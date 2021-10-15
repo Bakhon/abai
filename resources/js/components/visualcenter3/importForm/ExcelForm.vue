@@ -218,7 +218,24 @@
                 </div>
 
             </div>
-
+            <div v-else-if="category.isPlanActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.excelFormPlans.selectYear')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="currentPlan.year"
+                            type="year"
+                            format="yyyy"
+                            popper-class="custom-date-picker"
+                            @change="handleYearChange"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="table-form col-12 mt-3 ml-1">
                 <v-grid
                         v-if="!category.isPlanActive"
@@ -238,8 +255,6 @@
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
                         @beforeEdit="beforePlanEdit"
-                        :rowSize="30"
-                        :frameSize="72"
                 ></v-grid>
 
             </div>

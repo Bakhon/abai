@@ -46,13 +46,6 @@ export default {
             }
         },
        async changeCategory(name) {
-            // if (!this.isArchiveActive) {
-            //     this.isDataExist = false;
-            //     this.isDataReady = false;
-            //     await this.changeDefaultDzo();
-            //     await this.updateCurrentData();
-            //     this.addListeners();
-            // }
            this.category = _.mapValues(this.category, () => false);
            this.category[name] = true;
            this.isDataExist = false;
@@ -75,11 +68,11 @@ export default {
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
             if (this.category.isPlanActive) {
+                this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker].rows);
+                this.fillPlanRows();
                 this.plans = await this.getDzoPlans();
                 this.handlePlans();
                 document.querySelector('#planGrid').refresh('all');
-                // let spliced = this.planRows.splice(9,20);
-                // document.querySelector('#planGrid').source = spliced;
             } else {
                 if (this.selectedDzo.ticker === 'КОА') {
                     this.addColumnsToGrid();

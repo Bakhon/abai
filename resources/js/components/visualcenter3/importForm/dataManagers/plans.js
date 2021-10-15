@@ -1,77 +1,61 @@
 import moment from "moment-timezone";
-import planCellEmg from "../dzoData/plan_cells_mapping_emg.json";
 import planRowEmg from "../dzoData/plan_rows_emg.json";
-//import planFormatEmg from "../dzoData/plan_format_mapping_emg.json";
-
+import planRowYo from "../dzoData/plan_rows_yo.json";
+import planRowKbm from "../dzoData/plan_rows_kbm.json";
+import planRowKoa from "../dzoData/plan_rows_koa.json";
+import planRowKtm from "../dzoData/plan_rows_ktm.json";
+import planRowMmg from "../dzoData/plan_rows_mmg.json";
+import planRowOmg from "../dzoData/plan_rows_omg.json";
 
 export default {
     data: function () {
         return {
             planDzoMapping : {
                 "КОА" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowKoa,
                     id: 110
                 },
                 "КТМ" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowKtm,
                     id: 107
                 },
                 "КБМ" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowKbm,
                     id: 106
                 },
                 "КГМ" : {
                     rows: [],
-                    format: [],
-                    cells: [],
                     id: 108
                 },
                 "ММГ" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowMmg,
                     id: 109
                 },
                 "ОМГ" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowOmg,
                     id: 112
                 },
                 "УО" : {
-                    rows: [],
-                    format: [],
-                    cells: [],
+                    rows: planRowYo,
                     id: 111
                 },
                 "ЭМГ" : {
                     rows: planRowEmg,
-                  //  format: planFormatEmg,
-                  //  cells: planCellEmg,
                     id: 113,
                 },
             },
             planColumns: [],
             planRows: _.cloneDeep(planRowEmg),
-          //  planCellsMapping: _.cloneDeep(planCellEmg),
-         //   planRowsFormatMapping: _.cloneDeep(planFormatEmg.rowsFormatMapping),
-          //  planColumnsFormatMapping: _.cloneDeep(planFormatEmg.columnsFormatMapping),
             plans: [],
             currentPlan: {
                 rows: [],
                 cells: [],
                 columns: [],
-                year: moment().year()
+                year: moment()
             },
             outputPlans: [],
             isPlanValidateError: false,
-            isPlanFilled: false
+            isPlanFilled: false,
         };
     },
     methods: {
@@ -79,7 +63,7 @@ export default {
             let uri = this.localeUrl("/get-plans-by-dzo");
             let queryOptions = {
                 'dzo': this.selectedDzo.ticker,
-                'year': this.currentPlan.year
+                'year': this.currentPlan.year.year()
             };
             const response = await axios.get(uri, {params:queryOptions});
             if (response.status === 200) {
@@ -117,6 +101,7 @@ export default {
             }
         },
         fillPlanRows() {
+            this.currentPlan.rows = [];
             let header = {
                 "column1": "Показатель",
                 "column2": 'Январь',
@@ -138,7 +123,7 @@ export default {
                     'column1': y
                 }
                 for (let i=2;i<=13;i++) {
-                    row['column'+i] = "5";
+                    row['column'+i] = 0;
                 }
                 row['fieldName'] = this.planRows[y];
                 this.currentPlan.rows.push(row);
@@ -149,7 +134,7 @@ export default {
                 let row = this.currentPlan.rows[i];
                 for (let y=2;y<Object.keys(row).length;y++) {
                     let plan = this.plans.find(month => moment(month.date).month()+1 === y-1);
-                    let daysCount = moment().year(this.currentPlan.year).month(y-2).daysInMonth();
+                    let daysCount = moment().year(this.currentPlan.year.year()).month(y-2).daysInMonth();
                     row['column'+y] = Math.round(plan[row['fieldName']] * daysCount);
                 }
             }
@@ -158,7 +143,7 @@ export default {
             let systemColumns = ['column1', 'fieldName'];
             let output = [];
             for (let i = 1; i < 13; i++) {
-                let date = moment().year(this.currentPlan.year).month(i - 1).startOf('month').startOf('day');
+                let date = moment().year(this.currentPlan.year.year()).month(i - 1).startOf('month').startOf('day');
                 let fields = {
                     date: date.format(),
                     dzo: this.selectedDzo.ticker,
@@ -176,9 +161,9 @@ export default {
             this.outputPlans = output;
             if (this.isPlanValidateError) {
                 this.isPlanFilled = false;
-                this.showToast('Пожалуйста, заполните все поля. Разрешено вводить только числовые значения, либо 0.', 'Ошибка!', 'danger');
+                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
             } else {
-                this.showToast('Нажмите "Сохранить" для продолжения.', 'Проверено!', 'Success');
+                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
                 this.isPlanFilled = true;
             }
             this.isPlanValidateError = false;
@@ -191,7 +176,7 @@ export default {
             };
             await axios.post(uri, {params:queryOptions});
             this.isPlanFilled = false;
-            this.showToast('Данные успешно сохранены.', 'Сохранено!', 'Success');
+            this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
         },
         beforePlanEdit(e) {
             let cell = e.detail;
@@ -207,6 +192,19 @@ export default {
         },
         disableErrorHighlight(row,col) {
             this.removeClassFromElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
+        },
+        async handleYearChange() {
+            this.currentPlan.year = moment(this.currentPlan.year);
+            this.SET_LOADING(true);
+            this.plans = await this.getDzoPlans();
+            console.log(this.plans)
+            if (this.plans.length > 0) {
+                this.handlePlans();
+            } else {
+                this.fillPlanRows();
+            }
+            document.querySelector('#planGrid').refresh('all');
+            this.SET_LOADING(false);
         }
     },
     computed: {

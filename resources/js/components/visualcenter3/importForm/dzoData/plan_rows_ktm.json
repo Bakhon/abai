@@ -4,6 +4,8 @@
   "Сдача нефти":  "plan_oil_dlv",
   "Сдача нефти ОПЕК+":  "plan_oil_dlv_opek",
   "Общая закачка воды":  "plan_liq",
+  "Закачка сточной воды":  "plan_liq_waste",
+  "Закачка альбсеноманской воды":  "plan_liq_albsen",
   "Добыча газа":  "plan_gas",
   "Сдача газа":  "plan_gas_dlv",
   "Добыча попутного газа":  "plan_poput_gas",
@@ -15,5 +17,8 @@
   "Проходка бурением":  "plan_otm_burenie_prohodka",
   "КРС":  "plan_otm_krs_skv_plan",
   "ПРС":  "plan_otm_prs_skv_plan",
-  "Деэмульгатор":  "plan_chem_prod_zakacka_demulg"
+  "Деэмульгатор":  "plan_chem_prod_zakacka_demulg",
+  "Бактерицид":  "plan_chem_prod_zakacka_bakteracid",
+  "Ингибитор коррозии":  "plan_chem_prod_zakacka_ingibator_korrozin",
+  "Ингибитор солеотложения": "plan_chem_prod_zakacka_ingibator_soleotloj"
 }
