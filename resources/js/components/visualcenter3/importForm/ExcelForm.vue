@@ -44,7 +44,7 @@
                     {{trans('visualcenter.importForm.pasteData')}}
                 </div>
                 <div
-                        :class="[!isDataExist ? 'menu__button_disabled' : '','opacity-0 col-12 status-block status-block_little menu__button mt-3']"
+                        class="col-12 status-block status-block_little menu__button mt-3"
                         @click="validatePlan()"
                 >
                     {{trans('visualcenter.validateButton')}}
@@ -237,9 +237,8 @@
                         theme="material"
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
+                        @beforeEdit="beforePlanEdit"
                         :rowSize="30"
-                        @beforeRangeEdit="beforeRangeEdit"
-                        @beforeEdit="beforeRangeEdit"
                         :frameSize="72"
                 ></v-grid>
 

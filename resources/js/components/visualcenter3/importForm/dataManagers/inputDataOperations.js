@@ -82,7 +82,9 @@ export default {
             });
         },
         refreshGridData() {
-            document.querySelector('#factGrid').refresh('all');
+            if (document.querySelector('#factGrid')) {
+                document.querySelector('#factGrid').refresh('all');
+            }
         },
 
         formatCategoryByType(event,category,type) {

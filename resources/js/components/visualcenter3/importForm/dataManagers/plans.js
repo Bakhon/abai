@@ -68,7 +68,10 @@ export default {
                 cells: [],
                 columns: [],
                 year: moment().year()
-            }
+            },
+            outputPlans: [],
+            isPlanValidateError: false,
+            isPlanFilled: false
         };
     },
     methods: {
@@ -146,36 +149,64 @@ export default {
                 let row = this.currentPlan.rows[i];
                 for (let y=2;y<Object.keys(row).length;y++) {
                     let plan = this.plans.find(month => moment(month.date).month()+1 === y-1);
-                    let daysCount = moment().year(this.currentPlan.year).month(y-1).daysInMonth();
+                    let daysCount = moment().year(this.currentPlan.year).month(y-2).daysInMonth();
                     row['column'+y] = Math.round(plan[row['fieldName']] * daysCount);
                 }
             }
-            console.log(this.currentPlan.rows);
         },
         validatePlan() {
-
-        },
-        async savePlan() {
-            let systemColumns = ['column1','fieldName'];
+            let systemColumns = ['column1', 'fieldName'];
             let output = [];
-            for (let i=1;i<13;i++) {
-                let date = moment().year(this.currentPlan.year).month(i-1).startOf('month').startOf('day');
+            for (let i = 1; i < 13; i++) {
+                let date = moment().year(this.currentPlan.year).month(i - 1).startOf('month').startOf('day');
                 let fields = {
                     date: date.format(),
                     dzo: this.selectedDzo.ticker,
                 };
-                for (let y=1;y<this.currentPlan.rows.length;y++) {
+                for (let y = 1; y < this.currentPlan.rows.length; y++) {
                     let row = this.currentPlan.rows[y];
-                    fields[row['fieldName']] = row['column'+(i+1)] / date.daysInMonth();
+                    let plan = row['column' + (i + 1)] / date.daysInMonth();
+                    if (plan === 0) {
+                        plan = null;
+                    }
+                    fields[row['fieldName']] = plan;
                 }
                 output.push(fields);
             }
+            this.outputPlans = output;
+            if (this.isPlanValidateError) {
+                this.isPlanFilled = false;
+                this.showToast('Пожалуйста, заполните все поля. Разрешено вводить только числовые значения, либо 0.', 'Ошибка!', 'danger');
+            } else {
+                this.showToast('Нажмите "Сохранить" для продолжения.', 'Проверено!', 'Success');
+                this.isPlanFilled = true;
+            }
+            this.isPlanValidateError = false;
+        },
+        async savePlan() {
             let uri = this.localeUrl("/store-yearly-plans");
             let queryOptions = {
                 'dzo': this.selectedDzo.ticker,
-                'plans': output
+                'plans': this.outputPlans
             };
             await axios.post(uri, {params:queryOptions});
+            this.isPlanFilled = false;
+            this.showToast('Данные успешно сохранены.', 'Сохранено!', 'Success');
+        },
+        beforePlanEdit(e) {
+            let cell = e.detail;
+            let rowIndex = cell.rowIndex;
+            let colIndex = cell.prop.replace(/\D/g, "") - 1;
+            let value = cell.val.replace(',','.');
+            value = parseFloat(value);
+            this.disableErrorHighlight(rowIndex,colIndex);
+            if (isNaN(value)) {
+                this.setClassToElement($('#planGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
+                this.isPlanValidateError = true;
+            }
+        },
+        disableErrorHighlight(row,col) {
+            this.removeClassFromElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
         }
     },
     computed: {

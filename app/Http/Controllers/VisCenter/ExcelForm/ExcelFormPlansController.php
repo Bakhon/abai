@@ -23,9 +23,12 @@ class ExcelFormPlansController extends Controller
         $params = reset($params);
         foreach($params['plans'] as $plan) {
             $existRecord = $this->getExistRecord($params['dzo'],Carbon::parse($plan['date']));
-            if (!is_null($existRecord)) {
+            if (is_null($existRecord)) {
                 DzoPlan::create($plan);
-                dd($plan);
+            } else {
+                DzoPlan::query()
+                    ->where('id', $existRecord->id)
+                    ->update($plan);
             }
         }
     }
