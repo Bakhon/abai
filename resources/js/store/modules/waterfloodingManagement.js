@@ -36,7 +36,7 @@ const waterfloodingManagement = {
     },
     actions: {
         async getKin({dispatch, commit, state}, fieldObject){
-            let url =process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/kin/' + fieldObject + '/';
+            let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/kin/' + fieldObject + '/';
             axios.get(url)
                 .then((response) =>{
                     commit('SAVE_KIN', response.data)
@@ -45,7 +45,7 @@ const waterfloodingManagement = {
             })
         },
         async getWellList({dispatch, commit}){
-            let url = 'http://127.0.0.1:8001/api/v1/object_selections/well-list/';
+            let url =process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/well-list/';
             axios.get(url)
                 .then((response) =>{
                     commit('SAVE_WELL_LIST', response.data)

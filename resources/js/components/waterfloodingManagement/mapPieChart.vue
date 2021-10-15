@@ -107,7 +107,6 @@ export default {
   top: 0;
   left: 60%;
   font-weight: bold;
-  //font-size: calc(var(--radius-width) / 2 );
   z-index: 1999;
   color: #000;
 }
