@@ -118,7 +118,7 @@ class OilCondensateConsolidatedWithoutKmg {
         return $dzo->getSummaryWithoutKMG($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMappingWithoutKmg[$type][$dzoName]);
     }
 
-    public function getChartData($fact,$plan,$dzoName,$type)
+    public function getChartData($fact,$plan,$dzoName,$type,$periodRange)
     {
         $dataType = 'production';
         if (str_contains($type, 'delivery')) {
@@ -136,6 +136,6 @@ class OilCondensateConsolidatedWithoutKmg {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange);
     }
 }

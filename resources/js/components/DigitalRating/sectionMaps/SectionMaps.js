@@ -8,8 +8,9 @@ import WellAtlasModal from "../components/WellAtlasModal";
 import Accordion from "../components/Accordion";
 import SearchFormRefresh from "../../ui-kit/SearchFormRefresh";
 import mainMenu from "../../GTM/mock-data/main_menu.json";
-import { legends, maps, properties, objects, fileActions, mapActions } from '../json/data';
-import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
+import { legends, maps, properties, horizons, fileActions, mapActions } from '../json/data';
+import { digitalRatingState, digitalRatingMutations,globalloadingMutations } from '@store/helpers';
+import axios from "axios";
 
 export default {
     name: "SectionMaps",
@@ -24,7 +25,7 @@ export default {
 
     data() {
         return {
-            objects: objects,
+            horizons: horizons,
             maps: maps,
             legends: legends,
             properties: properties,
@@ -49,8 +50,10 @@ export default {
     },
 
     async mounted() {
+        this.SET_LOADING(true);
         await this.initMap();
         await this.initSectorOnMap();
+        this.SET_LOADING(false);
     },
 
     computed: {
@@ -58,7 +61,12 @@ export default {
     },
 
     methods: {
-        ...digitalRatingMutations(['SET_SECTOR', 'SET_HORIZON']),
+        ...digitalRatingMutations([
+          'SET_SECTOR', 'SET_HORIZON'
+        ]),
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
 
         initMap() {
             this.map = L.map('map', {
@@ -94,8 +102,18 @@ export default {
             });
         },
 
+        async fetchMaps(horizonId) {
+            try {
+                const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/${horizonId}`);
+                return res.data;
+            } catch (error) {
+                this.SET_LOADING(false);
+                console.error(error);
+            }
+        },
+
         async initSectorOnMap() {
-            const maps = await import(`../json/grid_${this.horizonNumber}.json`).then(module => module.default);
+            const maps = await this.fetchMaps(this.horizonNumber);
             if(maps?.length === 0) return;
             for (let i = 0; i < maps.length; i++) {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
@@ -103,7 +121,7 @@ export default {
                     color: maps[i]['color'],
                     weight: 1,
                     fillColor: maps[i]['color'],
-                    fillOpacity: 0.7,
+                    fillOpacity: 0.8,
                 }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
@@ -140,7 +158,7 @@ export default {
                 }).addTo(this.map);
                 setTimeout(() => {
                     this.map.removeLayer(polyline);
-                }, 1000);
+                }, 3000);
                 this.startPoint = this.endPoint = null;
             } else {
                 this.startPoint = event.latlng;

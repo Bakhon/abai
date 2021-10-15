@@ -127,8 +127,8 @@ export default {
                 },
                 {
                     id: 8,
-                    ticker: 'ОМГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
+                    ticker: 'ОМГК',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK') + ' (' + this.trans('visualcenter.condensate') + ')',
                 },
                 {
                     id: 6,
