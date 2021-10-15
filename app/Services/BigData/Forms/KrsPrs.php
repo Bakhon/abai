@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +18,16 @@ class KrsPrs extends PlainForm
 
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+    use WithDocumentsUpload;
+
     protected function getRows(): Collection
     {
         $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
         return $rows->map(function ($item) {
             $item->by_ourselves = empty($item->contractor);
             return $item;
@@ -69,24 +77,33 @@ class KrsPrs extends PlainForm
 
     protected function submitForm(): array
     {
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
+
         $formFields = $this->prepareDataToSubmit();
 
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($formFields['id'])) {
-            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $id = $formFields['id'];
         } else {
             $id = $dbQuery->insertGetId($formFields);
         }
 
         $this->updateWellStatus();
+        $this->insertInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     protected function prepareDataToSubmit()
     {
-        $data = $this->request->except('well_status');
+        $data = $this->request->except('well_status', 'documents');
 
         $kpc = DB::connection('tbd')
             ->table('dict.well_repair_type')

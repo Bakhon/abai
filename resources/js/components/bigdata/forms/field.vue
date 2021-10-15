@@ -348,6 +348,7 @@ export default {
     .vs__dropdown-menu {
       border: none;
       top: 30px;
+      width: auto;
 
       &::-webkit-scrollbar {
         width: 4px;

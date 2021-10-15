@@ -41,6 +41,7 @@ export default {
                 formatInput: true,
             },
             disabledDate: moment().subtract(1,'days').format(),
+            minimumDate: moment().startOf('year').startOf('day').format(),
             mainMenu: {
                 'oilCondensateProduction': true,
                 'oilCondensateProductionWithoutKMG': false,
@@ -80,7 +81,8 @@ export default {
                 }
             },
             companiesWithData: [],
-            exceptionDzo: ['КГМКМГ','ТП','ПККР']
+            exceptionDzo: ['КГМКМГ','ТП','ПККР'],
+            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY')
         }
     },
     methods: {
@@ -183,6 +185,9 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.selectedChartCategory.head = this.chartNameMapping[category].head;
+            this.selectedChartCategory.name = this.chartNameMapping[category].name;
+            this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
             let isWithoutKmg = this.doubleFilter.includes(category);
             let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;

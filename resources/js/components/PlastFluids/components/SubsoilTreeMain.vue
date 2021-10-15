@@ -74,4 +74,8 @@ export default {
 .subsoil-input-label-holder > label {
   margin-left: 10px;
 }
+
+.subsoil-tree::-webkit-scrollbar {
+  width: 4px;
+}
 </style>

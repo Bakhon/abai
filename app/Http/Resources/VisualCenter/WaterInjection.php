@@ -103,11 +103,11 @@ class WaterInjection {
             }
             $updated = $this->getData($dzoName,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$fields);
             if (count($updated) > 0) {
-                $sorted = $this->getSortedById($updated);
                 $summary = array_merge($summary,$updated);
             }
         }
-        return $summary;
+        $sorted = $this->getSortedById($summary);
+        return $sorted;
     }
 
     private function getData($dzo,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$categoryFields)
@@ -127,7 +127,7 @@ class WaterInjection {
         }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
-            $companySummary['plan'] *= Carbon::now()->day - 1;
+           // $companySummary['plan'] *= Carbon::now()->day - 1;
         }
         if ($periodType === 'year') {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);
@@ -178,9 +178,9 @@ class WaterInjection {
     private function getSortedById($data)
     {
         $ordered = array();
-        foreach(array_keys($this->companies) as $value) {
+        foreach($this->companies as $value) {
             $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
+            if ($key !== false) {
                 array_push($ordered,$data[$key]);
             }
         }
