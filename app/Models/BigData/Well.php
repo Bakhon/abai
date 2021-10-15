@@ -209,4 +209,22 @@ class Well extends TBDModel
             ->withPivot('dend', 'dbeg')
             ->first();
     }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return array|null
+     */
+    public function wellData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('date','liquid','wcut','oil','hdin')
+                          ->orderBy('date')->get();
+        return $query;
+    }
 }

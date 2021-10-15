@@ -1,7 +1,7 @@
 <template>
   <div class="main-page-map">
     <div class="map-header">
-      <p>Карта размещений нефтегазоносных провинций и областей</p>
+      <p>{{ trans("plast_fluids.oil_map") }}</p>
       <div class="map-header-toolbar">
         <div class="toolbar-search">
           <div class="input-holder">
@@ -11,10 +11,10 @@
                 alt="search for provinces"
             /></label>
             <div class="break"></div>
-            <input type="text" id="main-page-map-search" placeholder="Поиск" />
+            <input type="text" id="main-page-map-search" :placeholder="trans('plast_fluids.search')" />
           </div>
           <button class="toolbar-search-button">
-            Поиск
+            {{ trans("plast_fluids.search") }}
           </button>
         </div>
         <img src="/img/PlastFluids/box-icon.svg" alt="" />
@@ -26,11 +26,11 @@
         v-if="zoomLevel !== 'global'"
         @click="zoomToFeature({ target: 'previous' })"
       >
-        Назад
+        {{ trans("plast_fluids.back") }}
       </button>
       <button>
         <img src="/img/PlastFluids/satelite.svg" alt="" />
-        <span>Спутник</span>
+        <span>{{ trans("plast_fluids.satelite") }}</span>
       </button>
     </div>
     <div id="map"></div>

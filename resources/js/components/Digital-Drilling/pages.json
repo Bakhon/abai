@@ -78,6 +78,16 @@
       "parent": "bd",
       "child": [
         {
+          "name": "digital_drilling.project_data.daily_drilling_report",
+          "id": 28,
+          "checked": null,
+          "component": {
+            "name": "main-table",
+            "template": "<daily-drilling-report></daily-drilling-report>"
+          },
+          "parent": "bd"
+        },
+        {
           "name":  "digital_drilling.project_data.technical_task",
           "id": 8,
           "checked": null,
@@ -157,6 +167,17 @@
       "component": {
         "name": "main-table",
         "template": "<drilling-rigs></drilling-rigs>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    },
+    {
+      "name": "digital_drilling.capital_investments",
+      "img": "/img/digital-drilling/capital-investments.svg",
+      "id": 28,
+      "component": {
+        "name": "main-table",
+        "template": "<capital-investments></capital-investments>"
       },
       "accordion": false,
       "parent": "bd"

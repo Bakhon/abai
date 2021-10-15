@@ -44,7 +44,10 @@ export default {
                     summaryWells[fond] = _.round((_.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName]), 0);
                 });
                 _.forEach(this.fondList.other, function(fond) {
-                    summaryWells[otherFieldName] += _.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName];
+                    let summ = _.sumBy(inputData, fond);
+                    if (summ) {
+                        summaryWells[otherFieldName] += summ / self.fondDaysCountSelected[fondName];
+                    }
                 });
             } else {
                 _.forEach(this.fondList[fondName].work, function(fond) {

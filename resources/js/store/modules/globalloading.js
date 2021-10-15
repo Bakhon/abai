@@ -10,6 +10,12 @@ const globalloading = {
       state.loading = val;
     },
   },
+
+  actions: {
+    setLoading: ({commit}, val) => {
+      commit('SET_LOADING', val)
+    },
+  },
 };
 
 export default globalloading;

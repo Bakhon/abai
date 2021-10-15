@@ -329,4 +329,8 @@ return array (
   'discount_by_direction' => 'Скидка по направлению',
   'ton' => 'Тонна',
   'well_per_operation' => 'скв. опер.',
+  'input_indicators' => 'Входные показатели',
+  'estimated_data' => 'Расчетные данные',
+  'input_specific_indicators' => 'Входные удельные показатели',
+  'inactive_short' => 'БД',
 );
