@@ -98,13 +98,15 @@ export default {
         }
       ];
 
-      if (this.clickedObject.type == 'gu' ) {
-        options.push({
-          name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
-          mapObject: this.clickedObject,
-          type: 'redirect',
-          editMode: this.clickedObject.type
-        });
+      if (this.clickedObject.type == 'gu') {
+        if (this.clickedObject.object.id < 10000) {
+          options.push({
+            name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
+            mapObject: this.clickedObject,
+            type: 'redirect',
+            editMode: this.clickedObject.type
+          });
+        }
 
         options.push({
           name: this.trans('monitoring.add-omg-ngdu-data'),
