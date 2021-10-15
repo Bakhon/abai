@@ -4,8 +4,8 @@
       {{ trans('economic_reference.table_well_changes') }}
     </subtitle>
 
-    <div id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
-      <div v-for="(chunk, index) in tableDataChunks"
+    <div v-if="wells" id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
+      <div v-for="(chunk, index) in chunks"
            :key="index">
         <div :style="`width: ${columnWidth}px`"
              class="text-center border-grey d-flex bg-header">
@@ -29,15 +29,15 @@
 
           <div v-for="price in oilPrices"
                :key="`${uwi}_${price}_profitability_12m`"
-               :style="`background: ${getColor(tableData[uwi].oilPrices[+price])}`"
+               :style="`background: ${getColor(wells[uwi].oilPrices[+price])}`"
                class="border-grey flex-30px">
           </div>
 
           <div class="border-grey flex-30px position-relative d-flex align-items-center justify-content-center">
-            <input v-model="tableData[uwi].isShutdown"
+            <input v-model="wells[uwi].isShutdown"
                    type="checkbox"
                    class="form-check-input m-0 flex-30px"
-                   @change="toggleWell(uwi, tableData[uwi])">
+                   @change="toggleWell(uwi, wells[uwi])">
           </div>
         </div>
       </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 import Subtitle from "./Subtitle";
 
 const WELL_KEYS = [
@@ -98,7 +100,25 @@ export default {
       type: Array
     },
   },
+  data: () => ({
+    dollarRate: 0,
+    wells: null,
+  }),
+  created() {
+    this.dollarRate = +this.scenario.dollar_rate
+  },
+  mounted() {
+    this.SET_LOADING(true)
+
+    setTimeout(() => {
+      this.setWells()
+
+      this.SET_LOADING(false)
+    })
+  },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
         return '#387249'
@@ -147,17 +167,12 @@ export default {
           this.scenario[sumKey][valueKey] = +this.scenario[sumKey][valueKey] + sumValues[sumKey]
         })
       })
-    }
-  },
-  computed: {
-    filteredData() {
-      return this.data.filter(x => +x.dollar_rate === +this.scenario.dollar_rate)
     },
 
-    tableData() {
+    setWells() {
       let wells = {}
 
-      this.filteredData.forEach(well => {
+      this.data.filter(x => +x.dollar_rate === this.dollarRate).forEach(well => {
         if (!wells.hasOwnProperty(well.uwi)) {
           wells[well.uwi] = {
             oilPrices: {},
@@ -187,11 +202,12 @@ export default {
         }
       })
 
-      return wells
-    },
-
-    tableDataKeys() {
-      let wells = this.tableData
+      this.wells = wells
+    }
+  },
+  computed: {
+    sortedUwis() {
+      let wells = this.wells
 
       return Object.keys(wells).sort(function (prev, next) {
         return (wells[next].cat1 - wells[prev].cat1)
@@ -200,10 +216,10 @@ export default {
       })
     },
 
-    tableDataChunks() {
+    chunks() {
       let result = [];
 
-      let keys = this.tableDataKeys
+      let keys = this.sortedUwis
 
       let length = keys.length
 
@@ -215,13 +231,35 @@ export default {
     },
 
     chunkStep() {
-      return 20
+      return 21
     },
 
     columnWidth() {
       return 130 + this.oilPrices.length * 30
-    }
+    },
   },
+  watch: {
+    scenario: {
+      handler(scenario) {
+        this.SET_LOADING(true)
+
+        setTimeout(() => {
+          if (+scenario.dollar_rate !== this.dollarRate) {
+            this.dollarRate = +scenario.dollar_rate
+
+            this.setWells()
+          } else {
+            Object.keys(this.wells).forEach(uwi => {
+              this.wells[uwi].isShutdown = scenario.uwi_stop.includes(uwi)
+            })
+          }
+
+          this.SET_LOADING(false)
+        })
+      },
+      deep: true
+    }
+  }
 }
 </script>
 

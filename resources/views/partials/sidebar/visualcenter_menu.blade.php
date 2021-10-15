@@ -22,6 +22,7 @@
             @if (auth()->user()->can('visualcenter view main'))
             <li class="left-menu-li"><a href="{{ route('daily-report') }}">{{ trans("visualcenter.dailyReportsKMG") }}</a></li>
             <li class="left-menu-li"><a href="{{ route('daily-approve') }}">{{ trans("visualcenter.approvalsTable") }}</a></li>
+            <li class="left-menu-li"><a href="{{ route('oil-dynamic') }}">{{ trans("visualcenter.dailyDynamic") }}</a></li>
             @endif
         </div>
     </div>

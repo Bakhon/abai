@@ -1,8 +1,7 @@
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsOil,rowsHorizon,horizons} from '../json/data';
+import {rowsOil,rowsHorizon,horizons,actualIndicators} from '../json/data';
 import apexchart from 'vue-apexcharts';
-const ru = require("apexcharts/dist/locales/ru.json");
 
 export default {
   name: 'CompareDrilling',
@@ -17,9 +16,22 @@ export default {
       menu: mainMenu,
       parentType: '',
       horizonList: horizons,
-      yearList: ['2020', '2021'],
+      actualIndicators: actualIndicators,
+      coincidences: [
+        {
+          id: 50,
+          title: '50 м'
+        },
+        {
+          id: 100,
+          title: '100 м'
+        },
+        {
+          id: 150,
+          title: '150 м'
+        }
+      ],
       horizon: 12,
-      ru: ru
     }
   },
 
@@ -35,34 +47,49 @@ export default {
     },
     chartOptions() {
       return {
+        ...this.generalOptions,
         colors: ["#009847", "#F27E31"],
-        fill: {
-          opacity: 1
-        },
-        stroke: {
-          width: [2, 2]
-        },
-        legend: {
-          horizontalAlign: "left",
-          offsetX: 20
-        },
-        dataLabels: {
-          enabled: false
-        },
         xaxis: {
-          categories: this.getYearList
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
         },
-        toolbar: {
-          show: false,
-        }
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(6, '#fff')
+            }
+          }
+        },
+        grid: this.getGrid
       }
     },
     chartOptionsArea() {
       return {
-        chart: {
-          height: 350,
-          type: 'area'
+        ...this.generalOptions,
+        xaxis: {
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
         },
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(7, '#fff')
+            }
+          }
+        },
+        grid: this.getGrid
+      }
+    },
+    generalOptions() {
+      return {
         fill: {
           opacity: 1
         },
@@ -72,13 +99,52 @@ export default {
         dataLabels: {
           enabled: false
         },
+        legend:{
+          labels: {
+            colors: ['#FFFFFF']
+          },
+        },
+      }
+    },
+    getGrid() {
+      return {
+        show: true,
+        borderColor: '#454D7D',
+        strokeDashArray: 0,
+        position: 'back',
         xaxis: {
-          categories: this.getYearList
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          },
+        },
+        row: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        column: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         },
       }
     },
     getYearList() {
-      return [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
+      const years = [];
+      const currentYear = new Date().getFullYear();
+      for (let i = 2007; i < currentYear; i++) {
+        years.push(i);
+      }
+      return years.map(el => el.toString());
     },
     series() {
       return [
@@ -96,10 +162,10 @@ export default {
       return [
         {
           name: 'Факт',
-          data: [231, 140, 328, 251, 142, 109, 100, 123, 209, 259, 399, 249, 123, 234, 350]
+          data: [231, 140, 328, 251, 142, 109, 100, 123, 209, 259, 399, 249, 123, 234]
         }, {
           name: 'Проект',
-          data: [114, 322, 245, 232, 434, 152, 241, 132, 100, 150, 234, 328, 294,245,214]
+          data: [114, 322, 245, 232, 434, 152, 241, 132, 100, 150, 234, 328, 294,245]
         }
       ]
     }
@@ -112,5 +178,12 @@ export default {
         window.location.href = this.localeUrl(data.url);
       }
     },
+    getColors(count, color) {
+      let colors = [];
+      for (let i = 0; i < count; i++) {
+        colors.push(color);
+      }
+      return colors;
+    }
   }
 }

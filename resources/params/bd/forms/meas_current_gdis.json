@@ -1,0 +1,557 @@
+{
+  "type": "table",
+  "show_history": false,
+  "update_after_edit": false,
+  "columns": [
+    {
+      "title": "well",
+      "code": "uwi",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "conclusion",
+      "code": "conclusion",
+      "type": "dict",
+      "dict":"gdis_conclusion",
+      "is_editable": true
+    },
+    {
+      "title": "hdin",
+      "code": "hdin",
+      "table": "prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLVL"
+          }
+        }
+      },
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pzab",
+      "code": "pzab",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BHP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pmax",
+      "code": "pmax",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MLP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "target",
+      "code": "target",
+      "column":"target",
+      "table":"prod.gdis_current",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pri",
+      "code": "pri",
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "INJR"
+          }
+        }
+      },
+      "is_editable": true
+    },
+    {
+      "title": "Qzh_teor",
+      "code": "Qzh_teor",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLRT"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "Qzh_din",
+      "code": "Qzh_din",
+      "table":"prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLRD"
+          }
+        }
+      },
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "bsw",
+      "code": "bsw",
+      "table":"prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WCUT"
+          }
+        }
+      },
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "gas_fact",
+      "code": "gas_fact",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GASR"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "k_napol",
+      "code": "k_napol",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ADMCF"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "k_nasos",
+      "code": "k_nasos",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PDCF"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "p_priv",
+      "code": "p_priv",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RRP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "ppl",
+      "code": "ppl",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pbuf",
+      "code": "pbuf",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pstat",
+      "code": "pstat",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "STP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pzat",
+      "code": "pzat",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OTP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "ptr",
+      "code": "ptr",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TBP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "hstat",
+      "code": "hstat",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "STLV"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "tpl",
+      "code": "tpl",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RSVT"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "device",
+      "code": "device",
+      "column": "device",
+      "table": "prod.gdis_current",
+      "type": "dict",
+      "dict": "device",
+      "is_editable": true
+    },
+    {
+      "title": "transcript_dynamogram",
+      "code": "transcript_dynamogram",
+      "table":"prod.gdis_current",
+      "type": "text",
+      "column": "transcript_dynamogram",
+      "is_editable": true
+    },
+    {
+      "title": "glubina",
+      "code": "glubina",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RSD"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "kp",
+      "code": "kp",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PRDK"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "Hzab",
+      "code": "Hzab",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "DBD"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "dlina_gdm",
+      "code": "dlina_gdm",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SLHDM"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "note",
+      "code": "note",
+      "column":"note",
+      "table":"prod.gdis_current",
+      "type": "text",
+      "is_editable": true
+    },
+    {
+      "title": "count_gdm",
+      "code": "count_gdm",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PSHDM"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "depth_manometr",
+      "code": "depth_manometr",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PSD"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "Pzatr_Ppl",
+      "code": "Pzatr_Ppl",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OTPM"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "diameterHCH",
+      "code": "diameterHCH",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TPDM"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "L_m",
+      "code": "L_m",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PLST"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "n_min",
+      "code": "n_min",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PMPR"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "d_shkiv",
+      "code": "d_shkiv",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SHDMD"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "d_dvig",
+      "code": "d_dvig",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SHDME"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "count_num",
+      "code": "count_num",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RPM"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "conclusion_text",
+      "code": "conclusion_text",
+      "column": "conclusion_text",
+      "table":"prod.gdis_current",
+      "type": "text",
+      "is_editable": true
+    }
+  ]
+}

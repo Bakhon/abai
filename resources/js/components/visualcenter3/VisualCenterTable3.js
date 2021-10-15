@@ -138,18 +138,36 @@ export default {
             this.buttonTargetPlan = "";
         },
 
-        changeAssets(type,category,regionName) {
-            this.dzoCompaniesAssets[type] = true;
-            if (!this.dzoCompaniesAssets[type]) {
-                this.dzoCompaniesAssets['isAllAssets'] = true;
-            }
-            this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-            this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-            this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
-            this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
-            this.productionData = this.getFilteredTableData();
-            this.selectMultipleDzoCompanies(type,category,regionName);
+        disableRegions() {
+            _.forEach(this.dzoRegionsMapping, (item) => {
+                _.set(item, 'isActive', false);
+            });
         },
+
+        changeAssets(type) {
+            this.disableRegions();
+            this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
+            this.disableDzoCompaniesVisibility();
+            let selectedTypes = [];
+            _.forEach(this.dzoCompaniesAssets, (asset,key) => {
+                if (asset && typeof asset === "boolean") {
+                    selectedTypes.push(key);
+                    this.switchCompanies('type',key);
+                }
+            });
+            this.switchCompaniesVisibility(selectedTypes,'type');
+        },
+
+        switchCompaniesVisibility(types,type) {
+            if (types.length === 0) {
+                this.dzoCompaniesAssets['isAllAssets'] = true;
+                return this.selectAllDzoCompanies();
+            }
+            this.selectedDzoCompanies = _.cloneDeep(this.dzoCompanies).filter(company => types.includes(company[type])).map(company => company.ticker);
+            this.productionData = this.getFilteredTableData();
+        },
+
 
         getReasonExplanations() {
             let reasons = {};
@@ -160,6 +178,36 @@ export default {
                 }
             });
             return reasons;
+        },
+
+        switchCompanies(type,name) {
+            _.map(this.dzoCompanies, function(company) {
+                if (company[type] === name) {
+                    company.selected = !company.selected;
+                }
+            });
+        },
+
+        changeRegions(region) {
+            this.disableAssets();
+            this.dzoRegionsMapping[region].isActive = !this.dzoRegionsMapping[region].isActive;
+            this.disableDzoCompaniesVisibility();
+            let selectedRegions = [];
+            _.forEach(this.dzoRegionsMapping, (region,key) => {
+                if (region.isActive) {
+                    selectedRegions.push(key);
+                    this.switchCompanies('region',key);
+                }
+            });
+            this.switchCompaniesVisibility(selectedRegions,'region');
+        },
+
+        disableAssets() {
+            _.forEach(this.dzoCompaniesAssets, (asset,key) => {
+                if (typeof asset === 'boolean') {
+                    this.dzoCompaniesAssets[key] = false;
+                }
+            });
         },
 
         getProductionDataByOpekRestriction() {

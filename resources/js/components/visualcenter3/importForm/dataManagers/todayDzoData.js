@@ -109,7 +109,7 @@ export default {
         processFields(fieldsBlock,categoryName) {
             let self = this;
             _.forEach(Object.keys(fieldsBlock), function (key) {
-                if (self.todayData[categoryName].length > 0) {
+                if (Object.keys(self.todayData[categoryName]).length > 0) {
                     self.processDataBlock(fieldsBlock[key],categoryName,self.todayData[categoryName][key]);
                 }
             });

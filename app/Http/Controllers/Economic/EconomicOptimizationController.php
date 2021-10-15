@@ -11,6 +11,7 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
@@ -128,7 +129,11 @@ class EconomicOptimizationController extends Controller
     {
         $org = EconomicNrsController::getOrg($request->org_id, $this->structureService);
 
-        return [
+        if (Cache::has(self::DATA_SOURCE)) {
+            return json_decode(Cache::get(self::DATA_SOURCE), true);
+        }
+
+        $data = [
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
@@ -143,6 +148,10 @@ class EconomicOptimizationController extends Controller
             ],
             'gtms' => EcoRefsGtm::all()
         ];
+
+        Cache::put(self::DATA_SOURCE, json_encode($data, true), now()->addWeek());
+
+        return $data;
     }
 
     private function getScenarios(): array
