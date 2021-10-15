@@ -19,7 +19,6 @@ import LayerGroup from "ol/layer/Group";
 import {globalloadingMutations} from '@store/helpers';
 import draggable from 'vuedraggable'
 import {Overlay} from "ol";
-import test from './test.json';
 import Chart from 'ol-ext/style/Chart'
 import CircleStyle from "ol/style/Circle";
 
