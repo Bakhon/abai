@@ -50,7 +50,7 @@
                     {{trans('visualcenter.validateButton')}}
                 </div>
                 <div
-                        :class="'status-block status-block_little menu__button col-12 mt-3'"
+                        :class="[!isPlanFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
                         @click="savePlan()"
                 >
                     {{trans('visualcenter.saveButton')}}
@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div v-else class="col-2 row mt-3 ml-1"></div>
-            <div v-if="!category.isFactActive" class="col-4 mt-3 row ml-1">
+            <div v-if="category.isArchieveActive" class="col-4 mt-3 row ml-1">
                 <b-form-input
                         size="sm"
                         v-model="userName"
