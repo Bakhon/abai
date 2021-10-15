@@ -3,7 +3,6 @@
 namespace App\Repositories;
 use App\Models\BigData\Well;
 use App\Repositories\Interfaces\WellRepositoryInterface;
-use Illuminate\Support\Facades\Log;
 
 class WellCardGraphRepository  implements WellRepositoryInterface
 {
