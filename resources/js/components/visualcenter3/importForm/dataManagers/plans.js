@@ -197,7 +197,6 @@ export default {
             this.currentPlan.year = moment(this.currentPlan.year);
             this.SET_LOADING(true);
             this.plans = await this.getDzoPlans();
-            console.log(this.plans)
             if (this.plans.length > 0) {
                 this.handlePlans();
             } else {
