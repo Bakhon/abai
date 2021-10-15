@@ -99,7 +99,7 @@ export default {
       ];
 
       if (this.clickedObject.type == 'gu') {
-        if (this.clickedObject.object.id < 10000) {
+        if (!this.isManualGu(this.clickedObject.object.id)) {
           options.push({
             name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
             mapObject: this.clickedObject,
@@ -180,6 +180,9 @@ export default {
       if (event.keyCode === 27) {
         this.hideContextMenu();
       }
+    },
+    isManualGu (id) {
+      return id >= 10000;
     }
   }
 }
