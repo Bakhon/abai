@@ -148,7 +148,7 @@ export default {
         },
         importFile(file) {
             this.SET_LOADING(true);
-            const extensions = ['irap', 'zmap', 'shp', 'txt', 'bin'];
+            const extensions = ['irap', 'zmap', 'shp', 'txt'];
             let fileType = '';
             extensions.forEach(extension => {
                 if (fileType === '' && file.name.indexOf(extension) !== -1) {
@@ -160,11 +160,7 @@ export default {
                 this.$notifyError(this.trans('map_constructor.file_extension_error'));
                 this.SET_LOADING(false);
             }
-            if (fileType === 'bin') {
-                this.addGrid(file);
-            } else {
-                this.sendFileToAPI(file, fileType);
-            }
+            this.sendFileToAPI(file, fileType);
         },
         drawLines(fileData) {
             let features = [];
@@ -189,7 +185,7 @@ export default {
                 }),
                 style: new Style({
                     stroke: new Stroke({
-                        color: '#f00',
+                        color: '#3be7c5',
                         width: 3,
                     }),
                 }),
@@ -290,7 +286,7 @@ export default {
                 }
                 this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
                   'internal': internalStyle,
-                  'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.5)`,
+                  'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
                     parseInt(polygonsPerLevel.lower_bound).toString()),
                 });
             });
