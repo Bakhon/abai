@@ -10,14 +10,7 @@
           <span>Поиск</span>
         </button>
       </div>
-      <div
-        class="blocks-holder w-100"
-        :style="
-          `grid-template-columns: repeat(${
-            blocks.length > 9 ? 9 : blocks.length
-          }, 96px);`
-        "
-      >
+      <div class="blocks-holder w-100">
         <MainPageModuleBlock
           v-for="(block, index) in filteredBlocks"
           :key="index"
@@ -129,6 +122,7 @@ export default {
 <style lang="scss" scoped>
 .blocks-holder {
   display: grid;
+  grid-template-columns: repeat(9, 96px);
   grid-template-rows: auto;
   row-gap: 20px;
   justify-content: space-between;
