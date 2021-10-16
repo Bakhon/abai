@@ -42,6 +42,7 @@
           :tooltip-text="trans('economic_reference.thousand_tons')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
+          :prs="charts.prs"
           class="bg-economic-chart mt-2"/>
 
       <chart-with-well-top

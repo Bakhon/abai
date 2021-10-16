@@ -173,6 +173,7 @@ class EconomicNrsController extends Controller
             ->doubleSum('liquid')
             ->doubleSum('bsw')
             ->doubleSum('oil')
+            ->sum('prs1')
             ->count('uwi')
             ->where('status', '=', self::STATUS_ACTIVE);
 
@@ -276,8 +277,8 @@ class EconomicNrsController extends Controller
         $dataWithOilProduction = $dataWithProfitability;
         $dataWithLiquidProduction = $dataWithProfitability;
         $dataWithPausedProfitability = $dataWithProfitability;
-
         $dataWithWellTop = [];
+        $dataWithPrs = [];
 
         foreach (self::WELL_TOP_KEYS as $key) {
             $dataWithWellTop[$key] = [
@@ -300,6 +301,10 @@ class EconomicNrsController extends Controller
             $dataWithOilProduction[$item[$profitabilityType]][$date] = $item['oil'] / 1000;
 
             $dataWithLiquidProduction[$item[$profitabilityType]][$date] = self::formatProfitability($item);
+
+            isset($dataWithPrs[$date])
+                ? $dataWithPrs[$date] += $item['prs1']
+                : $dataWithPrs[$date] = $item['prs1'];
         }
 
         $this->fillZeroValues($dataWithOilProduction, $profitabilities);
@@ -398,6 +403,7 @@ class EconomicNrsController extends Controller
                 'wellTop' => $dataWithWellTop,
                 'liquidProduction' => $dataWithLiquidProduction,
                 'pausedProfitability' => $dataWithPausedProfitability,
+                'prs' => $dataWithPrs,
             ],
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),

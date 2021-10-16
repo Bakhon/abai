@@ -35,6 +35,10 @@ export const chartInitMixin = {
             required: false,
             type: String,
         },
+        prs: {
+            required: false,
+            type: Object
+        }
     },
     data: () => ({
         isVisibleDefaultSeries: true,
@@ -47,8 +51,10 @@ export const chartInitMixin = {
         },
 
         defaultSeries() {
-            return this.isVisibleDefaultSeries ?
-                [
+            let series = []
+
+            if (this.isVisibleDefaultSeries) {
+                series.push(
                     {
                         name: this.trans('economic_reference.course_prices'),
                         type: 'line',
@@ -61,8 +67,19 @@ export const chartInitMixin = {
                         data: this.oilPrices,
                         defaultColor: '#FC35B0',
                     }
-                ]
-                : []
+                )
+
+                if (this.prs) {
+                    series.push({
+                        name: this.trans('economic_reference.count_prs'),
+                        type: 'bar',
+                        data: Object.values(this.prs),
+                        defaultColor: '#1CEFFC',
+                    })
+                }
+            }
+
+            return series
         },
 
         defaultColors() {

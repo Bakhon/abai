@@ -292,6 +292,7 @@ const economicRes = {
     oilProduction: null,
     liquidProduction: null,
     wellTop: null,
+    prs: null,
   },
   oilPrices: [],
   dollarRates: [],
