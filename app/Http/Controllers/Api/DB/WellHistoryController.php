@@ -42,7 +42,13 @@ class WellHistoryController extends Controller
                     'date' => $date->format('Y-m-d'),
                     'liqCut' => round($day['wcut'], 1),
                     'workHours' => round($day['work_hours'], 1),
-                    'oil' => round($day['oil'], 1)
+                    'oil' => round($day['oil'], 1),
+                    'liquid_telemetry' => round($day['liquid_telemetry'], 1),
+                    'gas' => round($day['gas'], 1),
+                    'pbuf' => round($day['pbuf'], 1),
+                    'pzat' => round($day['pzat'], 1),
+                    'hdin' => round($day['hdin'], 1),
+                    'pzab' => round($day['pzab'], 1)
                  ));
               }
            }

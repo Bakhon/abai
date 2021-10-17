@@ -134,6 +134,8 @@
     Vue.component('pd-drilling-fluids', require('./bd/ProjectData/DrillingFluids').default);
     Vue.component('well-casing', require('./bd/ProjectData/WellСasing').default);
     Vue.component('technical-casing', require('./bd/ProjectData/TechnicalCasing').default);
+    Vue.component('daily-drilling-report', require('./bd/ProjectData/DailyDrillingReport').default);
+    Vue.component('capital-investments', require('./bd/CapitalInvestments').default);
     Vue.component('project', require('./project/project').default);
     Vue.component('structural-analysis', require('./project/structural-analysis').default);
     Vue.component('rasters', require('./project/rasters').default);
