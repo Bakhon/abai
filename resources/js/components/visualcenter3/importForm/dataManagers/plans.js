@@ -141,6 +141,18 @@ export default {
         },
         validatePlan() {
             let systemColumns = ['column1', 'fieldName'];
+            this.outputPlans = this.getValidatedPlan();
+            if (this.isPlanValidateError) {
+                this.isPlanFilled = false;
+                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+            } else {
+                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
+                this.isPlanFilled = true;
+            }
+            this.isPlanValidateError = false;
+        },
+
+        getValidatedPlan() {
             let output = [];
             for (let i = 1; i < 13; i++) {
                 let date = moment().year(this.currentPlan.year.year()).month(i - 1).startOf('month').startOf('day');
@@ -158,15 +170,7 @@ export default {
                 }
                 output.push(fields);
             }
-            this.outputPlans = output;
-            if (this.isPlanValidateError) {
-                this.isPlanFilled = false;
-                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
-            } else {
-                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
-                this.isPlanFilled = true;
-            }
-            this.isPlanValidateError = false;
+            return output;
         },
         async savePlan() {
             let uri = this.localeUrl("/store-yearly-plans");
@@ -185,7 +189,7 @@ export default {
             let value = cell.val.replace(',','.');
             value = parseFloat(value);
             this.disableErrorHighlight(rowIndex,colIndex);
-            if (isNaN(value)) {
+            if (isNaN(value) || value < 0) {
                 this.setClassToElement($('#planGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
                 this.isPlanValidateError = true;
             }
