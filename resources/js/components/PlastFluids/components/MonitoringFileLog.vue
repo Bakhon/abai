@@ -2,8 +2,20 @@
   <div class="upload-status-log">
     <p class="upload-status-title">{{ trans("plast_fluids.download_log") }}</p>
     <div class="log" ref="logDiv">
-      <div style="color: red;" v-if="reportDuplicated">
-        <p>{{ trans("plast_fluids.report_duplicated") }}</p>
+      <div style="color: red;" v-if="downloadFileData.status === 'error'">
+        <p v-if="reportDuplicated">
+          {{ trans("plast_fluids.report_duplicated") }}
+        </p>
+        <p v-else>Ошибка с шаблоном, перепроверьте данные</p>
+      </div>
+      <div style="color: green;" v-if="downloadFileData.status === 'ok'">
+        <p>
+          {{
+            `${trans("plast_fluids.template_upload_successfully")} ${
+              downloadFileData.user
+            } ${downloadFileData.template}`
+          }}
+        </p>
       </div>
       <template v-for="(sheetlog, ind) in fileLog">
         <div v-if="sheetlog[1].length" :key="ind">
@@ -35,7 +47,11 @@ import { mapState } from "vuex";
 export default {
   name: "MonitoringFileLog",
   computed: {
-    ...mapState("plastFluidsLocal", ["fileLog", "reportDuplicated"]),
+    ...mapState("plastFluidsLocal", [
+      "fileLog",
+      "reportDuplicated",
+      "downloadFileData",
+    ]),
   },
   methods: {
     downloadLog() {
