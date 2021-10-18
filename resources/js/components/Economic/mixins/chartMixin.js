@@ -35,10 +35,6 @@ export const chartInitMixin = {
             required: false,
             type: String,
         },
-        prs: {
-            required: false,
-            type: Object
-        }
     },
     data: () => ({
         isVisibleDefaultSeries: true,
@@ -68,15 +64,6 @@ export const chartInitMixin = {
                         defaultColor: '#FC35B0',
                     }
                 )
-
-                if (this.prs) {
-                    series.push({
-                        name: this.trans('economic_reference.count_prs'),
-                        type: 'bar',
-                        data: Object.values(this.prs),
-                        defaultColor: '#1CEFFC',
-                    })
-                }
             }
 
             return series

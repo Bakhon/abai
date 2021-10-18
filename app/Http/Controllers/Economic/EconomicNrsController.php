@@ -142,16 +142,9 @@ class EconomicNrsController extends Controller
                 ),
             ),
             'charts' => [
-                'profitability' => $this->getWellsCountByProfitability(
+                'wellTop' => $this->getWellTop(
                     $org,
                     $intervalMonths,
-                    $intervalMonthsStart,
-                    $intervalMonthsEnd,
-                    $intervalDates,
-                    $profitabilities,
-                    $profitabilityType,
-                    $granularity,
-                    $granularityFormat,
                     $dpz,
                     $excludeUwis
                 ),
@@ -166,7 +159,30 @@ class EconomicNrsController extends Controller
                     $dpz,
                     $excludeUwis
                 ),
-                'wellTop' => $this->getWellTop($org, $intervalMonths, $dpz, $excludeUwis),
+                'profitability' => $this->getWellsCountByProfitability(
+                    $org,
+                    $intervalMonths,
+                    $intervalMonthsStart,
+                    $intervalMonthsEnd,
+                    $intervalDates,
+                    $profitabilities,
+                    $profitabilityType,
+                    $granularity,
+                    $granularityFormat,
+                    $dpz,
+                    $excludeUwis
+                ),
+                'prs' => $this->getPrsCountByProfitability(
+                    $org,
+                    $intervalMonths,
+                    $intervalDates,
+                    $profitabilities,
+                    $profitabilityType,
+                    $granularity,
+                    $granularityFormat,
+                    $dpz,
+                    $excludeUwis
+                ),
             ],
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
@@ -997,6 +1013,88 @@ class EconomicNrsController extends Controller
         return [
             'active' => $profitabilityByDates,
             'paused' => $pausedProfitabilityByDates
+        ];
+    }
+
+    private function getPrsCountByProfitability(
+        Org $org,
+        string $interval,
+        array $intervalDates,
+        array $profitabilities,
+        string $profitabilityColumn,
+        string $granularity,
+        string $granularityFormat,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $wells = [];
+
+        $statuses = [
+            $profitabilityColumn => self::STATUS_ACTIVE,
+            $profitabilityColumn . self::PROFITABILITY_PAUSE => self::STATUS_PAUSE
+        ];
+
+        foreach ($statuses as $column => $status) {
+            $builder = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, $granularity)
+                ->interval($interval)
+                ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                    $extBuilder->timeFormat($granularityFormat);
+                })
+                ->select($column)
+                ->sum('prs1')
+                ->where('status', '=', $status)
+                ->whereIn($column, $profitabilities);
+
+            $wells[$status] = $this
+                ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+                ->groupBy()
+                ->data();
+        }
+
+        $prsByDates = ['dt' => $intervalDates];
+
+        foreach ($profitabilities as $profitability) {
+            $prsByDates[$profitability] = [];
+        }
+
+        $activePrsByDates = $prsByDates;
+        $pausedPrsByDates = $prsByDates;
+
+        foreach ($wells[self::STATUS_ACTIVE] as &$well) {
+            $date = $well['dt'];
+
+            $activePrsByDates[$well[$profitabilityColumn]][$date] = $well['prs1'];
+        }
+
+        foreach ($wells[self::STATUS_PAUSE] as &$well) {
+            $date = $well['dt'];
+
+            $key = $well[$profitabilityColumn . self::PROFITABILITY_PAUSE];
+
+            $pausedPrsByDates[$key][$date] = $well['prs1'];
+        }
+
+        $this->fillZeroValues($activePrsByDates, $profitabilities);
+
+        $this->fillZeroValues($pausedPrsByDates, $profitabilities);
+
+        foreach ($activePrsByDates['dt'] as $index => $date) {
+            foreach ($profitabilities as $profitability) {
+                $active = $activePrsByDates[$profitability][$index];
+
+                $paused = $pausedPrsByDates[$profitability][$index];
+
+                $prsByDates[$profitability][] = $active + $paused;
+            }
+        }
+
+        return [
+            'active' => $activePrsByDates,
+            'paused' => $pausedPrsByDates,
+            'total' => $prsByDates
         ];
     }
 }
