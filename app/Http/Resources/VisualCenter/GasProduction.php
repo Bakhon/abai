@@ -36,6 +36,10 @@ class GasProduction {
             'fact' => 'associated_gas_expenses_for_own_fact',
             'plan' => 'plan_poput_gas_raskhod'
         ),
+        'processingAssociatedGas' => array(
+            'fact' => 'associated_gas_processing_fact',
+            'plan' => 'plan_poput_gas_pererabotka'
+        ),
     );
     private $decreaseReasonFields = array (
         'opec_explanation_reasons',
@@ -101,11 +105,10 @@ class GasProduction {
             }
             $updated = $this->getData($dzoName,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$fields);
             if (count($updated) > 0) {
-                $sorted = $this->getSortedById($updated);
                 $summary = array_merge($summary,$updated);
             }
         }
-        return $summary;
+        return $this->getSortedByPlan($summary);
     }
 
     private function getData($dzo,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$categoryFields)
@@ -167,16 +170,11 @@ class GasProduction {
         return $summary;
     }
 
-    private function getSortedById($data)
+    private function getSortedByPlan($data)
     {
-        $ordered = array();
-        foreach(array_keys($this->companies) as $value) {
-            $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
-                array_push($ordered,$data[$key]);
-            }
-        }
-        return $ordered;
+        $sorted = array_column($data, 'plan');
+        array_multisort($sorted, SORT_DESC, $data);
+        return $data;
     }
 
     private function getSummary($naturalGas,$associatedGas)
@@ -197,7 +195,7 @@ class GasProduction {
             }
             array_push($summaryGas,$summary);
         }
-        return $summaryGas;
+        return $this->getSortedByPlan($summaryGas);
     }
 
     public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
