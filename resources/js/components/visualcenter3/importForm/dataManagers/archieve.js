@@ -5,7 +5,7 @@ export default {
     data: function () {
         return {
             isArchiveActive: false,
-            period: moment().subtract(1,'days'),
+            period: moment().subtract(1,'days').format("YYYY-MM-DD HH:mm:ss"),
             datePickerOptions: {
                 disabledDate (date) {
                     return moment(date) >= moment().startOf('day');
