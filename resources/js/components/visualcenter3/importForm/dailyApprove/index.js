@@ -66,7 +66,8 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
-                'isFinalApprove': master.isFinalApprove
+                'isFinalApprove': master.isFinalApprove,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -82,6 +83,7 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -205,5 +207,6 @@ export default {
         this.allProduction = await this.getForApprove();
         this.compared = this.getCompared();
         this.SET_LOADING(false);
-    }
+    },
+    props: ['userId'],
 }
