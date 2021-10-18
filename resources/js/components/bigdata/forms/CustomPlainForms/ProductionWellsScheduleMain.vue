@@ -94,6 +94,11 @@
                                 <table class="table text-center text-white text-nowrap historical-table">
                                     <thead>
                                     <tr>
+                                        <th>СЭ</th>
+                                        <th>ø нас.</th>
+                                        <th>L НКТ</th>
+                                        <th>L</th>
+                                        <th>N</th>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
                                     </tr>
@@ -103,13 +108,38 @@
                                             v-if="periodItem.params.techMode"
                                             v-for="(techModeItem,index) in periodItem.params.techMode"
                                             :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
+                                            v-show="!techModeItem.isHide"
                                     >
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
                                         <td>
                                             {{techModeItem.label}}
                                         </td>
                                         <td>
                                             {{techModeItem.value.toFixed(0)}}
                                         </td>
+                                    </tr>
+                                    <tr class="header-background_dark">
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td colspan="2">
+                                            <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.id)">Показать поля</a>
+                                            <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.id)">Скрыть поля</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="header-background_light">
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td colspan="2">Мероприятия</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -145,21 +175,21 @@
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                     :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                             >
-                                                {{periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1)}}
-                                            </td>
-                                            <td v-else>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                            >
                                                 {{periodItem.params.monthlyData[dayNumber-1].liqCut.toFixed(1)}}
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
                                         <tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1)}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -189,7 +219,17 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1)}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -199,7 +239,7 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -209,7 +249,16 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >{{periodItem.params.monthlyData[dayNumber-1].workHours}} 
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -219,7 +268,7 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -229,7 +278,7 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -239,7 +288,20 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td v-for="dayNumber in getDaysCountInMonth(periodItem.id)"> &nbsp; </td>
+                                        </tr>
                                         <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                            &nbsp;   
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -249,7 +311,37 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-                                        <tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1)}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr v-show="!periodItem.params.techMode[5].isHide">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     v-if="periodItem.params.monthlyData[dayNumber-1]"
@@ -341,12 +433,13 @@ export default {
             historicalData: [],
             isMeasurementScheduleActive: false,
             isActivityShown: false,
-            isFreeInfoShown: true,
+            isFreeInfoShown: false,
             historicalInfo: [],
             repairType: {
                 1: 'КРС',
                 3: 'ПРС',
-            }
+            },
+            isRowsHide: true
         };
     },
     methods: {
@@ -359,7 +452,7 @@ export default {
             this.historicalData = this.productionMeasurementSchedule;
             this.SET_LOADING(true);
             for (let i in this.historicalData) {
-                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+                this.historicalData[i].params['activity'] = [];
             }
             this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
             this.SET_LOADING(false);
@@ -402,63 +495,98 @@ export default {
                         'waterDebit': _.sumBy(month, item => Number(item.liq)) / workHours,
                         'waterCut': _.sumBy(month, 'liqCut') / month.length,
                         'hoursWorked': _.sumBy(month, 'workHours') / 24,
-                        'gas': 0,
+                        'gas': _.sumBy(month, 'gas'),
                         'params': {
                             'techMode': [
                                 {
                                     'label': 'Жидкость',
                                     'value': _.sumBy(month, item => Number(item.liq)) / month.length,
-                                },
-                                {
-                                    'label': 'Нефть',
-                                    'value': _.sumBy(month, 'oil') / month.length,
+                                    'isHide': !this.isRowsHide
                                 },
                                 {
                                     'label': 'Обводненность',
                                     'value': _.sumBy(month, 'liqCut') / month.length,
+                                    'isHide': !this.isRowsHide
                                 },
                                 {
-                                    'label': 'Аном. обв.',
+                                    'label': 'Нефть',
+                                    'value': _.sumBy(month, 'oil') / month.length,
+                                    'isHide': !this.isRowsHide
+                                },
+                                {
+                                    'label': 'Обв. с учетом доли ост. св. воды, %',
                                     'value': 0,
+                                    'isHide': !this.isRowsHide
+                                },
+                                {
+                                    'label': 'Нефть. с учетом доли ост. св. воды, %',
+                                    'value': 0,
+                                    'isHide': !this.isRowsHide
+                                },
+                                {
+                                    'label': 'Обв. не конд.пробы, %',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Н дин.',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Закючение ГДИС.',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Причина простоя',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Отработанное время',
+                                    'value': 24,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Жидкость м3/сут(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Обводненность, %(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Нефть, т/сут(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Газ.м3/сут(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Газовый фактор, м3/т(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
+                                },
+                                {
+                                    'label': 'Температура жидкости,%(телеметрия)',
+                                    'value': 0,
+                                    'isHide': this.isRowsHide
                                 },
                                 {
                                     'label': 'Добыча газа',
                                     'value': 0,
+                                    'isHide': this.isRowsHide
                                 },
                                 {
-                                    'label': 'Жидкость, м3/сут. (телеметрия)',
+                                    'label': 'Газовый фактор',
                                     'value': 0,
-                                },
-                                {
-                                    'label': 'Pбуфф.',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Pзатр.',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Pбуфф.\n' +
-                                        'до штуцера',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Pбуфф. после\n' + 'штуцера',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Н дин./\n' +
-                                        'Pзаб/Pзатр',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Н стат / Рпл / \n' +
-                                        'Pзатр',
-                                    'value': 0,
-                                },
-                                {
-                                    'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
-                                    'value': 0,
+                                    'isHide': this.isRowsHide
                                 }
                             ],
                             'monthlyData': month
@@ -498,6 +626,15 @@ export default {
         },
         isTechModeBigger(currentValue, techMode) {
             return currentValue < Math.round(techMode.value);
+        },
+        toggleRowVisibility(id){
+            this.isRowsHide = !this.isRowsHide
+            var key = _.findKey(this.historicalInfo, function(o) { return o.id == id; });
+
+            for (let i = 5; i < this.historicalInfo[key].params.techMode.length; i++) {
+                this.historicalInfo[key].params.techMode[i].isHide = this.isRowsHide
+            }
+
         }
     },
     async mounted() {
@@ -614,7 +751,7 @@ export default {
     overflow-y: auto;
 }
 .historical-container {
-    height: 410px;
+    height: 610px;
     overflow-y: auto;
 }
 .bottom-buttons div {

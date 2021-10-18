@@ -24,7 +24,8 @@ export default {
             let queryOptions = {
                 'startPeriod': periodStart,
                 'endPeriod': periodEnd,
-                'fields' : fields
+                'fondType': fondType,
+                'fields' : fields,
             };
 
             let uri = this.localeUrl("/get-fond-details");
@@ -43,7 +44,10 @@ export default {
                     summaryWells[fond] = _.round((_.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName]), 0);
                 });
                 _.forEach(this.fondList.other, function(fond) {
-                    summaryWells[otherFieldName] += _.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName];
+                    let summ = _.sumBy(inputData, fond);
+                    if (summ) {
+                        summaryWells[otherFieldName] += summ / self.fondDaysCountSelected[fondName];
+                    }
                 });
             } else {
                 _.forEach(this.fondList[fondName].work, function(fond) {
@@ -84,13 +88,15 @@ export default {
             })
         },
 
-        async getChartData(workFields,idleFields,periodStart,periodEnd) {
+        async getChartData(workFields,idleFields,periodStart,periodEnd,fondType,company) {
             let uri = this.localeUrl("/get-fond-daily-chart");
             let queryOptions = {
                 startPeriod: periodStart,
                 endPeriod: periodEnd,
                 workFields: workFields,
-                idleFields: idleFields
+                idleFields: idleFields,
+                fondType: fondType,
+                company: company
             };
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {

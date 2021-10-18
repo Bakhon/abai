@@ -30,8 +30,6 @@
             type="date"
             v-model="selectedDate"
             input-class="form-control date"
-            value-zone="Asia/Almaty"
-            zone="Asia/Almaty"
             :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
             :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
             :week-start="1"
@@ -50,7 +48,7 @@
       </div>
     </div>
 
-    <map-legend :variant="mapColorsMode" :referentValue="+referentValue" />
+    <map-legend :variant="mapColorsMode" :referentValue="+referentValue"/>
 
     <div id="map"></div>
 
@@ -137,15 +135,15 @@
         :ok-only="true"
         @ok="resetSelectedObjects()"
     >
-      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell" />
-      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu" />
-      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu" />
+      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell"/>
+      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu"/>
+      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu"/>
     </b-modal>
 
     <div v-show="false">
-      <gu-tool-tip ref="guToolTip" :gu="objectHovered" />
-      <well-tool-tip ref="wellToolTip" :well="objectHovered" />
-      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
+      <gu-tool-tip ref="guToolTip" :gu="objectHovered"/>
+      <well-tool-tip ref="wellToolTip" :well="objectHovered"/>
+      <pipe-tool-tip ref="pipeToolTip" :pipe="pipeHovered" :paramKey="pipeHoveredParameter"/>
     </div>
   </div>
 </template>
@@ -172,7 +170,7 @@ import wellOmgNgduForm from "./wellOmgNgduForm";
 import guOmgNgduForm from "./guOmgNgduForm"
 import zuOmgNgduForm from "./zuOmgNgduForm"
 import turfLength from '@turf/length';
-import { lineString as turfLineString} from "@turf/helpers";
+import {lineString as turfLineString} from "@turf/helpers";
 
 export default {
   name: "tech-map",
@@ -225,9 +223,10 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
-      mapColorsMode: 'default',
-      selectedDate: moment().format('YYYY-MM-DD'),
-      activeFilter: null,
+      mapColorsMode: 'speedFlow',
+      selectedDate: null,
+      activeFilter: 'speedFlow',
+      isMapLoaded: false,
       mapFilters: [
         {
           name: this.trans('monitoring.map.filters.speed-flow-filter'),
@@ -271,7 +270,7 @@ export default {
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
     },
-    omgNgduFormModalTitle () {
+    omgNgduFormModalTitle() {
       switch (true) {
         case this.selectedWell != null:
           return this.trans('monitoring.well.enter-omg-ngdu-data');
@@ -316,7 +315,9 @@ export default {
     },
     async initMap() {
       this.SET_LOADING(true);
-      this.pipes = await this.getMapData(this.gu);
+      let data = await this.getMapData(this.gu);
+      this.pipes = data.pipes;
+      this.selectedDate = data.date;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -361,7 +362,7 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip:  ({object}) => {
+        getTooltip: ({object}) => {
           if (object) {
             if (object.last_omgngdu && object.last_omgngdu.well_id) {
               return {
@@ -401,15 +402,16 @@ export default {
           layers: this.layers
         });
 
+        this.isMapLoaded = true;
         this.SET_LOADING(false);
       });
     },
-    getPipeCalcKey (pipe) {
+    getPipeCalcKey(pipe) {
       let keys = [
-          'last_hydro_calc',
-          'last_reverse_calc',
-          'hydro_calc',
-          'reverse_calc'
+        'last_hydro_calc',
+        'last_reverse_calc',
+        'hydro_calc',
+        'reverse_calc'
       ];
 
       for (let key of keys) {
@@ -420,7 +422,7 @@ export default {
 
       return null;
     },
-    getObjectTooltipHtml(object, type){
+    getObjectTooltipHtml(object, type) {
       this.objectHovered = object;
 
       return this.$refs[type].$el.outerHTML;
@@ -497,7 +499,7 @@ export default {
       }
     },
     calculateDistance(lastCoords, currentCoords) {
-      let line = turfLineString([lastCoords ,currentCoords]);
+      let line = turfLineString([lastCoords, currentCoords]);
       return turfLength(line, {units: 'kilometers'}) * 1000;
     },
     handleContextmenu(event) {
@@ -673,7 +675,7 @@ export default {
         this.mapClickHandle(option);
       }
     },
-    startNewPipe (option) {
+    startNewPipe(option) {
       this.pipeObject = {
         id: null,
         between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
@@ -787,7 +789,7 @@ export default {
       method += this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
       this[method]();
     },
-    isInvalid () {
+    isInvalid() {
       let form = this.editMode == 'pipe' ? 'pipeForm' : 'objectForm';
       return this.$refs[form].validate();
     },
@@ -1175,7 +1177,7 @@ export default {
             this.pipeObject.gu_id = info.object.gu_id;
           }
 
-          this.pipeObject.end_point =  info.object.name;
+          this.pipeObject.end_point = info.object.name;
           this.pipeObject.ngdu_id = info.object.ngdu_id;
           this.pipeObject.name = this.pipeObject.start_point + '-' + this.pipeObject.end_point;
 
@@ -1247,6 +1249,10 @@ export default {
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
     async applyFilter() {
+      if (!this.isMapLoaded) {
+        return false
+      }
+
       switch (this.activeFilter) {
         case 'speedFlow':
         case 'pressure':
@@ -1284,7 +1290,7 @@ export default {
     debounceMapRedraw() {
       _.debounce(() => {
         this.mapRedraw();
-      },500)()
+      }, 500)()
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
