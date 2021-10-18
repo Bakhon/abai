@@ -13,10 +13,10 @@
                         {{ report.file_id }}
                     </td>
                     <td>
-                        {{ report.document_name}}
+                        {{ report.document_date }}
                     </td>
                     <td>
-                        {{ report.document_date }}
+                        {{ report.document_name}}
                     </td>
                     <td>
                         <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.id +'/?file_id='+ report.file_id)">
