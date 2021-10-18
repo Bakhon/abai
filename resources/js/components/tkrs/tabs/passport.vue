@@ -4,11 +4,7 @@
             <div>
               <table>
                 <thead>
-                  <!-- <tr>
-                    <th>№</th>
-                    <th>Активность</th>
-                    <th>Связь</th>
-                  </tr> -->
+
                 </thead>
                 <tbody>
                   
