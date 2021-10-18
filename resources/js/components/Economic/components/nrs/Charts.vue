@@ -24,8 +24,8 @@
 
       <chart-with-profitability
           v-if="activeTab === 'profitability'"
-          :data="charts.profitability"
-          :paused-data="charts.pausedProfitability"
+          :data="charts.profitability.active"
+          :paused-data="charts.profitability.paused"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
@@ -35,7 +35,7 @@
 
       <chart-with-oil-production
           v-if="activeTab === 'oil_production'"
-          :data="charts.oilProduction"
+          :data="charts.production.oil"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
@@ -57,7 +57,7 @@
 
       <chart-with-liquid-production
           v-else-if="activeTab === 'liquid_production'"
-          :data="charts.liquidProduction"
+          :data="charts.production.liquid"
           :granularity="granularity"
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
@@ -140,7 +140,7 @@ export default {
 
       let price = this.oilPrices[0]
 
-      this.charts.profitability.dt.forEach(dt => {
+      this.charts.profitability.active.dt.forEach(dt => {
         price = this.oilPrices.find(rate => [rate.dt, rate.dt_month].includes(dt)) || price
 
         data.push(price ? price.value : 0)
@@ -154,7 +154,7 @@ export default {
 
       let rate = this.dollarRates[0]
 
-      this.charts.profitability.dt.forEach(dt => {
+      this.charts.profitability.active.dt.forEach(dt => {
         rate = this.dollarRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || rate
 
         data.push(rate ? rate.value : 0)
