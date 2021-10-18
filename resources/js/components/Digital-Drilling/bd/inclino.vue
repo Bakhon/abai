@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import {digitalDrillingState} from '@store/helpers';
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import VueApexCharts from "vue-apexcharts";
     import MainContent from '../components/MainContent'
     export default {
@@ -124,24 +124,14 @@
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
-                        toolbar: {
-                            show: true,
-                        },
+
                         zoom: {
                             enabled: true,
                             type: 'x',
-                            autoScaleYaxis: false,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                            autoScaleYaxis: true,
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         }
                     },
                     dataLabels: {
@@ -219,24 +209,13 @@
                     chart: {
                         height: 500,
                         type: 'line',
-                        toolbar: {
-                            show: true,
-                        },
                         zoom: {
                             enabled: true,
                             type: 'x',
                             autoScaleYaxis: true,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         },
                         background: '#2B2E5E',
 
@@ -328,6 +307,9 @@
             }
         },
         methods:{
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
             setParametersChartSideView(){
                 let coordinates = []
                 let coordinate = {}
@@ -338,6 +320,10 @@
                     }
                     coordinates.push(coordinate)
                 }
+                coordinates.push({
+                    x: 250,
+                    y: null
+                })
                 this.series[0].data = coordinates
             },
             setParametersChartAboveView(){
@@ -353,6 +339,7 @@
                 this.seriesAbove[0].data = coordinates
             },
             async getInclinoByWell(){
+                this.SET_LOADING(true);
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/'+
                         this.currentWell.id).then((response) => {
@@ -370,15 +357,19 @@
                     console.log(e)
                     this.inclino = []
                 }
+                this.SET_LOADING(false);
             },
         },
     }
 </script>
 
 <style scoped>
+    .inc__charts{
+        color: black!important;
+    }
     .apexcharts-tooltip {
-        background: #f3f3f3;
-        color: orange;
+        background: #f3f3f3!important;
+        color: orange!important;
     }
 
     th, td{
