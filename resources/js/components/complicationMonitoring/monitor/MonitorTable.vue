@@ -169,6 +169,15 @@
                 <span class="after">{{ trans('monitoring.units.bar') }}</span>
               </li>
             </ul>
+
+            <a href="#" @click.prevent="redirecTo('buffer-tank')" id="buffer-tank-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('buffer-tank')" id="buffer-tank-link-2"></a>
+            <a href="#" @click.prevent="redirecTo('sib')" id="sib-link"></a>
+            <a href="#" @click.prevent="redirecTo('pumps')" id="pump-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('pumps')" id="pump-link-2"></a>
+            <a href="#" @click.prevent="redirecTo('ovens')" id="oven-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('ovens')" id="oven-link-2"></a>
+
           </div>
         </div>
       </div>
@@ -229,7 +238,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import Calendar from "v-calendar/lib/components/calendar.umd"
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
 import VueTableDynamic from 'vue-table-dynamic'
@@ -238,8 +246,6 @@ import chart from './chart';
 import chartRadialBar from './MonitorChartRadialBar';
 import {globalloadingMutations} from '@store/helpers';
 
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
 
 export default {
   components: {
@@ -544,10 +550,25 @@ export default {
               console.log("No data")
             }
           });
+    },
+    redirecTo(url) {
+      let queryParams = {
+        page: 1,
+        'filter[gu]': this.localGu
+      };
+
+      this.SET_LOADING(true);
+
+      this.axios.get(this.localeUrl(url + '/list'), {params: queryParams}).then(response => {
+        window.location.href = this.localeUrl(url);
+      }).finally(() => {
+        this.SET_LOADING(false);
+      });
     }
   }
 };
 </script>
+
 <style scoped>
 .economicModalTable {
   color: #fff;
@@ -557,4 +578,61 @@ export default {
 .corrosion {
   margin: 2px;
 }
+
+#buffer-tank-link-1 {
+  bottom: 26.7%;
+  left: 31.2%;
+  position: absolute;
+  width: 20.3%;
+  height: 7%;
+}
+
+#buffer-tank-link-2 {
+  bottom: 15.8%;
+  left: 31.2%;
+  position: absolute;
+  width: 20.3%;
+  height: 6.4%;
+}
+
+#pump-link-1 {
+  bottom: 30.8%;
+  left: 69.5%;
+  position: absolute;
+  width: 9.2%;
+  height: 4%;
+}
+
+#pump-link-2 {
+  bottom: 42.2%;
+  left: 69.5%;
+  position: absolute;
+  width: 9.2%;
+  height: 4%;
+}
+
+#sib-link {
+  bottom: 7.6%;
+  left: 64.2%;
+  position: absolute;
+  width: 7.2%;
+  height: 6.1%;
+}
+
+#oven-link-1 {
+  bottom: 58.2%;
+  left: 66.3%;
+  position: absolute;
+  width: 8.6%;
+  height: 8%;
+}
+
+#oven-link-2 {
+  bottom: 70.2%;
+  left: 66.3%;
+  position: absolute;
+  width: 8.6%;
+  height: 8%;
+}
+
 </style>
