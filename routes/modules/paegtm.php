@@ -22,6 +22,10 @@ Route::group(
                     Route::post('/gtm-fact-costs-ref/import-excel', 'GTM\EcoRefs\GtmFactCostsController@importExcel')->name('paegtm-gtm-fact-costs-import-excel');
                     Route::resource('/gtm-decline-rates', 'GTM\EcoRefs\GtmDeclineRateController');
                 });
+
+                Route::group(['prefix' => 'aegtm'], function () {
+                    Route::get('/get-comparison-table-data', 'GTM\AegtmController@getComparisonTableData');
+                });
             }
         );
     }
