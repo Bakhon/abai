@@ -13,6 +13,7 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
@@ -28,6 +29,7 @@ class EconomicNrsController extends Controller
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
+    const GRANULARITY_YEAR_FORMAT = 'yyyy';
 
     const PROFITABILITY_FULL = 'profitability';
     const PROFITABILITY_DIRECT = 'profitability_kbm';
@@ -82,6 +84,10 @@ class EconomicNrsController extends Controller
 
     public function getData(EconomicNrsDataRequest $request): array
     {
+        if (Cache::has(self::DATA_SOURCE . "nrs")) {
+            return json_decode(Cache::get(self::DATA_SOURCE . "nrs"), true);
+        }
+
         $org = self::getOrg($request->org_id, $this->structureService);
 
         $dpz = $request->field_id
@@ -116,7 +122,7 @@ class EconomicNrsController extends Controller
         $profitabilityType = $request->profitability;
         list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
 
-        return [
+        $data = [
             'lastYear' => $this->getYearOperatingProfitAndPrs(
                 $org,
                 $intervalYear,
@@ -187,10 +193,18 @@ class EconomicNrsController extends Controller
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
         ];
+
+        Cache::put(self::DATA_SOURCE . "nrs", json_encode($data, true), now()->addWeek());
+
+        return $data;
     }
 
     public function getWells(EconomicNrsWellsRequest $request): array
     {
+        if (Cache::has(self::DATA_SOURCE)) {
+            return json_decode(Cache::get(self::DATA_SOURCE), true);
+        }
+
         $org = self::getOrg($request->org_id, $this->structureService);
 
         $dpz = $request->field_id
@@ -228,6 +242,7 @@ class EconomicNrsController extends Controller
             "PRS_nopayroll_expenditures",
             "PRS_expenditures",
             "Revenue_total",
+            "day_well_number",
         ];
 
         $builderWells = $this
@@ -275,27 +290,21 @@ class EconomicNrsController extends Controller
             $builderDailyParams->select($key);
         }
 
-        if ($org->druid_id) {
-            $builderWells->where('org_id2', '=', $org->druid_id);
-
-            $builderDailyParams->where('org_id2', '=', $org->druid_id);
-        }
-
-        if ($dpz) {
-            $builderWells->where('dpz', '=', $dpz);
-
-            $builderDailyParams->where('dpz', '=', $dpz);
-        }
-
         if ($request->well_id) {
             $builderWells->where('uwi', '=', $request->well_id);
 
             $builderDailyParams->where('uwi', '=', $request->well_id);
         }
 
-        $wells = $builderWells->groupBy()->data();
+        $wells = $this
+            ->createQueryForOrg($builderWells, $org, $dpz)
+            ->groupBy()
+            ->data();
 
-        $dailyParams = $builderDailyParams->groupBy()->data();
+        $dailyParams = $this
+            ->createQueryForOrg($builderDailyParams, $org, $dpz)
+            ->groupBy()
+            ->data();
 
         $wellsByDates = [
             'org' => $org,
@@ -324,6 +333,8 @@ class EconomicNrsController extends Controller
         foreach (array_keys($wellsByDates['dates']) as $index => $date) {
             $wellsByDates['dates'][$date] = $dailyParams[$index];
         }
+
+        Cache::put(self::DATA_SOURCE, json_encode($wellsByDates, true), now()->addWeek());
 
         return $wellsByDates;
     }
@@ -469,9 +480,14 @@ class EconomicNrsController extends Controller
 
     static function granularityFormat(string $granularity): string
     {
-        return $granularity === Granularity::MONTH
-            ? self::GRANULARITY_MONTHLY_FORMAT
-            : self::GRANULARITY_DAILY_FORMAT;
+        switch ($granularity) {
+            case Granularity::DAY:
+                return self::GRANULARITY_DAILY_FORMAT;
+            case Granularity::MONTH:
+                return self::GRANULARITY_MONTHLY_FORMAT;
+            case Granularity::YEAR:
+                return self::GRANULARITY_YEAR_FORMAT;
+        }
     }
 
     static function formatInterval(Carbon $start, Carbon $end): string
