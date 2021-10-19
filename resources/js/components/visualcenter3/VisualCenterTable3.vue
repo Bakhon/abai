@@ -423,36 +423,6 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory('associatedGasProduction','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.productionAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
-                              @click="switchCategory('associatedGasFlaring','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.flaringAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
                               @click="switchCategory('naturalGasDelivery','gasProduction')"
                       >
                         <div
@@ -483,6 +453,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('associatedGasProduction','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('associatedGasDelivery','gasProduction')"
                       >
                         <div
@@ -508,6 +493,36 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{ trans("visualcenter.raskhodpoputGaz") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('processingAssociatedGas','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.processingAssociatedGas ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.processingAssociatedGasForOwnExpenses") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('associatedGasFlaring','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.associatedGasFlaring") }}
                         </a>
                       </li>
                     </ul>

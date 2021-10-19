@@ -74,7 +74,7 @@ export default {
         {
           name: "Мониторинг осложнений",
           icon: "monitor.svg",
-          url: this.localeUrl("/monitor"),
+          url: this.localeUrl("/tech-map"),
         },
         {
           name: "Подбор и АЭГТМ",

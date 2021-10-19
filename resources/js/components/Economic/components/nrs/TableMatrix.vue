@@ -25,10 +25,11 @@
         </div>
 
         <div class="form-check mr-2">
-          <input v-model="isVisibleWells"
+          <input :checked="isVisibleWells"
                  id="visible_wells"
                  type="checkbox"
-                 class="form-check-input">
+                 class="form-check-input"
+                 @change="updateWellsVisibility()">
           <label for="visible_wells"
                  class="form-check-label text-blue">
             {{ trans('economic_reference.show_wells') }}
@@ -78,14 +79,15 @@
       <h4> {{ trans('economic_reference.estimated_data') }} </h4>
 
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
-        <div v-for="wellKey in wellKeys"
+        <div v-for="(wellKey, wellKeyIndex) in wellKeys"
              :key="wellKey.prop"
              class="d-flex flex-20 mr-2 mb-2 line-height-16px">
           <div class="d-flex align-items-center form-check mr-2 flex-150px">
-            <input v-model="wellKey.isVisible"
+            <input :checked="wellKeys[wellKeyIndex].isVisible"
                    :id="wellKey.prop"
                    type="checkbox"
-                   class="form-check-input mt-0">
+                   class="form-check-input mt-0"
+                   @change="updateWellKeyVisibility(wellKeyIndex)">
             <label :for="wellKey.prop"
                    class="form-check-label">
               {{ wellKey.name }}
@@ -158,38 +160,63 @@
           :dates="dates"
           class="text-white container-fluid bg-main1 p-4 mt-3"/>
 
-      <vue-table-dynamic
-          v-if="isVisibleWells"
-          :params="tableParams"
-          class="matrix-table mt-3 bg-main1 px-4 pt-4 pb-2">
-        <template :slot="`column-0`" slot-scope="{ props }">
-          <div class="d-flex align-items-center w-100">
-            <div> {{ props.cellData.label }}</div>
+      <div v-if="isVisibleWells" class="mt-3 bg-main1 px-4 pt-4 pb-2">
+        <div class="mb-3 d-flex align-items-center">
+          <i :class="form.isSortAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
+             class="fas text-white cursor-pointer mr-3"
+             style="font-size: 22px"
+             @click="updateSortOrder()"></i>
 
-            <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
-              <input
-                  v-model="selectedUwis[props.cellData.label]"
-                  type="checkbox"
-                  class="form-check-input m-0"
-                  @change="toggleUwi(props.cellData.label)">
+          <select
+              :value="form.sortKey"
+              class="form-control bg-dark-blue text-white"
+              style="width: 280px"
+              @change="updateSortKey">
+            <option :value="null" disabled selected>
+              {{ trans('economic_reference.select_sort') }}
+            </option>
+
+            <option
+                v-for="key in visibleWellKeys"
+                :key="key.prop"
+                :value="key.prop">
+              {{ key.name }}
+            </option>
+          </select>
+        </div>
+
+        <vue-table-dynamic :params="tableParams" class="matrix-table">
+          <template :slot="`column-0`" slot-scope="{ props }">
+            <div class="d-flex align-items-center w-100">
+              <div> {{ props.cellData.label }}</div>
+
+              <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
+                <input
+                    v-model="selectedUwis[props.cellData.label]"
+                    type="checkbox"
+                    class="form-check-input m-0"
+                    @change="toggleUwi(props.cellData.label)">
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template
-            v-for="(header, index) in tableTotalHeaders.slice(1)"
-            :slot="`column-${index+1}`" slot-scope="{ props }">
-          <div :style="`color: ${props.cellData.color}`"
-               class="d-flex align-items-center w-100">
-            {{ props.cellData.label }}
-          </div>
-        </template>
-      </vue-table-dynamic>
+          <template
+              v-for="(header, index) in tableTotalHeaders.slice(1)"
+              :slot="`column-${index+1}`" slot-scope="{ props }">
+            <div :style="`color: ${props.cellData.color}`"
+                 class="d-flex align-items-center w-100">
+              {{ props.cellData.label }}
+            </div>
+          </template>
+        </vue-table-dynamic>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 import ChartMatrixWell from "./ChartMatrixWell";
 import ChartMatrixTotal from "./ChartMatrixTotal";
 import SelectChartType from "../SelectChartType";
@@ -219,7 +246,9 @@ export default {
     isVisibleProfitless: true,
     isVisibleChartTotal: false,
     form: {
-      operatingProfit: 'Operating_profit'
+      operatingProfit: 'Operating_profit',
+      sortKey: null,
+      isSortAsc: true
     }
   }),
   created() {
@@ -235,9 +264,25 @@ export default {
         return []
       }
 
-      return Object.keys(this.wells.uwis).filter(uwi => {
+      let uwis = Object.keys(this.wells.uwis).filter(uwi => {
         return this.isVisibleProfitable && this.wells.uwis[uwi][this.form.operatingProfit].sum > 0
             || this.isVisibleProfitless && this.wells.uwis[uwi][this.form.operatingProfit].sum <= 0
+      })
+
+      if (!this.form.sortKey) {
+        return uwis
+      }
+
+      let sortKey = this.wellKeys.find(key => key.prop === this.form.sortKey)
+
+      return uwis.sort((prev, next) => {
+        let firstValue = this.getWellValue(this.wells.uwis[prev], sortKey, 'sum')
+
+        let secondValue = this.getWellValue(this.wells.uwis[next], sortKey, 'sum')
+
+        return this.form.isSortAsc
+            ? firstValue - secondValue
+            : secondValue - firstValue
       })
     },
 
@@ -804,6 +849,8 @@ export default {
     },
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     getColor(key, value) {
       if (!key.isColorful) {
         return ''
@@ -1286,6 +1333,48 @@ export default {
       })
 
       return htmlTable
+    },
+
+    updateSortKey(event) {
+      let key = event.target.value
+
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.form.sortKey = key
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateSortOrder() {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.form.isSortAsc = !this.form.isSortAsc
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateWellsVisibility() {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.isVisibleWells = !this.isVisibleWells
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateWellKeyVisibility(index) {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.wellKeys[index].isVisible = !this.wellKeys[index].isVisible
+
+        this.SET_LOADING(false)
+      })
     }
   },
   watch: {

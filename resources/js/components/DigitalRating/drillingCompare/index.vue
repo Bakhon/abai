@@ -34,7 +34,7 @@
       <div class="rating-compare__wrapper">
         <div class="rating-compare__wrapper-maps">
           <h5>{{ trans('digital_rating.map') }}</h5>
-          <img src="/img/digital-rating/compare-maps.svg" alt="">
+          <div id="wellMap"></div>
           <div class="d-flex">
             <div class="rating-compare__chart mr-10px" style="width: 100%; ">
               <p>{{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}</p>
@@ -181,5 +181,14 @@
       border: 3px solid #545580;
     }
   }
+}
+
+#wellMap {
+  width: 100%;
+  height: 100%;
+}
+
+.leaflet-container {
+  background: #fff;
 }
 </style>

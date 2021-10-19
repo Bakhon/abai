@@ -66,23 +66,25 @@ export default {
         },
         addListeners() {
             let self = this;
-            document.querySelector('revo-grid').addEventListener('keyup', function(e) {
+            document.querySelector('#factGrid').addEventListener('keyup', function(e) {
                 self.rows[self.currentCellOptions.rowIndex]['column' + self.currentCellOptions.columnIndex] = e.target.value;
                 self.refreshGridData();
                 self.isDataExist = true;
                 self.isDataReady = false;
             });
-            document.querySelector('revo-grid').addEventListener('dblclick', function(e) {
+            document.querySelector('#factGrid').addEventListener('dblclick', function(e) {
                 self.currentCellOptions.rowIndex = parseInt(e.target.dataset.row);
                 self.currentCellOptions.columnIndex = parseInt(e.target.dataset.col) + 1;
             });
-            document.querySelector('revo-grid').addEventListener('click', function(e) {
+            document.querySelector('#factGrid').addEventListener('click', function(e) {
                 self.currentCellOptions.rowIndex = parseInt(e.target.dataset.row);
                 self.currentCellOptions.columnIndex = parseInt(e.target.dataset.col) + 1;
             });
         },
         refreshGridData() {
-            document.querySelector('revo-grid').refresh('all');
+            if (document.querySelector('#factGrid')) {
+                document.querySelector('#factGrid').refresh('all');
+            }
         },
 
         formatCategoryByType(event,category,type) {
