@@ -137,7 +137,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'analysis'
+    activeTab: 'profitability'
   }),
   computed: {
     title() {
@@ -145,15 +145,24 @@ export default {
     },
 
     tabs() {
-      return {
-        profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
-        prs: this.trans('economic_reference.distribution_prs_by_profitability'),
-        oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
-        liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
-        well_map: this.trans('economic_reference.well_overview_map'),
-        analysis: this.trans('economic_reference.analysis_nrs'),
-      }
+      return this.form.org_id === 2
+          ? {
+            profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
+            prs: this.trans('economic_reference.distribution_prs_by_profitability'),
+            oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
+            liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+            well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+            well_map: this.trans('economic_reference.well_overview_map'),
+          }
+          : {
+            profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
+            prs: this.trans('economic_reference.distribution_prs_by_profitability'),
+            oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
+            liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+            well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+            well_map: this.trans('economic_reference.well_overview_map'),
+            analysis: this.trans('economic_reference.analysis_nrs'),
+          }
     },
 
     filteredOilPrices() {

@@ -3,7 +3,7 @@
     <apexchart
         :options="chartOptions"
         :series="chartSeries"
-        :height="340"/>
+        :height="350"/>
 
     <div class="mt-2 text-white">
       <div class="text-center border-grey d-flex bg-header">
@@ -88,7 +88,7 @@ export default {
     calcLiquid(liquid, oil) {
       return +liquid === 0
           ? 0
-          : 100 * (+liquid - +oil) / (+liquid * 1000)
+          : 100 * (+liquid - +oil) / (+liquid)
     },
 
     calcAvgQn(oil, day_well_number) {
@@ -243,12 +243,12 @@ export default {
           flexWidth: '135px',
           flexGrow: 1,
         },
-        {
-          title: this.trans('economic_reference.avg_qn'),
-          value: 'avgQn',
-          flexWidth: '100px',
-          flexGrow: 1,
-        },
+        // {
+        //   title: this.trans('economic_reference.avg_qn'),
+        //   value: 'avgQn',
+        //   flexWidth: '100px',
+        //   flexGrow: 1,
+        // },
         {
           title: this.trans('economic_reference.production'),
           value: 'oil',
@@ -259,6 +259,12 @@ export default {
           title: this.trans('economic_reference.revenue'),
           value: 'revenueTotal',
           flexWidth: '120px',
+          flexGrow: 1,
+        },
+        {
+          title: this.trans('economic_reference.gross_income'),
+          value: 'netBack',
+          flexWidth: '100px',
           flexGrow: 1,
         },
         {
@@ -281,10 +287,11 @@ export default {
         'prs1',
         'oil',
         'liquid',
-        'day_well_number',
+        // 'day_well_number',
         'Revenue_total',
         'Overall_expenditures',
         'Operating_profit',
+        'NetBack_bf_pr_exp',
       ]
 
       let sumValues = {
@@ -296,7 +303,7 @@ export default {
       })
 
       this.sortedUwis.forEach(uwi => {
-        let profitability = this.wells[uwi].Operating_profit.sum > 0
+        let profitability = +this.wells[uwi].Operating_profit.sum > 0
             ? 'profitable'
             : 'profitless'
 
@@ -314,9 +321,12 @@ export default {
           prsCount: this.trans('economic_reference.units'),
           prsPerUwi: this.trans('economic_reference.units'),
           liquid: '%',
-          avgQn: this.trans('economic_reference.tn_per_day'),
           oil: this.trans('economic_reference.thousand_tons'),
           revenueTotal: `
+            ${this.trans('economic_reference.billion')}
+            ${this.trans('economic_reference.tenge')}
+          `,
+          netBack: `
             ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
           `,
@@ -339,12 +349,9 @@ export default {
               sumValues.liquid.profitable + sumValues.liquid.profitless,
               sumValues.oil.profitable + sumValues.oil.profitless,
           ),
-          avgQn: this.calcAvgQn(
-              sumValues.oil.profitable + sumValues.oil.profitless,
-              sumValues.day_well_number.profitable + sumValues.day_well_number.profitless,
-          ),
           oil: (sumValues.oil.profitable + sumValues.oil.profitless) / 1000,
           revenueTotal: (sumValues.Revenue_total.profitable + sumValues.Revenue_total.profitless) / 1000000000,
+          netBack: (sumValues.NetBack_bf_pr_exp.profitable + sumValues.NetBack_bf_pr_exp.profitless) / 1000000000,
           overallExpenditures: (sumValues.Overall_expenditures.profitable + sumValues.Overall_expenditures.profitless) / 1000000000,
           operatingProfit: (sumValues.Operating_profit.profitable + sumValues.Operating_profit.profitless) / 1000000000,
         },
@@ -357,12 +364,9 @@ export default {
               sumValues.liquid.profitable,
               sumValues.oil.profitable,
           ),
-          avgQn: this.calcAvgQn(
-              sumValues.oil.profitable,
-              sumValues.day_well_number.profitable,
-          ),
           oil: sumValues.oil.profitable / 1000,
           revenueTotal: sumValues.Revenue_total.profitable / 1000000000,
+          netBack: sumValues.NetBack_bf_pr_exp.profitable / 1000000000,
           overallExpenditures: sumValues.Overall_expenditures.profitable / 1000000000,
           operatingProfit: sumValues.Operating_profit.profitable / 1000000000,
         },
@@ -375,12 +379,9 @@ export default {
               sumValues.liquid.profitless,
               sumValues.oil.profitless,
           ),
-          avgQn: this.calcAvgQn(
-              sumValues.oil.profitless,
-              sumValues.day_well_number.profitless,
-          ),
           oil: sumValues.oil.profitless / 1000,
           revenueTotal: sumValues.Revenue_total.profitless / 1000000000,
+          netBack: sumValues.NetBack_bf_pr_exp.profitless / 1000000000,
           overallExpenditures: sumValues.Overall_expenditures.profitless / 1000000000,
           operatingProfit: sumValues.Operating_profit.profitless / 1000000000,
         },
