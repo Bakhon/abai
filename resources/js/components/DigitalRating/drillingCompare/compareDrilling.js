@@ -2,6 +2,8 @@ import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
 import {rowsOil,rowsHorizon,horizons,actualIndicators} from '../json/data';
 import apexchart from 'vue-apexcharts';
+import maps from '../mixins/maps.js';
+import wellList from "../json/wells/13.json";
 
 export default {
   name: 'CompareDrilling',
@@ -10,6 +12,8 @@ export default {
     BtnDropdown,
     apexchart
   },
+
+  mixins: [maps],
 
   data() {
     return {
@@ -32,7 +36,13 @@ export default {
         }
       ],
       horizon: 12,
+      map: null,
     }
+  },
+
+  async mounted() {
+    await this.initMap('wellMap');
+    await this.initWellOnMap();
   },
 
   computed: {
@@ -61,7 +71,7 @@ export default {
           labels: {
             style: {
               colors: this.getColors(6, '#fff')
-            }
+            },
           }
         },
         grid: this.getGrid
@@ -172,18 +182,26 @@ export default {
   },
 
   methods: {
-    menuClick(data) {
-      const path = window.location.pathname.slice(3);
-      if (data?.url && data.url !== path) {
-        window.location.href = this.localeUrl(data.url);
+    initWellOnMap() {
+      for(let i = 0; i < wellList.length; i++) {
+        const coordinate = this.xy(wellList[i]['x'], wellList[i]['y']);
+        switch (wellList[i]['type']) {
+          case 1:
+            this.setCircleMarker(coordinate, wellList[i]['well']);
+            break;
+          case 4:
+            this.setTriangleMarker(coordinate, wellList[i]['well']);
+            break;
+        }
       }
     },
+
     getColors(count, color) {
       let colors = [];
       for (let i = 0; i < count; i++) {
         colors.push(color);
       }
       return colors;
-    }
+    },
   }
 }
