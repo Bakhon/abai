@@ -8,9 +8,20 @@ use Illuminate\Support\Facades\DB;
 
 trait WithDocumentsUpload
 {
+    protected $documents;
+
     protected function insertInnerTable(int $id)
     {
-        if (!empty($this->tableFields)) {
+        if (empty($this->tableFields)) {
+            $this->tableFields = $this->getFields()
+                ->filter(
+                    function ($item) {
+                        return $item['type'] === 'table';
+                    }
+                );
+        }
+
+        if ($this->tableFields && $this->tableFields->isNotEmpty()) {
             foreach ($this->tableFields as $field) {
                 if (!empty($this->request->get($field['code']))) {
                     if ($field['code'] === 'documents') {
@@ -89,7 +100,7 @@ trait WithDocumentsUpload
         return array_filter(
             $data,
             function ($key) {
-                return !in_array($key, ['gis_method', 'gis_type', 'documents']);
+                return !in_array($key, ['documents']);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -116,7 +127,7 @@ trait WithDocumentsUpload
 
         return $files->map(function ($file) use ($filesInfo) {
             $file->info = $filesInfo->where('id', $file->file)->first();
-            $file->filename = $file->info->filename;
+            $file->filename = $file->info->file_name;
             return $file;
         })
             ->groupBy('id')
@@ -133,8 +144,36 @@ trait WithDocumentsUpload
                                 'doc_date' => $items->first()->doc_date
                             ]
                         ];
-                    });
+                    })
+                    ->values();
             });
     }
 
+    protected function attachDocuments(Collection $rows)
+    {
+        $this->documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+        return $rows->map(function ($row) {
+            if ($this->documents->get($row->id)) {
+                $row->documents = $this->documents->get($row->id)->toArray();
+            }
+            return $row;
+        });
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = parent::getColumns();
+
+        $columns->put(
+            'documents',
+            [
+                'code' => 'documents',
+                'title' => trans('bd.documents'),
+                'document_list' => true,
+                'type' => 'text'
+            ]
+        );
+
+        return $columns;
+    }
 }

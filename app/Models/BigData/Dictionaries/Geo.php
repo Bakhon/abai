@@ -89,4 +89,38 @@ class Geo extends TBDModel
         Cache::put('bd_geo_children_' . $this->id, $result);
         return $result;
     }
+
+    public function parentTree(int $id)
+    {
+        return DB::connection('tbd')->select("
+                WITH RECURSIVE dict_orgs(id,geo,parent) AS (
+                   SELECT s1.id, 
+                          s1.geo, 
+                          s1.parent
+                     FROM dict.geo_parent s1 
+                     WHERE s1.geo = :id AND s1.dend>now() 
+                  UNION
+                  SELECT s2.id, 
+                         s2.geo, 
+                         s2.parent
+                    FROM dict.geo_parent s2, dict_orgs s1 
+                   WHERE s2.geo = s1.parent AND s2.dend>now()
+                  )
+                SELECT * FROM dict_orgs ",['id'=>$id]);
+    }
+
+    public function getWellName(int $id)
+    {
+        return Geo::select('name_ru')->find($id);
+    }
+
+    public function getItems(array $ids)
+    {
+        return Geo::leftJoin('dict.geo_type','dict.geo.geo_type','=','dict.geo_type.id')
+                   ->whereIn('dict.geo.id',$ids)
+                   ->select(DB::raw("(CASE WHEN dict.geo_type.code='FLD' THEN 1 ELSE null END) main"),
+                           'dict.geo.id',
+                           'dict.geo.name_ru')
+                   ->get();
+    }
 }

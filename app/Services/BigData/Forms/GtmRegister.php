@@ -22,31 +22,29 @@ class GtmRegister extends PlainForm
         $rows = parent::getRows();
 
         if (!empty($rows)) {
-            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
-            $rows = $rows->map(function ($row) use ($documents) {
-                if ($documents->get($row->id)->isNotEmpty()) {
-                    $row->documents = $documents->get($row->id)->toArray();
-                }
-                $row->own_forces = empty($item->company);
-                return $row;
-            });
+            $rows = $this->attachDocuments($rows);
         }
 
-        return $rows;
+        return $rows->map(function ($row) {
+            $row->own_forces = empty($item->company);
+            return $row;
+        });
     }
 
     protected function submitForm(): array
     {
-        $formFields = $this->request->except('well_status_type', 'own_forces');
+        $formFields = $this->request->except('well_status_type', 'own_forces', 'documents');
 
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($formFields['id'])) {
-            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $id = $formFields['id'];
         } else {
             $id = $dbQuery->insertGetId($formFields);
         }
 
+        $this->insertInnerTable($id);
         $this->updateWellStatus();
 
         DB::commit();

@@ -26,8 +26,14 @@
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
+    <select-operating-profit
+        :form="form"
+        class="ml-auto mb-3 bg-dark-blue text-blue"
+        style="width: 200px"
+        @change="updateCharts()"/>
+
     <div v-for="chart in loading ? [] : charts"
-         :key="chart.title"
+         :key="`${chart.title}_${profitabilityKey}`"
          :id="chart.title">
     </div>
   </div>
@@ -40,11 +46,13 @@ import {treemapMixin} from "../../mixins/treemapMixin";
 import {waterCutMixin} from "../../mixins/wellMixin";
 
 import SelectTechStructure from "../SelectTechStructure";
+import SelectOperatingProfit from "../SelectOperatingProfit";
 
 export default {
   name: "TableTreeMap",
   components: {
-    SelectTechStructure
+    SelectTechStructure,
+    SelectOperatingProfit,
   },
   mixins: [treemapMixin, waterCutMixin],
   props: {
@@ -59,6 +67,7 @@ export default {
       ngdu_id: null,
       cdng_id: null,
       field_id: null,
+      operatingProfit: 'Operating_profit',
     },
     selectedWells: [],
   }),
@@ -91,12 +100,16 @@ export default {
           title: this.trans('economic_reference.operating_profit') + '+',
           key: this.profitabilityKey,
           positive: true,
+          hasSubtitle: true,
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
           key: this.profitabilityKey,
           negative: true,
-          sort: 'asc'
+          sort: 'asc',
+          hasSubtitle: true,
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -114,6 +127,10 @@ export default {
           hasSubtitle: true,
         },
       ]
+    },
+
+    profitabilityKey() {
+      return this.form.operatingProfit
     },
   },
   methods: {
@@ -144,10 +161,20 @@ export default {
 
       this.getWells()
     },
+
+    updateCharts() {
+      this.$nextTick(() => this.plotCharts())
+    },
   }
 }
 </script>
 
 <style scoped>
+.text-blue {
+  color: #23AFE8;
+}
 
+.bg-dark-blue {
+  background: #272953;
+}
 </style>

@@ -358,8 +358,8 @@ export default {
         'krsWorkover': 'krs_well_workover',
         'prsWellWorkover': 'prs_well_workover',
         'treatmentDate': 'well_treatment',
-        'actualBottomHole': 'actual_bottom_hole.pivot.depth',
-        'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
+        'actualBottomHole': 'actual_bottom_hole',
+        'artificialBottomHole': 'artificial_bottom_hole',
         'perfActual': 'well_perf_actual',
         'treatmentSko': 'well_treatment_sko',
         'gdisCurrent': 'gdis_current',
@@ -442,7 +442,7 @@ export default {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
-            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
           }
           if (data.geo[0] != null) {
             this.wellGeo = data.geo[0]
@@ -484,7 +484,7 @@ export default {
             }
             if (this.tableData[i].neigbor_2 != null) {
               if(this.tableData[i].neigbor_1 != null) {
-                this.tableData[i].data += ' - '
+                this.tableData[i].data += ' / '
               }
               this.tableData[i].data += this.tableData[i].neigbor_2
             }
@@ -530,7 +530,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != '') {
-        return moment(data).format('DD/MM/YYYY')
+        return moment(data).format('DD.MM.YYYY')
       }
     },
     changeColumnsVisible(value) {
@@ -555,13 +555,13 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.wellType.name_ru,
+          'description': this.well.wellType != null ? this.well.wellType.name_ru : null,
           'method': null,
           'name': 'Вид скважины',
           'data': ''
         },
         {
-          'description': this.wellGeoFields.name_ru,
+          'description': this.wellGeoFields != null ? this.wellGeoFields.name_ru : null,
           'method': null,
           'name': 'Месторождение',
           'data': ''
@@ -569,93 +569,93 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.wellGeo.name_ru,
-          'neigbor_2': this.well.labResearchValue.value_double,
+          'neigbor_1': this.wellGeo != null ? this.wellGeo.name_ru : null,
+          'neigbor_2': this.well.labResearchValue != null ? this.well.labResearchValue.value_double : null,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
         },
         {
-          'description': this.well.wellInfo.rte,
+          'description': this.well.wellInfo != null ? this.well.wellInfo.rte : null,
           'method': null,
           'name': 'H ротора',
           'data': ''
         },
         {
-          'description': this.wellTechsName,
+          'description': this.wellTechsName != null ? this.wellTechsName : null,
           'method': null,
           'name': 'Тех. структура',
           'data': ''
         },
         {
-          'description': this.well.tap.tap,
+          'description': this.well.tap != null ? this.well.tap.tap : null,
           'method': null,
           'name': 'Отвод',
           'data': ''
         },
         {
-          'description': this.wellTechsName,
+          'description': this.wellTechsName!= null ? this.wellTechsName : null,
           'method': 'neighbors',
-          'neigbor_1': this.well.gu.name_ru,
-          'neigbor_2': this.well.agms.name_ru,
+          'neigbor_1': this.well.gu != null ? this.well.gu.name_ru : null,
+          'neigbor_2': this.well.agms != null ? this.well.agms.name_ru : null,
           'name': 'ГУ/АГЗУ',
           'data': ''
         },
         {
-          'description': this.wellOrgName,
+          'description': this.wellOrgName != null ? this.wellOrgName : null,
           'method': null,
           'name': 'Орг. структура',
           'data': ''
         },
         {
-          'description': this.well.zone.name_ru,
+          'description': this.well.zone != null ? this.well.zone.name_ru : null,
           'method': null,
           'name': 'Зона скважины',
           'data': ''
         },
         {
-          'description': this.well.wellReactInfl.well_reacting,
+          'description': this.well.wellReactInfl != null ? this.well.wellReactInfl.well_reacting : null,
           'method': null,
           'name': 'Реагирующие скважины',
           'data': ''
         },
         {
-          'description': this.well.wellReactInfl.well_influencing,
+          'description': this.well.wellReactInfl != null ? this.well.wellReactInfl.well_influencing : null,
           'method': null,
           'name': 'Влияющие скважины',
           'data': ''
         },
         {
-          'description': this.wellSaptialObjectX,
+          'description': this.wellSaptialObjectX != null ?  this.wellSaptialObjectX : null,
           'method': null,
           'name': 'Координаты X (устья)',
           'data': ''
         },
         {
-          'description': this.wellSaptialObjectY,
+          'description': this.wellSaptialObjectY != null ? this.wellSaptialObjectY : null,
           'method': null,
           'name': 'Координаты Y (устья)',
           'data': ''
         },
         {
-          'description': this.wellSaptialObjectBottomX,
+          'description': this.wellSaptialObjectBottomX != null ? this.wellSaptialObjectBottomX : null,
           'method': null,
           'name': 'Координаты забоя X',
           'data': ''
         },
         {
-          'description': this.wellSaptialObjectBottomY,
+          'description': this.wellSaptialObjectBottomY != null ? this.wellSaptialObjectBottomY : null,
           'method': null,
           'name': 'Координаты забоя Y',
           'data': ''
         },
         {
-          'description': this.well.category.name_ru,
+          'description': this.well.category != null ? this.well.category.name_ru : null,
           'method': null,
           'name': 'Назначение скважин по проекту',
           'data': ''
         },
         {
-          'description': this.well.categoryLast.name_ru,
+          'description': this.well.categoryLast != null ? this.well.categoryLast.name_ru : null,
           'method': null,
           'name': 'Категория',
           'data': ''
@@ -663,25 +663,25 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.well.wellInfo.drill_start_date,
-          'neigbor_2': this.well.wellInfo.drill_end_date,
+          'neigbor_1': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_start_date) : null,
+          'neigbor_2': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : null,
           'name': 'Период бурения',
           'data': ''
         },
         {
-          'description': this.well.expl.dbeg,
+          'description': this.well.expl != null  ? this.well.expl.dbeg : null,
           'method': 'trimToDate',
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
         },
         {
-          'description': this.well.status.name_ru,
+          'description': this.well.status != null ? this.well.status.name_ru : null,
           'method': null,
           'name': 'Состояние',
           'data': ''
         },
         {
-          'description': this.well.expl.name_ru,
+          'description': this.well.expl != null  ? this.well.expl.name_ru : null,
           'method': null,
           'name': 'Способ эксплуатации',
           'data': ''
@@ -693,7 +693,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.tubeNomOd,
+          'description': this.tubeNomOd != null ? this.tubeNomOd : null,
           'method': null,
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
           'data': ''
@@ -747,13 +747,13 @@ export default {
           'data': ''
         },
         {
-          'description': this.actualBottomHole,
+          'description': this.well.actualBottomHole != null ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : null,
           'method': null,
           'name': 'Фактический забой/(дата отбивки)',
           'data': ''
         },
         {
-          'description': this.actualBottomHole,
+          'description': this.well.artificialBottomHole != null ? this.well.artificialBottomHole.depth : null,
           'method': null,
           'name': 'Искусственный забой',
           'data': ''
@@ -785,15 +785,15 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.perfActual.top,
-          'neigbor_2': this.well.perfActual.base,
+          'neigbor_1': this.well.perfActual != null ? this.well.perfActual.top : null,
+          'neigbor_2': this.well.perfActual != null ? this.well.perfActual.base : null,
           'name': 'Действующие интервалы перфорации',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.injPressure,
+          'neigbor_1': this.well.injPressure != null ? this.well.injPressure : null,
           'neigbor_2': null,
           'name': 'Приемистость, м3/сут (режим/факт)',
           'data': ''
@@ -801,7 +801,7 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.agentVol,
+          'neigbor_1': this.well.agentVol != null ? this.well.agentVol : null,
           'neigbor_2': null,
           'name': 'Давление закачки, атм (режим/факт)',
           'data': ''
@@ -810,54 +810,54 @@ export default {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.liquid : null,
-          'neigbor_2': this.well.measLiq.liquid.toFixed(1),
-          'name': 'Дебит жидкости, м3/сут (режим-факт)',
+          'neigbor_2': this.well.measLiq != null ? this.well.measLiq.liquid.toFixed(1) : null,
+          'name': 'Дебит жидкости, м3/сут (режим/факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.wcut : null,
-          'neigbor_2': this.well.measWaterCut.water_cut,
-          'name': 'Обводненность, % (режим-факт)',
+          'neigbor_2': this.well.measWaterCut != null ? this.well.measWaterCut.water_cut : null,
+          'name': 'Обводненность, % (режим/факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
-          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null ? (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1) : null,
-          'name': 'Дебит нефти, т/сут (режим-факт)',
+          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null && this.well.measLiq != null ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : null,
+          'name': 'Дебит нефти, т/сут (режим/факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.getFormatedDate(this.well.krsWorkover.dbeg),
-          'neigbor_2': this.getFormatedDate(this.well.krsWorkover.dend),
+          'neigbor_1': this.well.krsWorkover != null ? this.getFormatedDate(this.well.krsWorkover.dbeg) : null,
+          'neigbor_2': this.well.krsWorkover != null ? this.getFormatedDate(this.well.krsWorkover.dend) : null,
           'name': 'Дата последнего КРС',
           'data': ''
         },
         {
-          'description': this.well.treatmentDate.treat_date,
+          'description': this.well.treatmentDate != null ? this.well.treatmentDate.treat_date : null,
           'method': null,
           'name': 'Дата проведения ПФП нагн. скважины',
           'data': ''
         },
         {
-          'description': this.getFormatedDate(this.well.gtm.dbeg),
+          'description': this.well.gtm != null ? this.getFormatedDate(this.well.gtm.dbeg) : null,
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
         },
         {
-          'description': this.well.treatmentSko.treat_date,
+          'description': this.well.treatmentSko != null ? this.well.treatmentSko.treat_date : null,
           'method': 'trimToDate',
           'name': 'Дата проведения СКО',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrent.meas_date,
+          'description': this.well.gdisCurrent != null ? this.well.gdisCurrent.meas_date : this.well.gdisCurrent,
           'method': 'trimToDate',
           'name': 'Дата проведения КПД',
           'data': ''
@@ -865,49 +865,49 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.getFormatedDate(this.well.prsWellWorkover.dbeg),
-          'neigbor_2': this.getFormatedDate(this.well.prsWellWorkover.dend),
+          'neigbor_1': this.well.prsWellWorkover != null ? this.getFormatedDate(this.well.prsWellWorkover.dbeg) : null,
+          'neigbor_2': this.well.prsWellWorkover != null ? this.getFormatedDate(this.well.prsWellWorkover.dend) : null,
           'name': 'Дата последнего ПРС',
           'data': ''
         },
         {
-          'description': this.well.gis.gis_date,
+          'description': this.well.gis != null ? this.well.gis.gis_date : null,
           'method': 'trimToDate',
           'name': 'Дата последнего ГИС',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrent.meas_date,
+          'description': this.well.gdisCurrent != null ? this.well.gdisCurrent.meas_date : null,
           'method': 'trimToDate',
           'name': 'Дата последнего ГДИС',
           'data': ''
         },
         {
-          'description': this.well.gdisConclusion.name_ru,
+          'description': this.well.gdisConclusion != null ? this.well.gdisConclusion.name_ru : null,
           'method': null,
           'name': 'Результат ГДМ',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrentValue.value_double,
+          'description': this.well.gdisCurrentValue != null ? this.well.gdisCurrentValue.value_double : null,
           'method': null,
           'name': 'Длина хода при проведении ГДМ',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrentValuePmpr.value_double,
+          'description': this.well.gdisCurrentValuePmpr != null ? this.well.gdisCurrentValuePmpr.value_double : null,
           'method': null,
           'name': 'число качаний при проведении ГДМ',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrentValueFlvl.value_double,
+          'description': this.well.gdisCurrentValueFlvl != null ? this.well.gdisCurrentValueFlvl.value_double : null,
           'method': null,
           'name': 'Динамический уровень',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrentValueStatic.value_double,
+          'description': this.well.gdisCurrentValueStatic != null ? this.well.gdisCurrentValueStatic.value_double : null,
           'method': null,
           'name': 'Статический уровень',
           'data': ''
@@ -915,41 +915,41 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.gdisCurrentValueRp.value_double,
-          'neigbor_2': this.well.gdisCurrentValueRp.meas_date,
+          'neigbor_1': this.well.gdisCurrentValueRp != null ? this.well.gdisCurrentValueRp.value_double : null,
+          'neigbor_2': this.well.gdisCurrentValueRp != null ? this.well.gdisCurrentValueRp.meas_date : null,
           'name': 'Рпл/(дата замера)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.gdisComplex.value_double,
-          'neigbor_2': this.well.gdisComplex.research_date,
+          'neigbor_1': this.well.gdisComplex != null ? this.well.gdisComplex.value_double : null,
+          'neigbor_2': this.well.gdisComplex != null ? this.well.gdisComplex.research_date : null,
           'name': 'Рпл (Сл. ГДИС)/(дата замера)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.gdisCurrentValueBhp.value_double,
-          'neigbor_2': this.well.gdisCurrentValueBhp.meas_date,
+          'neigbor_1': this.well.gdisCurrentValueBhp.value_double != null ? this.well.gdisCurrentValueBhp.value_double : null,
+          'neigbor_2': this.well.gdisCurrentValueBhp.meas_date != null ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : null,
           'name': 'Рзаб/(дата замера)',
           'data': ''
         },
         {
-          'description': this.well.rzatrAtm.value_double,
+          'description': this.well.rzatrAtm != null ? this.well.rzatrAtm.value_double : null,
           'method': null,
           'name': 'Рзатр(дин), атм',
           'data': ''
         },
         {
-          'description': this.well.rzatrStat.value_double,
+          'description': this.well.rzatrStat.value_double != null ? this.well.rzatrStat.value_double : null,
           'method': null,
           'name': 'Рзатр(стат)',
           'data': ''
         },
         {
-          'description': this.well.gdisCurrent.note,
+          'description': this.well.gdisCurrent.note != null ? this.well.gdisCurrent.note : null,
           'method': null,
           'name': 'Примечание',
           'data': ''

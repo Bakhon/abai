@@ -44,9 +44,9 @@
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart mt-2"/>
 
-      <chart-with-operating-profit-top
-          v-else-if="activeTab === 'operating_profit_top'"
-          :data="charts.operatingProfitTop"
+      <chart-with-well-top
+          v-else-if="activeTab === 'well_top'"
+          :data="charts.wellTop"
           :granularity="granularity"
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
@@ -74,7 +74,7 @@
 import ChartButton from "../ChartButton";
 import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
-import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
+import ChartWithWellTop from "./ChartWithWellTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 import ChartWellMap from "./ChartWellMap";
 import Subtitle from "../Subtitle";
@@ -85,7 +85,7 @@ export default {
     ChartButton,
     ChartWithProfitability,
     ChartWithOilProduction,
-    ChartWithOperatingProfitTop,
+    ChartWithWellTop,
     ChartWithLiquidProduction,
     ChartWellMap,
     Subtitle
@@ -128,7 +128,7 @@ export default {
       return {
         profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
-        operating_profit_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+        well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
         well_map: this.trans('economic_reference.well_overview_map'),
       }

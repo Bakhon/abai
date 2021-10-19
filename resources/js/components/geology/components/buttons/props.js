@@ -3,6 +3,7 @@ export default {
         href: String,
         iWidth:[String, Number],
         iHeight:[String, Number],
+        loading: Boolean,
         align: {
             type: String,
             validator(value) {
@@ -21,6 +22,7 @@ export default {
             type: String
         },
         hasCheckActive: Boolean,
+        disabled: Boolean,
         activeColor: {
             type: String,
             default: 'primary'

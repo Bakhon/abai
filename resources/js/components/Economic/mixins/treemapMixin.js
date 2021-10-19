@@ -54,9 +54,9 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value < 0) return
+                    if (chart.hasOwnProperty('positive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value >= 0) return
+                    if (chart.hasOwnProperty('negative') && value > 0) return
 
                     sum[chart.title][sumKey] += value
 
@@ -88,9 +88,9 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value < 0) return
+                    if (chart.hasOwnProperty('positive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value >= 0) return
+                    if (chart.hasOwnProperty('negative') && value > 0) return
 
                     let color = this.getColor(well)
 
@@ -160,24 +160,36 @@ export const treemapMixin = {
             return +well[this.profitabilityKey] > 0 ? '#13B062' : '#AB130E'
         },
 
-        getChartSubtitle({title, hasSubtitle}) {
+        getChartSubtitle({title, hasSubtitle, isShowCount}) {
             if (!hasSubtitle || !this.chartsSum[title]) {
                 return ''
             }
 
             let name = ''
 
-            if (this.chartsSum[title].profitable) {
+            let subtitleKey = 'profitable'
+
+            if (isShowCount) {
+                subtitleKey += 'Count'
+            }
+
+            if (this.chartsSum[title][subtitleKey]) {
                 name += `<br>
                 ${this.trans('economic_reference.profitable')}: 
-                ${this.chartsSum[title].profitable.toLocaleString()}
+                ${this.chartsSum[title][subtitleKey].toLocaleString()}
                 `
             }
 
-            if (this.chartsSum[title].profitless) {
+            subtitleKey = 'profitless'
+
+            if (isShowCount) {
+                subtitleKey += 'Count'
+            }
+
+            if (this.chartsSum[title][subtitleKey]) {
                 name += `<br>
                 ${this.trans('economic_reference.profitless')}: 
-                ${this.chartsSum[title].profitless.toLocaleString()}
+                ${this.chartsSum[title][subtitleKey].toLocaleString()}
                 `
             }
 

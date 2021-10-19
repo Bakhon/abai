@@ -33,6 +33,7 @@ class EconomicNrsDataRequest extends FormRequest
                     EconomicNrsController::PROFITABILITY_DIRECT_FROM_DATE,
                 ])
             ],
+            'exclude_uwis' => 'nullable|array'
         ];
     }
 }

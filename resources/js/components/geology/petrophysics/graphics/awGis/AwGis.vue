@@ -17,7 +17,6 @@
 <script>
 import AwGisBlock from "./AwGisBlock";
 import AwGisClass from "./utils/AwGisClass";
-import {ADD_BLOCK, FETCH_GIS_DATA} from "../../../../../store/modules/geologyGis.const";
 
 export default {
   name: "awGis",
@@ -42,32 +41,32 @@ export default {
       }
     }
   },
+
   async mounted() {
     this.awGis = new AwGisClass();
-    await this.$store.dispatch(FETCH_GIS_DATA);
-    for (let i = 0; i <1; i++) {
-      this.$store.commit(ADD_BLOCK, `well ${i}`);
-    }
-    setTimeout(()=>{this.setInfoCanvasSize();}, 1)
+    setTimeout(() => {
+      this.setInfoCanvasSize();
+    }, 1)
   },
+
   computed: {
     getGroups() {
       return this.gisGroups;
     },
-    getWellsBlock(){
+    getWellsBlock() {
       return this.$store.state.geologyGis.gisWells;
     }
   },
 
   methods: {
-    addGroup(bockName, opt){
+    addGroup(bockName, opt) {
       this.awGis.addGroup(bockName, {...this.groupSettingDefault, ...opt});
       this.update();
     },
 
     selectCurve(curveName, curve, groupName) {
       if (groupName) {
-        if(this.awGis.hasElementInGroup(groupName, curveName)) this.awGis.removeElementFromGroup(groupName, curveName)
+        if (this.awGis.hasElementInGroup(groupName, curveName)) this.awGis.removeElementFromGroup(groupName, curveName)
         else this.awGis.addElementToGroup(groupName, curveName, curve)
       }
       this.update();
