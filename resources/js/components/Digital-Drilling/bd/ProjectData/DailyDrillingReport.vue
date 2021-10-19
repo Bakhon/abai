@@ -68,7 +68,7 @@
             async getReportsByWell(){
                 this.SET_LOADING(true);
                 try{
-                    await this.axios.get(this.DIGITAL_DRILLING_URL +
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/' +
                         this.currentWell.id).then((response) => {
                         let data = response.data;
                         if (data) {

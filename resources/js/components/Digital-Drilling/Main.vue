@@ -66,7 +66,6 @@
                         this.fields = data;
                         if (data.length>0){
                             this.currentField = data[0].id;
-                            // this.getWELL('')
                         }
 
                     } else {

@@ -143,6 +143,9 @@
     Vue.component('rasters-params', require('./project/rasters-params').default);
     Vue.component('well-deepening', require('./project/well-deepening').default);
     Vue.component('well-fastening', require('./project/well-fastening').default);
+    Vue.component('project_inclino', require('./project/inclino').default);
+    Vue.component('report-download', require('./project/ReportDownload').default);
+
 
 </script>
 
