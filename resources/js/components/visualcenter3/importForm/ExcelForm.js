@@ -77,7 +77,8 @@ export default {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
-                    id: 113
+                    id: 113,
+                    requiredRows: 33
                 },
             },
             dzoCompanies: [
@@ -166,7 +167,8 @@ export default {
                     'formula': (value) => value * 1000
                 }
             },
-            dzoUsers: []
+            dzoUsers: [],
+            requiredRows: 0
         };
     },
     props: ['userId'],
@@ -240,6 +242,7 @@ export default {
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
+            this.requiredRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].requiredRows);
             this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
             this.columnsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
             this.rowsCount = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows).length + 2;
@@ -324,7 +327,9 @@ export default {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
+                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
             } else {
+                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
             }
             if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
@@ -363,16 +368,19 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text();
-                if (!this.isNumberCellValid(cellValue,selector)) {
+                cellValue = this.getFormattedNumber(cellValue);
+                cellValue = parseFloat(cellValue);
+                if ((isNaN(cellValue) || cellValue < 0) && row.rowIndex <= this.requiredRows) {
                     this.turnErrorForCell(selector);
                     continue;
                 }
-                if (cellValue.trim().length === 0) {
-                    cellValue = null;
-                }
-                if (cellValue) {
-                    cellValue = this.getFormattedNumber(cellValue);
-                }
+
+                // if (cellValue.trim().length === 0) {
+                //     cellValue = null;
+                // }
+                // if (cellValue) {
+                //     cellValue = this.getFormattedNumber(cellValue);
+                // }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
                 } else if (category === this.inputDataCategories[0]) {

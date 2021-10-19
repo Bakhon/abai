@@ -7,31 +7,12 @@
     "rowIndex": 1,
     "rowLength": 2
   },
-  "condensateDzo": {
-    "fields": [
-      "condensate_production_fact",
-      "condensate_delivery_fact"
-    ],
-    "rowIndex": 8,
-    "rowLength": 2
-  },
   "stockOfGoodsDzo": {
     "fields": [
       "stock_of_goods_delivery_fact"
     ],
-    "rowIndex": 15,
+    "rowIndex": 8,
     "rowLength": 1
-  },
-  "naturalGasDzo": {
-    "fields": [
-      "natural_gas_production_fact",
-      "natural_gas_delivery_fact",
-      "natural_gas_expenses_for_own_fact",
-      "natural_gas_processing_fact",
-      "natural_gas_flaring_fact"
-    ],
-    "rowIndex": 22,
-    "rowLength": 5
   },
   "associatedGasDzo": {
     "fields": [
@@ -41,26 +22,23 @@
       "associated_gas_processing_fact",
       "associated_gas_flaring_fact"
     ],
-    "rowIndex": 29,
+    "rowIndex": 15,
     "rowLength": 5
   },
   "agentUploadDzo": {
     "fields": [
       "agent_upload_total_water_injection_fact",
-      "agent_upload_seawater_injection_fact",
-      "agent_upload_waste_water_injection_fact",
-      "agent_upload_albsenomanian_water_injection_fact",
-      "agent_upload_stream_injection_fact"
+      "agent_upload_albsenomanian_water_injection_fact"
     ],
-    "rowIndex": 36,
-    "rowLength": 5
+    "rowIndex": 22,
+    "rowLength": 2
   },
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
       "otm_drilling_fact"
     ],
-    "rowIndex": 43,
+    "rowIndex": 29,
     "rowLength": 2
   },
   "operatingFond": {
@@ -68,7 +46,7 @@
       "operating_production_fond",
       "operating_injection_fond"
     ],
-    "rowIndex": 82,
+    "rowIndex": 68,
     "rowLength": 2
   },
   "activeFond": {
@@ -76,7 +54,7 @@
       "active_production_fond",
       "active_injection_fond"
     ],
-    "rowIndex": 83,
+    "rowIndex": 69,
     "rowLength": 2
   },
   "inWorkFond": {
@@ -84,7 +62,7 @@
       "in_work_production_fond",
       "in_work_injection_fond"
     ],
-    "rowIndex": 84,
+    "rowIndex": 70,
     "rowLength": 2
   },
   "inIdleFond": {
@@ -92,7 +70,7 @@
       "in_idle_production_fond",
       "in_idle_injection_fond"
     ],
-    "rowIndex": 85,
+    "rowIndex": 71,
     "rowLength": 2
   },
   "inactiveFond": {
@@ -100,7 +78,7 @@
       "inactive_production_fond",
       "inactive_injection_fond"
     ],
-    "rowIndex": 86,
+    "rowIndex": 72,
     "rowLength": 2
   },
   "developingFond": {
@@ -108,7 +86,7 @@
       "developing_production_fond",
       "developing_injection_fond"
     ],
-    "rowIndex": 87,
+    "rowIndex": 73,
     "rowLength": 2
   },
   "pendingLiquidationFond": {
@@ -116,7 +94,7 @@
       "pending_liquidation_production_fond",
       "pending_liquidation_injection_fond"
     ],
-    "rowIndex": 88,
+    "rowIndex": 74,
     "rowLength": 2
   },
   "inConservationFond": {
@@ -124,7 +102,7 @@
       "in_conservation_production_fond",
       "in_conservation_injection_fond"
     ],
-    "rowIndex": 89,
+    "rowIndex": 75,
     "rowLength": 2
   },
   "fields": {
@@ -162,114 +140,34 @@
         "rowLength": 2
       }
     },
-    "condensate": {
-      "НГДУ \"Жаикмунайгаз\"": {
-        "fields": [
-          "condensate_production_fact",
-          "condensate_delivery_fact"
-        ],
-        "rowIndex": 9,
-        "rowLength": 2
-      },
-      "НГДУ \"Жылоймунайгаз\"": {
-        "fields": [
-          "condensate_production_fact",
-          "condensate_delivery_fact"
-        ],
-        "rowIndex": 10,
-        "rowLength": 2
-      },
-      "НГДУ \"Доссормунайгаз\"": {
-        "fields": [
-          "condensate_production_fact",
-          "condensate_delivery_fact"
-        ],
-        "rowIndex": 11,
-        "rowLength": 2
-      },
-      "НГДУ \"Кайнармунайгаз\"": {
-        "fields": [
-          "condensate_production_fact",
-          "condensate_delivery_fact"
-        ],
-        "rowIndex": 12,
-        "rowLength": 2
-      }
-    },
     "stockOfGoodsDzo": {
       "НГДУ \"Жаикмунайгаз\"": {
         "fields": [
           "stock_of_goods_delivery_fact"
         ],
-        "rowIndex": 16,
+        "rowIndex": 9,
         "rowLength": 1
       },
       "НГДУ \"Жылоймунайгаз\"": {
         "fields": [
           "stock_of_goods_delivery_fact"
         ],
-        "rowIndex": 17,
+        "rowIndex": 10,
         "rowLength": 1
       },
       "НГДУ \"Доссормунайгаз\"": {
         "fields": [
           "stock_of_goods_delivery_fact"
         ],
-        "rowIndex": 18,
+        "rowIndex": 11,
         "rowLength": 1
       },
       "НГДУ \"Кайнармунайгаз\"": {
         "fields": [
           "stock_of_goods_delivery_fact"
         ],
-        "rowIndex": 19,
+        "rowIndex": 12,
         "rowLength": 1
-      }
-    },
-    "naturalGas": {
-      "НГДУ \"Жаикмунайгаз\"": {
-        "fields": [
-          "natural_gas_production_fact",
-          "natural_gas_delivery_fact",
-          "natural_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
-        ],
-        "rowIndex": 23,
-        "rowLength": 5
-      },
-      "НГДУ \"Жылоймунайгаз\"": {
-        "fields": [
-          "natural_gas_production_fact",
-          "natural_gas_delivery_fact",
-          "natural_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
-        ],
-        "rowIndex": 24,
-        "rowLength": 5
-      },
-      "НГДУ \"Доссормунайгаз\"": {
-        "fields": [
-          "natural_gas_production_fact",
-          "natural_gas_delivery_fact",
-          "natural_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
-        ],
-        "rowIndex": 25,
-        "rowLength": 5
-      },
-      "НГДУ \"Кайнармунайгаз\"": {
-        "fields": [
-          "natural_gas_production_fact",
-          "natural_gas_delivery_fact",
-          "natural_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
-        ],
-        "rowIndex": 26,
-        "rowLength": 5
       }
     },
     "associatedGas": {
@@ -278,78 +176,66 @@
           "associated_gas_production_fact",
           "associated_gas_delivery_fact"
         ],
-        "rowIndex": 30,
-        "rowLength": 2
+        "rowIndex": 16,
+        "rowLength": 5
       },
       "НГДУ \"Жылоймунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
           "associated_gas_delivery_fact"
         ],
-        "rowIndex": 31,
-        "rowLength": 2
+        "rowIndex": 17,
+        "rowLength": 5
       },
       "НГДУ \"Доссормунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
           "associated_gas_delivery_fact"
         ],
-        "rowIndex": 32,
-        "rowLength": 2
+        "rowIndex": 18,
+        "rowLength": 5
       },
       "НГДУ \"Кайнармунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
           "associated_gas_delivery_fact"
         ],
-        "rowIndex": 33,
-        "rowLength": 2
+        "rowIndex": 19,
+        "rowLength": 5
       }
     },
     "agentUpload": {
       "НГДУ \"Жаикмунайгаз\"": {
         "fields": [
           "agent_upload_total_water_injection_fact",
-          "agent_upload_seawater_injection_fact",
-          "agent_upload_waste_water_injection_fact",
-          "agent_upload_albsenomanian_water_injection_fact",
-          "agent_upload_stream_injection_fact"
+          "agent_upload_albsenomanian_water_injection_fact"
         ],
-        "rowIndex": 37,
-        "rowLength": 5
+        "rowIndex": 23,
+        "rowLength": 2
       },
       "НГДУ \"Жылоймунайгаз\"": {
         "fields": [
           "agent_upload_total_water_injection_fact",
-          "agent_upload_seawater_injection_fact",
-          "agent_upload_waste_water_injection_fact",
-          "agent_upload_albsenomanian_water_injection_fact",
-          "agent_upload_stream_injection_fact"
+          "agent_upload_albsenomanian_water_injection_fact"
         ],
-        "rowIndex": 38,
-        "rowLength": 5
+        "rowIndex": 24,
+        "rowLength": 2
       },
       "НГДУ \"Доссормунайгаз\"": {
         "fields": [
           "agent_upload_total_water_injection_fact",
-          "agent_upload_seawater_injection_fact",
-          "agent_upload_waste_water_injection_fact",
-          "agent_upload_albsenomanian_water_injection_fact",
-          "agent_upload_stream_injection_fact"
+          "agent_upload_albsenomanian_water_injection_fact"
         ],
-        "rowIndex": 39,
-        "rowLength": 5
+        "rowIndex": 25,
+        "rowLength": 2
       },
       "НГДУ \"Кайнармунайгаз\"": {
         "fields": [
           "agent_upload_total_water_injection_fact",
-          "agent_upload_seawater_injection_fact",
-          "agent_upload_waste_water_injection_fact",
-          "agent_upload_albsenomanian_water_injection_fact",
-          "agent_upload_stream_injection_fact"
+          "agent_upload_albsenomanian_water_injection_fact"
         ],
-        "rowIndex": 40,
-        "rowLength": 5
+        "rowIndex": 26,
+        "rowLength": 2
       }
     },
     "otm": {
@@ -358,7 +244,7 @@
           "otm_wells_commissioning_from_drilling_fact",
           "otm_drilling_fact"
         ],
-        "rowIndex": 44,
+        "rowIndex": 30,
         "rowLength": 2
       },
       "НГДУ \"Жылоймунайгаз\"": {
@@ -366,7 +252,7 @@
           "otm_wells_commissioning_from_drilling_fact",
           "otm_drilling_fact"
         ],
-        "rowIndex": 45,
+        "rowIndex": 31,
         "rowLength": 2
       },
       "НГДУ \"Доссормунайгаз\"": {
@@ -374,7 +260,7 @@
           "otm_wells_commissioning_from_drilling_fact",
           "otm_drilling_fact"
         ],
-        "rowIndex": 46,
+        "rowIndex": 32,
         "rowLength": 2
       },
       "НГДУ \"Кайнармунайгаз\"": {
@@ -382,7 +268,7 @@
           "otm_wells_commissioning_from_drilling_fact",
           "otm_drilling_fact"
         ],
-        "rowIndex": 47,
+        "rowIndex": 33,
         "rowLength": 2
       }
     }
@@ -390,147 +276,147 @@
   "downtimeReason": {
     "prs": {
       "fields": ["prs_downtime_production_wells_count","prs_downtime_production_wells_oil_loss","prs_downtime_injection_wells_count"],
-      "rowIndex": 51,
+      "rowIndex": 37,
       "rowLength": 3
     },
     "prsWait": {
       "fields": ["prs_wait_downtime_production_wells_count","prs_wait_downtime_production_wells_oil_loss","prs_wait_downtime_injection_wells_count"],
-      "rowIndex": 52,
+      "rowIndex": 38,
       "rowLength": 3
     },
     "krs": {
       "fields": ["krs_downtime_production_wells_count","krs_downtime_production_wells_oil_loss","krs_downtime_injection_wells_count"],
-      "rowIndex": 53,
+      "rowIndex": 39,
       "rowLength": 3
     },
     "krsWait": {
       "fields": ["krs_wait_downtime_production_wells_count","krs_wait_downtime_production_wells_oil_loss","krs_wait_downtime_injection_wells_count"],
-      "rowIndex": 54,
+      "rowIndex": 40,
       "rowLength": 3
     },
     "wellSurvey": {
       "fields": ["well_survey_downtime_production_wells_count","well_survey_downtime_production_wells_oil_loss","well_survey_downtime_injection_wells_count"],
-      "rowIndex": 55,
+      "rowIndex": 41,
       "rowLength": 3
     },
     "other": {
       "fields": ["other_downtime_production_wells_count","other_downtime_production_wells_oil_loss","other_downtime_injection_wells_count"],
-      "rowIndex": 56,
+      "rowIndex": 42,
       "rowLength": 3
     },
     "waitingPump": {
       "fields": ["waiting_pump_downtime_production_wells_count","waiting_pump_production_wells_oil_loss","waiting_pump_injection_wells_count"],
-      "rowIndex": 57,
+      "rowIndex": 43,
       "rowLength": 3
     },
     "glut": {
       "fields": ["glut_downtime_production_wells_count","glut_downtime_production_wells_oil_loss","glut_downtime_injection_wells_count"],
-      "rowIndex": 58,
+      "rowIndex": 44,
       "rowLength": 3
     },
     "impulse": {
       "fields": ["impulse_replacement_downtime_production_wells_count","impulse_replacement_downtime_production_wells_oil_loss","impulse_replacement_downtime_injection_wells_count"],
-      "rowIndex": 59,
+      "rowIndex": 45,
       "rowLength": 3
     },
     "electricalPart": {
       "fields": ["electrical_part_downtime_production_wells_count","electrical_part_downtime_production_wells_oil_loss","electrical_part_downtime_injection_wells_count"],
-      "rowIndex": 60,
+      "rowIndex": 46,
       "rowLength": 3
     },
     "groundRepair": {
       "fields": ["ground_repair_downtime_production_wells_count","ground_repair_downtime_production_wells_oil_loss","ground_repair_downtime_injection_wells_count"],
-      "rowIndex": 61,
+      "rowIndex": 47,
       "rowLength": 3
     },
     "periodicDowntime": {
       "fields": ["periodic_downtime_production_wells_count","periodic_downtime_production_wells_oil_loss","periodic_downtime_injection_wells_count"],
-      "rowIndex": 62,
+      "rowIndex": 48,
       "rowLength": 3
     },
     "swabbingWaiting": {
       "fields": ["waiting_swabbing_downtime_production_wells_count","waiting_swabbing_production_wells_oil_loss","waiting_swabbing_injection_wells_count"],
-      "rowIndex": 63,
+      "rowIndex": 49,
       "rowLength": 3
     },
     "productionRestriction": {
       "fields": ["production_restriction_downtime_production_wells_count","production_restriction_downtime_production_wells_oil_loss","production_restriction_downtime_injection_wells_count"],
-      "rowIndex": 64,
+      "rowIndex": 50,
       "rowLength": 3
     },
     "wellTreatment": {
       "fields": ["well_treatment_downtime_production_wells_count","well_treatment_downtime_production_wells_oil_loss","well_treatment_downtime_injection_wells_count"],
-      "rowIndex": 65,
+      "rowIndex": 51,
       "rowLength": 3
     },
     "highlyWatered": {
       "fields": ["highly_watered_downtime_production_wells_count","highly_watered_downtime_production_wells_oil_loss","highly_watered_downtime_injection_wells_count"],
-      "rowIndex": 66,
+      "rowIndex": 52,
       "rowLength": 3
     },
     "limitedDownload": {
       "fields": ["limited_download_downtime_production_wells_count","limited_download_downtime_production_wells_oil_loss","limited_download_downtime_injection_wells_count"],
-      "rowIndex": 67,
+      "rowIndex": 53,
       "rowLength": 3
     },
     "profileAlignment": {
       "fields": ["profile_alignment_downtime_production_wells_count","profile_alignment_downtime_production_wells_oil_loss","profile_alignment_downtime_injection_wells_count"],
-      "rowIndex": 68,
+      "rowIndex": 54,
       "rowLength": 3
     },
     "coiltubing": {
       "fields": ["coiltubing_downtime_production_wells_count","coiltubing_downtime_production_wells_oil_loss","coiltubing_downtime_injection_wells_count"],
-      "rowIndex": 69,
+      "rowIndex": 55,
       "rowLength": 3
     },
     "chrfRestriction": {
       "fields": ["chrf_restriction_downtime_production_wells_count","chrf_restriction_downtime_production_wells_oil_loss","chrf_restriction_downtime_injection_wells_count"],
-      "rowIndex": 70,
+      "rowIndex": 56,
       "rowLength": 3
     },
     "unprofitable": {
       "fields": ["unprofitable_downtime_production_wells_count","unprofitable_downtime_production_wells_oil_loss","unprofitable_downtime_injection_wells_count"],
-      "rowIndex": 71,
+      "rowIndex": 57,
       "rowLength": 3
     },
     "drillingRestriction": {
       "fields": ["drilling_restriction_downtime_production_wells_count","drilling_restriction_downtime_production_wells_oil_loss","drilling_restriction_downtime_injection_wells_count"],
-      "rowIndex": 72,
+      "rowIndex": 58,
       "rowLength": 3
     },
     "stoppedForRegulate": {
       "fields": ["regulate_stopped_downtime_production_wells_count","regulate_stopped_production_wells_oil_loss","regulate_stopped_injection_wells_count"],
-      "rowIndex": 73,
+      "rowIndex": 59,
       "rowLength": 3
     },
     "waitingPPR": {
       "fields": ["waiting_ppr_downtime_production_wells_count","waiting_ppr_production_wells_oil_loss","waiting_ppr_injection_wells_count"],
-      "rowIndex": 74,
+      "rowIndex": 60,
       "rowLength": 3
     },
     "impactPRS": {
       "fields": ["impact_prs_downtime_production_wells_count","impact_prs_production_wells_oil_loss","impact_prs_injection_wells_count"],
-      "rowIndex": 75,
+      "rowIndex": 61,
       "rowLength": 3
     },
     "mkdStop": {
       "fields": ["mkd_stop_downtime_production_wells_count","mkd_stop_production_wells_oil_loss","mkd_stop_injection_wells_count"],
-      "rowIndex": 76,
+      "rowIndex": 62,
       "rowLength": 3
     },
     "technologicalDowntime": {
       "fields": ["technological_downtime_downtime_production_wells_count","technological_downtime_production_wells_oil_loss","technological_downtime_injection_wells_count"],
-      "rowIndex": 77,
+      "rowIndex": 63,
       "rowLength": 3
     },
     "pns": {
       "fields": ["pns_production_wells_count","pns_production_wells_oil_loss","pns_injection_wells_count"],
-      "rowIndex": 78,
+      "rowIndex": 64,
       "rowLength": 3
     },
     "vns": {
       "fields": ["vns_production_wells_count","vns_production_wells_oil_loss","vns_injection_wells_count"],
-      "rowIndex": 79,
+      "rowIndex": 65,
       "rowLength": 3
     }
   },
@@ -543,7 +429,7 @@
         "opec_downtime",
         "opec_oil_losses"
       ],
-      "rowIndex": 92,
+      "rowIndex": 78,
       "rowLength": 5
     },
     "impulse": {
@@ -554,7 +440,7 @@
         "impulse_downtime",
         "impulse_oil_losses"
       ],
-      "rowIndex": 93,
+      "rowIndex": 79,
       "rowLength": 5
     },
     "shutdown": {
@@ -565,7 +451,7 @@
         "shutdown_downtime",
         "shutdown_oil_losses"
       ],
-      "rowIndex": 94,
+      "rowIndex": 80,
       "rowLength": 5
     },
     "accident": {
@@ -576,7 +462,7 @@
         "accident_downtime",
         "accident_oil_losses"
       ],
-      "rowIndex": 95,
+      "rowIndex": 81,
       "rowLength": 5
     },
     "restrictionKto": {
@@ -587,7 +473,7 @@
         "restriction_kto_downtime",
         "restriction_kto_oil_losses"
       ],
-      "rowIndex": 96,
+      "rowIndex": 82,
       "rowLength": 5
     },
     "gasRestriction": {
@@ -598,7 +484,7 @@
         "gas_restriction_downtime",
         "gas_restriction_oil_losses"
       ],
-      "rowIndex": 97,
+      "rowIndex": 83,
       "rowLength": 5
     },
     "other": {
@@ -609,7 +495,7 @@
         "other_downtime",
         "other_oil_losses"
       ],
-      "rowIndex": 98,
+      "rowIndex": 84,
       "rowLength": 5
     }
   }
