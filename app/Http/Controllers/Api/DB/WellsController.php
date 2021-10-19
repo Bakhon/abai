@@ -152,7 +152,7 @@ class WellsController extends Controller
             ->wherePivot('project_drill', '=', 'false')
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
-            ->get(['od']);
+            ->get(['dict.tube_nom.od']);
     }
 
     private function category(Well $well)
