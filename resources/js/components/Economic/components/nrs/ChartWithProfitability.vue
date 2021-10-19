@@ -30,7 +30,7 @@
         ref="chart"
         :options="options"
         :series="chartSeries"
-        :height="540"/>
+        :height="525"/>
   </div>
 </template>
 
