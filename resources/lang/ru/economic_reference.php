@@ -336,4 +336,6 @@ return array (
   'select_sort' => 'Выберите сортировку',
   'distribution_prs_by_profitability' => 'Распределение ПРС по типу рентабельности',
   'analysis_nrs' => 'Анализ НРС',
+  'stacked' => 'Stacked',
+  'scaled' => 'Scaled',
 );

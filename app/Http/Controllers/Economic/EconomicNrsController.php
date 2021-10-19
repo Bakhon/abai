@@ -561,7 +561,7 @@ class EconomicNrsController extends Controller
     {
         $bsw = round(($well['bsw'] / 1000) / ($well['uwi'] / 1000));
 
-        $liquid = round($well['liquid'] / 1000);
+        $liquid = round($well['liquid']);
 
         return "$liquid.$bsw";
     }
@@ -919,7 +919,7 @@ class EconomicNrsController extends Controller
         foreach ($wellProduction as $well) {
             $date = $well['dt'];
 
-            $oilByDate[$well[$profitabilityColumn]][$date] = $well['oil'] / 1000;
+            $oilByDate[$well[$profitabilityColumn]][$date] = $well['oil'];
 
             $liquidByDate[$well[$profitabilityColumn]][$date] = self::calcLiquid($well);
         }

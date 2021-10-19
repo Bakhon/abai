@@ -38,7 +38,6 @@
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
-          :tooltip-text="trans('economic_reference.thousand_tons')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart mt-2"/>
