@@ -60,15 +60,6 @@ import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import {formatValueMixin} from "./mixins/formatMixin";
 
-import Divider from "./components/Divider";
-import EconomicCol from "./components/EconomicCol";
-import EconomicTitle from "./components/EconomicTitle";
-import Subtitle from "./components/Subtitle";
-import PercentBadge from "./components/PercentBadge";
-import PercentBadgeIcon from "./components/PercentBadgeIcon";
-import PercentProgress from "./components/PercentProgress";
-import SelectOrganization from "./components/SelectOrganization";
-import SelectScenario from "./components/SelectScenario";
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
 import EconomicBlock from "./components/EconomicBlock";
@@ -192,15 +183,6 @@ optimizedColumns.forEach(column => {
 export default {
   name: "economic-optimization",
   components: {
-    Divider,
-    EconomicCol,
-    EconomicTitle,
-    Subtitle,
-    PercentBadge,
-    PercentBadgeIcon,
-    PercentProgress,
-    SelectOrganization,
-    SelectScenario,
     SelectScenarioVariations,
     Tables,
     EconomicBlock,
