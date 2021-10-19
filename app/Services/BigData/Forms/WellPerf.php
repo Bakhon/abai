@@ -142,24 +142,26 @@ class WellPerf extends PlainForm
 
     protected function insertInnerTable(int $id)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (empty($this->request->get($field['code']))) {
-                    continue;
-                }
-                if ($field['code'] === 'documents') {
-                    $this->submitFiles($id, $field);
-                    continue;
-                }
+        if (empty($this->tableFields)) {
+            return;
+        }
 
-                $this->submittedData['table_fields'][$field['code']] = [];
-                foreach ($this->request->get($field['code']) as $data) {
-                    $data[$field['parent_column']] = $id;
-                    $data['dbeg'] = $this->request->get('perf_date');
-                    $data['dend'] = Well::DEFAULT_END_DATE;
-                    $this->submittedData['table_fields'][$field['code']][] = $data;
-                    DB::connection('tbd')->table($field['table'])->insert($data);
-                }
+        foreach ($this->tableFields as $field) {
+            if (empty($this->request->get($field['code']))) {
+                continue;
+            }
+            if ($field['code'] === 'documents') {
+                $this->submitFiles($id, $field);
+                continue;
+            }
+
+            $this->submittedData['table_fields'][$field['code']] = [];
+            foreach ($this->request->get($field['code']) as $data) {
+                $data[$field['parent_column']] = $id;
+                $data['dbeg'] = $this->request->get('perf_date');
+                $data['dend'] = Well::DEFAULT_END_DATE;
+                $this->submittedData['table_fields'][$field['code']][] = $data;
+                DB::connection('tbd')->table($field['table'])->insert($data);
             }
         }
     }
