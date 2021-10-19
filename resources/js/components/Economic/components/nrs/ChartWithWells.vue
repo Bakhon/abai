@@ -3,17 +3,16 @@
     <apexchart
         :options="chartOptions"
         :series="chartSeries"
-        :height="350"/>
+        :height="285"/>
 
     <div class="mt-2 text-white">
       <div class="text-center border-grey d-flex bg-header">
-        <div
-            v-for="(item, index) in tableKeys"
-            :key="item.value"
-            :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
-            :class="index ? 'justify-content-center' : ''"
-            class="p-3 border-grey d-flex align-items-center line-height-16px"
-            style="white-space: normal">
+        <div v-for="(item, index) in tableKeys"
+             :key="item.value"
+             :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
+             :class="index ? 'justify-content-center' : ''"
+             class="p-3 border-grey d-flex align-items-center line-height-16px"
+             style="white-space: normal">
           {{ item.title }}
         </div>
       </div>
@@ -65,6 +64,8 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getWells() {
+      if (this.form.org_id === 2) return
+
       this.SET_LOADING(true);
 
       let params = {
@@ -85,16 +86,20 @@ export default {
       this.SET_LOADING(false);
     },
 
+    getProfitability(well) {
+      if (+well.Operating_profit_variable_prs.sum <= 0) {
+        return 'profitless_cat_1'
+      }
+
+      return +well.Operating_profit.sum > 0
+          ? 'profitable'
+          : 'profitless_cat_2'
+    },
+
     calcLiquid(liquid, oil) {
       return +liquid === 0
           ? 0
-          : 100 * (+liquid - +oil) / (+liquid)
-    },
-
-    calcAvgQn(oil, day_well_number) {
-      return +day_well_number === 0
-          ? 0
-          : +oil / +day_well_number
+          : 100 * (+liquid - +oil) / +liquid
     },
   },
   computed: {
@@ -107,9 +112,9 @@ export default {
         return []
       }
 
-      return Object.keys(this.wells).sort((prev, next) => {
-        return +this.wells[prev].Operating_profit.sum - +this.wells[next].Operating_profit.sum
-      })
+      return Object.keys(this.wells).sort((prev, next) =>
+          +this.wells[prev].Operating_profit.sum - +this.wells[next].Operating_profit.sum
+      )
     },
 
     chartOptions() {
@@ -191,9 +196,7 @@ export default {
             type: 'area',
             color: '#5697D9',
             data: oil,
-            dimensionTitle: `
-              ${this.trans('economic_reference.tons')}
-            `,
+            dimensionTitle: this.trans('economic_reference.tons'),
           },
           {
             name: this.trans('economic_reference.operating_profit'),
@@ -221,60 +224,76 @@ export default {
         },
         {
           title: this.trans('economic_reference.wells_count'),
+          dimensionTitle: this.trans('economic_reference.units'),
           value: 'uwiCount',
           flexWidth: '100px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.prs_count'),
+          dimensionTitle: this.trans('economic_reference.units'),
           value: 'prsCount',
           flexWidth: '100px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.prs_per_well_count'),
+          dimensionTitle: this.trans('economic_reference.units'),
           value: 'prsPerUwi',
           flexWidth: '120px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.water_cut'),
+          dimensionTitle: '%',
           value: 'liquid',
           flexWidth: '135px',
           flexGrow: 1,
         },
-        // {
-        //   title: this.trans('economic_reference.avg_qn'),
-        //   value: 'avgQn',
-        //   flexWidth: '100px',
-        //   flexGrow: 1,
-        // },
         {
           title: this.trans('economic_reference.production'),
+          dimensionTitle: this.trans('economic_reference.thousand_tons'),
+          dimension: 1000,
           value: 'oil',
           flexWidth: '115px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.revenue'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.billion')}
+            ${this.trans('economic_reference.tenge')}
+          `,
           value: 'revenueTotal',
           flexWidth: '120px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.gross_income'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.billion')}
+            ${this.trans('economic_reference.tenge')}
+          `,
           value: 'netBack',
           flexWidth: '100px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.costs'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.billion')}
+            ${this.trans('economic_reference.tenge')}
+          `,
           value: 'overallExpenditures',
           flexWidth: '120px',
           flexGrow: 1,
         },
         {
           title: this.trans('economic_reference.operating_profit'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.billion')}
+            ${this.trans('economic_reference.tenge')}
+          `,
           value: 'operatingProfit',
           flexWidth: '120px',
           flexGrow: 1,
@@ -287,106 +306,107 @@ export default {
         'prs1',
         'oil',
         'liquid',
-        // 'day_well_number',
         'Revenue_total',
         'Overall_expenditures',
         'Operating_profit',
         'NetBack_bf_pr_exp',
       ]
 
-      let sumValues = {
-        uwiCount: {profitable: 0, profitless: 0}
-      }
+      let sumValues = {uwiCount: {}}
+
+      this.profitabilityTypes.forEach(type => {
+        sumValues.uwiCount[type.key] = 0
+      })
 
       sumKeys.forEach(key => {
-        sumValues[key] = {profitable: 0, profitless: 0}
+        sumValues[key] = {...sumValues.uwiCount}
       })
 
       this.sortedUwis.forEach(uwi => {
-        let profitability = +this.wells[uwi].Operating_profit.sum > 0
-            ? 'profitable'
-            : 'profitless'
+        let profitability = this.getProfitability(this.wells[uwi])
+
+        let isProfitless = ['profitless_cat_1', 'profitless_cat_2'].includes(profitability)
 
         sumValues.uwiCount[profitability] += 1
 
+        sumValues.uwiCount.total += 1
+
+        if (isProfitless) {
+          sumValues.uwiCount.profitless += 1
+        }
+
         sumKeys.forEach(key => {
           sumValues[key][profitability] += +this.wells[uwi][key].sum
+
+          sumValues[key].total += +this.wells[uwi][key].sum
+
+          if (isProfitless) {
+            sumValues[key].profitless += +this.wells[uwi][key].sum
+          }
         })
       })
 
+      let titles = {color: '#151E70'}
+
+      this.tableKeys.forEach(key => {
+        titles[key.value] = key.dimensionTitle || ''
+      })
+
+      let rows = [titles]
+
+      this.profitabilityTypes.forEach(profitability => {
+        rows.push({
+          title: profitability.title,
+          uwiCount: sumValues.uwiCount[profitability.key],
+          prsCount: sumValues.prs1[profitability.key],
+          prsPerUwi: sumValues.uwiCount[profitability.key]
+              ? sumValues.prs1[profitability.key] / sumValues.uwiCount[profitability.key]
+              : 0,
+          liquid: this.calcLiquid(
+              sumValues.liquid[profitability.key],
+              sumValues.oil[profitability.key]
+          ),
+          oil: sumValues.oil[profitability.key] / 1000,
+          revenueTotal: sumValues.Revenue_total[profitability.key] / 1000000000,
+          netBack: sumValues.NetBack_bf_pr_exp[profitability.key] / 1000000000,
+          overallExpenditures: sumValues.Overall_expenditures[profitability.key] / 1000000000,
+          operatingProfit: sumValues.Operating_profit[profitability.key] / 1000000000,
+          color: profitability.color,
+          style: profitability.style
+        })
+      })
+
+      return rows
+    },
+
+    profitabilityTypes() {
       return [
         {
-          title: ``,
-          uwiCount: this.trans('economic_reference.units'),
-          prsCount: this.trans('economic_reference.units'),
-          prsPerUwi: this.trans('economic_reference.units'),
-          liquid: '%',
-          oil: this.trans('economic_reference.thousand_tons'),
-          revenueTotal: `
-            ${this.trans('economic_reference.billion')}
-            ${this.trans('economic_reference.tenge')}
-          `,
-          netBack: `
-            ${this.trans('economic_reference.billion')}
-            ${this.trans('economic_reference.tenge')}
-          `,
-          overallExpenditures: `
-            ${this.trans('economic_reference.billion')}
-            ${this.trans('economic_reference.tenge')}
-          `,
-          operatingProfit: `
-            ${this.trans('economic_reference.billion')}
-            ${this.trans('economic_reference.tenge')}
-          `,
-          color: '#151E70',
+          key: 'total',
+          title: this.trans('economic_reference.total_wells_including')
         },
         {
-          title: this.trans('economic_reference.total_wells_including'),
-          uwiCount: sumValues.uwiCount.profitable + sumValues.uwiCount.profitless,
-          prsCount: sumValues.prs1.profitable + sumValues.prs1.profitless,
-          prsPerUwi: (sumValues.prs1.profitable + sumValues.prs1.profitless) / (sumValues.uwiCount.profitable + sumValues.uwiCount.profitless),
-          liquid: this.calcLiquid(
-              sumValues.liquid.profitable + sumValues.liquid.profitless,
-              sumValues.oil.profitable + sumValues.oil.profitless,
-          ),
-          oil: (sumValues.oil.profitable + sumValues.oil.profitless) / 1000,
-          revenueTotal: (sumValues.Revenue_total.profitable + sumValues.Revenue_total.profitless) / 1000000000,
-          netBack: (sumValues.NetBack_bf_pr_exp.profitable + sumValues.NetBack_bf_pr_exp.profitless) / 1000000000,
-          overallExpenditures: (sumValues.Overall_expenditures.profitable + sumValues.Overall_expenditures.profitless) / 1000000000,
-          operatingProfit: (sumValues.Operating_profit.profitable + sumValues.Operating_profit.profitless) / 1000000000,
+          key: 'profitable',
+          title: this.trans('economic_reference.profitable')
         },
         {
-          title: this.trans('economic_reference.profitable'),
-          uwiCount: sumValues.uwiCount.profitable,
-          prsCount: sumValues.prs1.profitable,
-          prsPerUwi: sumValues.prs1.profitable / sumValues.uwiCount.profitable,
-          liquid: this.calcLiquid(
-              sumValues.liquid.profitable,
-              sumValues.oil.profitable,
-          ),
-          oil: sumValues.oil.profitable / 1000,
-          revenueTotal: sumValues.Revenue_total.profitable / 1000000000,
-          netBack: sumValues.NetBack_bf_pr_exp.profitable / 1000000000,
-          overallExpenditures: sumValues.Overall_expenditures.profitable / 1000000000,
-          operatingProfit: sumValues.Operating_profit.profitable / 1000000000,
+          key: 'profitless',
+          title: this.trans('economic_reference.profitless_all')
         },
         {
-          title: this.trans('economic_reference.profitless'),
-          uwiCount: sumValues.uwiCount.profitless,
-          prsCount: sumValues.prs1.profitless,
-          prsPerUwi: sumValues.prs1.profitless / sumValues.uwiCount.profitless,
-          liquid: this.calcLiquid(
-              sumValues.liquid.profitless,
-              sumValues.oil.profitless,
-          ),
-          oil: sumValues.oil.profitless / 1000,
-          revenueTotal: sumValues.Revenue_total.profitless / 1000000000,
-          netBack: sumValues.NetBack_bf_pr_exp.profitless / 1000000000,
-          overallExpenditures: sumValues.Overall_expenditures.profitless / 1000000000,
-          operatingProfit: sumValues.Operating_profit.profitless / 1000000000,
+          key: 'profitless_cat_1',
+          title: this.trans('economic_reference.profitless_cat_1'),
+          color: '#313560',
+          style: 'padding-left: 30px !important;',
+        },
+        {
+          key: 'profitless_cat_2',
+          title: this.trans('economic_reference.profitless_cat_2'),
+          color: '#313560',
+          style: 'padding-left: 30px !important;',
         },
       ]
-    },
+    }
   }
 }
 </script>
@@ -406,13 +426,5 @@ export default {
 
 .line-height-16px {
   line-height: 16px;
-}
-
-.line-height-18px {
-  line-height: 18px;
-}
-
-.font-size-16px {
-  font-size: 16px;
 }
 </style>
