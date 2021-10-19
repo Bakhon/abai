@@ -41,31 +41,36 @@ export default {
                     rows: initialRowsKOA,
                     format: formatMappingKOA,
                     cells: cellsMappingKOA,
-                    id: 110
+                    id: 110,
+                    requiredRows: 28
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
                     format: formatMappingKTM,
                     cells: cellsMappingKTM,
-                    id: 107
+                    id: 107,
+                    requiredRows: 23
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
                     format: formatMappingKBM,
                     cells: cellsMappingKBM,
-                    id: 106
+                    id: 106,
+                    requiredRows: 13
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
                     format: formatMappingMMG,
                     cells: cellsMappingMMG,
-                    id: 109
+                    id: 109,
+                    requiredRows: 27
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
                     format: formatMappingOMG,
                     cells: cellsMappingOMG,
-                    id: 112
+                    id: 112,
+                    requiredRows: 19
                 },
                 "УО" : {
                     rows: initialRowsYO,

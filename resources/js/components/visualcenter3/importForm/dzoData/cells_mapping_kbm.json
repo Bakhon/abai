@@ -2,11 +2,10 @@
   "oilDzo": {
     "fields": [
       "oil_production_fact",
-      "oil_delivery_fact",
-      "oil_delivery_by_stations_fact"
+      "oil_delivery_fact"
     ],
     "rowIndex": 1,
-    "rowLength": 3
+    "rowLength": 2
   },
   "stockOfGoodsDzo": {
     "fields": [
