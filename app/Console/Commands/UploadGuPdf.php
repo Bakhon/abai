@@ -2,16 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Models\ComplicationMonitoring\Agzu;
-use App\Models\ComplicationMonitoring\BufferTank;
 use App\Models\ComplicationMonitoring\Gu;
-use App\Models\ComplicationMonitoring\Pump;
 use App\Models\ComplicationMonitoring\Sib;
 use App\Services\AttachmentService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class UploadGuPdf extends Command
 {
@@ -75,7 +72,7 @@ class UploadGuPdf extends Command
                 continue;
             }
 
-            $filesIds = json_decode($this->service->upload($fileUpload, $query));
+            $filesIds = $this->service->upload($fileUpload, $query);
 
             if (!count($filesIds)) {
                 $this->error('Gu '.$gu_name.' Not uploaded '.PHP_EOL.json_encode($filesIds));

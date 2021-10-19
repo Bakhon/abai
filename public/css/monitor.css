@@ -210,6 +210,7 @@ body {
   color: #fff;
   position: relative;
 }
+#app .monitor .schema svg,
 #app .monitor .schema img {
   width: 100%;
 }

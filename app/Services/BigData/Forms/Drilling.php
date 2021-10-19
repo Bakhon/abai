@@ -42,6 +42,17 @@ class Drilling extends TableForm
                 return $items->first();
             });
 
+        $sumbottomHoles = DB::connection('tbd')
+            ->table('drill.well_daily_drill as wdd')
+            ->select('wdd.daily_drill_progress')
+            ->join('dict.well as w', 'wdd.well', 'w.id')
+            ->whereIn('w.id', $wellIds)
+            ->where('dbeg', '<=', $date->endOfDay())
+            ->where('dend', '>=', $date->startOfDay())
+            ->get('daily_drill_progress')
+            ->sum('daily_drill_progress');
+             
+
         $rows = DB::connection('tbd')
             ->table('drill.well_daily_drill as wdd')
             ->select(
@@ -68,7 +79,7 @@ class Drilling extends TableForm
                 }
 
                 $bottomHole = $bottomHoles->get($item->well_id);
-                $result['depth'] = ['value' => $bottomHole ? $bottomHole->depth : ''];
+                $result['depth'] = ['value' => $sumbottomHoles ? $sumbottomHoles : ''];
 
                 return $result;
             });

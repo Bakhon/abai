@@ -37,14 +37,14 @@
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto max-width-88vw">
+    <div class="mx-auto max-width-88vw">
       <table-matrix
           v-if="activeTab === 'matrix'"
-          :data="res"/>
+          :wells="wells"/>
 
       <table-tree-map
-          v-else-if="activeTab === 'treemap'"
-          :data="res"
+          v-else-if="wells && activeTab === 'treemap'"
+          :data="wells"
           :property="activeTab"
           is-colorful/>
     </div>
@@ -78,10 +78,10 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-07-31T00:00:00.000Z',
+      interval_end: '2021-06-30T00:00:00.000Z',
       granularity: 'month'
     },
-    res: null,
+    wells: null,
     activeTab: 'matrix'
   }),
   computed: {
@@ -102,15 +102,13 @@ export default {
 
       this.SET_LOADING(true)
 
-      this.res = null
+      this.wells = null
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-wells'), {params: this.form})
 
-        this.res = data
+        this.wells = data
       } catch (e) {
-        this.res = null
-
         console.log(e)
       }
 

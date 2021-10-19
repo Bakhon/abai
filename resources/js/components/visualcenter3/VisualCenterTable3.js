@@ -24,6 +24,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 import productionParams from './productionParams/index';
 import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.json";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
@@ -33,6 +34,9 @@ Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').
 
 export default {
     props: ['userId'],
+    components: {
+        "date-picker": DatePicker
+    },
     data: function () {
         return {
             dzoMapping : {
@@ -138,18 +142,36 @@ export default {
             this.buttonTargetPlan = "";
         },
 
-        changeAssets(type,category,regionName) {
-            this.dzoCompaniesAssets[type] = true;
-            if (!this.dzoCompaniesAssets[type]) {
-                this.dzoCompaniesAssets['isAllAssets'] = true;
-            }
-            this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-            this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-            this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
-            this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
-            this.productionData = this.getFilteredTableData();
-            this.selectMultipleDzoCompanies(type,category,regionName);
+        disableRegions() {
+            _.forEach(this.dzoRegionsMapping, (item) => {
+                _.set(item, 'isActive', false);
+            });
         },
+
+        changeAssets(type) {
+            this.disableRegions();
+            this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
+            this.disableDzoCompaniesVisibility();
+            let selectedTypes = [];
+            _.forEach(this.dzoCompaniesAssets, (asset,key) => {
+                if (asset && typeof asset === "boolean") {
+                    selectedTypes.push(key);
+                    this.switchCompanies('type',key);
+                }
+            });
+            this.switchCompaniesVisibility(selectedTypes,'type');
+        },
+
+        switchCompaniesVisibility(types,type) {
+            if (types.length === 0) {
+                this.dzoCompaniesAssets['isAllAssets'] = true;
+                return this.selectAllDzoCompanies();
+            }
+            this.selectedDzoCompanies = _.cloneDeep(this.dzoCompanies).filter(company => types.includes(company[type])).map(company => company.ticker);
+            this.productionData = this.getFilteredTableData();
+        },
+
 
         getReasonExplanations() {
             let reasons = {};
@@ -160,6 +182,36 @@ export default {
                 }
             });
             return reasons;
+        },
+
+        switchCompanies(type,name) {
+            _.map(this.dzoCompanies, function(company) {
+                if (company[type] === name) {
+                    company.selected = !company.selected;
+                }
+            });
+        },
+
+        changeRegions(region) {
+            this.disableAssets();
+            this.dzoRegionsMapping[region].isActive = !this.dzoRegionsMapping[region].isActive;
+            this.disableDzoCompaniesVisibility();
+            let selectedRegions = [];
+            _.forEach(this.dzoRegionsMapping, (region,key) => {
+                if (region.isActive) {
+                    selectedRegions.push(key);
+                    this.switchCompanies('region',key);
+                }
+            });
+            this.switchCompaniesVisibility(selectedRegions,'region');
+        },
+
+        disableAssets() {
+            _.forEach(this.dzoCompaniesAssets, (asset,key) => {
+                if (typeof asset === 'boolean') {
+                    this.dzoCompaniesAssets[key] = false;
+                }
+            });
         },
 
         getProductionDataByOpekRestriction() {
@@ -173,10 +225,31 @@ export default {
         },
 
         isTroubleCompany(dzoName) {
+            if ((this.mainMenu.oilCondensateDeliveryWithoutKMG || this.mainMenu.oilCondensateProductionWithoutKMG) && ['ТП','ПККР'].includes(dzoName)) {
+                return false;
+            }
             return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         },
         getAdditionalName(dzoName) {
             return this.trans('visualcenter.condensate');
+        },
+        async updateFondsByPreviousDay() {
+            if (this.productionFondDetails.length === 0) {
+                this.productionFondPeriodStart = moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondPeriodEnd = moment(this.productionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodStart = moment(this.productionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodEnd = moment(this.productionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+                this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+            }
+            if (this.injectionFondDetails.length === 0) {
+                this.injectionFondPeriodStart = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondPeriodEnd = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodStart = moment(this.injectionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodEnd = moment(this.injectionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+                this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+            }
         }
     },
     mixins: [
@@ -218,11 +291,16 @@ export default {
         if (moment().date() < 11) {
             this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
             this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
         }
         this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
         this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
         this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
         this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+        if (this.productionFondDetails.length === 0 && this.injectionFondDetails.length === 0) {
+            await this.updateFondsByPreviousDay();
+        }
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();

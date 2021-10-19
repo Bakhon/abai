@@ -60,8 +60,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
@@ -119,8 +118,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
@@ -177,8 +175,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
@@ -426,36 +423,6 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory('associatedGasProduction','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.productionAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
-                              @click="switchCategory('associatedGasFlaring','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.flaringAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
                               @click="switchCategory('naturalGasDelivery','gasProduction')"
                       >
                         <div
@@ -486,6 +453,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('associatedGasProduction','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('associatedGasDelivery','gasProduction')"
                       >
                         <div
@@ -511,6 +493,36 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{ trans("visualcenter.raskhodpoputGaz") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('processingAssociatedGas','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.processingAssociatedGas ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.processingAssociatedGasForOwnExpenses") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('associatedGasFlaring','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.associatedGasFlaring") }}
                         </a>
                       </li>
                     </ul>
@@ -634,9 +646,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating','type')}`"
+                                    @click="`${changeAssets('isOperating')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -645,9 +656,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating','type')}`"
+                                    @click="`${changeAssets('isNonOperating')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
@@ -660,9 +670,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
-                                    @click="`${changeAssets('isRegion','region',region)}`"
+                                    @click="changeRegions(region)"
                             ></input>
                             {{dzoRegionsMapping[region].translationName}}
                             <div
@@ -678,7 +687,6 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
                                     @change="`${selectOneDzoCompany(company.ticker)}`"
                             ></input>
@@ -763,6 +771,7 @@
                                   is-range
                                   class="m-auto"
                                   :max-date="disabledDate"
+                                  :min-date="minimumDate"
                                   @input="switchView('period')"
                           />
                         </div>
@@ -784,7 +793,6 @@
                 >
                   <thead>
                   <tr>
-                    <th>№</th>
                     <th>{{ trans("visualcenter.companyName") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoMonthlyPlan") }},
@@ -866,18 +874,6 @@
                   <tbody>
                   <tr v-for="(item, index) in productionData">
                     <td
-                            v-if="isConsolidatedCategoryActive()"
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id}}
-                    </td>
-                    <td
-                            v-else
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id + (index + 1)}}
-                    </td>
-                    <td
                             @mouseover="dzoHoverIndex = index"
                             @mouseout="dzoHoverIndex = null"
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.name)}` : `${selectAllDzoCompanies()}`"
@@ -888,6 +884,12 @@
                               :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
@@ -1030,7 +1032,6 @@
                     </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
-                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
@@ -1196,25 +1197,13 @@
                       v-if="periodRange > 0"
               >
                 <div
-                        v-if="isConsolidatedCategoryActive() && !mainMenu.oilCondensateDeliveryOilResidue"
+
                         class="oil-condensate-chart-secondary-name"
                 >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                  {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
-                <div
-                        v-else-if="mainMenu.oilCondensateDeliveryOilResidue"
-                        class="oil-condensate-chart-secondary-name"
-                >
-                  {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div
-                        v-else
-                        class="name-chart-left"
-                >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div class="name-chart-head">{{ chartHeadName }}</div>
+                <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
                 <vc-chart :height="465"> </vc-chart>
               </div>
             </div>
@@ -1794,7 +1783,7 @@
                 </div>
                 <div class="row m-0 emergency-table__header">
                   <span class="col-2 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.companies") }}</span>
                   <span class="col-5 py-2">{{ trans("visualcenter.emergency") }}</span>
                   <span class="col-2 px-0 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
@@ -2490,17 +2479,10 @@
     }
     .production-table {
       th {
-        &:first-child {
-          width: 20px;
-        }
-        &:nth-child(2) {
+        &:nth-child(1) {
           width: 390px;
         }
       }
-      td:first-child {
-        width: 20px;
-      }
-
     }
 
     .table4 {
@@ -2514,7 +2496,7 @@
           &:not(:first-child) {
             min-width: 71px;
           }
-          &:nth-child(2) {
+          &:nth-child(1) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2580,7 +2562,7 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:nth-child(2) {
+        &:nth-child(1) {
           padding-top: 5px;
           font-size: 15px;
         }
@@ -2945,7 +2927,7 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: 15%;
+    margin-top: calc(100% - 500px);
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;

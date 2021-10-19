@@ -141,10 +141,7 @@ class StructureService
             ->with(
                 [
                     'type',
-                    'wells' =>
-                        function ($query) use ($date) {
-                            $query->active($date);
-                        }
+                    'wells'
                 ]
             )
             ->get();

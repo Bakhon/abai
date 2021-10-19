@@ -64,7 +64,7 @@
                 "code": "brigadier",
                 "type": "dict",
                 "title": "brigade_master",
-                "validation": "exists:tbd.dict.brigadier,id",
+                "validation": "nullable|exists:tbd.dict.brigadier,id",
                 "dict": "brigadiers",
                 "depends_on": [
                   {
@@ -232,14 +232,25 @@
             "title": "",
             "items": [
               {
-                "code": "prs",
+                "code": "documents",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "doc",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_workover_file",
+                  "file_type": 4,
+                  "local_key": "workover",
+                  "document_key": "file"
+                },
+                "document_list": true,
                 "columns": [
                   {
-                    "code": "name_ru",
-                    "title": "scan_doc"
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }
