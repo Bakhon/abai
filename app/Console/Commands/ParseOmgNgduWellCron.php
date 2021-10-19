@@ -44,10 +44,10 @@ class ParseOmgNgduWellCron extends Command
     {
         Log::channel('parse_omg_ngdu_well_data:cron')->info('Parse run');
 
-        $yesterday = Carbon::yesterday()->format('Y-m-d');
-        Log::channel('parse_omg_ngdu_well_data:cron')->info('yesterday is '.$yesterday);
+        $lastDays = Carbon::now()->subDays(5)->format('Y-m-d');
+        Log::channel('parse_omg_ngdu_well_data:cron')->info('start from '.$lastDays);
 
-        $abaiprotZus = AbaiprotZu::where('__time', '>=', $yesterday)->get();
+        $abaiprotZus = AbaiprotZu::where('__time', '>=', $lastDays)->get();
         $this->parseOmgNgduWellData($abaiprotZus);
 
         foreach ($this->errors as $error) {

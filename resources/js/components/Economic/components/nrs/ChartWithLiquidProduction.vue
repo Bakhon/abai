@@ -2,7 +2,7 @@
   <apexchart
       :options="chartOptions"
       :series="chartSeries"
-      :height="575"/>
+      :height="570"/>
 </template>
 
 <script>

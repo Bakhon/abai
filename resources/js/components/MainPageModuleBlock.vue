@@ -47,11 +47,12 @@
           >
             <div>
               <div
-                :class="[
-                  'modal-blocks-holder',
-                  { 'no-last-child-margin': isLessChildren },
-                ]"
-                :style="'width: ' + childBlockWidth"
+                class="modal-blocks-holder"
+                :style="
+                  `grid-template-columns: repeat(${
+                    block.children.length > 5 ? 5 : block.children.length
+                  }, 48px);`
+                "
               >
                 <div
                   class="mchild"
@@ -99,18 +100,10 @@ export default {
     };
   },
   computed: {
-    isLessChildren() {
-      return this.block.children?.length <= 5;
-    },
     moveFor() {
       if (this.block?.children.length < 5)
-        return `right: ${this.block.children.length * -55}%`;
-      return "right: -275%;";
-    },
-    childBlockWidth() {
-      return this.block.children.length >= 5
-        ? "480px"
-        : (this.block.children.length - 1) * 108 + 48 + "px";
+        return `right: ${this.block.children.length * -53}%`;
+      return "right: -265%;";
     },
   },
 };

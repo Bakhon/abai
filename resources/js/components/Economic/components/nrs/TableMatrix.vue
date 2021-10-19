@@ -25,10 +25,11 @@
         </div>
 
         <div class="form-check mr-2">
-          <input v-model="isVisibleWells"
+          <input :checked="isVisibleWells"
                  id="visible_wells"
                  type="checkbox"
-                 class="form-check-input">
+                 class="form-check-input"
+                 @change="updateWellsVisibility()">
           <label for="visible_wells"
                  class="form-check-label text-blue">
             {{ trans('economic_reference.show_wells') }}
@@ -51,10 +52,12 @@
             class="mr-2 bg-dark-blue text-blue"
             style="width: 200px"/>
 
-        <button class="btn btn-primary ml-auto">
+        <button class="btn btn-primary ml-auto" @click="exportTablesToExcel()">
           {{ trans('economic_reference.export_excel') }}
         </button>
       </div>
+
+      <h4> {{ trans('economic_reference.input_indicators') }} </h4>
 
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="dailyKey in dailyKeys"
@@ -73,15 +76,18 @@
         </div>
       </div>
 
+      <h4> {{ trans('economic_reference.estimated_data') }} </h4>
+
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
-        <div v-for="wellKey in wellKeys"
+        <div v-for="(wellKey, wellKeyIndex) in wellKeys"
              :key="wellKey.prop"
              class="d-flex flex-20 mr-2 mb-2 line-height-16px">
           <div class="d-flex align-items-center form-check mr-2 flex-150px">
-            <input v-model="wellKey.isVisible"
+            <input :checked="wellKeys[wellKeyIndex].isVisible"
                    :id="wellKey.prop"
                    type="checkbox"
-                   class="form-check-input mt-0">
+                   class="form-check-input mt-0"
+                   @change="updateWellKeyVisibility(wellKeyIndex)">
             <label :for="wellKey.prop"
                    class="form-check-label">
               {{ wellKey.name }}
@@ -111,7 +117,7 @@
           :key="key.prop"
           :params="tableDailyParams(key)"
           :class="index ? 'pt-2' : 'pt-4'"
-          class="matrix-table bg-main1 px-4 pb-2">
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, headerIndex) in tableHeaders"
             :slot="`column-${headerIndex}`" slot-scope="{ props }">
@@ -123,7 +129,8 @@
 
       <vue-table-dynamic
           :params="tablePrsParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-2">
+          :class="visibleDailyKeys.length ? 'py-2' : 'pt-4'"
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -135,7 +142,7 @@
 
       <vue-table-dynamic
           :params="tableSumParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-4">
+          class="matrix-table bg-main1 px-4 py-2">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -153,38 +160,63 @@
           :dates="dates"
           class="text-white container-fluid bg-main1 p-4 mt-3"/>
 
-      <vue-table-dynamic
-          v-if="isVisibleWells"
-          :params="tableParams"
-          class="matrix-table mt-3 bg-main1 p-4">
-        <template :slot="`column-0`" slot-scope="{ props }">
-          <div class="d-flex align-items-center w-100">
-            <div> {{ props.cellData.label }}</div>
+      <div v-if="isVisibleWells" class="mt-3 bg-main1 px-4 pt-4 pb-2">
+        <div class="mb-3 d-flex align-items-center">
+          <i :class="form.isSortAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
+             class="fas text-white cursor-pointer mr-3"
+             style="font-size: 22px"
+             @click="updateSortOrder()"></i>
 
-            <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
-              <input
-                  v-model="selectedUwis[props.cellData.label]"
-                  type="checkbox"
-                  class="form-check-input m-0"
-                  @change="toggleUwi(props.cellData.label)">
+          <select
+              :value="form.sortKey"
+              class="form-control bg-dark-blue text-white"
+              style="width: 280px"
+              @change="updateSortKey">
+            <option :value="null" disabled selected>
+              {{ trans('economic_reference.select_sort') }}
+            </option>
+
+            <option
+                v-for="key in visibleWellKeys"
+                :key="key.prop"
+                :value="key.prop">
+              {{ key.name }}
+            </option>
+          </select>
+        </div>
+
+        <vue-table-dynamic :params="tableParams" class="matrix-table">
+          <template :slot="`column-0`" slot-scope="{ props }">
+            <div class="d-flex align-items-center w-100">
+              <div> {{ props.cellData.label }}</div>
+
+              <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
+                <input
+                    v-model="selectedUwis[props.cellData.label]"
+                    type="checkbox"
+                    class="form-check-input m-0"
+                    @change="toggleUwi(props.cellData.label)">
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template
-            v-for="(header, index) in tableTotalHeaders.slice(1)"
-            :slot="`column-${index+1}`" slot-scope="{ props }">
-          <div :style="`color: ${props.cellData.color}`"
-               class="d-flex align-items-center w-100">
-            {{ props.cellData.label }}
-          </div>
-        </template>
-      </vue-table-dynamic>
+          <template
+              v-for="(header, index) in tableTotalHeaders.slice(1)"
+              :slot="`column-${index+1}`" slot-scope="{ props }">
+            <div :style="`color: ${props.cellData.color}`"
+                 class="d-flex align-items-center w-100">
+              {{ props.cellData.label }}
+            </div>
+          </template>
+        </vue-table-dynamic>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 import ChartMatrixWell from "./ChartMatrixWell";
 import ChartMatrixTotal from "./ChartMatrixTotal";
 import SelectChartType from "../SelectChartType";
@@ -214,7 +246,9 @@ export default {
     isVisibleProfitless: true,
     isVisibleChartTotal: false,
     form: {
-      operatingProfit: 'Operating_profit'
+      operatingProfit: 'Operating_profit',
+      sortKey: null,
+      isSortAsc: true
     }
   }),
   created() {
@@ -230,9 +264,25 @@ export default {
         return []
       }
 
-      return Object.keys(this.wells.uwis).filter(uwi => {
+      let uwis = Object.keys(this.wells.uwis).filter(uwi => {
         return this.isVisibleProfitable && this.wells.uwis[uwi][this.form.operatingProfit].sum > 0
             || this.isVisibleProfitless && this.wells.uwis[uwi][this.form.operatingProfit].sum <= 0
+      })
+
+      if (!this.form.sortKey) {
+        return uwis
+      }
+
+      let sortKey = this.wellKeys.find(key => key.prop === this.form.sortKey)
+
+      return uwis.sort((prev, next) => {
+        let firstValue = this.getWellValue(this.wells.uwis[prev], sortKey, 'sum')
+
+        let secondValue = this.getWellValue(this.wells.uwis[next], sortKey, 'sum')
+
+        return this.form.isSortAsc
+            ? firstValue - secondValue
+            : secondValue - firstValue
       })
     },
 
@@ -430,10 +480,16 @@ export default {
           return prsSum.rows.push(this.getTotalRow(key, prsSum))
         }
 
+        let datesCount = this.datesParams.length
+
+        let sumCostWrNoPayroll = 0
+
+        this.datesParams.forEach(param => sumCostWrNoPayroll += +param.cost_WR_nopayroll)
+
         prsSum[key.prop][dateOffset - 1].value = key.calcValue(
             prsSum,
             dateOffset - 1,
-            this.datesParams ? this.datesParams[0] : [],
+            datesCount ? {cost_WR_nopayroll: sumCostWrNoPayroll / datesCount} : null
         )
 
         this.dates.forEach((date, dateIndex) => {
@@ -586,6 +642,13 @@ export default {
           name: this.trans('economic_reference.profitless'),
           isTotal: true,
           isProfitless: true,
+          dimensionTitle: `${this.trans('economic_reference.units')}.`,
+        },
+        {
+          prop: 'inactive',
+          name: this.trans('economic_reference.inactive_short'),
+          isTotal: true,
+          isInactive: true,
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
         {
@@ -786,6 +849,8 @@ export default {
     },
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     getColor(key, value) {
       if (!key.isColorful) {
         return ''
@@ -807,6 +872,10 @@ export default {
     },
 
     getWellValue(well, key, date, isString = false) {
+      if (key.isInactive) {
+        return well[this.form.operatingProfit].hasOwnProperty(date) ? 0 : 1
+      }
+
       if (key.isProfitable) {
         if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
           return 0
@@ -1058,7 +1127,7 @@ export default {
       this.dailyKeys = [
         {
           prop: 'costs',
-          name: this.trans('economic_reference.specific_indicators'),
+          name: this.trans('economic_reference.input_specific_indicators'),
           isVisible: false,
         },
         {
@@ -1201,6 +1270,112 @@ export default {
         highlightedColor: '#2E50E9'
       }
     },
+
+    exportTablesToExcel(worksheetName = 'worksheet', fileName = 'export.xls') {
+      let htmlTable = ''
+
+      this.visibleDailyKeys.forEach(key => {
+        htmlTable += this.generateHtmlTable(this.tableDailyParams(key).data)
+      })
+
+      htmlTable += this.generateHtmlTable(this.tablePrsParams.data)
+
+      htmlTable += this.generateHtmlTable(this.tableSumParams.data)
+
+      if (this.isVisibleWells) {
+        htmlTable += this.generateHtmlTable(this.tableParams.data)
+      }
+
+      htmlTable = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:x="urn:schemas-microsoft-com:office:excel"
+                xmlns="http://www.w3.org/TR/REC-html40">
+              <head><!--[if gte mso 9]>
+                    <xml>
+                      <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                          <x:ExcelWorksheet>
+                            <x:Name>${worksheetName}</x:Name>
+                            <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                          </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                      </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+              </head>
+              <body><table>${htmlTable}</table></body>
+            </html>
+        `
+
+      htmlTable = window.btoa(unescape(encodeURIComponent(htmlTable)))
+
+      let link = document.createElement("a")
+
+      link.download = fileName
+
+      link.href = `data:application/vnd.ms-excel;base64,${htmlTable}`
+
+      link.click()
+    },
+
+    generateHtmlTable(rows) {
+      let htmlTable = ''
+
+      rows.forEach(row => {
+        htmlTable += '<tr>'
+
+        row.forEach(col => {
+          htmlTable += `<td> ${typeof col === 'object' ? col.label : col} </td>`
+        })
+
+        htmlTable += '</tr>'
+      })
+
+      return htmlTable
+    },
+
+    updateSortKey(event) {
+      let key = event.target.value
+
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.form.sortKey = key
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateSortOrder() {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.form.isSortAsc = !this.form.isSortAsc
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateWellsVisibility() {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.isVisibleWells = !this.isVisibleWells
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateWellKeyVisibility(index) {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.wellKeys[index].isVisible = !this.wellKeys[index].isVisible
+
+        this.SET_LOADING(false)
+      })
+    }
   },
   watch: {
     data() {

@@ -43,12 +43,17 @@ class EconomicNrsController extends Controller
     const STATUS_ACTIVE = 'В работе';
     const STATUS_PAUSE = 'В простое';
 
-    const OPERATING_PROFIT_TOP_LIMIT = 10;
+    const WELL_TOP_LIMIT = 10;
+    const WELL_TOP_PREFIX = 'well_top_';
+    const WELL_TOP_KEYS = [
+        'Operating_profit',
+        'oil',
+        'liquid'
+    ];
 
     const BUILDERS = [
         'sum_year_operating_profit_and_prs' => '$builderSumYearOperatingProfitAndPrs',
         'sum_month_operating_profit_and_count_uwi' => '$builderSumMonthOperatingProfitAndCountUwi',
-        'sum_year_top_by_operating_profit' => '$builderSumYearTopByOperatingProfit',
         'oil_production' => '$builderOilProduction',
         'production_expenditures' => '$builderProductionExpenditures',
     ];
@@ -130,7 +135,7 @@ class EconomicNrsController extends Controller
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval($intervalMonths)
-            ->sum("Operating_profit")
+            ->doubleSum("Operating_profit")
             ->distinctCount('uwi');
 
         $buildersProfitability = [
@@ -143,15 +148,19 @@ class EconomicNrsController extends Controller
             $builder->where($profitabilityType, '=', $profitless);
         }
 
-        $builderSumYearTopByOperatingProfit = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($intervalMonths)
-            ->select("uwi")
-            ->sum("Operating_profit")
-            ->where('Operating_profit', '!=', '0')
-            ->where('status', '=', self::STATUS_ACTIVE)
-            ->orderBy('Operating_profit', 'desc');
+        $buildersWellTop = [];
+
+        foreach (self::WELL_TOP_KEYS as $key) {
+            $buildersWellTop[$key] = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, Granularity::YEAR)
+                ->interval($intervalMonths)
+                ->select('uwi')
+                ->doubleSum($key)
+                ->where($key, '!=', '0')
+                ->where('status', '=', self::STATUS_ACTIVE)
+                ->orderBy($key, 'desc');
+        }
 
         $builderOilProduction = $this
             ->druidClient
@@ -161,9 +170,9 @@ class EconomicNrsController extends Controller
                 $extBuilder->timeFormat($granularityFormat);
             })
             ->select($profitabilityType)
-            ->sum('liquid')
-            ->sum('bsw')
-            ->sum('oil')
+            ->doubleSum('liquid')
+            ->doubleSum('bsw')
+            ->doubleSum('oil')
             ->count('uwi')
             ->where('status', '=', self::STATUS_ACTIVE);
 
@@ -184,7 +193,7 @@ class EconomicNrsController extends Controller
         ];
 
         foreach ($sumKeys as $sumKey) {
-            $builderProductionExpenditures->sum($sumKey);
+            $builderProductionExpenditures->doubleSum($sumKey);
         }
 
         $buildersProfitabilityCount = [];
@@ -211,13 +220,16 @@ class EconomicNrsController extends Controller
         $builders = [
             self::BUILDERS['sum_month_operating_profit_and_count_uwi'] => $builderSumMonthOperatingProfitAndCountUwi,
             self::BUILDERS['sum_year_operating_profit_and_prs'] => $builderSumYearOperatingProfitAndPrs,
-            self::BUILDERS['sum_year_top_by_operating_profit'] => $builderSumYearTopByOperatingProfit,
             self::BUILDERS['oil_production'] => $builderOilProduction,
             self::BUILDERS['production_expenditures'] => $builderProductionExpenditures,
         ];
 
         foreach ($buildersProfitabilityCount as $key => $builder) {
             $builders[$key] = $builder;
+        }
+
+        foreach ($buildersWellTop as $key => $builder) {
+            $builders[self::WELL_TOP_PREFIX . $key] = $builder;
         }
 
         if ($org->druid_id) {
@@ -265,32 +277,21 @@ class EconomicNrsController extends Controller
         $dataWithLiquidProduction = $dataWithProfitability;
         $dataWithPausedProfitability = $dataWithProfitability;
 
-        $dataWithOperatingProfitTop = [
-            'uwi' => [],
-            'Operating_profit' => []
-        ];
+        $dataWithWellTop = [];
 
-        $operatingProfitTopHighest = array_slice(
-            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
-            0,
-            self::OPERATING_PROFIT_TOP_LIMIT
-        );
-
-        $operatingProfitTopLowest = array_reverse(array_slice(
-            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
-            -self::OPERATING_PROFIT_TOP_LIMIT,
-            self::OPERATING_PROFIT_TOP_LIMIT
-        ));
-
-        $result[self::BUILDERS['sum_year_top_by_operating_profit']] = array_merge(
-            $operatingProfitTopLowest,
-            $operatingProfitTopHighest
-        );
-
-        foreach ($result[self::BUILDERS['sum_year_top_by_operating_profit']] as &$item) {
-            $dataWithOperatingProfitTop['uwi'][] = $item['uwi'];
-
-            $dataWithOperatingProfitTop['Operating_profit'][] = $item['Operating_profit'] / 1000;
+        foreach (self::WELL_TOP_KEYS as $key) {
+            $dataWithWellTop[$key] = [
+                'highest' => array_slice(
+                    $result[self::WELL_TOP_PREFIX . $key],
+                    0,
+                    self::WELL_TOP_LIMIT
+                ),
+                'lowest' => array_reverse(array_slice(
+                    $result[self::WELL_TOP_PREFIX . $key],
+                    -self::WELL_TOP_LIMIT,
+                    self::WELL_TOP_LIMIT
+                ))
+            ];
         }
 
         foreach ($result[self::BUILDERS['oil_production']] as &$item) {
@@ -394,7 +395,7 @@ class EconomicNrsController extends Controller
             'charts' => [
                 'profitability' => $dataWithProfitability,
                 'oilProduction' => $dataWithOilProduction,
-                'operatingProfitTop' => $dataWithOperatingProfitTop,
+                'wellTop' => $dataWithWellTop,
                 'liquidProduction' => $dataWithLiquidProduction,
                 'pausedProfitability' => $dataWithPausedProfitability,
             ],
