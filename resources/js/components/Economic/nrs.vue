@@ -167,7 +167,7 @@
             <input-exclude-uwis :form="form" class="ml-2"/>
           </div>
 
-          <div class="mt-3 d-flex align-items-center">
+          <div class="d-flex align-items-center" style="margin-top: 10px;">
             <button
                 class="btn btn-primary w-100 border-0 bg-export py-2">
               {{ trans('economic_reference.export_excel') }}
@@ -291,7 +291,7 @@ const economicRes = {
     pausedProfitability: null,
     oilProduction: null,
     liquidProduction: null,
-    operatingProfitTop: null,
+    wellTop: null,
   },
   oilPrices: [],
   dollarRates: [],
