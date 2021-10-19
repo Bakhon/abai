@@ -1,214 +1,53 @@
 <template>
-  <div class="position-relative">
-    <div class="row">
-      <div class="col-9 pr-2">
-        <div class="row text-white text-wrap flex-nowrap mb-10px">
-          <div v-for="(header, index) in calculatedHeaders"
-               :key="`calculated_${index}`"
-               class="p-3 bg-blue-dark position-relative"
-               style="flex: 1 0 250px;">
-            <divider v-if="index"/>
+  <div class="position-relative row">
+    <div class="col-12 px-3 mb-10px">
+      <div class="row text-white text-wrap flex-nowrap">
+        <calculated-header
+            v-for="(header, index) in calculatedHeaders"
+            :key="`calculated_${index}`"
+            :header="header"
+            :index="index"
+            :class="index ? 'ml-2' : ''"
+            class="flex-grow-1"
+            style="min-height: 135px"/>
 
-            <economic-title
-                font-size="58"
-                line-height="72"
-                class="text-nowrap">
-              <span> {{ +header.value.toFixed(2) }} </span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-               {{ header.dimension }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18"> {{ header.name }}</subtitle>
-
-            <div class="d-flex mt-2 pt-2 border-grey-top">
-              <div class="flex-grow-1">
-                <subtitle font-size="24"> {{ header.nrsOmg }}</subtitle>
-
-                <div class="font-size-14px line-height-20px text-blue font-weight-bold">
-                  НРС ОМГ
-                </div>
-              </div>
-
-              <div class="flex-grow-1">
-                <subtitle font-size="24"> {{ header.crfOmg }}</subtitle>
-
-                <div class="font-size-14px line-height-20px text-blue font-weight-bold">
-                  ЧРФ ОМГ
-                </div>
-              </div>
-
-              <div class="flex-grow-1">
-                <subtitle font-size="24"> {{ header.opec }}</subtitle>
-
-                <div class="font-size-14px line-height-20px text-blue font-weight-bold">
-                  ОПЕК +
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div v-for="(header, index) in remoteHeaders"
-               :key="`remote_${index}`"
-               class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative"
-               style="min-width: 270px">
-            <economic-title
-                font-size="58"
-                line-height="72"
-                flex-grow="0"
-                class="text-nowrap">
-              <span> {{ header.value }} </span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-                {{ header.dimension }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18">
-              {{ header.name }}
-            </subtitle>
-
-            <span class="text-grey font-size-14px line-height-22px flex-grow-1 font-weight-bold">
-              {{ trans('economic_reference.current') }}
-            </span>
-
-            <div v-if="form.scenario_id" class="d-flex align-items-center">
-              <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="header.percent" reverse/>
-
-                <span>{{ header.percent }}</span>
-
-                <span class="font-size-16px">{{ header.dimension }}</span>
-              </div>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                {{ trans('economic_reference.vs_choice') }}
-              </div>
-            </div>
-
-            <a :href="header.url" target="_blank" class="remote-link">
-              <i class="fas fa-external-link-alt text-blue"> </i>
-            </a>
-          </div>
-        </div>
-
-        <tables
-            v-if="!loading"
-            :scenario="scenario"
-            :scenario-variations="scenarioVariations"
-            :res="res"/>
+        <remote-header
+            v-for="(header, index) in remoteHeaders"
+            :key="`remote_${index}`"
+            :header="header"
+            :form="form"
+            class="flex-grow-1 ml-2"
+            style="min-height: 135px"/>
       </div>
+    </div>
 
-      <div class="col-3 pr-0">
-        <div class="bg-main1 text-white text-wrap mb-10px">
-          <div v-for="(header, index) in monthHeaders"
-               :key="header.name"
-               :class="index ? 'border-grey-top' : ''"
-               class="d-flex line-height-16px">
-            <div :class="[index ? '' : 'pt-3', index === monthHeaders.length - 1 ? 'pb-3' : '']"
-                 class="pl-3 py-2 flex-150px font-size-14px text-wrap"
-                 style="font-weight: 600">
-              {{ header.name }}
-            </div>
+    <div class="col-12 px-2 py-3 bg-main1 mb-10px">
+      <select-scenario-variations
+          :form="form"
+          :scenario-variation="scenarioVariation"
+          :scenario-variations="scenarioVariations"
+          @changeOrg="getData()"/>
+    </div>
 
-            <div class="mx-2 p-2 bg-grey flex-120px">
-              {{ header.dimension }}
-            </div>
+    <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+      <tables
+          v-if="!loading"
+          :scenario="scenario"
+          :scenario-variations="scenarioVariations"
+          :res="res"/>
+    </div>
 
-            <div :class="index ? '' : 'pt-3'"
-                 class="p-2 flex-120px">
-              {{ header.value }}
-            </div>
-          </div>
-        </div>
+    <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
+      <economic-block
+          v-for="(block, index) in blocks"
+          :key="index"
+          :index="index"
+          :block="block"
+          :form="form"
+          class="mb-10px"
+          style="min-height: 145px"/>
 
-        <div v-for="(block, index) in blocks"
-             :key="index"
-             :style="form.scenario_id ? 'min-height: 175px' : 'min-height: 100px'"
-             class="d-flex bg-main1 text-white text-wrap p-3 mb-10px">
-          <div v-for="(subBlock, subBlockIndex) in block"
-               :key="subBlock.title"
-               :class="subBlockIndex % 2 === 1 ? '' : 'pl-0 pr-2'"
-               class="col-6 d-flex flex-column position-relative">
-            <divider v-if="subBlockIndex % 2 === 1"/>
-
-            <div class="font-size-32px text-nowrap font-weight-bold">
-              {{ +subBlock.value.toFixed(2) }}
-            </div>
-
-            <div class="flex-grow-1 font-weight-bold line-height-20px font-size-16px">
-              <div>
-                <span>{{ subBlock.name }}</span>,
-
-                <span>{{ subBlock.dimension }}</span>
-
-                <span v-if="subBlock.dimensionSuffix">
-                    {{ subBlock.dimensionSuffix }}.
-                </span>
-              </div>
-
-              <div v-if="!subBlock.diff">
-                Предлагаемый вариант
-              </div>
-            </div>
-
-            <percent-progress :percent="subBlock.percent"/>
-
-            <div class="d-flex font-size-12px line-height-14px mb-2">
-              <div class="flex-grow-1 text-blue">
-                {{ (100 + subBlock.percent).toFixed(2) }} %
-              </div>
-
-              <div>{{ subBlock.value.toFixed(2) }}</div>
-            </div>
-
-            <div class="d-flex align-items-center">
-              <percent-badge
-                  :percent="subBlock.percent.toFixed(2)"
-                  class="text-nowrap mr-2"
-                  reverse/>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                vs факт
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-main1 p-3 text-white text-wrap">
-          <div class="font-size-16px line-height-22px font-weight-bold mb-3">
-            {{ trans('economic_reference.select_optimization_scenarios') }}
-          </div>
-
-          <select-organization
-              :form="form"
-              class="mb-3"
-              @change="getData"/>
-
-          <select
-              v-model="form.scenario_id"
-              id="scenarios"
-              class="mb-3 form-control text-white border-0 bg-dark-blue"
-              @change="selectScenario">
-            <option
-                v-for="item in scenarios"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
-
-          <select-scenario-variations
-              v-if="form.scenario_id"
-              :scenario-variation="scenarioVariation"
-              :scenario-variations="scenarioVariations"/>
-
-          <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
-            {{ trans('economic_reference.export_excel') }}
-          </button>
-        </div>
-      </div>
+      <month-headers :headers="monthHeaders"/>
     </div>
   </div>
 </template>
@@ -222,60 +61,67 @@ import {formatValueMixin} from "./mixins/formatMixin";
 import {scenarioMixin} from "./mixins/scenarioMixin";
 import {calcPercentMixin} from "./mixins/percentMixin";
 
-import Divider from "./components/Divider";
-import EconomicCol from "./components/EconomicCol";
-import EconomicTitle from "./components/EconomicTitle";
-import Subtitle from "./components/Subtitle";
-import PercentBadge from "./components/PercentBadge";
-import PercentBadgeIcon from "./components/PercentBadgeIcon";
-import PercentProgress from "./components/PercentProgress";
-import SelectOrganization from "./components/SelectOrganization";
+import EconomicBlock from "./components/analysis/EconomicBlock";
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
+import CalculatedHeader from "./components/analysis/CalculatedHeader";
+import RemoteHeader from "./components/RemoteHeader";
+import MonthHeaders from "./components/analysis/MonthHeaders";
 import Tables from "./components/analysis/Tables";
 
 export default {
   name: "economic-analysis",
   components: {
-    Divider,
-    EconomicCol,
-    EconomicTitle,
-    Subtitle,
-    PercentBadge,
-    PercentBadgeIcon,
-    PercentProgress,
-    SelectOrganization,
     SelectScenarioVariations,
     Tables,
+    EconomicBlock,
+    CalculatedHeader,
+    RemoteHeader,
+    MonthHeaders,
   },
   mixins: [formatValueMixin, scenarioMixin, calcPercentMixin],
+  data: () => ({
+    form: {
+      org_id: null,
+      scenario_id: null
+    },
+  }),
   computed: {
     ...globalloadingState(['loading']),
 
     calculatedHeaders() {
+      let blocks = [
+        {
+          title: 'НРС ОМГ',
+          value: 202
+        },
+        {
+          title: 'ЧРФ ОМГ',
+          value: 134
+        },
+        {
+          title: 'ОПЕК +',
+          value: 78
+        }
+      ]
+
       return [
         {
           name: 'Количество фактических остановленных скважин',
           value: 418,
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
-          nrsOmg: 202,
-          crfOmg: 134,
-          opec: 78
+          blocks: blocks,
         },
         {
           name: 'Количество предлагаемых скважин на остановку',
           value: 421,
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
-          nrsOmg: 202,
-          crfOmg: 134,
-          opec: 78
+          blocks: blocks,
         },
         {
           name: 'Потеря добычи на остановках',
           value: 43,
           dimension: this.trans('economic_reference.thousand_tons'),
-          nrsOmg: 2.77,
-          crfOmg: 8.50,
-          opec: 31.72
+          blocks: blocks,
         }
       ]
     },
@@ -392,7 +238,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/analysis/get-data'), {params: this.form})
 
         this.res = data
       } catch (e) {
@@ -411,28 +257,12 @@ export default {
   font-size: 12px;
 }
 
-.font-size-14px {
-  font-size: 14px;
-}
-
 .font-size-16px {
   font-size: 16px;
 }
 
-.font-size-22px {
-  font-size: 22px;
-}
-
-.font-size-24px {
-  font-size: 24px;
-}
-
 .font-size-32px {
   font-size: 32px;
-}
-
-.line-height-12px {
-  line-height: 12px;
 }
 
 .line-height-14px {
@@ -451,57 +281,15 @@ export default {
   line-height: 22px;
 }
 
-.line-height-26px {
-  line-height: 26px;
-}
-
-.line-height-28px {
-  line-height: 28px;
-}
-
-.bg-blue-dark {
-  background: #2B2E5E;
-}
-
-.bg-dark-blue {
-  background: #333975;
-}
-
 .bg-export {
   background: #213181;
-}
-
-.bg-grey {
-  background: #313560;
 }
 
 .text-blue {
   color: #82BAFF;
 }
 
-.text-grey {
-  color: #656A8A
-}
-
-.border-grey-top {
-  border-top: 1px solid #454D7D;
-}
-
-.remote-link {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
 .mb-10px {
   margin-bottom: 10px;
-}
-
-.flex-120px {
-  flex: 1 0 120px;
-}
-
-.flex-150px {
-  flex: 1 0 150px;
 }
 </style>
