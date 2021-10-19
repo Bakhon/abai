@@ -152,7 +152,7 @@ class CalculateHydroDynamics implements ShouldQueue
                 break;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature ? $points[$key]->omgngdu->heater_output_temperature : $points[$key]->omgngdu->heater_inlet_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
@@ -161,9 +161,9 @@ class CalculateHydroDynamics implements ShouldQueue
                 continue;
             }
 
-            if (!$points[$key]->omgngdu->pump_discharge_pressure ||
-                !$points[$key]->omgngdu->daily_fluid_production ||
-                !$points[$key]->omgngdu->bsw) {
+            if (is_null($points[$key]->omgngdu->pump_discharge_pressure) ||
+                is_null($points[$key]->omgngdu->daily_fluid_production) ||
+                is_null($points[$key]->omgngdu->bsw)) {
                 $isErrors = true;
                 break;
             }

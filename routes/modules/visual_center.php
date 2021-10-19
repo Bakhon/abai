@@ -65,6 +65,7 @@ Route::group(
                 Route::get('store-kgm-reports-from-avocet', function() {
                     Artisan::call('store-kgm-reports-from-avocet:cron');
                 });
+                Route::get('/store-kgm-archive', 'VisCenter\VisualCenterController@storeKgmarchive');
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
                 Route::get('/get-production-details', 'VisCenter\VisualCenterController@getProductionDetails');
@@ -89,7 +90,15 @@ Route::group(
                 Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
+                Route::get('/oil-dynamic', 'VisCenter\OilDynamic@oilDynamic')->name('oil-dynamic');
+                Route::get('/oil-dynamic-daily', 'VisCenter\OilDynamic@getDailyProductionData');
                 Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
+
+                Route::get('/upload-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@uploadHistoricalData')->name('upload-historical-data');
+                Route::post('/store-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@storeHistoricalDataByDzo');
+                Route::get('get-plans-by-dzo', 'VisCenter\ExcelForm\ExcelFormPlansController@getPlansByDzo');
+                Route::post('/store-yearly-plans', 'VisCenter\ExcelForm\ExcelFormPlansController@storePlans');
+
             }
         );
     }

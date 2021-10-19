@@ -5,6 +5,8 @@ return array (
     'database' => 'Мәліметтер базасы',
     'general_information' => 'жалпы ақпарат',
     'well_data_sheet' => 'ұңғыманың паспорты',
+    'drilling_rigs' => 'Буровые установки',
+    'capital_investments' => 'Капитальные вложения',
     'open_hole_logging' => 'ұңғымасының ашық шұңқырындағы геофизикалық зерттеу жұмыстары',
     'survey' => 'Инклинометрия',
     'well_design_menu' => 'Ұңғыманың Құрылымдығы',
@@ -193,7 +195,7 @@ return array (
         'BR_component' => 'Бұрғылау ерітіндісінің компоненттер құрамы',
         'BHA_selection' => 'бұрғылау құралдарын тандау',
         'drilling_parameters_modes' => 'Бұрғылау параметрлері мен режимдері',
-
+        'daily_drilling_report' => 'Суточные рапорты по бурению',
         'casing_strings_OK' => 'Қаптау жолдары: Деректер',
         'casing_running_mode' => 'Қаптама: жұмыс режимі',
         'casing_pressure_testing' => 'Қаптама: қысымды тексеру және кернеу жақсы',
@@ -372,6 +374,7 @@ return array (
         'DAILY_DRILLING_REPORT' => 'Күнделікті рапорттар / тәүлік ақпарат',
         'IMPORT_DRILLING_REPORT' => 'Бұрғылау есебін енгізу',
         'date' => 'Дата',
+        'save' => 'Сақтау',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -612,7 +615,7 @@ return array (
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

@@ -2,8 +2,7 @@
   <apexchart
       :options="chartOptions"
       :series="chartSeries"
-      :height="740"
-      type="line"/>
+      :height="570"/>
 </template>
 
 <script>
@@ -16,7 +15,7 @@ export default {
   components: {apexchart: chart},
   methods: {
     tooltipFormatter(value, {dataPointIndex, seriesIndex}) {
-      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
+      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex] + ''
 
       let liquid = value.split('.')
 
@@ -36,7 +35,7 @@ export default {
             name: name,
             type: 'area',
             data: wells[profitability].map(value => {
-              return +value.split('.')[0]
+              return value ? +value.split('.')[0] : 0
             }),
             tooltipData: wells[profitability],
           }
@@ -47,7 +46,13 @@ export default {
             profitability: profitability,
             type: 'area',
             data: wells[profitability].map((value, index) => {
-              return +value.split('.')[0] + +wells.profitable[index].split('.')[0]
+              value = value ? +value.split('.')[0] : 0
+
+              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                value += +wells.profitable[index].split('.')[0]
+              }
+
+              return value
             }),
             tooltipData: wells[profitability],
           }
@@ -57,9 +62,17 @@ export default {
             profitability: profitability,
             type: 'area',
             data: wells[profitability].map((value, index) => {
-              return +value.split('.')[0]
-                  + +wells.profitable[index].split('.')[0]
-                  + +wells.profitless_cat_2[index].split('.')[0]
+              value = value ? +value.split('.')[0] : 0
+
+              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                value += +wells.profitable[index].split('.')[0]
+              }
+
+              if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
+                value += +wells.profitless_cat_2[index].split('.')[0]
+              }
+
+              return value
             }),
             tooltipData: wells[profitability],
           }

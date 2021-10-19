@@ -5,6 +5,8 @@ return array (
     'database' => 'Database',
     'general_information' => 'General information',
     'well_data_sheet' => 'Well data sheet',
+    'drilling_rigs' => 'Drilling Rigs',
+    'capital_investments' => 'Капитальные вложения',
     'open_hole_logging' => 'Open hole logging',
     'survey' => 'Survey',
     'well_design_menu' => 'Well design',
@@ -193,7 +195,7 @@ return array (
         'BR_component' => 'Component composition of drilling mud',
         'BHA_selection' => 'BHA selection',
         'drilling_parameters_modes' => 'Drilling mode and parameters',
-
+        'daily_drilling_report' => 'Суточные рапорты по бурению',
         'casing_strings_OK' => 'Casing: Casing data',
         'casing_running_mode' => 'Casing: running mode',
         'casing_pressure_testing' => 'Casing: Casing pressure and stretching test ',
@@ -373,6 +375,7 @@ return array (
         'DAILY_DRILLING_REPORT' => 'Daily drilling report',
         'IMPORT_DRILLING_REPORT' => 'Drilling report import',
         'date' => 'Дата',
+        'save' => 'Save',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -613,7 +616,7 @@ return array (
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

@@ -31,7 +31,7 @@ class PumpsController extends CrudController
             ],
             'title' => trans('monitoring.pumps.title'),
             'fields' => [               
-                'gu_id' => [
+                'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
@@ -85,7 +85,11 @@ class PumpsController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
-                
+                'pdf' => [
+                    'title' => trans('monitoring.certificate'),
+                    'type' => 'download',
+                    'filterable' => false
+                ]
             ]
         ];
 
@@ -96,11 +100,15 @@ class PumpsController extends CrudController
             $params['links']['export'] = route('pumps.export');
         }
 
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.pumps.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
+        parent::list($request);
+
         $query = Pump::query()
             ->with('gu');
 

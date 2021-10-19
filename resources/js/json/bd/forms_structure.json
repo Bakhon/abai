@@ -6,8 +6,7 @@
     "type": "dir",
     "isVisible": true,
     "forms": [
-      "well_design",
-      "production_program"
+      "well_design"
     ]
   },
   {
@@ -89,7 +88,8 @@
         "forms": [
           "production_well",
           "injection_wells",
-          "gas_well"
+          "gas_well",
+          "meas_water_prod"
         ]
       },
       {
@@ -101,8 +101,21 @@
         "forms": [
           "bottom_hole",
           "bottom_hole_artificial",
-          "lab_research",
-          "well_mark"
+          "research_lab_research",
+          "well_mark",
+          "gdis",
+          "current_g_d_i_s",
+          "gis_type"
+        ]
+      },
+      {
+        "code": "well_treats",
+        "name": "Обработка",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "well_treat"
         ]
       },
       {
@@ -115,25 +128,20 @@
           "kpc",
           "prs"
         ]
+      },
+      {
+        "code": "well_equips",
+        "name": "Оборудование",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "underground_equipment"
+        ]
       }
     ],
     "forms": [
-      "gis_type"
-    ]
-  },
-  {
-    "code": "daily_reports",
-    "name": "Суточные сводки",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "daily_reports_oil_prod",
-      "daily_reports_fluid_prod",
-      "daily_reports_water_prod",
-      "daily_reports_oil_sale",
-      "daily_reports_gas_prod",
-      "daily_reports_water_upload"
+      
     ]
   },
   {

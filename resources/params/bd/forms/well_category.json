@@ -54,53 +54,12 @@
                 "dict": "orgs",
                 "title": "org",
                 "is_editable": true,
-                "validation": "required|exists:tbd.dict.org,id"
+                "validation": "nullable|exists:tbd.dict.org,id"
               }
             ]
           }
         ]
       ]
-    },
-    {
-      "title": "reag_well",
-      "blocks": [
-        [
-          {
-            "title": "",
-            "items": [
-              {
-                "code": "connected_wells",
-                "type": "checkbox_table",
-                "title": "",
-                "columns": [
-                  {
-                    "code": "well",
-                    "title": "uwi_number"
-                  },
-                  {
-                    "code": "status",
-                    "title": "status"
-                  },
-                  {
-                    "code": "liquid_debit",
-                    "title": "water_l"
-                  },
-                  {
-                    "code": "oil_debit",
-                    "title": "water_v"
-                  },
-                  {
-                    "code": "category",
-                    "title": "well_cat"
-                  }
-                ],
-                "rows": [
-                ]
-              }
-            ]
-          }
-        ]
-      ]
-    }
+    }    
   ]
 }

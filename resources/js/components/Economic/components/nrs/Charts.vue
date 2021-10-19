@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1">
+  <div class="row px-3 py-2 bg-main1">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -13,13 +13,14 @@
       <chart-button
           :text="trans('economic_reference.matrix')"
           class="ml-2 col"
+          style="font-size: 12px"
           @click.native="openMatrix"/>
     </div>
 
-    <div class="mt-3 w-100">
-      <h5 class="subtitle text-wrap">
+    <div class="w-100 mt-2">
+      <subtitle class="text-wrap text-white">
         {{ tabs[activeTab] }}
-      </h5>
+      </subtitle>
 
       <chart-with-profitability
           v-if="activeTab === 'profitability'"
@@ -30,7 +31,7 @@
           :title="trans('economic_reference.count_well')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
       <chart-with-oil-production
           v-if="activeTab === 'oil_production'"
@@ -41,17 +42,17 @@
           :tooltip-text="trans('economic_reference.thousand_tons')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
-      <chart-with-operating-profit-top
-          v-else-if="activeTab === 'operating_profit_top'"
-          :data="charts.operatingProfitTop"
+      <chart-with-well-top
+          v-else-if="activeTab === 'well_top'"
+          :data="charts.wellTop"
           :granularity="granularity"
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          :org_id="org_id"
-          class="bg-economic-chart"/>
+          :org_id="form.org_id"
+          class="bg-economic-chart mt-2"/>
 
       <chart-with-liquid-production
           v-else-if="activeTab === 'liquid_production'"
@@ -60,7 +61,11 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
+
+      <chart-well-map
+          v-else-if="activeTab === 'well_map'"
+          :org-form="form"/>
     </div>
   </div>
 </template>
@@ -69,8 +74,10 @@
 import ChartButton from "../ChartButton";
 import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
-import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
+import ChartWithWellTop from "./ChartWithWellTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
+import ChartWellMap from "./ChartWellMap";
+import Subtitle from "../Subtitle";
 
 export default {
   name: "Charts",
@@ -78,8 +85,10 @@ export default {
     ChartButton,
     ChartWithProfitability,
     ChartWithOilProduction,
-    ChartWithOperatingProfitTop,
+    ChartWithWellTop,
     ChartWithLiquidProduction,
+    ChartWellMap,
+    Subtitle
   },
   props: {
     charts: {
@@ -102,9 +111,9 @@ export default {
       required: true,
       type: Array
     },
-    org_id: {
+    form: {
       required: true,
-      type: Number
+      type: Object
     }
   },
   data: () => ({
@@ -119,8 +128,9 @@ export default {
       return {
         profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
-        operating_profit_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+        well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+        well_map: this.trans('economic_reference.well_overview_map'),
       }
     },
 

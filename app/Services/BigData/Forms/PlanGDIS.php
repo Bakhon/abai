@@ -15,6 +15,10 @@ class PlanGDIS extends TableForm
 
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        }
+
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
             return ['rows' => []];
@@ -109,7 +113,7 @@ class PlanGDIS extends TableForm
     private function addRow(\stdClass $treeRow, array $dates, Collection $data): array
     {
         $row = [
-            'id' => $this->request->get('id'),
+            'id' => $treeRow->id,
             'value' => ['name' => $treeRow->name]
         ];
         foreach ($dates as $date) {
@@ -121,11 +125,11 @@ class PlanGDIS extends TableForm
 
             $row["date_{$date->format('m_Y')}_well_count"] = [
                 'value' => $rowData ? $rowData->well_count : 0,
-                'params' => ['expl_proced_type' => $treeRow->id]
+                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
             ];
             $row["date_{$date->format('m_Y')}_measure"] = [
                 'value' => $rowData ? $rowData->measure : 0,
-                'params' => ['expl_proced_type' => $treeRow->id]
+                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
             ];
         }
         return $row;
@@ -164,10 +168,11 @@ class PlanGDIS extends TableForm
     {
         list($date, $month, $year, $field) = explode('_', $params['field'], 4);
         $explProcedType = $this->request->params['expl_proced_type'];
+        $orgId = $this->request->params['org_id'];
 
         $plan = DB::connection('tbd')
             ->table('prod.plan_gdis')
-            ->where('well', $params['wellId'])
+            ->where('well', $orgId)
             ->where('expl_type_proced_type_plan_gdis', $explProcedType)
             ->where('month', $month)
             ->where('year', $year)
@@ -183,7 +188,7 @@ class PlanGDIS extends TableForm
                 ->table('prod.plan_gdis')
                 ->insert(
                     [
-                        'well' => $params['wellId'],
+                        'well' => $orgId,
                         'expl_type_proced_type_plan_gdis' => $explProcedType,
                         'month' => $month,
                         'year' => $year,
@@ -193,4 +198,12 @@ class PlanGDIS extends TableForm
         }
     }
 
+    protected function getCustomValidationErrors(string $field = null): array
+    {
+        $errors = [];
+        if (!is_numeric($this->request->get($field))) {
+            $errors[$field][] = trans('bd.validation.numeric');
+        }
+        return $errors;
+    }
 }

@@ -154,6 +154,12 @@ export const globalloadingMutations = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const globalloadingActions = arrNames => ({
+    ...mapActions('globalloading', [
+        ...arrNames,
+    ]),
+});
 // End global loading //
 
 // geology //
@@ -204,5 +210,15 @@ export const waterfloodingManagementMapActions = arrNames => ({
 export const waterfloodingManagementMapGetters = arrNames => ({
     ...mapGetters('waterfloodingManagement', [
         ...arrNames,
+    ]),
+});
+export const bigdatahistoricalVisibleState = arrNames => ({
+    ...mapState('bidataWellLevel', [
+        ...arrNames,
+    ]),
+});
+export const bigdatahistoricalVisibleMutations = arrNames => ({
+    ...mapMutations('bidataWellLevel', [
+        ...arrNames
     ]),
 });

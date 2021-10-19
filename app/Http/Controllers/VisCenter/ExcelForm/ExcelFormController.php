@@ -33,18 +33,18 @@ class ExcelFormController extends Controller
     private $host = 'mail.kmg.kz';
     private $emailSubject = 'Заявка на изменение суточных данных в ИС ABAI';
     private $kmgEmails = array (
-        'firstMaster' => 's.sugal@kmg.kz',
-        'secondMaster' => 's.sugal@kmg.kz',
-        'mainMaster' => 's.sugal@kmg.kz',
+        'firstMaster' => 'A.Sensizbay@kmg.kz',
+        'secondMaster' => 'N.Kenzhebayev@kmg.kz',
+        'mainMaster' => 'a.kutzhanov@kmg.kz',
     );
     private $dzoEmails = array (
-        'ЭМГ' => 's.sugal@kmg.kz',
-        'УО' => 's.sugal@kmg.kz',
-        'КБМ' => 's.sugal@kmg.kz',
-        'КОА' => 's.sugal@kmg.kz',
-        'ОМГ' => 's.sugal@kmg.kz',
-        'КТМ' => 's.sugal@kmg.kz',
-        'ММГ' => 's.sugal@kmg.kz',
+        'ЭМГ' => 'cits@emg.kmgep.kz',
+        'УО' => 'nachsmeny@urikhtau.kz',
+        'КБМ' => 'F_Dispatcher@kbm.kz',
+        'КОА' => 'dispatchers22@koa.kz',
+        'ОМГ' => 'cits2@umg.kmgep.kz',
+        'КТМ' => 'Sairan.Nurmagambetov@aktm.kz',
+        'ММГ' => 'cits@mmg.kz',
     );
 
     public function getDzoCurrentData(Request $request)
@@ -57,7 +57,7 @@ class ExcelFormController extends Controller
 
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',$date)
+            ->whereDate('date',Carbon::parse($date))
             ->where('dzo_name',$dzoName)
             ->whereNull('is_corrected')
             ->with('importField')
@@ -168,15 +168,16 @@ class ExcelFormController extends Controller
 
     public function storeCorrected(Request $request)
     {
-        $client = $this->getEmailClient();
-        foreach($request->toList as $item) {
-            $this->sendEmailToMaster($request->request, $client, $item);
-        }
-
+        $emails = $request->toList;
         $request->request->remove('toList');
+        $isApproveRequired = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
+        $isCorrected = true;
+        if (!$isApproveRequired) {
+            $isCorrected = null;
+            $request->request->set('is_corrected', null);
+        }
         $this->saveDzoSummaryData($request);
-        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
-
+        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', $isCorrected)->first();
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;
@@ -188,6 +189,22 @@ class ExcelFormController extends Controller
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
+        if ($isApproveRequired) {
+            $client = $this->getEmailClient();
+            foreach($emails as $item) {
+                $this->sendEmailToMaster($request->request, $client, $item);
+            }
+        }
+    }
+
+    private function isProductionRecordExist($dzoName,$date)
+    {
+        $existRecord = DzoImportData::query()
+            ->whereNull('is_corrected')
+            ->where('dzo_name', $dzoName)
+            ->whereDate('date', $date)
+            ->first();
+        return !is_null($existRecord);
     }
 
     public function getDailyProductionForApprove()
@@ -243,6 +260,7 @@ class ExcelFormController extends Controller
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportData::where('id',$request->actualId)->delete();
         $updateOptions['is_corrected'] = null;
+        $updateOptions['user_id'] = $request->userId;
 
         DzoImportData::query()
             ->where('id', $request->currentId)
@@ -273,7 +291,8 @@ class ExcelFormController extends Controller
             ->update(
                 [
                     'is_corrected' => false,
-                    'is_approved' => false
+                    'is_approved' => false,
+                    'user_id' => $request->userId
                 ]
             );
     }

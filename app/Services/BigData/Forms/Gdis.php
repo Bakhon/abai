@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +15,11 @@ class Gdis extends PlainForm
 {
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
+    use WithDocumentsUpload;
 
     protected $configurationFileName = 'gdis';
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
@@ -25,14 +27,31 @@ class Gdis extends PlainForm
         }
         if (!$this->isValidDate(
             $this->request->get('well'),
-            $this->request->get('research_date'),
+            $this->request->get('dbeg'),
             'dict.well',
             'drill_start_date'
         )) {
-            $errors['research_date'] = trans('bd.validation.date');
+            $errors['dbeg'] = trans('bd.validation.date');
         }
 
         return $errors;
+    }
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+            $rows = $rows->map(function ($row) use ($documents) {
+                if ($documents->get($row->id)) {
+                    $row->documents = $documents->get($row->id)->toArray();
+                }
+                return $row;
+            });
+        }
+
+        return $rows;
     }
 
     protected function submitForm(): array
@@ -135,7 +154,7 @@ class Gdis extends PlainForm
             );
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         $rowIds = $rows->pluck('id')->toArray();
 

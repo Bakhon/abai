@@ -29,16 +29,19 @@ export default {
             selectedView: 'day',
             productionTableData: [],
             productionChartData: [],
-            marginMapping: {
-                'oilCondensateProduction': [1,13,14,15],
-                'oilCondensateDelivery': [1,11,12,13],
-            },
+            troubleCategories: [
+                'oilCondensateProduction',
+                'oilCondensateDelivery',
+                'oilCondensateProductionWithoutKMG',
+                'oilCondensateDeliveryWithoutKMG'
+            ],
             datePickerModel: {
                 start: moment().startOf('day').subtract(1, "days").format(),
                 end: moment().endOf('day').subtract(1, "days").format(),
                 formatInput: true,
             },
             disabledDate: moment().subtract(1,'days').format(),
+            minimumDate: moment().startOf('year').startOf('day').format(),
             mainMenu: {
                 'oilCondensateProduction': true,
                 'oilCondensateProductionWithoutKMG': false,
@@ -55,6 +58,7 @@ export default {
                 'expensesForOwnNaturalGas': false,
                 'associatedGasDelivery': false,
                 'expensesForOwnAssociatedGas': false,
+                'processingAssociatedGas': false,
                 'waterInjection': false,
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,
@@ -78,7 +82,8 @@ export default {
                 }
             },
             companiesWithData: [],
-            exceptionDzo: ['КГМКМГ','ТП','ПККР']
+            exceptionDzo: ['КГМКМГ','ТП','ПККР'],
+            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY')
         }
     },
     methods: {
@@ -181,6 +186,9 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.selectedChartCategory.head = this.chartNameMapping[category].head;
+            this.selectedChartCategory.name = this.chartNameMapping[category].name;
+            this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
             let isWithoutKmg = this.doubleFilter.includes(category);
             let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;
@@ -221,6 +229,7 @@ export default {
                 this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
                 this.selectedCategory = parent;
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
@@ -249,7 +258,7 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.companiesWithData.includes(item.name)
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {

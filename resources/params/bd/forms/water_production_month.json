@@ -1,0 +1,68 @@
+{
+  "type": "table",
+  "show_history": false,
+  "update_after_edit": false,
+  "columns": [
+    {
+      "code": "uwi",
+      "type": "text",
+      "is_editable": false,
+      "title": "uwi",
+      "visible": true,
+      "freezed": true,
+      "width": 80
+    },
+    {
+      "code": "indicator",
+      "visible": true,
+      "type": "text",
+      "is_editable": false,
+      "title": "indicators",
+      "freezed": true,
+      "width": 120
+    },     
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "visible": true,
+      "type": "history",
+      "fields": [
+        {
+          "uwi": {},
+          "worktime": {},
+          "water_prod_val": {},
+          "water_val": {}
+        }
+      ],
+      "is_editable": false,
+      "freezed": true,
+      "width": 86
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "visible":false,
+      "is_editable": false
+    },  
+    {
+      "title": "water_prod_val",
+      "code": "water_prod_val",
+      "table": "prod.meas_water_prod",
+      "column": "water_prod_val",
+      "type": "float",
+      "visible":false,
+      "is_editable": false
+    },
+    {
+      "title": "water_val",
+      "code": "water_val",
+      "type": "calc",
+      "formula": "$water_prod_val$ * $worktime$",
+      "visible":false,
+      "is_editable": false
+    }
+  ]
+}

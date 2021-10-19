@@ -18,19 +18,19 @@
         <table class="table">
           <thead>
           <tr>
-            <th v-for="field in params.table_fields">
+            <th v-for="field in params.columns">
               {{ field.title }}
             </th>
           </tr>
           </thead>
           <tbody>
           <tr
-              v-for="(row, index) in tableRows"
+              v-for="(item, index) in items"
               :class="{'selected': selectedRowIndex === index}"
               @click="selectedRowIndex = index"
           >
-            <td v-for="column in params.table_fields">
-              {{ row.values[column.code] }}
+            <td v-for="column in params.columns">
+              {{ item.values[column.code] }}
             </td>
           </tr>
           </tbody>
@@ -53,7 +53,7 @@
                 {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
               </template>
               <template v-else-if="column.type === 'datetime'">
-                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:mm') }}
               </template>
               <template v-else>
                 {{ item[column.code].text }}
@@ -122,7 +122,7 @@ export default {
   props: {
     values: {
       type: Array,
-      required: true
+      required: false
     },
     params: {
       type: Object,
@@ -150,27 +150,38 @@ export default {
       items: [],
       errors: {},
       formValues: {},
-      selectedRowIndex: null,
-      tableRows: []
+      selectedRowIndex: null
     }
   },
   mounted() {
-    this.items = this.values.map(value => {
-      let obj = {}
-      for (let i in value) {
-        obj[i] = {
-          value: value[i]
-        }
-      }
-      return obj
-    })
+    this.initValues()
   },
   methods: {
+    initValues() {
+      if (!this.values) return
+
+      if (this.params.form) {
+        this.items = this.values
+        return
+      }
+
+      this.items = this.values.map(value => {
+        let obj = {}
+        for (let i in value) {
+          obj[i] = {
+            value: value[i]
+          }
+        }
+        return obj
+      })
+
+    },
     openCreateForm() {
       this.editedItemIndex = null
 
       if (this.params.form) {
         this.formParams = this.forms.find(form => form.code === this.params.form)
+        this.formValues = {}
         this.isFormOpened = true
         return
       }
@@ -185,8 +196,15 @@ export default {
     },
     openEditForm(index) {
       if (index === null) return
-
       let item = this.items[index]
+
+      if (this.params.form) {
+        this.formParams = this.forms.find(form => form.code === this.params.form)
+        this.formValues = item
+        this.isFormOpened = true
+        return
+      }
+
       this.editedItemIndex = index
       this.isFormOpened = true
       let formValues = []
@@ -194,6 +212,7 @@ export default {
         formValues[column.code] = item[column.code]
       })
       this.formValues = formValues
+
     },
     saveItem() {
 
@@ -232,9 +251,9 @@ export default {
       this.formValues[column.code] = event
     },
     updateResults(event) {
-      this.tableRows.push(event)
+      this.items.push(event)
 
-      this.$emit('change', this.tableRows.map(row => row.id))
+      this.$emit('change', this.items.map(row => row.id))
 
     },
     validateField: _.debounce(function (e, formItem) {

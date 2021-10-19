@@ -100,6 +100,9 @@ Route::group(
                 Route::patch('forms/{form}/save/{field}', 'Api\DB\FormsController@saveField')->name(
                     'bigdata.form.save.field'
                 );
+                Route::post('forms/{form}/upload/{field}', 'Api\DB\FormsController@uploadField')->name(
+                    'bigdata.form.upload.field'
+                );
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
                 Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');
@@ -122,6 +125,12 @@ Route::group(
                 Route::get('/las/wells/{well}', 'Api\DB\LasController@getWellForLas')->name('las.well');
                 Route::post('/las/gis', 'Api\DB\LasController@attachFileToGis')->name('las.attach_to_gis');
                 Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
+
+                Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
+                Route::get('wells/productionHistory/{well}', 'Api\DB\WellHistoryController@getProductionHistory');
+                Route::get('wells/get-activity/{activityInfo}', 'Api\DB\WellsController@getActivityByWell');
+                Route::get('well-events','Api\DB\WellCardChart@getWellEvents');
+                Route::get('well-history','Api\DB\WellHistoryController@getProductionHistory');
             }
         );
     }

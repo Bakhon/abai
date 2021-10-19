@@ -7,6 +7,17 @@
       "order": "desc"
     }
   ],
+  "table_fields": [
+    "dbeg",
+    "dend",
+    "daily_drill_progress",
+    "chisel",
+    "kern_roofing",
+    "kern_sole",
+    "chisel",
+    "work_status",
+    "reason_dowtime"
+  ],
   "tabs": [
     {
       "title": "main_information",
@@ -22,17 +33,17 @@
                 "validation": "required|date"
               },
               {
-                "code":"well_status_type",
-                "type":"dict",
-                "title":"well_status_type",
-                "validation":"required|exists:tbd.dict.well_status_type,id",
-                "dict":"well_statuses"
+                "code": "work_status",
+                "type": "dict",
+                "title": "well_status_type",
+                "validation": "required|exists:tbd.dict.drill_work_status,id",
+                "dict": "work_status"
               },
               {
                 "code":"reason_dowtime",
                 "type":"text",
                 "title":"reason_downtime",
-                "validation":"required|string"
+                "validation": "required_if:well_status_type,4|string"
               },
               {
                 "code":"dbeg",
@@ -162,13 +173,13 @@
                 "code":"kern_roofing",
                 "type":"numeric",
                 "title":"kern_roofing",
-                "validation":"required|numeric|gt:0|lte:kern_sole" 
+                "validation": "nullable|numeric|gt:0|lte:kern_sole"
               },
               {
                 "code":"kern_sole",
                 "type":"numeric",
                 "title":"kern_sole",
-                "validation":"required|numeric|gt:0" 
+                "validation": "nullable|numeric|gt:0"
               }
             ]
           }

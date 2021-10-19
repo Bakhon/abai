@@ -19,11 +19,15 @@ class Factory {
         'УО' => 'Yo',
         'ЭМГ' => 'Emg',
         'КТМ' => 'Ktm',
-        'ПКК' => 'Pkk'
+        'ПКК' => 'Pkk',
+        'ОМГК' => 'Omgk',
+        'КГМКМГ' => 'Kgmkmg'
     );
     protected $categoryMapping = array (
         'oilCondensateProduction' => 'OilCondensateConsolidated',
         'oilCondensateDelivery' => 'OilCondensateConsolidated',
+        'oilCondensateDeliveryCondensateOnly' => 'OilCondensateConsolidated',
+        'oilCondensateProductionCondensateOnly' => 'OilCondensateConsolidated',
         'oilCondensateProductionWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryOilResidue' => 'OilCondensateConsolidatedOilResidue',
@@ -35,6 +39,7 @@ class Factory {
         'expensesForOwnNaturalGas' => 'GasProduction',
         'associatedGasDelivery' => 'GasProduction',
         'expensesForOwnAssociatedGas' => 'GasProduction',
+        'processingAssociatedGas' => 'GasProduction',
         'waterInjection' => 'WaterInjection',
         'seaWaterInjection' => 'WaterInjection',
         'wasteWaterInjection' => 'WaterInjection',

@@ -1,26 +1,26 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.technical_economic_indicators') }}
       “{{ org.name }}”
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-header" style="padding-right: 10px">
         <div class="p-3 border-grey d-flex align-items-center flex-80px">
           {{ trans('economic_reference.item_number') }}
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center flex-320px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-start flex-320px">
           {{ trans('economic_reference.nomination') }}
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center flex-150px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-start flex-150px">
           {{ trans('economic_reference.unit_of_measurement_short') }}
         </div>
 
         <div class="border-grey flex-200px">
-          <div class="p-3 line-height-14px">
+          <div class="p-3 line-height-14px text-left">
             {{ trans('economic_reference.approved_budget_2020') }}
           </div>
 
@@ -28,7 +28,7 @@
             <div v-for="(budget, index) in budget2020"
                  :key="index"
                  :class="index % 2 === 1 ? 'border-grey-left' : ''"
-                 class="p-2 flex-grow-1">
+                 class="p-2 flex-grow-1 text-left">
               {{ budget }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
@@ -36,12 +36,12 @@
         </div>
 
         <div class="border-grey flex-grow-1">
-          <div class="p-3">
+          <div class="p-3 text-left">
             {{ trans('economic_reference.when_changing_macro_indicators') }}
           </div>
 
           <div class="d-flex">
-            <div class="p-2 flex-grow-1 line-height-14px" style="white-space: pre-line"
+            <div class="p-2 flex-grow-1 line-height-14px text-left" style="white-space: pre-line"
             > {{ (+baseScenario.oil_price).toLocaleString() }} {{ trans('economic_reference.dollar_per_bar') }}
               {{ trans('economic_reference.basic').toLocaleLowerCase() }}
             </div>
@@ -49,7 +49,7 @@
             <div v-for="(price, index) in reverseOilPrices"
                  :key="index"
                  :class="index % 2 === 0 ? 'border-grey-left' : ''"
-                 class="p-2 flex-grow-1 d-flex align-items-center justify-content-center">
+                 class="p-2 flex-grow-1 d-flex align-items-center justify-content-start">
               {{ (+price).toLocaleString() }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
@@ -57,38 +57,41 @@
         </div>
       </div>
 
-      <div v-for="(item, itemIndex) in tableData"
-           :key="itemIndex"
-           :style="`background: ${item.color}`"
-           class="d-flex">
-        <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
-          {{ item.index }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center flex-320px">
-          {{ item.title }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center flex-150px">
-          {{ item.dimension }}
-        </div>
-
-        <div class="d-flex flex-200px">
-          <div v-for="(budget, index) in item.budget2020"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1">
-            {{ budget.value }}
+      <div class="customScroll"
+           style="overflow-y: scroll; overflow-x: hidden; height: 405px">
+        <div v-for="(item, itemIndex) in tableData"
+             :key="itemIndex"
+             :style="`background: ${item.color}`"
+             class="d-flex">
+          <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
+            {{ item.index }}
           </div>
-        </div>
 
-        <div class="d-flex flex-grow-1">
-          <div v-for="(value, index) in item.values"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0"
-               style="flex: 1 0 100px; white-space: pre-line"
-          >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
+            {{ item.title }}
+          </div>
+
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
+            {{ item.dimension }}
+          </div>
+
+          <div class="d-flex flex-200px">
+            <div v-for="(budget, index) in item.budget2020"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
+              {{ budget.value }}
+            </div>
+          </div>
+
+          <div class="d-flex flex-grow-1">
+            <div v-for="(value, index) in item.values"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
+                 style="flex: 1 0 100px; white-space: pre-line"
+            >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+            </div>
           </div>
         </div>
       </div>
@@ -97,6 +100,8 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../mixins/formatMixin";
+
 import Subtitle from "./Subtitle";
 
 export default {
@@ -104,6 +109,9 @@ export default {
   components: {
     Subtitle
   },
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     org: {
       required: true,
@@ -214,6 +222,19 @@ export default {
         },
         {
           index: '3',
+          title: this.trans('economic_reference.count_prs'),
+          dimension: this.trans('economic_reference.thousand_tons'),
+          values: [
+            ...[+this.baseScenario.prs.original_value_optimized],
+            ...this.reverseOilPrices.map((oilPrice, index) =>
+                +this.oilPriceScenarios[index].prs.original_value_optimized
+            )
+          ],
+          budget2020: this.budget2020Map,
+          color: '#313560',
+        },
+        {
+          index: '4',
           title: this.trans('economic_reference.liquid_production'),
           dimension: this.trans('economic_reference.thousand_tons'),
           values: [
@@ -223,10 +244,10 @@ export default {
             )
           ],
           budget2020: this.budget2020Map,
-          color: '#313560',
+          color: '#272953',
         },
         {
-          index: '4',
+          index: '5',
           title: this.trans('economic_reference.total_oil_sales'),
           dimension: this.trans('economic_reference.thousand_tons'),
           values: [
@@ -237,7 +258,7 @@ export default {
           color: '#AC7550',
         },
         {
-          index: '4.1',
+          index: '5.1',
           title: this.trans('economic_reference.export'),
           dimension: this.trans('economic_reference.thousand_tons'),
           values: [
@@ -250,7 +271,7 @@ export default {
           color: '#313560',
         },
         {
-          index: '4.2',
+          index: '5.2',
           title: this.trans('economic_reference.home_market'),
           dimension: this.trans('economic_reference.thousand_tons'),
           values: [
@@ -263,7 +284,7 @@ export default {
           color: '#272953',
         },
         {
-          index: '5',
+          index: '6',
           title: this.trans('economic_reference.oil_sale_prices'),
           dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
           values: [
@@ -274,7 +295,7 @@ export default {
           color: '#313560',
         },
         {
-          index: '5.1',
+          index: '6.1',
           title: this.trans('economic_reference.export'),
           dimension: `$ / bbl`,
           values: [
@@ -285,7 +306,7 @@ export default {
           color: '#272953',
         },
         {
-          index: '5.2',
+          index: '6.2',
           title: this.trans('economic_reference.home_market'),
           dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
           values: [
@@ -296,9 +317,9 @@ export default {
           color: '#313560',
         },
         {
-          index: '6',
+          index: '7',
           title: this.trans('economic_reference.well_stock'),
-          dimension: '',
+          dimension: this.trans('economic_reference.well_short').toLocaleLowerCase(),
           values: [
             ...[this.baseScenario.uwi_count_optimize],
             ...this.reverseOilPrices.map((oilPrice, index) => +this.oilPriceScenarios[index].uwi_count_optimize)
@@ -307,9 +328,9 @@ export default {
           color: '#AC7550',
         },
         {
-          index: '6.1',
+          index: '7.1',
           title: this.trans('economic_reference.shutdown_percentage'),
-          dimension: '',
+          dimension: '%',
           values: [
             ...[`${this.trans('economic_reference.cat_1')}: 0%\n${this.trans('economic_reference.cat_2')}: 0%`],
             ...this.reverseOilPrices.map((oilPrice, index) =>
@@ -321,26 +342,29 @@ export default {
           color: '#313560',
         },
         {
-          index: '7',
-          title: this.trans('economic_reference.income'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          index: '7.2',
+          title: this.trans('economic_reference.count_shutdown_wells'),
+          dimension: this.trans('economic_reference.well_short').toLocaleLowerCase(),
           values: [
-            ...[+this.baseScenario.Revenue_total.original_value_optimized / 1000000],
+            ...[+this.baseScenario.uwi_count.original_value - +this.baseScenario.uwi_count.original_value_optimized],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Revenue_total.original_value_optimized / 1000000
+                +this.oilPriceScenarios[index].uwi_count.original_value - +this.oilPriceScenarios[index].uwi_count.original_value_optimized
             )
           ],
           budget2020: this.budget2020Map,
-          color: '#106B4B',
+          color: '#272953',
         },
         {
           index: '8',
-          title: this.trans('economic_reference.total_expenses'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          title: this.trans('economic_reference.income'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Overall_expenditures_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Overall_expenditures_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Revenue_total.original_value_optimized).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -348,6 +372,22 @@ export default {
         },
         {
           index: '9',
+          title: this.trans('economic_reference.total_expenses'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Overall_expenditures_scenario).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
+          values: [
+            ...[this.formatValue(this.baseScenario.Overall_expenditures_scenario).value],
+            ...this.reverseOilPrices.map((oilPrice, index) =>
+                this.formatValue(this.oilPriceScenarios[index].Overall_expenditures_scenario).value
+            )
+          ],
+          budget2020: this.budget2020Map,
+          color: '#106B4B',
+        },
+        {
+          index: '10',
           title: this.trans('economic_reference.cost_price_including'),
           dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
           values: [
@@ -358,13 +398,16 @@ export default {
           color: '#106B4B',
         },
         {
-          index: '10',
-          title:  this.trans('economic_reference.operating_profit'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          index: '11',
+          title: this.trans('economic_reference.operating_profit'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Operating_profit_scenario).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Operating_profit_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Operating_profit_scenario).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Operating_profit_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Operating_profit_scenario).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -451,5 +494,9 @@ export default {
 
 .line-height-14px {
   line-height: 14px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>

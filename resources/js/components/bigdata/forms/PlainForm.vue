@@ -132,6 +132,7 @@ export default {
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
         if (field && field.type === 'file') continue
+        if (field && field.submit_value === false) continue
         if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
@@ -215,7 +216,7 @@ export default {
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = [...JSON.parse(data.files), ...existedFiles]
+            files[key] = [...data.files, ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })
@@ -283,14 +284,16 @@ export default {
     changeTab(index) {
       this.activeTab = index
     },
-    callback(e, formItem) {
-      if (typeof formItem.callbacks === 'undefined') return
+    callback: _.debounce(function (e, formItem) {
+      this.$nextTick(() => {
+        if (typeof formItem.callbacks === 'undefined') return
 
-      for (let callback in formItem.callbacks) {
-        if (typeof this[callback] === 'undefined') continue
-        this[callback](formItem.code, formItem.callbacks[callback])
-      }
-    },
+        for (let callback in formItem.callbacks) {
+          if (typeof this[callback] === 'undefined') continue
+          this[callback](formItem.code, formItem.callbacks[callback])
+        }
+      })
+    }, 350),
     fillCalculatedFields() {
       this.SET_LOADING(true)
       axios.post(
@@ -303,6 +306,7 @@ export default {
         for (let key in data) {
           this.formValues[key] = data[key]
         }
+        this.$forceUpdate()
       }).finally(() => {
         this.SET_LOADING(false)
       })

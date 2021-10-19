@@ -1,5 +1,228 @@
 <template>
   <div class="w-100">
+    <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
+                <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+                  <div>
+                        <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
+                            <h5>{{trans('tr.well_add')}}</h5>
+                            <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
+                        </div>
+                        <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
+                                <div style="margin-left: 7px;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="statusFilter"
+                                    value="Статус"
+                                  >
+                                    <option v-for="(f, k) in statusFilters" :key="k" :value="f">
+                                      {{ f }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="select_mod form-control"
+                                    style="background: #334296 !important"
+                                    v-model="fieldFilter"
+                                    value="Месторождение"
+                                  >
+                                    <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                                      {{ f === null ? trans('tr.choose_field') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="typeWellFilter"
+                                    value="Тип скв"
+                                  >
+                                    <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
+                                      {{ f === null ? trans('tr.choose_well_type') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="wellStatusFilter"
+                                    value="Состояние"
+                                  >
+                                    <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
+                                      {{ f === null ? trans('tr.choose_state') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+                
+                                  <div v-if="wellFilter.length > 0" class="title-multi-select">{{trans('tr.add')}} {{ wellFilter.length }} скважин</div>
+                                  <div v-else class="title-multi-select">Выберите скважину</div>
+                                  <div class="dropdown_modal">
+                                    <b-dropdown  toggle-class="drop-filter-custom" >
+                                      <template #button-content class="outer_button_filter">        
+                                    
+                                      </template>
+                                        <b-dropdown-form class="modal_filter" >
+                                          <b-form-group
+                                            label=""
+                                            v-slot="{ ariaDescribedby }"
+                                            @submit.stop.prevent
+                                            class="well_modal_form_fil"
+                                          >
+                                            <b-form-checkbox-group
+                                            v-model="wellFilter"
+                                            :options="wellFilters"
+                                            :aria-describedby="ariaDescribedby"                                  
+                                          >
+                                          </b-form-checkbox-group>
+                                          </b-form-group>
+                                        </b-dropdown-form>
+                                    </b-dropdown>
+                                  </div>
+                                  <a
+                                    class="add_button_modal"
+                                    v-if="!isShowAdd"
+                                    @click="addWellData"
+                                    @click.prevent="showWells"
+                                    ><svg 
+                                    width="16" 
+                                    height="16" 
+                                    viewBox="0 0 16 16" 
+                                    fill="none" 
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                  {{trans('tr.add')}}</a>
+
+                                  <a                                   
+                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    v-if="isShowAdd"
+                                    @click="showWells"
+                                    @click.prevent="reRender"
+                                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      </svg>
+                                  {{trans('tr.cancel')}}</a> 
+
+                                <button
+                                  
+                                  
+                                  @click="saveadd()"
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
+                                  @click.prevent="reRender"
+                                  v-if="isDeleted && isShowAdd"
+                                  ><svg width="24" 
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                                  stroke-width="1.5" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.save')}} </button>
+
+                                  
+                                  <button
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
+                                  @click="saveadd()"
+                                  @click.prevent="reRender"
+                                  v-if="isSaved && isShowAdd"
+                                  ><svg width="24" 
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                                  stroke-width="1.5" stroke-linecap="round"/>
+                                  </svg>{{trans('tr.save_changes')}} </button>
+
+                                <a
+                                  class="delete_but_modal"
+                                  @click="deleteWell"
+                                  @click.prevent="reRender"
+                                  v-if="isSaved && isShowAdd"
+                                  disabled
+                                  ><svg width="24"
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.delete')}}</a>
+                                
+                    </div>
+                  </div>
+                  <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
+
+                        <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
+                        <thead>
+                          <tr >
+                            <td scope="col">{{trans('tr.field')}}</td>
+                            <td scope="col">{{trans('tr.well_state')}}</td>
+                            <td scope="col">{{trans('tr.well_number_short')}}</td>
+                            <td scope="col">{{trans('tr.u_horizon')}}</td>
+                            <td scope="col">{{trans('tr.u_object')}}</td>
+                            <td scope="col">{{trans('tr.operation_method_short')}}</td>
+                            <td scope="col">{{trans('tr.well_type_short')}}</td>
+                            <td scope="col">{{trans('tr.u_block')}}</td>
+                            <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                            <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
+                            <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
+                            <td scope="col">{{trans('tr.pump_type')}}</td>
+                            <td scope="col">{{trans('tr.sk_type')}}</td>
+                            <td scope="col">{{trans('tr.p_buffer')}}</td>
+                            <td scope="col">{{trans('tr.p_linear')}}</td>
+                            <td scope="col">{{trans('tr.p_layer')}}</td>
+                            <td scope="col">{{trans('tr.h_dynamic')}}</td>
+                            <td scope="col">{{trans('tr.p_annular')}}</td>
+                            <td scope="col">{{trans('tr.oil_density_short')}}</td>
+                            <td scope="col">{{trans('tr.water_density_short')}}</td>
+                            <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
+                            <td scope="col">{{trans('tr.bhp_meter')}}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(row, row_index) in lonelywell" 
+                            :key="row_index"
+                            ref="editTable">
+                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
+                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
+                            <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
+                            <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !isExpMethInput(row),'input_edit_modal': isExpMethInput(row)}"></td>
+                            <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
+                            <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
+                            <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
+                            <td><input data-key="cas_ID" v-model="row.cas_ID" class="input_edit_modal"></td>
+                            <td><input data-key="h_up_perf_md" v-model="row.h_up_perf_md" class="input_edit_modal"></td>
+                            <td><input data-key="pump_type" v-model="row.pump_type" class="input_edit_modal"></td>
+                            <td><input data-key="type_sr" v-model="row.type_sr" class="input_edit_modal"></td>
+                            <td><input data-key="whp" v-model="row.whp" class="input_edit_modal"></td>
+                            <td><input data-key="line_p" v-model="row.line_p" class="input_edit_modal"></td>
+                            <td><input data-key="p_res" v-model="row.p_res" class="input_edit_modal"></td>
+                            <td><input data-key="h_dyn" v-model="row.h_dyn" class="input_edit_modal"></td>
+                            <td><input data-key="p_annular" v-model="row.p_annular" class="input_edit_modal"></td>
+                            <td><input data-key="dens_oil" v-model="row.dens_oil" class="input_edit_modal"></td>
+                            <td><input data-key="dens_liq" v-model="row.dens_liq" class="input_edit_modal"></td>
+                            <td><input data-key="h_perf" v-model="row.h_perf" class="input_edit_modal"></td>
+                            <td><input data-key="bhp_meter" v-model="row.bhp_meter" class="input_edit_modal"></td>
+                            <td v-show="false"><input data-key="well" v-model="row.well" class="input_edit_modal"></td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
+                </div>
+              </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -170,7 +393,7 @@
     <div>
     </div>
     <div class="col-md-12 maintable tablecont">
-      <div class="maintable-level2" style="position: relative">
+      <div class="maintable-level2" style="position: relative; z-index:1;">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>          
@@ -181,227 +404,7 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
-                <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-                  <div>
-                        <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
-                            <h5>{{trans('tr.well_add')}}</h5>
-                            <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
-                        </div>
-                        <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
-                                <div style="margin-left: 7px;">
-                                  <select
-                                    class="form-control select_mod"
-                                    style="background: #334296 !important"
-                                    v-model="statusFilter"
-                                    value="Статус"
-                                  >
-                                    <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                      {{ f }}
-                                    </option>
-                                  </select>
-                                </div>
-                                <div style="margin-left: 7px; cursor: pointer;">
-                                  <select
-                                    class="select_mod form-control"
-                                    style="background: #334296 !important"
-                                    v-model="fieldFilter"
-                                    value="Месторождение"
-                                  >
-                                    <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                      {{ f === null ? trans('tr.choose_field') : f }}
-                                    </option>
-                                  </select>
-                                </div>
-
-                                <div style="margin-left: 7px; cursor: pointer;">
-                                  <select
-                                    class="form-control select_mod"
-                                    style="background: #334296 !important"
-                                    v-model="typeWellFilter"
-                                    value="Тип скв"
-                                  >
-                                    <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                      {{ f === null ? trans('tr.choose_well_type') : f }}
-                                    </option>
-                                  </select>
-                                </div>
-
-                                <div style="margin-left: 7px; cursor: pointer;">
-                                  <select
-                                    class="form-control select_mod"
-                                    style="background: #334296 !important"
-                                    v-model="wellStatusFilter"
-                                    value="Состояние"
-                                  >
-                                    <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                      {{ f === null ? trans('tr.choose_state') : f }}
-                                    </option>
-                                  </select>
-                                </div>
-                
-                                  <div v-if="wellFilter.length > 0" class="title-multi-select">{{trans('tr.add')}} {{ wellFilter.length }} скважин</div>
-                                  <div v-else class="title-multi-select">Выберите скважину</div>
-                                  <div class="dropdown_modal">
-                                    <b-dropdown  toggle-class="drop-filter-custom" >
-                                      <template #button-content class="outer_button_filter">        
-                                    
-                                      </template>
-                                        <b-dropdown-form class="modal_filter" >
-                                          <b-form-group
-                                            label=""
-                                            v-slot="{ ariaDescribedby }"
-                                            @submit.stop.prevent
-                                            class="well_modal_form_fil"
-                                          >
-                                            <b-form-checkbox-group
-                                            v-model="wellFilter"
-                                            :options="wellFilters"
-                                            :aria-describedby="ariaDescribedby"                                  
-                                          >
-                                          </b-form-checkbox-group>
-                                          </b-form-group>
-                                        </b-dropdown-form>
-                                    </b-dropdown>
-                                  </div>
-                                  <a
-                                    class="add_button_modal"
-                                    v-if="!isShowAdd"
-                                    @click="addWellData"
-                                    @click.prevent="showWells"
-                                    ><svg 
-                                    width="16" 
-                                    height="16" 
-                                    viewBox="0 0 16 16" 
-                                    fill="none" 
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                    </svg>
-                                  {{trans('tr.add')}}</a>
-
-                                  <a                                   
-                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                    v-if="isShowAdd"
-                                    @click="showWells"
-                                    @click.prevent="reRender"
-                                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M17.6567 17.6575L6.34294 6.34383" 
-                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                      <path d="M17.6556 6.34383L6.34188 17.6575" 
-                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                      </svg>
-                                  {{trans('tr.cancel')}}</a> 
-
-                                <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                                  @click="saveadd()"
-                                  @click.prevent="reRender"
-                                  v-if="isDeleted && isShowAdd"
-                                  ><svg width="24" 
-                                  height="24" 
-                                  viewBox="0 0 24 24" 
-                                  fill="none" 
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
-                                  stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg> {{trans('tr.save')}}</a>
-
-                                  
-                                  <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                                  @click="saveadd()"
-                                  @click.prevent="reRender"
-                                  v-if="isSaved && isShowAdd"
-                                  ><svg width="24" 
-                                  height="24" 
-                                  viewBox="0 0 24 24" 
-                                  fill="none" 
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
-                                  stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg>{{trans('tr.save_changes')}}</a>
-
-                                <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                                  @click="deleteWell"
-                                  @click.prevent="reRender"
-                                  v-if="isSaved && isShowAdd"
-
-                                  ><svg width="24"
-                                  height="24" 
-                                  viewBox="0 0 24 24" 
-                                  fill="none" 
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  </svg> {{trans('tr.delete')}}</a>
-                                
-                    </div>
-                  </div>
-                  <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
-
-                        <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
-                        <thead>
-                          <tr >
-                            <td scope="col">{{trans('tr.field')}}</td>
-                            <td scope="col">{{trans('tr.well_state')}}</td>
-                            <td scope="col">{{trans('tr.well_number_short')}}</td>
-                            <td scope="col">{{trans('tr.u_horizon')}}</td>
-                            <td scope="col">{{trans('tr.u_object')}}</td>
-                            <td scope="col">{{trans('tr.operation_method_short')}}</td>
-                            <td scope="col">{{trans('tr.well_type_short')}}</td>
-                            <td scope="col">{{trans('tr.u_block')}}</td>
-                            <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                            <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
-                            <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
-                            <td scope="col">{{trans('tr.pump_type')}}</td>
-                            <td scope="col">{{trans('tr.sk_type')}}</td>
-                            <td scope="col">{{trans('tr.p_buffer')}}</td>
-                            <td scope="col">{{trans('tr.p_linear')}}</td>
-                            <td scope="col">{{trans('tr.p_layer')}}</td>
-                            <td scope="col">{{trans('tr.h_dynamic')}}</td>
-                            <td scope="col">{{trans('tr.p_annular')}}</td>
-                            <td scope="col">{{trans('tr.oil_density_short')}}</td>
-                            <td scope="col">{{trans('tr.water_density_short')}}</td>
-                            <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
-                            <td scope="col">{{trans('tr.bhp_meter')}}</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(row, row_index) in lonelywell" 
-                            :key="row_index"
-                            ref="editTable">
-                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
-                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
-                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
-                            <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
-                            <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" v-model="row.exp_meth" class="input_edit_modal"></td>
-                            <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
-                            <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
-                            <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
-                            <td><input data-key="cas_ID" v-model="row.cas_ID" class="input_edit_modal"></td>
-                            <td><input data-key="h_up_perf_md" v-model="row.h_up_perf_md" class="input_edit_modal"></td>
-                            <td><input data-key="pump_type" v-model="row.pump_type" class="input_edit_modal"></td>
-                            <td><input data-key="type_sr" v-model="row.type_sr" class="input_edit_modal"></td>
-                            <td><input data-key="whp" v-model="row.whp" class="input_edit_modal"></td>
-                            <td><input data-key="line_p" v-model="row.line_p" class="input_edit_modal"></td>
-                            <td><input data-key="p_res" v-model="row.p_res" class="input_edit_modal"></td>
-                            <td><input data-key="h_dyn" v-model="row.h_dyn" class="input_edit_modal"></td>
-                            <td><input data-key="p_annular" v-model="row.p_annular" class="input_edit_modal"></td>
-                            <td><input data-key="dens_oil" v-model="row.dens_oil" class="input_edit_modal"></td>
-                            <td><input data-key="dens_liq" v-model="row.dens_liq" class="input_edit_modal"></td>
-                            <td><input data-key="h_perf" v-model="row.h_perf" class="input_edit_modal"></td>
-                            <td><input data-key="bhp_meter" v-model="row.bhp_meter" class="input_edit_modal"></td>
-                            <td v-show="false"><input data-key="well" v-model="row.well" class="input_edit_modal"></td>
-
-                          </tr>
-                        </tbody>
-                      </table>
-                  </div>
-                </div>
-              </modal>
+              
 
               <button
                 v-if="isPermission"
@@ -6461,9 +6464,7 @@
               </tbody>
             </table>
           </div>
-          
           <div class="overflow-auto">
-            
             <paginate
                 v-model="this.$store.state.tr.pageNumber"
                 :page-count="this.pageCount"
@@ -6496,7 +6497,12 @@
 .select_pages {
   color: white;
 }
-
+.delete_but_modal {
+  margin-left: 10px; 
+  cursor: pointer; 
+  color:white; 
+  margin-top: 5px;
+}
 .form-controll-from {
   background-color: #333975;
   border-color: #333975;
@@ -6773,6 +6779,20 @@ tr:nth-child(even) td {
   font-size: 12px;
   height: 31px;
 }
+.save_but_modal_no_activ {
+  pointer-events: none;
+  cursor: not-allowed;
+  background: #272953;
+  color: #656A8A;
+  border: none;
+  margin-left: 11px;
+}
+.save_but_modal {
+  background: #272953;
+  color:#fff;
+  border: none;
+  margin-left: 11px;
+}
 
 
 ::-webkit-scrollbar {
@@ -6868,6 +6888,11 @@ table::-webkit-scrollbar-corner {
   cursor: pointer; 
   color:white; 
   margin-top: 5px;
+}
+.input_edit_modal_2 {
+  border-color: red;
+  font-size: 12px;
+  height: 31px;
 }
 .modal_table {
   height: 240px !important;

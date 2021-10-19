@@ -188,6 +188,15 @@ export default {
             return this.mainMenu.oilCondensateProduction || this.mainMenu.oilCondensateDelivery;
         },
 
+        isHoverShouldBeShown() {
+            return this.isConsolidatedCategoryActive() &&
+                !this.mainMenu.oilCondensateProductionWithoutKMG &&
+                !this.mainMenu.oilCondensateProductionCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryOilResidue &&
+                !this.mainMenu.oilCondensateDeliveryWithoutKMG;
+        },
+
         getNumberFormat(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))
         },
@@ -208,7 +217,7 @@ export default {
         },
 
         getMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
+            if (!this.isConsolidatedCategoryActive()) {
                 return this.trans('visualcenter.meterCubic');
             } else {
                 return this.trans("visualcenter.tonWithSpace");
@@ -216,8 +225,8 @@ export default {
         },
 
         getThousandMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
-                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+            if (!this.isConsolidatedCategoryActive()) {
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubic');
             } else {
                 return this.trans("visualcenter.dzoThousandTon");
             }

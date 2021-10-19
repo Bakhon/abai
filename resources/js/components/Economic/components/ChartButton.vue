@@ -1,7 +1,6 @@
 <template>
-  <div
-      :class="active ? 'economic-tab-btn-active' : ''"
-      class="text-white text-wrap economic-tab-btn py-2">
+  <div :class="active ? 'economic-tab-btn-active' : ''"
+       class="text-white text-wrap economic-tab-btn py-2">
     {{ text }}
   </div>
 </template>
@@ -30,9 +29,9 @@ export default {
 .economic-tab-btn {
   border-radius: 4px;
   background: #656A8A;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
-  min-height: 54px;
+  min-height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Models\BigData\Well;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
@@ -10,6 +11,7 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
@@ -19,8 +21,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v2';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v8';
+    const DATA_SOURCE = 'economic_scenario_MMG_Scenario_Test_v3';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_MMG_Scenario_Test_v3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -127,11 +129,15 @@ class EconomicOptimizationController extends Controller
     {
         $org = EconomicNrsController::getOrg($request->org_id, $this->structureService);
 
-        return [
+        if (Cache::has(self::DATA_SOURCE)) {
+            return json_decode(Cache::get(self::DATA_SOURCE), true);
+        }
+
+        $data = [
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'wellChanges' => $this->getWellChangesData(),
+            'wells' => $this->getWells(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -142,6 +148,10 @@ class EconomicOptimizationController extends Controller
             ],
             'gtms' => EcoRefsGtm::all()
         ];
+
+        Cache::put(self::DATA_SOURCE, json_encode($data, true), now()->addWeek());
+
+        return $data;
     }
 
     private function getScenarios(): array
@@ -210,7 +220,7 @@ class EconomicOptimizationController extends Controller
         return $query->get()->first()->toArray();
     }
 
-    private function getWellChangesData(): array
+    private function getWells(): array
     {
         $builder = $this
             ->druidClient
@@ -234,7 +244,26 @@ class EconomicOptimizationController extends Controller
             $builder->doubleSum($column);
         }
 
-        return $builder->groupBy($columns)->data();
+        $wells = $builder->groupBy($columns)->data();
+
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $uwis[$well['uwi']] = 1;
+        }
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', array_keys($uwis))
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     private function getDollarRate(): ?string

@@ -4,7 +4,7 @@
       {{ gu.name }}
     </p>
     <p>
-      {{ trans('app.date') }} : {{ getValueOrNoData(gu.last_omgngdu.date) }}
+      {{ trans('app.date') }} : {{ gu.last_omgngdu.date }}
     </p>
     <p>
       {{ trans('monitoring.gu.fields.daily_fluid_production') }} :
@@ -24,6 +24,10 @@
     <p>
       {{ trans('monitoring.gu.fields.pump_discharge_pressure') }} :
       {{ getValueOrNoData(gu.last_omgngdu.pump_discharge_pressure) }} {{ trans('measurements.pressure_bar') }}
+    </p>
+    <p>
+      {{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }} :
+      {{ getValueOrNoData(gu.last_omgngdu.heater_inlet_temperature) }} {{ trans('measurements.celsius') }}
     </p>
     <p>
       {{ trans('monitoring.gu.fields.heater_output_temperature') }} :

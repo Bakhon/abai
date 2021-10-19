@@ -1,16 +1,12 @@
 <template>
   <PageSide>
     <template #top>
-      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор месторождения" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
+      <dropdown block class="w-100 mb-2" @selected="dzos($event)" :loading="loadingStates.dzos"
+                button-text="Выбор ДЗО" :options="getDZOSList" />
+
+      <dropdown ref="dropDawnFields" block class="w-100 mb-2" @selected="field($event)"
+                :loading="loadingStates.field"
+                button-text="Выбор месторождения" :options="getFieldsList" />
     </template>
     <ToolBlock class="mb-2 toolBlock__auto-height" title="Скважины">
       <template #header>
@@ -27,27 +23,20 @@
           <Button size="narrow" icon="List" class="mb-2" />
           <Button size="narrow" icon="ListItemDown" class="mb-2" />
           <Button size="narrow" icon="ListItemUp" class="mb-2" />
-          <Button size="narrow" icon="success" color="success" class="mt-4" />
+          <Button @click="applyWells"
+                  :loading="loadingStates.mnemonics"
+                  :disabled="!selectedWells.length||loadingStates.mnemonics"
+                  size="narrow"
+                  icon="success"
+                  color="success"
+                  class="mt-4" />
         </div>
       </template>
       <ToolBlockList
-          @click="selectedHandle"
-          :selected.sync="listSelect"
-          :list="[
-              {label: '1', value: '1'},
-              {label: '1-T', value: '1-T'},
-              {label: '10', value: '10'},
-              {label: '100', value: '100'},
-              {label: '1000', value: '1000'},
-              {label: '1001', value: '1001'},
-              {label: '1002', value: '1002'},
-              {label: '1003', value: '1003'},
-              {label: '1007', value: '1007'},
-              {label: '1008', value: '1008'},
-              {label: '1009', value: '1009'},
-              {label: '101', value: '101'},
-              {label: '1011', value: '1011'},
-          ]"
+          :loading="loadingStates.wells"
+          @click="selectWellsHandle"
+          :selected="getSelectedWells"
+          :list="getWellsList"
       />
     </ToolBlock>
     <ToolBlockGroup>
@@ -78,7 +67,7 @@
       <ToolBlockGroupDivider>
         <div class="d-flex align-items-center justify-content-between w-100">
           <div class="d-flex align-items-center">
-            <AwIcon name="rulerToArrow" class="mr-2"/>
+            <AwIcon name="rulerToArrow" class="mr-2" />
             <span>Журнал горизонтов</span>
           </div>
           <Button size="narrow" icon="tripleDots" class="mb-2" />
@@ -90,7 +79,7 @@
             ]" />
         <template #right-side>
           <div class="d-flex h-100 align-items-center">
-            <Button size="narrow" icon="reload" class="mb-2" color="success"/>
+            <Button size="narrow" icon="reload" class="mb-2" color="success" />
           </div>
         </template>
       </ToolBlockGroupDivider>
@@ -109,11 +98,6 @@
               <input type="checkbox" class="mr-1">
               <small>Между интервалами</small>
             </label>
-            <dropdown size="tiny" :selected-value.sync="dropdownValue.value" button-text="Значения" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
           </div>
         </template>
       </ToolBlock>
@@ -131,6 +115,15 @@ import Button from "../components/buttons/Button";
 import AwIcon from "../components/icons/AwIcon";
 
 import PageSide from "../components/pageSide/PageSide";
+import {
+  FETCH_DZOS,
+  FETCH_FIELDS,
+  FETCH_WELLS,
+  GET_WELLS_OPTIONS,
+  SET_WELLS,
+  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS
+} from "../../../store/modules/geologyGis.const";
+
 export default {
   name: "Geology-LSide",
   data() {
@@ -138,7 +131,13 @@ export default {
       dropdownValue: {
         value: null
       },
-      listSelect: []
+      loadingStates: {
+        dzos: false,
+        field: false,
+        wells: false,
+        mnemonics: false
+      },
+      selectedWells: []
     }
   },
   components: {
@@ -151,15 +150,63 @@ export default {
     AwIcon,
     PageSide
   },
-  computed:{
-    cListSelect(){
-      return this.listSelect
+  computed: {
+    getSelectedWells() {
+      return this.selectedWells.map((item) => {
+        return item.value
+      })
+    },
+    getDZOSList() {
+      return this.$store.getters[GET_DZOS_OPTIONS];
+    },
+    getFieldsList() {
+      return this.$store.getters[GET_FIELDS_OPTIONS];
+    },
+    getWellsList() {
+      return this.$store.getters[GET_WELLS_OPTIONS];
     }
   },
-  methods:{
-    selectedHandle(item){
-      this.listSelect = [];
-      this.listSelect.push(item.value);
+
+  async mounted() {
+    await this.$store.dispatch(FETCH_DZOS);
+    await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+  },
+
+  methods: {
+    async dzos(e) {
+      this.loadingStates.field = true;
+      this.$refs.dropDawnFields.selectedLocal = null;
+      this.$store.commit(SET_WELLS, []);
+      this.selectedWells = [];
+      await this.$store.dispatch(FETCH_FIELDS, e);
+      this.loadingStates.field = false;
+    },
+
+    async field(e) {
+      this.selectedWells = [];
+      this.loadingStates.wells = true;
+      await this.$store.dispatch(FETCH_WELLS, e);
+      this.loadingStates.wells = false;
+    },
+
+    async applyWells() {
+      let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
+      this.loadingStates.mnemonics = true;
+      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      this.loadingStates.mnemonics = false;
+      this.$store.commit(SET_WELLS_BLOCKS, arr);
+    },
+
+    selectWellsHandle(item, i) {
+      let index = this.selectedWells.findIndex((a) => a.value === item.value);
+      if (~index) {
+        this.selectedWells.splice(index, 1)
+      } else {
+        this.selectedWells.push({
+          sort: i,
+          value: item.value
+        });
+      }
     }
   }
 }

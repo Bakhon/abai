@@ -10,11 +10,11 @@ class WellTech extends PlainForm
     protected $configurationFileName = 'well_tech';
 
     use DateMoreThanValidationTrait;
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'), 'prod.well_tech' , 'dend')) {
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'), 'prod.well_tech', 'dend')) {
             $errors['dbeg'][] = trans('bd.validation.dbeg');
         }
 

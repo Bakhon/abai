@@ -1,0 +1,127 @@
+label {
+  margin: 0;
+}
+
+.graphs-and-tables-left-menu {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  color: #fff;
+}
+
+.graphs-customization {
+  width: 100%;
+}
+
+.customization-title {
+  display: flex;
+  align-items: center;
+  background: #323370;
+  padding: 6px 10px;
+}
+
+.customization-title > p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.customization-title > img {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.customization-content {
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.customization-content > div {
+  margin-bottom: 4px;
+}
+
+.customization-content > div:nth-last-child(1),
+.customization-content > div:nth-last-child(2) {
+  margin-bottom: 0;
+}
+
+.customization-content > div:nth-of-type(odd) {
+  margin-right: 2px;
+}
+
+.customization-content > div:nth-of-type(even) {
+  margin-left: 2px;
+}
+
+.customization-category {
+  width: calc(50% - 2px);
+}
+
+.customization-category > div {
+  background: #363b68;
+  border: 1px solid #545580;
+  width: 100%;
+}
+
+.customization-category > div:first-of-type {
+  margin-bottom: 5px;
+}
+
+.correlations-holder {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px;
+  margin-bottom: 10px;
+}
+
+.correlation {
+  padding: 8px 6px;
+  margin-bottom: 6px;
+  background: #363b68;
+}
+
+.correlation:last-child {
+  margin-bottom: 0;
+}
+
+.correlation > p {
+  margin: 0 0 6px 4px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.table-customization-inputs-holder {
+  width: 100%;
+  background: #363b68;
+  border: 1px solid #545580;
+  padding: 8px 6px;
+}
+
+.table-customization-inputs-holder > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.table-customization-inputs-holder > div > input {
+  margin-right: 8px;
+}
+
+.table-customization-inputs-holder > div > label {
+  font-size: 14px;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
+}

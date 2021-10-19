@@ -181,6 +181,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#modalAtlas___BV_modal_outer_ {
+  z-index: 4002 !important;
+}
 .content {
   background: #363B68;
   border: 1px solid #545580;

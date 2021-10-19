@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\AttachmentService;
-use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
@@ -26,18 +25,21 @@ class AttachmentController extends Controller
         return response()->json(['files' => $files]);
     }
 
-    public function get(int $attachment)
+    public function download(int $attachment)
     {
-        $response = $this->service->get($attachment);
-        $body = $response->getBody();
-        foreach ($response->getHeaders() as $key => $header) {
-            header("$key:{$header[0]}");
-        }
+        $fileInfo = $this->service->getInfo([$attachment])->first();
+        $file = $this->service->get($fileInfo->file_path);
+        $fileUrl = $file->getBody()->getMetadata('uri');
 
-        while (!$body->eof()) {
-            echo Utils::readline($body);
-            ob_flush();
-            flush();
-        }
+        return response()->streamDownload(function () use ($fileUrl) {
+            echo file_get_contents($fileUrl);
+        }, $fileInfo->file_name);
+    }
+
+    public function getFileInfo(int $attachment)
+    {
+        $fileInfo = $this->service->getInfo([$attachment])->first();
+
+        return response()->json(['file_info' => $fileInfo]);
     }
 }

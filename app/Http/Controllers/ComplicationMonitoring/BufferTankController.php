@@ -31,7 +31,7 @@ class BufferTankController extends CrudController
             ],
             'title' => trans('monitoring.buffer_tank.title'),
             'fields' => [
-                'gu_id' => [
+                'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
@@ -89,16 +89,24 @@ class BufferTankController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
-                
+                'pdf' => [
+                    'title' => trans('monitoring.certificate'),
+                    'type' => 'download',
+                    'filterable' => false
+                ]
             ]
         ];
 
+
+        $params['filter'] = session($this->modelName . '_filter');
         return view('complicationMonitoring.buffer_tank.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
-            $query = BufferTank::query()
+        parent::list($request);
+
+        $query = BufferTank::query()
             ->with('gu');
 
         $buffer_tank = $this
@@ -120,7 +128,7 @@ class BufferTankController extends CrudController
         );
     }
 
-    public function create(): \Illuminate\View\View 
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('buffer_tank');
         return view('complicationMonitoring.buffer_tank.create', compact('validationParams'));
@@ -160,10 +168,9 @@ class BufferTankController extends CrudController
     public function destroy(Request $request, BufferTank $buffer_tank)
     {
         $buffer_tank->delete();
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
-        }
-        else {
+        } else {
             return redirect()->route('buffer_tank.index')->with('success', __('app.deleted'));
         }
     }

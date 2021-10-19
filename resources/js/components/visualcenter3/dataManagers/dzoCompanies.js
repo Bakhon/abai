@@ -55,34 +55,29 @@ export default {
                 isNonOperating: []
             },
             dzoSummaryForTable: [],
+            dzoHoverIndex: null,
+            dzoHoverMapping: {
+                'ОМГ': '100%',
+                'ОМГК': '100%',
+                'ММГ': '50%',
+                'ЭМГ': '100%',
+                'КБМ': '50%',
+                'КГМ': '50%',
+                'КТМ': '100%',
+                'КОА': '50%',
+                'УО': '100%',
+                'ТШО': '20%',
+                'НКО': '8,44%',
+                'КПО': '10%',
+                'ПКИ': '33%',
+                'ПККР': '100% * 33%',
+                'КГМКМГ': '50% * 33%',
+                'ТП': '50% * 33%',
+                'АГ': '100%'
+            }
         };
     },
     methods: {
-        getSelectedDzoCompanies(type, category, regionName) {
-            this.disableDzoRegions();
-            if (!regionName) {
-                return _.cloneDeep(this.dzoCompanies).filter(company => company[category] === type).map(company => company.ticker);
-            }
-            this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
-            if (regionName === 'zhambul') {
-                category = regionName;
-                type = type.toLowerCase().replace('is','');
-                return ['АГ'];
-            }
-            if (this.dzoRegionsMapping[regionName].isActive) {
-                category = regionName;
-                type = type.toLowerCase().replace('is','');
-                return _.cloneDeep(this.dzoCompanies).filter(company => company[type] === category).map(company => company.ticker);
-            }
-            return _.cloneDeep(this.dzoCompanies).map(company => company.ticker);
-        },
-
-        selectMultipleDzoCompanies(type,category,regionName) {
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.disableDzoCompaniesVisibility();
-            this.switchDzoCompaniesVisibility(type,category,regionName);
-        },
-
         disableDzoCompaniesVisibility() {
             _.forEach(this.dzoCompanies, function (dzo) {
                 _.set(dzo, 'selected', false);
