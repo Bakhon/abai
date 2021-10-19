@@ -396,13 +396,13 @@ export default {
         {
           key: 'profitless_cat_1',
           title: this.trans('economic_reference.profitless_cat_1'),
-          color: '#313560',
+          color: '#333975',
           style: 'padding-left: 30px !important;',
         },
         {
           key: 'profitless_cat_2',
           title: this.trans('economic_reference.profitless_cat_2'),
-          color: '#313560',
+          color: '#333975',
           style: 'padding-left: 30px !important;',
         },
       ]
