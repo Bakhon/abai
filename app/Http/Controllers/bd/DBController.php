@@ -35,7 +35,25 @@ class DBController extends Controller
 
     public function well_card()
     {
-        return view('bigdata.well_card.index');
+        $translation = new \stdClass();
+        $translation->case_well = trans('well.case_well');
+        $translation->well = trans('well.well');
+        $translation->all_dzo = trans('well.all_dzo');
+        $translation->number_well = trans('well.number_well');
+        $translation->general = trans('well.general');
+        $translation->category_well = trans('well.category_well');
+        $translation->binding = trans('well.binding');
+        $translation->org_struct = trans('well.org_struct');
+        $translation->coord = trans('well.coord');
+        $translation->zaboi = trans('well.zaboi');
+        $translation->zaboi_x = trans('well.zaboi_x');
+        $translation->zaboi_y = trans('well.zaboi_y');
+        $translation->well_passport = trans('well.well_passport');
+        $translation->download_excel = trans('well.download_excel');
+        $translation->general_info =  trans('well.general_info');
+        $params =['translation'=>json_encode($translation)];
+
+        return view('bigdata.well_card.index',$params);
     }
 
     public function field_list()

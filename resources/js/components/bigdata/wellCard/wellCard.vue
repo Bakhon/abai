@@ -12,7 +12,7 @@
                 <div class="well-deal__header">
                   <div class="title">
                     <div class="icon-ierarchy"></div>
-                    <h2>Дело скважины</h2>
+                    <h2>{{lang.case_well}}</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
                        @click="onColumnFoldingEvent('left')">
@@ -39,9 +39,7 @@
             </div>
           </div>
           <div v-if="isLeftColumnFolded" class="row">
-            <div class="rotate" style="color: white">
-              Дело скважины
-            </div>
+            <div class="rotate" style="color: white">{{lang.case_well}}</div>
           </div>
         </div>
       </div>
@@ -53,7 +51,7 @@
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
+                  {{lang.well}}: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
@@ -64,7 +62,7 @@
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
                           @change="dzoSelectChange($event)">
-                    <option value="0" selected>Все ДЗО</option>
+                    <option value="0" selected>{{lang.all_dzo}}</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
                     </option>
@@ -73,7 +71,7 @@
                       class="flex-fill"
                       :filterable="false"
                       :options="options"
-                      placeholder="Номер скважины"
+                      :placeholder="lang.number_well"
                       @input="selectWell"
                       @search="onSearch"
                   >
@@ -116,33 +114,33 @@
                   </div>
                   <div class="col">
                     <div class="well-info">
-                      <div class="title">Основное</div>
-                      <p>Номер скважины:
+                      <div class="title">{{lang.general}}</div>
+                      <p>{{lang.number_well}}:
                         <span v-if="wellUwi">
                           {{ wellUwi }}
                         </span>
                       </p>
-                      <p>Категория скважины:
+                      <p>{{lang.category_well}}:
                         <span v-if="well.category">
                           {{ well.category.name_ru }}
                         </span>
                       </p>
-                      <div class="title">Привязка</div>
-                      <p>Оргструктура: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
-                      <div class="title">Координаты устья</div>
-                      <p>Координаты устья X:
+                      <div class="title">{{lang.binding}}</div>
+                      <p>{{lang.org_struct}}: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
+                      <div class="title">{{lang.coord}}</div>
+                      <p>{{lang.coord_x}}:
                         <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
                       </p>
-                      <p>Координаты устья Y:
+                      <p>{{lang.coord_y}}:
                         <span v-if="wellSaptialObjectY">
                           {{ wellSaptialObjectY }}
                         </span></p>
-                      <div class="title">Координаты забоя</div>
-                      <p>Координаты забоя X:
+                      <div class="title">{{lang.zaboi}}</div>
+                      <p>{{lang.zaboi_x}}:
                         <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                      <p>Координаты забоя Y:
+                      <p>{{lang.zaboi_y}}:
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
@@ -170,7 +168,7 @@
                             stroke-width="1.2"/>
                     </svg>
                   </div>
-                  <p v-if="wellUwi">Паспорт скважины</p>
+                  <p v-if="wellUwi">{{lang.well_passport}}</p>
                 </div>
                 <div class="title-container">
                   <div v-if="wellUwi" class="sheare-icon">
@@ -186,20 +184,20 @@
                     </svg>
                   </div>
                   <div v-if="wellUwi" class="sheare-text">
-                    Скачать в MS-Excel
+                    {{lang.download_excel}}
                   </div>
                 </div>
               </div>
             </div>
           </template>
           <div class="info">
-            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
+            <div v-if="isRightColumnFolded" class="rotate">{{lang.well_passport}}</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
                   <table v-if="wellUwi">
                     <tr>
-                      <th colspan="3">Общая информация</th>
+                      <th colspan="3">{{lang.general_info}}</th>
                     </tr>
                     <tr v-for="(item, index) in this.tableData">
                       <td>{{ index + 1 }}</td>
@@ -265,8 +263,10 @@ export default {
     InjectionHistoricalData,
     ProductionHistoricalData
   },
+  props: ['translation'],
   data() {
     return {
+      lang: {},
       well_passport : [],
       well_passport_data:[],
       options: [],
@@ -388,6 +388,7 @@ export default {
     }
   },
   mounted() {
+    this.lang = JSON.parse(this.translation)
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
