@@ -17,6 +17,6 @@ Route::group(
                 return view('digital_rating.compare');
             })->name('digital-rating-compare');
             Route::get('/get_environment', 'DigitalRating\DigitalRatingContoller@get_environment')->name('get_environment');   
-            Route::get('/get_injection_wells', 'DigitalRating\DigitalRatingContoller@get_injection_wells')->name('get_injection_wells');   
+            Route::get('/get_injection_wells', 'DigitalRating\DigitalRatingContoller@get_injection_wells')->name('get_injection_wells');
         });
     });
