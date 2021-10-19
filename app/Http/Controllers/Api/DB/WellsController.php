@@ -6,25 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\BottomHole;
 use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\GdisCurrent;
-use App\Models\BigData\GdisCurrentValue;
+use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
-use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
-use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\Gtm;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class WellsController extends Controller
 {
@@ -151,7 +144,7 @@ class WellsController extends Controller
             ->wherePivot('project_drill', '=', 'false')
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
-            ->get(['od']);
+            ->get(['prod.well_constr.od']);
     }
 
     private function category(Well $well)
