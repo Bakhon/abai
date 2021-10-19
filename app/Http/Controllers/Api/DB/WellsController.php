@@ -51,7 +51,6 @@ class WellsController extends Controller
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
-            'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
