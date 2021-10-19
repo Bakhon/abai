@@ -25,7 +25,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "bottom_h_m",
-                "validation": "required|numeric|gte:0"
+                "validation": "required|numeric|gte:0|lte:10000"
               },
               {
                 "code": "comment",
