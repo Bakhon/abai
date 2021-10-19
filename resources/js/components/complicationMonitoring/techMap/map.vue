@@ -527,7 +527,7 @@ export default {
           iconAtlas = '/img/icons/map/gu.png';
           break;
         case "well":
-          iconAtlas = '/img/icons/map/well_normal.png';
+          iconAtlas = '/img/icons/map/well_black.png';
           break;
       }
 
