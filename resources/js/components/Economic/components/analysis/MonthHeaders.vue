@@ -4,7 +4,7 @@
          :key="header.name"
          :class="index ? 'border-grey-top' : ''"
          class="d-flex font-size-12px line-height-14px">
-      <div :class="[index ? '' : 'pt-2', index === headers.length - 1 ? 'pb-2' : '']"
+      <div :class="[index ? '' : 'pt-3', index === headers.length - 1 ? 'pb-3' : '']"
            class="pl-3 py-2 flex-150px text-wrap">
         {{ header.name }}
       </div>
@@ -13,7 +13,7 @@
         {{ header.dimension }}
       </div>
 
-      <div :class="index ? '' : 'pt-2'"
+      <div :class="index ? '' : 'pt-3'"
            class="p-2 flex-120px">
         {{ header.value }}
       </div>

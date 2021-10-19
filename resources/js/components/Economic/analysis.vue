@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="col-12 px-2 py-3 bg-main1 mb-10px">
+    <div class="col-12 p-2 bg-main1 mb-10px">
       <select-scenario-variations
           :form="form"
           :scenario-variation="scenarioVariation"

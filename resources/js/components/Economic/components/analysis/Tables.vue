@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1 position-relative">
+  <div class="row px-3 py-2 bg-main1 position-relative">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -11,7 +11,7 @@
           @click.native="selectTab(tab)"/>
     </div>
 
-    <div class="mt-3 w-100">
+    <div class="mt-2 w-100">
       <table-production-loss
           v-if="activeTab === 'production_loss'"
           class="text-white"/>
