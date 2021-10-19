@@ -303,10 +303,17 @@ export default {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
         },
+        showModal(modalName) {
+            this.$modal.show(modalName);
+        },
+        closeModal(modalName) {
+            this.$modal.hide(modalName)
+        },
         getTreeData() {
             this.SET_LOADING(true);
             axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
                 .then((res) => {
+                    console.log(res.data)
                     this.dataRange = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
                     this.fieldName = res.data.field_name;
@@ -324,24 +331,25 @@ export default {
                     children: v
                 }
             }
-            this.SET_LOADING(true);
-            axios.post(this.url, {
-                action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            })
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.setNotify("Информация о скважинах получена", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+            console.log(this.dataRange)
+            // this.SET_LOADING(true);
+            // axios.post(this.url, {
+            //     action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
+            //     finder_model: {
+            //         name: "root",
+            //         children: v
+            //     }
+            // })
+            //     .then((res) => {
+            //         if (res.status === 200) {
+            //             this.setNotify("Информация о скважинах получена", "Success", "success")
+            //         } else {
+            //             this.setNotify("Что-то пошло не так", "Error", "danger")
+            //         }
+            //     })
+            //     .finally(() => {
+            //         this.SET_LOADING(false);
+            //     })
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);

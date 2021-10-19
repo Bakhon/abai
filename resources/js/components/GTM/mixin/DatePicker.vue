@@ -54,29 +54,7 @@
         <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
       </div>
 
-      <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
-             :height="100"
-             style="background: transparent;" :adaptive="true">
-        <div class="modal-bign modal-bign-container">
-          <div class="modal-bign-header">
-            <div class="modal-bign-title">{{ trans('paegtm.period') }}</div>
-            <button type="button" class="modal-bign-button" @click="closeModal('modalPeriod')">
-              {{ trans('pgno.zakrit') }}
-            </button>
-          </div>
-          <div class="d-flex justify-content-start">
-            <div class="d-flex">
-              <input class="mt-7px" type="checkbox" value="">
-              <label class="pl-5px">Шаг</label>
-            </div>
-            <div class="d-flex pl-4">
-              <div>
-                <input class="period-settings-input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
-      </modal>
+
     </div>
 
   </div>

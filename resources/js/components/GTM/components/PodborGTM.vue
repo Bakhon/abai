@@ -53,7 +53,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="c in table.main_data.data" @click="onClickWell(c[0])">
-                          <th class="bg-body" v-for="row in c" >{{ row }}</th>
+                          <th class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -210,13 +210,33 @@
         </div>
       </div>
       <div class="col-lg-3 p-0 pl-2 pr-1">
-        <div class="block-header gtm-dark p-2">
+        <div class="gtm-dark p-2">
           <div class="block-header p-2">
             {{ this.trans("paegtm.period") }}
           </div>
-          <gtm-date-picker
-              :showSettings="true"
-          ></gtm-date-picker>
+          <!--          <gtm-date-picker-->
+          <!--              :showSettings="true"-->
+          <!--          ></gtm-date-picker>-->
+          <div class="d-flex">
+            <div class="d-flex calendar-filter-block fl-1">
+              {{ this.dataRange.min_date }}
+<!--              <div class="calendar-filter-block d-flex f-1 text-center">-->
+<!--                <div class="d-flex block-date">-->
+<!--                  asd-->
+<!--                </div>-->
+<!--              </div>-->
+            </div>
+            <div class="d-flex calendar-filter-block fl-1">
+              {{ this.dataRange.max_date }}
+            </div>
+
+            <div class="d-flex calendar-filter-block show-block"  @click="showModal('modalPeriod')">
+              <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
+            </div>
+
+            <div class="asd">asdasdasda</div>
+          </div>
+
         </div>
 
         <div class="block-header gtm-dark">
@@ -259,7 +279,7 @@
         </div>
 
         <div class="gtm-dark mt-2 p-2 calc-button text-center" @click="postTreeData(treeData)">
-            {{ trans("paegtm.calc") }}
+          {{ trans("paegtm.calc") }}
         </div>
 
         <div class="gtm-dark mt-2 p-2">
@@ -322,12 +342,43 @@
         </div>
       </div>
     </div>
+    <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
+           :height="100"
+           style="background: transparent;" :adaptive="true">
+      <div class="modal-bign modal-bign-container">
+        <div class="modal-bign-header">
+          <div class="modal-bign-title">{{ trans('paegtm.period') }}</div>
+          <button type="button" class="modal-bign-button" @click="closeModal('modalPeriod')">
+            {{ trans('pgno.zakrit') }}
+          </button>
+        </div>
+        <div class="d-flex justify-content-start">
+          <div class="d-flex">
+            <input class="mt-7px" type="checkbox" value="" v-model="this.dataRange.is_days_group">
+            <label class="pl-5px">Шаг</label>
+          </div>
+          <div class="d-flex pl-4">
+            <div>
+              <input class="period-settings-input" type="text" v-model="this.dataRange.days" :disable="!this.dataRange.is_days_group">
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 <script src="./js/PodborGTM.js"></script>
 <style scoped>
 .h-233 {
   min-height: 233px;
+}
+
+.asd {
+  display: none;
+}
+
+.show-block:hover + .asd {
+  display: block;
 }
 
 .lg-border-block {
@@ -398,6 +449,7 @@
 .gtm-filter .v-select {
   margin-bottom: 15px;
 }
+
 .maximize-block {
   flex: 1;
 }
@@ -436,13 +488,21 @@
   border-collapse: collapse;
   width: 100%;
 }
+
 .th {
   padding: 8px 15px;
   border: 2px solid #529432;
 }
 
-thead tr:nth-child(1) .th { position: sticky; top: -1px; }
-thead tr:nth-child(2) .th { position: sticky; top: 26px; }
+thead tr:nth-child(1) .th {
+  position: sticky;
+  top: -1px;
+}
+
+thead tr:nth-child(2) .th {
+  position: sticky;
+  top: 26px;
+}
 
 tr:last-child td {
   border-bottom: 1px solid #454d7d !important;
@@ -454,6 +514,10 @@ tr:nth-child(odd) td {
 
 tr:nth-child(even) td {
   background: #272953 !important;
+}
+
+.fl-1 {
+  flex: 1
 }
 
 </style>
