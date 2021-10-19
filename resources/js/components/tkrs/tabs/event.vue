@@ -41,15 +41,15 @@
               </table>
             </div>
       </div>
-      <div class="table-div">
+      <div class="table-div summary">
             <div>
               <table>
                 <thead>
                   <tr>
-                    <th>№</th>
                     <th>Начало</th>
                     <th>Конец</th>
-                    <th>Продолжительность</th>
+                    <th>Часы</th>
+                    <th>Сводка по работам (описание проделанных работ)</th>
                     
                   </tr>
                     
@@ -57,19 +57,17 @@
                 <tbody>
                   
                     <tr>
-                      <td>1</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></td>
-                      <td><img class="cursor-pointer" @click="brigada_modal()" data-toggle="modal" 
-                data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Бригада №11 ТОО "Жанрос Дриллинг</td>
+                      <td style="background: #009847;"></td>
+                      <td style="background: #009847;"></td>
+                      <td style="background: #009847;"></td>
+                      <td style="background: #009847;"> Дневное время</td>
                       
                     </tr>
                     <tr>
-                      <td>1</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></td>
-                      <td><img class="cursor-pointer" @click="brigada_modal()" data-toggle="modal" 
-                data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Бригада №11 ТОО "Жанрос Дриллинг</td>
+                      <td>6:00</td>
+                      <td>8:00</td>
+                      <td>2:00</td>
+                      <td>Завоз тех.воды с плотностью 1,01г/см3 в объеме-60м3.</td>
 
                       
                     </tr>
@@ -94,5 +92,8 @@ export default {
 <style>
 .all-table {
     display: flex;
+}
+.summary {
+    padding-left: 5px;
 }
 </style>

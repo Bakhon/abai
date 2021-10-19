@@ -228,11 +228,11 @@
                 </svg>
                 <div>
                     <ul class="nav nav-tabs all-tabs">
-                        <li class="nav-item test">
-                            <a class="nav-link active" @click="selectTab(1)" href="#">События</a>
+                        <li class="nav-item">
+                            <a class="nav-link active tab-header" @click="selectTab(1)" href="#">События</a>
                         </li>
-                        <li class="nav-item test">
-                            <a class="nav-link " @click="selectTab(2)" href="#">Превышения</a>
+                        <li class="nav-item">
+                            <a class="nav-link tab-header " @click="selectTab(2)" href="#">Превышения</a>
                         </li>
                         
                     </ul>
@@ -245,13 +245,8 @@
                       <excess></excess>
                   </div>
 
-            
-
-                  
 
                 </div>
-
-                <!-- <BaseTable :fields="fields" :items="items" :filter="true"/> -->
 
             </div>
 
@@ -313,5 +308,17 @@ table {
 }
 table, th, td {
   border:1px solid black;
+}
+.all-tabs {
+  background: #323370;
+}
+.tab-header {
+  color: white !important;
+}
+.active {
+  background: #2E50E9;
+}
+.nav-link.active {
+  background: #2E50E9;
 }
 </style>
