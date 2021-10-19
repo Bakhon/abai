@@ -76,14 +76,15 @@ export default {
                     rows: initialRowsYO,
                     format: formatMappingYO,
                     cells: cellsMappingYO,
-                    id: 111
+                    id: 111,
+                    requiredRows: 21
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
                     id: 113,
-                    requiredRows: 33
+                    requiredRows: 26
                 },
             },
             dzoCompanies: [
@@ -379,13 +380,6 @@ export default {
                     this.turnErrorForCell(selector);
                     continue;
                 }
-
-                // if (cellValue.trim().length === 0) {
-                //     cellValue = null;
-                // }
-                // if (cellValue) {
-                //     cellValue = this.getFormattedNumber(cellValue);
-                // }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
                 } else if (category === this.inputDataCategories[0]) {
