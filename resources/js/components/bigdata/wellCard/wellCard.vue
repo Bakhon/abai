@@ -557,337 +557,337 @@ export default {
         {
           'description': this.well_passport_data.well,
           'method': null,
-          'name': 'Скважина',
+          'name': this.lang.well,
           'data': this.well_passport_data.well
         },
         {
           'description': this.well_passport_data.wellType,
           'method': null,
-          'name': 'Вид скважины',
+          'name': this.lang.view_well,
           'data': this.well_passport_data.wellType
         },
         {
           'description': this.well_passport_data.wellGeoFields,
           'method': null,
-          'name': 'Месторождение',
+          'name': this.lang.well_field,
           'data': this.well_passport_data.wellGeoFields
         },
         {
           'description': '',
           'method': 'neighbors',
-          'name': 'Горизонт / Pнас, атм',
+          'name': this.lang.horizont_rnas,
           'data': this.well_passport_data.neighbors
         },
         {
           'description': '',
           'method': null,
-          'name': 'H ротора',
+          'name': this.lang.h_rotor,
           'data': this.well_passport_data.wellInfo
         },
         {
           'description': '',
           'method': null,
-          'name': 'Тех. структура',
+          'name': this.lang.tech_struct,
           'data': this.well_passport_data.wellTechsName
         },
         {
           'description': '',
           'method': null,
-          'name': 'Отвод',
+          'name': this.lang.otvod,
           'data': this.well_passport_data.tap
         },
         {
           'description': '',
           'method': 'neighbors',
-          'name': 'ГУ/АГЗУ',
+          'name': this.lang.gu_zu,
           'data': this.well_passport_data.gu_agsu
         },
         {
           'description': '',
           'method': null,
-          'name': 'Орг. структура',
+          'name': this.lang.org_struct,
           'data': this.well_passport_data.wellOrgName
         },
         {
           'description': '',
           'method': null,
-          'name': 'Зона скважины',
+          'name': this.lang.zone_well,
           'data': this.well_passport_data.well_zone
         },
         {
           'description': '',
           'method': null,
-          'name': 'Влияющие скважины',
+          'name': this.lang.influence_well,
           'data': this.well_passport_data.wellReactInfl
         },
         {
           'description': '',
           'method': null,
-          'name': 'Координаты X (устья)',
+          'name': this.lang.coord_x_outfall,
           'data': this.well_passport_data.wellSaptialObjectX
         },
         {
           'description': '',
           'method': null,
-          'name': 'Координаты Y (устья)',
+          'name': this.lang.coord_y_outfall,
           'data': this.well_passport_data.wellSaptialObjectY
         },
         {
           'description': '',
           'method': null,
-          'name': 'Координаты забоя X',
+          'name': this.lang.coord_zaboi_x,
           'data': this.well_passport_data.wellSaptialObjectBottomX
         },
         {
           'description': '',
           'method': null,
-          'name': 'Координаты забоя Y',
+          'name': this.lang.coord_zaboi_y,
           'data': this.well_passport_data.wellSaptialObjectBottomY
         },
         {
           'description': '',
           'method': null,
-          'name': 'Назначение скважин по проекту',
+          'name': this.lang.assign_well_project,
           'data': this.well_passport_data.well_category
         },
         {
           'description': '',
           'method': null,
-          'name': 'Категория',
+          'name': this.lang.category,
           'data': this.well_passport_data.categoryLast
         },
         {
           'description': '',
           'method': null,
-          'name': 'Период бурения',
+          'name': this.lang.period_bur,
           'data': this.well_passport_data.period_bur
         },
         {
           'description': '',
           'method': 'trimToDate',
-          'name': 'Дата ввода в эксплуатацию',
+          'name': this.lang.date_expluatation,
           'data': this.well_passport_data.wellExpl
         },
         {
           'description': '',
           'method': null,
-          'name': 'Состояние',
+          'name': this.lang.status,
           'data': this.well_passport_data.well_status
         },
         {
           'description': '',
           'method': null,
-          'name': 'Способ эксплуатации',
+          'name': this.lang.way_expluatation,
           'data': this.well_passport_data.well_expl_name
         },
         {
           'description': '',
           'method': null,
-          'name': 'Тип УО / наличие эксц. болта',
+          'name': this.lang.uo_bolt,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+          'name': this.lang.diametr,
           'data': this.well_passport_data.tubeNomOd
         },
         {
           'description': '',
           'method': null,
-          'name': 'Тип колонной головки / размеры',
+          'name': this.lang.type_gol,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Глубина спуска насоса (м)',
+          'name': this.lang.pump_depth,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Код насоса',
+          'name': this.lang.code_pump,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Диаметр насоса (мм)',
+          'name': this.lang.diameter_pump,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Тип СК',
+          'name': this.lang.sk,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'длина хода (м)',
+          'name': this.lang.length_hod,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'число качаний (об/мин)',
+          'name': this.lang.count_swaing,
           'data': ''
         },
         {
           'description': '',
           'method': null,
-          'name': 'Фактический забой/(дата отбивки)',
+          'name': this.lang.fact_zaboi,
           'data': this.well_passport_data.actualBottomHole
         },
         {
           'description': '',
           'method': null,
-          'name': 'Искусственный забой',
+          'name': this.lang.synthetic_zaboi,
           'data': this.well_passport_data.artificialBottomHole
         },
         {
           'description': null,
           'method': null,
-          'name': 'Отбитый забой',
+          'name': this.lang.broken_zaboi,
           'data': ''
         },
         {
           'description': null,
           'method': null,
-          'name': 'Глубина спуска НКТ, м',
+          'name': this.lang.depth_down,
           'data': ''
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дата перфорации',
+          'name': this.lang.date_perforation,
           'data': ''
         },
         {
           'description': null,
           'method': null,
-          'name': 'Действующие интервалы перфорации',
+          'name': this.progress_interval_perforation,
           'data': this.well_passport_data.perfActual
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дебит жидкости, м3/сут (режим/факт)',
+          'name': this.lang.debit_water,
           'data': this.well_passport_data.techModeProdOil
         },
         {
           'description': null,
           'method': null,
-          'name': 'Обводненность, % (режим/факт)',
+          'name': this.lang.water_cut,
           'data': this.well_passport_data.techModeProdOil_measWaterCut
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дебит нефти, т/сут (режим/факт)',
+          'name': this.lang.debit_oil,
           'data': this.well_passport_data.techModeProdOil_measWaterCut2
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дата последнего КРС',
+          'name': this.lang.date_krs,
           'data': this.well_passport_data.krsWorkover
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дата проведения ГРП',
+          'name': this.lang.date_krp,
           'data': this.well_passport_data.well_gtm
         },
         {
           'description': null,
           'method': 'trimToDate',
-          'name': 'Дата проведения СКО',
+          'name': this.lang.date_sko,
           'data': this.well_passport_data.treatmentSko
         },
         {
           'description': null,
           'method': null,
-          'name': 'Дата последнего ПРС',
+          'name': this.lang.date_prc,
           'data':  this.well_passport_data.prsWellWorkover
         },
         {
           'description': null,
           'method': 'trimToDate',
-          'name': 'Дата последнего ГИС',
+          'name': this.lang.date_last_gis,
           'data': this.well_passport_data.well_gis
         },
         {
           'description': null,
           'method': 'trimToDate',
-          'name': 'Дата последнего ГДИС',
+          'name': this.lang.date_last_gdis,
           'data': this.well_passport_data.well_gdisCurrent2
         },
         {
           'description': null,
           'method': null,
-          'name': 'Результат ГДМ',
+          'name': this.lang.result_gdm,
           'data': this.well_passport_data.gdisConclusion
         },
         {
           'description': null,
           'method': null,
-          'name': 'Длина хода при проведении ГДМ',
+          'name': this.lang.length_hod_gdm,
           'data': this.well_passport_data.gdisCurrentValue
         },
         {
           'description': null,
           'method': null,
-          'name': 'число качаний при проведении ГДМ',
+          'name': this.lang.count_swing,
           'data': this.well_passport_data.gdisCurrentValuePmpr
         },
         {
           'description': null,
           'method': null,
-          'name': 'Динамический уровень',
+          'name': this.lang.dynamic_level,
           'data': this.well_passport_data.gdisCurrentValueFlvl
         },
         {
           'description': null,
           'method': null,
-          'name': 'Статический уровень',
+          'name': this.lang.static_level,
           'data': this.well_passport_data.gdisCurrentValueStatic
         },
         {
           'description': null,
           'method': null,
-          'name': 'Рпл/(дата замера)',
+          'name': this.rpl_date,
           'data': this.well_passport_data.gdisCurrentValueRp
         },
         {
           'description': null,
           'method': null,
-          'name': 'Рпл (Сл. ГДИС)/(дата замера)',
+          'name': this.lang.rpl_sl_gdis,
           'data': this.well_passport_data.gdisComplex
         },
         {
           'description': null,
           'method': null,
-          'name': 'Рзаб/(дата замера)',
+          'name': this.lang.rzab,
           'data': this.well_passport_data.gdisCurrentValueBhp
         },
         {
           'description': null,
           'method': null,
-          'name': 'Рзатр(дин), атм',
+          'name': this.lang.rzatr,
           'data': this.well_passport_data.rzatrAtm
         },
         {
           'description': null,
           'method': null,
-          'name': 'Рзатр(стат)',
+          'name': this.lang.rzatr_stat,
           'data': this.well_passport_data.rzatrStat
         },
         {
           'description': null,
           'method': null,
-          'name': 'Примечание',
+          'name': this.lang.note,
           'data': this.well_passport_data.gdisCurrent_note
         }
       ]
@@ -963,337 +963,337 @@ export default {
           {
             'description': this.well_passport_data.well,
             'method': null,
-            'name': 'Скважина',
+            'name': this.lang.well,
             'data': this.well_passport_data.well
           },
           {
             'description': this.well_passport_data.wellType,
             'method': null,
-            'name': 'Вид скважины',
+            'name': this.lang.view_well,
             'data': this.well_passport_data.wellType
           },
           {
             'description': this.well_passport_data.wellGeoFields,
             'method': null,
-            'name': 'Месторождение',
+            'name': this.lang.well_field,
             'data': this.well_passport_data.wellGeoFields
           },
           {
             'description': '',
             'method': 'neighbors',
-            'name': 'Горизонт / Pнас, атм',
+            'name': this.lang.horizont_rnas,
             'data': this.well_passport_data.neighbors
           },
           {
             'description': '',
             'method': null,
-            'name': 'H ротора',
+            'name': this.lang.h_rotor,
             'data': this.well_passport_data.wellInfo
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тех. структура',
+            'name': this.lang.tech_struct,
             'data': this.well_passport_data.wellTechsName
           },
           {
             'description': '',
             'method': null,
-            'name': 'Отвод',
+            'name': this.lang.otvod,
             'data': this.well_passport_data.tap
           },
           {
             'description': '',
             'method': 'neighbors',
-            'name': 'ГУ/АГЗУ',
+            'name': this.lang.gu_zu,
             'data': this.well_passport_data.gu_agsu
           },
           {
             'description': '',
             'method': null,
-            'name': 'Орг. структура',
+            'name': this.lang.org_struct,
             'data': this.well_passport_data.wellOrgName
           },
           {
             'description': '',
             'method': null,
-            'name': 'Зона скважины',
+            'name': this.lang.zone_well,
             'data': this.well_passport_data.well_zone
           },
           {
             'description': '',
             'method': null,
-            'name': 'Влияющие скважины',
+            'name': this.lang.influence_well,
             'data': this.well_passport_data.wellReactInfl
           },
           {
             'description': '',
             'method': null,
-            'name': 'Координаты X (устья)',
+            'name': this.lang.coord_x_outfall,
             'data': this.well_passport_data.wellSaptialObjectX
           },
           {
             'description': '',
             'method': null,
-            'name': 'Координаты Y (устья)',
+            'name': this.lang.coord_y_outfall,
             'data': this.well_passport_data.wellSaptialObjectY
           },
           {
             'description': '',
             'method': null,
-            'name': 'Координаты забоя X',
+            'name': this.lang.coord_zaboi_x,
             'data': this.well_passport_data.wellSaptialObjectBottomX
           },
           {
             'description': '',
             'method': null,
-            'name': 'Координаты забоя Y',
+            'name': this.lang.coord_zaboi_y,
             'data': this.well_passport_data.wellSaptialObjectBottomY
           },
           {
             'description': '',
             'method': null,
-            'name': 'Назначение скважин по проекту',
+            'name': this.lang.assign_well_project,
             'data': this.well_passport_data.well_category
           },
           {
             'description': '',
             'method': null,
-            'name': 'Категория',
+            'name': this.lang.category,
             'data': this.well_passport_data.categoryLast
           },
           {
             'description': '',
             'method': null,
-            'name': 'Период бурения',
+            'name': this.lang.period_bur,
             'data': this.well_passport_data.period_bur
           },
           {
             'description': '',
             'method': 'trimToDate',
-            'name': 'Дата ввода в эксплуатацию',
+            'name': this.lang.date_expluatation,
             'data': this.well_passport_data.wellExpl
           },
           {
             'description': '',
             'method': null,
-            'name': 'Состояние',
+            'name': this.lang.status,
             'data': this.well_passport_data.well_status
           },
           {
             'description': '',
             'method': null,
-            'name': 'Способ эксплуатации',
+            'name': this.lang.way_expluatation,
             'data': this.well_passport_data.well_expl_name
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тип УО / наличие эксц. болта',
+            'name': this.lang.uo_bolt,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+            'name': this.lang.diametr,
             'data': this.well_passport_data.tubeNomOd
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тип колонной головки / размеры',
+            'name': this.lang.type_gol,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Глубина спуска насоса (м)',
+            'name': this.lang.pump_depth,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Код насоса',
+            'name': this.lang.code_pump,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Диаметр насоса (мм)',
+            'name': this.lang.diameter_pump,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тип СК',
+            'name': this.lang.sk,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'длина хода (м)',
+            'name': this.lang.length_hod,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'число качаний (об/мин)',
+            'name': this.lang.count_swaing,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Фактический забой/(дата отбивки)',
+            'name': this.lang.fact_zaboi,
             'data': this.well_passport_data.actualBottomHole
           },
           {
             'description': '',
             'method': null,
-            'name': 'Искусственный забой',
+            'name': this.lang.synthetic_zaboi,
             'data': this.well_passport_data.artificialBottomHole
           },
           {
             'description': null,
             'method': null,
-            'name': 'Отбитый забой',
+            'name': this.lang.broken_zaboi,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Глубина спуска НКТ, м',
+            'name': this.lang.depth_down,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата перфорации',
+            'name': this.lang.date_perforation,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Действующие интервалы перфорации',
+            'name': this.progress_interval_perforation,
             'data': this.well_passport_data.perfActual
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дебит жидкости, м3/сут (режим/факт)',
+            'name': this.lang.debit_water,
             'data': this.well_passport_data.techModeProdOil
           },
           {
             'description': null,
             'method': null,
-            'name': 'Обводненность, % (режим/факт)',
+            'name': this.lang.water_cut,
             'data': this.well_passport_data.techModeProdOil_measWaterCut
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дебит нефти, т/сут (режим/факт)',
+            'name': this.lang.debit_oil,
             'data': this.well_passport_data.techModeProdOil_measWaterCut2
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата последнего КРС',
+            'name': this.lang.date_krs,
             'data': this.well_passport_data.krsWorkover
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата проведения ГРП',
+            'name': this.lang.date_krp,
             'data': this.well_passport_data.well_gtm
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата проведения СКО',
+            'name': this.lang.date_sko,
             'data': this.well_passport_data.treatmentSko
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата последнего ПРС',
+            'name': this.lang.date_prc,
             'data':  this.well_passport_data.prsWellWorkover
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата последнего ГИС',
+            'name': this.lang.date_last_gis,
             'data': this.well_passport_data.well_gis
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата последнего ГДИС',
+            'name': this.lang.date_last_gdis,
             'data': this.well_passport_data.well_gdisCurrent2
           },
           {
             'description': null,
             'method': null,
-            'name': 'Результат ГДМ',
+            'name': this.lang.result_gdm,
             'data': this.well_passport_data.gdisConclusion
           },
           {
             'description': null,
             'method': null,
-            'name': 'Длина хода при проведении ГДМ',
+            'name': this.lang.length_hod_gdm,
             'data': this.well_passport_data.gdisCurrentValue
           },
           {
             'description': null,
             'method': null,
-            'name': 'число качаний при проведении ГДМ',
+            'name': this.lang.count_swing,
             'data': this.well_passport_data.gdisCurrentValuePmpr
           },
           {
             'description': null,
             'method': null,
-            'name': 'Динамический уровень',
+            'name': this.lang.dynamic_level,
             'data': this.well_passport_data.gdisCurrentValueFlvl
           },
           {
             'description': null,
             'method': null,
-            'name': 'Статический уровень',
+            'name': this.lang.static_level,
             'data': this.well_passport_data.gdisCurrentValueStatic
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рпл/(дата замера)',
+            'name': this.rpl_date,
             'data': this.well_passport_data.gdisCurrentValueRp
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рпл (Сл. ГДИС)/(дата замера)',
+            'name': this.lang.rpl_sl_gdis,
             'data': this.well_passport_data.gdisComplex
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рзаб/(дата замера)',
+            'name': this.lang.rzab,
             'data': this.well_passport_data.gdisCurrentValueBhp
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рзатр(дин), атм',
+            'name': this.lang.rzatr,
             'data': this.well_passport_data.rzatrAtm
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рзатр(стат)',
+            'name': this.lang.rzatr_stat,
             'data': this.well_passport_data.rzatrStat
           },
           {
             'description': null,
             'method': null,
-            'name': 'Примечание',
+            'name': this.lang.note,
             'data': this.well_passport_data.gdisCurrent_note
           }
         ]
@@ -1304,277 +1304,277 @@ export default {
           {
             'description': null,
             'method': null,
-            'name': 'Скважина',
+            'name': this.lang.well,
             'data': this.well_passport_data.well
           },
           {
             'description': null,
             'method': null,
-            'name': 'Вид скважины',
+            'name': this.lang.view_well,
             'data': this.well_passport_data.wellType
           },
           {
             'description': null,
             'method': null,
-            'name': 'Месторождение',
+            'name': this.lang.well_field,
             'data': this.well_passport_data.wellGeoFields
           },
           {
             'description': '',
             'method': 'neighbors',
-            'name': 'Горизонт / Pнас, атм',
+            'name': this.lang.horizont_rnas,
             'data': this.well_passport_data.neighbors
           },
           {
             'description': null,
             'method': null,
-            'name': 'H ротора',
+            'name': this.lang.h_rotor,
             'data': this.well_passport_data.wellInfo
           },
           {
             'description': null,
             'method': null,
-            'name': 'Тех. структура',
+            'name': this.lang.tech_struct,
             'data': this.well_passport_data.wellTechsName
           },
           {
             'description': null,
             'method': null,
-            'name': 'Отвод',
+            'name': this.lang.otvod,
             'data': this.well_passport_data.tap
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'ГУ/АГЗУ',
+            'name': this.lang.gu_zu,
             'data': this.well_passport_data.gu_agsu
           },
           {
             'description': null,
             'method': null,
-            'name': 'Орг. структура',
+            'name': this.lang.org_struct,
             'data': this.well_passport_data.wellOrgName
           },
           {
             'description': null,
             'method': null,
-            'name': 'Зона скважины',
+            'name': this.lang.zone_well,
             'data': this.well_passport_data.well_zone
           },
           {
             'description': null,
             'method': null,
-            'name': 'Реагирующие скважины',
+            'name': this.lang.reactive_wells,
             'data': this.well_passport_data.wellReactInfl_reacting
           },
           {
             'description': null,
             'method': null,
-            'name': 'Влияющие скважины',
+            'name': this.lang.influence_well,
             'data': this.well_passport_data.wellReactInfl
           },
           {
             'description': null,
             'method': null,
-            'name': 'Координаты X (устья)',
+            'name': this.lang.coord_x_outfall,
             'data': this.well_passport_data.wellSaptialObjectX
           },
           {
             'description': null,
             'method': null,
-            'name': 'Координаты Y (устья)',
+            'name': this.lang.coord_y_outfall,
             'data': this.well_passport_data.wellSaptialObjectY
           },
           {
             'description': null,
             'method': null,
-            'name': 'Координаты забоя X',
+            'name': this.lang.zaboi_x,
             'data': this.well_passport_data.wellSaptialObjectBottomX
           },
           {
             'description': null,
             'method': null,
-            'name': 'Координаты забоя Y',
+            'name': this.lang.zaboi_y,
             'data': this.well_passport_data.wellSaptialObjectBottomY
           },
           {
             'description': null,
             'method': null,
-            'name': 'Назначение скважин по проекту',
+            'name': this.lang.assign_well_project,
             'data': this.well_passport_data.well_category
           },
           {
             'description': null,
             'method': null,
-            'name': 'Категория',
+            'name': this.lang.category,
             'data': this.well_passport_data.categoryLast
           },
           {
             'description': '',
             'method': 'neighbors',
-            'name': 'Период бурения',
+            'name': this.lang.period_bur,
             'data': this.well_passport_data.period_bur
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата ввода в эксплуатацию',
+            'name': this.lang.date_expluatation,
             'data': this.well_passport_data.wellExpl
           },
           {
             'description': null,
             'method': null,
-            'name': 'Состояние',
+            'name': this.lang.status,
             'data': this.well_passport_data.well_status
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тип УО / наличие эксц. болта',
+            'name': this.lang.uo_bolt,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+            'name': this.lang.diametr,
             'data': this.well_passport_data.tubeNomOd
           },
           {
             'description': '',
             'method': null,
-            'name': 'Тип колонной головки / размеры',
+            'name': this.lang.type_gol,
             'data': ''
           },
           {
             'description': '',
             'method': null,
-            'name': 'Глубина спуска пакера',
+            'name': this.lang.packer_running_depth,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Фактический забой/(дата отбивки)',
+            'name': this.lang.fact_zaboi,
             'data': this.well_passport_data.actualBottomHole
           },
           {
             'description': null,
             'method': null,
-            'name': 'Искусственный забой',
+            'name': this.lang.synthetic_zaboi,
             'data': this.well_passport_data.artificialBottomHole
           },
           {
             'description': null,
             'method': null,
-            'name': 'Отбитый забой',
+            'name': this.lang.broken_zaboi,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Глубина спуска НКТ, м',
+            'name': this.lang.depth_down,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'КШД (тип/диаметр)',
+            'name': this.lang.kshd,
             'data': ''
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата перфорации',
+            'name': this.lang.date_perforation,
             'data': ''
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Действующие интервалы перфорации',
+            'name': this.lang.progress_interval_perforation,
             'data': this.well_passport_data.perfActual
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Приемистость, м3/сут (режим/факт)',
+            'name': this.lang.pickup,
             'data': this.well_passport_data.injPressure
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Давление закачки, атм (режим/факт)',
+            'name': this.lang.injection_pressure,
             'data': this.well_passport_data.agentVol
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Дата последнего КРС',
+            'name': this.lang.date_krs,
             'data': this.well_passport_data.krsWorkover
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата проведения ПФП нагн. скважины',
+            'name': this.lang.date_pfp,
             'data': this.well_passport_data.treatmentDate
           },
           {
             'description': null,
             'method': null,
-            'name': 'Дата проведения ГРП',
+            'name': this.lang.date_krp,
             'data': this.well_passport_data.well_gtm
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата проведения СКО',
+            'name': this.lang.date_sko,
             'data': this.well_passport_data.treatmentSko
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата проведения КПД',
+            'name': this.lang.date_kpd,
             'data': this.well_passport_data.well_gdisCurrent
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Дата последнего ПРС',
+            'name': this.lang.date_prc,
             'data':  this.well_passport_data.prsWellWorkover
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата последнего ГИС',
+            'name': this.lang.date_last_gis,
             'data': this.well_passport_data.well_gis
           },
           {
             'description': null,
             'method': 'trimToDate',
-            'name': 'Дата последнего ГДИС',
+            'name': this.lang.date_last_gdis,
             'data': this.well_passport_data.well_gdisCurrent2
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Рпл/(дата замера)',
+            'name': this.lang.rpl_date,
             'data': this.well_passport_data.gdisCurrentValueRp
           },
           {
             'description': null,
             'method': 'neighbors',
-            'name': 'Рпл (Сл. ГДИС)/(дата замера)',
+            'name': this.lang.rpl_sl_gdis,
             'data': this.well_passport_data.gdisComplex
           },
           {
             'description': null,
             'method': null,
-            'name': 'Рзатр(дин), атм',
+            'name': this.lang.rzatr,
             'data': this.well_passport_data.rzatrAtm
           },
           {
             'description': null,
             'method': null,
-            'name': 'Примечание',
+            'name': this.lang.note,
             'data': this.well_passport_data.gdisCurrent_note
           },
         ]
