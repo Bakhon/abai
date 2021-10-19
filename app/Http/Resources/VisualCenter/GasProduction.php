@@ -36,6 +36,10 @@ class GasProduction {
             'fact' => 'associated_gas_expenses_for_own_fact',
             'plan' => 'plan_poput_gas_raskhod'
         ),
+        'processingAssociatedGas' => array(
+            'fact' => 'associated_gas_processing_fact',
+            'plan' => 'plan_poput_gas_pererabotka'
+        ),
     );
     private $decreaseReasonFields = array (
         'opec_explanation_reasons',
@@ -101,11 +105,10 @@ class GasProduction {
             }
             $updated = $this->getData($dzoName,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$fields);
             if (count($updated) > 0) {
-                $sorted = $this->getSortedById($updated);
                 $summary = array_merge($summary,$updated);
             }
         }
-        return $summary;
+        return $this->getSortedByPlan($summary);
     }
 
     private function getData($dzo,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$categoryFields)
@@ -125,7 +128,6 @@ class GasProduction {
         }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = $filteredPlan->sum($categoryFields['plan']) * $daysInMonth;
-            $companySummary['plan'] *= Carbon::now()->day - 1;
         }
         if ($periodType === 'year') {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);
@@ -161,28 +163,18 @@ class GasProduction {
 
     private function getCurrentPlanForYear($filteredPlan,$fieldName)
     {
-        $summaryPlan = 0;
-        foreach($filteredPlan as $monthlyPlan) {
-            if (Carbon::parse($monthlyPlan['date'])->month < Carbon::now()->month) {
-                $summaryPlan += $monthlyPlan[$fieldName] * Carbon::parse($monthlyPlan['date'])->daysInMonth;
-            }
-            if (Carbon::parse($monthlyPlan['date'])->month === Carbon::now()->month) {
-                $summaryPlan += $monthlyPlan[$fieldName] * Carbon::now()->day - 1;
-            }
+        $summary = 0;
+        foreach($filteredPlan as $plan) {
+            $summary += $plan[$fieldName] * Carbon::parse($plan['date'])->daysInMonth;
         }
-        return $summaryPlan;
+        return $summary;
     }
 
-    private function getSortedById($data)
+    private function getSortedByPlan($data)
     {
-        $ordered = array();
-        foreach(array_keys($this->companies) as $value) {
-            $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
-                array_push($ordered,$data[$key]);
-            }
-        }
-        return $ordered;
+        $sorted = array_column($data, 'plan');
+        array_multisort($sorted, SORT_DESC, $data);
+        return $data;
     }
 
     private function getSummary($naturalGas,$associatedGas)
@@ -203,10 +195,10 @@ class GasProduction {
             }
             array_push($summaryGas,$summary);
         }
-        return $summaryGas;
+        return $this->getSortedByPlan($summaryGas);
     }
 
-    public function getChartData($fact,$plan,$dzoName,$type)
+    public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
     {
         if (!is_null($dzoName)) {
             $this->companies = array();
@@ -235,7 +227,11 @@ class GasProduction {
             $dzoName = $item['dzo_name'];
             $planRecord = $formattedPlan[$formattedDate][$dzoName];
             $daySummary['fact'] = $item[$factField];
-            $daySummary['plan'] = $planRecord[$planField];
+            if ($periodType === 'year') {
+                $daySummary['plan'] = $planRecord[$planField];
+            } else {
+                $daySummary['plan'] = $planRecord[$planField] / $periodRange;
+            }
             $daySummary['date'] = $date;
             $daySummary['name'] = $dzoName;
             if ($type === 'gasProduction') {

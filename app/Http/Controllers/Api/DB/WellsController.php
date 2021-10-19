@@ -18,14 +18,24 @@ use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Models\BigData\Gtm;
+use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class WellsController extends Controller
 {
+
+    private $wellCardGraphRepo;
+
+    public function  __construct(WellCardGraphRepository $wellCardGraphRepo)
+    {
+        $this->wellCardGraphRepo = $wellCardGraphRepo;
+    }
+
     public function getStructureTree(StructureService $service, Request $request)
     {
         return $service->getTreeWithPermissions();
@@ -477,117 +487,15 @@ class WellsController extends Controller
         ];
     }
 
-    public function getProductionWellsScheduleData(Request $request):array {
-        $result = [
-            'measLiq' => [
-                'name' => trans('app.liquid'),
-                'type' => 'area',
-                'data' => [],
-                ],
-            'measWaterCut' => [
-                'name' => trans('app.waterCut'),
-                'type' => 'line',
-                'data' => [],
-                ],
-            'oil' => [
-                'name' => trans('app.oil'),
-                'type' => 'area',
-                'data' => [],
-                ],
-            'ndin' => [
-                'name' => trans('app.ndin'),
-                'type' => 'line',
-                'data' => [],
-            ],
-            'labels' => [],
-            'wellStatuses' => [],
-        ];
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getProductionWellsScheduleData(Request $request):object {
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $dateFrom = Carbon::now('Asia/Almaty');
-        $measLiqs = MeasLiq::where('well', $wellId);
-        $measWaterCuts = MeasWaterCut::where('well', $wellId);
-        $wellStatuses = WellStatus::where('well', $wellId);
-        $gdisCurrent = GdisCurrent::where('well', $wellId);
-        $gdisCurrentValueResult = [];
-        if ($period) {
-            $dateFrom->subDays($period);
-            $measLiqs->where('dbeg', '>=', $dateFrom);
-            $measWaterCuts->where('dbeg', '>=', $dateFrom);
-            $wellStatuses->where('dbeg', '>=', $dateFrom);
-            if ($gdisCurrent) {
-                $gdisCurrent->where('meas_date', '>=', $dateFrom);
-            }
-        }
-        $measLiqs = $measLiqs->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        $measWaterCuts = $measWaterCuts->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        $wellStatuses = $wellStatuses->with('statusType')
-            ->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        if ($gdisCurrent) {
-            $gdisCurrent = $gdisCurrent
-                ->get()
-                ->toArray();
-            $gdisCurrent = array_map(function ($item) {
-                return $item['id'];
-            }, $gdisCurrent);
-            if ($gdisCurrent) {
-                $metric = Metric::where('code', 'FLVL')->first();
-                if($metric) {
-                    $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
-                        ->whereIn('gdis_curr', $gdisCurrent)
-                        ->with('gdisCurrent')
-                        ->get();
-                    foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
-                        $gdisCurrentValueResult[] = [
-                            'value_double' => $gdisCurrentValueItem['value_double'],
-                            'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
-                        ];
-                    }
-                }
-            }
-        }
-        foreach ($wellStatuses as $wellStatus) {
-            $result['wellStatuses'][] = [
-                DateTime::createFromFormat('Y-m-d H:i:sP', $wellStatus['dbeg'])->format('Y-m-d'),
-                $wellStatus['status_type']['code'],
-                $wellStatus['status_type']['name_ru'],
-            ];
-        }
-
-        foreach ($measLiqs as $measLiq) {
-            $measWaterCutVal = $oilVal = $gdisCurrentVal = 0;
-            $dateTime = DateTime::createFromFormat('Y-m-d H:i:sP', $measLiq['dbeg']);
-            $result['measLiq']['data'][] = $measLiq['liquid'];
-            $result['labels'][] = $dateTime->format('Y-m-d');
-            foreach ($measWaterCuts as $measWaterCut) {
-                $dateTimeWCBeg = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
-                $dateTimeWCEnd = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dend']);
-                if ($dateTimeWCBeg >= $dateTime && $dateTime >= $dateTimeWCEnd) {
-                    $measWaterCutVal = $measWaterCut['water_cut'];
-                    $oilVal = round(abs($measLiq['liquid'] * (1 - $measWaterCut['water_cut'] / 100) * 0.86));
-                    break;
-                }
-            }
-            foreach ($gdisCurrentValueResult as $gdisCurrentValueResultItem) {
-                $dateTimeGdis = DateTime::createFromFormat('Y-m-d H:i:s',
-                    $gdisCurrentValueResultItem['meas_date'] . ' 00:00:00');
-                if ($dateTime == $dateTimeGdis) {
-                    $gdisCurrentVal = $gdisCurrentValueResultItem['value_double'];
-                    break;
-                }
-            }
-            $result['measWaterCut']['data'][] = $measWaterCutVal;
-            $result['oil']['data'][] = $oilVal;
-            $result['ndin']['data'][] = $gdisCurrentVal;
-        }
-
-        return $result;
+        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        return response()->json($result);
     }
 
     public function getInjectionHistory($wellId)

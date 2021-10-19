@@ -41,6 +41,7 @@ export default {
                 formatInput: true,
             },
             disabledDate: moment().subtract(1,'days').format(),
+            minimumDate: moment().startOf('year').startOf('day').format(),
             mainMenu: {
                 'oilCondensateProduction': true,
                 'oilCondensateProductionWithoutKMG': false,
@@ -57,6 +58,7 @@ export default {
                 'expensesForOwnNaturalGas': false,
                 'associatedGasDelivery': false,
                 'expensesForOwnAssociatedGas': false,
+                'processingAssociatedGas': false,
                 'waterInjection': false,
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,
@@ -80,7 +82,8 @@ export default {
                 }
             },
             companiesWithData: [],
-            exceptionDzo: ['КГМКМГ','ТП','ПККР']
+            exceptionDzo: ['КГМКМГ','ТП','ПККР'],
+            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY')
         }
     },
     methods: {

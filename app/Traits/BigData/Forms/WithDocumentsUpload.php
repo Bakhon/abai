@@ -127,7 +127,7 @@ trait WithDocumentsUpload
 
         return $files->map(function ($file) use ($filesInfo) {
             $file->info = $filesInfo->where('id', $file->file)->first();
-            $file->filename = $file->info->filename;
+            $file->filename = $file->info->file_name;
             return $file;
         })
             ->groupBy('id')

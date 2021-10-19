@@ -6,8 +6,6 @@ import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
 import ReportModal from './modals/ReportModal'
 import ExportModal from './modals/ExportModal'
 import './MyFilter'
-import {Datetime} from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
 import 'ol/ol.css';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
@@ -16,18 +14,17 @@ import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import Projection from 'ol/proj/Projection';
 import View from 'ol/View';
-import monthlyOilValue from './data.json'
-import {LineString, Polygon} from "ol/geom";
+import {Point, LineString, Polygon} from "ol/geom";
 import LayerGroup from "ol/layer/Group";
 import {globalloadingMutations} from '@store/helpers';
 import draggable from 'vuedraggable'
+import {Overlay} from "ol";
+import Chart from 'ol-ext/style/Chart'
+import CircleStyle from "ol/style/Circle";
 
 export default {
     data() {
         return {
-            monthlyOilValue: monthlyOilValue.data,
-            accumulatedSelected: false,
-            currentSelected: false,
             selectedMonth: null,
             viewMenu: false,
             viewMenuLayers: false,
@@ -37,8 +34,6 @@ export default {
             left: '0px',
             windHeight: window.innerHeight,
             windWidth: window.innerWidth,
-            date: null,
-            mapInitialized: false,
             leftTools: [
                 {
                     icon: 'fas fa-plus',
@@ -79,10 +74,10 @@ export default {
             ],
             map: {},
             layerGroups: [],
+            gridMapsValues: [],
         }
     },
     components: {
-        Datetime,
         PrinterModal,
         BuildMapModal,
         BuildMapSpecificModal,
@@ -189,7 +184,7 @@ export default {
                 }),
                 style: new Style({
                     stroke: new Stroke({
-                        color: '#f00',
+                        color: '#3be7c5',
                         width: 3,
                     }),
                 }),
@@ -198,8 +193,7 @@ export default {
             let layerGroup = new LayerGroup();
             layerGroup.name = 'Слой ' + this.layerGroups.length;
             layerGroup.getLayers().push(newLayer);
-            this.map.getLayerGroup().getLayers().push(layerGroup);
-            this.layerGroups.push(layerGroup);
+            this.addLayerGroupToMap(layerGroup);
             this.SET_LOADING(false);
         },
         sendFileToAPI(file, type) {
@@ -217,10 +211,10 @@ export default {
               }
             ).then((response) => {
                 if (response.data) {
-                    if (type === 'shp') {
+                    if (type === 'shp' || type === 'txt') {
                         this.drawLines(response.data)
                     } else {
-                        this.initPolygons(response.data);
+                        this.addPolygons(response.data);
                     }
                 }
                 this.SET_LOADING(false);
@@ -231,27 +225,29 @@ export default {
             });
         },
         initMap(projection) {
+            const mapExtent = projection.getExtent();
             this.map = new Map({
                 target: 'olmap',
                 layers: this.layerGroups,
                 view: new View({
                     projection: projection,
-                    center: [projection.extent_[0] + (projection.extent_[2] - projection.extent_[0]) / 2,
-                        projection.extent_[1] + (projection.extent_[3] - projection.extent_[1]) / 2],
+                    center: [mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 2,
+                        mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2],
                     zoom: 1,
                 }),
             });
         },
-        initPolygons(data) {
-            const x1 = data.top_left[0];
-            const y1 = data.top_left[1];
-            const x2 = data.bottom_right[0];
-            const y2 = data.bottom_right[1];
+        addPolygons(data) {
+            let x1 = data.top_left[0];
+            let y1 = data.top_left[1];
+            let x2 = data.bottom_right[0];
+            let y2 = data.bottom_right[1];
             const extent = [x1, y1, x2, y2];
             const projection = new Projection({
                 units: 'pixels',
                 extent: extent,
             });
+            this.initMap(projection);
             const internalStyle = new Style({
                 stroke: new Stroke({
                     color: 'rgba(255, 255, 255, 0.1)',
@@ -280,48 +276,24 @@ export default {
             let redColor = 255;
             let greenColor = 255;
             data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
-                let internalVectorSource = new VectorSource();
-                let externalVectorSource = new VectorSource();
                 levelIndex = levelIndex !== 0 ? levelIndex : 1;
                 const colorIndex = 255 - 255 / (levelIndex);
                 if (levelIndex % 2 === 0) {
-                    greenColor = colorIndex;
-                } else {
                     redColor = colorIndex;
+                } else {
+                    greenColor = colorIndex;
                 }
-                polygonsPerLevel.polygons.forEach((polygon) => {
-                    const feature = new Feature({
-                        geometry: new Polygon([polygon.data])
-                    });
-                    if (polygon.type === 'internal') {
-                        internalVectorSource.addFeature(feature)
-                    } else {
-                        externalVectorSource.addFeature(feature)
-                    }
+                this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
+                  'internal': internalStyle,
+                  'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
+                    parseInt(polygonsPerLevel.lower_bound).toString()),
                 });
-                const externalStyle = new Style({
-                    stroke: new Stroke({
-                        color: `rgba(${redColor}, ${greenColor}, 0, 0.5)`,
-                        width: 1,
-                    }),
-                    fill: new Fill({
-                        color: `rgba(${redColor}, ${greenColor}, 0, 0.5)`,
-                    }),
-                });
-                let internalVectorLayer = new VectorLayer({
-                    source: internalVectorSource,
-                    style: internalStyle,
-                });
-                let externalVectorLayer = new VectorLayer({
-                    source: externalVectorSource,
-                    style: externalStyle,
-                });
-                layerGroup.getLayers().push(externalVectorLayer);
-                layerGroup.getLayers().push(internalVectorLayer);
             });
             layerGroup.name = 'Слой ' + this.layerGroups.length;
-            this.layerGroups.push(layerGroup)
-            this.initMap(projection);
+            this.addLayerGroupToMap(layerGroup);
+            if (typeof data.grid !== "undefined") {
+                this.addGrid(data);
+            }
         },
         toggleOpacity(layerGroup) {
             layerGroup.forEach(layer => {
@@ -336,6 +308,200 @@ export default {
                     layer.setZIndex(index);
                 })
             })
+        },
+        addGrid(data) {
+            let binValues = this.decodeFromBase64(data.grid);
+            let shape = data.shape;
+            let resultArray = [];
+            for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
+                resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
+            }
+            if (this.map) {
+                const self = this;
+                const mapExtent = this.map.getView().getProjection().getExtent();
+                this.gridMapsValues.push(resultArray);
+                let popupDiv = document.createElement('div');
+                let popupOverlay = new Overlay({
+                    element: popupDiv,
+                });
+                this.map.on('pointermove', function (evt) {
+                    if (
+                      evt.coordinate[0] < mapExtent[0]
+                      || evt.coordinate[0] > mapExtent[2]
+                      || evt.coordinate[1] < mapExtent[1]
+                      || evt.coordinate[1] > mapExtent[3]
+                      || evt.dragging
+                    ) {
+                        popupDiv.classList.add('d-none');
+                        return;
+                    }
+                    if (self.gridMapsValues.length > 0) {
+                        const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
+                        const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
+                        popupDiv.classList.remove('d-none');
+                        popupOverlay.setPosition(evt.coordinate);
+                        let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
+                        let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
+                        let value = self.gridMapsValues[0][x][y];
+                        if (isNaN(value)) {
+                            popupDiv.classList.add('d-none');
+                            return;
+                        }
+                        popupDiv.innerHTML = '<div class="bg-white p-1"> Значение: ' + value.toFixed(2) + '</div';
+                    }
+                });
+                this.map.addOverlay(popupOverlay);
+            }
+            this.SET_LOADING(false);
+        },
+        decodeFromBase64(encodedString) {
+            let binary_string = atob(encodedString);
+            let buffer = new ArrayBuffer(binary_string.length);
+            let bytes_buffer = new Uint8Array(buffer);
+
+            for (let i = 0; i < binary_string.length; i++) {
+                bytes_buffer[i] = binary_string.charCodeAt(i);
+            }
+
+            let values = new Float64Array(buffer);
+            return Array.from(values);
+        },
+        showBubbles() {
+            const mapExtent = this.map.getView().getProjection().getExtent();
+            const middleX = mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 2;
+            const middleY = mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2;
+            let oilWithWaterBubbleStyle = new Style({
+                image: new Chart({
+                    radius: 15,
+                    type: "pie",
+                    data: [120 , 20],
+                    colors: [`rgba(222, 138, 11, 0.8)`, `rgba(10, 134, 145, 0.8)`],
+                }),
+            });
+            let waterBubbleStyle = new Style({
+                image: new CircleStyle({
+                    radius: 20,
+                    fill: new Fill({
+                        color: 'rgba(14, 162, 198, 0.6)',
+                    }),
+                    stroke: new Stroke({
+                        color: 'rgba(14, 162, 198, 0.8)',
+                        width: 1,
+                    }),
+                }),
+            });
+            let bubbleLayers = [
+                new VectorLayer({
+                    source: new VectorSource({
+                        features: [new Feature({
+                            geometry: new Point([middleX, middleY]),
+                        })]
+                    }),
+                    style: [oilWithWaterBubbleStyle],
+                    zIndex: this.layerGroups.length + 1
+                }),
+                new VectorLayer({
+                    source: new VectorSource({
+                        features: [new Feature({
+                            geometry: new Point([
+                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 1.5,
+                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2.5,
+                            ]),
+                        })]
+                    }),
+                    style: [oilWithWaterBubbleStyle],
+                    zIndex: this.layerGroups.length + 1
+                }),
+                new VectorLayer({
+                    source: new VectorSource({
+                        features: [new Feature({
+                            geometry: new Point([
+                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 1.5,
+                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 1.5,
+                            ]),
+                        })]
+                    }),
+                    style: [oilWithWaterBubbleStyle],
+                    zIndex: this.layerGroups.length + 1
+                }),
+                new VectorLayer({
+                    source: new VectorSource({
+                        features: [new Feature({
+                            geometry: new Point([
+                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 4,
+                                middleY
+                            ]),
+                        })]
+                    }),
+                    style: [waterBubbleStyle],
+                    zIndex: this.layerGroups.length + 1
+                }),
+                new VectorLayer({
+                    source: new VectorSource({
+                        features: [new Feature({
+                            geometry: new Point([
+                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 4,
+                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2.5,
+                            ]),
+                        })]
+                    }),
+                    style: [waterBubbleStyle],
+                    zIndex: this.layerGroups.length + 1
+                }),
+            ];
+            let layerGroup = new LayerGroup();
+            bubbleLayers.forEach(item => {
+                layerGroup.getLayers().push(item);
+            })
+            layerGroup.name = 'Слой ' + this.layerGroups.length;
+            this.addLayerGroupToMap(layerGroup);
+        },
+        addLayerGroupToMap(layerGroup) {
+            this.layerGroups.push(layerGroup);
+            this.map.getLayerGroup().getLayers().push(layerGroup);
+        },
+        getPolygonsLayerGroup(layerGroup, polygonsPerLevel, styles) {
+            let internalVectorSource = new VectorSource();
+            let externalVectorSource = new VectorSource();
+            polygonsPerLevel.polygons.forEach((polygon) => {
+                const feature = new Feature({
+                    geometry: new Polygon([polygon.data])
+                });
+                if (polygon.type === 'internal') {
+                    internalVectorSource.addFeature(feature)
+                } else {
+                    externalVectorSource.addFeature(feature)
+                }
+            });
+            let internalVectorLayer = new VectorLayer({
+                source: internalVectorSource,
+                style: styles.internal,
+            });
+            let externalVectorLayer = new VectorLayer({
+                source: externalVectorSource,
+                style: styles.external,
+            });
+            layerGroup.getLayers().push(externalVectorLayer);
+            layerGroup.getLayers().push(internalVectorLayer);
+        },
+        getExternalLayerStyle(color, text) {
+            return new Style({
+                stroke: new Stroke({
+                    color: color,
+                    width: 1,
+                }),
+                fill: new Fill({
+                    color: color,
+                }),
+                text: new Text({
+                    font: '14px bold Calibri,sans-serif',
+                    fill: new Fill({
+                        color: 'white',
+                    }),
+                    text: text,
+                    placement: 'line',
+                }),
+            });
         }
     },
 }
