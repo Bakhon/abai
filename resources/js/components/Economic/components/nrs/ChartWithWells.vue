@@ -289,13 +289,16 @@ export default {
           flexGrow: 1,
         },
         {
-          title: 'Прибыль / убыток',
+          title: `
+            ${this.trans('economic_reference.profit')} /
+            ${this.trans('economic_reference.loss').toLocaleLowerCase()}
+          `,
           dimensionTitle: `
             ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
           `,
           value: 'operatingProfit',
-          flexWidth: '120px',
+          flexWidth: '140px',
           flexGrow: 1,
         },
       ]

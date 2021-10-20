@@ -64,8 +64,7 @@
             </economic-title>
 
             <subtitle :font-size="14" class="mt-2 line-height-18px">
-              Убытки по НРС за последний месяц
-<!--              {{ trans('economic_reference.operating_profit_last_month') }}-->
+              {{ trans('economic_reference.operating_profit_last_month') }}
             </subtitle>
           </economic-col>
 
