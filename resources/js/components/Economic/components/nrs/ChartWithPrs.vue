@@ -59,39 +59,36 @@ export default {
   }),
   computed: {
     chartSeries() {
-      let data = [...this.defaultSeries]
+      let series = [...this.defaultSeries]
 
       if (this.isVisibleInPause && this.isVisibleInWork) {
-        this.chartKeys.forEach(key => {
-          data.push(this.chartArea(key, this.totalData))
-        })
-
-        return data
+        return this.fillSeries(series, 'totalData')
       }
 
       if (this.isVisibleInPause) {
-        this.chartKeys.forEach(key => {
-          data.push(this.chartArea(key, this.pausedData))
-        })
-
-        return data
+        return this.fillSeries(series, 'pausedData')
       }
 
       if (this.isVisibleInWork) {
-        this.chartKeys.forEach(key => {
-          data.push(this.chartArea(key, this.data))
-        })
-
-        return data
+        return this.fillSeries(series, 'data')
       }
 
-      return data
+      return series
     },
 
     title() {
       return this.trans('economic_reference.count_prs')
     }
   },
+  methods: {
+    fillSeries(series, dataKey) {
+      this.chartKeys.forEach(chartKey => {
+        series.push(this.chartArea(chartKey, this[dataKey]))
+      })
+
+      return series
+    }
+  }
 }
 </script>
 
