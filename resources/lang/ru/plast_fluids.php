@@ -124,4 +124,7 @@ return array (
   'template_upload_successfully' => 'Шаблон успешно загружен',
   'no_data' => 'Нет данных',
   'data' => 'Данные',
+  'actions' => 'Действия',
+  'download' => 'Скачать',
+  'error_with_template' => 'Ошибка с шаблоном, перепроверьте данные',
 );

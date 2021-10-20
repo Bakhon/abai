@@ -6,7 +6,7 @@
         <p v-if="reportDuplicated">
           {{ trans("plast_fluids.report_duplicated") }}
         </p>
-        <p v-else>Ошибка с шаблоном, перепроверьте данные</p>
+        <p v-else>{{ trans("plast_fluids.error_with_template") }}</p>
       </div>
       <div style="color: green;" v-if="downloadFileData.status === 'ok'">
         <p>
