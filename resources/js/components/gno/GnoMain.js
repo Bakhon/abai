@@ -15,6 +15,7 @@ import * as htmlToImage from "html-to-image";
 import Tabs from "./components/tabs/Tabs.vue";
 import { globalloadingMutations } from "@store/helpers";
 import _ from 'lodash'
+import orgSample from "./jsons/orgs.json";
 
 const fileDownload = require("js-file-download");
 
@@ -60,32 +61,7 @@ export default {
       wellNumber: null,
       curveSelect: "pi",
       curveQselect: null,
-      fieldsByOrgId: {
-        "АО «ОзенМунайГаз»": [
-          {
-            short_name: "UZN",
-            full_name: "Узень",
-            id: 1,
-          },
-          {
-            short_name: "KMB",
-            full_name: "Карамандыбас",
-            id: 2,
-          },
-        ],
-        "АО «Мангистаумунайгаз»": [
-          {
-            short_name: "JET",
-            full_name: "Жетыбай",
-            id: 3,
-          },
-          {
-            short_name: "ASA",
-            full_name: "Асар",
-            id: 4,
-          },
-        ],
-      },
+      fieldsByOrgId: orgSample,
       shgnTubOD: null,
       expAnalysisData: {
         NNO1: null,
@@ -105,10 +81,13 @@ export default {
         nno1: null,
         nno2: null,
       },
+      dzos: null,
+      dzo: null,
+      fields: null,
       field: null,
+      isDisabledForKgm: false,
       windowWidth: null,
       ao: null,
-      organizations: [],
       centratorsRequiredValue: null,
       nkt_choose: [
         {
@@ -163,17 +142,6 @@ export default {
   },
   beforeCreate: function () {
     this.apiUrl = process.env.MIX_PGNO_API_URL;
-    this.axios.get("/ru/organizations").then(({ data }) => {
-      var orgs = data.organizations
-      if (orgs.length === 0) {
-        this.orgs = [...this.fieldsByOrgId["АО «ОзенМунайГаз»"], ...this.fieldsByOrgId["АО «Мангистаумунайгаз»"]]
-      }
-      for (let orgName in this.fieldsByOrgId) {
-        if (orgs.some(org => org['name'] === orgName)) {
-          this.organizations = [...this.organizations, ...this.fieldsByOrgId[orgName]]
-          }
-        }
-      }),
 
     this.axios.get(this.apiUrl + "status").then((response) => {
       this.isServiceOnline = true;
@@ -217,7 +185,16 @@ export default {
       "setCurveSettings",
       "getInclinometry",
     ]),
-
+    chooseDZO() {
+      this.field = null
+      this.wellNumber = null
+      if (this.dzo ==='ТОО «СП КазГерМунай»') {
+        this.isDisabledForKgm = true
+        this.curveSettings.expChoosen = "ЭЦН"
+      } else {
+        this.isDisabledForKgm = false
+      }
+    },
     setNotify(message, title, type) {
       this.$bvToast.toast(message, {
         title: title,
@@ -880,6 +857,20 @@ export default {
       this.windowWidth = window.innerWidth;
     });
     this.setDefault();
+    switch(true){
+      case this.user.org_structure.includes("org:2"):
+        this.dzos = Object.keys(orgSample)
+        break;
+      case userthis.user.org_structureOrgs.includes("org:112"):
+        this.dzos = ["АО «Мангистаумунайгаз»"]
+        break;
+      case this.user.org_structure.includes("org:3"):
+        this.dzos = ["АО ОзенМунайГаз"]
+        break;
+      case this.user.org_structure.includes("org:179"):
+        this.dzos = ["ТОО «СП КазГерМунай»"]
+        break;
+    }
   },
 };
   

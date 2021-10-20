@@ -47,8 +47,10 @@ export const chartInitMixin = {
         },
 
         defaultSeries() {
-            return this.isVisibleDefaultSeries ?
-                [
+            let series = []
+
+            if (this.isVisibleDefaultSeries) {
+                series.push(
                     {
                         name: this.trans('economic_reference.course_prices'),
                         type: 'line',
@@ -61,8 +63,10 @@ export const chartInitMixin = {
                         data: this.oilPrices,
                         defaultColor: '#FC35B0',
                     }
-                ]
-                : []
+                )
+            }
+
+            return series
         },
 
         defaultColors() {
