@@ -3,7 +3,9 @@
     <p class="monitoring-table-title">
       {{ trans("plast_fluids.downloads_monitoring") }}
     </p>
-
+    <div class="loader-holder" v-if="loading">
+      <SmallCatLoader :loading="loading" page="upload" />
+    </div>
     <BaseTable
       :fields="fields"
       :items="items"
@@ -11,6 +13,7 @@
       :currentPage="currentPage"
       @sort-by-arrow-filter="sortByKey"
       @show-items-per-page="showItemsPerPage"
+      tableType="upload"
       pagination
       filter
       sticky
@@ -20,12 +23,18 @@
 
 <script>
 import BaseTable from "./BaseTable.vue";
+import SmallCatLoader from "./SmallCatLoader.vue";
 import { getTemplateHistory } from "../services/templateService";
+import { mapState } from "vuex";
 
 export default {
   name: "MonitoringDataTable",
   components: {
+    SmallCatLoader,
     BaseTable,
+  },
+  computed: {
+    ...mapState("plastFluidsLocal", ["loading"]),
   },
   props: {
     currentSubsoil: Object,
@@ -136,6 +145,7 @@ export default {
 .monitoring-table-div {
   display: flex;
   flex-flow: column;
+  position: relative;
   justify-content: space-between;
   flex: 2 1 auto;
   padding: 15px;
@@ -151,5 +161,12 @@ export default {
   font-size: 22px;
   color: #fff;
   height: 30px;
+}
+
+.loader-holder {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 47px);
+  z-index: 100;
 }
 </style>

@@ -26,6 +26,21 @@ export const downloadTemplate = async (postData) => {
   }
 };
 
+export const downloadUserReport = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/templates/download-report-file`,
+      postData,
+      {
+        responseType: "blob",
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const uploadTemplate = async (postData) => {
   try {
     const response = await axios.post(
