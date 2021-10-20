@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Exports\ManualCalculateExport;
+use App\Exports\ManualCalculateExportCalc;
 use App\Filters\ManualHydroCalculationFilter;
 use App\Imports\HydroCalcResultImport;
 use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
@@ -186,9 +186,9 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             'columnNames' => $this->columnNames
         ];
 
-        $fileName = 'pipeline_calc_input.xlsx';
+        $fileName = 'pipeline_calc_input_' . auth()->user()->id . '.xlsx';
         $filePath = 'public/export/' . $fileName;
-        Excel::store(new ManualCalculateExport($data), $filePath);
+        Excel::store(new ManualCalculateExportCalc($data), $filePath);
 
         $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
         $url = $calcUrl . 'url_file/?url=' . $fileurl;
