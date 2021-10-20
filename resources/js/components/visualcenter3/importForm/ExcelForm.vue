@@ -381,7 +381,7 @@
     }
     .main-layout {
         background: #272953;
-        max-width: 1838px;
+        max-width: 1834px;
     }
     .menu__button {
         background: #656A8A;
@@ -509,6 +509,9 @@
     }
     .opacity-0 {
         opacity: 0;
+    }
+    ::-webkit-scrollbar {
+        width: '';
     }
 
 </style>

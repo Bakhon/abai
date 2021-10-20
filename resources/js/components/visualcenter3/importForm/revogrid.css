@@ -26,3 +26,6 @@ revo-grid .header-wrapper {
 table.el-year-table a.cell {
     background: transparent;
 }
+revogr-scroll-virtual.horizontal::-webkit-scrollbar-track {
+    background: transparent;
+}
