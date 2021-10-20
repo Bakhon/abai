@@ -12,18 +12,6 @@
           {{ trans(`economic_reference.stacked`) }}
         </label>
       </div>
-
-      <div class="form-check ml-2">
-        <input v-model="isScaled"
-               id="scaled"
-               type="checkbox"
-               class="form-check-input cursor-pointer">
-
-        <label class="form-check-label cursor-pointer"
-               for="scaled">
-          {{ trans(`economic_reference.scaled`) }}
-        </label>
-      </div>
     </div>
 
     <apexchart
@@ -51,14 +39,15 @@ export default {
   },
   computed: {
     tooltipText() {
-      return this.isScaled
-          ? this.trans('economic_reference.thousand_tons')
-          : this.trans('economic_reference.tons')
+      return this.trans('economic_reference.tons')
     },
+  },
+  methods: {
+    labelsFormatter(value) {
+      value = this.isStacked ? +value.toFixed(0) : +value.toFixed(1)
 
-    chartDimension() {
-      return this.isScaled ? 1000 : null
-    }
+      return value.toLocaleString()
+    },
   }
 }
 </script>

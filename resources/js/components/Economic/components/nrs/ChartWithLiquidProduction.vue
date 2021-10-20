@@ -12,18 +12,6 @@
           {{ trans(`economic_reference.stacked`) }}
         </label>
       </div>
-
-      <div class="form-check ml-2">
-        <input v-model="isScaled"
-               id="scaled"
-               type="checkbox"
-               class="form-check-input cursor-pointer">
-
-        <label class="form-check-label cursor-pointer"
-               for="scaled">
-          {{ trans(`economic_reference.scaled`) }}
-        </label>
-      </div>
     </div>
 
     <apexchart
@@ -47,15 +35,15 @@ export default {
         return (+value.toFixed(2)).toLocaleString()
       }
 
-      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex].split('.')
+      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
 
-      let liquid = +value[0]
-
-      if (this.chartDimension) {
-        liquid /= this.chartDimension
+      if (!value) {
+        value = '0'
       }
 
-      liquid = (+liquid.toFixed(2)).toLocaleString()
+      value = value.split('.')
+
+      let liquid = (+value[0].toFixed(2)).toLocaleString()
 
       let waterCut = value.length > 1 ? value[1] : 0
 
@@ -63,6 +51,12 @@ export default {
           ${liquid} ${this.tooltipText},
           ${this.trans('economic_reference.liquid')}: ${waterCut}%
       `
+    },
+
+    labelsFormatter(value) {
+      value = this.isStacked ? +value.toFixed(0) : +value.toFixed(1)
+
+      return value.toLocaleString()
     },
 
     chartArea(profitability, wells) {
@@ -74,13 +68,7 @@ export default {
             name: name,
             type: 'area',
             data: wells[profitability].map(value => {
-              value = value ? +value.split('.')[0] : 0
-
-              if (this.chartDimension) {
-                value /= this.chartDimension
-              }
-
-              return value
+              return value ? +value.split('.')[0] : 0
             }),
             tooltipData: wells[profitability],
           }
@@ -93,12 +81,12 @@ export default {
             data: wells[profitability].map((value, index) => {
               value = value ? +value.split('.')[0] : 0
 
-              if (this.isStacked && wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                value += +wells.profitable[index].split('.')[0]
+              if (!this.isStacked) {
+                return value
               }
 
-              if (this.chartDimension) {
-                value /= this.chartDimension
+              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                value += +wells.profitable[index].split('.')[0]
               }
 
               return value
@@ -113,18 +101,16 @@ export default {
             data: wells[profitability].map((value, index) => {
               value = value ? +value.split('.')[0] : 0
 
-              if (this.isStacked) {
-                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                  value += +wells.profitable[index].split('.')[0]
-                }
-
-                if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
-                  value += +wells.profitless_cat_2[index].split('.')[0]
-                }
+              if (!this.isStacked) {
+                return value
               }
 
-              if (this.chartDimension) {
-                value /= this.chartDimension
+              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                value += +wells.profitable[index].split('.')[0]
+              }
+
+              if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
+                value += +wells.profitless_cat_2[index].split('.')[0]
               }
 
               return value
@@ -136,14 +122,8 @@ export default {
   },
   computed: {
     tooltipText() {
-      return this.isScaled
-          ? this.trans('economic_reference.thousand_tons')
-          : this.trans('economic_reference.tons')
+      return this.trans('economic_reference.tons')
     },
-
-    chartDimension() {
-      return this.isScaled ? 1000 : null
-    }
   }
 }
 </script>

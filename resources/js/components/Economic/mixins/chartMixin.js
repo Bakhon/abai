@@ -38,7 +38,6 @@ export const chartInitMixin = {
         isVisibleInWork: true,
         isVisibleInPause: false,
         isStacked: true,
-        isScaled: true,
     }),
     computed: {
         isProfitabilityFull() {
@@ -155,11 +154,7 @@ export const chartInitMixin = {
                             : this.title,
                     },
                     labels: {
-                        formatter: (value) => {
-                            value = this.isScaled ? +value.toFixed(0) : +value.toFixed(2)
-
-                            return value.toLocaleString()
-                        }
+                        formatter: (value) => this.labelsFormatter(value)
                     },
                 }
             })
@@ -185,25 +180,29 @@ export const chartInitMixin = {
             return 525
         },
 
-        chartDimension() {
-            return 0
-        },
-
         tooltipText() {
             return ''
         },
     },
     methods: {
         tooltipFormatter(value, {dataPointIndex, seriesIndex}) {
+            let tooltipText = ''
+
             if (seriesIndex >= this.defaultSeriesLength) {
                 value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
 
-                if (this.chartDimension) {
-                    value /= this.chartDimension
-                }
+                tooltipText = this.tooltipText
             }
 
-            return (+value.toFixed(2)).toLocaleString() + ` ${this.tooltipText}`
+            if (value && +value.toFixed(2) !== 0) {
+                value = +value.toFixed(2)
+            }
+
+            return `${value.toLocaleString()} ${tooltipText}`
+        },
+
+        labelsFormatter(value) {
+            return (+value.toFixed(0)).toLocaleString()
         },
 
         chartArea(profitability, wells, pausedWells = null) {
@@ -226,31 +225,23 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                if (this.isStacked) {
-                                    if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                                        value += wells.profitable[index]
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        value += (wells[profitless][index] || 0)
                                     }
-
-                                    PROFITLESS_PROFITABILITIES.forEach(profitless => {
-                                        if (wells.hasOwnProperty(profitless)) {
-                                            value += (wells[profitless][index] || 0)
-                                        }
-                                    })
-                                }
-
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
-                                }
+                                })
 
                                 return value
                             })
-                            : wells[profitability].map((value) => {
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
-                                }
-
-                                return value
-                            }),
+                            : wells[profitability],
                         tooltipData: pausedWells
                             ? pausedWells[profitability]
                             : wells[profitability],
@@ -263,36 +254,34 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                if (this.isStacked) {
-                                    if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                                        value += wells.profitable[index]
-                                    }
-
-                                    if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
-                                        value += pausedWells.profitable[index]
-                                    }
-
-                                    PROFITLESS_PROFITABILITIES.forEach(profitless => {
-                                        if (wells.hasOwnProperty(profitless)) {
-                                            value += (wells[profitless][index] || 0)
-                                        }
-                                    })
+                                if (!this.isStacked) {
+                                    return value
                                 }
 
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
                                 }
+
+                                if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
+                                    value += pausedWells.profitable[index]
+                                }
+
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        value += (wells[profitless][index] || 0)
+                                    }
+                                })
 
                                 return value
                             })
                             : wells[profitability].map((value, index) => {
-                                if (this.isStacked && wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                                    value += wells.profitable[index]
-
+                                if (!this.isStacked) {
+                                    return value
                                 }
 
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+
                                 }
 
                                 return value
@@ -308,45 +297,41 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                if (this.isStacked) {
-                                    if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                                        value += wells.profitable[index]
-                                    }
-
-                                    if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
-                                        value += pausedWells.profitable[index]
-                                    }
-
-                                    if (pausedWells.hasOwnProperty('profitless_cat_2') && pausedWells.profitless_cat_2[index]) {
-                                        value += pausedWells.profitless_cat_2[index]
-                                    }
-
-                                    PROFITLESS_PROFITABILITIES.forEach(profitless => {
-                                        if (wells.hasOwnProperty(profitless)) {
-                                            value += (wells[profitless][index] || 0)
-                                        }
-                                    })
+                                if (!this.isStacked) {
+                                    return value
                                 }
 
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
                                 }
+
+                                if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
+                                    value += pausedWells.profitable[index]
+                                }
+
+                                if (pausedWells.hasOwnProperty('profitless_cat_2') && pausedWells.profitless_cat_2[index]) {
+                                    value += pausedWells.profitless_cat_2[index]
+                                }
+
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        value += (wells[profitless][index] || 0)
+                                    }
+                                })
 
                                 return value
                             })
                             : wells[profitability].map((value, index) => {
-                                if (this.isStacked) {
-                                    if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                                        value += wells.profitable[index]
-                                    }
-
-                                    if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
-                                        value += wells.profitless_cat_2[index]
-                                    }
+                                if (!this.isStacked) {
+                                    return value
                                 }
 
-                                if (this.chartDimension) {
-                                    value /= this.chartDimension
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
+                                    value += wells.profitless_cat_2[index]
                                 }
 
                                 return value
