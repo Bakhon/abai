@@ -186,7 +186,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             'columnNames' => $this->columnNames
         ];
 
-        $fileName = 'pipeline_calc_input_' . auth()->user()->id . '.xlsx';
+        $fileName = 'pipeline_calc_input_' . Carbon::now()->format('YmdHis') . '.xlsx';
         $filePath = 'public/export/' . $fileName;
         Excel::store(new ManualCalculateExportCalc($data), $filePath);
 
