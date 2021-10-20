@@ -18,11 +18,23 @@
                 <img src="/img/gno/edit.svg" alt="">
               </div>
 
-              <div class="choosing-well-data  col-7">{{ trans('pgno.mestorozhdenie') }}</div>
-              <div class="choosing-well-data left-border-line right-block-data col-5 pl-1 pr-1 pt-0 pb-1">
+              <div class="choosing-well-data col-7">
+                {{ trans('pgno.dzo') }}
+              </div>
+              <div
+                  class="choosing-well-data left-border-line right-block-data  col-5 pl-1 pr-1 pt-0 pb-1">
+                <select class="select-well" v-model="dzo" @change="chooseDZO">
+                  <option v-for="org in this.dzos" :value="org" :key="org">
+                    {{ org }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="choosing-well-data top-border-line col-7">{{ trans('pgno.mestorozhdenie') }}</div>
+              <div class="choosing-well-data top-border-line left-border-line right-block-data col-5 pl-1 pr-1 pt-0 pb-1">
                 <select class="select-well" v-model="field">
-                  <option v-for="org in this.organizations" :value="org.short_name" :key="org.id">
-                    {{ org.full_name }}
+                  <option v-for="field in this.fieldsByOrgId[dzo]" :value="field.short_name" :key="field.id">
+                    {{ field.full_name }}
                   </option>
                 </select>
               </div>
@@ -32,23 +44,6 @@
               <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5 pl-1 pr-1 pt-0 pb-1">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text" @change="getWellData(wellNumber)"
                        class="well-number-input pl-1"/>
-              </div>
-              <div class="choosing-well-data top-border-line  col-7">
-                <div class="row">
-                  <div class="col-9">{{ trans('pgno.new_well') }}</div>
-                  <div class="col-3 pr-1">
-                    <input :checked="well.newWell" v-model="well.newWell" class="new-well-grp-checkbox" type="checkbox"/>
-                  </div>
-                </div>
-              </div>
-              <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5">
-                <div class="row">
-                  <div class="col-9">{{ trans('pgno.grp') }}</div>
-                  <div class="col-3 pr-1">
-                    <input class="new-well-grp-checkbox" v-model="analysisSettings.hasGrp" :disabled="!well.newWell" type="checkbox"/>
-                  </div>
-                </div>
-
               </div>
 
               <div class="choosing-well-data top-border-line  col-7">{{ trans('pgno.horizon') }}</div>
@@ -283,7 +278,7 @@
                   <div class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.stopDate }}
                   </div>
-                  <div class="prs-button" @click="openPrsModal()">{{ trans('pgno.istoria_krs_prs') }}</div>
+                  <div class="prs-button" @click="!isDisabledForKgm && openPrsModal()">{{ trans('pgno.istoria_krs_prs') }}</div>
                 </div>
               </div>
             </div>
@@ -567,7 +562,7 @@
                   </div>
                   <div class="nno-modal-button-wrapper">
                     <div class="nno-modal-buttons-container">
-                      <div class="nno-icon" @click="openEcoTableModal()">
+                      <div class="nno-icon" @click="!isDisabledForKgm && openEcoTableModal()">
                         <img src="/img/gno/info.svg" alt="">
                       </div>
 
@@ -1105,7 +1100,7 @@
                     </div>
                   </div>
 
-                  <div class="potential-analysis-button col-12" @click="openAnalysisModal()">
+                  <div class="potential-analysis-button col-12" @click="!isDisabledForKgm && openAnalysisModal()">
                     {{ trans('pgno.analis_potenciala_skvazhini') }}
                   </div>
                 </div>
@@ -1124,6 +1119,7 @@
                               <input class="curve-select-option" value="ШГН"
                                      v-model="curveSettings.expChoosen" @change="postCurveData()"
                                      :checked="curveSettings.expChoosen === 'ШГН'" type="radio"
+                                     :disabled="isDisabledForKgm"
                                      name="gno10"/>{{ trans('pgno.shgn') }}
                             </label>
                           </div>
@@ -1139,6 +1135,7 @@
                             <input class="curve-select-option" value="ФОН"
                                    v-model="curveSettings.expChoosen" @change="postCurveData()"
                                    :checked="curveSettings.expChoosen === 'ФОН'" type="radio"
+                                   :disabled="isDisabledForKgm"
                                    name="gno10"/>{{ trans('pgno.fon') }}</label>
                           </div>
                           <div class="col-2">
@@ -1150,7 +1147,7 @@
                           <div class="col-2">
                             <label class="pt-10px">{{ trans('pgno.h_spuska') }}</label>
                           </div>
-                      <div class="gear-icon" @click="openTabsModal()">
+                      <div class="gear-icon" @click="!isDisabledForKgm && openTabsModal()">
                         <img class="gear-icon-svg" src="/img/gno/gear-icon.svg" alt="">
                       </div>
                     </div>
@@ -1288,7 +1285,7 @@
                     </div>
                   </div>
 
-                  <div class="way-of-operation-button col-12" @click="openEcoModal()">
+                  <div class="way-of-operation-button col-12" @click="!isDisabledForKgm && openEcoModal()">
                     {{ trans('pgno.analis_effect_sposoba_exp') }}
                   </div>
                 </div>

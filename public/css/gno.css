@@ -805,7 +805,6 @@ a.dropdown-item:hover {
     background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat right 5px top 50%;
     border-radius: 2px;
     border: 1px solid #222452;
-    height: inherit;
 }
 
 .select-edit {
@@ -861,15 +860,15 @@ a.dropdown-item:hover {
 }
 
 .well-number-input {
-    background: rgba(76, 190, 237, 0.278431);
     outline: none;
-    margin-top: 2px;
     width: 100%;
     color: white;
-    line-height: 25px !important;
-    border: 1px solid #222452;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    padding-left: 5px;
+    background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat right 5px top 50%;
     border-radius: 2px;
-    height: 19px;
+    border: solid 1px #222452;
 }
 
 .shgn-input {
@@ -924,7 +923,7 @@ input[type="radio"] {
 input[type="text"]:enabled.well-number-input {
     background: #494AA5;
     outline: none;
-    border: 0;
+    border: solid 1px #222452;
 }
 
 input[type="radio"]:not(:checked) {
@@ -1239,7 +1238,7 @@ iframe.iframe {
 .choosing-well-data {
     float: left;
     background-color: #2b2e5e;
-    height: 24px;
+    height: 25px;
 }
 
 .construction {
@@ -2011,6 +2010,9 @@ input.radio-q-liq {
     background: #323370;
     padding-left: 5px;
     padding-top: 5px;
+    border-inline: 0.5px solid #545580;
+    border-top: 0.5px solid #545580
+
 }
 
 .title__block__koroz {
@@ -2029,6 +2031,8 @@ input.radio-q-liq {
     background: #2b2e5e;
     padding-left: 5px;
     padding-top: 5px;
+    border-inline: 0.5px solid #545580;
+    border-bottom: 0.5px solid #545580;
 }
 
 .title__block__koroz__checkbox__2 {
@@ -2058,6 +2062,9 @@ input.radio-q-liq {
     background: #2b2e5e;
     padding-top: 10px;
     padding-left: 5px;
+    border-inline: 0.5px solid #545580;
+    border-top: 0.5px solid #545580;
+
 }
 
 .kpod-input-text {
@@ -2079,6 +2086,7 @@ input.radio-q-liq {
     text-align: left;
     background: #2b2e5e;
     padding-left: 20px;
+    border: 0.5px solid #545580;
 }
 
 .title__block__kpod {
@@ -2092,7 +2100,7 @@ input.radio-q-liq {
 }
 
 .title__block__pump__1 {
-    height: 29px;
+    height: 27px;
     width: 65px;
     text-align: left;
     background: #2b2e5e;
@@ -2129,6 +2137,9 @@ input.radio-q-liq {
     background: #2b2e5e;
     padding-top: 10px;
     padding-left: 5px;
+    border-inline: 0.5px solid #545580;
+    border-bottom: 0.5px solid #545580;
+
 }
 
 .title__block__pump_list {
@@ -2172,6 +2183,9 @@ input.radio-q-liq {
     position: relative;
     top: 0;
     left: 0;
+    border-inline: 0.5px solid #545580;
+    border-bottom: 0.5px solid #545580;
+
 }
 
 .block__1__input {
@@ -3015,7 +3029,8 @@ input.radio-q-liq {
     text-align: left;
     background: #323370;
     padding-left: 5px;
-    padding-top: 5px;
+    padding-top: 5px;    
+    border: 0.5px solid #545580;
 }
 
 .title__block__koroz__checkbox {
@@ -3025,6 +3040,8 @@ input.radio-q-liq {
     background: #2b2e5e;
     padding-left: 5px;
     padding-top: 5px;
+    border-inline: 0.5px solid #545580;
+    border-bottom: 0.5px solid #545580;
 }
 
 .title__block__koroz__checkbox__2 {
@@ -3056,12 +3073,17 @@ input.radio-q-liq {
     padding-left: 5px;
 }
 
+.b-b {
+    border-bottom: 0.5px solid #545580;
+}
+
 .title__block__max {
     height: 90px;
     text-align: left;
     background: #2b2e5e;
     padding-top: 3px;
     padding-left: 5px;
+    border: 0.5px solid #545580;
 }
 
 .title__block__pump {
@@ -3079,14 +3101,6 @@ input.radio-q-liq {
     padding-right: 5px;
     font-size: 12px;
     padding-block: 2px;
-}
-
-.title__block__pump__1 {
-    height: 29px;
-    width: 65px;
-    text-align: left;
-    background: #2b2e5e;
-    padding-right: 5px;
 }
 
 .title__block__pump__1__flex {
