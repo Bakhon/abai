@@ -49,7 +49,7 @@
 import Dropdown from "./Dropdown.vue";
 import Icon from "../../geology/components/icons/AwIcon";
 import MonitoringTreeMenu from "./MonitoringTreeMenu.vue";
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "MonitoringLeftBlock",

@@ -8,11 +8,7 @@ const plastFluidsLocal = {
   state: {
     fileLog: null,
     reportDuplicated: false,
-    downloadFileData: {
-      template: '',
-      user: '',
-      status: '',
-    },
+    downloadFileData: {},
     tableFields: [],
     tableRows: [],
     currentTemplate: {},
@@ -52,17 +48,16 @@ const plastFluidsLocal = {
   },
 
   actions: {
-    HANDLE_FILE_LOG({ commit }, log) {
+    HANDLE_FILE_LOG({ commit }, sheets) {
       let entries = [];
-      for (let key in log) {
-        if (key.includes("sheet")) {
-          let replacedKey = key.replace(
-            "sheet",
-            translation.translate("plast_fluids.page")
-          );
-          entries.push([replacedKey, log[key]]);
-        }
-      }
+      sheets.forEach((sheet) => {
+        let key = Object.keys(sheet)[0];
+        let replacedKey = key.replace(
+          "sheet",
+          translation.translate("plast_fluids.page")
+        );
+        entries.push([replacedKey, sheet[key]]);
+      });
       commit("SET_FILE_LOG", entries);
     },
     async getTableData({}, obj) {

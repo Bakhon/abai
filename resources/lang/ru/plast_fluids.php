@@ -121,9 +121,10 @@ return array (
   'back' => 'Назад',
   'search' => 'Поиск',
   'oil_map' => 'Карта размещений нефтегазоносных провинций и областей',
-  'template_upload_successfully' => 'Шаблон успешно загружен',
+  'template_upload_successfully' => 'Отчёт успешно загружен',
   'no_data' => 'Нет данных',
   'data' => 'Данные',
   'actions' => 'Действия',
   'download' => 'Скачать',
+  'error_with_template' => 'Ошибка с шаблоном, перепроверьте данные',
 );
