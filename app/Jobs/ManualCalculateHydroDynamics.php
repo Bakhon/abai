@@ -190,8 +190,6 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $filePath = 'public/export/' . $fileName;
         Excel::store(new ManualCalculateExportCalc($data), $filePath);
 
-        dd($filePath);
-
         $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
         $url = $calcUrl . 'url_file/?url=' . $fileurl;
 
