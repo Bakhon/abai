@@ -482,7 +482,7 @@ class EconomicNrsController extends Controller
             . "T00:00:00+00:00";
     }
 
-    static function calcIntervalYears(string $start = null, string $end = null, int $count = 1): string
+    static function calcIntervalYears(string $start = null, string $end = null): string
     {
         $end = Carbon::parse($end ?? now());
 
