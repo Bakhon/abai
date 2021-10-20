@@ -58,6 +58,7 @@ export default {
                 'expensesForOwnNaturalGas': false,
                 'associatedGasDelivery': false,
                 'expensesForOwnAssociatedGas': false,
+                'processingAssociatedGas': false,
                 'waterInjection': false,
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,

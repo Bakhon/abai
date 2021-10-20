@@ -78,7 +78,7 @@ export default {
                     self.processDataBlock(self.cellsMapping[key]);
                 }
             });
-            document.querySelector('revo-grid').refresh('all');
+            document.querySelector('#factGrid').refresh('all');
         },
         processCategory(categoryBlock,categoryName) {
             let self = this;

@@ -106,7 +106,7 @@ const legends = [
     }
 ]
 
-const maps = [
+const mapList = [
     {
         id: 1,
         title: 'Карта пробуренного фонда скважин'
@@ -365,7 +365,7 @@ export {
     histories,
     secondIndicators,
     legends,
-    maps,
+    mapList,
     properties,
     horizons,
     fileActions,

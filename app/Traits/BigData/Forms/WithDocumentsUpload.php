@@ -54,15 +54,19 @@ trait WithDocumentsUpload
             if (is_array($value)) {
                 continue;
             }
+
+            $data = [
+                $field['table']['local_key'] => $parentRowId,
+                $field['table']['document_key'] => $value
+            ];
+
+            if (!empty($field['table']['file_type'])) {
+                $data['file_type'] = $field['table']['file_type'];
+            }
+
             DB::connection('tbd')
                 ->table($field['table']['name'])
-                ->insert(
-                    [
-                        $field['table']['local_key'] => $parentRowId,
-                        'file_type' => $field['table']['file_type'],
-                        $field['table']['document_key'] => $value
-                    ]
-                );
+                ->insert($data);
         }
     }
 
@@ -72,11 +76,15 @@ trait WithDocumentsUpload
             return;
         }
 
-        $existedFiles = DB::connection('tbd')
+        $existedFilesQuery = DB::connection('tbd')
             ->table($field['table']['name'])
-            ->where($field['table']['local_key'], $parentRowId)
-            ->where('file_type', $field['table']['file_type'])
-            ->get();
+            ->where($field['table']['local_key'], $parentRowId);
+
+        if (!empty($field['table']['file_type'])) {
+            $existedFilesQuery->where('file_type', $field['table']['file_type']);
+        }
+
+        $existedFiles = $existedFilesQuery->get();
 
         foreach ($existedFiles as $existedFile) {
             $value = array_filter($values, function ($item) use ($existedFile) {
@@ -109,14 +117,18 @@ trait WithDocumentsUpload
     protected function getAttachedDocuments(array $rowIds): ?Collection
     {
         $field = $this->getFields()->where('code', 'documents')->first();
-        $files = DB::connection('tbd')
+        $query = DB::connection('tbd')
             ->table($field['table']['name'] . ' as f')
             ->select("f.{$field['table']['local_key']} as id", 'd.id as document_id', 'df.file', 'd.doc_date')
             ->join('prod.document as d', 'f.' . $field['table']['document_key'], 'd.id')
             ->join('prod.document_file as df', 'd.id', 'df.document')
-            ->where('f.file_type', $field['table']['file_type'])
-            ->whereIn('f.' . $field['table']['local_key'], $rowIds)
-            ->get();
+            ->whereIn('f.' . $field['table']['local_key'], $rowIds);
+
+        if (!empty($field['table']['file_type'])) {
+            $query->where('f.file_type', $field['table']['file_type']);
+        }
+
+        $files = $query->get();
 
         if ($files->isEmpty()) {
             return collect();
@@ -127,7 +139,7 @@ trait WithDocumentsUpload
 
         return $files->map(function ($file) use ($filesInfo) {
             $file->info = $filesInfo->where('id', $file->file)->first();
-            $file->filename = $file->info->filename;
+            $file->filename = $file->info->file_name;
             return $file;
         })
             ->groupBy('id')
