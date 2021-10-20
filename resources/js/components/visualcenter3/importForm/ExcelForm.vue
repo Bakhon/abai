@@ -132,10 +132,17 @@
                 </div>
                 <select
                         class="form-select col-12 mt-3 status-block status-block_little"
-                        v-if="!dzoUsers.includes(parseInt(userId))"
+                        v-if="!dzoUsers.includes(parseInt(userId)) && (category.isArchieveActive || category.isFactActive)"
                         @change="switchCompany($event)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                </select>
+                <select
+                        class="form-select col-12 mt-3 status-block status-block_little"
+                        v-else-if="!dzoUsers.includes(parseInt(userId)) && category.isPlanActive"
+                        @change="switchDzo($event)"
+                >
+                    <option v-for="company in planCompanies" :value="company.ticker">{{company.name}}</option>
                 </select>
                 <div v-else class="col-12 mt-3 status-block status-block_little">
                     &nbsp;
