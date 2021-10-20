@@ -1,7 +1,7 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import orgStructure from '../../mock-data/org_structure.json'
-import {paegtmMapState, globalloadingMutations} from "@store/helpers";
+import {paegtmMapState, globalloadingMutations, paegtmMapGetters} from "@store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import filterSelect from '../../mixin/selectFilter'
 
@@ -14,6 +14,7 @@ export default {
     data: function () {
         return {
             comparisonIndicators: [],
+            gtmIndicators: [],
             accumOilProdLabels: [],
             accumOilProdFactData: [],
             accumOilProdPlanData: [],
@@ -142,7 +143,11 @@ export default {
     computed: {
         ...paegtmMapState([
             'dateStart',
-            'dateEnd'
+            'dateEnd',
+        ]),
+        ...paegtmMapGetters([
+            'dzoId',
+            'dzoName',
         ]),
         accumOilProdData: function () {
             return [
@@ -230,11 +235,44 @@ export default {
                     });
                 }
             });
+            this.axios.get(
+                this.localeUrl('/paegtm/aegtm/get-comparison-table-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    console.log(data);
+                    if (typeof data == 'undefined' || !data.length) {
+                        this.setNotify("Отсутствуют данные по плановым и фактическим показателям. Попробуйте изменить параметры фильтра.", "Ошибка", "danger")
+                    }
+
+                    this.gtmIndicators = [];
+                    data.forEach((item) => {
+                        this.gtmIndicators.push([
+                            item.gtm,
+                            item.plan,
+                            item.fact,
+                            '-',
+                            '-',
+                            '-',
+                            '-',
+                        ])
+                    });
+                }
+            });
             this.SET_LOADING(false);
+        },
+        setNotify(message, title, type) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: type,
+                solid: true,
+                toaster: "b-toaster-top-center",
+                autoHideDelay: 8000,
+            });
         },
     },
     mounted() {
-        this.getData();
         this.dzosForFilter = this.dzos;
     },
 }

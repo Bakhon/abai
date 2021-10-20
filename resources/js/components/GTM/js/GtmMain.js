@@ -291,6 +291,6 @@ export default {
         this.changeChartOptions()
     },
     mounted() {
-        this.getData();
+
     }
 }

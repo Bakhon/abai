@@ -13,12 +13,14 @@ class AegtmController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:paegtm view main');
+        //$this->middleware('can:paegtm view main');
     }
 
 
     public function getComparisonTableData(Request $request): JsonResponse
     {
+        $result = [];
+
         //TODO: вынести в отдельный метод
         $techEfficiencyQuery = TechEfficiency::query();
 
@@ -37,13 +39,7 @@ class AegtmController extends Controller
 
         $techEfficiencyResult = $techEfficiencyQuery->groupBy('gtm', 'uwi')->get();
 
-        if(!$techEfficiencyResult) {
-            return response()->json([]);
-        }
-
         $techEfficiencyResult = $techEfficiencyResult->groupBy('gtm')->map->count();
-//        dd($techEfficiencyResult);
-
 
         //TODO: вынести в отдельный метод
         $dzoAegtmQuery = DzoAegtm::query();
@@ -70,6 +66,21 @@ class AegtmController extends Controller
             $pvlgPlan+= $item->pvlg_plan;
         }
 
-        return response()->json([]);
+        if ($techEfficiencyResult) {
+            foreach ($techEfficiencyResult as $gtm => $gtmCountFact) {
+                $gtmInfo['gtm'] = $gtm;
+                $gtmInfo['fact'] = $gtmCountFact;
+                $result[] = $gtmInfo;
+            }
+
+            foreach ($result as $key => $gtmItem) {
+                $gtmItem['gtm'] == 'ПВР' ?: $result[$key]['plan'] = $pvrPlan;
+                $gtmItem['gtm'] == 'ГРП' ?: $result[$key]['plan'] = $grpPlan;
+                $gtmItem['gtm'] == 'ВПС' ?: $result[$key]['plan'] = $vpsPlan;
+                $gtmItem['gtm'] == 'ПВЛГ' ?: $result[$key]['plan'] = $pvlgPlan;
+            }
+        }
+
+        return response()->json($result);
     }
 }

@@ -44,10 +44,15 @@
                     <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
-                    <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
-                  </tr>
+                  <tbody v-if="gtmIndicators.length">
+                    <tr v-for="comparisonIndicatorsItem in gtmIndicators">
+                      <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7">{{ trans('app.thereIsNoData')}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

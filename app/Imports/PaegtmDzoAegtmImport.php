@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\BigData\Dictionaries\Org;
 use App\Models\Paegtm\DzoAegtm;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
@@ -137,6 +138,13 @@ class PaegtmDzoAegtmImport implements ToModel, WithStartRow
         'gtm_fact_chart'  => 120,
     ];
 
+    private $_orgs;
+
+    public function __construct()
+    {
+        $this->_orgs = Org::all();
+    }
+
     /**
      * @return int
      */
@@ -167,14 +175,18 @@ class PaegtmDzoAegtmImport implements ToModel, WithStartRow
     {
         $arFileds = [];
 
-        foreach (self::COLUMNS as $filed => $columnIndex) {
-            if ($filed == 'date') {
-                $arFileds[$filed] = $this->transformDate($row[$columnIndex]);
+        $org = $this->_orgs->where('name_short_ru', $row[self::COLUMNS['org_name_short']])->first();
+
+        foreach (self::COLUMNS as $field => $columnIndex) {
+            if ($field == 'date') {
+                $arFileds[$field] = $this->transformDate($row[$columnIndex]);
                 continue;
             }
 
-            $arFileds[$filed] =  $row[$columnIndex];
+            $arFileds[$field] =  $row[$columnIndex];
         }
+
+        $arFileds['org_id'] = $org ? $org->id : null;
 
         return new DzoAegtm($arFileds);
     }

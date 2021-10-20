@@ -31,7 +31,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:paegtm view main')->only('index');
+        //$this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
@@ -484,7 +484,7 @@ class GTMController extends Controller
         }
 
         $result[] = [
-            'ВНС',
+            __('paegtm.gtm_vns'),
             $vnsPlan,
             $vnsFact,
             0,
@@ -492,7 +492,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС ГРП',
+            __('paegtm.gtm_vns_grp'),
             $vnsGrpPlan,
             $vnsGrpFact,
             0,
@@ -500,7 +500,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГС',
+            __('paegtm.gtm_gs'),
             $gsPlan,
             $gsFact,
             0,
@@ -508,7 +508,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ЗБС',
+            __('paegtm.gtm_zbs'),
             $zbsPlan,
             $zbsFact,
             0,
@@ -516,7 +516,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ЗБГС',
+            __('paegtm.gtm_zbgs'),
             $zbgsPlan,
             $zbgsFact,
             0,
@@ -524,7 +524,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГРП',
+            __('paegtm.gtm_grp'),
             $grpPlan,
             $grpFact,
             0,
@@ -532,7 +532,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВЛГ',
+            __('paegtm.gtm_pvlg'),
             $pvlgPlan,
             $pvlgFact,
             0,
@@ -540,7 +540,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВР',
+            __('paegtm.gtm_pvr'),
             $pvrPlan,
             $pvrFact,
             0,
@@ -548,7 +548,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГС+ГРП',
+            __('paegtm.gtm_gs_grp'),
             $gsGrpPlan,
             $gsGrpFact,
             0,
@@ -556,7 +556,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Углубление',
+            __('paegtm.gtm_deepening'),
             $deepeningPlan,
             $deepeningFact,
             0,
@@ -564,7 +564,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Скин ГРП',
+            __('paegtm.gtm_skin_grp'),
             $grpSkinPlan,
             $grpSkinFact,
             0,
@@ -572,7 +572,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Перестрел',
+            __('paegtm.gtm_perestrel'),
             $perestrelPlan,
             $perestrelFact,
             0,
@@ -580,7 +580,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Дострел',
+            __('paegtm.gtm_dostrel'),
             $dostrelPlan,
             $dostrelFact,
             0,
@@ -588,7 +588,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВБД',
+            __('paegtm.gtm_vbd'),
             $vbdPlan,
             $vbdFact,
             0,
@@ -596,7 +596,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ОПЛ',
+            __('paegtm.gtm_opl'),
             $oplPlan,
             $oplFact,
             0,
@@ -604,7 +604,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Перевод под нефть',
+            __('paegtm.gtm_transfer_to_oil'),
             $transferToOilPlan,
             $transferToOilFact,
             0,
@@ -612,7 +612,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'УЭЦН',
+            __('paegtm.gtm_uecn'),
             $uecnPlan,
             $uecnFact,
             0,
@@ -620,7 +620,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВЛГ при ПРС',
+            __('paegtm.gtm_pvlg_pri_prs'),
             $pvlgPriPrsPlan,
             $pvlgPriPrsFact,
             0,
@@ -628,7 +628,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВПП',
+            __('paegtm.gtm_vpp'),
             $vppPlan,
             $vppFact,
             0,
@@ -636,7 +636,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПФП',
+            __('paegtm.gtm_pfp'),
             $pfpPlan,
             $pfpFact,
             0,
@@ -644,7 +644,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ТГРП',
+            __('paegtm.gtm_tgrp'),
             $tgrpPlan,
             $tgrpFact,
             0,
@@ -652,7 +652,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС опер.',
+            __('paegtm.gtm_vns_oper'),
             $vnsOperPlan,
             $vnsOperFact,
             0,
@@ -660,7 +660,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС НН',
+            __('paegtm.gtm_vns_nn'),
             $vnsNnPlan,
             $vnsNnFact,
             0,
@@ -668,7 +668,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС НН опер.',
+            __('paegtm.gtm_vns_nn_oper'),
             $vnsNnOperPlan,
             $vnsNnOperFact,
             0,
@@ -676,7 +676,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ИДН',
+            __('paegtm.gtm_idn'),
             $idnPlan,
             $idnFact,
             0,
