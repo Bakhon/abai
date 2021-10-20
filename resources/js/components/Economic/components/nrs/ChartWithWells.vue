@@ -87,7 +87,7 @@ export default {
     },
 
     getProfitability(well) {
-      if (+well.Operating_profit_variable_prs.sum <= 0) {
+      if (+well.Operating_profit_variable_prs_nopayrall.sum <= 0) {
         return 'profitless_cat_1'
       }
 
@@ -289,7 +289,7 @@ export default {
           flexGrow: 1,
         },
         {
-          title: this.trans('economic_reference.operating_profit'),
+          title: 'Прибыль / убыток',
           dimensionTitle: `
             ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
