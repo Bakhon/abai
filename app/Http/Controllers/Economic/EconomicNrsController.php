@@ -488,7 +488,7 @@ class EconomicNrsController extends Controller
 
         $start = $start ? Carbon::parse($start) : $end->copy();
 
-        $start->subYears($count)->setDay(1)->setMonth(1);
+        $start->setDay(1)->setMonth(1);
 
         return self::formatInterval($start, $end);
     }
@@ -728,14 +728,24 @@ class EconomicNrsController extends Controller
             ->doubleSum("Operating_profit", 'operatingProfit')
             ->where($profitabilityColumn, '=', $profitabilityValue);
 
-        $data = $this
+        $years = $this
             ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
             ->timeseries()
-            ->data()[0];
+            ->data();
+
+        $operatingProfit = 0;
+
+        $prs = 0;
+
+        foreach ($years as $year) {
+            $operatingProfit += $year['operatingProfit'];
+
+            $prs += $year['prs'];
+        }
 
         return [
-            'operatingProfit' => $data["operatingProfit"],
-            'prs' => round($data["prs"])
+            'operatingProfit' => $operatingProfit,
+            'prs' => $prs
         ];
     }
 
