@@ -87,7 +87,7 @@
 import Subtitle from "../Subtitle";
 
 export default {
-  name: "TableOilProduction",
+  name: "TableOilProductionLoss",
   components: {
     Subtitle
   },
@@ -205,10 +205,6 @@ export default {
   background: #333975;
 }
 
-.bg-light-blue {
-  background: #2B2E5E;
-}
-
 .border-grey {
   border: 1px solid #454D7D
 }
@@ -225,16 +221,8 @@ export default {
   font-weight: 600;
 }
 
-.font-size-12px {
-  font-size: 12px;
-}
-
 .font-size-14px {
   font-size: 14px;
-}
-
-.line-height-14px {
-  line-height: 14px;
 }
 
 .line-height-16px {
