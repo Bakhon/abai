@@ -333,4 +333,5 @@ return array (
   'estimated_data' => 'Расчетные данные',
   'input_specific_indicators' => 'Входные удельные показатели',
   'inactive_short' => 'БД',
+  'select_sort' => 'Выберите сортировку',
 );

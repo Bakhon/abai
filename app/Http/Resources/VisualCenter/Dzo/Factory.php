@@ -39,6 +39,7 @@ class Factory {
         'expensesForOwnNaturalGas' => 'GasProduction',
         'associatedGasDelivery' => 'GasProduction',
         'expensesForOwnAssociatedGas' => 'GasProduction',
+        'processingAssociatedGas' => 'GasProduction',
         'waterInjection' => 'WaterInjection',
         'seaWaterInjection' => 'WaterInjection',
         'wasteWaterInjection' => 'WaterInjection',
