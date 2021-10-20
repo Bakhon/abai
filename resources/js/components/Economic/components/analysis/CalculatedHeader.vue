@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3 py-2 bg-blue-dark d-flex flex-column position-relative">
+  <div class="bg-blue-dark d-flex flex-column position-relative">
     <economic-title
         :flex-grow="0"
         font-size="26"

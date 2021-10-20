@@ -15,6 +15,10 @@
       <table-production-loss
           v-if="activeTab === 'production_loss'"
           class="text-white"/>
+
+      <table-oil-production
+          v-else-if="activeTab === 'oil_production'"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -22,12 +26,14 @@
 <script>
 import ChartButton from "../ChartButton";
 import TableProductionLoss from "./TableProductionLoss";
+import TableOilProduction from "./TableOilProduction";
 
 export default {
   name: "Tables",
   components: {
     ChartButton,
     TableProductionLoss,
+    TableOilProduction,
   },
   props: {
     scenario: {
@@ -44,13 +50,13 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'production_loss',
+    activeTab: 'oil_production',
   }),
   computed: {
     tabs() {
       return {
         production_loss: 'Потеря добычи остановок',
-        production_loss_by_profitability: 'Потеря добычи по типу рентабельности',
+        oil_production: 'Потеря добычи по типу рентабельности',
       }
     },
   },

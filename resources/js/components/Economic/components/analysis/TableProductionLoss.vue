@@ -18,7 +18,7 @@
         <div v-for="(block, index) in blocks"
              :key="block.name"
              :class="index ? 'ml-3' : ''"
-             class="bg-light-blue text-center flex-grow-1 font-size-14px line-height-16px">
+             class="bg-light-blue text-center text-nowrap flex-grow-1 font-size-14px line-height-16px">
           <div v-if="item !== 2" class="bg-blue border-grey px-2 py-1 font-weight-600">
             {{ block.name }}
           </div>
@@ -93,6 +93,9 @@ export default {
   computed: {
     blocks() {
       return [
+        {
+          name: 'Остановка НРС'
+        },
         {
           name: 'Остановка ЧРФ'
         },

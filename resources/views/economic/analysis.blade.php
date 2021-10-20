@@ -19,4 +19,13 @@
         border: 1px solid #0D2B4D;
         margin-bottom: 15px;
     }
+
+    #app {
+        flex-wrap: nowrap;
+        overflow: hidden;
+    }
+
+    body{
+        overflow: hidden;
+    }
 </style>

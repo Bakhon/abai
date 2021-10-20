@@ -8,16 +8,16 @@
             :header="header"
             :index="index"
             :class="index ? 'ml-2' : ''"
-            class="flex-grow-1"
-            style="min-height: 135px"/>
+            class="flex-grow-1 px-3 py-1"
+            style="min-height: 130px"/>
 
         <remote-header
             v-for="(header, index) in remoteHeaders"
             :key="`remote_${index}`"
             :header="header"
             :form="form"
-            class="flex-grow-1 ml-2"
-            style="min-height: 135px"/>
+            class="flex-grow-1 px-3 py-1 ml-2"
+            style="min-height: 130px"/>
       </div>
     </div>
 
