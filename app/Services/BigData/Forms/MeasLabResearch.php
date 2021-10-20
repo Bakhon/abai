@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\Metric;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -21,14 +23,13 @@ class MeasLabResearch extends TableForm
 
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
-        $table = $this->getResearchTable($filter->research_type);
-
-        $columns = $this->getColumns($table);
+        $columns = $this->getColumns($filter->research_type);
 
         $rowsData = DB::connection('tbd')
             ->table('prod.lab_research as lr')
-            ->select('t.*', 'lr.id', 'lr.well', 'lr.research_date')
-            ->leftJoin($table . ' as t', 'lr.id', 't.well')
+            ->select('lrv.*', 'lr.id', 'lr.well', 'lr.research_date', 'm.code')
+            ->leftJoin('prod.lab_research_value as lrv', 'lr.id', 'lrv.research')
+            ->leftJoin('dict.metric as m', 'm.id', 'lrv.param')
             ->whereIn('lr.well', $wells->pluck('id')->toArray())
             ->whereDate('research_date', '<=', $filter->date)
             ->where('research_type', $filter->research_type)
@@ -39,29 +40,36 @@ class MeasLabResearch extends TableForm
 
         $rows = $wells
             ->map(
-                function ($item) use ($rowsData, $columns) {
-                    $rowData = $rowsData->where('well', $item->id)->first();
-                    if (empty($rowData)) {
-                        return null;
-                    }
+                function ($item) use ($filter, $rowsData, $columns) {
+                    $rowData = $rowsData->where('well', $item->id);
+
                     $result = [
-                        'id' => $rowData->id
+                        'id' => $item->id
                     ];
 
                     foreach ($columns as $column) {
+                        $cellData = $rowData->where('code', $column['code'])->first();
                         if ($column['type'] === 'link') {
-                            $value = [
+                            $cellValue = [
                                 'id' => $item->id,
                                 'name' => $item->uwi,
                                 'href' => '#'
                             ];
                         } else {
-                            $value = [
-                                'date' => $rowData->research_date,
-                                'old_value' => $rowData->{$column['code']}
-                            ];
+                            $value = $cellData ? $cellData->{$column['column']} : null;
+                            $isSameDay = $cellData && Carbon::parse($filter->date, 'Asia/Almaty')
+                                    ->diffInDays(Carbon::parse($cellData->research_date, 'Asia/Almaty')) === 0;
+
+                            if ($isSameDay) {
+                                $cellValue = ['value' => $value];
+                            } else {
+                                $cellValue = [
+                                    'date' => $cellData ? $cellData->research_date : null,
+                                    'old_value' => $value
+                                ];
+                            }
                         }
-                        $result[$column['code']] = $value;
+                        $result[$column['code']] = $cellValue;
                     }
                     return $result;
                 }
@@ -76,28 +84,77 @@ class MeasLabResearch extends TableForm
         ];
     }
 
-    protected function getResearchTable(int $researchTypeId)
+    protected function getColumns(int $researchTypeId): Collection
     {
         $researchType = LabResearchType::find($researchTypeId);
-        try {
-            return ResearchLabResearch::TABLES_BY_TYPE[$researchType->code];
-        } catch (\Exception $e) {
-            throw new \Exception('Нет данных по исследованию');
-        }
-    }
-
-    protected function getColumns(string $table): Collection
-    {
         return $this->getFields()
-            ->filter(function ($field) use ($table) {
-                if (!isset($field['table'])) {
+            ->filter(function ($field) use ($researchType) {
+                if (!isset($field['depends_on'])) {
                     return true;
                 }
-                return $field['table'] === $table;
+                foreach ($field['depends_on'] as $dependency) {
+                    if ($dependency['field'] === 'research_type') {
+                        return $dependency['value']['code'] === $researchType->code;
+                    }
+                }
+                return false;
             });
     }
 
     protected function saveSingleFieldInDB(array $params): void
     {
+        $columns = $this->getColumns($this->request->get('research_type'));
+        $column = $columns->where('code', $params['field'])->first();
+
+        $research = DB::connection('tbd')
+            ->table('prod.lab_research')
+            ->where('well', $params['wellId'])
+            ->whereDate('research_date', '=', $this->request->get('date'))
+            ->where('research_type', $this->request->get('research_type'))
+            ->first();
+
+        if (!$research) {
+            $researchId = DB::connection('tbd')
+                ->table('prod.lab_research')
+                ->insertGetId(
+                    [
+                        'well' => $params['wellId'],
+                        'research_date' => $this->request->get('date'),
+                        'research_type' => $this->request->get('research_type')
+                    ]
+                );
+        } else {
+            $researchId = $research->id;
+        }
+
+        $metric = Metric::where('code', $params['field'])->first();
+
+        $researchValue = DB::connection('tbd')
+            ->table('prod.lab_research_value')
+            ->where('research', $researchId)
+            ->where('param', $metric->id)
+            ->first();
+
+        if (!$researchValue) {
+            $researchValueId = DB::connection('tbd')
+                ->table('prod.lab_research_value')
+                ->insertGetId(
+                    [
+                        'research' => $researchId,
+                        'param' => $metric->id
+                    ]
+                );
+        } else {
+            $researchValueId = $researchValue->id;
+        }
+
+        DB::connection('tbd')
+            ->table('prod.lab_research_value')
+            ->where('id', $researchValueId)
+            ->update(
+                [
+                    $column['column'] => $params['value']
+                ]
+            );
     }
 }
