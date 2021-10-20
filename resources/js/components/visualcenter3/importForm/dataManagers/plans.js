@@ -244,22 +244,23 @@ export default {
         },
         beforeRangeEdit(e) {
             let cellOptions = e.detail.data;
-            if (cellOptions) {
-                let row = parseInt(Object.keys(cellOptions)[0]);
-                let column = Object.keys(cellOptions[row]);
-                let columnName = Object.keys(cellOptions[row]).toString();
-                column = column.toString().replace(/\D/g, "") - 1;
-                let value = Object.values(cellOptions[row])[0];
-                value = value.replace(/ /g, '');
-                value = value.replace(',', '.');
-                value = parseFloat(value);
-                this.disableErrorHighlight(row,column);
-                if (isNaN(value) || value < 0) {
-                    this.setClassToElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
-                    this.isPlanValidateError = true;
-                }
-                e.detail.data[row][columnName] = value;
+            if (!cellOptions) {
+                return;
             }
+            let row = parseInt(Object.keys(cellOptions)[0]);
+            let column = Object.keys(cellOptions[row]);
+            let columnName = Object.keys(cellOptions[row]).toString();
+            column = column.toString().replace(/\D/g, "") - 1;
+            let value = Object.values(cellOptions[row])[0];
+            value = value.replace(/ /g, '');
+            value = value.replace(',', '.');
+            value = parseFloat(value);
+            this.disableErrorHighlight(row,column);
+            if (isNaN(value) || value < 0) {
+                this.setClassToElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
+                this.isPlanValidateError = true;
+            }
+            e.detail.data[row][columnName] = value;
         },
         disableErrorHighlight(row,col) {
             this.removeClassFromElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
@@ -297,8 +298,5 @@ export default {
             });
             return dzoName;
         },
-    },
-    computed: {
-
     }
 }
