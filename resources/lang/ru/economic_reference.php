@@ -334,4 +334,5 @@ return array (
   'input_specific_indicators' => 'Входные удельные показатели',
   'inactive_short' => 'БД',
   'select_sort' => 'Выберите сортировку',
+  'distribution_prs_by_profitability' => 'Распределение ПРС по типу рентабельности',
 );

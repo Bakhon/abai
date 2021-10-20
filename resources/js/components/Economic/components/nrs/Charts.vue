@@ -7,13 +7,12 @@
           :text="tabs[tab]"
           :active="activeTab === tab"
           :class="index ? 'ml-2' : ''"
-          class="col"
+          class="col font-size-12px line-height-12px"
           @click.native="activeTab = tab"/>
 
       <chart-button
           :text="trans('economic_reference.matrix')"
-          class="ml-2 col"
-          style="font-size: 12px"
+          class="ml-2 col font-size-12px line-height-12px"
           @click.native="openMatrix"/>
     </div>
 
@@ -24,8 +23,8 @@
 
       <chart-with-profitability
           v-if="activeTab === 'profitability'"
-          :data="charts.profitability"
-          :paused-data="charts.pausedProfitability"
+          :data="charts.profitability.active"
+          :paused-data="charts.profitability.paused"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
@@ -35,7 +34,7 @@
 
       <chart-with-oil-production
           v-if="activeTab === 'oil_production'"
-          :data="charts.oilProduction"
+          :data="charts.production.oil"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
@@ -56,7 +55,7 @@
 
       <chart-with-liquid-production
           v-else-if="activeTab === 'liquid_production'"
-          :data="charts.liquidProduction"
+          :data="charts.production.liquid"
           :granularity="granularity"
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
@@ -66,29 +65,43 @@
       <chart-well-map
           v-else-if="activeTab === 'well_map'"
           :org-form="form"/>
+
+      <chart-with-prs
+          v-else-if="activeTab === 'prs'"
+          :data="charts.prs.active"
+          :paused-data="charts.prs.paused"
+          :total-data="charts.prs.total"
+          :granularity="granularity"
+          :profitability="profitability"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
+          class="bg-economic-chart mt-2"/>
     </div>
   </div>
 </template>
 
 <script>
+import Subtitle from "../Subtitle";
+
 import ChartButton from "../ChartButton";
 import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithWellTop from "./ChartWithWellTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 import ChartWellMap from "./ChartWellMap";
-import Subtitle from "../Subtitle";
+import ChartWithPrs from "./ChartWithPrs";
 
 export default {
   name: "Charts",
   components: {
+    Subtitle,
     ChartButton,
     ChartWithProfitability,
     ChartWithOilProduction,
     ChartWithWellTop,
     ChartWithLiquidProduction,
     ChartWellMap,
-    Subtitle
+    ChartWithPrs
   },
   props: {
     charts: {
@@ -127,9 +140,10 @@ export default {
     tabs() {
       return {
         profitability: this.trans('economic_reference.distribution_wells_by_profitability'),
+        prs: this.trans('economic_reference.distribution_prs_by_profitability'),
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
-        well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+        well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         well_map: this.trans('economic_reference.well_overview_map'),
       }
     },
@@ -139,7 +153,7 @@ export default {
 
       let price = this.oilPrices[0]
 
-      this.charts.profitability.dt.forEach(dt => {
+      this.charts.profitability.active.dt.forEach(dt => {
         price = this.oilPrices.find(rate => [rate.dt, rate.dt_month].includes(dt)) || price
 
         data.push(price ? price.value : 0)
@@ -153,7 +167,7 @@ export default {
 
       let rate = this.dollarRates[0]
 
-      this.charts.profitability.dt.forEach(dt => {
+      this.charts.profitability.active.dt.forEach(dt => {
         rate = this.dollarRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || rate
 
         data.push(rate ? rate.value : 0)
@@ -174,4 +188,13 @@ export default {
 .bg-economic-chart {
   background: #2B2E5E;
 }
+
+.font-size-12px {
+  font-size: 12px;
+}
+
+.line-height-12px {
+  line-height: 12px;
+}
+
 </style>
