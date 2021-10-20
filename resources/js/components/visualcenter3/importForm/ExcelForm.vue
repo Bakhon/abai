@@ -255,6 +255,7 @@
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
                         @beforeEdit="beforePlanEdit"
+                        @beforeRangeEdit="beforeRangeEdit"
                 ></v-grid>
 
             </div>

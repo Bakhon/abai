@@ -157,7 +157,7 @@ export default {
             for (let i = 1; i < 13; i++) {
                 let date = moment().year(this.currentPlan.year.year()).month(i - 1).startOf('month').startOf('day');
                 let fields = {
-                    date: date.format(),
+                    date: date.format("YYYY-MM-DD HH:mm:ss"),
                     dzo: this.selectedDzo.ticker,
                 };
                 for (let y = 1; y < this.currentPlan.rows.length; y++) {
@@ -192,6 +192,25 @@ export default {
             if (isNaN(value) || value < 0) {
                 this.setClassToElement($('#planGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
                 this.isPlanValidateError = true;
+            }
+        },
+        beforeRangeEdit(e) {
+            let cellOptions = e.detail.data;
+            if (cellOptions) {
+                let row = parseInt(Object.keys(cellOptions)[0]);
+                let column = Object.keys(cellOptions[row]);
+                let columnName = Object.keys(cellOptions[row]).toString();
+                column = column.toString().replace(/\D/g, "") - 1;
+                let value = Object.values(cellOptions[row])[0];
+                value = value.replace(/ /g, '');
+                value = value.replace(',', '.');
+                value = parseFloat(value);
+                this.disableErrorHighlight(row,column);
+                if (isNaN(value) || value < 0) {
+                    this.setClassToElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
+                    this.isPlanValidateError = true;
+                }
+                e.detail.data[row][columnName] = value;
             }
         },
         disableErrorHighlight(row,col) {
