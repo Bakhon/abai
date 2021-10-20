@@ -1,8 +1,36 @@
 <template>
-  <apexchart
-      :options="chartOptions"
-      :series="chartSeries"
-      :height="555"/>
+  <div>
+    <div class="d-flex justify-content-center pt-2">
+      <div class="form-check">
+        <input v-model="isStacked"
+               id="stacked"
+               type="checkbox"
+               class="form-check-input cursor-pointer">
+
+        <label class="form-check-label cursor-pointer"
+               for="stacked">
+          {{ trans(`economic_reference.stacked`) }}
+        </label>
+      </div>
+
+      <div class="form-check ml-2">
+        <input v-model="isScaled"
+               id="scaled"
+               type="checkbox"
+               class="form-check-input cursor-pointer">
+
+        <label class="form-check-label cursor-pointer"
+               for="scaled">
+          {{ trans(`economic_reference.scaled`) }}
+        </label>
+      </div>
+    </div>
+
+    <apexchart
+        :options="chartOptions"
+        :series="chartSeries"
+        :height="chartHeight"/>
+  </div>
 </template>
 
 <script>
@@ -15,15 +43,26 @@ export default {
   components: {apexchart: chart},
   methods: {
     tooltipFormatter(value, {dataPointIndex, seriesIndex}) {
-      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex] + ''
+      if (seriesIndex < this.defaultSeriesLength) {
+        return (+value.toFixed(2)).toLocaleString()
+      }
 
-      let liquid = value.split('.')
+      value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex].split('.')
 
-      let res = `${liquid[0]} ${this.trans('economic_reference.thousand_tons')}`
+      let liquid = +value[0]
 
-      return liquid.length > 1
-          ? res + `, ${this.trans('economic_reference.liquid')}: ${liquid[1]}%`
-          : res
+      if (this.chartDimension) {
+        liquid /= this.chartDimension
+      }
+
+      liquid = (+liquid.toFixed(2)).toLocaleString()
+
+      let waterCut = value.length > 1 ? value[1] : 0
+
+      return `
+          ${liquid} ${this.tooltipText},
+          ${this.trans('economic_reference.liquid')}: ${waterCut}%
+      `
     },
 
     chartArea(profitability, wells) {
@@ -35,7 +74,13 @@ export default {
             name: name,
             type: 'area',
             data: wells[profitability].map(value => {
-              return value ? +value.split('.')[0] : 0
+              value = value ? +value.split('.')[0] : 0
+
+              if (this.chartDimension) {
+                value /= this.chartDimension
+              }
+
+              return value
             }),
             tooltipData: wells[profitability],
           }
@@ -48,8 +93,12 @@ export default {
             data: wells[profitability].map((value, index) => {
               value = value ? +value.split('.')[0] : 0
 
-              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+              if (this.isStacked && wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                 value += +wells.profitable[index].split('.')[0]
+              }
+
+              if (this.chartDimension) {
+                value /= this.chartDimension
               }
 
               return value
@@ -64,12 +113,18 @@ export default {
             data: wells[profitability].map((value, index) => {
               value = value ? +value.split('.')[0] : 0
 
-              if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
-                value += +wells.profitable[index].split('.')[0]
+              if (this.isStacked) {
+                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                  value += +wells.profitable[index].split('.')[0]
+                }
+
+                if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
+                  value += +wells.profitless_cat_2[index].split('.')[0]
+                }
               }
 
-              if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
-                value += +wells.profitless_cat_2[index].split('.')[0]
+              if (this.chartDimension) {
+                value /= this.chartDimension
               }
 
               return value
@@ -78,6 +133,17 @@ export default {
           }
       }
     },
+  },
+  computed: {
+    tooltipText() {
+      return this.isScaled
+          ? this.trans('economic_reference.thousand_tons')
+          : this.trans('economic_reference.tons')
+    },
+
+    chartDimension() {
+      return this.isScaled ? 1000 : null
+    }
   }
 }
 </script>
