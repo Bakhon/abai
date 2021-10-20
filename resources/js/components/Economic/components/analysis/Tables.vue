@@ -23,6 +23,10 @@
       <table-financial-loss
           v-else-if="activeTab === 'financial_loss'"
           class="text-white"/>
+
+      <table-additional-stops
+          v-else-if="activeTab === 'additional_stops'"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -32,6 +36,7 @@ import ChartButton from "../ChartButton";
 import TableProductionLoss from "./TableProductionLoss";
 import TableOilProductionLoss from "./TableOilProductionLoss";
 import TableFinancialLoss from "./TableFinancialLoss";
+import TableAdditionalStops from "./TableAdditionalStops";
 
 export default {
   name: "Tables",
@@ -40,6 +45,7 @@ export default {
     TableProductionLoss,
     TableOilProductionLoss,
     TableFinancialLoss,
+    TableAdditionalStops,
   },
   props: {
     scenario: {
@@ -56,7 +62,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'financial_loss',
+    activeTab: 'additional_stops',
   }),
   computed: {
     tabs() {
@@ -64,6 +70,7 @@ export default {
         production_loss: 'Потеря добычи остановок',
         oil_production_loss: 'Потеря добычи по типу рентабельности',
         financial_loss: 'Финансовые потери от остановок',
+        additional_stops: 'Возможность дополнительных остановок',
       }
     },
   },
