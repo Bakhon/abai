@@ -133,11 +133,25 @@
             :inputText.sync="backwardPredict"
             labelTransKey="approximation_backward_predict"
           />
-          <ScatterGraphApproximationLabelCheckbox
-            :graphType="graphType"
-            :checkboxInput.sync="isConfigureIntersection"
-            labelTransKey="configure_intersection"
-          />
+          <div class="configure-intersection-holder">
+            <ScatterGraphApproximationLabelCheckbox
+              style="margin-bottom: 0;"
+              :graphType="graphType"
+              :checkboxInput.sync="isConfigureIntersection"
+              labelTransKey="configure_intersection"
+              :disableCheckbox="
+                approximationSelected !== 'linear' &&
+                  approximationSelected !== 'polynomial'
+              "
+            />
+            <input
+              v-show="isConfigureIntersection"
+              type="number"
+              step="0.1"
+              placeholder="0,0"
+              v-model="intersection"
+            />
+          </div>
           <ScatterGraphApproximationLabelCheckbox
             :graphType="graphType"
             :checkboxInput.sync="isShowEquationOnChart"
@@ -195,7 +209,7 @@
           'submit-button',
           approximationSelected.length > 0 || isAxisTyped ? 'rest' : 'disabled',
         ]"
-        :disabled="approximationSelected.length === 0 && !isAxisTyped"
+        :disabled="!approximationSelected && !isAxisTyped"
         @click="drawApproximation"
       >
         {{ trans("plast_fluids.done") }}
@@ -228,6 +242,7 @@ export default {
       isOpen: true,
       aheadPredict: "",
       backwardPredict: "",
+      intersection: "",
       isConfigureIntersection: false,
       isShowEquationOnChart: false,
       isPlaceValueOfR2: false,
@@ -281,6 +296,14 @@ export default {
       },
       immediate: true,
     },
+    isConfigureIntersection() {
+      this.intersection = "";
+    },
+    approximationSelected(value) {
+      if (value === "linear" || value === "polynomial") return;
+      this.isConfigureIntersection = false;
+      this.intersection = "";
+    },
   },
   methods: {
     updatePolynomialDegreeValue(e) {
@@ -315,6 +338,10 @@ export default {
             this.approximationSelected === "polynomial"
               ? "polynomial_" + this.computedPolynomialDegree
               : this.approximationSelected,
+          y0:
+            this.isConfigureIntersection && this.intersection
+              ? Number(this.intersection)
+              : "",
         };
         const {
           approximation_data,
@@ -343,6 +370,8 @@ export default {
               return `${prev} ${polynomial}`;
             }, "");
           emitData.approximation.function = approximationFunction;
+        }
+        if (this.isConfigureIntersection) {
         }
       }
       if (this.isAxisTyped) {

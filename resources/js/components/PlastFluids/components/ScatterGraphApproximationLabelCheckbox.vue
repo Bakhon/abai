@@ -3,11 +3,15 @@
     <input
       type="checkbox"
       :checked="checkboxInput"
+      :disabled="disableCheckbox"
+      :class="{ disabled: disableCheckbox }"
       @change="$emit('update:checkboxInput', $event.target.checked)"
       :id="'approximation' + labelTransKey + graphType"
-    /><label :for="'approximation' + labelTransKey + graphType">{{
-      trans("plast_fluids." + labelTransKey)
-    }}</label>
+    /><label
+      :for="'approximation' + labelTransKey + graphType"
+      :class="{ disabledText: disableCheckbox }"
+      >{{ trans("plast_fluids." + labelTransKey) }}</label
+    >
   </div>
 </template>
 
@@ -18,6 +22,7 @@ export default {
     labelTransKey: String,
     graphType: String,
     checkboxInput: Boolean,
+    disableCheckbox: Boolean,
   },
 };
 </script>
@@ -29,11 +34,20 @@ export default {
   margin-bottom: 10px;
 }
 
-.approximation-forecast-checkbox-holder:last-child {
+label {
   margin-bottom: 0;
 }
 
 .approximation-forecast-checkbox-holder > input {
   margin-right: 10px;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.disabledText {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
