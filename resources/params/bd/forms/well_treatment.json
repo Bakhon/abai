@@ -3,11 +3,11 @@
   "table": "prod.well_treatment",
   "tabs": [
     {
-      "title": "hello_world",
+      "title": "treat",
       "blocks": [
         [
           {
-            "title": "hello_world",
+            "title": "",
             "items": [
               {
                 "code": "treatment_type",
@@ -70,7 +70,13 @@
                 "title": "scraper_income",
                 "code": "scraper_income",
                 "type": "numeric",
-                "validation": "required|gte:0"
+                "validation": "required|gte:0|lte:10000"
+              },
+              {
+                "code": "treat_date",
+                "title": "date",
+                "type": "date",
+                "validation": "required"
               }
             ]
           }

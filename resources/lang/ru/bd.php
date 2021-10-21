@@ -1536,6 +1536,7 @@ return [
             'meas_date' => 'Дата исследования'
         ],
         'well_treatment' => [
+            'treat' => 'Обработка',
             'volume' => 'Объем, м3',
             'pretreat_pressure' => 'Рагр. пред., атм',
             'posttreat_pressure' => 'Рагр.посл. атм',
