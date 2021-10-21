@@ -1507,8 +1507,15 @@
 
                   <div class="col pl-2">
                     <div
+                            v-if="productionFondSelectedCompany !== 'УО'"
                             :class="fondsFilter.isProductionIdleActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="switchProductionFondFilter('isProductionIdleActive')"
+                    >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                    <div
+                            v-else
+                            class="button2 button__disabled"
                     >
                       {{ trans("visualcenter.inIdle") }}
                     </div>
@@ -3087,5 +3094,9 @@
     margin-top: 5px;
     margin-right: 5px;
     overflow: hidden;
+  }
+  .button__disabled{
+    opacity: 0.4;
+    pointer-events: none;
   }
 </style>

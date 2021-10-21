@@ -62,7 +62,12 @@ class HistoricalUploadController extends Controller
             'dzo_name' => $this->dzoName
         );
         foreach($this->fields as $index => $fieldName) {
-            if ($row[$index] !== '') {
+            if ($row[$index] === '') {
+                continue;
+            }
+            if ($fieldName == 'date') {
+                $values[$fieldName] = Carbon::parse($row[$index])->format('Y-m-d H:i:s');
+            } else {
                 $values[$fieldName] = $row[$index];
             }
         }
@@ -75,10 +80,11 @@ class HistoricalUploadController extends Controller
         foreach($data as $index => $dayData) {
             if ($this->type === 'DzoImportOtm') {
                 $existRecord = $this->getRecordByOtm($model,$dayData);
+            } elseif ($this->type === 'DzoImportDowntimeReason') {
+                $existRecord = $this->getRecordByDowntimeReason($model,$dayData);
             } else {
                 $existRecord = $this->getRecord($model,$dayData);
             }
-
             if (is_null($existRecord)) {
                 $this->operation['create'] += 1;
                 $model->create($dayData);
@@ -107,6 +113,13 @@ class HistoricalUploadController extends Controller
             ->whereYear('date',$date->year)
             ->whereMonth('date',$date->month)
             ->where('dzo_name',$this->dzoName)
+            ->first();
+    }
+
+    private function getRecordByDowntimeReason($model,$data)
+    {
+        return $model::query()
+            ->where('id',$data['id'])
             ->first();
     }
 }

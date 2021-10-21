@@ -474,6 +474,7 @@ class VisualCenterController extends Controller
             $summary = $daily;
             if (!is_null($daily['import_downtime_reason'])) {
                 $detail = array();
+                unset($daily['import_downtime_reason']['id']);
                 foreach($daily['import_downtime_reason'] as $key => $fondDetail) {
                     if (!is_null($fondDetail)) {
                         $detail[$key] = $fondDetail;

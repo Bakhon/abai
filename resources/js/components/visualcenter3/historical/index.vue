@@ -41,6 +41,7 @@
 
 <script>
     import moment from "moment-timezone";
+    import {globalloadingMutations} from '@store/helpers';
 
     export default {
         data: function () {
@@ -70,7 +71,8 @@
                 types: {
                     'OTM': 'DzoImportOtm',
                     'Химизация': 'DzoImportChemistry',
-                    'Производственные показатели': 'DzoImportData'
+                    'Производственные показатели': 'DzoImportData',
+                    'Причины простоя': 'DzoImportDowntimeReason'
                 },
                 operation: {
                     create: 0,
@@ -83,6 +85,7 @@
                 this.inputFile = event.target.files[0];
             },
             async store() {
+                this.SET_LOADING(true);
                 let uri = this.localeUrl("/store-historical-data");
                 let formData = new FormData();
                 formData.append("file", this.inputFile);
@@ -100,8 +103,12 @@
                     this.showToast('Данные успешно сохранены/обновлены.','Успешно','success');
                     this.operation.create = response.data.create;
                     this.operation.update = response.data.update;
+                    this.SET_LOADING(false);
                 });
             },
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
         }
     }
 </script>

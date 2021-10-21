@@ -247,6 +247,9 @@ export default {
 
         changeSelectedProductionFondCompanies(e) {
             this.productionFondSelectedCompany = e.target.value;
+            if (e.target.value === 'УО') {
+                this.fondsFilter.isProductionIdleActive = false;
+            }
             this.updateProductionFondWidget();
         },
 
