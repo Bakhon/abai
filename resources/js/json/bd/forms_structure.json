@@ -115,7 +115,8 @@
         "type": "dir",
         "isVisible": true,
         "forms": [
-          "well_treat"
+          "well_treat",
+          "well_treatment"
         ]
       },
       {

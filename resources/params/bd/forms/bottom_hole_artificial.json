@@ -25,13 +25,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "b_hole_m",
-                "validation": "required|numeric|gt:0"
-              },
-              {
-                "code": "comment",
-                "type": "text",
-                "title": "comment",
-                "validation": ""
+                "validation": "required|numeric|gte:0|lte:10000"
               }
             ]
           }

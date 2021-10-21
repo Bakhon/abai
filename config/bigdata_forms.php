@@ -78,4 +78,5 @@
   'tech_mode_inj' => '\\App\\Services\\BigData\\Forms\\TechModeInj',
   'water_production_month' => '\\App\\Services\\BigData\\Forms\\WaterProductionMonth',
   'meas_current_gdis' => '\\App\\Services\\BigData\\Forms\\MeasCurrentGdis',
+  'well_treatment' => '\\App\\Services\\BigData\\Forms\\WellTreatment',
 );

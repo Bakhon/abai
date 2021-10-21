@@ -27,6 +27,10 @@ class WaterInjection {
         'streamWaterInjection' => array(
             'fact' => 'agent_upload_stream_injection_fact',
             'plan' => 'plan_par'
+        ),
+        'volgaWaterInjection' => array(
+            'fact' => 'agent_upload_volga_water_injection_fact',
+            'plan' => 'plan_liq_voljsk'
         )
     );
     private $decreaseReasonFields = array (

@@ -170,13 +170,13 @@
               </li>
             </ul>
 
-            <a href="#" @click.prevent="redirecTo('buffer-tank')" id="buffer-tank-link-1"></a>
-            <a href="#" @click.prevent="redirecTo('buffer-tank')" id="buffer-tank-link-2"></a>
-            <a href="#" @click.prevent="redirecTo('sib')" id="sib-link"></a>
-            <a href="#" @click.prevent="redirecTo('pumps')" id="pump-link-1"></a>
-            <a href="#" @click.prevent="redirecTo('pumps')" id="pump-link-2"></a>
-            <a href="#" @click.prevent="redirecTo('ovens')" id="oven-link-1"></a>
-            <a href="#" @click.prevent="redirecTo('ovens')" id="oven-link-2"></a>
+            <a href="#" @click.prevent="redirecTo('/buffer-tank')" id="buffer-tank-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('/buffer-tank')" id="buffer-tank-link-2"></a>
+            <a href="#" @click.prevent="redirecTo('/sib')" id="sib-link"></a>
+            <a href="#" @click.prevent="redirecTo('/pumps')" id="pump-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('/pumps')" id="pump-link-2"></a>
+            <a href="#" @click.prevent="redirecTo('/ovens')" id="oven-link-1"></a>
+            <a href="#" @click.prevent="redirecTo('/ovens')" id="oven-link-2"></a>
 
           </div>
         </div>
