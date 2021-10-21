@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100">
+  <div class="w-100 main-fa">
     <div
       class="row justify-content-between farowjustcontbet"
       style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; line-height: 31px;"
@@ -1024,6 +1024,15 @@ export default {
     SearchFormRefresh,
     TrMultiselect,
   },
+  computed: {
+    changeSecondCalendarDate() {
+      const { firstCalendarDate} = this;
+      var lastBeginningWeekDate = new Date(firstCalendarDate)
+      this.lastBeginningWeekDate = lastBeginningWeekDate.setDate(lastBeginningWeekDate.getDate()-7);
+      this.secondCalendarDate = lastBeginningWeekDate.toLocaleDateString("en-CA");
+      return this.secondCalendarDate;
+    },
+  },
   data: function () {
     return {
       postApiUrl: process.env.MIX_POST_API_URL,
@@ -1080,6 +1089,9 @@ export default {
     },
     filter() {
       this.chooseField();
+    },
+    firstCalendarDate() {
+      this.changeSecondCalendarDate;
     },
   },
   methods: {
@@ -1696,5 +1708,8 @@ padding-top: 4px;
 .fatable {
 position: relative;
 }
-
+.main-fa {
+position: relative; 
+z-index: 1; 
+}
 </style>

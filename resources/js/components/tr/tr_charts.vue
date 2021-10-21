@@ -1180,11 +1180,11 @@ export default {
       const self = this;
       filteredResult.sort(function (a, b) {
         const grow1 =
-          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
-          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+          self.getStringOrFirstItem(a, "tp_idn_liq_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_liq");
         const grow2 =
-          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
-          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+          self.getStringOrFirstItem(b, "tp_idn_liq_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_liq");
         if (grow2 > grow1) return 1;
         if (grow2 < grow1) return -1;
         return 0;
