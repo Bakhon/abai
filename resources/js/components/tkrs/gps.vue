@@ -27,8 +27,8 @@
               <table>
                 <tbody>
                     <tr>
-                      <td>Дата отчета</td>
-                      <td>29.05.2020 г.</td>
+                      <td >Дата отчета</td>
+                      <td class="input-form">29.05.2020 г.</td>
                       <td>Скважина № 283</td>
                       <td>м/р. Акшабулак </td>
                       <td>Начало бурения:</td>
@@ -49,12 +49,17 @@
                       <td>эксплуатационная</td>
                     </tr>
                     <tr>
-                      <td colspan="1"> № отчета:</td>
-                      <td>1</td>
-                      <td>Задание по программе:</td>
-                      <td>Переход на низлежащий горизонт (ПНЛГ)</td>
-                      <td>Тип скважины:</td>
-
+                      <td colspan="2">Тип станка:</td>
+                      <td>УПА-80  kz 146 АL 11</td>
+                      <td>Подрядчик:</td>
+                      <td colspan="2">ТОО "Zhanros-Drilling"</td>
+                    </tr>
+                </tbody>
+              </table>
+              <table>
+                <tbody>
+                    <tr>
+                      <td>Параметры (давления) по скважине </td>
                     </tr>
                 </tbody>
               </table>
@@ -95,7 +100,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped src="./BaseTableStyles.scss"></style>
+<style lang="scss" scoped src="./InputFormTableStyles.scss"></style>
 <style scoped>
 .tkrs-main {
   width: 100%;
@@ -113,5 +118,8 @@ table {
 }
 table, th, td {
   border:1px solid black;
+}
+.input-form {
+background: #FFFFFF
 }
 </style>
