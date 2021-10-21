@@ -1,13 +1,13 @@
 <template>
   <div>
     <subtitle font-size="16" class="line-height-18px">
-      Технологические потери: добыча рентабельных и нерентабельных скважин
+      Технологические потери: упущенная выгода, расходы на ПРС
     </subtitle>
 
     <div class="mt-2 text-white font-size-14px line-height-16px">
       <div class="bg-blue font-weight-600 pr-10px">
         <div class="pr-1 py-2 text-center border-grey pl-10">
-          Количество скважин в простое по технологическим причинам
+          Упущенная выгода по потерям нефти, млн. тенге
         </div>
 
         <div class="d-flex">
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="d-flex flex-column customScroll">
+      <div class="customScroll">
         <table-oil-production-tech-loss-row
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
@@ -42,16 +42,16 @@
             :titles="titles"
             :sub-titles="subTitles"
             :style="row.style"
-            class="flex-grow-1"/>
+            class="line-height-14px"/>
       </div>
     </div>
 
     <div class="text-white font-size-14px line-height-16px mt-3">
-      <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
-        Потери нефти, тонн
+      <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 pr-10px">
+        Расходы на ПРС, млн. тенге
       </div>
 
-      <div class="d-flex flex-column customScroll">
+      <div class="d-flex flex-column customScroll" style="height: 300px">
         <table-oil-production-tech-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
@@ -59,7 +59,7 @@
             :titles="titles"
             :sub-titles="subTitles"
             :style="row.style"
-            class="flex-grow-1"/>
+            class="flex-grow-1 line-height-14px"/>
       </div>
     </div>
   </div>
@@ -70,14 +70,14 @@ import Subtitle from "../Subtitle";
 import TableOilProductionTechLossRow from "./TableOilProductionTechLossRow";
 
 export default {
-  name: "TableOilProductionTechLoss",
+  name: "TableEconomicTechLoss",
   components: {
     Subtitle,
     TableOilProductionTechLossRow
   },
   computed: {
     tableRows() {
-      let rows = this.dates.map((date, dateIndex) => {
+      let rows = this.columns.map((date, dateIndex) => {
         return {
           date: date,
           values: this.titles.map((title, titleIndex) => {
@@ -103,12 +103,7 @@ export default {
 
       rows.push(
           {
-            date: 'Общий итог',
-            values: sumValues,
-            style: 'background: #323D85; font-weight: 600'
-          },
-          {
-            date: 'Уд. вес, %',
+            date: 'Упущенная выгода, млн. тг.',
             values: sumValues,
             style: 'background: #293688; font-weight: 600'
           }
@@ -144,12 +139,12 @@ export default {
 
       rows.push(
           {
-            date: 'Общий итог',
+            date: 'Расходы на ПРС по тех. простоям*',
             values: sumValues,
             style: 'background: #323D85; font-weight: 600'
           },
           {
-            date: 'Уд. вес, %',
+            date: 'Кол-во ПРС',
             values: sumValues,
             style: 'background: #293688; font-weight: 600'
           }
@@ -165,6 +160,14 @@ export default {
         'Июль',
         'Август',
         'Сентябрь',
+        'Октябрь',
+      ]
+    },
+
+    columns() {
+      return [
+        'Кол-во скв. в простое',
+        'Потери нефти, тн',
       ]
     },
 
@@ -238,6 +241,10 @@ export default {
   font-size: 14px;
 }
 
+.line-height-14px {
+  line-height: 14px;
+}
+
 .line-height-16px {
   line-height: 16px;
 }
@@ -248,7 +255,6 @@ export default {
 
 .customScroll {
   overflow-y: scroll;
-  height: 205px
 }
 
 .customScroll::-webkit-scrollbar {

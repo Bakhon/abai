@@ -35,7 +35,7 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :res="res"
-          style="min-height: 100%"/>
+          class="h-100"/>
     </div>
 
     <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">

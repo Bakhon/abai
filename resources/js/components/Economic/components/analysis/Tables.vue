@@ -7,7 +7,7 @@
           :text="tabs[tab]"
           :active="activeTab === tab"
           :class="index ? 'ml-2' : ''"
-          class="px-2 d-flex align-items-center"
+          class="px-2 d-flex align-items-center h-50px"
           @click.native="selectTab(tab)"/>
     </div>
 
@@ -24,12 +24,24 @@
           v-else-if="activeTab === 'financial_loss'"
           class="text-white"/>
 
+      <table-well-distribution
+          v-else-if="activeTab === 'well_distribution'"
+          class="text-white"/>
+
       <table-additional-stops
           v-else-if="activeTab === 'additional_stops'"
           class="text-white"/>
 
       <table-oil-production-tech-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
+          class="text-white"/>
+
+      <table-economic-tech-loss
+          v-else-if="activeTab === 'economic_tech_loss'"
+          class="text-white"/>
+
+      <table-prs-cost
+          v-else-if="activeTab === 'prs_cost'"
           class="text-white"/>
     </div>
   </div>
@@ -40,8 +52,11 @@ import ChartButton from "../ChartButton";
 import TableProductionLoss from "./TableProductionLoss";
 import TableOilProductionLoss from "./TableOilProductionLoss";
 import TableFinancialLoss from "./TableFinancialLoss";
+import TableWellDistribution from "./TableWellDistribution";
 import TableAdditionalStops from "./TableAdditionalStops";
 import TableOilProductionTechLoss from "./TableOilProductionTechLoss";
+import TableEconomicTechLoss from "./TableEconomicTechLoss";
+import TablePrsCost from "./TablePrsCost";
 
 export default {
   name: "Tables",
@@ -50,8 +65,11 @@ export default {
     TableProductionLoss,
     TableOilProductionLoss,
     TableFinancialLoss,
+    TableWellDistribution,
     TableAdditionalStops,
     TableOilProductionTechLoss,
+    TableEconomicTechLoss,
+    TablePrsCost,
   },
   props: {
     scenario: {
@@ -68,7 +86,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'oil_production_tech_loss',
+    activeTab: 'well_distribution',
   }),
   computed: {
     tabs() {
@@ -76,8 +94,11 @@ export default {
         production_loss: 'Потеря добычи остановок',
         oil_production_loss: 'Потеря добычи по типу рентабельности',
         financial_loss: 'Финансовые потери от остановок',
+        well_distribution: 'Распределение остановленных скважин',
         additional_stops: 'Возможность дополнительных остановок',
         oil_production_tech_loss: 'Технологические потери: добыча',
+        economic_tech_loss: 'Технологические потери: экономика',
+        prs_cost: 'Расходы на ПРС',
       }
     },
   },
@@ -92,5 +113,7 @@ export default {
 </script>
 
 <style scoped>
-
+.h-50px {
+  height: 50px;
+}
 </style>

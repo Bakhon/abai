@@ -5,7 +5,7 @@
     </subtitle>
 
     <div class="mt-2 text-white font-size-12px line-height-14px">
-      <div class="d-flex bg-blue font-weight-600 text-center">
+      <div class="d-flex bg-blue font-weight-600 text-center pr-10px">
         <div class="py-2 px-1 border-grey d-flex align-items-center justify-content-center flex-20">
           Месяцы
         </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="d-flex bg-blue font-weight-600 text-center">
+      <div class="d-flex bg-blue font-weight-600 text-center pr-10px">
         <div v-for="dimension in (4 + titles.length)"
              :class="[
                  dimension === 1 ? 'flex-20' : '',
@@ -50,27 +50,28 @@
         </div>
       </div>
 
-      <div v-for="(date, dateIndex) in dates"
-           :key="date"
-           :style="`background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`"
-           class="d-flex text-center">
-        <div class="text-left flex-20 p-3 border-grey">
-          {{ date }}
-        </div>
+      <div class="d-flex flex-column customScroll">
+        <div v-for="(date, dateIndex) in dates"
+             :key="date"
+             :style="`background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`"
+             class="flex-grow-1 d-flex text-center">
+          <div class="text-left flex-20 p-3 border-grey">
+            {{ date }}
+          </div>
 
-        <div v-for="dimension in (3 + titles.length)"
-             :class="[
+          <div v-for="dimension in (3 + titles.length)"
+               :class="[
                  dimension === 1 ? 'flex-10' : '',
                  dimension === 2 || dimension === 3 ? 'flex-5' : '',
                  dimension >= 4 ? 'flex-15' : '',
                  ]"
-             class="p-3 border-grey">
-          {{ dateIndex * 100 + dimension * 10 }}
+               class="p-3 border-grey">
+            {{ dateIndex * 100 + dimension * 10 }}
+          </div>
         </div>
       </div>
 
-      <div class="d-flex text-center"
-           style="background: #293688">
+      <div class="d-flex text-center bg-deep-blue font-weight-600 pr-10px">
         <div class="text-left flex-20 p-3 border-grey">
           Всего (суммированием с повторами скв.)
         </div>
@@ -200,6 +201,10 @@ export default {
   background: #333975;
 }
 
+.bg-deep-blue {
+  background: #293688;
+}
+
 .border-grey {
   border: 1px solid #454D7D
 }
@@ -238,5 +243,18 @@ export default {
 
 .line-height-18px {
   line-height: 18px;
+}
+
+.pr-10px {
+  padding-right: 10px;
+}
+
+.customScroll {
+  overflow-y: scroll;
+  height: 385px
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>

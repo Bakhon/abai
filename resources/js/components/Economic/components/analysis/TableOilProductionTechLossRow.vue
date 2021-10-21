@@ -10,7 +10,7 @@
       <div v-for="(subTitle, subTitleIndex) in subTitles"
            :key="subTitleIndex"
            :style="`flex: 0 0 ${100 / subTitles.length}%`"
-           class="py-2 px-1 border-grey">
+           class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
         {{ row.values[titleIndex][subTitleIndex] }}
       </div>
     </div>

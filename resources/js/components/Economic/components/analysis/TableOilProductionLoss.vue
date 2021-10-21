@@ -34,14 +34,15 @@
         </div>
       </div>
 
-      <div class="customScroll">
+      <div class="d-flex flex-column customScroll">
         <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
             :row="row"
             :titles="titles"
             :sub-titles="subTitles"
-            :style="row.style"/>
+            :style="row.style"
+            class="flex-grow-1"/>
       </div>
     </div>
 
@@ -50,14 +51,15 @@
         Потери нефти, тонн
       </div>
 
-      <div class="customScroll">
+      <div class="d-flex flex-column customScroll">
         <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
             :row="row"
             :titles="titles"
             :sub-titles="subTitles"
-            :style="row.style"/>
+            :style="row.style"
+            class="flex-grow-1"/>
       </div>
     </div>
   </div>
