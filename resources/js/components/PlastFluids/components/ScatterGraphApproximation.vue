@@ -384,6 +384,8 @@ export default {
       }
       this.$emit("get-approximation", emitData);
       this.approximationSelected = "";
+      this.isPlaceValueOfR2 = false;
+      this.isShowEquationOnChart = false;
       this.closeApproximation();
     },
   },
