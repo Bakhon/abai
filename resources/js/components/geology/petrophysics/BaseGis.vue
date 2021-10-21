@@ -238,9 +238,12 @@ export default {
     async saveTableSettings() {
       this.SET_LOADING(true);
       const awGisData = this.$store.state.geologyGis.awGis.getElementsWithData();
-      const awGisSelectedWells = this.$store.state.geologyGis.gisWells;
-      const awGisSelectedCurves = this.$store.state.geologyGis.selectedGisCurves;
-      const loadedCurves = this.$store.state.geologyGis.CURVES_OF_SELECTED_WELLS;
+      const {
+        CURVES_OF_SELECTED_WELLS: loadedCurves,
+        selectedGisCurves: awGisSelectedCurves,
+        gisWells: awGisSelectedWells
+      } = this.$store.state.geologyGis;
+
       let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
         let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
         let curves = Object.values(findElement.data.curve_id);
