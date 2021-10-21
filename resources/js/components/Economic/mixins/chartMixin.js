@@ -31,15 +31,13 @@ export const chartInitMixin = {
             required: true,
             type: Array
         },
-        tooltipText: {
-            required: false,
-            type: String,
-        },
+
     },
     data: () => ({
         isVisibleDefaultSeries: true,
         isVisibleInWork: true,
         isVisibleInPause: false,
+        isStacked: true,
     }),
     computed: {
         isProfitabilityFull() {
@@ -130,13 +128,9 @@ export const chartInitMixin = {
                 tooltip: {
                     shared: true,
                     intersect: false,
-                    y: this.chartSeries.map((item, index) => {
-                        return {
-                            formatter: index < this.defaultSeriesLength
-                                ? (y) => y
-                                : (y, config) => this.tooltipFormatter(y, config)
-                        }
-                    })
+                    y: {
+                        formatter: (y, config) => this.tooltipFormatter(y, config)
+                    }
                 },
                 fill: {
                     opacity: 0.9,
@@ -145,10 +139,11 @@ export const chartInitMixin = {
         },
 
         chartYaxis() {
-            return this.chartSeries.map((item, index) => {
+            return this.chartSeries.map((chart, index) => {
                 return {
                     min: 0,
                     show: index <= 1 || index === this.defaultSeriesLength,
+                    showAlways: index === this.defaultSeriesLength,
                     opposite: index < this.defaultSeriesLength && this.defaultSeriesLength,
                     seriesName: index < this.defaultSeriesLength
                         ? this.defaultSeries[index].name
@@ -159,7 +154,7 @@ export const chartInitMixin = {
                             : this.title,
                     },
                     labels: {
-                        formatter: (val) => Math.round(val)
+                        formatter: (value) => this.labelsFormatter(value)
                     },
                 }
             })
@@ -180,15 +175,34 @@ export const chartInitMixin = {
                 ? ['#0E7D45', '#C49525', '#780D0A'].reverse()
                 : ['#0E7D45', '#780D0A'].reverse()
         },
+
+        chartHeight() {
+            return 525
+        },
+
+        tooltipText() {
+            return ''
+        },
     },
     methods: {
         tooltipFormatter(value, {dataPointIndex, seriesIndex}) {
-            value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
+            let tooltipText = ''
 
-            return new Intl.NumberFormat(
-                'en-IN',
-                {maximumSignificantDigits: 4}
-            ).format(value.toFixed(2)) + ` ${this.tooltipText || ''}`;
+            if (seriesIndex >= this.defaultSeriesLength) {
+                value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
+
+                tooltipText = this.tooltipText
+            }
+
+            if (value && +value.toFixed(2) !== 0) {
+                value = +value.toFixed(2)
+            }
+
+            return `${value.toLocaleString()} ${tooltipText}`
+        },
+
+        labelsFormatter(value) {
+            return (+value.toFixed(0)).toLocaleString()
         },
 
         chartArea(profitability, wells, pausedWells = null) {
@@ -211,6 +225,10 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
                                 if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                                     value += wells.profitable[index]
                                 }
@@ -236,6 +254,10 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
                                 if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                                     value += wells.profitable[index]
                                 }
@@ -253,8 +275,13 @@ export const chartInitMixin = {
                                 return value
                             })
                             : wells[profitability].map((value, index) => {
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
                                 if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                                     value += wells.profitable[index]
+
                                 }
 
                                 return value
@@ -270,6 +297,10 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
                                 if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                                     value += wells.profitable[index]
                                 }
@@ -291,6 +322,10 @@ export const chartInitMixin = {
                                 return value
                             })
                             : wells[profitability].map((value, index) => {
+                                if (!this.isStacked) {
+                                    return value
+                                }
+
                                 if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
                                     value += wells.profitable[index]
                                 }

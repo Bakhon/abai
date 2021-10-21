@@ -57,7 +57,7 @@ export default {
   props: {
     block: {
       required: true,
-      type: Object
+      type: Array
     }
   }
 }
