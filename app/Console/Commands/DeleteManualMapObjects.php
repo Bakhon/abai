@@ -52,8 +52,8 @@ class DeleteManualMapObjects extends Command
     {
         $manual_pipes = ManualOilPipe::where('gu_id', '!=', 10010)->get();
         $pipe_coords = PipeCoord::whereIn('oil_pipe_id', $manual_pipes->pluck('id'))->get();
-        $calc_long = ManualHydroCalcLong::whereIn('oil_pipe_id', $manual_pipes->pluck('id'))->get();
-        $calc = ManualHydroCalcResult::whereIn('oil_pipe_id', $manual_pipes->pluck('id'))->get();
+        $calc_long = ManualHydroCalcLong::whereIn('oil_pipe_id', $manual_pipes->pluck('id'))->delete();
+        $calc = ManualHydroCalcResult::whereIn('oil_pipe_id', $manual_pipes->pluck('id'))->delete();
         $manual_zus = ManualZu::where('gu_id', '!=', 10010)->get();
         $manual_gus = ManualGu::where('id', '!=', 10010)->get();
         $manual_wells = ManualWell::where('gu_id', '!=', 10010)->get();
@@ -61,15 +61,23 @@ class DeleteManualMapObjects extends Command
         $omgngdu_zus = OmgNGDUZu::whereIn('zu_id', $manual_zus->pluck('id'))->get();
         $omgngdu_gus = OmgNGDU::whereIn('gu_id', $manual_gus->pluck('id'))->get();
 
-        $manual_pipes->forceDelete();
-        $pipe_coords->forceDelete();
-        $calc_long->forceDelete();
-        $calc->forceDelete();
-        $manual_zus->forceDelete();
-        $manual_gus->forceDelete();
-        $manual_wells->forceDelete();
-        $omgngdu_wells->forceDelete();
-        $omgngdu_zus->forceDelete();
-        $omgngdu_gus->forceDelete();
+        $variables_to_delete = [
+            'pipe_coords',
+            'manual_zus',
+            'manual_gus',
+            'manual_wells',
+            'omgngdu_wells',
+            'omgngdu_zus',
+            'omgngdu_gus',
+            'manual_pipes'
+        ];
+
+        foreach ($variables_to_delete as $var) {
+            $var_name = substr($var,0,-1);
+
+            foreach ($$var as $$var_name) {
+                $$var_name->forceDelete();
+            }
+        }
     }
 }
