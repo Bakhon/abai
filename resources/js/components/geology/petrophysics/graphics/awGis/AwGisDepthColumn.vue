@@ -6,7 +6,7 @@
       :header-height="headerHeight"
       :depth-column-width="depthColumnWidth"
       :offset-y="offsetY"
-      :elements="['SSTVD']"
+      :elements="[{data: {name: 'SSTVD'}}]"
   />
 </template>
 <script>
