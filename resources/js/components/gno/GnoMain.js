@@ -857,19 +857,14 @@ export default {
       this.windowWidth = window.innerWidth;
     });
     this.setDefault();
-    switch(true){
-      case this.user.org_structure.includes("org:2"):
-        this.dzos = Object.keys(orgSample)
-        break;
-      case userthis.user.org_structureOrgs.includes("org:112"):
-        this.dzos = ["АО «Мангистаумунайгаз»"]
-        break;
-      case this.user.org_structure.includes("org:3"):
-        this.dzos = ["АО ОзенМунайГаз"]
-        break;
-      case this.user.org_structure.includes("org:179"):
-        this.dzos = ["ТОО «СП КазГерМунай»"]
-        break;
+    if (this.user.org_structure.includes("org:2")) {
+      this.dzos = Object.keys(orgSample)
+    } else if (this.user.org_structure.includes("org:112")) {
+      this.dzos = ["АО «Мангистаумунайгаз»"]
+    } else if (this.user.org_structure.includes("org:3")) {
+      this.dzos = ["АО ОзенМунайГаз"]
+    } else if (this.user.org_structure.includes("org:179")) {
+      this.dzos = ["ТОО «СП КазГерМунай»"]
     }
   },
 };
