@@ -266,9 +266,9 @@ export default {
   props: ['translation'],
   data() {
     return {
+      well_type_category: null,
       lang: {},
       well_passport : [],
-      well_passport_data:[],
       options: [],
       graph: null,
       activeForm: null,
@@ -388,7 +388,6 @@ export default {
     }
   },
   mounted() {
-    this.lang = JSON.parse(this.translation)
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
@@ -452,15 +451,20 @@ export default {
           (this.well.gu.name_ru ? this.well.gu.name_ru : (this.well.agms.name_ru ? this.well.agms.name_ru : ''))
       let wellOrgName = this.wellOrgName ? this.wellOrgName : ''
       let well_zone = this.well.zone ? this.well.zone.name_ru : ''
-      let wellReactInfl = this.well.wellReactInfl ? this.well.wellReactInfl.well_influencing : ''
+      let wellReactReacting = this.well.wellReactInfl.well_reacting ? this.well.wellReactInfl.well_reacting : ''
+      let wellReactInfl = this.well.wellReactInfl.well_influencing ? this.well.wellReactInfl.well_influencing : ''
       let wellSaptialObjectX = this.wellSaptialObjectX ?  this.wellSaptialObjectX : ''
       let wellSaptialObjectY = this.wellSaptialObjectY ? this.wellSaptialObjectY : ''
       let wellSaptialObjectBottomX = this.wellSaptialObjectBottomX ? this.wellSaptialObjectBottomX : ''
       let wellSaptialObjectBottomY = this.wellSaptialObjectBottomY ? this.wellSaptialObjectBottomY : ''
       let well_category = this.well.category ? this.well.category.name_ru : ''
       let categoryLast = this.well.categoryLast  ? this.well.categoryLast.name_ru : ''
-      let period_bur = this.well.wellInfo ? this.getFormatedDate(this.well.wellInfo.drill_start_date)+'/'+this.getFormatedDate(this.well.wellInfo.drill_end_date) : ''
-      let wellExpl = this.well.expl ? this.well.expl.dbeg : ''
+      let period_bur = this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
+                       ? this.getFormatedDate(this.well.wellInfo.drill_start_date)+' - '+this.getFormatedDate(this.well.wellInfo.drill_end_date)
+                       : (this.well.wellInfo.drill_start_date
+                            ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
+                            : (this.well.wellInfo.drill_end_date ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : ''))
+      let wellExpl = this.well.expl ? this.getFormatedDate(this.well.expl.dbeg) : ''
       let well_status = this.well.status ? this.well.status.name_ru : ''
       let well_expl_name = this.well.expl ? this.well.expl.name_ru : ''
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : ''
@@ -468,27 +472,27 @@ export default {
       let artificialBottomHole = this.well.artificialBottomHole ? this.well.artificialBottomHole.depth : ''
       let perfActual = this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+'/'+this.well.perfActual.base : ''
       let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+'/'+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
-      let techModeProdOil_measWaterCut = this.well.techModeProdOil.wcut && this.well.measWaterCut.water_cut
+      let techModeProdOil_measWaterCut = this.well?.techModeProdOil?.wcut  && this.well?.measWaterCut?.water_cut
                                          ? this.well.techModeProdOil.wcut+'/'+this.well.measWaterCut.water_cut
-                                         : (this.well.techModeProdOil.wcut ? this.well.techModeProdOil.wcut : (this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : ''))
+                                         : (this.well?.techModeProdOil?.wcut ? this.well.techModeProdOil.wcut : (this.well?.measWaterCut?.water_cut ? this.well.measWaterCut.water_cut : ''))
       let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.measWaterCut && this.well.measLiq ? this.well.techModeProdOil.oil+'/'+(this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : ( this.well.measWaterCut && this.well.measLiq ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )
       let krsWorkover = this.well.krsWorkover.dbeg && this.well.krsWorkover.dend ? this.getFormatedDate(this.well.krsWorkover.dbeg)+'/'+this.getFormatedDate(this.well.krsWorkover.dend) : ''
-      let treatmentDate = this.well.treatmentDate.treat_date ? this.well.treatmentDate.treat_date : ''
+      let treatmentDate = this.well.treatmentDate.treat_date ? this.getFormatedDate(this.well.treatmentDate.treat_date) : ''
       let well_gtm = this.well.gtm.dbeg ? this.getFormatedDate(this.well.gtm.dbeg) : ''
-      let treatmentSko = this.well.treatmentSko.treat_date ? this.well.treatmentSko.treat_date : ''
-      let well_gdisCurrent =  this.well.gdisCurrent.meas_date ? this.well.gdisCurrent.meas_date : ''
+      let treatmentSko = this.well.treatmentSko.treat_date ? this.getFormatedDate(this.well.treatmentSko.treat_date) : ''
+      let well_gdisCurrent =  this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
       let prsWellWorkover = this.well.prsWellWorkover.dbeg && this.well.prsWellWorkover.dend ? this.getFormatedDate(this.well.prsWellWorkover.dbeg)+'/'+this.getFormatedDate(this.well.prsWellWorkover.dend) : ''
-      let well_gis = this.well.gis.gis_date ? this.well.gis.gis_date : ''
-      let well_gdisCurrent2 =this.well.gdisCurrent.meas_date ? this.well.gdisCurrent.meas_date : ''
+      let well_gis = this.well.gis.gis_date ? this.getFormatedDate(this.well.gis.gis_date) : ''
+      let well_gdisCurrent2 =this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
       let gdisConclusion = this.well.gdisConclusion.name_ru ? this.well.gdisConclusion.name_ru : ''
       let gdisCurrentValue = this.well.gdisCurrentValue.value_double ? this.well.gdisCurrentValue.value_double : ''
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double ? this.well.gdisCurrentValuePmpr.value_double : ''
       let gdisCurrentValueFlvl = this.well.gdisCurrentValueFlvl.value_double ? this.well.gdisCurrentValueFlvl.value_double : ''
       let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double ? this.well.gdisCurrentValueStatic.value_double : ''
-      let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.well.gdisCurrentValueRp.meas_date : ''
+      let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date) : ''
       let gdisComplex = this.well.gdisComplex.value_double && this.well.gdisComplex.research_date ?
-             this.well.gdisComplex.value_double+'/'+this.well.gdisComplex.research_date
-           : (this.well.gdisComplex.value_double ? this.well.gdisComplex.value_double : (this.well.gdisComplex.research_date ? this.well.gdisComplex.research_date : '') )
+             this.well.gdisComplex.value_double+'/'+this.getFormatedDate(this.well.gdisComplex.research_date)
+           : (this.well.gdisComplex.value_double ? this.well.gdisComplex.value_double : (this.well.gdisComplex.research_date ? this.getFormatedDate(this.well.gdisComplex.research_date) : '') )
       let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : ''
       let gdisCurrent_note = this.well.gdisCurrent.note ? this.well.gdisCurrent.note : ''
       let gdisCurrentValueBhp = this.well.gdisCurrentValueBhp.value_double && this.well.gdisCurrentValueBhp.meas_date ? this.well.gdisCurrentValueBhp.value_double+'/'+"(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")"
@@ -496,401 +500,351 @@ export default {
           (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
 
       let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
-      let wellReactInfl_reacting = this.well.wellReactInfl.well_reacting ? this.well.wellReactInfl.well_reacting : ''
       let injPressure = this.well.injPressure ? this.well.injPressure : ''
       let agentVol = this.well.agentVol ? this.well.agentVol : ''
-
-      this.well_passport_data = {
-        'well':well,
-        'wellType':wellType,
-        'wellGeoFields':wellGeoFields,
-        'neighbors':neighbors,
-        'wellInfo':wellInfo,
-        'wellTechsName':wellTechsName,
-        'tap':tap,
-        'gu_agsu':gu_agsu,
-        'wellOrgName':wellOrgName,
-        'well_zone':well_zone,
-        'wellReactInfl':wellReactInfl,
-        'wellSaptialObjectX':wellSaptialObjectX,
-        'wellSaptialObjectY':wellSaptialObjectY,
-        'wellSaptialObjectBottomX':wellSaptialObjectBottomX,
-        'wellSaptialObjectBottomY':wellSaptialObjectBottomY,
-        'well_category':well_category,
-        'categoryLast':categoryLast,
-        'period_bur':period_bur,
-        'wellExpl':wellExpl,
-        'well_status':well_status,
-        'well_expl_name':well_expl_name,
-        'tubeNomOd':tubeNomOd,
-        'actualBottomHole':actualBottomHole,
-        'artificialBottomHole':artificialBottomHole,
-        'perfActual':perfActual,
-        'techModeProdOil':techModeProdOil,
-        'techModeProdOil_measWaterCut':techModeProdOil_measWaterCut,
-        'techModeProdOil_measWaterCut2':techModeProdOil_measWaterCut2,
-        'krsWorkover':krsWorkover,
-        'treatmentDate':treatmentDate,
-        'well_gtm':well_gtm,
-        'treatmentSko':treatmentSko,
-        'well_gdisCurrent':well_gdisCurrent,
-        'prsWellWorkover':prsWellWorkover,
-        'well_gis':well_gis,
-        'well_gdisCurrent2':well_gdisCurrent2,
-        'gdisConclusion':gdisConclusion,
-        'gdisCurrentValue':gdisCurrentValue,
-        'gdisCurrentValuePmpr':gdisCurrentValuePmpr,
-        'gdisCurrentValueFlvl':gdisCurrentValueFlvl,
-        'gdisCurrentValueStatic':gdisCurrentValueStatic,
-        'gdisCurrentValueRp':gdisCurrentValueRp,
-        'gdisComplex':gdisComplex,
-        'rzatrAtm':rzatrAtm,
-        'gdisCurrent_note':gdisCurrent_note,
-        'gdisCurrentValueBhp':gdisCurrentValueBhp,
-        'rzatrStat':rzatrStat,
-        'wellReactInfl_reacting':wellReactInfl_reacting,
-        'injPressure':injPressure,
-        'agentVol':agentVol
-      }
-
+      let category_id = this.well.categoryLast.pivot.category
       this.well_passport = [
         {
-          'description': this.well_passport_data.well,
-          'method': null,
-          'name': this.lang.well,
-          'data': this.well_passport_data.well
+          'name': this.trans('well.well'),
+          'data': well,
+          'type': ['all']
         },
         {
-          'description': this.well_passport_data.wellType,
-          'method': null,
-          'name': this.lang.view_well,
-          'data': this.well_passport_data.wellType
+          'name': this.trans('well.view_well'),
+          'data': wellType,
+          'type': ['all']
         },
         {
-          'description': this.well_passport_data.wellGeoFields,
-          'method': null,
-          'name': this.lang.well_field,
-          'data': this.well_passport_data.wellGeoFields
+          'name': this.trans('well.well_field'),
+          'data': wellGeoFields,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': 'neighbors',
-          'name': this.lang.horizont_rnas,
-          'data': this.well_passport_data.neighbors
+          'name': this.trans('well.horizont_rnas'),
+          'data': neighbors,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.h_rotor,
-          'data': this.well_passport_data.wellInfo
+          'name': this.trans('well.h_rotor'),
+          'data': wellInfo,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.tech_struct,
-          'data': this.well_passport_data.wellTechsName
+          'name': this.trans('well.tech_struct'),
+          'data': wellTechsName,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.otvod,
-          'data': this.well_passport_data.tap
+          'name': this.trans('well.otvod'),
+          'data': tap,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': 'neighbors',
-          'name': this.lang.gu_zu,
-          'data': this.well_passport_data.gu_agsu
+          'name': this.trans('well.gu_zu'),
+          'data': gu_agsu,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.org_struct,
-          'data': this.well_passport_data.wellOrgName
+          'name': this.trans('well.org_struct'),
+          'data': wellOrgName,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.zone_well,
-          'data': this.well_passport_data.well_zone
+          'name': this.trans('well.zone_well'),
+          'data': well_zone,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.influence_well,
-          'data': this.well_passport_data.wellReactInfl
+          'name': this.trans('well.reactive_wells'),
+          'data': wellReactReacting,
+          'type': ['nag']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.coord_x_outfall,
-          'data': this.well_passport_data.wellSaptialObjectX
+          'name': this.trans('well.influence_well'),
+          'data': wellReactInfl,
+          'type': ['dob_oil']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.coord_y_outfall,
-          'data': this.well_passport_data.wellSaptialObjectY
+          'name': this.trans('well.coord_x_outfall'),
+          'data': wellSaptialObjectX,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.coord_zaboi_x,
-          'data': this.well_passport_data.wellSaptialObjectBottomX
+          'name': this.trans('well.coord_y_outfall'),
+          'data': wellSaptialObjectY,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.coord_zaboi_y,
-          'data': this.well_passport_data.wellSaptialObjectBottomY
+          'name': this.trans('well.zaboi_x'),
+          'data': wellSaptialObjectBottomX,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.assign_well_project,
-          'data': this.well_passport_data.well_category
+          'name': this.trans('well.zaboi_y'),
+          'data': wellSaptialObjectBottomY,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.category,
-          'data': this.well_passport_data.categoryLast
+          'name': this.trans('well.assign_well_project'),
+          'data': well_category,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.period_bur,
-          'data': this.well_passport_data.period_bur
+          'name': this.trans('well.category'),
+          'data': categoryLast,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': 'trimToDate',
-          'name': this.lang.date_expluatation,
-          'data': this.well_passport_data.wellExpl
+          'name': this.trans('well.period_bur'),
+          'data': period_bur,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.status,
-          'data': this.well_passport_data.well_status
+          'name': this.trans('well.date_expluatation'),
+          'data': wellExpl,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.way_expluatation,
-          'data': this.well_passport_data.well_expl_name
+          'name': this.trans('well.status'),
+          'data': well_status,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.uo_bolt,
-          'data': ''
+          'name': this.trans('well.way_expluatation'),
+          'data': well_expl_name,
+          'type': ['dob_oil']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.diametr,
-          'data': this.well_passport_data.tubeNomOd
+          'name': this.trans('well.uo_bolt'),
+          'data': '',
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.type_gol,
-          'data': ''
+          'name': this.trans('well.diametr'),
+          'data': tubeNomOd,
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.pump_depth,
-          'data': ''
+          'name': this.trans('well.type_gol'),
+          'data': '',
+          'type': ['all']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.code_pump,
-          'data': ''
+          'name': this.trans('well.type_pump'),
+          'data': '',
+          'type': ['dob_oil']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.diameter_pump,
-          'data': ''
+          'name': this.trans('well.diameter_pump'),
+          'data': '',
+          'type': ['dob_oil']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.sk,
-          'data': ''
+          'name': this.trans('well.pump_depth'),
+          'data': '',
+          'type': ['dob_oil']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.length_hod,
-          'data': ''
+          'name': this.trans('well.packer_running_depth'),
+          'data': '',
+          'type': ['nag']
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.count_swaing,
-          'data': ''
+          'name': this.trans('well.sk'),
+          'data': '',
+          'type': ['dob_oil'],
+          'exp': 1 // шгн
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.fact_zaboi,
-          'data': this.well_passport_data.actualBottomHole
+          'name': this.trans('well.length_hod'),
+          'data': '',
+          'type': ['dob_oil'],
+          'exp': 1
         },
         {
-          'description': '',
-          'method': null,
-          'name': this.lang.synthetic_zaboi,
-          'data': this.well_passport_data.artificialBottomHole
+          'name': this.trans('well.count_swaing'),
+          'data': '',
+          'type': ['dob_oil'],
+          'exp': 1
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.broken_zaboi,
-          'data': ''
+          'name': this.trans('well.fact_zaboi'),
+          'data': actualBottomHole,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.depth_down,
-          'data': ''
+          'name': this.trans('well.synthetic_zaboi'),
+          'data': artificialBottomHole,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.date_perforation,
-          'data': ''
+          'name': this.trans('well.broken_zaboi'),
+          'data': '',
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.progress_interval_perforation,
-          'data': this.well_passport_data.perfActual
+          'name': this.trans('well.depth_down'),
+          'data': '',
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.debit_water,
-          'data': this.well_passport_data.techModeProdOil
+          'name': this.trans('well.kshd'),
+          'data': '',
+          'type': ['nag']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.water_cut,
-          'data': this.well_passport_data.techModeProdOil_measWaterCut
+          'name': this.trans('well.progress_interval_perforation'),
+          'data': perfActual,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.debit_oil,
-          'data': this.well_passport_data.techModeProdOil_measWaterCut2
+          'name': this.trans('well.date_perforation'),
+          'data': '',
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.date_krs,
-          'data': this.well_passport_data.krsWorkover
+          'name': this.trans('well.pickup'),
+          'data': injPressure,
+          'type': ['nag']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.date_krp,
-          'data': this.well_passport_data.well_gtm
+          'name': this.trans('well.injection_pressure'),
+          'data': agentVol,
+          'type': ['nag']
         },
         {
-          'description': null,
-          'method': 'trimToDate',
-          'name': this.lang.date_sko,
-          'data': this.well_passport_data.treatmentSko
+          'name': this.trans('well.debit_water'),
+          'data': techModeProdOil,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.date_prc,
-          'data':  this.well_passport_data.prsWellWorkover
+          'name': this.trans('well.water_cut'),
+          'data': techModeProdOil_measWaterCut,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': 'trimToDate',
-          'name': this.lang.date_last_gis,
-          'data': this.well_passport_data.well_gis
+          'name': this.trans('well.debit_oil'),
+          'data': techModeProdOil_measWaterCut2,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': 'trimToDate',
-          'name': this.lang.date_last_gdis,
-          'data': this.well_passport_data.well_gdisCurrent2
+          'name': this.trans('well.date_krs'),
+          'data': krsWorkover,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.result_gdm,
-          'data': this.well_passport_data.gdisConclusion
+          'name': this.trans('well.date_pfp'),
+          'data': treatmentDate,
+          'type': ['nag']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.length_hod_gdm,
-          'data': this.well_passport_data.gdisCurrentValue
+          'name': this.trans('well.date_krp'),
+          'data': well_gtm,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.count_swing,
-          'data': this.well_passport_data.gdisCurrentValuePmpr
+          'name': this.trans('well.date_sko'),
+          'data': treatmentSko,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.dynamic_level,
-          'data': this.well_passport_data.gdisCurrentValueFlvl
+          'name': this.trans('well.date_kpd'),
+          'data': well_gdisCurrent,
+          'type': ['nag']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.static_level,
-          'data': this.well_passport_data.gdisCurrentValueStatic
+          'name': this.trans('well.date_prc'),
+          'data': prsWellWorkover,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.rpl_date,
-          'data': this.well_passport_data.gdisCurrentValueRp
+          'name': this.trans('well.date_prc'),
+          'data': well_gis,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.rpl_sl_gdis,
-          'data': this.well_passport_data.gdisComplex
+          'name': this.trans('well.date_last_gis'),
+          'data': well_gdisCurrent2,
+          'type': ['all']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.rzab,
-          'data': this.well_passport_data.gdisCurrentValueBhp
+          'name': this.trans('well.result_gdm'),
+          'data': gdisConclusion,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.rzatr,
-          'data': this.well_passport_data.rzatrAtm
+          'name': this.trans('well.length_hod_gdm'),
+          'data': gdisCurrentValue,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.rzatr_stat,
-          'data': this.well_passport_data.rzatrStat
+          'name': this.trans('well.count_swing'),
+          'data': gdisCurrentValuePmpr,
+          'type': ['dob_oil']
         },
         {
-          'description': null,
-          'method': null,
-          'name': this.lang.note,
-          'data': this.well_passport_data.gdisCurrent_note
-        }
+          'name': this.trans('well.dynamic_level'),
+          'data': gdisCurrentValueFlvl,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.static_level'),
+          'data': gdisCurrentValueStatic,
+          'type': ['dob_oil','nabl']
+        },
+        {
+          'name': this.trans('well.rpl_date'),
+          'data': gdisCurrentValueRp,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.rpl_sl_gdis'),
+          'data': gdisComplex,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.rzab'),
+          'data': gdisCurrentValueBhp,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.rzatr'),
+          'data': rzatrAtm,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.rzatr_stat'),
+          'data': rzatrStat,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.note'),
+          'data': gdisCurrent_note,
+          'type': ['all']
+        },
       ]
+
+      this.well_passport = this.rebuildRightSidebar(this.well_passport,category_id,well_expl_name)
+    },
+    rebuildRightSidebar(data,category_id,well_expl_name)
+    {
+        let well_passport_data=[]
+
+        data.forEach(function(item)
+        {
+          let type = item.type
+          let exp = item.exp
+          let types = {13:'dob_oil',9:'nabl',5:'nag'}
+          if(type.indexOf(types[category_id])!= -1 || type.indexOf('all')!= -1 )
+          {
+             if(exp==1 && well_expl_name!='УШГН')
+             {
+               return
+             }
+            well_passport_data.push(item)
+          }
+        })
+      return well_passport_data
     },
     selectWell(well) {
       this.SET_LOADING(true);
@@ -957,628 +911,6 @@ export default {
       this.activeForm = data;
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName ? this.activeFormComponentName : 'ProductionWellsScheduleMain'
-      if(this.activeFormComponentName=='ProductionWellsScheduleMain')
-      {
-        this.well_passport = [
-          {
-            'description': this.well_passport_data.well,
-            'method': null,
-            'name': this.lang.well,
-            'data': this.well_passport_data.well
-          },
-          {
-            'description': this.well_passport_data.wellType,
-            'method': null,
-            'name': this.lang.view_well,
-            'data': this.well_passport_data.wellType
-          },
-          {
-            'description': this.well_passport_data.wellGeoFields,
-            'method': null,
-            'name': this.lang.well_field,
-            'data': this.well_passport_data.wellGeoFields
-          },
-          {
-            'description': '',
-            'method': 'neighbors',
-            'name': this.lang.horizont_rnas,
-            'data': this.well_passport_data.neighbors
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.h_rotor,
-            'data': this.well_passport_data.wellInfo
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.tech_struct,
-            'data': this.well_passport_data.wellTechsName
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.otvod,
-            'data': this.well_passport_data.tap
-          },
-          {
-            'description': '',
-            'method': 'neighbors',
-            'name': this.lang.gu_zu,
-            'data': this.well_passport_data.gu_agsu
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.org_struct,
-            'data': this.well_passport_data.wellOrgName
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.zone_well,
-            'data': this.well_passport_data.well_zone
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.influence_well,
-            'data': this.well_passport_data.wellReactInfl
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.coord_x_outfall,
-            'data': this.well_passport_data.wellSaptialObjectX
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.coord_y_outfall,
-            'data': this.well_passport_data.wellSaptialObjectY
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.coord_zaboi_x,
-            'data': this.well_passport_data.wellSaptialObjectBottomX
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.coord_zaboi_y,
-            'data': this.well_passport_data.wellSaptialObjectBottomY
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.assign_well_project,
-            'data': this.well_passport_data.well_category
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.category,
-            'data': this.well_passport_data.categoryLast
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.period_bur,
-            'data': this.well_passport_data.period_bur
-          },
-          {
-            'description': '',
-            'method': 'trimToDate',
-            'name': this.lang.date_expluatation,
-            'data': this.well_passport_data.wellExpl
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.status,
-            'data': this.well_passport_data.well_status
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.way_expluatation,
-            'data': this.well_passport_data.well_expl_name
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.uo_bolt,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.diametr,
-            'data': this.well_passport_data.tubeNomOd
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.type_gol,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.pump_depth,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.code_pump,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.diameter_pump,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.sk,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.length_hod,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.count_swaing,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.fact_zaboi,
-            'data': this.well_passport_data.actualBottomHole
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.synthetic_zaboi,
-            'data': this.well_passport_data.artificialBottomHole
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.broken_zaboi,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.depth_down,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_perforation,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.progress_interval_perforation,
-            'data': this.well_passport_data.perfActual
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.debit_water,
-            'data': this.well_passport_data.techModeProdOil
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.water_cut,
-            'data': this.well_passport_data.techModeProdOil_measWaterCut
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.debit_oil,
-            'data': this.well_passport_data.techModeProdOil_measWaterCut2
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_krs,
-            'data': this.well_passport_data.krsWorkover
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_krp,
-            'data': this.well_passport_data.well_gtm
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_sko,
-            'data': this.well_passport_data.treatmentSko
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_prc,
-            'data':  this.well_passport_data.prsWellWorkover
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_last_gis,
-            'data': this.well_passport_data.well_gis
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_last_gdis,
-            'data': this.well_passport_data.well_gdisCurrent2
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.result_gdm,
-            'data': this.well_passport_data.gdisConclusion
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.length_hod_gdm,
-            'data': this.well_passport_data.gdisCurrentValue
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.count_swing,
-            'data': this.well_passport_data.gdisCurrentValuePmpr
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.dynamic_level,
-            'data': this.well_passport_data.gdisCurrentValueFlvl
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.static_level,
-            'data': this.well_passport_data.gdisCurrentValueStatic
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.rpl_date,
-            'data': this.well_passport_data.gdisCurrentValueRp
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.rpl_sl_gdis,
-            'data': this.well_passport_data.gdisComplex
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.rzab,
-            'data': this.well_passport_data.gdisCurrentValueBhp
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.rzatr,
-            'data': this.well_passport_data.rzatrAtm
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.rzatr_stat,
-            'data': this.well_passport_data.rzatrStat
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.note,
-            'data': this.well_passport_data.gdisCurrent_note
-          }
-        ]
-      }
-      else
-      {
-        this.well_passport =[
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.well,
-            'data': this.well_passport_data.well
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.view_well,
-            'data': this.well_passport_data.wellType
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.well_field,
-            'data': this.well_passport_data.wellGeoFields
-          },
-          {
-            'description': '',
-            'method': 'neighbors',
-            'name': this.lang.horizont_rnas,
-            'data': this.well_passport_data.neighbors
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.h_rotor,
-            'data': this.well_passport_data.wellInfo
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.tech_struct,
-            'data': this.well_passport_data.wellTechsName
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.otvod,
-            'data': this.well_passport_data.tap
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.gu_zu,
-            'data': this.well_passport_data.gu_agsu
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.org_struct,
-            'data': this.well_passport_data.wellOrgName
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.zone_well,
-            'data': this.well_passport_data.well_zone
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.reactive_wells,
-            'data': this.well_passport_data.wellReactInfl_reacting
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.influence_well,
-            'data': this.well_passport_data.wellReactInfl
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.coord_x_outfall,
-            'data': this.well_passport_data.wellSaptialObjectX
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.coord_y_outfall,
-            'data': this.well_passport_data.wellSaptialObjectY
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.zaboi_x,
-            'data': this.well_passport_data.wellSaptialObjectBottomX
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.zaboi_y,
-            'data': this.well_passport_data.wellSaptialObjectBottomY
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.assign_well_project,
-            'data': this.well_passport_data.well_category
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.category,
-            'data': this.well_passport_data.categoryLast
-          },
-          {
-            'description': '',
-            'method': 'neighbors',
-            'name': this.lang.period_bur,
-            'data': this.well_passport_data.period_bur
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_expluatation,
-            'data': this.well_passport_data.wellExpl
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.status,
-            'data': this.well_passport_data.well_status
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.uo_bolt,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.diametr,
-            'data': this.well_passport_data.tubeNomOd
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.type_gol,
-            'data': ''
-          },
-          {
-            'description': '',
-            'method': null,
-            'name': this.lang.packer_running_depth,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.fact_zaboi,
-            'data': this.well_passport_data.actualBottomHole
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.synthetic_zaboi,
-            'data': this.well_passport_data.artificialBottomHole
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.broken_zaboi,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.depth_down,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.kshd,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_perforation,
-            'data': ''
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.progress_interval_perforation,
-            'data': this.well_passport_data.perfActual
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.pickup,
-            'data': this.well_passport_data.injPressure
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.injection_pressure,
-            'data': this.well_passport_data.agentVol
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.date_krs,
-            'data': this.well_passport_data.krsWorkover
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_pfp,
-            'data': this.well_passport_data.treatmentDate
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.date_krp,
-            'data': this.well_passport_data.well_gtm
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_sko,
-            'data': this.well_passport_data.treatmentSko
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_kpd,
-            'data': this.well_passport_data.well_gdisCurrent
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.date_prc,
-            'data':  this.well_passport_data.prsWellWorkover
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_last_gis,
-            'data': this.well_passport_data.well_gis
-          },
-          {
-            'description': null,
-            'method': 'trimToDate',
-            'name': this.lang.date_last_gdis,
-            'data': this.well_passport_data.well_gdisCurrent2
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.rpl_date,
-            'data': this.well_passport_data.gdisCurrentValueRp
-          },
-          {
-            'description': null,
-            'method': 'neighbors',
-            'name': this.lang.rpl_sl_gdis,
-            'data': this.well_passport_data.gdisComplex
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.rzatr,
-            'data': this.well_passport_data.rzatrAtm
-          },
-          {
-            'description': null,
-            'method': null,
-            'name': this.lang.note,
-            'data': this.well_passport_data.gdisCurrent_note
-          },
-        ]
-      }
 
 
     },
@@ -1600,8 +932,9 @@ export default {
   },
   computed: {
     ...bigdatahistoricalVisibleState(['isInjectionWellsHistoricalVisible','isProductionWellsHistoricalVisible']),
-    tableData: function () {
-      return this.well_passport
+    tableData: function ()
+    {
+        return this.well_passport
     }
   }
 }
