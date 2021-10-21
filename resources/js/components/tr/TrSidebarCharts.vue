@@ -89,9 +89,6 @@ export default {
 <style  scoped>
 .tr-sidebar__link {
   color: #FFF;
-  
-  
-
 }
 .tr-sidebar__page {
   font-weight: bold;
