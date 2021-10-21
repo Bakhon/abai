@@ -4,7 +4,9 @@
       Потери добычи от остановок за май-октябрь 2020 г.
     </subtitle>
 
-    <div v-for="item in 3" class="mt-2">
+    <div v-for="item in 3"
+         :key="item"
+         :class="item > 1 ? 'mt-3' : 'mt-2'">
       <subtitle
           v-if="item > 1"
           font-size="16"

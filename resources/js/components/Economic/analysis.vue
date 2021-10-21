@@ -34,7 +34,8 @@
           v-if="!loading"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
-          :res="res"/>
+          :res="res"
+          style="min-height: 100%"/>
     </div>
 
     <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
@@ -45,7 +46,7 @@
           :block="block"
           :form="form"
           class="mb-10px"
-          style="min-height: 145px"/>
+          style="min-height: 160px"/>
 
       <month-headers :headers="monthHeaders"/>
     </div>

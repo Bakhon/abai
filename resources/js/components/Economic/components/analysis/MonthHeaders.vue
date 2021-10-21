@@ -3,9 +3,8 @@
     <div v-for="(header, index) in headers"
          :key="header.name"
          :class="index ? 'border-grey-top' : ''"
-         class="d-flex font-size-12px line-height-14px">
-      <div :class="[index ? '' : 'pt-3', index === headers.length - 1 ? 'pb-3' : '']"
-           class="pl-3 py-2 flex-150px text-wrap">
+         class="d-flex font-size-14px line-height-16px">
+      <div class="pl-3 py-2 flex-150px text-wrap">
         {{ header.name }}
       </div>
 
@@ -13,8 +12,7 @@
         {{ header.dimension }}
       </div>
 
-      <div :class="index ? '' : 'pt-3'"
-           class="p-2 flex-120px">
+      <div class="p-2 flex-120px">
         {{ header.value }}
       </div>
     </div>
@@ -42,12 +40,12 @@ export default {
   border-top: 1px solid #454D7D;
 }
 
-.font-size-12px {
+.font-size-14px {
   font-size: 12px;
 }
 
-.line-height-14px {
-  line-height: 14px;
+.line-height-16px {
+  line-height: 16px;
 }
 
 .flex-120px {

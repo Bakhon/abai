@@ -5,7 +5,7 @@
     </subtitle>
 
     <div class="mt-2 text-white font-size-14px line-height-16px">
-      <div class="bg-blue font-weight-600">
+      <div class="bg-blue font-weight-600 pr-10px">
         <div class="pr-1 py-2 text-center border-grey pl-20">
           Количество скважин, остановленных НРС, ЧРФ, Опек+
         </div>
@@ -34,50 +34,30 @@
         </div>
       </div>
 
-      <div v-for="(row, rowIndex) in tableRows"
-           :key="rowIndex"
-           :style="row.style"
-           class="d-flex">
-        <div class="py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-20">
-          {{ row.date }}
-        </div>
-
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             class="text-center d-flex flex-20">
-          <div v-for="(subTitle, subTitleIndex) in subTitles"
-               :key="subTitleIndex"
-               :style="`flex: 0 0 ${100 / subTitles.length}%`"
-               class="py-2 px-2 border-grey">
-            {{ row.values[titleIndex][subTitleIndex] }}
-          </div>
-        </div>
+      <div class="customScroll">
+        <table-oil-production-loss-row
+            v-for="(row, rowIndex) in tableRows"
+            :key="rowIndex"
+            :row="row"
+            :titles="titles"
+            :sub-titles="subTitles"
+            :style="row.style"/>
       </div>
     </div>
 
-    <div class="text-white font-size-14px line-height-16px">
-      <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-20">
+    <div class="text-white font-size-14px line-height-16px mt-3">
+      <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-20 pr-10px">
         Потери нефти, тонн
       </div>
 
-      <div v-for="(row, rowIndex) in tableOilRows"
-           :key="rowIndex"
-           :style="row.style"
-           class="d-flex">
-        <div class="py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-20">
-          {{ row.date }}
-        </div>
-
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             class="text-center d-flex flex-20">
-          <div v-for="(subTitle, subTitleIndex) in subTitles"
-               :key="subTitleIndex"
-               :style="`flex: 0 0 ${100 / subTitles.length}%`"
-               class="py-2 px-2 border-grey">
-            {{ row.values[titleIndex][subTitleIndex] }}
-          </div>
-        </div>
+      <div class="customScroll">
+        <table-oil-production-loss-row
+            v-for="(row, rowIndex) in tableOilRows"
+            :key="rowIndex"
+            :row="row"
+            :titles="titles"
+            :sub-titles="subTitles"
+            :style="row.style"/>
       </div>
     </div>
   </div>
@@ -85,11 +65,13 @@
 
 <script>
 import Subtitle from "../Subtitle";
+import TableOilProductionLossRow from "./TableOilProductionLossRow";
 
 export default {
   name: "TableOilProductionLoss",
   components: {
-    Subtitle
+    Subtitle,
+    TableOilProductionLossRow
   },
   computed: {
     tableRows() {
@@ -217,6 +199,10 @@ export default {
   padding-left: 20%;
 }
 
+.pr-10px {
+  padding-right: 10px;
+}
+
 .font-weight-600 {
   font-weight: 600;
 }
@@ -231,5 +217,14 @@ export default {
 
 .line-height-18px {
   line-height: 18px;
+}
+
+.customScroll {
+  overflow-y: scroll;
+  height: 205px
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>

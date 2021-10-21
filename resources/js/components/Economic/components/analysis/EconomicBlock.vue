@@ -23,14 +23,14 @@
         </div>
       </div>
 
-      <div class="text-grey font-size-12px line-height-14px font-weight-bold mb-2">
+      <div class="text-grey font-size-12px line-height-14px font-weight-bold mb-3">
         Предлагаемый
       </div>
 
-      <div>
+      <div class="mb-2">
         <percent-progress :percent="subBlock.percent"/>
 
-        <div class="d-flex font-size-12px line-height-14px mb-2">
+        <div class="d-flex font-size-12px line-height-14px">
           <div class="flex-grow-1 text-blue">
             {{ (100 + subBlock.percent).toFixed(2) }} %
           </div>
@@ -43,13 +43,13 @@
         <percent-badge-icon
             :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
             :reverse="subBlock.reverse"
-            class="font-size-16px line-height-18px mr-1"/>
+            class="font-size-18px line-height-20px mr-1"/>
 
-        <span class="font-size-16px line-height-18px font-weight-bold">
+        <span class="font-size-18px line-height-20px font-weight-bold">
             {{ Math.abs(+subBlock.percent) }}
         </span>
 
-        <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
+        <span class="ml-2 d-flex flex-column font-size-12px line-height-14px">
            <div>{{ subBlock.percentDimension || subBlock.dimension }}</div>
 
             <div v-if="subBlock.dimensionSuffix">
@@ -111,16 +111,12 @@ export default {
   font-size: 16px;
 }
 
-.font-size-20px {
-  font-size: 24px;
+.font-size-18px {
+  font-size: 18px;
 }
 
 .font-size-26px {
   font-size: 26px;
-}
-
-.line-height-12px {
-  line-height: 12px;
 }
 
 .line-height-14px {
@@ -135,8 +131,8 @@ export default {
   line-height: 18px;
 }
 
-.line-height-28px {
-  line-height: 28px;
+.line-height-20px {
+  line-height: 20px;
 }
 
 .text-blue {

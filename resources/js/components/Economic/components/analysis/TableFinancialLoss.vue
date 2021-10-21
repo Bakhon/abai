@@ -17,7 +17,7 @@
              :key="titleIndex"
              :class="title.styleClass"
              class="bg-blue d-flex flex-column flex-95px">
-          <div class="p-1 border-grey flex-grow-1 w-100 d-flex align-items-center justify-content-center">
+          <div class="px-1 py-3 border-grey flex-grow-1 w-100 d-flex align-items-center justify-content-center">
             {{ title.name }}
           </div>
 
@@ -27,83 +27,32 @@
         </div>
       </div>
 
-      <div v-for="(row, rowIndex) in tableRows"
-           :key="rowIndex"
-           class="d-flex text-center">
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-50px text-center font-weight-600">
-          {{ row.subTitle || '' }}
-        </div>
+      <table-financial-loss-row
+          v-for="(row, rowIndex) in tableRows"
+          :key="rowIndex"
+          :row="row"
+          :titles="titles"
+      />
 
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-300px flex-grow-1 text-left font-weight-600">
-          {{ row.title }}
-        </div>
+      <table-financial-loss-row
+          v-for="(row, rowIndex) in tableOptimizedRows"
+          :key="`${rowIndex}_optimized`"
+          :row="row"
+          :titles="titles"
+          :class="rowIndex ? '' : 'mt-2'"
+      />
 
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             :class="title.styleClass"
-             :style="row.style"
-             class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-          {{ row.values[titleIndex] }}
-        </div>
-      </div>
-
-      <div v-for="(row, rowIndex) in tableOptimizedRows"
-           :key="rowIndex"
-           :class="rowIndex ? '' : 'mt-3'"
-           class="d-flex text-center">
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-50px text-center font-weight-600">
-          {{ row.subTitle || '' }}
-        </div>
-
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-300px flex-grow-1 text-left font-weight-600">
-          {{ row.title }}
-        </div>
-
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             :class="title.styleClass"
-             :style="row.style"
-             class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-          {{ row.values[titleIndex] }}
-        </div>
-      </div>
-
-      <div v-for="(row, rowIndex) in tableSubtractionRows"
-           :key="rowIndex"
-           :class="rowIndex ? '' : 'mt-3'"
-           class="d-flex text-center">
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-50px text-center font-weight-600">
-          {{ row.subTitle || '' }}
-        </div>
-
-        <div :style="row.style"
-             class="px-2 py-1 border-grey min-width-300px flex-grow-1 text-left font-weight-600">
-          {{ row.title }}
-        </div>
-
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             :class="[
-                 title.styleClass,
-                 rowIndex === 0 && titleIndex === titles.length -1
-                 ? 'bg-orange font-weight-600'
-                  : ''
-                 ]"
-             :style="row.style"
-             class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-          {{ row.values[titleIndex] }}
-        </div>
-      </div>
+      <table-financial-loss-row
+          v-for="(row, rowIndex) in tableSubtractionRows"
+          :key="`${rowIndex}_subtraction`"
+          :row="row"
+          :titles="titles"
+          :class="rowIndex ? '' : 'mt-2'"
+      />
 
       <div v-for="(subTitle, subTitleIndex) in subTitles"
-           :key="subTitleIndex"
-           :class="subTitleIndex ? 'mt-2' : 'mt-3'"
-           class="d-flex text-center font-weight-600">
+           :key="`${subTitleIndex}_subtitle`"
+           class="mt-2 d-flex text-center font-weight-600">
         <div class="px-2 py-1 border-grey min-width-50px text-center bg-dark-blue">
           {{ 4 + subTitleIndex }}
         </div>
@@ -124,11 +73,13 @@
 
 <script>
 import Subtitle from "../Subtitle";
+import TableFinancialLossRow from "./TableFinancialLossRow";
 
 export default {
   name: "TableFinancialLoss",
   components: {
-    Subtitle
+    Subtitle,
+    TableFinancialLossRow
   },
   computed: {
     tableRows() {
@@ -136,30 +87,30 @@ export default {
         {
           title: 'Фактические показатели',
           subTitle: '1.',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #2B2E5E'
         }
       ]
@@ -170,30 +121,30 @@ export default {
         {
           title: 'Предлагаемый вариант',
           subTitle: '2.',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex * 100
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex * 100,
+          })),
           style: 'background: #2B2E5E'
         }
       ]
@@ -204,38 +155,41 @@ export default {
         {
           title: 'Предлагаемый вариант минус фактические показатели',
           subTitle: '3.',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex
-                ? this.tableOptimizedRows[0].values[titleIndex] - this.tableRows[0].values[titleIndex]
-                : 0
-          }),
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex
+                ? this.tableOptimizedRows[0].values[titleIndex].value - this.tableRows[0].values[titleIndex].value
+                : 0,
+            style: titleIndex === this.titles.length - 1
+                ? 'background: #B97919 !important'
+                : ''
+          })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex
-                ? this.tableOptimizedRows[1].values[titleIndex] - this.tableRows[1].values[titleIndex]
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex
+                ? this.tableOptimizedRows[1].values[titleIndex].value - this.tableRows[1].values[titleIndex].value
                 : 0
-          }),
+          })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex
-                ? this.tableOptimizedRows[2].values[titleIndex] - this.tableRows[2].values[titleIndex]
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex
+                ? this.tableOptimizedRows[2].values[titleIndex].value - this.tableRows[2].values[titleIndex].value
                 : 0
-          }),
+          })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => {
-            return titleIndex
-                ? this.tableOptimizedRows[3].values[titleIndex] - this.tableRows[3].values[titleIndex]
+          values: this.titles.map((title, titleIndex) => ({
+            value: titleIndex
+                ? this.tableOptimizedRows[3].values[titleIndex].value - this.tableRows[3].values[titleIndex].value
                 : 0
-          }),
+          })),
           style: 'background: #2B2E5E'
         }
       ]
