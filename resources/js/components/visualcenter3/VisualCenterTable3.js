@@ -33,7 +33,7 @@ Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').
 
 
 export default {
-    props: ['userId'],
+    props: ['userId','oilDynamicRoute'],
     components: {
         "date-picker": DatePicker
     },

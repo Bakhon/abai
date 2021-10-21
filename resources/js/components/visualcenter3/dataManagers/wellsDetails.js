@@ -78,6 +78,9 @@ export default {
                 _.forEach(inputData, function(item) {
                     item.fact = tableData[0][item.code];
                     item.isVisible = typeof item.fact !== 'undefined';
+                    if (!item.fact) {
+                        item.fact = 0;
+                    }
                 });
             }
         },
