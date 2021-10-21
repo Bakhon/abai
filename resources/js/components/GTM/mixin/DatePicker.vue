@@ -1,67 +1,61 @@
 <template>
   <div>
     <div class="d-flex">
-      <template>
-        <div style="display: flex; justify-content: space-evenly;"
-             class="calendar-filter-block d-flex* fl-g-2 text-center align-items-center cursor-pointer">
-
-          <div class="d-flex">
-            <div class="pr-2">
-              от
-            </div>
-            <div>
-              <datetime
-                  type="date"
-                  v-model="dateStartGtm"
-                  class="start-date-gtm"
-                  value-zone="Asia/Almaty"
-                  zone="Asia/Almaty"
-                  :title="trans('bd.choose_start_date')"
-                  :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                  :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                  :max-datetime="dateEndGtm"
-                  :week-start="1"
-                  :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                  auto
-                  :flow="dateFlow"
-              >
-              </datetime>
-            </div>
-
-          </div>
-          <div class="d-flex">
-            <div class="pr-2">
-              до
-            </div>
-            <div>
-              <datetime
-                  type="date"
-                  v-model="dateEndGtm"
-                  @input="onDateRangeChange"
-                  class="end-date-gtm"
-                  value-zone="Asia/Almaty"
-                  zone="Asia/Almaty"
-                  :title="trans('bd.choose_end_date')"
-                  :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                  :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                  :min-datetime="dateStartGtm"
-                  :week-start="1"
-                  :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                  auto
-                  :flow="dateFlow"
-              >
-              </datetime>
-            </div>
-          </div>
+      <div class="calendar-filter-block d-flex f-1 text-center">
+        <div class="d-flex block-date">
+          <datetime
+              type="date"
+              v-model="dateStartGtm"
+              class="start-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_start_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :max-datetime="dateEndGtm"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          ></datetime>
         </div>
-      </template>
+        <div>
+          <img src="/img/GTM/calendar_icon.svg" alt="">
+        </div>
+      </div>
+
+      <div class="calendar-filter-block d-flex text-center f-1 ml-5px">
+        <div class="d-flex block-date">
+          <datetime
+              type="date"
+              v-model="dateEndGtm"
+              @input="onDateRangeChange"
+              class="end-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_end_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :min-datetime="dateStartGtm"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          >
+          </datetime>
+        </div>
+        <div>
+          <img src="/img/GTM/calendar_icon.svg" alt="">
+        </div>
+
+      </div>
 
       <div class="ml-1 calendar-filter-block d-flex" v-if="showSettings" @click="showModal('modalPeriod')">
-        <img class="gear-icon-svg" src="/img/GTM/gear-icon.svg" alt="">
+        <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
       </div>
 
       <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
-             :height="230"
+             :height="100"
              style="background: transparent;" :adaptive="true">
         <div class="modal-bign modal-bign-container">
           <div class="modal-bign-header">
@@ -70,32 +64,16 @@
               {{ trans('pgno.zakrit') }}
             </button>
           </div>
-          <div class="d-flex jc">
-            <div class="d-flex fd">
-              <div>
-                {{ trans('paegtm.day') }}
-              </div>
-              <div>
-                {{ trans('paegtm.month') }}
-              </div>
-              <div>
-                {{ trans('paegtm.year') }}
-              </div>
+          <div class="d-flex justify-content-start">
+            <div class="d-flex">
+              <input class="mt-7px" type="checkbox" value="">
+              <label class="pl-5px">Шаг</label>
             </div>
-            <div class="d-flex fd">
-              <div>
-                <input class="period-settings-input" type="text">
-              </div>
-              <div>
-                <input class="period-settings-input" type="text">
-              </div>
+            <div class="d-flex pl-4">
               <div>
                 <input class="period-settings-input" type="text">
               </div>
             </div>
-          </div>
-          <div class="block-header p-2 text-center calc-button mt-4" @click="closeModal('modalPeriod')">
-            {{ trans("paegtm.calc") }}
           </div>
         </div>
       </modal>
@@ -159,6 +137,10 @@ export default {
   animation: gear-icon-svg 3s infinite both;
 }
 
+.mt-7px {
+  margin-top: 7px;
+}
+
 @-webkit-keyframes gear-icon-svg {
   0% {
     -webkit-transform: scale(1) rotateZ(0);
@@ -189,11 +171,16 @@ export default {
   }
 }
 
+.modal-bign-wrapper {
+  left: 815px;
+  top: -340px;
+}
+
 .period-settings-input {
   background: #494AA5;
   border: 1px solid #272953;
   outline: none;
-  max-width: 60px;
+  max-width: 30px;
   height: 22px;
   color: white;
   box-sizing: border-box;
@@ -212,8 +199,17 @@ export default {
   background: #353e70;
 }
 
-.jc {
-  justify-content: space-between;
+.block-date {
+  justify-content: space-around;
+}
+
+.start-date-gtm .vdatetime-input, .end-date-gtm .vdatetime-input {
+  float: left;
+}
+
+.f-1 {
+  flex: 1;
+  justify-content: space-around;
 }
 
 .fd {

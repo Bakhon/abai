@@ -29,6 +29,7 @@ use App\Models\BigData\Dictionaries\GeoRockType;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
 use App\Models\BigData\Dictionaries\GisMethodType;
+use App\Models\BigData\Dictionaries\GisType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
@@ -447,10 +448,16 @@ class DictionaryService
                     break;
                 case 'res_type_dict':
                     $dict = $this->getResTypeDict();
-                    break; 
+                    break;
                 case 'res_method_dict':
                     $dict = $this->getResMethodDict();
-                    break;        
+                    break;
+                case 'gis_method_types_gis_type':
+                    $dict = $this->getGisMethodTypesForGisTypeForm();
+                    break;
+                case 'gis_kinds_gis_type':
+                    $dict = $this->getGisKindsForGisTypeForm();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -591,7 +598,29 @@ class DictionaryService
             )
             ->toArray();
 
-        return $this->generateTree((array)$items);
+        $tree = [];
+        $items = $this->generateTree($items);
+        $geoPermissionsIds = $this->getUserGeoPermissionIds();
+        $this->filterTree($items, $tree, $geoPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserGeoPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_geo as og')
+                ->select('og.geo as geo')
+                ->where('og.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->geo;
+        }, $result));
+        return $result;
     }
 
     private function getWellTechsDict(): array
@@ -612,7 +641,7 @@ class DictionaryService
         $this->filterTree($items, $tree, $techPermissionsIds);
         return $tree;
     }
-
+    
     public function getUserTechPermissionIds() {
         $orgIds = $this->getUserOrgPermissionIds();
         $result = [];
@@ -850,5 +879,30 @@ class DictionaryService
             )
             ->toArray();
         return $items;
+    }
+
+    private function getGisMethodTypesForGisTypeForm()
+    {
+        $dict = $this->get('gis_method_types');
+        return array_filter($dict, function ($item) {
+            return !in_array($item['code'], ['GATR']);
+        });
+    }
+
+    private function getGisKindsForGisTypeForm()
+    {
+        $gisType = GisType::where('code', 'WLS')->first();
+        return DB::connection('tbd')
+            ->table('dict.gis_kind')
+            ->select('id', 'name_ru as name')
+            ->where('gis_type', $gisType->id)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
     }
 }    

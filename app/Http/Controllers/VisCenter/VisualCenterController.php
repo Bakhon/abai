@@ -28,6 +28,7 @@ use App\Models\VisCenter\EmergencyHistory;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\ChemistryForKGM;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\RepairsForKGM;
 use App\Console\Commands\StoreKGMReportsFromAvocetByDay;
+use Illuminate\Support\Facades\Cache;
 
 class VisualCenterController extends Controller
 {
@@ -43,6 +44,9 @@ class VisualCenterController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
+
+    private $saveTime = 1440;
+
     public function getDZOcalcs(Request $request)
     {
         $dateStart = $request->get('dateStart');
@@ -87,19 +91,30 @@ class VisualCenterController extends Controller
 
     public function getUsdRates()
     {
+        $name = 'usd_rates_' . Carbon::now()->format('M_d_Y');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
         $data = UsdRate::query()
             ->where('date', '>=', '2010-01-01')
             ->get()
             ->toArray();
 
+        Cache::put($name, $data, $this->saveTime);
         return response()->json($data);
     }
 
-    public function getOilRates() {
-      $oilRatesData = OilRate::query()
+    public function getOilRates()
+    {
+        $name = 'oil_rates_' . Carbon::now()->format('M_d_Y');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+        $oilRates = OilRate::query()
           ->get()
           ->toArray();
-      return response()->json($oilRatesData);
+        Cache::put($name, $oilRates, $this->saveTime);
+        return response()->json($oilRates);
     }
 
     public function getDzoMonthlyPlans()
@@ -378,24 +393,39 @@ class VisualCenterController extends Controller
 
     public function getOtmDetails(Request $request)
     {
-        return DzoImportOtm::query()
+        $name = 'otm_' . $request->startPeriod . '_' . $request->endPeriod;
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+
+        $otm = DzoImportOtm::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
             ->whereYear('date',Carbon::now()->year)
             ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
+
+        Cache::put($name, $otm, $this->saveTime);
+        return $otm;
     }
 
     public function getChemistryDetails(Request $request)
     {
-        return DzoImportChemistry::query()
+        $name = 'chemistry_' . $request->startPeriod . '_' . $request->endPeriod;
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+
+        $chemistry = DzoImportChemistry::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
             ->whereYear('date',Carbon::now()->year)
             ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
+        Cache::put($name, $chemistry, $this->saveTime);
+        return $chemistry;
     }
 
     private function deleteDuplicateFields($planRecord)
@@ -429,14 +459,33 @@ class VisualCenterController extends Controller
     {
         $fields = $request->fields;
         array_push($fields, "date", "dzo_name", "id");
-        return DzoImportData::query()
+        $startPeriod = Carbon::parse($request->startPeriod);
+        $endPeriod = Carbon::parse($request->endPeriod);
+        $fondData = DzoImportData::query()
             ->select($fields)
-            ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
-            ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
             ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->get()
             ->toArray();
+        $compared = array();
+        foreach($fondData as $daily) {
+            $summary = $daily;
+            if (!is_null($daily['import_downtime_reason'])) {
+                $detail = array();
+                unset($daily['import_downtime_reason']['id']);
+                foreach($daily['import_downtime_reason'] as $key => $fondDetail) {
+                    if (!is_null($fondDetail)) {
+                        $detail[$key] = $fondDetail;
+                    }
+                }
+               $summary = array_merge($summary,$detail);
+            }
+            unset($summary['import_downtime_reason']);
+            array_push($compared,$summary);
+        }
+        return $compared;
     }
 
     public function dailyReport()
@@ -448,14 +497,34 @@ class VisualCenterController extends Controller
     {
         $startPeriod = Carbon::now()->startOfYear();
         $endPeriod = Carbon::now()->endOfDay();
-        return DzoImportData::query()
-            ->select()
+        $name = 'year_production_' . $startPeriod->format('Y_m_d') . '_' . $endPeriod->format('Y_m_d');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+        $productionByYear = DzoImportData::query()
+            ->select(['id','dzo_name','date','oil_production_fact','condensate_production_fact','oil_delivery_fact','condensate_delivery_fact'])
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
             ->whereNull('is_corrected')
-            ->with('importDecreaseReason')
+            ->with(['importDecreaseReason' => function($decreaseReason){
+               $decreaseReason->select(
+                  [
+                     'dzo_import_data_id',
+                     'accident_explanation_reasons',
+                     'gas_restriction_explanation_reasons',
+                     'impulse_explanation_reasons',
+                     'opec_explanation_reasons',
+                     'other_explanation_reasons',
+                     'restriction_kto_explanation_reasons',
+                     'shutdown_explanation_reasons'
+                  ]
+                )
+                ->get();
+            }])
             ->get()
             ->toArray();
+        Cache::put($name, $productionByYear, $this->saveTime);
+        return $productionByYear;
     }
     public function getEmergencyHistory(Request $request)
     {

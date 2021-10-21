@@ -23,13 +23,7 @@ export default {
   },
   computed: {
     dateString: function(){
-      let date = this.dateRange.toLocaleDateString().split('/');
-      let day = date[1]
-      let month = date[0]
-      let year = date[2]
-      let new_date = [day, month, year].join('.')
-
-      return new_date;
+      return moment(this.dateRange.toLocaleDateString()).format('DD.MM.YYYY');;
     }
   },
   methods: {
@@ -39,7 +33,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
   .calendar-block{
     margin:0;

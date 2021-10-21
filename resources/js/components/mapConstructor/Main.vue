@@ -44,19 +44,19 @@
                             </div>
                             <span>{{ trans('map_constructor.date_picker') }}</span>
                         </div>
-                        <div class="tool" @click="accumulatedSelected = !accumulatedSelected">
-                            <div class="box" :class="{'is-active': accumulatedSelected === true}">
+                        <div class="tool">
+                            <div class="box">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <span>{{ trans('map_constructor.select_kno') }}</span>
                         </div>
-                        <div class="tool" @click="currentSelected = !currentSelected">
-                            <div class="box" :class="{'is-active': currentSelected === true}">
+                        <div class="tool">
+                            <div class="box">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <span>{{ trans('map_constructor.select_kto') }}</span>
                         </div>
-                        <div class="tool">
+                        <div class="tool" @click="showBubbles">
                             <div class="box">
                                 <i class="fas fa-map"></i>
                             </div>
@@ -74,12 +74,13 @@
                           <i class="fas fa-caret-down ml-2"></i>
                           <i class="fas fa-vector-square ml-2"></i>
                           <span class="ml-2">Группа</span>
-                          <ul class="text-white list-style-none ml-4">
-                            <li v-for="(layerGroup, index) in layersList">
-                              <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup)">
-                              layer_{{ index }}
-                            </li>
-                          </ul>
+                          <draggable class="ml-3 text-white" v-model="layerGroups" @change="layerGroupsChangeOrder"
+                                     group="layers" @start="drag=true" @end="drag=false" >
+                              <div v-for="(layerGroup, index) in layerGroups" :key="index">
+                                  <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup.getLayers())">
+                                  {{ layerGroup.name }}
+                              </div>
+                          </draggable>
                         </div>
                     </div>
                     <div class="main-map" @contextmenu="openMenu">

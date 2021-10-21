@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class WellPerf extends PlainForm
 {
     protected $configurationFileName = 'well_perf';
+
+    use WithDocumentsUpload;
 
     public function getFormByRow(array $row): array
     {
@@ -37,11 +40,25 @@ class WellPerf extends PlainForm
             case 7:
                 $form = 'well_perf_bridge_plug';
                 break;
-            case 8:
-                $form = 'well_document_short';
-                break;    
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                $form = 'well_perf_other';
+                break;
         }
         return ['form' => $form];
+    }
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
+        return $rows;
     }
 
     protected function formatRows(Collection $wellPerforations): Collection
@@ -125,18 +142,26 @@ class WellPerf extends PlainForm
 
     protected function insertInnerTable(int $id)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        $data['dbeg'] = $this->request->get('perf_date');
-                        $data['dend'] = Well::DEFAULT_END_DATE;
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
-                }
+        if (empty($this->tableFields)) {
+            return;
+        }
+
+        foreach ($this->tableFields as $field) {
+            if (empty($this->request->get($field['code']))) {
+                continue;
+            }
+            if ($field['code'] === 'documents') {
+                $this->submitFiles($id, $field);
+                continue;
+            }
+
+            $this->submittedData['table_fields'][$field['code']] = [];
+            foreach ($this->request->get($field['code']) as $data) {
+                $data[$field['parent_column']] = $id;
+                $data['dbeg'] = $this->request->get('perf_date');
+                $data['dend'] = Well::DEFAULT_END_DATE;
+                $this->submittedData['table_fields'][$field['code']][] = $data;
+                DB::connection('tbd')->table($field['table'])->insert($data);
             }
         }
     }

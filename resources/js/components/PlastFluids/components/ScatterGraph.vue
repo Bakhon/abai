@@ -3,9 +3,11 @@
     <div class="scatter-graph-header">
       <p>{{ title }}</p>
       <div class="scatter-graph-toolbar">
-        <button @click.stop="isApproximationOpen = true">
-          {{ trans("plast_fluids.approximation") }}
-        </button>
+        <img
+          @click.stop="isApproximationOpen = true"
+          src="/img/PlastFluids/settings.svg"
+          alt="customize graph"
+        />
         <img
           src="/img/PlastFluids/download.svg"
           @click="saveToPng"
@@ -15,17 +17,23 @@
         <img src="/img/PlastFluids/openModal.svg" width="14" />
       </div>
     </div>
-    <ApexCharts
-      ref="scatterGraph"
-      :options="chartOptions"
-      :series="graphSeries"
-      :type="type"
-      height="100%"
-    ></ApexCharts>
+    <div class="graph-holder">
+      <ApexCharts
+        ref="scatterGraph"
+        :options="chartOptions"
+        :series="graphSeries"
+        :type="type"
+        height="100%"
+      ></ApexCharts>
+    </div>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
       :graphType="graphType"
+      :minX="minXAxisBorder"
+      :maxX="maxXAxisBorder"
+      :minY="minYAxisBorder"
+      :maxY="maxYAxisBorder"
       @close-approximation="isApproximationOpen = false"
       @get-approximation="getApproximation"
     />
@@ -36,6 +44,7 @@
 import ScatterGraphApproximation from "./ScatterGraphApproximation.vue";
 import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
+import _ from "lodash";
 
 export default {
   name: "ScatterGraph",
@@ -52,18 +61,19 @@ export default {
     return {
       type: "scatter",
       isApproximationOpen: false,
+      currentAnnotationColorIndex: 0,
       graphSeries: [],
       approximation: [],
-      minX: "",
-      minY: "",
-      maxX: "",
-      maxY: "",
+      minXAxisBorder: "",
+      minYAxisBorder: "",
+      maxXAxisBorder: "",
+      maxYAxisBorder: "",
       chartOptions: {
+        annotations: {
+          points: [],
+        },
         stroke: {
           show: true,
-        },
-        dataLabels: {
-          enabled: false,
         },
         colors: ["#82BAFF", "#CF3630", "#F27E31"],
         chart: {
@@ -87,7 +97,7 @@ export default {
           showForSingleSeries: true,
         },
         noData: {
-          text: "Загрузка...",
+          text: this.trans("plast_fluids.no_data"),
         },
         grid: {
           show: true,
@@ -111,6 +121,10 @@ export default {
           },
         },
         xaxis: {
+          labels: {
+            formatter: this.labelFormatterX,
+          },
+          seriesName: this.trans("plast_fluids.data"),
           type: "numeric",
           lines: {
             show: true,
@@ -119,8 +133,9 @@ export default {
           tickAmount: 6,
         },
         yaxis: {
+          seriesName: this.trans("plast_fluids.data"),
           labels: {
-            formatter: this.labelFormatter,
+            formatter: this.labelFormatterY,
           },
           lines: {
             show: true,
@@ -135,14 +150,76 @@ export default {
     series: {
       handler(obj) {
         const filtered = obj.data.filter((item) => item.x && item.y);
-        this.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
-        this.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
-        this.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
-        this.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
-        Vue.set(this.chartOptions.xaxis, "min", this.minX - this.minX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "min", this.minY - this.minY * 0.2);
-        Vue.set(this.chartOptions.xaxis, "max", this.maxX + this.maxX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "max", this.maxY + this.maxY * 0.2);
+        let axis = {};
+        axis.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
+        axis.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
+        axis.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
+        axis.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+
+        const calculate = (num, axisLine, type) => {
+          let largeDiff, sum, max, min;
+          max = axis["max" + axisLine];
+          min = axis["min" + axisLine];
+          largeDiff = max - min > max * 0.2;
+          if (type === "min") {
+            sum = largeDiff ? num - num * 0.2 : num - num * 0.05;
+          } else {
+            sum = largeDiff ? num + num * 0.2 : num + num * 0.05;
+          }
+          return Number(sum.toFixed(1));
+        };
+
+        const temp = {
+          minX:
+            obj.config.minX === "auto"
+              ? calculate(axis.minX, "X", "min")
+              : obj.config.minX,
+          minY:
+            obj.config.minY === "auto"
+              ? calculate(axis.minY, "Y", "min")
+              : obj.config.minY,
+          maxX:
+            obj.config.maxX === "auto"
+              ? calculate(axis.maxX, "X", "max")
+              : obj.config.maxX,
+          maxY:
+            obj.config.maxY === "auto"
+              ? calculate(axis.maxY, "Y", "max")
+              : obj.config.maxY,
+        };
+
+        this.minXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.minX
+          : temp.maxX;
+        this.minYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.minY
+          : temp.maxY;
+        this.maxXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.maxX
+          : temp.minX;
+        this.maxYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.maxY
+          : temp.minY;
+
+        this.chartOptions = {
+          ...this.chartOptions,
+          xaxis: {
+            ...this.chartOptions.xaxis,
+            min: this.minXAxisBorder,
+            max: this.maxXAxisBorder,
+          },
+          yaxis: {
+            min: this.minYAxisBorder,
+            max: this.maxYAxisBorder,
+            labels: {
+              formatter: this.labelFormatterY,
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+          },
+        };
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,
@@ -154,8 +231,22 @@ export default {
     },
   },
   methods: {
-    labelFormatter(value) {
-      return value.toFixed(this.maxY + this.maxY * 0.2 < 4 ? 1 : "");
+    comparePositives(max, min) {
+      return Math.abs(max) > Math.abs(min);
+    },
+    labelFormatterY(value) {
+      return value.toFixed(
+        Math.abs(this.maxYAxisBorder) < 4 && Math.abs(this.minYAxisBorder) < 4
+          ? 1
+          : ""
+      );
+    },
+    labelFormatterX(value) {
+      return value.toFixed(
+        Math.abs(this.maxXAxisBorder) < 4 && Math.abs(this.minXAxisBorder)
+          ? 1
+          : ""
+      );
     },
     getMaxMinInObjectArray(obj, property) {
       let max = Number.NEGATIVE_INFINITY;
@@ -172,6 +263,66 @@ export default {
         this.type = "line";
         this.chartOptions.stroke.curve = "smooth";
         this.graphSeries.push(data.approximation);
+        this.currentAnnotationColorIndex++;
+        if (data.approximation.r2 || data.approximation.function) {
+          let r2 = data.approximation.r2
+            ? "R2: " + data.approximation.r2.toFixed(2)
+            : "";
+          let equation = data.approximation.function
+            ? "Функция: " + data.approximation.function
+            : "";
+          const temp = _.cloneDeep(this.chartOptions);
+          !temp.colors[this.currentAnnotationColorIndex]
+            ? (this.currentAnnotationColorIndex = 0)
+            : "";
+          const pushObject = {
+            x:
+              this.currentAnnotationColorIndex === 1
+                ? this.minXAxisBorder
+                : this.currentAnnotationColorIndex === 2
+                ? this.maxXAxisBorder
+                : this.maxXAxisBorder / 2,
+            y: this.maxYAxisBorder,
+            seriesIndex: data.approximation.name,
+            marker: {
+              size: 0,
+            },
+            label: {
+              borderColor: temp.colors[this.currentAnnotationColorIndex],
+              offsetY: 0,
+              offsetX:
+                this.currentAnnotationColorIndex === 1
+                  ? 5
+                  : this.currentAnnotationColorIndex === 2
+                  ? -5
+                  : 0,
+              style: {
+                color: "#fff",
+                background: temp.colors[this.currentAnnotationColorIndex],
+                cssClass: "show",
+              },
+              textAnchor:
+                this.currentAnnotationColorIndex === 1
+                  ? "start"
+                  : this.currentAnnotationColorIndex === 2
+                  ? "end"
+                  : "middle",
+              text: '',
+            },
+          };
+          if(r2) {
+            let r2Push = _.cloneDeep(pushObject);
+            r2Push.label.text = r2;
+            temp.annotations.points.push(r2Push);
+          }
+          if(equation) {
+            let equationPush = _.cloneDeep(pushObject);
+            equationPush.label.text = equation;
+            r2 ? equationPush.label.offsetY = 20 : '';
+            temp.annotations.points.push(equationPush);
+          }
+          this.chartOptions = temp;
+        }
       }
       if (data.graphOptions) {
         const minY =
@@ -180,21 +331,6 @@ export default {
           this.chartOptions.yaxis.max ?? this.chartOptions.yaxis[0].max;
         this.chartOptions = {
           ...this.chartOptions,
-          yaxis: {
-            min: data.graphOptions.ordinateFrom
-              ? Number(data.graphOptions.ordinateFrom)
-              : minY,
-            max: data.graphOptions.ordinateTo
-              ? Number(data.graphOptions.ordinateTo)
-              : maxY,
-            labels: {
-              formatter: this.labelFormatter,
-            },
-            lines: {
-              show: true,
-            },
-            tickAmount: 4,
-          },
           xaxis: {
             ...this.chartOptions.xaxis,
             min: data.graphOptions.abscissaFrom
@@ -203,6 +339,21 @@ export default {
             max: data.graphOptions.abscissaTo
               ? Number(data.graphOptions.abscissaTo)
               : this.chartOptions.xaxis.max,
+          },
+          yaxis: {
+            labels: {
+              formatter: this.labelFormatterY,
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+            min: data.graphOptions.ordinateFrom
+              ? Number(data.graphOptions.ordinateFrom)
+              : minY,
+            max: data.graphOptions.ordinateTo
+              ? Number(data.graphOptions.ordinateTo)
+              : maxY,
           },
         };
       }
@@ -214,12 +365,24 @@ export default {
     ) {
       console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
     },
+    toggleApproximationR2AndEquation(chartContext, seriesIndex, config) {
+      const temp = _.cloneDeep(this.chartOptions);
+      temp.annotations.points.forEach((point) => {
+        if (point.seriesIndex === this.graphSeries[seriesIndex].name) {
+          point.label.style.cssClass =
+            point.label.style.cssClass === "hide" ? "show" : "hide";
+          point.marker.radius = {};
+        }
+      });
+      this.chartOptions = temp;
+    },
     saveToPng() {
       const exprt = new Export(this.$refs.scatterGraph.chart);
       exprt.exportToPng();
     },
     setEvents() {
       this.chartOptions.chart.events.markerClick = this.handleMarkerClick;
+      this.chartOptions.chart.events.legendClick = this.toggleApproximationR2AndEquation;
     },
   },
   created() {
@@ -230,8 +393,27 @@ export default {
 
 <style scoped>
 .scatter-graph {
-  height: calc(100% - 30px);
   width: 100%;
+  height: 100%;
+  flex: 1;
+  padding: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.graph-holder {
+  width: 100%;
+  height: calc(100% - 30px);
+  display: block;
+  overflow: hidden;
+}
+
+.graph-holder::v-deep .show {
+  display: block;
+}
+
+.graph-holder::v-deep .hide {
+  display: none;
 }
 
 .approx-button {
@@ -278,9 +460,10 @@ export default {
   width: 16px;
   height: 16px;
   cursor: pointer;
+  margin-right: 12px;
 }
 
-.scatter-graph-toolbar > img:nth-of-type(1) {
-  margin-right: 12px;
+.scatter-graph-toolbar > img:last-of-type {
+  margin-right: 0;
 }
 </style>

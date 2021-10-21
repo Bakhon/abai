@@ -32,13 +32,13 @@
                 }
               },
               {
-                "code": "old_status",
+                "code": "old_state",
                 "type": "calc",
                 "visible": true,
                 "title": "well_st"
               },
               {
-                "code": "name_ru",
+                "code": "old_category",
                 "type": "calc",
                 "visible": true,
                 "title": "well_cat"
@@ -48,7 +48,7 @@
                 "type": "dict",
                 "dict": "well_statuses",
                 "title": "well_st",
-                "validation": "exists:tbd.dict.well_status_type,id"
+                "validation": "required|exists:tbd.dict.well_status_type,id"
               }
             ]
           }

@@ -32,7 +32,10 @@
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": "required"
+                "validation": "required",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "depth",
@@ -47,6 +50,40 @@
                 "code": "new_intervals",
                 "type": "calc",
                 "title": "packer_new_intervals"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_perf_file",
+                  "local_key": "well_perf",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }

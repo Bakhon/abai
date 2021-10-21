@@ -1,0 +1,20 @@
+{
+  "Добыча нефти":  "plan_oil",
+  "Добыча нефти ОПЕК+":  "plan_oil_opek",
+  "Сдача нефти":  "plan_oil_dlv",
+  "Сдача нефти ОПЕК+":  "plan_oil_dlv_opek",
+  "Общая закачка воды":  "plan_liq",
+  "Добыча газа":  "plan_gas",
+  "Сдача газа":  "plan_gas_dlv",
+  "Добыча попутного газа":  "plan_poput_gas",
+  "Сдача попутного газа":  "plan_poput_gas_dlv",
+  "Расход попутного газа":  "plan_poput_gas_raskhod",
+  "Переработка попутного газа":  "plan_poput_gas_pererabotka",
+  "Сжигание попутного газа":  "plan_poput_gas_burn",
+  "Ввод скважин из бурения":  "plan_otm_iz_burenia_skv",
+  "Проходка бурением":  "plan_otm_burenie_prohodka",
+  "КРС":  "plan_otm_krs_skv_plan",
+  "ПРС":  "plan_otm_prs_skv_plan",
+  "Деэмульгатор":  "plan_chem_prod_zakacka_demulg",
+  "Ингибитор коррозии":  "plan_chem_prod_zakacka_ingibator_korrozin"
+}

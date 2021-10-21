@@ -35,8 +35,17 @@
                 "validation": ""
               },
               {
-                "code": "oil_viscosity",
-                "table": "prod.pvt_data",
+                "code": "OVC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "OVC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "oil",
                 "validation": "gte:0|lte:1000000",
@@ -50,8 +59,17 @@
                 ]
               },
               {
-                "code": "water_viscosity",
-                "table": "prod.pvt_data",
+                "code": "WVC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "WVC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "water",
                 "validation": "gte:0|lte:100000",
@@ -64,9 +82,18 @@
                   }
                 ]
               },
-              {
-                "code": "volume_coef",
-                "table": "prod.pvt_data",
+              { 
+                "code": "VOCF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VOCF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "volume",
                 "validation": "gte:0.9|lte:10",
@@ -80,8 +107,17 @@
                 ]
               },
               {
-                "code": "oil_density",
-                "table": "prod.pvt_data",
+                "code": "ODEN",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ODEN"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "r_oil",
                 "validation": "gte:0.7|lte:1.05",
@@ -95,11 +131,20 @@
                 ]
               },
               {
-                "code": "water_density",
-                "table": "prod.pvt_data",
+                "code": "WDEN",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "WDEN"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "r_water",
-                "validation" : "gte:0.9|lte:2",
+                "validation": "gte:0.7|lte:2",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -110,8 +155,17 @@
                 ]
               },
               {
-                "code": "gas_pressure",
-                "table": "prod.pvt_data",
+                "code": "OGPS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "OGPS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "pnac",
                 "validation": "gte:0|lte:1500",
@@ -125,8 +179,17 @@
                 ]
               },
               {
-                "code": "gas_factor",
-                "table": "prod.pvt_data",
+                "code": "GFM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GFM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "gf",
                 "validation": "gte:0",
@@ -140,8 +203,17 @@
                 ]
               },
               {
-                "code": "temp_pl",
-                "table": "prod.pvt_data",
+                "code": "TRS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TRS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "tpl",
                 "validation": "gte:0|lte:250",
@@ -155,8 +227,17 @@
                 ]
               },
               {
-                "code": "res_pressure",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "RP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "pres_plast",
                 "validation" : "gte:0|lte: 200",
@@ -170,8 +251,17 @@
                 ]
               },
               {
-                "code": "res_temp",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TRS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TRS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "temp_plast",
                 "validation" : "gte:0|lte: 250",
@@ -185,8 +275,17 @@
                 ]
               },
               {
-                "code": "sat_press_oil_gas",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "OGPS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "OGPS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "pres_gas",
                 "validation" : "gte:0|lte:150",
@@ -200,8 +299,17 @@
                 ]
               },
               {
-                "code": "gas_share_m3t",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GSR",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GSR"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "gas_t",
                 "validation" : "gte:0|lte:1000000",
@@ -215,8 +323,17 @@
                 ]
               },
               {
-                "code": "gas_share_m3m3",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GSRM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GSRM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "gas_m3",
                 "validation" : "gte:0|lte:1000000",
@@ -230,8 +347,17 @@
                 ]
               },
               {
-                "code": "stand_sep_volume_coef",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "VCSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VCSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "koeff",
                 "validation" : "gte:0.9|lte:10",
@@ -245,8 +371,17 @@
                 ]
               },
               {
-                "code": "shrinkage",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SHRN",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SHRN"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "usadka",
                 "validation" : "gte:0",
@@ -260,8 +395,17 @@
                 ]
               },
               {
-                "code": "sol_coef_gas_oil",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SCGO",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SCGO"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "k_gasoil",
                 "validation" : "gte:0",
@@ -275,8 +419,17 @@
                 ]
               },
               {
-                "code": "comp_coef_res_oil",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SFRO",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SFRO"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "k_plastoil",
                 "validation" : "gte:0.0001|lte:0.05",
@@ -290,8 +443,17 @@
                 ]
               },
               {
-                "code": "res_oil_viscosity",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ROV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ROV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "plast_oil",
                 "validation" : "gte:0.7|lte: 1000000",
@@ -305,8 +467,17 @@
                 ]
               },
               {
-                "code": "res_oil_density",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ROD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ROD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density_oil",
                 "validation" : "gte:0.7|lte:1.05",
@@ -320,8 +491,17 @@
                 ]
               },
               {
-                "code": "sep_oil_density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SOD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SOD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density_20",
                 "validation" : "gte:0.5|lte:1.1",
@@ -335,8 +515,17 @@
                 ]
               },
               {
-                "code": "gas_density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GTD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GTD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density_gas_20",
                 "validation" : "gte:0.0001|lte:0.01",
@@ -350,8 +539,17 @@
                 ]
               },
               {
-                "code": "water_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "WATC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "WATC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "water_share",
                 "validation" : "gte:0|lte:100",
@@ -365,8 +563,17 @@
                 ]
               },
               {
-                "code": "dehyd_water_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ADWS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ADWS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "dehyd_water_share",
                 "validation" : "gte:0|lte:100",
@@ -380,8 +587,17 @@
                 ]
               },
               {
-                "code": "density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TDD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TDD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density20c",
                 "validation" : "gte:0.5|lte:1.1",
@@ -395,8 +611,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_40c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVTF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVTF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_40c",
                 "validation" : "gte:0",
@@ -410,8 +635,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_50c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVFF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVFF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_50c",
                 "validation" : "gte:0",
@@ -425,8 +659,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_60c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVTS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVTS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_60c",
                 "validation" : "gte:0",
@@ -440,8 +683,17 @@
                 ]
               },
               {
-                "code": "solid_temp",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "solid_temp",
                 "validation" : "gte:-100|lte:100",
@@ -455,8 +707,17 @@
                 ]
               },
               {
-                "code": "molecular_weight",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "MLW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MLW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "molecular_weight",
                 "validation" : "gte:0",
@@ -470,8 +731,17 @@
                 ]
               },
               {
-                "code": "sulf_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_share",
                 "validation" : "gte:0|lte:100",
@@ -485,8 +755,17 @@
                 ]
               },
               {
-                "code": "res_pressure",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "RP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "pres_plast",
                 "validation" : "gte:0|lte:200",
@@ -500,8 +779,17 @@
                 ]
               },
               {
-                "code": "res_temp",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TRS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TRS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "temp_plast",
                 "validation" : "gte:0|lte:250",
@@ -515,8 +803,17 @@
                 ]
               },
               {
-                "code": "sat_press_oil_gas",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "OGPS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "OGPS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "pres_gas",
                 "validation" : "gte:0|lte:150",
@@ -530,8 +827,17 @@
                 ]
               },
               {
-                "code": "gas_share_m3t",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GSR",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GSR"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "gas_t",
                 "validation" : "gte:0|lte:1000000",
@@ -545,8 +851,17 @@
                 ]
               },
               {
-                "code": "gas_share_m3m3",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GSRM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GSRM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "gas_m3",
                 "validation" : "gte:0|lte:1000000",
@@ -560,8 +875,17 @@
                 ]
               },
               {
-                "code": "stand_sep_volume_coef",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "VCSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VCSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "koeff",
                 "validation" : "gte:0.9|lte:10",
@@ -575,8 +899,17 @@
                 ]
               },
               {
-                "code": "shrinkage",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SHRN",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SHRN"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "usadka",
                 "validation" : "gte:0",
@@ -590,8 +923,17 @@
                 ]
               },
               {
-                "code": "sol_coef_gas_oil",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SCGO",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SCGO"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "k_gasoil",
                 "validation" : "gte:0",
@@ -605,8 +947,17 @@
                 ]
               },
               {
-                "code": "comp_coef_res_oil",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SFRO",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SFRO"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "k_plastoil",
                 "validation" : "gte:0.0001|lte:0.05",
@@ -620,8 +971,17 @@
                 ]
               },
               {
-                "code": "res_oil_viscosity",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ROV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ROV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "plast_oil",
                 "validation" : "gte:0|lte:1000000",
@@ -635,8 +995,17 @@
                 ]
               },
               {
-                "code": "res_oil_density",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ROD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ROD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density_oil",
                 "validation" : "gte:0.7|lte:1.05",
@@ -650,8 +1019,17 @@
                 ]
               },
               {
-                "code": "sep_oil_density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "SOD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SOD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density_20",
                 "validation" : "gte:0.5|lte:1.1",
@@ -665,8 +1043,17 @@
                 ]
               },
               {
-                "code": "gas_density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "GTD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "GTD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation" : "gte:0.0001|lte:0.01",
                 "title": "density_gas_20",
@@ -680,8 +1067,17 @@
                 ]
               },
               {
-                "code": "water_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "WATC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "WATC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "water_share",
                 "validation" : "gte:0|lte:100",
@@ -695,8 +1091,17 @@
                 ]
               },
               {
-                "code": "dehyd_water_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "ADWS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ADWS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "dehyd_water_share",
                 "validation" : "gte:0|lte:100",
@@ -710,8 +1115,17 @@
                 ]
               },
               {
-                "code": "density20c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TDD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TDD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density20c",
                 "validation" : "gte:0.5|lte:1.1",
@@ -725,8 +1139,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_40c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVTF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVTF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_40c",
                 "validation" : "gte:0",
@@ -740,8 +1163,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_50c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVFF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVFF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_50c",
                 "validation" : "gte:0",
@@ -755,8 +1187,17 @@
                 ]
               },
               {
-                "code": "cinem_visc_60c",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CVTS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVTS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cinem_visc_60c",
                 "validation" : "gte:0",
@@ -770,8 +1211,17 @@
                 ]
               },
               {
-                "code": "solid_temp",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "CTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "solid_temp",
                 "validation" : "gte:-100|lte:100",
@@ -785,8 +1235,17 @@
                 ]
               },
               {
-                "code": "molecular_weight",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "MLW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MLW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation" : "gte:0",
                 "title": "molecular_weight",
@@ -800,8 +1259,17 @@
                 ]
               },
               {
-                "code": "sulf_share",
-                "table": "prod.reservoir_oil_prob_analysis",
+                "code": "TSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_share",
                 "validation" : "gte:0|lte:100",
@@ -815,8 +1283,17 @@
                 ]
               },
               {
-                "code": "water_share",
-                "table": "prod.produced_water_analysis",
+                "code": "HTO",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HTO"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "water_sh",
                 "validation" : "gte:0|lte:100",
@@ -830,10 +1307,18 @@
                 ]
               },
               {
-                "code": "water_density",
-                "table": "prod.produced_water_analysis",
+                "code": "PGC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PGC"
+                    }
+                  }
+                },
                 "type": "numeric",
-                "validation" : "gte:0.9|lte:2",
                 "title": "water_density",
                 "depends_on": [
                   {
@@ -845,8 +1330,17 @@
                 ]
               },
               {
-                "code": "ca_share",
-                "table": "prod.produced_water_analysis",
+                "code": "CAS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CAS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "ca_share",
                 "validation" : "gte:0|lte:1000000",
@@ -860,8 +1354,17 @@
                 ]
               },
               {
-                "code": "cl_share",
-                "table": "prod.produced_water_analysis",
+                "code": "CLS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CLS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cl_share",
                 "validation" : "gte:0|lte:1000000",
@@ -875,8 +1378,17 @@
                 ]
               },
               {
-                "code": "mg_share",
-                "table": "prod.produced_water_analysis",
+                "code": "MGS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MGS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "mg_share",
                 "validation" : "gte:0|lte:1000000",
@@ -890,8 +1402,17 @@
                 ]
               },
               {
-                "code": "salt_types",
-                "table": "prod.produced_water_analysis",
+                "code": "STT",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "STT"
+                    }
+                  }
+                },
                 "type": "text",
                 "title": "salt_types",
                 "depends_on": [
@@ -904,8 +1425,17 @@
                 ]
               },
               {
-                "code": "comments",
-                "table": "prod.produced_water_analysis",
+                "code": "COM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "COM"
+                    }
+                  }
+                },
                 "type": "text",
                 "title": "comments",
                 "depends_on": [
@@ -918,8 +1448,17 @@
                 ]
               },
               {
-                "code": "sea_water_share",
-                "table": "prod.produced_water_analysis",
+                "code": "SWC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SWC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation" : "gte:0",
                 "title": "sea_water_share",
@@ -933,8 +1472,17 @@
                 ]
               },
               {
-                "code": "alb_water_share",
-                "table": "prod.produced_water_analysis",
+                "code": "WAS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "WAS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation" : "gte:0",
                 "title": "alb_water_share",
@@ -948,8 +1496,17 @@
                 ]
               },
               {
-                "code": "res_water_share",
-                "table": "prod.produced_water_analysis",
+                "code": "RWS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RWS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation" : "gte:0",
                 "title": "res_water_share",
@@ -963,8 +1520,17 @@
                 ]
               },
               {
-                "code": "mech_mixtures",
-                "table": "prod.produced_water_analysis",
+                "code": "MIMP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MIMP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "mech_mixtures",
                 "validation" : "gte:0|lte:100",
@@ -978,8 +1544,17 @@
                 ]
               },
               {
-                "code": "sat_pressure",
-                "table": "prod.res_oil_char",
+                "code": "SATP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SATP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sat_pressure",
                 "validation" :"gte:0|lte:150",
@@ -993,8 +1568,17 @@
                 ]
               },
               {
-                "code": "comp_coef",
-                "table": "prod.res_oil_char",
+                "code": "CVOL",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CVOL"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "comp_coef",
                 "validation":"gte:0.0001|lte:0.05",
@@ -1008,8 +1592,17 @@
                 ]
               },
               {
-                "code": "stand_sep_gas_share",
-                "table": "prod.res_oil_char",
+                "code": "SSGS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSGS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_sep_gas_share",
                 "validation":"gte:0|lte:10000000",
@@ -1023,8 +1616,17 @@
                 ]
               },
               {
-                "code": "stand_sep_volume_coef",
-                "table": "prod.res_oil_char",
+                "code": "SSVC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSVC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_sep_volume_coef",
                 "validation":"gte:0.9|lte:10",
@@ -1038,8 +1640,17 @@
                 ]
               },
               {
-                "code": "stand_sep_res_oil_density",
-                "table": "prod.res_oil_char",
+                "code": "SSOD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSOD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_sep_res_oil_density",
                 "validation":"gte:0.7|lte:1.05",
@@ -1053,8 +1664,17 @@
                 ]
               },
               {
-                "code": "stand_sep_sep_oil_density",
-                "table": "prod.res_oil_char",
+                "code": "SSSD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSSD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_sep_sep_oil_density",
                 "validation":"gte:0.5|lte:1.1",
@@ -1068,8 +1688,17 @@
                 ]
               },
               {
-                "code": "stand_sep_sep_gas_density",
-                "table": "prod.res_oil_char",
+                "code": "SSGD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSGD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_sep_sep_gas_density",
                 "validation": "gte:0.0001|lte:0.01",
@@ -1083,8 +1712,17 @@
                 ]
               },
               {
-                "code": "step_sep_gas_factor",
-                "table": "prod.res_oil_char",
+                "code": "SSGF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSGF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "step_sep_gas_factor",
                 "validation":"gte:0",
@@ -1098,8 +1736,17 @@
                 ]
               },
               {
-                "code": "step_sep_volume_coef",
-                "table": "prod.res_oil_char",
+                "code": "SSV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "step_sep_volume_coef",
                 "validation":"gte:0.9|lte:10",
@@ -1113,8 +1760,17 @@
                 ]
               },
               {
-                "code": "step_sep_sep_oil_density",
-                "table": "prod.res_oil_char",
+                "code": "SSPD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SSPD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "step_sep_sep_oil_density",
                 "validation":"gte:0.5|lte:1.1",
@@ -1128,8 +1784,17 @@
                 ]
               },
               {
-                "code": "res_oil_viscosity",
-                "table": "prod.res_oil_char",
+                "code": "ROV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ROV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "res_oil_viscosity",
                 "validation":"gte:0|lte:10000000",
@@ -1143,8 +1808,17 @@
                 ]
               },
               {
-                "code": "paraf_sat_temp",
-                "table": "prod.res_oil_char",
+                "code": "PSTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PSTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "paraf_sat_temp",
                 "validation":"gte:0",
@@ -1158,8 +1832,17 @@
                 ]
               },
               {
-                "code": "horizone",
-                "table": "prod.surf_oil_characteristics",
+                "code": "HOR",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HOR"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "horizone",
                 "depends_on": [
@@ -1172,8 +1855,17 @@
                 ]
               },
               {
-                "code": "depth",
-                "table": "prod.surf_oil_characteristics",
+                "code": "DEP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "DEP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "depth",
                 "validation":"lte:10000",
@@ -1187,8 +1879,17 @@
                 ]
               },
               {
-                "code": "viscosity_20c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "VTW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VTW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "viscosity_20c",
                 "validation":"gte:0",
@@ -1202,8 +1903,17 @@
                 ]
               },
               {
-                "code": "viscosity_50c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "VFF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VFF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "viscosity_50c",
                 "validation":"gte:0",
@@ -1217,8 +1927,17 @@
                 ]
               },
               {
-                "code": "solid_temp",
-                "table": "prod.surf_oil_characteristics",
+                "code": "CTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "solid_temp",
                 "validation":"gte:-100|lte:100",
@@ -1232,8 +1951,17 @@
                 ]
               },
               {
-                "code": "paraf_sat_temp",
-                "table": "prod.surf_oil_characteristics",
+                "code": "PSTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PSTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "paraf_sat_temp",
                 "validation":"gte:0",
@@ -1247,8 +1975,17 @@
                 ]
               },
               {
-                "code": "sulf_weight",
-                "table": "prod.surf_oil_characteristics",
+                "code": "SFW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SFW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "validation":"gte:0",
                 "title": "sulf_weight",
@@ -1262,8 +1999,17 @@
                 ]
               },
               {
-                "code": "sulf_share",
-                "table": "prod.surf_oil_characteristics",
+                "code": "SULF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SULF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_share",
                 "validation":"gte:0|lte:100",
@@ -1277,8 +2023,17 @@
                 ]
               },
               {
-                "code": "selik_smol_weight",
-                "table": "prod.surf_oil_characteristics",
+                "code": "SELW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SELW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "selik_smol_weight",
                 "validation":"gte:0",
@@ -1292,8 +2047,17 @@
                 ]
               },
               {
-                "code": "selik_smol_share",
-                "table": "prod.surf_oil_characteristics",
+                "code": "SELS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SELS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "selik_smol_share",
                 "validation":"gte:0|lte:100",
@@ -1307,8 +2071,17 @@
                 ]
               },
               {
-                "code": "asphalten_weight",
-                "table": "prod.surf_oil_characteristics",
+                "code": "ASPW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ASPW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "asphalten_weight",
                 "validation":"gte:0",
@@ -1322,8 +2095,17 @@
                 ]
               },
               {
-                "code": "asphalten_share",
-                "table": "prod.surf_oil_characteristics",
+                "code": "ASPS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ASPS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "asphalten_share",
                 "validation":"gte:0|lte:100",
@@ -1337,8 +2119,17 @@
                 ]
               },
               {
-                "code": "paraf_weight",
-                "table": "prod.surf_oil_characteristics",
+                "code": "PARW",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PARW"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "paraf_weight",
                 "validation":"gte:0",
@@ -1352,8 +2143,17 @@
                 ]
               },
               {
-                "code": "paraf_share",
-                "table": "prod.surf_oil_characteristics",
+                "code": "PARS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PARS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "paraf_share",
                 "validation":"gte:0|lte:100",
@@ -1367,8 +2167,17 @@
                 ]
               },
               {
-                "code": "fractions_100c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "FRAC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "FRAC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "fractions_100c",
                 "validation":"gte:0|lte:100",
@@ -1382,8 +2191,17 @@
                 ]
               },
               {
-                "code": "fractions_150c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "FRCV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "FRCV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "fractions_150c",
                 "validation":"gte:0|lte:100",
@@ -1397,8 +2215,17 @@
                 ]
               },
               {
-                "code": "fractions_200c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "FRCC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "FRCC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "fractions_200c",
                 "validation":"gte:0|lte:100",
@@ -1412,8 +2239,17 @@
                 ]
               },
               {
-                "code": "fractions_300c",
-                "table": "prod.surf_oil_characteristics",
+                "code": "FRTC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "FRTC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "fractions_300c",
                 "validation":"gte:0|lte:100",
@@ -1427,8 +2263,17 @@
                 ]
               },
               {
-                "code": "cond_begin_pressure",
-                "table": "prod.res_gas_char",
+                "code": "CBP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CBP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cond_begin_pressure",
                 "validation":"gte:0|lte:150",
@@ -1442,8 +2287,17 @@
                 ]
               },
               {
-                "code": "density",
-                "table": "prod.res_gas_char",
+                "code": "DENS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "DENS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density",
                 "validation":"gte:0|lte:1",
@@ -1457,8 +2311,17 @@
                 ]
               },
               {
-                "code": "sep_volume_coef",
-                "table": "prod.res_gas_char",
+                "code": "VCSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VCSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sep_volume_coef",
                 "validation":"gte:0|lte:500",
@@ -1472,8 +2335,17 @@
                 ]
               },
               {
-                "code": "viscosity",
-                "table": "prod.res_gas_char",
+                "code": "VISC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VISC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "viscosity",
                 "validation":"gte:0|lte:10",
@@ -1487,8 +2359,17 @@
                 ]
               },
               {
-                "code": "stable_cond_share",
-                "table": "prod.res_gas_char",
+                "code": "SCD",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SCD"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stable_cond_share",
                 "validation":"gte:0",
@@ -1502,8 +2383,17 @@
                 ]
               },
               {
-                "code": "cond_sep_factor",
-                "table": "prod.res_gas_char",
+                "code": "CFSC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CFSC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cond_sep_factor",
                 "validation":"gte:0",
@@ -1517,8 +2407,17 @@
                 ]
               },
               {
-                "code": "sulf_hydro_mol",
-                "table": "prod.petro_gas_char",
+                "code": "HSM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HSM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_hydro_mol",
                 "validation":"gte:0",
@@ -1532,8 +2431,17 @@
                 ]
               },
               {
-                "code": "sulf_hydro_share",
-                "table": "prod.petro_gas_char",
+                "code": "HSS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HSS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_hydro_share",
                 "validation":"gte:0|lte:100",
@@ -1547,8 +2455,17 @@
                 ]
               },
               {
-                "code": "co2_mol",
-                "table": "prod.petro_gas_char",
+                "code": "MCOT",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MCOT"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "co2_mol",
                 "validation":"gte:0",
@@ -1562,8 +2479,17 @@
                 ]
               },
               {
-                "code": "co2_share",
-                "table": "prod.petro_gas_char",
+                "code": "MCOS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MCOS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "co2_share",
                 "validation":"gte:0|lte:100",
@@ -1577,8 +2503,17 @@
                 ]
               },
               {
-                "code": "nitro_rare_mol",
-                "table": "prod.petro_gas_char",
+                "code": "RNM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RNM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "nitro_rare_mol",
                 "validation":"gte:0",
@@ -1592,8 +2527,17 @@
                 ]
               },
               {
-                "code": "nitro_rare_share",
-                "table": "prod.petro_gas_char",
+                "code": "RNS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RNS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "nitro_rare_share",
                 "validation":"gte:0|lte:100",
@@ -1607,8 +2551,17 @@
                 ]
               },
               {
-                "code": "metan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "CHFM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CHFM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "metan_mol",
                 "validation":"gte:0",
@@ -1622,8 +2575,17 @@
                 ]
               },
               {
-                "code": "metan_share",
-                "table": "prod.petro_gas_char",
+                "code": "CHFS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CHFS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "metan_share",
                 "validation":"gte:0|lte:100",
@@ -1637,8 +2599,17 @@
                 ]
               },
               {
-                "code": "etan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "ETHM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ETHM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "etan_mol",
                 "validation":"gte:0",
@@ -1652,8 +2623,17 @@
                 ]
               },
               {
-                "code": "etan_share",
-                "table": "prod.petro_gas_char",
+                "code": "ETHS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ETHS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "etan_share",
                 "validation":"gte:0|lte:100",
@@ -1667,8 +2647,17 @@
                 ]
               },
               {
-                "code": "propan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "PROM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PROM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "propan_mol",
                 "validation":"gte:0",
@@ -1682,8 +2671,17 @@
                 ]
               },
               {
-                "code": "propan_share",
-                "table": "prod.petro_gas_char",
+                "code": "PROS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "PROS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "propan_share",
                 "validation":"gte:0|lte:100",
@@ -1697,8 +2695,17 @@
                 ]
               },
               {
-                "code": "isobutan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "ISOM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ISOM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "isobutan_mol",
                 "validation":"gte:0",
@@ -1712,8 +2719,17 @@
                 ]
               },
               {
-                "code": "isobutan_share",
-                "table": "prod.petro_gas_char",
+                "code": "ISOS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ISOS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "isobutan_share",
                 "validation":"gte:0|lte:100",
@@ -1727,8 +2743,17 @@
                 ]
               },
               {
-                "code": "h_butan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "HBM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HBM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "h_butan_mol",
                 "validation":"gte:0",
@@ -1742,8 +2767,17 @@
                 ]
               },
               {
-                "code": "h_butan_share",
-                "table": "prod.petro_gas_char",
+                "code": "HBS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HBS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "h_butan_share",
                 "validation":"gte:0|lte:100",
@@ -1757,8 +2791,17 @@
                 ]
               },
               {
-                "code": "heksan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "HEXM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HEXM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "heksan_mol",
                 "validation":"gte:0",
@@ -1772,8 +2815,17 @@
                 ]
               },
               {
-                "code": "heksan_share",
-                "table": "prod.petro_gas_char",
+                "code": "HEXS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HEXS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "heksan_share",
                 "validation":"gte:0|lte:100",
@@ -1787,8 +2839,17 @@
                 ]
               },
               {
-                "code": "heptan_mol",
-                "table": "prod.petro_gas_char",
+                "code": "HEPM",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HEPM"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "heptan_mol",
                 "validation":"gte:0",
@@ -1802,8 +2863,17 @@
                 ]
               },
               {
-                "code": "heptan_share",
-                "table": "prod.petro_gas_char",
+                "code": "HEPS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HEPS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "heptan_share",
                 "validation":"gte:0|lte:100",
@@ -1817,8 +2887,17 @@
                 ]
               },
               {
-                "code": "resid_mol",
-                "table": "prod.petro_gas_char",
+                "code": "RESS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RESS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "resid_mol",
                 "validation":"gte:0",
@@ -1832,8 +2911,17 @@
                 ]
               },
               {
-                "code": "resid_share",
-                "table": "prod.petro_gas_char",
+                "code": "RSSP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "RSSP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "resid_share",
                 "validation":"gte:0|lte:100",
@@ -1847,8 +2935,17 @@
                 ]
               },
               {
-                "code": "molar_mol",
-                "table": "prod.petro_gas_char",
+                "code": "MMT",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MMT"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "molar_mol",
                 "validation":"gte:0",
@@ -1862,8 +2959,17 @@
                 ]
               },
               {
-                "code": "molar_share",
-                "table": "prod.petro_gas_char",
+                "code": "MMR",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MMR"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "molar_share",
                 "validation":"gte:0|lte:100",
@@ -1877,8 +2983,17 @@
                 ]
               },
               {
-                "code": "stand_density",
-                "table": "prod.petro_gas_char",
+                "code": "SCDT",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SCDT"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_density",
                 "validation":"gte:0.0001|lte:0.01",
@@ -1892,8 +3007,17 @@
                 ]
               },
               {
-                "code": "stand_density_resid",
-                "table": "prod.petro_gas_char",
+                "code": "SCDR",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SDCR"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "stand_density_resid",
                 "validation":"gte:0.0001|lte: 0.01",
@@ -1907,8 +3031,17 @@
                 ]
               },
               {
-                "code": "sat_pressure",
-                "table": "prod.res_water_char",
+                "code": "SATP",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SATP"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sat_pressure",
                 "validation":"gte:0",
@@ -1922,8 +3055,17 @@
                 ]
               },
               {
-                "code": "sulf_hydro",
-                "table": "prod.res_water_char",
+                "code": "HSV",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HSV"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "sulf_hydro",
                 "validation":"gte:0",
@@ -1937,8 +3079,17 @@
                 ]
               },
               {
-                "code": "volume_coef",
-                "table": "prod.res_water_char",
+                "code": "VOCF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VOCF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "volume_coef",
                 "validation":"gte:0.98|lte: 1.07",
@@ -1952,8 +3103,17 @@
                 ]
               },
               {
-                "code": "viscosity",
-                "table": "prod.res_water_char",
+                "code": "VISC",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "VISC"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "viscosity",
                 "validation":"gte:0|lte:100000",
@@ -1967,8 +3127,17 @@
                 ]
               },
               {
-                "code": "total_mineralization",
-                "table": "prod.res_water_char",
+                "code": "TMG",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "TMG"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "total_mineralization",
                 "validation":"gte:0|lte: 1000",
@@ -1982,8 +3151,17 @@
                 ]
               },
               {
-                "code": "density",
-                "table": "prod.res_water_char",
+                "code": "DENS",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "DENS"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "density",
                 "validation":"gte:0.9|lte:2",
@@ -1997,8 +3175,17 @@
                 ]
               },
               {
-                "code": "cl_ion",
-                "table": "prod.res_water_char",
+                "code": "ICL",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "ICL"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "cl_ion",
                 "validation":"gte:0|lte:1000000",
@@ -2012,8 +3199,17 @@
                 ]
               },
               {
-                "code": "so4_ion",
-                "table": "prod.res_water_char",
+                "code": "SOF",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "SOF"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "so4_ion",
                 "validation":"gte:0|lte:1000000",
@@ -2027,8 +3223,17 @@
                 ]
               },
               {
-                "code": "hso3_ion",
-                "table": "prod.res_water_char",
+                "code": "HSOI",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "HSOI"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "hso3_ion",
                 "validation":"gte:0|lte:1000000",
@@ -2042,8 +3247,17 @@
                 ]
               },
               {
-                "code": "ca_ion",
-                "table": "prod.res_water_char",
+                "code": "CAI",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "CAI"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "ca_ion",
                 "validation":"gte:0|lte:1000000",
@@ -2057,8 +3271,17 @@
                 ]
               },
               {
-                "code": "mg_ion",
-                "table": "prod.res_water_char",
+                "code": "MGI",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "MGI"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "mg_ion",
                 "validation":"gte:0|lte:1000000",
@@ -2072,8 +3295,17 @@
                 ]
               },
               {
-                "code": "nak_ion",
-                "table": "prod.res_water_char",
+                "code": "NAKI",
+                "table": "prod.lab_research_value",
+                "column": "value_double",
+                "additional_filter": {
+                  "metric": {
+                    "table": "dict.metric",
+                    "fields": {
+                      "code": "NAKI"
+                    }
+                  }
+                },
                 "type": "numeric",
                 "title": "nak_ion",
                 "validation":"gte:0|lte:1000000",

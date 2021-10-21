@@ -177,6 +177,20 @@ export default {
                     }
                 },
             },
+            initialTemplate: {
+                plan_oil: 0,
+                oil_production_fact: 0,
+                plan_oil_opek: 0,
+                plan_kondensat: 0,
+                condensate_production_fact: 0,
+                plan_kondensat: 0,
+                plan_oil_dlv: 0,
+                oil_delivery_fact: 0,
+                plan_oil_dlv_opek: 0,
+                plan_kondensat_dlv: 0,
+                condensate_delivery_fact: 0,
+                plan_kondensat_dlv: 0
+            },
             timeouts: {
                 'firstLoading': 0,
                 'type': 0,
@@ -478,7 +492,11 @@ export default {
             return template;
         },
         getDzoRecord(input,dzoName) {
-            return input.find(item => item.dzo_name === dzoName);
+            let filtered = input.find(item => item && item.dzo_name === dzoName);
+            if (!filtered) {
+                return this.initialTemplate;
+            }
+            return filtered;
         },
         getFilteredByCompany(input,dzoName,fieldName) {
             return _.filter(input, function (item) {

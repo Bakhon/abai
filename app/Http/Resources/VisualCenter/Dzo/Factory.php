@@ -26,6 +26,8 @@ class Factory {
     protected $categoryMapping = array (
         'oilCondensateProduction' => 'OilCondensateConsolidated',
         'oilCondensateDelivery' => 'OilCondensateConsolidated',
+        'oilCondensateDeliveryCondensateOnly' => 'OilCondensateConsolidated',
+        'oilCondensateProductionCondensateOnly' => 'OilCondensateConsolidated',
         'oilCondensateProductionWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryOilResidue' => 'OilCondensateConsolidatedOilResidue',
@@ -37,11 +39,13 @@ class Factory {
         'expensesForOwnNaturalGas' => 'GasProduction',
         'associatedGasDelivery' => 'GasProduction',
         'expensesForOwnAssociatedGas' => 'GasProduction',
+        'processingAssociatedGas' => 'GasProduction',
         'waterInjection' => 'WaterInjection',
         'seaWaterInjection' => 'WaterInjection',
         'wasteWaterInjection' => 'WaterInjection',
         'artezianWaterInjection' => 'WaterInjection',
-        'streamWaterInjection' => 'WaterInjection'
+        'streamWaterInjection' => 'WaterInjection',
+        'volgaWaterInjection' => 'WaterInjection'
     );
 
     public function make($dzoName)

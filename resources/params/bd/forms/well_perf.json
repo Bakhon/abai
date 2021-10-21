@@ -69,22 +69,34 @@
     {
       "action": "create",
       "title": "add_cement_plug",
-      "form": "well_perf_other"
+      "form": "well_perf_other",
+      "default_values": {
+        "perf_type": 20
+      }
     },
     {
       "action": "create",
       "title": "add_mechanical_packer",
-      "form": "well_perf_other"
+      "form": "well_perf_other",
+      "default_values": {
+        "perf_type": 21
+      }
     },
     {
       "action": "create",
       "title": "add_pilot_packer",
-      "form": "well_perf_other"
+      "form": "well_perf_other",
+      "default_values": {
+        "perf_type": 22
+      }
     },
     {
       "action": "create",
       "title": "add_4_landing",
-      "form": "well_perf_other"
+      "form": "well_perf_other",
+      "default_values": {
+        "perf_type": 23
+      }
     },
     {
       "action": "create",
@@ -212,6 +224,40 @@
                 "code": "well",
                 "type": "numeric",
                 "title": "well_e"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_perf_file",
+                  "local_key": "well_perf",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }

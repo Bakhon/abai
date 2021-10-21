@@ -17,6 +17,20 @@
           :children="category.children"
           :currentGraphic.sync="currentGraphic"
         />
+        <div class="customization-category">
+          <LeftMenuGraphCustomization
+            categoryName="temperature"
+            valueKey="temperature"
+            :children="['μos', 'mod', 'Ds']"
+            :currentGraphic.sync="currentGraphic"
+          />
+          <LeftMenuGraphCustomization
+            categoryName="density_st"
+            valueKey="depth_pi_ps"
+            :children="['mod', 'Mo']"
+            :currentGraphic.sync="currentGraphic"
+          />
+        </div>
       </div>
     </div>
     <div class="correlations-holder">
@@ -63,6 +77,7 @@
 <script>
 import LeftMenuGraphCustomization from "./LeftMenuGraphCustomization.vue";
 import Dropdown from "../Dropdown.vue";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "GraphsAndTablesLeftMenu",
@@ -72,7 +87,6 @@ export default {
   },
   data() {
     return {
-      currentGraphic: "ps_bs_ds_ms",
       currentSelectedCorrelation1: "",
       currentSelectedCorrelation2: "",
       currentSelectedCorrelation3: "",
@@ -85,18 +99,13 @@ export default {
         },
         {
           name: "sampling_time",
-          key: "depth_pi_ps",
+          key: "data_rs_ps_ds",
           children: ["Rs", "Ps", "μ‎o", "po"],
         },
         {
           name: "depth",
           key: "depth_g_vol_rpl_visc_rpl_dso",
-          children: ["Ps", "Rs", "Bos", "Dos", "μos", "po", "μ‎o"],
-        },
-        {
-          name: "density_st",
-          key: "data_rs_ps_ds",
-          children: ["μos", "mod"],
+          children: ["Ps", "Rs", "Bo", "Do", "mo", "po", "mod"],
         },
       ],
       correlationList: [
@@ -166,7 +175,25 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState("plastFluids", ["currentSubsoilField"]),
+    ...mapState("plastFluidsLocal", ["graphType"]),
+    currentGraphic: {
+      get() {
+        return this.graphType;
+      },
+      set(value) {
+        this.SET_GRAPH_TYPE(value);
+        if (this.currentSubsoilField[0])
+          this.handleTableGraphData({
+            field_id: this.currentSubsoilField[0].field_id,
+          });
+      },
+    },
+  },
   methods: {
+    ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
+    ...mapMutations("plastFluidsLocal", ["SET_GRAPH_TYPE"]),
     getCurrentSelectedCorrelation(index) {
       return this["currentSelectedCorrelation" + (index + 1)];
     },
