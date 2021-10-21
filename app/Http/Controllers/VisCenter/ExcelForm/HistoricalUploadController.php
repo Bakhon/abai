@@ -13,6 +13,10 @@ class HistoricalUploadController extends Controller
     private $fields = array();
     private $dzoName;
     private $type;
+    private $operation = array (
+        'create' => 0,
+        'update' => 0
+    );
 
     public function uploadHistoricalData()
     {
@@ -38,6 +42,7 @@ class HistoricalUploadController extends Controller
         $modelName = "App\Models\VisCenter\ExcelForm\\" . $request->type;
         $model = new $modelName();
         $this->store($model,$summary);
+        return $this->operation;
     }
 
     private function getFieldKeys($row)
@@ -75,9 +80,11 @@ class HistoricalUploadController extends Controller
             }
 
             if (is_null($existRecord)) {
+                $this->operation['create'] += 1;
                 $model->create($dayData);
             } else {
                 $result = $existRecord->update($dayData);
+                $this->operation['update'] += 1;
             }
             if ($index > 0 && $index % 10 == 0) {
                 sleep(5);
