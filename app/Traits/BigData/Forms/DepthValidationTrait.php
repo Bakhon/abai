@@ -23,5 +23,19 @@ trait DepthValidationTrait
 
         return $this->isCorrectSummofDailyDrill($dailyDrill, $depth);
     }
+
+    protected function isValidDepthofBottomHole($wellId, $depth):bool
+    {
+        
+        $bottomHole =  DB::connection('tbd')
+            ->table('prod.bottom_hole as pb')
+            ->where('pb.well', $wellId)
+            ->where('bt.code','HUD')
+            ->leftjoin('dict.bottom_hole_type as bt', 'pb.bottom_hole_type','bt.id' )            
+            ->get('pb.depth');       
+        
+        return $depth <= $bottomHole;
+    }
+
        
 }

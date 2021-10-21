@@ -60,8 +60,8 @@ class MeasWaterInj extends MeasLogByMonth
                 return $items->map(function ($item) {
                     $item = $item->first();
                     return [
-                        'pressure' => round($item->pressure_inj, 2),
-                        'water_inj' => round($item->water_inj_val, 2),
+                        'pressure' => round((int)$item->pressure_inj, 2),
+                        'water_inj' => round((int)$item->water_inj_val, 2),
                     ];
                 });
             });

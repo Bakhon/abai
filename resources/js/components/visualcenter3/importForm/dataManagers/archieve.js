@@ -67,20 +67,12 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
-            if (this.category.isPlanActive) {
-                this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker].rows);
-                this.fillPlanRows();
-                this.plans = await this.getDzoPlans();
-                this.handlePlans();
-                document.querySelector('#planGrid').refresh('all');
-            } else {
-                if (this.selectedDzo.ticker === 'КОА') {
-                    this.addColumnsToGrid();
-                }
-                this.changeDefaultDzo();
-                this.handleSwitchFilter();
-                this.addListeners();
+            if (this.selectedDzo.ticker === 'КОА') {
+                this.addColumnsToGrid();
             }
+            this.changeDefaultDzo();
+            this.handleSwitchFilter();
+            this.addListeners();
             this.SET_LOADING(false);
         },
         async handleSwitchFilter() {

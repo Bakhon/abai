@@ -598,6 +598,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('volgaWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.volgaWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.volgaWaterInjection")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('streamWaterInjection','waterInjection')"
                       >
                         <div

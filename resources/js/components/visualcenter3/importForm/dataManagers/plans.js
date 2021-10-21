@@ -6,43 +6,29 @@ import planRowKoa from "../dzoData/plan_rows_koa.json";
 import planRowKtm from "../dzoData/plan_rows_ktm.json";
 import planRowMmg from "../dzoData/plan_rows_mmg.json";
 import planRowOmg from "../dzoData/plan_rows_omg.json";
+import planRowKgm from "../dzoData/plan_rows_kgm.json";
+import planRowAg from "../dzoData/plan_rows_ag.json";
+import planRowPkk from "../dzoData/plan_rows_pkk.json";
 
 export default {
     data: function () {
         return {
             planDzoMapping : {
-                "КОА" : {
-                    rows: planRowKoa,
-                    id: 110
-                },
-                "КТМ" : {
-                    rows: planRowKtm,
-                    id: 107
-                },
-                "КБМ" : {
-                    rows: planRowKbm,
-                    id: 106
-                },
-                "КГМ" : {
-                    rows: [],
-                    id: 108
-                },
-                "ММГ" : {
-                    rows: planRowMmg,
-                    id: 109
-                },
-                "ОМГ" : {
-                    rows: planRowOmg,
-                    id: 112
-                },
-                "УО" : {
-                    rows: planRowYo,
-                    id: 111
-                },
-                "ЭМГ" : {
-                    rows: planRowEmg,
-                    id: 113,
-                },
+                "КОА" : planRowKoa,
+                "КТМ" : planRowKtm,
+                "КБМ" : planRowKbm,
+                "ММГ" : planRowMmg,
+                "ОМГ" : planRowOmg,
+                "УО" : planRowYo,
+                "ЭМГ" : planRowEmg,
+                "КГМ" : planRowKgm,
+                "АГ" : planRowAg,
+                "ПКК" : planRowPkk,
+                "ТП" : planRowPkk,
+                "КПО" : planRowPkk,
+                "НКО" : planRowPkk,
+                "ПКИ" : planRowPkk,
+                "ТШО" : planRowPkk,
             },
             planColumns: [],
             planRows: _.cloneDeep(planRowEmg),
@@ -56,6 +42,68 @@ export default {
             outputPlans: [],
             isPlanValidateError: false,
             isPlanFilled: false,
+            planCompanies: [
+                {
+                    ticker: 'ЭМГ',
+                    name: 'АО "Эмбамунайгаз"'
+                },
+                {
+                    ticker: 'КОА',
+                    name: 'ТОО "Казахойл Актобе"'
+                },
+                {
+                    ticker: 'КТМ',
+                    name: 'ТОО "Казахтуркмунай"'
+                },
+                {
+                    ticker: 'КБМ',
+                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
+                },
+                {
+                    ticker: 'ММГ',
+                    name: 'АО "Мангистаумунайгаз"'
+                },
+                {
+                    ticker: 'ОМГ',
+                    name: 'АО "ОзенМунайГаз"'
+                },
+                {
+                    ticker: 'УО',
+                    name: 'ТОО "Урихтау Оперейтинг"'
+                },
+                {
+                    ticker: 'КГМ',
+                    name: 'ТОО "СП "Казгермунай"'
+                },
+                {
+                    ticker: 'АГ',
+                    name: 'ТОО "Амангельды Газ"'
+                },
+                {
+                    ticker: 'ПКК',
+                    name: 'АО "ПетроКазахстан Кумколь Ресорсиз"'
+                },
+                {
+                    ticker: 'ТП',
+                    name: 'АО "Тургай-Петролеум"'
+                },
+                {
+                    ticker: 'КПО',
+                    name: 'Карачаганак Петролеум Оперейтинг б.в.'
+                },
+                {
+                    ticker: 'НКО',
+                    name: 'Норт Каспиан Оперейтинг Компани н.в.'
+                },
+                {
+                    ticker: 'ПКИ',
+                    name: 'АО "ПетроКазахстан Инк"'
+                },
+                {
+                    ticker: 'ТШО',
+                    name: 'ТОО "Тенгизшевройл"'
+                },
+            ],
         };
     },
     methods: {
@@ -157,7 +205,7 @@ export default {
             for (let i = 1; i < 13; i++) {
                 let date = moment().year(this.currentPlan.year.year()).month(i - 1).startOf('month').startOf('day');
                 let fields = {
-                    date: date.format(),
+                    date: date.format("YYYY-MM-DD HH:mm:ss"),
                     dzo: this.selectedDzo.ticker,
                 };
                 for (let y = 1; y < this.currentPlan.rows.length; y++) {
@@ -194,6 +242,26 @@ export default {
                 this.isPlanValidateError = true;
             }
         },
+        beforeRangeEdit(e) {
+            let cellOptions = e.detail.data;
+            if (!cellOptions) {
+                return;
+            }
+            let row = parseInt(Object.keys(cellOptions)[0]);
+            let column = Object.keys(cellOptions[row]);
+            let columnName = Object.keys(cellOptions[row]).toString();
+            column = column.toString().replace(/\D/g, "") - 1;
+            let value = Object.values(cellOptions[row])[0];
+            value = value.replace(/ /g, '');
+            value = value.replace(',', '.');
+            value = parseFloat(value);
+            this.disableErrorHighlight(row,column);
+            if (isNaN(value) || value < 0) {
+                this.setClassToElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
+                this.isPlanValidateError = true;
+            }
+            e.detail.data[row][columnName] = value;
+        },
         disableErrorHighlight(row,col) {
             this.removeClassFromElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
         },
@@ -208,9 +276,27 @@ export default {
             }
             document.querySelector('#planGrid').refresh('all');
             this.SET_LOADING(false);
-        }
-    },
-    computed: {
-
+        },
+        async switchDzo(e) {
+            this.SET_LOADING(true);
+            this.selectedDzo.ticker = e.target.value;
+            this.selectedDzo.name = this.getCompanyName();
+            this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
+            this.fillPlanRows();
+            this.plans = await this.getDzoPlans();
+            this.handlePlans();
+            document.querySelector('#planGrid').refresh('all');
+            this.SET_LOADING(false);
+        },
+        getCompanyName() {
+            let dzoName = '';
+            let self = this;
+            _.forEach(this.planCompanies, function(dzo) {
+                if (dzo.ticker === self.selectedDzo.ticker) {
+                    dzoName = dzo.name;
+                }
+            });
+            return dzoName;
+        },
     }
 }

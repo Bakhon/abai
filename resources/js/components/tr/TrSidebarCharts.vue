@@ -89,12 +89,10 @@ export default {
 <style  scoped>
 .tr-sidebar__link {
   color: #FFF;
-
 }
 .tr-sidebar__page {
   font-weight: bold;
   font-size: 18px;
-  padding: 3px 20px;
 }
 
 .dropright.dropright {
@@ -106,5 +104,8 @@ export default {
     padding: 0px;
     margin: 0;
     z-index: 5000 !important;
+}
+.tr-sidebar__graph{
+  padding: 0px 28px;
 }
 </style>
