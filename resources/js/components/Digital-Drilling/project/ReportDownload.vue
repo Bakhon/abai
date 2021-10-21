@@ -41,7 +41,7 @@
 .report__download{
     position: fixed;
     left: 64px;
-    top: 86px;
+    top: 83px;
     right: 0;
     bottom: 0;
     background-color: #272953;

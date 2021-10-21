@@ -121,6 +121,9 @@
                 ],
                 chartOptions: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
@@ -205,13 +208,17 @@
 
                     },
                 },
+                chartOptionsAboveLast: {},
                 chartOptionsAbove: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         zoom: {
                             enabled: true,
-                            type: 'x',
+                            type: 'y',
                             autoScaleYaxis: true,
                         },
                         toolbar: {
@@ -342,10 +349,10 @@
                     coordinates.push(coordinate)
                 }
 
-                coordinates.push({
-                    x: 2 * this.inclino[this.inclino.length-1].N_S,
-                    y: null
-                })
+                // coordinates.push({
+                //     x: 2 * this.inclino[this.inclino.length-1].N_S,
+                //     y: null
+                // })
                 // coordinates.push({
                 //     x: 0,
                 //     y: 4 * this.inclino[this.inclino.length-1].E_W,
@@ -357,11 +364,14 @@
                 }]
                 this.chartOptionsAbove = {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                             type: 'line',
                             zoom: {
-                            enabled: true,
-                                type: 'x',
+                                enabled: true,
+                                type: 'y',
                                 autoScaleYaxis: true,
                         },
                         toolbar: {
@@ -417,33 +427,37 @@
                         },
                     },
                     xaxis: {
+                        max: 2 * this.inclino[this.inclino.length-1].N_S,
+                        min: -2 * this.inclino[this.inclino.length-1].N_S,
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
                             },
                         },
                         tickAmount: 9,
-                            position: 'bottom',
+                        position: 'bottom',
                     },
                     yaxis:{
                         opposite: true,
-                            max: 2 * this.inclino[this.inclino.length-1].N_S,
-                            labels: {
-                            style: {
-                                colors: '#FFFFFF'
-                            },
+                        max: 2 * this.inclino[this.inclino.length-1].N_S,
+                        min: -2 * this.inclino[this.inclino.length-1].N_S,
+                        labels: {
+                        style: {
+                            colors: '#FFFFFF'
+                        },
 
-                            formatter: function(val) {
-                                if (val == null)
-                                    return 0;
-                                return val.toFixed(0);
-                            },
+                        formatter: function(val) {
+                            if (val == null)
+                                return 0;
+                            return val.toFixed(0);
+                        },
                         },
 
                     },
                 }
 
             },
+
             async getInclinoByWell(){
                 this.SET_LOADING(true);
                 try{

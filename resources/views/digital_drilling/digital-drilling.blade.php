@@ -8,6 +8,7 @@
 @section('module_title', trans('digital_drilling.module_title'))
 @section('content')
     <link rel="stylesheet" href="/css/digital-drilling.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
     <digital-drilling />
 @endsection
 @section('sidebar_menu_additional')

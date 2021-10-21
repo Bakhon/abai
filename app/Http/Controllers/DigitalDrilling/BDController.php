@@ -11,8 +11,8 @@ class BDController extends Controller
     {
         $this->middleware('can:digitalDrilling view main')
             ->only([
-                'index',
-                'home'
+//                'index',
+//                'home'
             ]);
     }
 

@@ -18,17 +18,20 @@
         </div>
         <div class="map__content">
             <MglMap
-                    container="map-test"
-                    :center.sync="center"
                     :accessToken="accessToken"
                     :mapStyle="mapStyle"
+                    :center="center"
                     :zoom="zoom"
-                    class="mglMap"
             >
                 <MglMarker
-                        :coordinates.sync="center"
-                        color='green'
-                />
+                        v-for="(coordinate, i)  in coordinates"
+                        :coordinates="[coordinate.Y, coordinate.X]"
+                        :key="i"
+                >
+                    <div slot="marker">
+                        <img src="/img/digital-drilling/menu3.svg" alt="">
+                    </div>
+                </MglMarker>
             </MglMap>
         </div>
         <div class="contentBlock__map-bottom">
@@ -42,21 +45,49 @@
 </template>
 
 <script>
+    import {globalloadingMutations} from '@store/helpers';
+
     import {
         MglMap,
-        MglMarker,
-        MglGeojsonLayer
+        MglMarker
     } from 'vue-mapbox'
     export default {
         name: "DigitalMap",
-        components:{ MglMap, MglMarker, MglGeojsonLayer},
+        components:{ MglMap, MglMarker},
         data() {
             return {
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-                center: [52.1108, 43.68999],
-                zoom: 9,
+                center: [54.0, 47.0],
+                zoom: 5,
+                coordinates: []
             }
+        },
+        mounted(){
+            this.getCoordinates()
+        },
+        methods:{
+             async getCoordinates(){
+                    this.SET_LOADING(true);
+                    try{
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/').then((response) => {
+                            let data = response.data;
+                            if (data) {
+                                this.coordinates = data.slice(0, 20);
+                            } else {
+                                console.log('No data');
+                            }
+                        });
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
+                    this.SET_LOADING(false);
+
+            },
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
         }
     }
 </script>
