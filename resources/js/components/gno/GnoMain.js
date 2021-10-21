@@ -81,7 +81,7 @@ export default {
         nno1: null,
         nno2: null,
       },
-      dzos: null,
+      dzos: [],
       dzo: null,
       fields: null,
       field: null,
@@ -857,14 +857,19 @@ export default {
       this.windowWidth = window.innerWidth;
     });
     this.setDefault();
+    let dzoMap = {
+      "org:112": "АО «Мангистаумунайгаз»",
+      "org:3": "АО ОзенМунайГаз",
+      "org:179": "ТОО «СП КазГерМунай»"
+  };
     if (this.user.org_structure.includes("org:2")) {
       this.dzos = Object.keys(orgSample)
-    } else if (this.user.org_structure.includes("org:112")) {
-      this.dzos = ["АО «Мангистаумунайгаз»"]
-    } else if (this.user.org_structure.includes("org:3")) {
-      this.dzos = ["АО ОзенМунайГаз"]
-    } else if (this.user.org_structure.includes("org:179")) {
-      this.dzos = ["ТОО «СП КазГерМунай»"]
+    } else {
+      for (let key in dzoMap) {
+        if (this.user.org_structure.includes(key)) {
+          this.dzos.push(dzoMap[key])
+        }
+      }
     }
   },
 };
