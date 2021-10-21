@@ -154,7 +154,6 @@ class DigitalRatingContoller extends Controller
          $well_id[] = $item->well_id;
       }
    
-      // tbdi.pressure_inj
       $injection_wells =   DB::connection('tbd')->table('tbdi.well')
                ->whereIn('tbdi.well.id',$well_id)
                ->join('tbdi.water_inj', 'tbdi.water_inj.well_id', '=', 'tbdi.well.id')
