@@ -325,7 +325,6 @@
                     x: 9 * this.inclino[this.inclino.length-1].HD,
                     y: null
                 })
-                // this.series[0].data = coordinates
                 this.series=[{
                     name: "Desktops",
                         data: coordinates
@@ -346,11 +345,6 @@
                     x: 2 * this.inclino[this.inclino.length-1].N_S,
                     y: null
                 })
-                // coordinates.push({
-                //     x: 0,
-                //     y: 4 * this.inclino[this.inclino.length-1].E_W,
-                // })
-                // this.seriesAbove[0].data = coordinates
                 this.seriesAbove = [{
                     name: "Desktops",
                         data: coordinates
