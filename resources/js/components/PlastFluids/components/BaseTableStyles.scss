@@ -6,13 +6,23 @@ td {
 }
 
 td > button {
-  background: #3366ff;
-  font-size: 12px;
-  color: #fff;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  background: #334296;
   padding: 6px 12px;
   border-radius: 4px;
   border: none;
+  transition: .2s ease;
+}
+
+td > button:hover {
+  background: #2E50E9;
+}
+
+td > button > p {
+  margin: 0 0 0 5px;
+  font-size: 12px;
+  color: #fff;
 }
 
 table {

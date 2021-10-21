@@ -46,6 +46,7 @@
               </th>
               <th
                 v-if="tableType === 'upload'"
+                style="padding: 13px 10px 13px 22px"
                 :style="sticky ? 'position: sticky; top: -1px;' : ''"
               >
                 {{ trans("plast_fluids.actions") }}
@@ -58,9 +59,10 @@
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
                   {{ item[fieldKey] }}
                 </td>
-                <td>
+                <td v-if="tableType === 'upload'">
                   <button @click="handleReportDownload(item)">
-                    {{ trans("plast_fluids.download") }}
+                    <img src="/img/PlastFluids/downloadTableIcon.svg" alt="download">
+                    <p>{{ trans("plast_fluids.download") }}</p>
                   </button>
                 </td>
               </tr>
