@@ -5,9 +5,6 @@ export default class TGroup {
     #__old = {};
 
     save(){
-/*        this.#__old = Object.entries({groups: this.#__groups, groupElements: this.#__groupsElements, groupsOptions: this.#__groupsOptions}).reduce((acc, item, key)=>{
-            console.log(item, key);
-        }, [])*/
         this.#__old = {
             group: new Set(this.#__groups),
             groupElements: new Map(this.#__groupsElements),
