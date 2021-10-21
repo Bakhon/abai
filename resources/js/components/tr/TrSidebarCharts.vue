@@ -96,7 +96,6 @@ export default {
 .tr-sidebar__page {
   font-weight: bold;
   font-size: 18px;
-  /* padding: 3px 20px; */
 }
 
 .dropright.dropright {
