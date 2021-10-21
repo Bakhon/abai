@@ -87,8 +87,8 @@ trait WithDocumentsUpload
         $existedFiles = $existedFilesQuery->get();
 
         foreach ($existedFiles as $existedFile) {
-            $value = array_filter($values, function ($item) use ($existedFile) {
-                if (is_array($item) && $item['id'] === $existedFile->document_id) {
+            $value = array_filter($values, function ($item) use ($existedFile, $field) {
+                if (is_array($item) && $item['id'] === $existedFile->{$field['table']['document_key']}) {
                     return true;
                 }
                 return false;
@@ -139,7 +139,7 @@ trait WithDocumentsUpload
 
         return $files->map(function ($file) use ($filesInfo) {
             $file->info = $filesInfo->where('id', $file->file)->first();
-            $file->filename = $file->info->file_name;
+            $file->filename = $file->info ? $file->info->file_name : null;
             return $file;
         })
             ->groupBy('id')
