@@ -106,9 +106,24 @@ class MeasLabResearch extends TableForm
         $columns = $this->getColumns($this->request->get('research_type'));
         $column = $columns->where('code', $params['field'])->first();
 
+        $researchId = $this->getResearchId($params['wellId']);
+        $researchValueId = $this->getResearchValueId($params['field'], $researchId);
+
+        DB::connection('tbd')
+            ->table('prod.lab_research_value')
+            ->where('id', $researchValueId)
+            ->update(
+                [
+                    $column['column'] => $params['value']
+                ]
+            );
+    }
+
+    protected function getResearchId($wellId)
+    {
         $research = DB::connection('tbd')
             ->table('prod.lab_research')
-            ->where('well', $params['wellId'])
+            ->where('well', $wellId)
             ->whereDate('research_date', '=', $this->request->get('date'))
             ->where('research_type', $this->request->get('research_type'))
             ->first();
@@ -118,7 +133,7 @@ class MeasLabResearch extends TableForm
                 ->table('prod.lab_research')
                 ->insertGetId(
                     [
-                        'well' => $params['wellId'],
+                        'well' => $wellId,
                         'research_date' => $this->request->get('date'),
                         'research_type' => $this->request->get('research_type')
                     ]
@@ -126,8 +141,12 @@ class MeasLabResearch extends TableForm
         } else {
             $researchId = $research->id;
         }
+        return $researchId;
+    }
 
-        $metric = Metric::where('code', $params['field'])->first();
+    protected function getResearchValueId($field, $researchId)
+    {
+        $metric = Metric::where('code', $field)->first();
 
         $researchValue = DB::connection('tbd')
             ->table('prod.lab_research_value')
@@ -147,14 +166,6 @@ class MeasLabResearch extends TableForm
         } else {
             $researchValueId = $researchValue->id;
         }
-
-        DB::connection('tbd')
-            ->table('prod.lab_research_value')
-            ->where('id', $researchValueId)
-            ->update(
-                [
-                    $column['column'] => $params['value']
-                ]
-            );
+        return $researchValueId;
     }
 }
