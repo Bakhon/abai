@@ -162,7 +162,7 @@ export default {
                 },
             ],
             activePeriod: 90,
-            colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)']
+            colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)', 'rgba(230, 230, 0, 1)']
         }
     },
     methods: {
