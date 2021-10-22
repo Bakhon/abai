@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\WellForecast\EconomicWellForecastDataRequest;
 use App\Http\Requests\Economic\WellForecast\EconomicWellForecastImportExcelRequest;
 use App\Imports\Economic\EconomicWellForecastImport;
 use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsWellForecast;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,7 +22,7 @@ class EconomicWellForecastController extends Controller
         return view('economic.well_forecast.index', compact('logType'));
     }
 
-    public function getData(Request $request): array
+    public function getData(EconomicWellForecastDataRequest $request): array
     {
         $query = EcoRefsWellForecast::query();
 
