@@ -313,6 +313,7 @@ export default {
                         let wcut_telemetry = '['+this.trans(wcut_telemetry)+' '+info.wcut_telemetry+']'
                         let well_expl = '['+this.trans(well_expl)+' '+info.well_expl+']'
                         let work_hours = '['+this.trans(work_hours)+' '+info.work_hours+']'
+                        let activity_value = info?.activity_value ? info.activity_value : null
 
                         info.well_status ? events_info.push(well_status) : null
                         info.gas_factor_telemetry ? events_info.push(gas_factor_telemetry) : null
@@ -340,7 +341,7 @@ export default {
 
                         events_hint = events_hint+"<span style='display: block;'> "
                                                      +"<div style='background: "+color+";"+style_circle+"'></div>"
-                                                     +"<b>"+ event.name +' '+(info.activity_value ? info.activity_value : '')+ ":</b> "
+                                                     +"<b>"+ event.name +' '+activity_value+ ":</b> "
                                                      + events_info
                                                    + "</span>"
                       }
