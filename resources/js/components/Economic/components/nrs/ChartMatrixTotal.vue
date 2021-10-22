@@ -121,11 +121,16 @@ export default {
         xaxis: {
           type: 'date'
         },
+        yaxis: {
+          labels: {
+            formatter: (value) => (+value.toFixed(0)).toLocaleString()
+          },
+        },
         tooltip: {
           shared: true,
           intersect: false,
           y: {
-            formatter: (y) => y
+            formatter: (value) => (+value.toFixed(2)).toLocaleString()
           }
         },
       }

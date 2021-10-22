@@ -705,7 +705,7 @@ export default {
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+            ${this.trans('economic_reference.day').toLocaleLowerCase()}
           `,
           isString: true
         },
@@ -716,7 +716,7 @@ export default {
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+            ${this.trans('economic_reference.day').toLocaleLowerCase()}
           `,
           isString: true
         },
@@ -727,7 +727,7 @@ export default {
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+            ${this.trans('economic_reference.day').toLocaleLowerCase()}
           `,
           isString: true
         },
@@ -738,7 +738,7 @@ export default {
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+            ${this.trans('economic_reference.day').toLocaleLowerCase()}
           `,
           isString: true
         },
@@ -749,7 +749,7 @@ export default {
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+            ${this.trans('economic_reference.day').toLocaleLowerCase()}
           `,
           isString: true
         },
