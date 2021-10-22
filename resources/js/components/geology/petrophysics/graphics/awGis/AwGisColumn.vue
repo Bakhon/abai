@@ -1,7 +1,7 @@
 <template>
   <div class="column" ref="column" :style="{height: `${heightContainer - columnTopPadding}px`}">
     <div class="column__header d-flex flex-column" :style="{height: `${headerHeight}px`}">
-      <div v-for="(el, i) in elements" :key="i" v-show="getElements.includes(el.data.name)||el.data.name === 'SSTVD'">
+      <div v-for="(el, i) in elements.filter((element)=>getElements.includes(element.data.name)||element.data.name === 'SSTVD')" :key="i">
         <div class="column__header_info">
           {{ el.data.name }}
         </div>
