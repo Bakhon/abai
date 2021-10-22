@@ -86,7 +86,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'well_distribution',
+    activeTab: 'production_loss',
   }),
   computed: {
     tabs() {

@@ -4,7 +4,7 @@
       Технологические потери: упущенная выгода, расходы на ПРС
     </subtitle>
 
-    <div class="mt-2 text-white font-size-14px line-height-16px">
+    <div class="mt-2 text-white font-size-12px line-height-14px">
       <div class="bg-blue font-weight-600 pr-10px">
         <div class="pr-1 py-2 text-center border-grey pl-10">
           Упущенная выгода по потерям нефти, млн. тенге
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="text-white font-size-14px line-height-16px mt-3">
+    <div class="text-white font-size-12px line-height-14px mt-3">
       <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 pr-10px">
         Расходы на ПРС, млн. тенге
       </div>
@@ -237,16 +237,12 @@ export default {
   font-weight: 600;
 }
 
-.font-size-14px {
-  font-size: 14px;
+.font-size-12px {
+  font-size: 12px;
 }
 
 .line-height-14px {
   line-height: 14px;
-}
-
-.line-height-16px {
-  line-height: 16px;
 }
 
 .line-height-18px {
