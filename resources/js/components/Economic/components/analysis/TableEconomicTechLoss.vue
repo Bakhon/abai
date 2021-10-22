@@ -51,7 +51,7 @@
         Расходы на ПРС, млн. тенге
       </div>
 
-      <div class="d-flex flex-column customScroll" style="height: 300px">
+      <div class="d-flex flex-column customScroll" style="height: 310px">
         <table-oil-production-tech-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"

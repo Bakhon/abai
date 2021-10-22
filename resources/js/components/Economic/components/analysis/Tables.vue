@@ -11,7 +11,7 @@
           @click.native="selectTab(tab)"/>
     </div>
 
-    <div class="mt-2 w-100">
+    <div class="mt-2 w-100 h-100">
       <table-production-loss
           v-if="activeTab === 'production_loss'"
           class="text-white"/>

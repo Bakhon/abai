@@ -50,7 +50,7 @@
         Потери нефти, тонн
       </div>
 
-      <div class="d-flex flex-column customScroll" style="height: 340px">
+      <div class="d-flex flex-column customScroll" style="height: 355px">
         <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
