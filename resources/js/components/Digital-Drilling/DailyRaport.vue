@@ -71,7 +71,8 @@
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <select-input :options="drillingContractors" name="name"/>
+                                <select-add :options="drillingContractors" @addItem="addItemRig"/>
+                                <!--<select-input :options="drillingContractors" name="name"/>-->
                             </td>
                         </tr>
                         <tr>
