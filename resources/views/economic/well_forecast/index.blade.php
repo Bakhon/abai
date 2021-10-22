@@ -8,7 +8,7 @@
         </a>
 
         <div class="mt-3 text-center">
-            <a href="{{ route('economic.cost.upload', ['is_forecast'=> $isForecast]) }}"
+            <a href="{{ route('economic.well_forecast.upload') }}"
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.upload_excel') }}
             </a>
@@ -17,19 +17,8 @@
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.delete_wrong_uploaded_data') }}
             </a>
-
-            @if ($isForecast)
-                <a href="{{ route('economic.scenario.index') }}"
-                   class="list-group-item list-group-item-action">
-                    {{ __('economic_reference.scenarios') }}
-                </a>
-            @endif
         </div>
     </div>
 
-    @if($isForecast)
-        <economic-data-cost-component is-forecast></economic-data-cost-component>
-    @else
-        <economic-data-cost-component></economic-data-cost-component>
-    @endif
+    <economic-data-well-forecast-component></economic-data-well-forecast-component>
 @endsection

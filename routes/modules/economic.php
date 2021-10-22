@@ -215,5 +215,19 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     ]);
             });
         });
+
+        Route::group([], function () {
+            Route::group(['prefix' => 'well_forecast'], function () {
+                Route::get('get-data', 'EconomicWellForecastController@getData');
+                Route::get('upload-excel', 'EconomicWellForecastController@uploadExcel')
+                    ->name('economic.well_forecast.upload');
+                Route::post('import-excel', 'EconomicWellForecastController@importExcel')
+                    ->name('economic.well_forecast.import');
+            });
+
+            Route::resource('well_forecast', 'EconomicWellForecastController')
+                ->only(['index'])
+                ->names(['index' => 'economic.well_forecast.index']);
+        });
     });
 });

@@ -34,7 +34,7 @@ import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
 
 export default {
-  name: "economic-data-component",
+  name: "economic-data-cost-component",
   components: {
     VueTableDynamic,
     Subtitle,
