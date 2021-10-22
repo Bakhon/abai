@@ -107,6 +107,7 @@
                 inclino: [],
                 d2_Show: true,
                 d3_Show: false,
+                maxValue: 50,
                 series: [
                     {
                     name: "Desktops",
@@ -121,6 +122,9 @@
                 ],
                 chartOptions: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
@@ -205,13 +209,17 @@
 
                     },
                 },
+                chartOptionsAboveLast: {},
                 chartOptionsAbove: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         zoom: {
                             enabled: true,
-                            type: 'x',
+                            type: 'y',
                             autoScaleYaxis: true,
                         },
                         toolbar: {
@@ -325,6 +333,7 @@
                     x: 9 * this.inclino[this.inclino.length-1].HD,
                     y: null
                 })
+                // this.series[0].data = coordinates
                 this.series=[{
                     name: "Desktops",
                         data: coordinates
@@ -341,21 +350,33 @@
                     coordinates.push(coordinate)
                 }
 
-                coordinates.push({
-                    x: 2 * this.inclino[this.inclino.length-1].N_S,
-                    y: null
-                })
+                let first = this.inclino[0].N_S
+                let last = this.inclino[this.inclino.length-1].N_S
+                if(first<0){
+                    first = -1 * first
+                }
+                if(last<0){
+                    last = -1 * last
+                }
+                if(last < first){
+                    this.maxValue = first
+                }else{
+                    this.maxValue = last
+                }
                 this.seriesAbove = [{
                     name: "Desktops",
                         data: coordinates
                 }]
                 this.chartOptionsAbove = {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                             type: 'line',
                             zoom: {
-                            enabled: true,
-                                type: 'x',
+                                enabled: true,
+                                type: 'y',
                                 autoScaleYaxis: true,
                         },
                         toolbar: {
@@ -411,27 +432,30 @@
                         },
                     },
                     xaxis: {
+                        max: 2* this.maxValue,
+                        min: -2 * this.maxValue,
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
                             },
                         },
                         tickAmount: 9,
-                            position: 'bottom',
+                        position: 'bottom',
                     },
                     yaxis:{
                         opposite: true,
-                            max: 2 * this.inclino[this.inclino.length-1].N_S,
-                            labels: {
-                            style: {
-                                colors: '#FFFFFF'
-                            },
+                        max: 2*this.maxValue,
+                        min: -2 * this.maxValue,
+                        labels: {
+                        style: {
+                            colors: '#FFFFFF'
+                        },
 
-                            formatter: function(val) {
-                                if (val == null)
-                                    return 0;
-                                return val.toFixed(0);
-                            },
+                        formatter: function(val) {
+                            if (val == null)
+                                return 0;
+                            return val.toFixed(0);
+                        },
                         },
 
                     },
