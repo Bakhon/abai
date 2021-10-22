@@ -123,7 +123,17 @@ export default {
                   color: '#000000',
                 }
               },
-            }
+            },
+              {
+                seriesName: this.trans('well_card_graph.events'),
+                opposite: true,
+                min: 0,
+                max: 70,
+                title: {
+                  text: this.trans('well_card_graph.events')
+                },
+                show: false
+              }
           ],
             schedulePeriods: [
                 {
@@ -186,12 +196,13 @@ export default {
                     data.measLiq,
                     data.oil,
                     data.measWaterCut,
+                    data.events
                 ];
 
              if(data.events!=undefined)
              {
                  window.Apex.events = data.events;
-                 Object.keys(data.events).forEach(key => {
+                 /*Object.keys(data.events).forEach(key => {
                    this.chartSeries.push(data.events[key])
                    this.yaxis.push({
                      seriesName: data.events[key].name,
@@ -205,7 +216,7 @@ export default {
                    })
                    let color = this.randomRgba(1,245);
                    this.colors.push(color)
-                 });
+                 });*/
              }
                 if (data.wellStatuses) {
                     this.chartPoints = [];
@@ -277,76 +288,8 @@ export default {
                     let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                     let dateItem = ''
                     let events = window.Apex.events
-                    let events_hint = ''
-                    let events_info = []
-                    let info = null
-                    let event = null
-                    let size = null
-                    let color = null
-                    let c_index = 0
-                    Object.keys(events).forEach(key => {
-                      event = events[key]
-                      size = event.data[dataPointIndex]
-                      c_index = 4+parseInt(key.substring(5))
-                      color = colors[c_index]
-                      if(size>0)
-                      {
-                        info = event.info[dataPointIndex]
-
-                        let well_status = '['+this.trans(well_status)+' '+info.well_status+']'
-                        let gas_factor_telemetry = '['+this.trans(gas_factor_telemetry)+' '+info.gas_factor_telemetry+']'
-                        let gas_telemetry = '['+this.trans(gas_telemetry)+' '+info.gas_telemetry+']'
-                        let gdis_conclusion = '['+this.trans(gdis_conclusion)+' '+info.gdis_conclusion+']'
-                        let hdin = '['+this.trans(hdin)+' '+info.hdin+']'
-                        let hstat = '['+this.trans(hstat)+' '+info.hstat+']'
-                        let liquid_telemetry = '['+this.trans(liquid_telemetry)+' '+info.liquid_telemetry+']'
-                        let liquid_temp = '['+this.trans(liquid_temp)+' '+info.liquid_temp+']'
-                        let oil_telemetry = '['+this.trans(oil_telemetry)+' '+info.oil_telemetry+']'
-                        let park_indicator = '['+this.trans(park_indicator)+' '+info.park_indicator+']'
-                        let pbuf = '['+this.trans(pbuf)+' '+info.pbuf+']'
-                        let pbuf_after = '['+this.trans(pbuf_after)+' '+info.pbuf_after+']'
-                        let pbuf_before = '['+this.trans(pbuf_before)+' '+info.pbuf_before+']'
-                        let ppl = '['+this.trans(ppl)+' '+info.ppl+']'
-                        let pzab = '['+this.trans(pzab)+' '+info.pzab+']'
-                        let pzat = '['+this.trans(pzat)+' '+info.pzat+']'
-                        let reason_downtime = '['+this.trans(reason_downtime)+' '+info.reason_downtime+']'
-                        let wcut_telemetry = '['+this.trans(wcut_telemetry)+' '+info.wcut_telemetry+']'
-                        let well_expl = '['+this.trans(well_expl)+' '+info.well_expl+']'
-                        let work_hours = '['+this.trans(work_hours)+' '+info.work_hours+']'
-                        let activity_value = info?.activity_value ? info.activity_value : null
-
-                        info.well_status ? events_info.push(well_status) : null
-                        info.gas_factor_telemetry ? events_info.push(gas_factor_telemetry) : null
-                        info.gas_telemetry ? events_info.push(gas_telemetry) : null
-                        info.gdis_conclusion ? events_info.push(gdis_conclusion) : null
-                        info.hdin ? events_info.push(hdin) : null
-                        info.hstat ? events_info.push(hstat) : null
-                        info.liquid_telemetry ? events_info.push(liquid_telemetry) : null
-                        info.liquid_temp ? events_info.push(liquid_temp) : null
-                        info.oil_telemetry ? events_info.push(oil_telemetry) : null
-                        info.park_indicator ? events_info.push(park_indicator) : null
-                        info.pbuf ? events_info.push(pbuf) : null
-                        info.pbuf_after ? events_info.push(pbuf_after) : null
-                        info.pbuf_before ? events_info.push(pbuf_before) : null
-                        info.ppl ? events_info.push(ppl) : null
-                        info.pzab ? events_info.push(pzab) : null
-                        info.pzat ? events_info.push(pzat) : null
-                        info.reason_downtime ? events_info.push(reason_downtime) : null
-                        info.wcut_telemetry ? events_info.push(wcut_telemetry) : null
-                        info.well_category ? events_info.push(well_category) : null
-                        info.well_expl ? events_info.push(well_expl) : null
-                        info.work_hours ? events_info.push(work_hours) : null
-
-                        events_info.filter(function(v, i){ return (i+1)%6 == 0 ? v+'<br/>' : v; })
-
-                        events_hint = events_hint+"<span style='display: block;'> "
-                                                     +"<div style='background: "+color+";"+style_circle+"'></div>"
-                                                     +"<b>"+ event.name +' '+activity_value+ ":</b> "
-                                                     + events_info
-                                                   + "</span>"
-                      }
-                    });
-
+                      console.log(events)
+                    let events_hint = events.info[dataPointIndex]
                     return (
                         '<div class="arrow_box" style="padding: 3px">' +
                         "<span style='display: block;background: #ccc'>" + dateItem + "</span>" +
@@ -354,7 +297,9 @@ export default {
                         "<span style='display: block;'><b><div style='background: "+colors[1]+";"+style_circle+"'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
                         "<span style='display: block;'><b><div style='background: "+colors[2]+";"+style_circle+"'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
                         "<span style='display: block;'><b><div style='background: "+colors[3]+";"+style_circle+"'></div>" + w.globals.initialSeries[3].name + ":</b> " + w.globals.initialSeries[3].data[dataPointIndex].toFixed(1) + "</span>" +
-                        events_hint+
+                        "<span style='display: block;'><div style='background: "+colors[4]+";"+style_circle+"'></div>"
+                          + events_hint+
+                         "</span>"+
                         "</div>"
                     );
 
