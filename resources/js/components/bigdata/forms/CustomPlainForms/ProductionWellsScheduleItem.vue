@@ -199,25 +199,7 @@ export default {
                     data.events
                 ];
 
-             if(data.events!=undefined)
-             {
-                 window.Apex.events = data.events;
-                 /*Object.keys(data.events).forEach(key => {
-                   this.chartSeries.push(data.events[key])
-                   this.yaxis.push({
-                     seriesName: data.events[key].name,
-                     opposite: true,
-                     min: 0,
-                     max: 70,
-                     title: {
-                       text: data.events[key].name
-                     },
-                     show: false
-                   })
-                   let color = this.randomRgba(1,245);
-                   this.colors.push(color)
-                 });*/
-             }
+                window.Apex.events = data.events;
                 if (data.wellStatuses) {
                     this.chartPoints = [];
                     data.wellStatuses.forEach(status => {
