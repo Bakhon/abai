@@ -11,11 +11,8 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
-<<<<<<< HEAD
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
-=======
->>>>>>> 9891a2f740a56347f8fb0ecba13fac1ad76ac0e4
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
