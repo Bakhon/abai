@@ -286,7 +286,7 @@ class WellsController extends Controller
     {
         return $well->MeasLiqInjection()
             ->orderBy('dbeg', 'desc')
-            ->first('water_inj_val', 'inj_pressure');
+            ->first('water_inj_val', 'pressure_inj');
     }
 
     private function wellPerfActual(Well $well)

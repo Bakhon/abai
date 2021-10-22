@@ -441,7 +441,7 @@ export default {
     selectWell(well) {
       this.SET_LOADING(true);
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {               
+        try {                       
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
@@ -805,7 +805,7 @@ export default {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.agentVol != null ? this.well.agentVol : '-',
-          'neigbor_2': this.well.meas_water_inj != null ? this.well.meas_water_inj.inj_pressure : null,
+          'neigbor_2': this.well.meas_water_inj != null ? this.well.meas_water_inj.pressure_inj : null,
           'name': 'Давление закачки, атм (режим/факт)',
           'data': ''
         },
