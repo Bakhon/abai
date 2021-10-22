@@ -12,7 +12,7 @@
                 <div class="well-deal__header">
                   <div class="title">
                     <div class="icon-ierarchy"></div>
-                    <h2>{{lang.case_well}}</h2>
+                    <h2>{{this.trans('well.well_passport')}}</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
                        @click="onColumnFoldingEvent('left')">
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div v-if="isLeftColumnFolded" class="row">
-            <div class="rotate" style="color: white">{{lang.case_well}}</div>
+            <div class="rotate" style="color: white">{{this.trans('well.download_excel')}}</div>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  {{lang.well}}: <span v-if="wellUwi">{{ wellUwi }}</span>
+                  {{this.trans('well.well')}}: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
@@ -62,7 +62,7 @@
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
                           @change="dzoSelectChange($event)">
-                    <option value="0" selected>{{lang.all_dzo}}</option>
+                    <option value="0" selected>{{this.trans('well.all_dzo')}}</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
                     </option>
@@ -71,7 +71,7 @@
                       class="flex-fill"
                       :filterable="false"
                       :options="options"
-                      :placeholder="lang.number_well"
+                      :placeholder="this.trans('well.number_well')"
                       @input="selectWell"
                       @search="onSearch"
                   >
@@ -114,33 +114,33 @@
                   </div>
                   <div class="col">
                     <div class="well-info">
-                      <div class="title">{{lang.general}}</div>
-                      <p>{{lang.number_well}}:
+                      <div class="title">{{this.trans('well.general')}}</div>
+                      <p>{{this.trans('well.number_well')}}:
                         <span v-if="wellUwi">
                           {{ wellUwi }}
                         </span>
                       </p>
-                      <p>{{lang.category_well}}:
+                      <p>{{this.trans('well.category_well')}}:
                         <span v-if="well.category">
                           {{ well.category.name_ru }}
                         </span>
                       </p>
-                      <div class="title">{{lang.binding}}</div>
-                      <p>{{lang.org_struct}}: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
-                      <div class="title">{{lang.coord}}</div>
-                      <p>{{lang.coord_x}}:
+                      <div class="title">{{this.trans('well.binding')}}</div>
+                      <p>{{this.trans('well.org_struct')}}: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
+                      <div class="title">{{this.trans('well.coord')}}</div>
+                      <p>{{this.trans('well.coord_x')}}:
                         <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
                       </p>
-                      <p>{{lang.coord_y}}:
+                      <p>{{this.trans('well.coord_y')}}:
                         <span v-if="wellSaptialObjectY">
                           {{ wellSaptialObjectY }}
                         </span></p>
-                      <div class="title">{{lang.zaboi}}</div>
-                      <p>{{lang.zaboi_x}}:
+                      <div class="title">{{this.trans('well.zaboi')}}</div>
+                      <p>{{this.trans('well.zaboi_x')}}:
                         <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                      <p>{{lang.zaboi_y}}:
+                      <p>{{this.trans('well.zaboi_y')}}:
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
@@ -168,7 +168,7 @@
                             stroke-width="1.2"/>
                     </svg>
                   </div>
-                  <p v-if="wellUwi">{{lang.well_passport}}</p>
+                  <p v-if="wellUwi">{{this.trans('well.well_passport')}}</p>
                 </div>
                 <div class="title-container">
                   <div v-if="wellUwi" class="sheare-icon">
@@ -184,20 +184,20 @@
                     </svg>
                   </div>
                   <div v-if="wellUwi" class="sheare-text">
-                    {{lang.download_excel}}
+                    {{this.trans('well.download_excel')}}
                   </div>
                 </div>
               </div>
             </div>
           </template>
           <div class="info">
-            <div v-if="isRightColumnFolded" class="rotate">{{lang.well_passport}}</div>
+            <div v-if="isRightColumnFolded" class="rotate">{{this.trans('well.well_passport')}}</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
                   <table v-if="wellUwi">
                     <tr>
-                      <th colspan="3">{{lang.general_info}}</th>
+                      <th colspan="3">{{this.trans('well.general_info')}}</th>
                     </tr>
                     <tr v-for="(item, index) in this.tableData">
                       <td>{{ index + 1 }}</td>
@@ -268,7 +268,6 @@ export default {
     return {
       well_all_data: null,
       well_type_category: null,
-      lang: {},
       well_passport : [],
       options: [],
       graph: null,
