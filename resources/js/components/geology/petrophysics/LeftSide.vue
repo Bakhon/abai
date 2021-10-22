@@ -137,7 +137,7 @@ export default {
         wells: false,
         mnemonics: false
       },
-      selectedWells: []
+      selectedWells: [{"sort":0,"value":"UZN_0144"}]
     }
   },
   components: {
@@ -169,7 +169,6 @@ export default {
 
   async mounted() {
     await this.$store.dispatch(FETCH_DZOS);
-    await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
   },
 
   methods: {
@@ -196,7 +195,6 @@ export default {
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
     },
-
     selectWellsHandle(item, i) {
       let index = this.selectedWells.findIndex((a) => a.value === item.value);
       if (~index) {

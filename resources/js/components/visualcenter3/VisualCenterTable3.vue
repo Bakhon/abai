@@ -423,36 +423,6 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory('associatedGasProduction','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.productionAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
-                              @click="switchCategory('associatedGasFlaring','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.flaringAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
                               @click="switchCategory('naturalGasDelivery','gasProduction')"
                       >
                         <div
@@ -483,6 +453,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('associatedGasProduction','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('associatedGasDelivery','gasProduction')"
                       >
                         <div
@@ -508,6 +493,36 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{ trans("visualcenter.raskhodpoputGaz") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('processingAssociatedGas','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.processingAssociatedGas ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.processingAssociatedGasForOwnExpenses") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('associatedGasFlaring','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.associatedGasFlaring") }}
                         </a>
                       </li>
                     </ul>
@@ -578,6 +593,21 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{trans("visualcenter.injectionArtesianWater")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('volgaWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.volgaWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.volgaWaterInjection")}}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
@@ -1477,8 +1507,15 @@
 
                   <div class="col pl-2">
                     <div
+                            v-if="productionFondSelectedCompany !== 'УО'"
                             :class="fondsFilter.isProductionIdleActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="switchProductionFondFilter('isProductionIdleActive')"
+                    >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                    <div
+                            v-else
+                            class="button2 button__disabled"
                     >
                       {{ trans("visualcenter.inIdle") }}
                     </div>
@@ -2348,14 +2385,13 @@
               <div>
                 <table class="table emergency-table">
                   <tr class="d-flex">
-                    <td class="col-6">
-                      <div class="secondaryTitle">0</div>
-                      <div class="metric-title">
-                        {{ trans('visualcenter.chemistryMetricTon') }}
-                      </div>
-                      <div class="in-idle">
-                        {{ timeSelect }}
-                      </div>
+                    <td class="col-6 cursor-pointer">
+                      <a :href="oilDynamicRoute" class="secondaryTitle d-flex">
+                        <div class="col-9 p-0 oil-dynamic-icon"></div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </a>
                     </td>
                     <td
                             class="col-6 cursor-pointer emergency-block"
@@ -2373,7 +2409,7 @@
                   <tr class="d-flex">
                     <td class="col-6">
                       <div class="right-column_header">
-                        {{ trans('visualcenter.expectedProduction') }}
+                        {{ trans('visualcenter.dailyDynamic') }}
                       </div>
                     </td>
                     <td
@@ -3048,5 +3084,19 @@
     background: #3366FF;
     border-radius: 10px;
     padding: 2px 5px;
+  }
+  .oil-dynamic-icon {
+    width: 70px;
+    height: 70px;
+    background: url(/img/visualcenter3/oil-graph.svg) no-repeat;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+  .button__disabled{
+    opacity: 0.4;
+    pointer-events: none;
   }
 </style>

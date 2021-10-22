@@ -24,6 +24,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 import productionParams from './productionParams/index';
 import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.json";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
@@ -32,7 +33,10 @@ Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').
 
 
 export default {
-    props: ['userId'],
+    props: ['userId','oilDynamicRoute'],
+    components: {
+        "date-picker": DatePicker
+    },
     data: function () {
         return {
             dzoMapping : {

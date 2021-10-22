@@ -343,7 +343,8 @@ export default {
         if (!row[column.code]) return ''
         return Object.values(row[column.code]).map(item => {
           return item.values.file.map(file => {
-            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.filename} (${file.info.size})</a>`
+            if (!file.info) return null
+            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.file_name} (${file.info.file_size})</a>`
           }).join('<br>')
         }).join('<br>')
       }

@@ -260,6 +260,7 @@ class ExcelFormController extends Controller
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportData::where('id',$request->actualId)->delete();
         $updateOptions['is_corrected'] = null;
+        $updateOptions['user_id'] = $request->userId;
 
         DzoImportData::query()
             ->where('id', $request->currentId)
@@ -290,7 +291,8 @@ class ExcelFormController extends Controller
             ->update(
                 [
                     'is_corrected' => false,
-                    'is_approved' => false
+                    'is_approved' => false,
+                    'user_id' => $request->userId
                 ]
             );
     }

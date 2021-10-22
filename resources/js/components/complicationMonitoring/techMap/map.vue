@@ -518,9 +518,21 @@ export default {
       this.addMapLayer(layerId);
     },
     createIconLayer(layerId, data, type) {
-      let iconAtlas = type == 'zu' || type == 'gu' ? '/img/icons/barrel.png' : '/img/icons/well.png';
+      let iconAtlas = '';
+      switch (type) {
+        case 'zu':
+          iconAtlas = '/img/icons/map/zu.png';
+          break;
+        case 'gu':
+          iconAtlas = '/img/icons/map/gu.png';
+          break;
+        case "well":
+          iconAtlas = '/img/icons/map/well_black.png';
+          break;
+      }
+
       let name = this.getObjectName(type);
-      let marker = this.getObjectMarker(type);
+      let marker = {x: 0, y: 0, width: 168, height: 168};
 
       return new IconLayer({
         id: layerId,
@@ -531,7 +543,7 @@ export default {
           marker
         },
         getIcon: d => 'marker',
-        sizeScale: type == 'gu' ? 30 : 20,
+        sizeScale: type == 'gu' ? 60 : 40,
         getPosition: (d) => [
           parseFloat(d.lon.toString().replace(',', '.')),
           parseFloat(d.lat.toString().replace(',', '.'))
@@ -1222,25 +1234,6 @@ export default {
 
         default:
           return ""
-          break;
-      }
-    },
-    getObjectMarker(type) {
-      switch (type) {
-        case 'gu':
-          return {x: 0, y: 0, width: 24, height: 36, mask: true}
-          break;
-
-        case 'zu':
-          return {x: 0, y: 0, width: 24, height: 36, mask: true}
-          break;
-
-        case 'well':
-          return {x: 0, y: 0, width: 52, height: 48, mask: true}
-          break;
-
-        default:
-          return {}
           break;
       }
     },

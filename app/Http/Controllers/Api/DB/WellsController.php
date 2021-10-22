@@ -6,26 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\BottomHole;
 use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\GdisCurrent;
-use App\Models\BigData\GdisCurrentValue;
+use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
-use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
+<<<<<<< HEAD
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
+=======
+>>>>>>> 9891a2f740a56347f8fb0ecba13fac1ad76ac0e4
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\Gtm;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class WellsController extends Controller
 {
@@ -49,13 +46,10 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-
-        dd($well);
-
+       
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
-            'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),

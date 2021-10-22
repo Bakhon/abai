@@ -44,7 +44,7 @@ class ExportManualHydroCalc implements ShouldQueue
      */
     public function handle()
     {
-        $fileName = '/export/manual_hydro_calc_' . Carbon::now()->format('YmdHis') . auth()->user()->id . '.xlsx';
+        $fileName = '/export/manual_hydro_calc_' . Carbon::now()->format('YmdHis') . '.xlsx';
         Excel::store(new ManualHydroCalcExport($this->params, $this->pipes), 'public' . $fileName);
 
         $this->setOutput(

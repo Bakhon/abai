@@ -58,11 +58,13 @@ export default {
                 'expensesForOwnNaturalGas': false,
                 'associatedGasDelivery': false,
                 'expensesForOwnAssociatedGas': false,
+                'processingAssociatedGas': false,
                 'waterInjection': false,
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,
                 'artezianWaterInjection': false,
-                'streamWaterInjection': false
+                'streamWaterInjection': false,
+                'volgaWaterInjection': false
             },
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +

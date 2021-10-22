@@ -38,7 +38,6 @@ return array (
   'select_file' => 'Выберите файл',
   'or' => 'или',
   'move_file' => 'перетащите сюда файл',
-  'uploading_file' => 'Загружаем файл',
   'download_package' => 'Загрузить пакет',
   'replace_package' => 'Заменить пакет',
   'something_went_wrong' => 'Что-то пошло не так, попробуйте позже',
@@ -122,4 +121,10 @@ return array (
   'back' => 'Назад',
   'search' => 'Поиск',
   'oil_map' => 'Карта размещений нефтегазоносных провинций и областей',
+  'template_upload_successfully' => 'Шаблон успешно загружен',
+  'no_data' => 'Нет данных',
+  'data' => 'Данные',
+  'actions' => 'Действия',
+  'download' => 'Скачать',
+  'error_with_template' => 'Ошибка с шаблоном, перепроверьте данные',
 );
