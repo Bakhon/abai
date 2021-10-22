@@ -75,7 +75,10 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 120,
         rowHeight: 50,
-        columnWidth: this.headers.map((col, index) => ({column: index, width: 120}))
+        columnWidth: this.headers.map((header, index) => ({
+          column: index,
+          width: header.isAuthor ? 180 : 120
+        }))
       }
     },
 
