@@ -22,6 +22,6 @@
 @section('module_title', 'Карточка скважины')
 @section('content')
     <div  >
-        <well-card translation="{{$translation}}"></well-card>
+        <well-card></well-card>
     </div>
 @endsection

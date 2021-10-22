@@ -263,7 +263,6 @@ export default {
     InjectionHistoricalData,
     ProductionHistoricalData
   },
-  props: ['translation'],
   data() {
     return {
       well_all_data: null,
