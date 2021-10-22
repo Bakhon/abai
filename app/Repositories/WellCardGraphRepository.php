@@ -57,32 +57,32 @@ class WellCardGraphRepository  implements WellRepositoryInterface
                {
                    $is_have = true;
                }
-               $result['events']['event'.$i]['name'] = $event->activity_name;
+               $result['events']['event'.$i]['name'] = $event->activity;
                $result['events']['event'.$i]['type'] = 'column';
                $result['events']['event'.$i]['data'][] = $is_have ? (($i==0) ? $i+2 : $i*3) : 0;
                $object = new \stdClass();
-               $object->activity_value = $item->activity_value ? $item->activity_value : null;
-               $object->liquid_telemetry = $item->liquid_telemetry ? '[Жидкость м3/сут (телеметрия): '.$item->liquid_telemetry.']' : null;
-               $object->pbuf = $item->pbuf ? '[P буфф:'.$item->pbuf.']' : null;
-               $object->pzat = $item->pzat ? '[Р затр:'.$item->pzat.']' : null;
-               $object->pbuf_before = $item->pbuf_before ? '[P буфф до штуцера: '.$item->pbuf_before.']' : null;
-               $object->pbuf_after = $item->pbuf_after ? '[P буфф после штуцера: '.$item->pbuf_after.']' : null;
-               $object->hdin = $item->hdin ? '[Н дин: '.$item->hdin.']' : null;
-               $object->pzab = $item->pzab ? '[Р заб: '.$item->pzab.']' : null;
-               $object->hstat = $item->hstat ? '[Н стат: '.$item->hstat.']' : null;
-               $object->ppl = $item->ppl ? '[Р пл: '.$item->ppl.']' : $item->ppl;
-               $object->work_hours = $item->work_hours ? '[Отработанное время: '.$item->work_hours.' ч.]' : null;
-               $object->well_status = $item->well_status ? '[Статус: '.$item->well_status.']' : null;
-               $object->well_expl =  $item->well_expl ? '[Способ экстплуатации: '.$item->well_expl.']' : null;
-               $object->well_category = $item->well_category ? '[Категория скважины: '.$item->well_category.']' : null;
-               $object->gdis_conclusion = $item->gdis_conclusion ? '[Заключение ГДИС: '.$item->gdis_conclusion.']' : null;
-               $object->reason_downtime = $item->reason_downtime ? '[Причина простоя:'.$item->reason_downtime.']' : null;
-               $object->wcut_telemetry = $item->wcut_telemetry ? '[Обводненность % (телеметрия): '.$item->wcut_telemetry.']' : null;
-               $object->oil_telemetry = $item->oil_telemetry ? '[Нефть т/сут (телеметрия): '.$item->oil_telemetry.']' : null;
-               $object->gas_telemetry = $item->gas_telemetry ? '[Газ м3/сут (телеметрия): '.$item->gas_telemetry.']' : null;
-               $object->gas_factor_telemetry = $item->gas_factor_telemetry ? '[Газовый фактор м3/т (телеметрия): '.$item->gas_factor_telemetry.']' : null;
-               $object->liquid_temp = $item->liquid_temp ? '[Температура жидкости % (телеметрия): '.$item->liquid_temp.']' : null;
-               $object->park_indicator = $item->park_indicator ? '[Парковые показатели: '.$item->park_indicator.']' : null;
+              // $object->activity_value = $item->activity_value;
+               $object->liquid_telemetry = $item->liquid_telemetry;
+               $object->pbuf = $item->pbuf;
+               $object->pzat = $item->pzat;
+               $object->pbuf_before = $item->pbuf_before;
+               $object->pbuf_after = $item->pbuf_after;
+               $object->hdin = $item->hdin;
+               $object->pzab = $item->pzab;
+               $object->hstat = $item->hstat;
+               $object->ppl = $item->ppl;
+               $object->work_hours = $item->work_hours;
+               $object->well_status = $item->well_status;
+               $object->well_expl =  $item->well_expl;
+               $object->well_category = $item->well_category;
+               $object->gdis_conclusion = $item->gdis_conclusion;
+               $object->reason_downtime = $item->reason_downtime;
+               $object->wcut_telemetry = $item->wcut_telemetry;
+               $object->oil_telemetry = $item->oil_telemetry;
+               $object->gas_telemetry = $item->gas_telemetry;
+               $object->gas_factor_telemetry = $item->gas_factor_telemetry;
+               $object->liquid_temp = $item->liquid_temp;
+               $object->park_indicator = $item->park_indicator;
                $result['events']['event'.$i]['info'][] = $object;
            }
        }
