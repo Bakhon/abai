@@ -3,7 +3,7 @@ import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
-import {toArray} from "html-to-image/es/util";
+import {toNumber} from "lodash/lang";
 
 
 export default {
@@ -18,6 +18,7 @@ export default {
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
             url: process.env.MIX_PODBOR_GTM_URL,
+            isHidden: true,
             bswVal: [],
             liquidRate: [],
             oilRate: [],
@@ -28,7 +29,10 @@ export default {
                     data: null,
                 },
             },
-            dataRange: null,
+            dataRangeInfo: {
+                days: Number,
+                is_days_group: Boolean
+            },
             fieldName: null,
             mainData: null,
             serviceOffline: true,
@@ -79,9 +83,9 @@ export default {
                     foreColor: '#fff'
                 },
                 stroke: {
-                  show: true,
-                  width: 1,
-                  colors: ['#808080'],
+                    show: true,
+                    width: 1,
+                    colors: ['#808080'],
                     curve: 'smooth',
                     lineCap: 'butt'
                 },
@@ -110,7 +114,6 @@ export default {
                     },
                 },
                 colors: ["#04f689", "#fa4202", '#0253fa'],
-
                 dataLabels: {
                     enabled: false
                 },
@@ -132,20 +135,6 @@ export default {
                 },
                 yaxis: [
                     {
-                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
-                        axisTicks: {show: true},
-                        axisBorder: {show: true,},
-                        title: {
-                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
-                                color: undefined,
-                                fontSize: '15px',
-                                fontFamily: 'Helvetica, Arial, sans-serif',
-                                fontWeight: 700,
-                                cssClass: 'apexcharts-yaxis-title',
-                            },
-                        },
-                    },
-                    {
                         seriesName: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`,
                         axisTicks: {show: true},
                         axisBorder: {show: true,},
@@ -158,6 +147,20 @@ export default {
                                 cssClass: 'apexcharts-yaxis-title',
                             },
                         }
+                    },
+                    {
+                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
+                        axisTicks: {show: true},
+                        axisBorder: {show: true,},
+                        title: {
+                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        },
                     },
                     {
                         seriesName: `${this.trans('pgno.obvodnenost')} %`,
@@ -185,7 +188,8 @@ export default {
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
-            isMinimize: true
+            isMinimize: true,
+            days: null
         };
     },
     computed: {
@@ -210,25 +214,31 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
+        onMyEvent() {
+            console.log('as')
+        },
         onClickableValue() {
-            const body = {
-                action_type: 'finder_item_clicked',
-                main_data: this.clickable,
-            }
-            this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
-                .then((res) => {
-                    this.table.main_data.header = res.data.main_data.header
-                    this.table.main_data.data = res.data.main_data.data
-                    if (res.status === 200) {
-                        this.setNotify("Данные получены", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+            console.log('clickable')
+            // const body = {
+            //     action_type: 'finder_item_clicked',
+            //     main_data: this.clickable,
+            // }
+            // console.log('asd in gtm')
+            // console.log(body.main_data)
+            // this.SET_LOADING(true);
+            // axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
+            //     .then((res) => {
+            //         this.table.main_data.header = res.data.main_data.header
+            //         this.table.main_data.data = res.data.main_data.data
+            //         if (res.status === 200) {
+            //             this.setNotify("Данные получены", "Success", "success")
+            //         } else {
+            //             this.setNotify("Что-то пошло не так", "Error", "danger")
+            //         }
+            //     })
+            //     .finally(() => {
+            //         this.SET_LOADING(false);
+            //     })
         },
         onClickWell(v) {
             this.wellNumber = v
@@ -259,31 +269,31 @@ export default {
                             data: [
                                 {
                                     x: res.data.fa_plot.labels.pbeg_oil_prod,
-                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.pbeg_oil_prod.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceWC,
-                                    y: res.data.fa_plot.influenceWC.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.influenceWC.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influencePres,
-                                    y: res.data.fa_plot.influencePres.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.influencePres.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceLiquidPI,
-                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.influenceLiquidPI.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceBHP,
-                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.influenceBHP.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceWorkDay,
-                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.influenceWorkDay.color,
                                 }, {
                                     x: res.data.fa_plot.labels.pend_oil_prod,
-                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseInt(a).toFixed(0)),
+                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
                                     fillColor: res.data.fa_plot.pend_oil_prod.color,
                                 }
                             ]
@@ -309,47 +319,58 @@ export default {
         closeModal(modalName) {
             this.$modal.hide(modalName)
         },
-        getTreeData() {
+        async getTreeData() {
+            console.log('before request', this.dataRangeInfo);
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
+            await axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
                 .then((res) => {
                     console.log(res.data)
-                    this.dataRange = res.data.date_range_model;
+                    this.dataRangeInfo = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
                     this.fieldName = res.data.field_name;
                 }).finally(() => {
-                this.SET_LOADING(false);
-            })
+                    this.SET_LOADING(false);
+                    console.log('after request', this.dataRangeInfo)
+                })
+            console.log('after finally', this.dataRangeInfo);
+        },
+        onChangeDays1(e) {
+            this.dataRangeInfo.days = toNumber(e.target.value)
+            console.log(this.dataRangeInfo)
+        },
+        myEvent() {
+            this.isHidden = !this.isHidden
+            console.log(this.isHidden)
         },
         postTreeData(v) {
             const body = {
                 action_type: 'calc_button_pressed',
-                date_range_model: this.dataRange,
+                date_range_model: this.dataRangeInfo,
                 fieldName: this.fieldName,
                 finder_model: {
                     name: "root",
                     children: v
                 }
             }
-            console.log(this.dataRange)
-            // this.SET_LOADING(true);
-            // axios.post(this.url, {
-            //     action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
-            //     finder_model: {
-            //         name: "root",
-            //         children: v
-            //     }
-            // })
-            //     .then((res) => {
-            //         if (res.status === 200) {
-            //             this.setNotify("Информация о скважинах получена", "Success", "success")
-            //         } else {
-            //             this.setNotify("Что-то пошло не так", "Error", "danger")
-            //         }
-            //     })
-            //     .finally(() => {
-            //         this.SET_LOADING(false);
-            //     })
+            console.log(this.dataRangeInfo.days)
+            this.SET_LOADING(true);
+            axios.post(this.url, {
+                action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
+                finder_model: {
+                    name: "root",
+                    children: v
+                }
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        this.setNotify("Информация о скважинах получена", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
@@ -386,17 +407,22 @@ export default {
                 },
                 template: '<div>' +
                     '       <div class="block-header text-center">' + data.node.name +
-                    '</div><gtm-tree :treeData="treeData" @node-click="handleClick">' +
+                    '</div><gtm-tree :treeData="treeData" @node-click="handleClick" @event-emit="onMyEvent()">' +
                     '</gtm-tree></div>',
                 methods: {
                     handleClick(data) {
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
                     },
+                    onMyEvent() {
+                        console.log('ioi')
+                        this.onClickableValue()
+                    }
                 }
             };
         },
     },
-    created() {
+    mounted() {
         this.getTreeData();
+        this.$root.$refs
     },
 }

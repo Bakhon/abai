@@ -211,30 +211,42 @@
       </div>
       <div class="col-lg-3 p-0 pl-2 pr-1">
         <div class="gtm-dark p-2">
-          <div class="block-header p-2">
-            {{ this.trans("paegtm.period") }}
-          </div>
-          <!--          <gtm-date-picker-->
-          <!--              :showSettings="true"-->
-          <!--          ></gtm-date-picker>-->
-          <div class="d-flex">
-            <div class="d-flex calendar-filter-block fl-1">
-              {{ this.dataRange.min_date }}
-<!--              <div class="calendar-filter-block d-flex f-1 text-center">-->
-<!--                <div class="d-flex block-date">-->
-<!--                  asd-->
-<!--                </div>-->
-<!--              </div>-->
+          <div class="block-header pb-2 pt-1 d-flex">
+            <div>
+              {{ this.trans("paegtm.period") }}
             </div>
-            <div class="d-flex calendar-filter-block fl-1">
-              {{ this.dataRange.max_date }}
+            <div v-if="isHidden" class="period-block">
+              <div class="pl-1" style="font-weight: normal">
+                <input class="mt-7px pl-1" type="checkbox" value="" v-model="dataRangeInfo.is_days_group">
+                <label class="pl-1">Шаг</label>
+                <input class="period-settings-input" type="number" v-model="dataRangeInfo.days" @input="onChangeDays1($event)"/>
+              </div>
             </div>
 
-            <div class="d-flex calendar-filter-block show-block"  @click="showModal('modalPeriod')">
+          </div>
+          <div class="d-flex">
+            <div class="d-flex calendar-filter-block fl-1">
+              {{ this.dataRangeInfo.begin_date }}
+            </div>
+            <div style="width: 5px;"></div>
+            <div class="d-flex calendar-filter-block fl-1">
+              {{ this.dataRangeInfo.end_date }}
+            </div>
+            <div style="width: 5px;"></div>
+            <div class="d-flex calendar-filter-block show-block"  @click="myEvent">
               <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
             </div>
 
-            <div class="asd">asdasdasda</div>
+<!--            <div v-if="isHidden" class="asdasd">-->
+<!--              <div style="text-align: center">-->
+<!--                Выберите {{ trans('paegtm.period') }}-->
+<!--              </div>-->
+<!--              <div class="pl-1">-->
+<!--                <input class="mt-7px pl-1" type="checkbox" value="" v-model="this.dataRange.is_days_group">-->
+<!--                <label class="pl-1">Шаг</label>-->
+<!--                <input class="period-settings-input" type="text" v-model="this.dataRange.days" :disable="!this.dataRange.is_days_group">-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
 
         </div>
@@ -342,29 +354,6 @@
         </div>
       </div>
     </div>
-    <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
-           :height="100"
-           style="background: transparent;" :adaptive="true">
-      <div class="modal-bign modal-bign-container">
-        <div class="modal-bign-header">
-          <div class="modal-bign-title">{{ trans('paegtm.period') }}</div>
-          <button type="button" class="modal-bign-button" @click="closeModal('modalPeriod')">
-            {{ trans('pgno.zakrit') }}
-          </button>
-        </div>
-        <div class="d-flex justify-content-start">
-          <div class="d-flex">
-            <input class="mt-7px" type="checkbox" value="" v-model="this.dataRange.is_days_group">
-            <label class="pl-5px">Шаг</label>
-          </div>
-          <div class="d-flex pl-4">
-            <div>
-              <input class="period-settings-input" type="text" v-model="this.dataRange.days" :disable="!this.dataRange.is_days_group">
-            </div>
-          </div>
-        </div>
-      </div>
-    </modal>
   </div>
 </template>
 <script src="./js/PodborGTM.js"></script>
@@ -373,12 +362,25 @@
   min-height: 233px;
 }
 
-.asd {
-  display: none;
+.period-settings-input {
+  width: 60px;
+  height: 24px;
+  background: rgba(31, 33, 66, 0.8);
+  border: 1px solid #454FA1;
+  border-radius: 4px;
+  color: white;
+  outline: none;
+  padding-left: 5px;
 }
 
-.show-block:hover + .asd {
-  display: block;
+.period-block {
+  background-color: #41488b;
+  border: 2px solid #545580;
+  border-radius: 5px;
+  color: white;
+  width: 120px;
+  height: 30px;
+  font-size: 13px;
 }
 
 .lg-border-block {
@@ -391,6 +393,17 @@
   text-align: center;
   font-size: 16px;
   padding-top: 20px;
+}
+
+.period-settings-input[type=number]::-webkit-inner-spin-button {
+  opacity: 1;
+  background-color: #323370;
+}
+.period-settings-input[type="number"]::-webkit-inner-spin-button,
+.period-settings-input[type="number"]::-webkit-outer-spin-button {
+  /*-webkit-appearance: none;*/
+  margin: 0;
+  color: #0E9A00;
 }
 
 .border-color {

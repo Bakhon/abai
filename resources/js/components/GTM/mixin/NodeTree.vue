@@ -11,12 +11,12 @@
             </span>
       <span v-if="!nodeHasChildren && !node.value">
         <template>
-          <input v-if="this.checkable" type="checkbox">
+          <input v-if="checkable" type="checkbox">
           <img v-else width="20" height="20" src='../img/file.svg'>
         </template>
       </span>
-      <span v-if="this.checkable !== undefined"></span>
-      <span class="margin-input" @click="toggleCheckState()">{{ node.name }} </span>
+      <span v-if="checkable !== undefined"></span>
+      <span class="margin-input" @click="toggleCheckState(node)">{{ node.name }} </span>
       <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
     </div>
     <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
@@ -74,7 +74,6 @@ export default {
         },
       isLeaf: function(node) {
         if (node.hasOwnProperty('value')) {
-          console.log('asd')
           return true
         }
       },
