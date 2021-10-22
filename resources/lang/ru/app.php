@@ -63,5 +63,5 @@ return array (
   'module_title' => 'Модуль',
   'download' => 'Скачать',
   'thereIsNoData' => 'Нет данных',
-  'modules' => 'Модули',
+  'modules' => 'Модули'
 );
