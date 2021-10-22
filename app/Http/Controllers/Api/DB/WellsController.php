@@ -41,6 +41,7 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }
 
+        $orgs = $this->org($well);
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -51,7 +52,8 @@ class WellsController extends Controller
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'well_type' => $this->wellType($well),
-            'org' => $this->org($well),
+            'org' => $this->structureOrg($orgs),
+            'main_org_code'=>$this->orgCode($orgs),
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
@@ -212,16 +214,35 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
+        $dict_orgs = [];
         $org_object = new Org();
-        $allParents = [];
         $item = $well->getRelationOrg($this->getToday());
         if (isset($item))
         {
             $dict_orgs = $org_object->parentTree($item->id);
-            foreach($dict_orgs as $dict_org)
+        }
+
+        return $dict_orgs;
+    }
+
+    private function orgCode(array $dict_orgs)
+    {
+        foreach($dict_orgs as $dict_org)
+        {
+            if(!$dict_org->parent)
             {
-                $allParents[]['name_ru'] = $dict_org->name;
+                return $dict_org->code;
             }
+        }
+        return null;
+    }
+
+    private function structureOrg(array $dict_orgs)
+    {
+        $allParents = [];
+        foreach($dict_orgs as $dict_org)
+        {
+            $allParents[]['name_ru'] = $dict_org->name;
         }
 
         return $allParents;
