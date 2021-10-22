@@ -965,21 +965,13 @@
                       </div>
                     </td>
                     <td
-                            @mouseover="dzoHoverIndex = index"
-                            @mouseout="dzoHoverIndex = null"
                             v-if="isConsolidatedCategoryActive()"
-                            :class="[buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan'),missedCompanies.includes(item.name) ? 'color__yellow' : '']"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
-                      <span
-                              v-if="isHoverShouldBeShown()"
-                              v-show="dzoHoverIndex === index"
-                              class="fact_hover"
-                      >
-                        Устаревшие данные
-                      </span>
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -989,6 +981,7 @@
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -3109,17 +3102,6 @@
     pointer-events: none;
   }
   .color__yellow {
-    background: #FFC607;
-  }
-  .fact_hover {
-    background: #272953;
-    z-index: 1000;
-    position: absolute;
-    width: 100%;
-    margin-left: 90%;
-    border: 1px solid #575975;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
+    color: #FFC607;
   }
 </style>

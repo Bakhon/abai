@@ -644,6 +644,13 @@ class VisualCenterController extends Controller
             ->whereNull('is_corrected')
             ->get()
             ->pluck('dzo_name');
-        return array_values(array_diff($this->allCompanies,reset($presentCompanies)));
+        $diff = array_values(array_diff($this->allCompanies,reset($presentCompanies)));
+        if (in_array('ОМГ', $diff)) {
+            array_push($diff,'ОМГК');
+        }
+        if (in_array('КГМ', $diff)) {
+            array_push($diff,'КГМКМГ');
+        }
+        return $diff;
     }
 }
