@@ -53,7 +53,7 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            foreach($data->well_events as $i=>$event)
            {
                $is_have = false;
-               if($event->activity_name==$item->activity_name)
+               if($event->activity==$item->activity)
                {
                    $is_have = true;
                }
