@@ -13,6 +13,10 @@ class HistoricalUploadController extends Controller
     private $fields = array();
     private $dzoName;
     private $type;
+    private $operation = array (
+        'create' => 0,
+        'update' => 0
+    );
 
     public function uploadHistoricalData()
     {
@@ -38,6 +42,7 @@ class HistoricalUploadController extends Controller
         $modelName = "App\Models\VisCenter\ExcelForm\\" . $request->type;
         $model = new $modelName();
         $this->store($model,$summary);
+        return $this->operation;
     }
 
     private function getFieldKeys($row)
@@ -57,7 +62,12 @@ class HistoricalUploadController extends Controller
             'dzo_name' => $this->dzoName
         );
         foreach($this->fields as $index => $fieldName) {
-            if ($row[$index] !== '') {
+            if ($row[$index] === '') {
+                continue;
+            }
+            if ($fieldName == 'date') {
+                $values[$fieldName] = Carbon::parse($row[$index])->format('Y-m-d H:i:s');
+            } else {
                 $values[$fieldName] = $row[$index];
             }
         }
@@ -70,14 +80,17 @@ class HistoricalUploadController extends Controller
         foreach($data as $index => $dayData) {
             if ($this->type === 'DzoImportOtm') {
                 $existRecord = $this->getRecordByOtm($model,$dayData);
+            } elseif ($this->type === 'DzoImportDowntimeReason') {
+                $existRecord = $this->getRecordByDowntimeReason($model,$dayData);
             } else {
                 $existRecord = $this->getRecord($model,$dayData);
             }
-
             if (is_null($existRecord)) {
+                $this->operation['create'] += 1;
                 $model->create($dayData);
             } else {
                 $result = $existRecord->update($dayData);
+                $this->operation['update'] += 1;
             }
             if ($index > 0 && $index % 10 == 0) {
                 sleep(5);
@@ -100,6 +113,13 @@ class HistoricalUploadController extends Controller
             ->whereYear('date',$date->year)
             ->whereMonth('date',$date->month)
             ->where('dzo_name',$this->dzoName)
+            ->first();
+    }
+
+    private function getRecordByDowntimeReason($model,$data)
+    {
+        return $model::query()
+            ->where('id',$data['id'])
             ->first();
     }
 }

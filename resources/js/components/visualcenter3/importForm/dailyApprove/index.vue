@@ -74,7 +74,8 @@
                                 >
                                     {{trans('visualcenter.dailyApprove.cancel')}}</span>
                             </div>
-                            <div v-if="!currentDzo.isProcessed" class="col-6"></div>
+                            <span class="col-2 column-title">{{trans('visualcenter.importForm.position')}}: </span>
+                            <span class="column-parameter col-4">{{currentDzo.position}}</span>
                             <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
                                 <span clas="col-4">{{approvers.mainMaster.name}}</span>
                                 <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve(approvers.mainMaster)">{{trans('visualcenter.dailyApprove.approve')}}</span>

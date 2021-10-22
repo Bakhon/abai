@@ -1,0 +1,43 @@
+{
+  "АО «ОзенМунайГаз»": [
+    {
+      "short_name": "UZN",
+      "full_name": "Узень",
+      "id": 1
+    },
+    {
+      "short_name": "KMB",
+      "full_name": "Карамандыбас",
+      "id": 2
+    }
+  ],
+  "АО «Мангистаумунайгаз»": [
+    {
+      "short_name": "JET",
+      "full_name": "Жетыбай",
+      "id": 3
+    },
+    {
+      "short_name": "ASA",
+      "full_name": "Асар",
+      "id": 4
+    }
+  ],
+  "ТОО «СП КазГерМунай»" : [
+    {
+      "short_name": "AKSH",
+      "full_name": "Акшабулак",
+      "id": 5
+    },
+    {
+      "short_name": "NUR",
+      "full_name": "Нуралы",
+      "id": 6
+    },
+    {
+      "short_name": "ASY",
+      "full_name": "Аксай",
+      "id": 7
+    }
+  ]
+}

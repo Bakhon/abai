@@ -2,7 +2,7 @@ revo-grid .header-wrapper {
     display: none;
 }
 .cell-title {
-    background-color: rgba(31, 78, 121);
+    background-color: rgba(31, 78, 121) !important;
     color: white !important;
     text-align: center;
     line-height: 30px;
@@ -22,4 +22,10 @@ revo-grid .header-wrapper {
 }
 .cell__color-normal {
     background-color: white;
+}
+table.el-year-table a.cell {
+    background: transparent;
+}
+revogr-scroll-virtual.horizontal::-webkit-scrollbar-track {
+    background: transparent;
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\AttachmentService;
-use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
@@ -28,18 +27,18 @@ class AttachmentController extends Controller
 
     public function download(int $attachment)
     {
-        $file = $this->service->get($attachment);
-        $filename = $this->service->getInfo([$attachment])[0]->filename;
+        $fileInfo = $this->service->getInfo([$attachment])->first();
+        $file = $this->service->get($fileInfo->file_path);
         $fileUrl = $file->getBody()->getMetadata('uri');
 
         return response()->streamDownload(function () use ($fileUrl) {
             echo file_get_contents($fileUrl);
-        }, $filename);
+        }, $fileInfo->file_name);
     }
 
     public function getFileInfo(int $attachment)
     {
-        $fileInfo = $this->service->getInfo([$attachment])[0];
+        $fileInfo = $this->service->getInfo([$attachment])->first();
 
         return response()->json(['file_info' => $fileInfo]);
     }

@@ -44,7 +44,10 @@ export default {
                     summaryWells[fond] = _.round((_.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName]), 0);
                 });
                 _.forEach(this.fondList.other, function(fond) {
-                    summaryWells[otherFieldName] += _.sumBy(inputData, fond) / self.fondDaysCountSelected[fondName];
+                    let summ = _.sumBy(inputData, fond);
+                    if (summ) {
+                        summaryWells[otherFieldName] += summ / self.fondDaysCountSelected[fondName];
+                    }
                 });
             } else {
                 _.forEach(this.fondList[fondName].work, function(fond) {
@@ -75,6 +78,9 @@ export default {
                 _.forEach(inputData, function(item) {
                     item.fact = tableData[0][item.code];
                     item.isVisible = typeof item.fact !== 'undefined';
+                    if (!item.fact) {
+                        item.fact = 0;
+                    }
                 });
             }
         },

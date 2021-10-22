@@ -27,6 +27,10 @@ class WaterInjection {
         'streamWaterInjection' => array(
             'fact' => 'agent_upload_stream_injection_fact',
             'plan' => 'plan_par'
+        ),
+        'volgaWaterInjection' => array(
+            'fact' => 'agent_upload_volga_water_injection_fact',
+            'plan' => 'plan_liq_voljsk'
         )
     );
     private $decreaseReasonFields = array (
@@ -127,7 +131,7 @@ class WaterInjection {
         }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
-            $companySummary['plan'] *= Carbon::now()->day - 1;
+           // $companySummary['plan'] *= Carbon::now()->day - 1;
         }
         if ($periodType === 'year') {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);
@@ -180,7 +184,7 @@ class WaterInjection {
         $ordered = array();
         foreach($this->companies as $value) {
             $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
+            if ($key !== false) {
                 array_push($ordered,$data[$key]);
             }
         }

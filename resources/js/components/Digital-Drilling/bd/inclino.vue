@@ -333,6 +333,7 @@
                     x: 9 * this.inclino[this.inclino.length-1].HD,
                     y: null
                 })
+                // this.series[0].data = coordinates
                 this.series=[{
                     name: "Desktops",
                         data: coordinates
@@ -348,12 +349,6 @@
                     }
                     coordinates.push(coordinate)
                 }
-
-                // coordinates.push({
-                //     x: 2 * this.inclino[this.inclino.length-1].N_S,
-                //     y: null
-                // })
-
 
                 let first = this.inclino[0].N_S
                 let last = this.inclino[this.inclino.length-1].N_S
@@ -417,7 +412,6 @@
                             }
                         },
                         yaxis: {
-
                             lines: {
                                 show: true
                             },
@@ -468,7 +462,6 @@
                 }
 
             },
-
             async getInclinoByWell(){
                 this.SET_LOADING(true);
                 try{

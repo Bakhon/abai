@@ -474,6 +474,7 @@ class VisualCenterController extends Controller
             $summary = $daily;
             if (!is_null($daily['import_downtime_reason'])) {
                 $detail = array();
+                unset($daily['import_downtime_reason']['id']);
                 foreach($daily['import_downtime_reason'] as $key => $fondDetail) {
                     if (!is_null($fondDetail)) {
                         $detail[$key] = $fondDetail;
@@ -496,14 +497,34 @@ class VisualCenterController extends Controller
     {
         $startPeriod = Carbon::now()->startOfYear();
         $endPeriod = Carbon::now()->endOfDay();
-        return DzoImportData::query()
-            ->select()
+        $name = 'year_production_' . $startPeriod->format('Y_m_d') . '_' . $endPeriod->format('Y_m_d');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+        $productionByYear = DzoImportData::query()
+            ->select(['id','dzo_name','date','oil_production_fact','condensate_production_fact','oil_delivery_fact','condensate_delivery_fact'])
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
             ->whereNull('is_corrected')
-            ->with('importDecreaseReason')
+            ->with(['importDecreaseReason' => function($decreaseReason){
+               $decreaseReason->select(
+                  [
+                     'dzo_import_data_id',
+                     'accident_explanation_reasons',
+                     'gas_restriction_explanation_reasons',
+                     'impulse_explanation_reasons',
+                     'opec_explanation_reasons',
+                     'other_explanation_reasons',
+                     'restriction_kto_explanation_reasons',
+                     'shutdown_explanation_reasons'
+                  ]
+                )
+                ->get();
+            }])
             ->get()
             ->toArray();
+        Cache::put($name, $productionByYear, $this->saveTime);
+        return $productionByYear;
     }
     public function getEmergencyHistory(Request $request)
     {
