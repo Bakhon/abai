@@ -295,6 +295,7 @@ export default {
         'geo': {'name_ru': null},
         'tubeNom': null,
         'measLiq': null,
+        'tech_mode_inj': null,
         'techModeProdOil': null,
         'techModeProdLiquid': null,
         'injPressure': null,
@@ -351,6 +352,8 @@ export default {
         'geo': 'geo',
         'tubeNom': 'tube_nom',
         'measLiq': 'meas_liq',
+        'meas_water_inj': 'meas_water_inj',
+        'tech_mode_inj': 'tech_mode_inj',
         'techModeProdOil': 'techModeProdOil',
         'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
         'injPressure': 'tech_mode_inj.inj_pressure',
@@ -438,7 +441,7 @@ export default {
     selectWell(well) {
       this.SET_LOADING(true);
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {
+        try {               
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
@@ -449,7 +452,7 @@ export default {
           }
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }
+          }         
           this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
           this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
           this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
@@ -475,7 +478,7 @@ export default {
           this.SET_LOADING(false);
       })
     },
-    setTableData() {
+    setTableData() {      
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'neighbors') {
           try {
@@ -793,16 +796,16 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.injPressure != null ? this.well.injPressure : null,
-          'neigbor_2': null,
+          'neigbor_1': this.well.tech_mode_inj != null ? this.well.tech_mode_inj.agent_vol : null,
+          'neigbor_2': this.well.meas_water_inj != null ? this.well.meas_water_inj.water_inj_val.toFixed(1): null,
           'name': 'Приемистость, м3/сут (режим/факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.agentVol != null ? this.well.agentVol : null,
-          'neigbor_2': null,
+          'neigbor_1': this.well.agentVol != null ? this.well.agentVol : '-',
+          'neigbor_2': this.well.meas_water_inj != null ? this.well.meas_water_inj.inj_pressure : null,
           'name': 'Давление закачки, атм (режим/факт)',
           'data': ''
         },
