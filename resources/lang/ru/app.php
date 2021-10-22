@@ -62,6 +62,9 @@ return array (
     11 => 'Ноябрь',
     12 => 'Декабрь',
   ),
+  'module_title' => 'Модуль',
+  'download' => 'Скачать',
+  'thereIsNoData' => 'Нет данных',
   'modules' => 'Модули',
   'goTo' => 'Перейти',
 );

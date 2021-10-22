@@ -19,9 +19,13 @@ class WellCardGraphRepository  implements WellRepositoryInterface
        $dateFrom =  ($period) ? date('Y-m-d',strtotime($dateFrom.'-'.$period.' day')) : null;
 
        $well_data = $this->well->wellData($id,$dateFrom);
+       $well_events = $this->well->eventsOfWell($id,$dateFrom);
        if(isset($well_data))
        {
-          $collect_data = $this->collectData($well_data);
+          $data = new \stdClass();
+          $data->well_data = $well_data;
+          $data->well_events = $well_events;
+          $collect_data = $this->collectData($data);
        }
        return $collect_data;
    }
@@ -33,17 +37,26 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            'measWaterCut' => ['name' => trans('app.waterCut'),'type' => 'line','data'=>[]],
            'oil' => ['name' => trans('app.oil'),'type' => 'area','data'=>[]],
            'ndin' => ['name' => trans('app.ndin'),'type' => 'line','data'=>[]],
-           'labels' => []
+           'labels' => [],
+           'events'=>['name'=>trans('well_card_graph.events'),
+                      'type'=>'column',
+                      'data'=>[]
+            ]
        ];
 
-       foreach($data as $item)
+       foreach($data->well_data as $item)
        {
+           $dateItem = date('Y-m-d',strtotime($item->date));
            $result['measLiq']['data'][] = $item->liquid;
            $result['measWaterCut']['data'][] = $item->wcut;
            $result['oil']['data'][] = $item->oil;
            $result['ndin']['data'][] = $item->hdin;
-           $result['labels'][] = date('Y-m-d',strtotime($item->date));
+           $result['labels'][] = $dateItem;
+
+           $result['events']['data'][] = $item->activity ? 2 : 0;
+           $result['events']['info'][] = $item->activity;
        }
+
        return $result;
    }
 }

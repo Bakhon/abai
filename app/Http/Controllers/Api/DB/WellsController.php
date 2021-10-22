@@ -487,7 +487,7 @@ class WellsController extends Controller
         $wellId = $request->get('wellId');
         $period = $request->get('period');
         $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
-        return response()->json($result);
+        return  response()->json($result);
     }
 
     public function getInjectionHistory($wellId)

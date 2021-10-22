@@ -39,6 +39,102 @@ export default {
             chartPoints: [],
             tmpChartPoints: [],
             labels: [],
+            yaxis: [
+            {
+              seriesName: this.trans('app.liquid'),
+              opposite: true,
+              axisTicks: {
+                show: true,
+              },
+              axisBorder: {
+                show: true,
+                color: 'rgba(69, 77, 125, 1)'
+              },
+              labels: {
+                style: {
+                  colors: '#000000',
+                },
+                formatter: function (value) {
+                  return value.toFixed(1);
+                }
+              },
+              title: {
+                text: this.trans('app.liquidOil'),
+                style: {
+                  color: '#000000',
+                }
+              },
+            },
+            {
+              seriesName: this.trans('app.oil'),
+              labels: {
+                formatter: function (value) {
+                  return value.toFixed(1);
+                }
+              },
+              show: false
+            },
+            {
+              seriesName: this.trans('app.waterCut'),
+              opposite: true,
+              axisTicks: {
+                show: true,
+              },
+              axisBorder: {
+                show: true,
+                color: 'rgba(69, 77, 125, 1)'
+              },
+              labels: {
+                style: {
+                  colors: '#000000',
+                },
+                formatter: function (value) {
+                  return value.toFixed(1);
+                }
+              },
+              title: {
+                text: this.trans('app.waterCut'),
+                style: {
+                  color: '#000000',
+                }
+              },
+            },
+            {
+              seriesName: this.trans('app.ndin'),
+              opposite: true,
+              axisTicks: {
+                show: true,
+              },
+              axisBorder: {
+                show: true,
+                color: 'rgba(69, 77, 125, 1)'
+              },
+              labels: {
+                style: {
+                  colors: '#000000',
+                },
+                formatter: function (value) {
+                  return value.toFixed(1);
+                }
+              },
+              title: {
+                text: this.trans('app.ndin'),
+                style: {
+                  color: '#000000',
+                }
+              },
+            },
+              {
+                seriesName: this.trans('well_card_graph.events'),
+                opposite: true,
+                min: 0,
+                max: 70,
+                title: {
+                  text: this.trans('well_card_graph.events')
+                },
+                show: false
+              }
+          ],
             schedulePeriods: [
                 {
                     period: "1 " + this.trans('bd.week'),
@@ -66,12 +162,23 @@ export default {
                 },
             ],
             activePeriod: 90,
+            colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)']
         }
     },
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        randomRgba(min,max){
+           let r = this.randomNumber(min,max)
+           let g = this.randomNumber(min,max)
+           let b = this.randomNumber(min,max)
+           return 'rgba('+r+','+g+','+b+',1)'
+        },
+        randomNumber(min,max)
+        {
+           return Math.floor(Math.random() * (max - min + 1)) + min
+        },
         changePeriod(value) {
             this.activePeriod = value;
             this.getSchuduleData();
@@ -89,7 +196,28 @@ export default {
                     data.measLiq,
                     data.oil,
                     data.measWaterCut,
+                    data.events
                 ];
+
+             if(data.events!=undefined)
+             {
+                 window.Apex.events = data.events;
+                 /*Object.keys(data.events).forEach(key => {
+                   this.chartSeries.push(data.events[key])
+                   this.yaxis.push({
+                     seriesName: data.events[key].name,
+                     opposite: true,
+                     min: 0,
+                     max: 70,
+                     title: {
+                       text: data.events[key].name
+                     },
+                     show: false
+                   })
+                   let color = this.randomRgba(1,245);
+                   this.colors.push(color)
+                 });*/
+             }
                 if (data.wellStatuses) {
                     this.chartPoints = [];
                     data.wellStatuses.forEach(status => {
@@ -153,103 +281,34 @@ export default {
                         format: 'dd-MM-yyyy',
                     }
                 },
-                yaxis: [
-                    {
-                        seriesName: this.trans('app.liquid'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.liquidOil'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.oil'),
-                        labels: {
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        show: false
-                    },
-                    {
-                        seriesName: this.trans('app.waterCut'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.waterCut'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.ndin'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.ndin'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    }
-                ],
+                yaxis: this.yaxis,
                 tooltip: {
-                    shared: true,
-                    intersect: false,
-                    x: {
-                        format: 'dd-MM-yyyy'
-                    }
+                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    let colors = w.globals.colors
+                    let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
+                    let dateItem = ''
+                    let events = window.Apex.events
+                      console.log(events)
+                    let events_hint = events.info[dataPointIndex]
+                    return (
+                        '<div class="arrow_box" style="padding: 3px">' +
+                        "<span style='display: block;background: #ccc'>" + dateItem + "</span>" +
+                        "<span style='display: block;'><b><div style='background: "+colors[0]+";"+style_circle+"'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex].toFixed(1) + "</span>" +
+                        "<span style='display: block;'><b><div style='background: "+colors[1]+";"+style_circle+"'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
+                        "<span style='display: block;'><b><div style='background: "+colors[2]+";"+style_circle+"'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
+                        "<span style='display: block;'><b><div style='background: "+colors[3]+";"+style_circle+"'></div>" + w.globals.initialSeries[3].name + ":</b> " + w.globals.initialSeries[3].data[dataPointIndex].toFixed(1) + "</span>" +
+                        "<span style='display: block;'><div style='background: "+colors[4]+";"+style_circle+"'></div>"
+                          + events_hint+
+                         "</span>"+
+                        "</div>"
+                    );
+
+                  }
                 },
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)'],
+                colors:this.colors,
             }
         },
     },
