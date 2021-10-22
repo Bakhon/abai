@@ -581,7 +581,7 @@ export default {
     async downloadFile(file_id) {
       this.SET_LOADING(true);
       let fileInfo = await this.getFileInfo(file_id);
-      let label = fileInfo.filename;
+      let label = fileInfo.file_name;
       let url = this.localeUrl('/attachments/' + file_id);
 
       this.axios.get(url, {responseType: 'blob'})

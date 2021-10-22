@@ -8,10 +8,15 @@ const plastFluidsLocal = {
   state: {
     fileLog: null,
     reportDuplicated: false,
+    downloadFileData: {
+      template: '',
+      user: '',
+      status: '',
+    },
     tableFields: [],
     tableRows: [],
     currentTemplate: {},
-    tableState: 'default',
+    tableState: "default",
     loading: false,
     graphType: "ps_bs_ds_ms",
   },
@@ -22,6 +27,9 @@ const plastFluidsLocal = {
     },
     SET_REPORT_DUPLICATED_STATUS(state, payload) {
       state.reportDuplicated = payload;
+    },
+    SET_DOWNLOAD_FILE_DATA(state, payload) {
+      state.downloadFileData = payload;
     },
     SET_TABLE_FIELDS(state, payload) {
       state.tableFields = payload;
@@ -47,11 +55,13 @@ const plastFluidsLocal = {
     HANDLE_FILE_LOG({ commit }, log) {
       let entries = [];
       for (let key in log) {
-        let replacedKey = key.replace(
-          "sheet",
-          translation.translate("plast_fluids.page")
-        );
-        entries.push([replacedKey, log[key]]);
+        if (key.includes("sheet")) {
+          let replacedKey = key.replace(
+            "sheet",
+            translation.translate("plast_fluids.page")
+          );
+          entries.push([replacedKey, log[key]]);
+        }
       }
       commit("SET_FILE_LOG", entries);
     },

@@ -475,5 +475,8 @@ return array (
     'selectYear' => 'Выберите год'
   ),
   'processingAssociatedGasForOwnExpenses' => 'Переработка попутного газа на собственные нужды',
-  'associatedGasFlaring' => 'Сжигание попутного газа на факелах'
+  'associatedGasFlaring' => 'Сжигание попутного газа на факелах',
+  'volgaWaterInjection' => 'Закачка волжской воды',
+  'dynamicVolgaWater' => 'Динамика закачки волжской воды',
+  'trialOperating' => 'При пробной эксплуатации',
 );
