@@ -155,6 +155,35 @@ label {
   padding: 10px 12px;
 }
 
+.configure-intersection-holder {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  height: 29px;
+}
+
+.configure-intersection-holder > input {
+  width: 70px;
+  font-size: 14px;
+  background-color: #1f2142;
+  color: #a5a6b3;
+  padding: 3px 10px;
+  border: 0.5px solid #454fa1;
+  border-radius: 4px;
+}
+
+.configure-intersection-holder > input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.configure-intersection-holder > input::-webkit-outer-spin-button,
+.configure-intersection-holder > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .subtitle {
   width: 100%;
   background-color: #37408b;

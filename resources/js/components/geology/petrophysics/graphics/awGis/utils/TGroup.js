@@ -1,8 +1,22 @@
 export default class TGroup {
     #__groups = new Set();
-    #__subGroups = new Map();
     #__groupsElements = new Map();
     #__groupsOptions = new Map();
+    #__old = {};
+
+    save(){
+        this.#__old = {
+            group: new Set(this.#__groups),
+            groupElements: new Map(this.#__groupsElements),
+            groupOption: new Map(this.#__groupsOptions)
+        }
+    }
+
+    reset(){
+        this.#__groups = new Set(this.#__old.group);
+        this.#__groupsElements = new Map(this.#__old.groupElements);
+        this.#__groupsOptions = new Map(this.#__old.groupOption);
+    }
 
     get getGroupsList() {
         return [...this.#__groups.keys()];
@@ -40,7 +54,6 @@ export default class TGroup {
         groupName = groupName.trim();
         this.#__groups.add(groupName);
         this.#__groupsOptions.set(groupName, options);
-        this.#__subGroups.set(groupName, []);
         if (Array.isArray(data) && data.length) {
             this.editGroupElement(groupName, data, true);
         }
@@ -66,6 +79,10 @@ export default class TGroup {
                 this.removeGroup(item);
             });
         }
+    }
+
+    hasGroup(groupName){
+        return this.#__groups.has(groupName)
     }
 
     hasElementInGroup(groupName, elementName) {

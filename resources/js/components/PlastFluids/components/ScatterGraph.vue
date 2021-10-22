@@ -61,7 +61,7 @@ export default {
     return {
       type: "scatter",
       isApproximationOpen: false,
-      currentAnnotationColorIndex: 1,
+      currentAnnotationColorIndex: 0,
       graphSeries: [],
       approximation: [],
       minXAxisBorder: "",
@@ -263,6 +263,7 @@ export default {
         this.type = "line";
         this.chartOptions.stroke.curve = "smooth";
         this.graphSeries.push(data.approximation);
+        this.currentAnnotationColorIndex++;
         if (data.approximation.r2 || data.approximation.function) {
           let r2 = data.approximation.r2
             ? "R2: " + data.approximation.r2.toFixed(2)
@@ -321,7 +322,6 @@ export default {
             temp.annotations.points.push(equationPush);
           }
           this.chartOptions = temp;
-          this.currentAnnotationColorIndex++;
         }
       }
       if (data.graphOptions) {
