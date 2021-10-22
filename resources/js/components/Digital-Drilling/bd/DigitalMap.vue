@@ -6,6 +6,10 @@
                     <img src="/img/digital-drilling/icon-map.png" alt="">
                     <div class="title">ДЗО, месторождение</div>
                 </div>
+                <div class="all-graph" @click="allGraphModal=true">
+                    <img src="/img/digital-drilling/all-graph.svg" alt="">
+                    <span>ОБЩИЙ ГРАФИК БУРЕНИЯ</span>
+                </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">
                         <img src="/img/digital-drilling/search.png" alt="">
@@ -41,6 +45,9 @@
                 <div class="name">Разведка и Добыча</div>
             </div>
         </div>
+        <div class="all-graph-modal" v-if="allGraphModal">
+            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
+        </div>
     </div>
 </template>
 
@@ -56,6 +63,7 @@
         components:{ MglMap, MglMarker},
         data() {
             return {
+                allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
                 center: [54.0, 47.0],
