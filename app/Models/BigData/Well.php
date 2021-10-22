@@ -263,14 +263,14 @@ class Well extends TBDModel
      */
     public function eventsOfWell(int $well_id,?string $date) : ?object
     {
-        $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity_name');
+        $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
         if($date)
         {
             $query = $query->where('date','>=',$date);
         }
 
-        $query = $query->select('activity_name')
-            ->groupBy('activity_name')->get();
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
         return $query;
     }
 }
