@@ -309,6 +309,9 @@ export default {
             if (value.parent) {
               value = dict.find(dictItem => dictItem.id === value.parent)
               result.push(value.label)
+              if (column.dict === 'geos') {
+                if (value.type === 'FLD') break;
+              }
               continue;
             }
             break;

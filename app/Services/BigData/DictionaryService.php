@@ -578,10 +578,10 @@ class DictionaryService
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent')
+            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent', 'gt.code as type')
             ->distinct()
-            ->orderBy('parent', 'asc')
-            ->orderBy('label', 'asc')
+            ->orderBy('parent')
+            ->orderBy('label')
             ->leftJoin(
                 'dict.geo_parent as gp',
                 function ($join) {
@@ -590,6 +590,7 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->leftJoin('dict.geo_type as gt', 'g.geo_type', 'gt.id')
             ->get()
             ->map(
                 function ($item) {
