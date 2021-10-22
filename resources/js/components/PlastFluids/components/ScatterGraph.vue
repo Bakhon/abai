@@ -44,6 +44,7 @@
 import ScatterGraphApproximation from "./ScatterGraphApproximation.vue";
 import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
+import _ from "lodash";
 
 export default {
   name: "ScatterGraph",
@@ -60,6 +61,7 @@ export default {
     return {
       type: "scatter",
       isApproximationOpen: false,
+      currentAnnotationColorIndex: 0,
       graphSeries: [],
       approximation: [],
       minXAxisBorder: "",
@@ -67,11 +69,11 @@ export default {
       maxXAxisBorder: "",
       maxYAxisBorder: "",
       chartOptions: {
+        annotations: {
+          points: [],
+        },
         stroke: {
           show: true,
-        },
-        dataLabels: {
-          enabled: false,
         },
         colors: ["#82BAFF", "#CF3630", "#F27E31"],
         chart: {
@@ -95,7 +97,7 @@ export default {
           showForSingleSeries: true,
         },
         noData: {
-          text: "Нет данных",
+          text: this.trans("plast_fluids.no_data"),
         },
         grid: {
           show: true,
@@ -122,6 +124,7 @@ export default {
           labels: {
             formatter: this.labelFormatterX,
           },
+          seriesName: this.trans("plast_fluids.data"),
           type: "numeric",
           lines: {
             show: true,
@@ -130,6 +133,7 @@ export default {
           tickAmount: 6,
         },
         yaxis: {
+          seriesName: this.trans("plast_fluids.data"),
           labels: {
             formatter: this.labelFormatterY,
           },
@@ -259,6 +263,66 @@ export default {
         this.type = "line";
         this.chartOptions.stroke.curve = "smooth";
         this.graphSeries.push(data.approximation);
+        this.currentAnnotationColorIndex++;
+        if (data.approximation.r2 || data.approximation.function) {
+          let r2 = data.approximation.r2
+            ? "R2: " + data.approximation.r2.toFixed(2)
+            : "";
+          let equation = data.approximation.function
+            ? "Функция: " + data.approximation.function
+            : "";
+          const temp = _.cloneDeep(this.chartOptions);
+          !temp.colors[this.currentAnnotationColorIndex]
+            ? (this.currentAnnotationColorIndex = 0)
+            : "";
+          const pushObject = {
+            x:
+              this.currentAnnotationColorIndex === 1
+                ? this.minXAxisBorder
+                : this.currentAnnotationColorIndex === 2
+                ? this.maxXAxisBorder
+                : this.maxXAxisBorder / 2,
+            y: this.maxYAxisBorder,
+            seriesIndex: data.approximation.name,
+            marker: {
+              size: 0,
+            },
+            label: {
+              borderColor: temp.colors[this.currentAnnotationColorIndex],
+              offsetY: 0,
+              offsetX:
+                this.currentAnnotationColorIndex === 1
+                  ? 5
+                  : this.currentAnnotationColorIndex === 2
+                  ? -5
+                  : 0,
+              style: {
+                color: "#fff",
+                background: temp.colors[this.currentAnnotationColorIndex],
+                cssClass: "show",
+              },
+              textAnchor:
+                this.currentAnnotationColorIndex === 1
+                  ? "start"
+                  : this.currentAnnotationColorIndex === 2
+                  ? "end"
+                  : "middle",
+              text: '',
+            },
+          };
+          if(r2) {
+            let r2Push = _.cloneDeep(pushObject);
+            r2Push.label.text = r2;
+            temp.annotations.points.push(r2Push);
+          }
+          if(equation) {
+            let equationPush = _.cloneDeep(pushObject);
+            equationPush.label.text = equation;
+            r2 ? equationPush.label.offsetY = 20 : '';
+            temp.annotations.points.push(equationPush);
+          }
+          this.chartOptions = temp;
+        }
       }
       if (data.graphOptions) {
         const minY =
@@ -267,21 +331,6 @@ export default {
           this.chartOptions.yaxis.max ?? this.chartOptions.yaxis[0].max;
         this.chartOptions = {
           ...this.chartOptions,
-          yaxis: {
-            min: data.graphOptions.ordinateFrom
-              ? Number(data.graphOptions.ordinateFrom)
-              : minY,
-            max: data.graphOptions.ordinateTo
-              ? Number(data.graphOptions.ordinateTo)
-              : maxY,
-            labels: {
-              formatter: this.labelFormatterY,
-            },
-            lines: {
-              show: true,
-            },
-            tickAmount: 4,
-          },
           xaxis: {
             ...this.chartOptions.xaxis,
             min: data.graphOptions.abscissaFrom
@@ -290,6 +339,21 @@ export default {
             max: data.graphOptions.abscissaTo
               ? Number(data.graphOptions.abscissaTo)
               : this.chartOptions.xaxis.max,
+          },
+          yaxis: {
+            labels: {
+              formatter: this.labelFormatterY,
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+            min: data.graphOptions.ordinateFrom
+              ? Number(data.graphOptions.ordinateFrom)
+              : minY,
+            max: data.graphOptions.ordinateTo
+              ? Number(data.graphOptions.ordinateTo)
+              : maxY,
           },
         };
       }
@@ -301,12 +365,24 @@ export default {
     ) {
       console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
     },
+    toggleApproximationR2AndEquation(chartContext, seriesIndex, config) {
+      const temp = _.cloneDeep(this.chartOptions);
+      temp.annotations.points.forEach((point) => {
+        if (point.seriesIndex === this.graphSeries[seriesIndex].name) {
+          point.label.style.cssClass =
+            point.label.style.cssClass === "hide" ? "show" : "hide";
+          point.marker.radius = {};
+        }
+      });
+      this.chartOptions = temp;
+    },
     saveToPng() {
       const exprt = new Export(this.$refs.scatterGraph.chart);
       exprt.exportToPng();
     },
     setEvents() {
       this.chartOptions.chart.events.markerClick = this.handleMarkerClick;
+      this.chartOptions.chart.events.legendClick = this.toggleApproximationR2AndEquation;
     },
   },
   created() {
@@ -330,6 +406,14 @@ export default {
   height: calc(100% - 30px);
   display: block;
   overflow: hidden;
+}
+
+.graph-holder::v-deep .show {
+  display: block;
+}
+
+.graph-holder::v-deep .hide {
+  display: none;
 }
 
 .approx-button {

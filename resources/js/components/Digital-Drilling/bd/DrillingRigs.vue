@@ -191,7 +191,11 @@
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
+                    <img src="/img/digital-drilling/scheme.png" alt="">
                 </div>
+                <button class="btn__ok" @click="openCharacteristicGraphModal">
+                    Ok
+                </button>
             </div>
         </div>
         <div class="characteristic__modal scheme" v-if="characteristicScheme">

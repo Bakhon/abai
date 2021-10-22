@@ -38,7 +38,6 @@
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
-          :tooltip-text="trans('economic_reference.thousand_tons')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart mt-2"/>
@@ -76,6 +75,11 @@
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart mt-2"/>
+
+      <chart-with-wells
+          v-else-if="activeTab === 'analysis'"
+          :form="form"
+          class="bg-economic-chart mt-2"/>
     </div>
   </div>
 </template>
@@ -90,6 +94,7 @@ import ChartWithWellTop from "./ChartWithWellTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 import ChartWellMap from "./ChartWellMap";
 import ChartWithPrs from "./ChartWithPrs";
+import ChartWithWells from "./ChartWithWells";
 
 export default {
   name: "Charts",
@@ -101,7 +106,8 @@ export default {
     ChartWithWellTop,
     ChartWithLiquidProduction,
     ChartWellMap,
-    ChartWithPrs
+    ChartWithPrs,
+    ChartWithWells
   },
   props: {
     charts: {
@@ -144,6 +150,7 @@ export default {
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
         well_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+        analysis: this.trans('economic_reference.analysis_nrs'),
         well_map: this.trans('economic_reference.well_overview_map'),
       }
     },

@@ -4,7 +4,7 @@
             <div class="digitalDrillingTables-head-title">
                 Профиль Скважины
             </div>
-            <div class="export_btn">
+            <div class="export_btn" @click="download = !download">
                 Скачать отчет
             </div>
         </div>
@@ -118,12 +118,18 @@
             </table>
             <note />
         </div>
+        <report-download v-if="download"/>
     </div>
 </template>
 
 <script>
     export default {
         name: "project",
+        data(){
+            return{
+                download: false
+            }
+        },
         methods: {
 
         },

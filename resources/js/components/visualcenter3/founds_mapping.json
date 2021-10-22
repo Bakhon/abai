@@ -5,7 +5,8 @@
       "active_production_fond",
       "inactive_production_fond",
       "developing_production_fond",
-      "pending_liquidation_production_fond"
+      "pending_liquidation_production_fond",
+      "trial_operating_production_fond"
     ],
     "idle": [
       "prs_wait_downtime_production_wells_count",

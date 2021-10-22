@@ -24,10 +24,11 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v7';
+    const DATA_SOURCE = 'economic_nrs_total_v8';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
+    const GRANULARITY_YEAR_FORMAT = 'yyyy';
 
     const PROFITABILITY_FULL = 'profitability';
     const PROFITABILITY_DIRECT = 'profitability_kbm';
@@ -275,27 +276,21 @@ class EconomicNrsController extends Controller
             $builderDailyParams->select($key);
         }
 
-        if ($org->druid_id) {
-            $builderWells->where('org_id2', '=', $org->druid_id);
-
-            $builderDailyParams->where('org_id2', '=', $org->druid_id);
-        }
-
-        if ($dpz) {
-            $builderWells->where('dpz', '=', $dpz);
-
-            $builderDailyParams->where('dpz', '=', $dpz);
-        }
-
         if ($request->well_id) {
             $builderWells->where('uwi', '=', $request->well_id);
 
             $builderDailyParams->where('uwi', '=', $request->well_id);
         }
 
-        $wells = $builderWells->groupBy()->data();
+        $wells = $this
+            ->createQueryForOrg($builderWells, $org, $dpz)
+            ->groupBy()
+            ->data();
 
-        $dailyParams = $builderDailyParams->groupBy()->data();
+        $dailyParams = $this
+            ->createQueryForOrg($builderDailyParams, $org, $dpz)
+            ->groupBy()
+            ->data();
 
         $wellsByDates = [
             'org' => $org,
@@ -469,9 +464,14 @@ class EconomicNrsController extends Controller
 
     static function granularityFormat(string $granularity): string
     {
-        return $granularity === Granularity::MONTH
-            ? self::GRANULARITY_MONTHLY_FORMAT
-            : self::GRANULARITY_DAILY_FORMAT;
+        switch ($granularity) {
+            case Granularity::DAY:
+                return self::GRANULARITY_DAILY_FORMAT;
+            case Granularity::MONTH:
+                return self::GRANULARITY_MONTHLY_FORMAT;
+            case Granularity::YEAR:
+                return self::GRANULARITY_YEAR_FORMAT;
+        }
     }
 
     static function formatInterval(Carbon $start, Carbon $end): string
@@ -482,13 +482,13 @@ class EconomicNrsController extends Controller
             . "T00:00:00+00:00";
     }
 
-    static function calcIntervalYears(string $start = null, string $end = null, int $count = 1): string
+    static function calcIntervalYears(string $start = null, string $end = null): string
     {
         $end = Carbon::parse($end ?? now());
 
         $start = $start ? Carbon::parse($start) : $end->copy();
 
-        $start->subYears($count)->setDay(1)->setMonth(1);
+        $start->setDay(1)->setMonth(1);
 
         return self::formatInterval($start, $end);
     }
@@ -561,7 +561,7 @@ class EconomicNrsController extends Controller
     {
         $bsw = round(($well['bsw'] / 1000) / ($well['uwi'] / 1000));
 
-        $liquid = round($well['liquid'] / 1000);
+        $liquid = round($well['liquid']);
 
         return "$liquid.$bsw";
     }
@@ -728,14 +728,24 @@ class EconomicNrsController extends Controller
             ->doubleSum("Operating_profit", 'operatingProfit')
             ->where($profitabilityColumn, '=', $profitabilityValue);
 
-        $data = $this
+        $years = $this
             ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
             ->timeseries()
-            ->data()[0];
+            ->data();
+
+        $operatingProfit = 0;
+
+        $prs = 0;
+
+        foreach ($years as $year) {
+            $operatingProfit += $year['operatingProfit'];
+
+            $prs += $year['prs'];
+        }
 
         return [
-            'operatingProfit' => $data["operatingProfit"],
-            'prs' => round($data["prs"])
+            'operatingProfit' => $operatingProfit,
+            'prs' => $prs
         ];
     }
 
@@ -919,7 +929,7 @@ class EconomicNrsController extends Controller
         foreach ($wellProduction as $well) {
             $date = $well['dt'];
 
-            $oilByDate[$well[$profitabilityColumn]][$date] = $well['oil'] / 1000;
+            $oilByDate[$well[$profitabilityColumn]][$date] = $well['oil'];
 
             $liquidByDate[$well[$profitabilityColumn]][$date] = self::calcLiquid($well);
         }

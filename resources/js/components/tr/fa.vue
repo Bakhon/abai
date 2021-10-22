@@ -1027,14 +1027,15 @@ export default {
   computed: {
     changeSecondCalendarDate() {
       const { firstCalendarDate} = this;
-      var lastBeginningWeekDate = new Date(firstCalendarDate)
-      this.lastBeginningWeekDate = lastBeginningWeekDate.setDate(lastBeginningWeekDate.getDate()-7);
-      this.secondCalendarDate = lastBeginningWeekDate.toLocaleDateString("en-CA");
+      var dynamicLastBegginingWeekDate = new Date(firstCalendarDate)
+      this.dynamicLastBegginingWeekDate = dynamicLastBegginingWeekDate.setDate(dynamicLastBegginingWeekDate.getDate()-7);
+      this.secondCalendarDate = dynamicLastBegginingWeekDate.toLocaleDateString("en-CA");
       return this.secondCalendarDate;
     },
   },
   data: function () {
     return {
+      dynamicLastBegginingWeekDate: null,
       postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
