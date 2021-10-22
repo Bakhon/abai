@@ -107,6 +107,7 @@
                 inclino: [],
                 d2_Show: true,
                 d3_Show: false,
+                maxValue: 50,
                 series: [
                     {
                     name: "Desktops",
@@ -332,7 +333,6 @@
                     x: 9 * this.inclino[this.inclino.length-1].HD,
                     y: null
                 })
-                // this.series[0].data = coordinates
                 this.series=[{
                     name: "Desktops",
                         data: coordinates
@@ -353,11 +353,21 @@
                 //     x: 2 * this.inclino[this.inclino.length-1].N_S,
                 //     y: null
                 // })
-                // coordinates.push({
-                //     x: 0,
-                //     y: 4 * this.inclino[this.inclino.length-1].E_W,
-                // })
-                // this.seriesAbove[0].data = coordinates
+
+
+                let first = this.inclino[0].N_S
+                let last = this.inclino[this.inclino.length-1].N_S
+                if(first<0){
+                    first = -1 * first
+                }
+                if(last<0){
+                    last = -1 * last
+                }
+                if(last < first){
+                    this.maxValue = first
+                }else{
+                    this.maxValue = last
+                }
                 this.seriesAbove = [{
                     name: "Desktops",
                         data: coordinates
@@ -407,6 +417,7 @@
                             }
                         },
                         yaxis: {
+
                             lines: {
                                 show: true
                             },
@@ -427,8 +438,8 @@
                         },
                     },
                     xaxis: {
-                        max: 2 * this.inclino[this.inclino.length-1].N_S,
-                        min: -2 * this.inclino[this.inclino.length-1].N_S,
+                        max: 2* this.maxValue,
+                        min: -2 * this.maxValue,
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -439,8 +450,8 @@
                     },
                     yaxis:{
                         opposite: true,
-                        max: 2 * this.inclino[this.inclino.length-1].N_S,
-                        min: -2 * this.inclino[this.inclino.length-1].N_S,
+                        max: 2*this.maxValue,
+                        min: -2 * this.maxValue,
                         labels: {
                         style: {
                             colors: '#FFFFFF'
