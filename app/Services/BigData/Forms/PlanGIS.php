@@ -60,7 +60,7 @@ class PlanGIS extends TableForm
             return $org;
         }
 
-        if ($org->parentOrg->type->code === 'SUBC') {
+        if ($this->isOrganization($org->parentOrg)) {
             return $org->parentOrg;
         }
 
@@ -92,7 +92,7 @@ class PlanGIS extends TableForm
         $dateTo = Carbon::parse($filter->date_to);
 
         $childCodesByMonths = [];
-        while (true) {
+        while ($date < $dateTo) {
             $mergeColumns['date_' . $date->format('n_Y')] = [
                 'code' => 'date_' . $date->format('n_Y'),
                 'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
@@ -114,18 +114,8 @@ class PlanGIS extends TableForm
 
             $orgCode = "date_{$date->format('n_Y')}_" . $org->id;
             $formula = $this->getSumFormula($childCodes);
-            $columns[] = [
-                'code' => $orgCode,
-                'title' => $org->name_short_ru,
-                'parent_column' => 'date_' . $date->format('n_Y'),
-                'type' => 'calc',
-                'formula' => $formula
-            ];
 
             $date->addMonth();
-            if ($date >= $dateTo) {
-                break;
-            }
         }
 
         $mergeColumns['total'] = [
@@ -189,7 +179,6 @@ class PlanGIS extends TableForm
                 'num' => ['value' => $gisType['id']],
                 'name' => ['value' => $gisType['name']]
             ];
-
             $date = Carbon::parse($filter->date);
             $dateTo = Carbon::parse($filter->date_to);
 
@@ -203,7 +192,7 @@ class PlanGIS extends TableForm
 
             $rows[] = $row;
         }
-
+        $rows = array_slice($rows, 1);
         usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
         return $rows;
     }
