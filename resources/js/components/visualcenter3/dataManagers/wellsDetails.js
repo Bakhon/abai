@@ -82,6 +82,15 @@ export default {
                         item.fact = 0;
                     }
                 });
+            } else {
+                let fondType = this.productionFondWorkFields;
+                if (this.fondsFilter.isProductionIdleActive) {
+                    fondType = this.productionFondIdleFields;
+                }
+                _.forEach(inputData, (item) => {
+                    item.fact = 0;
+                    item.isVisible = fondType.includes(item.code);
+                });
             }
         },
 
