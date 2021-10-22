@@ -38,7 +38,10 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            'oil' => ['name' => trans('app.oil'),'type' => 'area','data'=>[]],
            'ndin' => ['name' => trans('app.ndin'),'type' => 'line','data'=>[]],
            'labels' => [],
-           'events'=>[]
+           'events'=>['name'=>trans('well_card_graph.events'),
+                      'type'=>'column',
+                      'data'=>[]
+            ]
        ];
 
        foreach($data->well_data as $item)
@@ -50,41 +53,8 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            $result['ndin']['data'][] = $item->hdin;
            $result['labels'][] = $dateItem;
 
-           foreach($data->well_events as $i=>$event)
-           {
-               $is_have = false;
-               if($event->activity==$item->activity)
-               {
-                   $is_have = true;
-               }
-               $result['events']['event'.$i]['name'] = $event->activity;
-               $result['events']['event'.$i]['type'] = 'column';
-               $result['events']['event'.$i]['data'][] = $is_have ? (($i==0) ? $i+2 : $i*3) : 0;
-               $object = new \stdClass();
-              // $object->activity_value = $item->activity_value;
-               $object->liquid_telemetry = $item->liquid_telemetry;
-               $object->pbuf = $item->pbuf;
-               $object->pzat = $item->pzat;
-               $object->pbuf_before = $item->pbuf_before;
-               $object->pbuf_after = $item->pbuf_after;
-               $object->hdin = $item->hdin;
-               $object->pzab = $item->pzab;
-               $object->hstat = $item->hstat;
-               $object->ppl = $item->ppl;
-               $object->work_hours = $item->work_hours;
-               $object->well_status = $item->well_status;
-               $object->well_expl =  $item->well_expl;
-               $object->well_category = $item->well_category;
-               $object->gdis_conclusion = $item->gdis_conclusion;
-               $object->reason_downtime = $item->reason_downtime;
-               $object->wcut_telemetry = $item->wcut_telemetry;
-               $object->oil_telemetry = $item->oil_telemetry;
-               $object->gas_telemetry = $item->gas_telemetry;
-               $object->gas_factor_telemetry = $item->gas_factor_telemetry;
-               $object->liquid_temp = $item->liquid_temp;
-               $object->park_indicator = $item->park_indicator;
-               $result['events']['event'.$i]['info'][] = $object;
-           }
+           $result['events']['data'][] = $item->activity ? 2 : 0;
+           $result['events']['info'][] = $item->activity;
        }
 
        return $result;
