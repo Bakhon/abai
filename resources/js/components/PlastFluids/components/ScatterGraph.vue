@@ -226,6 +226,14 @@ export default {
           type: obj.type,
           data: filtered,
         });
+        this.chartOptions = {
+          ...this.chartOptions,
+          chart: {
+            ...this.chartOptions.chart,
+            type: "scatter",
+          },
+        };
+        this.type = "scatter";
       },
       immediate: true,
     },
@@ -261,6 +269,13 @@ export default {
       if (data.approximation) {
         this.chartOptions.markers.size.push(0);
         this.type = "line";
+        this.chartOptions = {
+          ...this.chartOptions,
+          chart: {
+            ...this.chartOptions.chart,
+            type: "line",
+          },
+        };
         this.chartOptions.stroke.curve = "smooth";
         this.graphSeries.push(data.approximation);
         this.currentAnnotationColorIndex++;
@@ -307,18 +322,18 @@ export default {
                   : this.currentAnnotationColorIndex === 2
                   ? "end"
                   : "middle",
-              text: '',
+              text: "",
             },
           };
-          if(r2) {
+          if (r2) {
             let r2Push = _.cloneDeep(pushObject);
             r2Push.label.text = r2;
             temp.annotations.points.push(r2Push);
           }
-          if(equation) {
+          if (equation) {
             let equationPush = _.cloneDeep(pushObject);
             equationPush.label.text = equation;
-            r2 ? equationPush.label.offsetY = 20 : '';
+            r2 ? (equationPush.label.offsetY = 20) : "";
             temp.annotations.points.push(equationPush);
           }
           this.chartOptions = temp;
@@ -387,6 +402,15 @@ export default {
   },
   created() {
     this.setEvents();
+  },
+  mounted() {
+    this.chartOptions = {
+      ...this.chartOptions,
+      xaxis: {
+        ...this.chartOptions.xaxis,
+        max: this.maxXAxisBorder,
+      },
+    };
   },
 };
 </script>
