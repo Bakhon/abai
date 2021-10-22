@@ -38,7 +38,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required"
+                "validation": "required|lte:10000|gte:0"
               },
               {
                 "code": "research_target_text",
