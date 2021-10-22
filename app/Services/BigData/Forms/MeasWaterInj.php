@@ -86,7 +86,8 @@ class MeasWaterInj extends MeasLogByMonth
         ];
         $waterInjRow = [
             'id' => $well->id,
-            'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')]
+            'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')],
+            'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->agent_vol : 0]
         ];
         $workTime = $workTimes[$well->id] ?? null;
         $monthDay = $date->startOfMonth();
