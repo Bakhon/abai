@@ -20,6 +20,7 @@ class ProductionFondController extends Controller
         'КТМ' => array(),
         'КБМ' => array(),
         'ЭМГ' => array(),
+        'УО' => array(),
     );
     private $saveTime = 1440;
     public function getDailyDataByDzo(Request $request)

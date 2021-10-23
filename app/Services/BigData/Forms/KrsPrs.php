@@ -22,7 +22,26 @@ class KrsPrs extends PlainForm
 
     protected function getRows(): Collection
     {
-        $rows = parent::getRows();
+        $wellId = $this->request->get('well_id');
+        $query = DB::connection('tbd')
+            ->table('prod.well_workover as ww')
+            ->select('ww.*')
+            ->join('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
+            ->where('ww.well', $wellId)
+            ->where('wrt.code', $this->repairType)
+            ->orderBy('ww.id', 'desc');
+
+        $rows = $query->get();
+
+        if (!empty($this->params()['sort'])) {
+            foreach ($this->params()['sort'] as $sort) {
+                if ($sort['order'] === 'desc') {
+                    $rows = $rows->sortByDesc($sort['field']);
+                } else {
+                    $rows = $rows->sortBy($sort['field']);
+                }
+            }
+        }
 
         if (!empty($rows)) {
             $rows = $this->attachDocuments($rows);

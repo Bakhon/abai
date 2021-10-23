@@ -271,4 +271,5 @@ return array (
   'kPodCalced' => 'Кпод (расч.)',
   'kPodUser' => 'Кпод (польз.)',
   'paker_no_tail' => 'Пакер',
+  'dzo' => 'ДЗО',
 );

@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="rigs__content">
+                    <div class="rigs__content defaultScroll">
                         <table class="table defaultTable">
                             <tbody>
                                 <tr>
@@ -77,13 +77,37 @@
                                     <th>Номинальная глубина бурения</th>
                                     <th>Продолжительность монтажа, сут</th>
                                     <th>Продолжительность демонтажа, сут</th>
-                                    <th style="width: 100px;">-</th>
-                                    <th>-</th>
+                                    <th>График планирования</th>
+                                    <th>Схема перемещения</th>
                                 </tr>
                                 <tr v-for="i in 12">
-                                    <td v-for="i in 8"></td>
+                                    <td></td>
                                     <td>
+                                        <div class="text-center mb-2">ZJ-40</div>
                                         <button class="characteristic" @click="openCharacteristicModal">Тех. характеристики</button>
+                                    </td>
+
+                                    <td v-for="i in 4"></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="text-center mb-2">
+                                            8-ая скв.
+                                            с 01.01.2021
+                                        </div>
+                                        <button class="characteristic" @click="openCharacteristicGraphModal">
+                                            График
+                                            <img src="/img/digital-drilling/install-graph.svg" alt="">
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div class="text-center mb-2">
+                                            АО ЭМГ
+                                            М/е: Актобе
+                                            Скв.№112</div>
+                                        <button class="characteristic" @click="openCharacteristicSchemeModal">
+                                            Схема
+                                            <img src="/img/digital-drilling/install-cheme.svg" alt="">
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -148,7 +172,7 @@
                                 <th>Ед.измерения</th>
                                 <th>Значение</th>
                             </tr>
-                            <tr v-for="i in 10">
+                            <tr v-for="i in 20">
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -158,15 +182,74 @@
                 </div>
             </div>
         </div>
+        <div class="characteristic__modal graph" v-if="characteristicGraph">
+            <div class="characteristic_content">
+                <div class="characteristic_header">
+                    <span>График бурения буровой установки ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <div class="characteristic_header-close" @click="openCharacteristicGraphModal">
+                        Закрыть
+                    </div>
+                </div>
+                <div class="characteristic_body defaultScroll">
+                    <img src="/img/digital-drilling/scheme.png" alt="">
+                </div>
+                <button class="btn__ok" @click="openCharacteristicGraphModal">
+                    Ok
+                </button>
+            </div>
+        </div>
+        <div class="characteristic__modal scheme" v-if="characteristicScheme">
+            <div class="characteristic_content">
+                <div class="characteristic_header">
+                    <span>Схема передвижения буровой установки ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <div class="characteristic_header-close" @click="openCharacteristicSchemeModal">
+                        Закрыть
+                    </div>
+                </div>
+                <div class="characteristic_body defaultScroll">
+                    <div class="map__content">
+                        <MglMap
+                                container="map-test"
+                                :center.sync="center"
+                                :accessToken="accessToken"
+                                :mapStyle="mapStyle"
+                                :zoom="zoom"
+                                class="mglMap"
+                        >
+                            <MglMarker
+                                    :coordinates.sync="center"
+                                    color='green'
+                            />
+                        </MglMap>
+                    </div>
+                    <button class="btn__ok" @click="openCharacteristicSchemeModal">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import {
+        MglMap,
+        MglMarker,
+        MglGeojsonLayer
+    } from 'vue-mapbox'
+
     export default {
         name: "DrillingRigs",
+        components:{ MglMap, MglMarker, MglGeojsonLayer},
         data(){
             return{
-                characteristicModal: false
+                accessToken: process.env.MIX_MAPBOX_TOKEN,
+                mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+                center: [52.1108, 43.68999],
+                zoom: 9,
+                characteristicModal: false,
+                characteristicGraph: false,
+                characteristicScheme: false,
             }
         },
         methods:{
@@ -177,7 +260,23 @@
                     document.body.overflow = 'hidden'
                     this.characteristicModal = true
                 }
-            }
+            },
+            openCharacteristicGraphModal(){
+                if (this.characteristicGraph){
+                    this.characteristicGraph = false
+                } else{
+                    document.body.overflow = 'hidden'
+                    this.characteristicGraph = true
+                }
+            },
+            openCharacteristicSchemeModal(){
+                if (this.characteristicScheme){
+                    this.characteristicScheme = false
+                } else{
+                    document.body.overflow = 'hidden'
+                    this.characteristicScheme = true
+                }
+            },
         }
     }
 </script>
@@ -200,6 +299,18 @@
         box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
         border-radius: 10px;
         padding: 15px;
+    }
+    .characteristic__modal.graph,
+    .characteristic__modal.scheme{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .characteristic__modal.graph .characteristic_content,
+    .characteristic__modal.scheme .characteristic_content{
+        max-width: 90%;
+        width: 90%;
+        height: auto;
     }
     .characteristic_content .characteristic_body{
         margin-top: 15px;
@@ -237,22 +348,52 @@
     .rigs__content{
         background-color: #272953;
         width: 100%;
-        height: calc(100% - 60px);
+        height: 675px;
         padding: 0 4px 0;
         position: relative;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
     }
     .modalTable td{
         padding: 15px!important;
     }
-    td{
-        padding: 5px!important;
+    .characteristic__modal td{
+        padding: 10px 5px!important;
     }
     .characteristic{
-        background: #40467E;
+        background: #205AA3;
         border: 0.5px solid #454FA1;
         box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
         border-radius: 10px;
         padding: 5px;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+    }
+    .characteristic img{
+        margin-left: 5px;
+    }
+    .characteristic__modal.scheme .characteristic_body{
+        height: calc(100vh - 200px);
+    }
+    .map__content{
+        height: calc(100% - 80px);
+    }
+    .btn__ok{
+        border: 0;
+        background: #464A8A;
+        border-radius: 6px;
+        width: 170px;
+        height: 26px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+
+        color: #FFFFFF;
+        margin: 25px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

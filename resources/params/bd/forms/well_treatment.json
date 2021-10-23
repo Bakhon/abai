@@ -1,0 +1,87 @@
+{
+  "type": "plain",
+  "table": "prod.well_treatment",
+  "tabs": [
+    {
+      "title": "treat",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "treat_date",
+                "title": "date",
+                "type": "date",
+                "validation": "required"
+              },
+              {
+                "code": "treatment_type",
+                "title": "treat_type",
+                "type": "dict",
+                "dict": "treat_type"
+              },
+              {
+                "title": "volume",
+                "code": "volume",
+                "type": "numeric",
+                "validation": "required|gte:0"
+               
+              },
+              {
+                "title": "pretreat_pressure",
+                "code": "pressure_before",
+                "type": "numeric",
+                "validation": "gte:0"                
+              },
+              {
+                "title": "pretreat_pressure",
+                "code": "pressure_after",
+                "type": "numeric",
+                "validation": "gte:0"                
+              },
+              {
+                "title": "temperature",
+                "code": "temperature",
+                "type": "numeric",
+                "validation": "gte:0"
+              },
+              {
+                "title": "pretreat_buff_pressure",
+                "code": "pretreat_buff_pressure",
+                "type": "numeric",
+                "validation": "gte:0"
+              },
+              {
+                "title": "posttreat_buff_pressure",
+                "code": "posttreat_buff_pressure",
+                "type": "numeric",
+                "validation": "gte:0"
+              },
+              {
+                "code": "chemical_reagent_type",
+                "type": "dict",
+                "dict": "chemical_reagent_types",
+                "title": "ch_reagent_type",
+                "validation": "exists:tbd.dict.chemical_reagent_type,id"
+              },
+              {
+                "code": "reason",
+                "type": "dict",
+                "dict": "reason_type_rtr",
+                "title": "reason",
+                "validation": "required|exists:tbd.dict.reason,id"
+              },
+              {
+                "title": "scraper_income",
+                "code": "scraper_income",
+                "type": "numeric",
+                "validation": "required|gte:0|lte:10000"
+              }              
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

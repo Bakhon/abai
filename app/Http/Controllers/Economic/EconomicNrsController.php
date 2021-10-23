@@ -7,7 +7,6 @@ use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\BigData\Well;
-use App\Models\EcoRefsCost;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -25,10 +24,11 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v7';
+    const DATA_SOURCE = 'economic_nrs_total_v8';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
+    const GRANULARITY_YEAR_FORMAT = 'yyyy';
 
     const PROFITABILITY_FULL = 'profitability';
     const PROFITABILITY_DIRECT = 'profitability_kbm';
@@ -44,31 +44,14 @@ class EconomicNrsController extends Controller
     const STATUS_ACTIVE = 'В работе';
     const STATUS_PAUSE = 'В простое';
 
-    const OPERATING_PROFIT_TOP_LIMIT = 10;
-
-    const BUILDERS = [
-        'sum_year_operating_profit_and_prs' => '$builderSumYearOperatingProfitAndPrs',
-        'sum_month_operating_profit_and_count_uwi' => '$builderSumMonthOperatingProfitAndCountUwi',
-        'sum_year_top_by_operating_profit' => '$builderSumYearTopByOperatingProfit',
-        'oil_production' => '$builderOilProduction',
-        'production_expenditures' => '$builderProductionExpenditures',
+    const WELL_TOP_LIMIT = 10;
+    const WELL_TOP_KEYS = [
+        'Operating_profit',
+        'oil',
+        'liquid'
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
-
-    const TEMP_ORG_COMPANY_MAP = [
-        3 => 5, // OZEN
-        4 => 8, // KBM
-        5 => 9, // KAZGER
-        6 => 6, // EMBA
-        7 => 7 // MANGISTAU
-    ];
-
-    const TEMP_SC_FA_IDS = [
-        9, // 2020
-        12, // 2021 1 kv
-        13 // 2021 2 kv
-    ];
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -134,284 +117,73 @@ class EconomicNrsController extends Controller
         $profitabilityType = $request->profitability;
         list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
 
-        $builderSumYearOperatingProfitAndPrs = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($intervalYear)
-            ->longSum("prs1")
-            ->sum("Operating_profit");
-
-        $builderSumMonthOperatingProfitAndCountUwi = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($intervalMonths)
-            ->sum("Operating_profit")
-            ->distinctCount('uwi');
-
-        $buildersProfitability = [
-            $builderSumYearOperatingProfitAndPrs,
-            $builderSumMonthOperatingProfitAndCountUwi,
-        ];
-
-        foreach ($buildersProfitability as &$builder) {
-            /** @var QueryBuilder $builder */
-            $builder->where($profitabilityType, '=', $profitless);
-        }
-
-        $builderSumYearTopByOperatingProfit = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($intervalMonths)
-            ->select("uwi")
-            ->sum("Operating_profit")
-            ->where('Operating_profit', '!=', '0')
-            ->where('status', '=', self::STATUS_ACTIVE)
-            ->orderBy('Operating_profit', 'desc');
-
-        $builderOilProduction = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, $granularity)
-            ->interval($intervalMonths)
-            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
-                $extBuilder->timeFormat($granularityFormat);
-            })
-            ->select($profitabilityType)
-            ->sum('liquid')
-            ->sum('bsw')
-            ->sum('oil')
-            ->count('uwi')
-            ->where('status', '=', self::STATUS_ACTIVE);
-
-        $builderProductionExpenditures = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($intervalMonths);
-
-        $sumKeys = [
-            'Revenue_export',
-            'Revenue_local',
-            'Variable_expenditures',
-            'Fixed_expenditures',
-            'Production_expenditures',
-            "MET_payments",
-            "ECD_payments",
-            "ERT_payments",
-        ];
-
-        foreach ($sumKeys as $sumKey) {
-            $builderProductionExpenditures->sum($sumKey);
-        }
-
-        $buildersProfitabilityCount = [];
-
-        $statuses = [
-            $profitabilityType => self::STATUS_ACTIVE,
-            $profitabilityType . '_v_prostoe' => self::STATUS_PAUSE
-        ];
-
-        foreach ($statuses as $column => $status) {
-            $buildersProfitabilityCount[$status] = $this
-                ->druidClient
-                ->query(self::DATA_SOURCE, $granularity)
-                ->interval($intervalMonths)
-                ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
-                    $extBuilder->timeFormat($granularityFormat);
-                })
-                ->select($column)
-                ->count('count')
-                ->where('status', '=', $status)
-                ->whereIn($column, $profitabilities);
-        }
-
-        $builders = [
-            self::BUILDERS['sum_month_operating_profit_and_count_uwi'] => $builderSumMonthOperatingProfitAndCountUwi,
-            self::BUILDERS['sum_year_operating_profit_and_prs'] => $builderSumYearOperatingProfitAndPrs,
-            self::BUILDERS['sum_year_top_by_operating_profit'] => $builderSumYearTopByOperatingProfit,
-            self::BUILDERS['oil_production'] => $builderOilProduction,
-            self::BUILDERS['production_expenditures'] => $builderProductionExpenditures,
-        ];
-
-        foreach ($buildersProfitabilityCount as $key => $builder) {
-            $builders[$key] = $builder;
-        }
-
-        if ($org->druid_id) {
-            /** @var QueryBuilder $builder */
-            foreach ($builders as &$builder) {
-                $builder->where('org_id2', '=', $org->druid_id);
-            }
-        }
-
-        if ($dpz) {
-            /** @var QueryBuilder $builder */
-            foreach ($builders as &$builder) {
-                $builder->where('dpz', '=', $dpz);
-            }
-        }
-
-        if ($excludeUwis) {
-            /** @var QueryBuilder $builder */
-            foreach ($builders as &$builder) {
-                $builder->whereNotIn('uwi', $excludeUwis);
-            }
-        }
-
-        $result = [];
-
-        foreach ($builders as $key => &$builder) {
-            $timeseries = [
-                self::BUILDERS['sum_month_operating_profit_and_count_uwi'],
-                self::BUILDERS['sum_year_operating_profit_and_prs'],
-                self::BUILDERS['production_expenditures'],
-            ];
-
-            $result[$key] = in_array($key, $timeseries)
-                ? $builder->timeseries()->data()
-                : $builder->groupBy()->data();
-        }
-
-        $dataWithProfitability = ['dt' => $intervalDates];
-
-        foreach ($profitabilities as $profitability) {
-            $dataWithProfitability[$profitability] = [];
-        }
-
-        $dataWithOilProduction = $dataWithProfitability;
-        $dataWithLiquidProduction = $dataWithProfitability;
-        $dataWithPausedProfitability = $dataWithProfitability;
-
-        $dataWithOperatingProfitTop = [
-            'uwi' => [],
-            'Operating_profit' => []
-        ];
-
-        $operatingProfitTopHighest = array_slice(
-            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
-            0,
-            self::OPERATING_PROFIT_TOP_LIMIT
-        );
-
-        $operatingProfitTopLowest = array_reverse(array_slice(
-            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
-            -self::OPERATING_PROFIT_TOP_LIMIT,
-            self::OPERATING_PROFIT_TOP_LIMIT
-        ));
-
-        $result[self::BUILDERS['sum_year_top_by_operating_profit']] = array_merge(
-            $operatingProfitTopLowest,
-            $operatingProfitTopHighest
-        );
-
-        foreach ($result[self::BUILDERS['sum_year_top_by_operating_profit']] as &$item) {
-            $dataWithOperatingProfitTop['uwi'][] = $item['uwi'];
-
-            $dataWithOperatingProfitTop['Operating_profit'][] = $item['Operating_profit'] / 1000;
-        }
-
-        foreach ($result[self::BUILDERS['oil_production']] as &$item) {
-            $date = $item['dt'];
-
-            $dataWithOilProduction[$item[$profitabilityType]][$date] = $item['oil'] / 1000;
-
-            $dataWithLiquidProduction[$item[$profitabilityType]][$date] = self::formatProfitability($item);
-        }
-
-        $this->fillZeroValues($dataWithOilProduction, $profitabilities);
-
-        $this->fillZeroValues($dataWithLiquidProduction, $profitabilities);
-
-        foreach ($result[self::STATUS_ACTIVE] as &$item) {
-            $date = $item['dt'];
-
-            $dataWithProfitability[$item[$profitabilityType]][$date] = self::calcProfitabilityCount(
-                $item,
-                $granularity,
-                $intervalMonthsStart,
-                $intervalMonthsEnd,
-            );
-        }
-
-        $this->fillZeroValues($dataWithProfitability, $profitabilities);
-
-        foreach ($result[self::STATUS_PAUSE] as &$item) {
-            $date = $item['dt'];
-
-            $key = $item[$profitabilityType . self::PROFITABILITY_PAUSE];
-
-            $dataWithPausedProfitability[$key][$date] = self::calcProfitabilityCount(
-                $item,
-                $granularity,
-                $intervalMonthsStart,
-                $intervalMonthsEnd,
-            );
-        }
-
-        $this->fillZeroValues($dataWithPausedProfitability, $profitabilities);
-
-        $monthOperatingProfitAndCountUwi = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']];
-
-        $monthsCount = count($monthOperatingProfitAndCountUwi);
-
-        $lastMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 1];
-        $prevMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 2];
-
-        $resLastMonth = [
-            'Operating_profit' => [
-                'sum' => [
-                    'value_prev' => self::formatMoney($prevMonth["Operating_profit"]),
-                    'value' => self::formatMoney($lastMonth["Operating_profit"]),
-                    'percent' => self::calcPercent($lastMonth["Operating_profit"], $prevMonth["Operating_profit"]),
-                ],
-            ],
-            'cat1' => [
-                'count' => [
-                    'value_prev' => (int)$prevMonth['uwi'],
-                    'value' => (int)$lastMonth['uwi'],
-                    'percent' => self::calcPercent((int)$lastMonth['uwi'], (int)$prevMonth['uwi'])
-                ],
-            ]
-        ];
-
-        $productionExpenditures = $result[self::BUILDERS['production_expenditures']];
-
-        $monthsCount = count($productionExpenditures);
-
-        foreach ($sumKeys as $sumKey) {
-            $lastMonth = $productionExpenditures[$monthsCount - 1][$sumKey];
-
-            $prevMonth = $productionExpenditures[$monthsCount - 2][$sumKey];
-
-            $resLastMonth[$sumKey] = [
-                'sum' => [
-                    'value' => self::formatMoney($lastMonth),
-                    'value_prev' => self::formatMoney($prevMonth),
-                    'percent' => self::calcPercent($lastMonth, $prevMonth)
-                ]
-            ];
-        }
-
-        $resLastMonth['tax_costs']['sum'] = self::calcTaxCosts($productionExpenditures, $monthsCount);
-
         return [
-            'lastYear' => [
-                'Operating_profit' => [
-                    'sum' => [
-                        'value' => self::formatMoney($result[self::BUILDERS['sum_year_operating_profit_and_prs']][0]["Operating_profit"])
-                    ],
-                ],
-                'prs1' => [
-                    'count' => [
-                        'value' => round($result[self::BUILDERS['sum_year_operating_profit_and_prs']][0]["prs1"])
-                    ]
-                ]
-            ],
-            'lastMonth' => $resLastMonth,
+            'lastYear' => $this->getYearOperatingProfitAndPrs(
+                $org,
+                $intervalYear,
+                $profitabilityType,
+                $profitless,
+                $dpz,
+                $excludeUwis
+            ),
+            'lastMonth' => array_merge(
+                $this->getMonthOperatingProfitAndUwiCount(
+                    $org,
+                    $intervalMonths,
+                    $profitabilityType,
+                    $profitless,
+                    $dpz,
+                    $excludeUwis
+                ),
+                $this->getMonthProductionExpenditures(
+                    $org,
+                    $intervalMonths,
+                    $dpz,
+                    $excludeUwis
+                ),
+            ),
             'charts' => [
-                'profitability' => $dataWithProfitability,
-                'oilProduction' => $dataWithOilProduction,
-                'operatingProfitTop' => $dataWithOperatingProfitTop,
-                'liquidProduction' => $dataWithLiquidProduction,
-                'pausedProfitability' => $dataWithPausedProfitability,
+                'wellTop' => $this->getWellTop(
+                    $org,
+                    $intervalMonths,
+                    $dpz,
+                    $excludeUwis
+                ),
+                'production' => $this->getWellProduction(
+                    $org,
+                    $intervalMonths,
+                    $intervalDates,
+                    $profitabilities,
+                    $profitabilityType,
+                    $granularity,
+                    $granularityFormat,
+                    $dpz,
+                    $excludeUwis
+                ),
+                'profitability' => $this->getWellsCountByProfitability(
+                    $org,
+                    $intervalMonths,
+                    $intervalMonthsStart,
+                    $intervalMonthsEnd,
+                    $intervalDates,
+                    $profitabilities,
+                    $profitabilityType,
+                    $granularity,
+                    $granularityFormat,
+                    $dpz,
+                    $excludeUwis
+                ),
+                'prs' => $this->getPrsCountByProfitability(
+                    $org,
+                    $intervalMonths,
+                    $intervalDates,
+                    $profitabilities,
+                    $profitabilityType,
+                    $granularity,
+                    $granularityFormat,
+                    $dpz,
+                    $excludeUwis
+                ),
             ],
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
@@ -429,14 +201,12 @@ class EconomicNrsController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
-        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
-
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
             Carbon::parse($request->interval_end)->addDay(),
         );
 
-        $sumKeys = [
+        $wellsKeys = [
             "Operating_profit",
             "Operating_profit_variable_prs",
             "Operating_profit_variable_prs_nopayrall",
@@ -458,9 +228,10 @@ class EconomicNrsController extends Controller
             "prs1",
             "PRS_nopayroll_expenditures",
             "PRS_expenditures",
+            "Revenue_total",
         ];
 
-        $builder = $this
+        $builderWells = $this
             ->druidClient
             ->query(self::DATA_SOURCE, $granularity)
             ->interval($interval)
@@ -469,32 +240,63 @@ class EconomicNrsController extends Controller
             })
             ->select("uwi");
 
-        foreach ($sumKeys as $key) {
-            $builder->doubleSum($key);
+        foreach ($wellsKeys as $key) {
+            $builderWells->doubleSum($key);
         }
 
-        if ($org->druid_id) {
-            $builder->where('org_id2', '=', $org->druid_id);
-        }
+        $dailyKeys = array_merge(
+            [
+                'cost_variable',
+                'cost_fix_noWRpayroll',
+                'cost_fix_payroll',
+                'cost_fix_nopayroll',
+                'cost_fix',
+                'cost_Gaoverheads',
+                'cost_WR_nopayroll',
+                'cost_WR_payroll',
+                'cost_WR',
+                'cost_WO',
+            ],
+            self::getDailyKeys('trans_exp'),
+            self::getDailyKeys('price'),
+            self::getDailyKeys('Barrel_ratio'),
+            self::getDailyKeys('sale_share'),
+            self::getDailyKeys('discount'),
+        );
 
-        if ($dpz) {
-            $builder->where('dpz', '=', $dpz);
+        $builderDailyParams = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, $granularity)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
+            });
+
+        foreach ($dailyKeys as $key) {
+            $builderDailyParams->select($key);
         }
 
         if ($request->well_id) {
-            $builder->where('uwi', '=', $request->well_id);
+            $builderWells->where('uwi', '=', $request->well_id);
+
+            $builderDailyParams->where('uwi', '=', $request->well_id);
         }
 
-        $wells = $builder->groupBy()->data();
+        $wells = $this
+            ->createQueryForOrg($builderWells, $org, $dpz)
+            ->groupBy()
+            ->data();
 
-        $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
+        $dailyParams = $this
+            ->createQueryForOrg($builderDailyParams, $org, $dpz)
+            ->groupBy()
+            ->data();
 
-        $dailyValues = EcoRefsCost::query()
-            ->distinct()
-            ->select(['date', 'wr_nopayroll', 'wr_payroll'])
-            ->whereCompanyId(self::TEMP_ORG_COMPANY_MAP[$org->id])
-            ->whereIn('sc_fa', self::TEMP_SC_FA_IDS)
-            ->get();
+        $wellsByDates = [
+            'org' => $org,
+            'dates' => [],
+            'uwis' => [],
+        ];
 
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
@@ -503,7 +305,7 @@ class EconomicNrsController extends Controller
 
             $wellsByDates['dates'][$date] = 1;
 
-            foreach ($sumKeys as $key) {
+            foreach ($wellsKeys as $key) {
                 $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key];
 
                 if (!isset($wellsByDates['uwis'][$uwi][$key]['sum'])) {
@@ -512,19 +314,11 @@ class EconomicNrsController extends Controller
 
                 $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
             }
-
-            $dailyDate = Carbon::createFromFormat($dateFormat, $date)
-                ->setDay(1)
-                ->format('Y-m-d');
-
-            $dailyValue = $dailyValues->firstWhere('date', $dailyDate);
-
-            $wellsByDates['uwis'][$uwi]['cost_WR_nopayroll'][$date] = $dailyValue->wr_nopayroll ?? 0;
-
-            $wellsByDates['uwis'][$uwi]['cost_WR_payroll'][$date] = $dailyValue->wr_payroll ?? 0;
         }
 
-        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
+        foreach (array_keys($wellsByDates['dates']) as $index => $date) {
+            $wellsByDates['dates'][$date] = $dailyParams[$index];
+        }
 
         return $wellsByDates;
     }
@@ -670,9 +464,14 @@ class EconomicNrsController extends Controller
 
     static function granularityFormat(string $granularity): string
     {
-        return $granularity === Granularity::MONTH
-            ? self::GRANULARITY_MONTHLY_FORMAT
-            : self::GRANULARITY_DAILY_FORMAT;
+        switch ($granularity) {
+            case Granularity::DAY:
+                return self::GRANULARITY_DAILY_FORMAT;
+            case Granularity::MONTH:
+                return self::GRANULARITY_MONTHLY_FORMAT;
+            case Granularity::YEAR:
+                return self::GRANULARITY_YEAR_FORMAT;
+        }
     }
 
     static function formatInterval(Carbon $start, Carbon $end): string
@@ -683,13 +482,13 @@ class EconomicNrsController extends Controller
             . "T00:00:00+00:00";
     }
 
-    static function calcIntervalYears(string $start = null, string $end = null, int $count = 1): string
+    static function calcIntervalYears(string $start = null, string $end = null): string
     {
         $end = Carbon::parse($end ?? now());
 
         $start = $start ? Carbon::parse($start) : $end->copy();
 
-        $start->subYears($count)->setDay(1)->setMonth(1);
+        $start->setDay(1)->setMonth(1);
 
         return self::formatInterval($start, $end);
     }
@@ -758,39 +557,13 @@ class EconomicNrsController extends Controller
         return round($count / $date->daysInMonth);
     }
 
-    static function formatProfitability(array $item): string
+    static function calcLiquid(array $well): string
     {
-        $bsw = round(($item['bsw'] / 1000) / ($item['uwi'] / 1000));
+        $bsw = round(($well['bsw'] / 1000) / ($well['uwi'] / 1000));
 
-        $liquid = round($item['liquid'] / 1000);
+        $liquid = round($well['liquid']);
 
         return "$liquid.$bsw";
-    }
-
-    static function formatMoney(?float $digit): array
-    {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit),
-                ''
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
-        ];
     }
 
     static function getOilPrices(Carbon $intervalStart, Carbon $intervalEnd): array
@@ -849,8 +622,8 @@ class EconomicNrsController extends Controller
     static function calcTaxCosts(array $productionExpenditures, int $monthsCount): array
     {
         $taxCosts = [
-            'value' => 0,
-            'value_prev' => 0,
+            'last' => 0,
+            'prev' => 0,
         ];
 
         $taxKeys = [
@@ -864,16 +637,10 @@ class EconomicNrsController extends Controller
 
             $prevMonth = $productionExpenditures[$monthsCount - 2][$taxKey];
 
-            $taxCosts['value'] += $lastMonth;
+            $taxCosts['last'] += $lastMonth;
 
-            $taxCosts['value_prev'] += $prevMonth;
+            $taxCosts['prev'] += $prevMonth;
         }
-
-        $taxCosts['percent'] = self::calcPercent($taxCosts['value'], $taxCosts['value_prev']);
-
-        $taxCosts['value'] = self::formatMoney($taxCosts['value']);
-
-        $taxCosts['value_prev'] = self::formatMoney($taxCosts['value_prev']);
 
         return $taxCosts;
     }
@@ -904,5 +671,440 @@ class EconomicNrsController extends Controller
         $uwis = array_filter($uwis);
 
         return $uwis;
+    }
+
+    static function getDailyKeys(string $prefix): array
+    {
+        return [
+            $prefix . "_export_AA",
+            $prefix . "_export_KTK",
+            $prefix . "_export_Samara",
+            $prefix . "_export_Aktau",
+            $prefix . "_export_other",
+            $prefix . "_local_ANPZ",
+            $prefix . "_local_PNHZ",
+            $prefix . "_local_PKOP",
+            $prefix . "_local_KBITUM",
+            $prefix . "_local_other",
+        ];
+    }
+
+    private function createQueryForOrg(
+        QueryBuilder $builder,
+        Org $org,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    ): QueryBuilder
+    {
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($dpz) {
+            $builder->where('dpz', '=', $dpz);
+        }
+
+        if ($excludeUwis) {
+            $builder->whereNotIn('uwi', $excludeUwis);
+        }
+
+        return $builder;
+    }
+
+    private function getYearOperatingProfitAndPrs(
+        Org $org,
+        string $interval,
+        string $profitabilityColumn,
+        string $profitabilityValue,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    ): array
+    {
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
+            ->interval($interval)
+            ->longSum("prs1", 'prs')
+            ->doubleSum("Operating_profit", 'operatingProfit')
+            ->where($profitabilityColumn, '=', $profitabilityValue);
+
+        $years = $this
+            ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+            ->timeseries()
+            ->data();
+
+        $operatingProfit = 0;
+
+        $prs = 0;
+
+        foreach ($years as $year) {
+            $operatingProfit += $year['operatingProfit'];
+
+            $prs += $year['prs'];
+        }
+
+        return [
+            'operatingProfit' => $operatingProfit,
+            'prs' => $prs
+        ];
+    }
+
+    private function getMonthOperatingProfitAndUwiCount(
+        Org $org,
+        string $interval,
+        string $profitabilityColumn,
+        string $profitabilityValue,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    ): array
+    {
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->interval($interval)
+            ->doubleSum("Operating_profit", 'operatingProfit')
+            ->distinctCount('uwi')
+            ->where($profitabilityColumn, '=', $profitabilityValue);
+
+        $data = $this
+            ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+            ->timeseries()
+            ->data();
+
+        $monthsCount = count($data);
+
+        $lastMonth = $data[$monthsCount - 1];
+        $prevMonth = $data[$monthsCount - 2];
+
+        return [
+            'operatingProfit' => [
+                'last' => $lastMonth["operatingProfit"],
+                'prev' => $prevMonth["operatingProfit"],
+            ],
+            'uwiCount' => [
+                'last' => (int)$lastMonth['uwi'],
+                'prev' => (int)$prevMonth['uwi'],
+            ]
+        ];
+    }
+
+    private function getMonthProductionExpenditures(
+        Org $org,
+        string $interval,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->interval($interval);
+
+        $productionKeys = [
+            'Revenue_export',
+            'Revenue_local',
+            'Variable_expenditures',
+            'Fixed_expenditures',
+            'Production_expenditures',
+            'MET_payments',
+            'ECD_payments',
+            'ERT_payments',
+        ];
+
+        foreach ($productionKeys as $key) {
+            $builder->doubleSum($key);
+        }
+
+        $data = $this
+            ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+            ->timeseries()
+            ->data();
+
+        $monthsCount = count($data);
+
+        $lastMonth = $data[$monthsCount - 1];
+        $prevMonth = $data[$monthsCount - 2];
+
+        $productionExpenditures = [];
+
+        foreach ($productionKeys as $key) {
+            $productionExpenditures[$key] = [
+                'last' => $lastMonth[$key],
+                'prev' => $prevMonth[$key],
+            ];
+        }
+
+        $productionExpenditures['Tax_costs'] = self::calcTaxCosts($data, $monthsCount);
+
+        return $productionExpenditures;
+    }
+
+    private function getWellTop(
+        Org $org,
+        string $interval,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $builders = [];
+
+        foreach (self::WELL_TOP_KEYS as $key) {
+            $builders[$key] = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, Granularity::YEAR)
+                ->interval($interval)
+                ->select('uwi')
+                ->doubleSum($key)
+                ->where($key, '!=', '0')
+                ->where('status', '=', self::STATUS_ACTIVE)
+                ->orderBy($key, 'desc');
+        }
+
+        foreach ($builders as $key => $builder) {
+            $builders[$key] = $this
+                ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+                ->groupBy()
+                ->data();
+        }
+
+        $wellTop = [];
+
+        foreach (self::WELL_TOP_KEYS as $key) {
+            $wellTop[$key] = [
+                'highest' => array_slice(
+                    $builders[$key],
+                    0,
+                    self::WELL_TOP_LIMIT
+                ),
+                'lowest' => array_reverse(array_slice(
+                    $builders[$key],
+                    -self::WELL_TOP_LIMIT,
+                    self::WELL_TOP_LIMIT
+                ))
+            ];
+        }
+
+        return $wellTop;
+    }
+
+    private function getWellProduction(
+        Org $org,
+        string $interval,
+        array $intervalDates,
+        array $profitabilities,
+        string $profitabilityColumn,
+        string $granularity,
+        string $granularityFormat,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, $granularity)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
+            })
+            ->select($profitabilityColumn)
+            ->doubleSum('liquid')
+            ->doubleSum('bsw')
+            ->doubleSum('oil')
+            ->count('uwi')
+            ->where('status', '=', self::STATUS_ACTIVE);
+
+        $wellProduction = $this
+            ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+            ->groupBy()
+            ->data();
+
+        $oilByDate = ['dt' => $intervalDates];
+
+        foreach ($profitabilities as $profitability) {
+            $oilByDate[$profitability] = [];
+        }
+
+        $liquidByDate = $oilByDate;
+
+        foreach ($wellProduction as $well) {
+            $date = $well['dt'];
+
+            $oilByDate[$well[$profitabilityColumn]][$date] = $well['oil'];
+
+            $liquidByDate[$well[$profitabilityColumn]][$date] = self::calcLiquid($well);
+        }
+
+        $this->fillZeroValues($oilByDate, $profitabilities);
+
+        $this->fillZeroValues($liquidByDate, $profitabilities);
+
+        return [
+            'oil' => $oilByDate,
+            'liquid' => $liquidByDate
+        ];
+    }
+
+    private function getWellsCountByProfitability(
+        Org $org,
+        string $interval,
+        Carbon $intervalStart,
+        Carbon $intervalEnd,
+        array $intervalDates,
+        array $profitabilities,
+        string $profitabilityColumn,
+        string $granularity,
+        string $granularityFormat,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $wells = [];
+
+        $statuses = [
+            $profitabilityColumn => self::STATUS_ACTIVE,
+            $profitabilityColumn . self::PROFITABILITY_PAUSE => self::STATUS_PAUSE
+        ];
+
+        foreach ($statuses as $column => $status) {
+            $builder = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, $granularity)
+                ->interval($interval)
+                ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                    $extBuilder->timeFormat($granularityFormat);
+                })
+                ->select($column)
+                ->count('count')
+                ->where('status', '=', $status)
+                ->whereIn($column, $profitabilities);
+
+            $wells[$status] = $this
+                ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+                ->groupBy()
+                ->data();
+        }
+
+        $profitabilityByDates = ['dt' => $intervalDates];
+
+        foreach ($profitabilities as $profitability) {
+            $profitabilityByDates[$profitability] = [];
+        }
+
+        $pausedProfitabilityByDates = $profitabilityByDates;
+
+        foreach ($wells[self::STATUS_ACTIVE] as &$well) {
+            $date = $well['dt'];
+
+            $profitabilityByDates[$well[$profitabilityColumn]][$date] = self::calcProfitabilityCount(
+                $well,
+                $granularity,
+                $intervalStart,
+                $intervalEnd,
+            );
+        }
+
+        foreach ($wells[self::STATUS_PAUSE] as &$well) {
+            $date = $well['dt'];
+
+            $key = $well[$profitabilityColumn . self::PROFITABILITY_PAUSE];
+
+            $pausedProfitabilityByDates[$key][$date] = self::calcProfitabilityCount(
+                $well,
+                $granularity,
+                $intervalStart,
+                $intervalEnd,
+            );
+        }
+
+        $this->fillZeroValues($profitabilityByDates, $profitabilities);
+
+        $this->fillZeroValues($pausedProfitabilityByDates, $profitabilities);
+
+        return [
+            'active' => $profitabilityByDates,
+            'paused' => $pausedProfitabilityByDates
+        ];
+    }
+
+    private function getPrsCountByProfitability(
+        Org $org,
+        string $interval,
+        array $intervalDates,
+        array $profitabilities,
+        string $profitabilityColumn,
+        string $granularity,
+        string $granularityFormat,
+        ?string $dpz = null,
+        array $excludeUwis = null
+    )
+    {
+        $wells = [];
+
+        $statuses = [
+            $profitabilityColumn => self::STATUS_ACTIVE,
+            $profitabilityColumn . self::PROFITABILITY_PAUSE => self::STATUS_PAUSE
+        ];
+
+        foreach ($statuses as $column => $status) {
+            $builder = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, $granularity)
+                ->interval($interval)
+                ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                    $extBuilder->timeFormat($granularityFormat);
+                })
+                ->select($column)
+                ->sum('prs1')
+                ->where('status', '=', $status)
+                ->whereIn($column, $profitabilities);
+
+            $wells[$status] = $this
+                ->createQueryForOrg($builder, $org, $dpz, $excludeUwis)
+                ->groupBy()
+                ->data();
+        }
+
+        $prsByDates = ['dt' => $intervalDates];
+
+        foreach ($profitabilities as $profitability) {
+            $prsByDates[$profitability] = [];
+        }
+
+        $activePrsByDates = $prsByDates;
+        $pausedPrsByDates = $prsByDates;
+
+        foreach ($wells[self::STATUS_ACTIVE] as &$well) {
+            $date = $well['dt'];
+
+            $activePrsByDates[$well[$profitabilityColumn]][$date] = $well['prs1'];
+        }
+
+        foreach ($wells[self::STATUS_PAUSE] as &$well) {
+            $date = $well['dt'];
+
+            $key = $well[$profitabilityColumn . self::PROFITABILITY_PAUSE];
+
+            $pausedPrsByDates[$key][$date] = $well['prs1'];
+        }
+
+        $this->fillZeroValues($activePrsByDates, $profitabilities);
+
+        $this->fillZeroValues($pausedPrsByDates, $profitabilities);
+
+        foreach ($activePrsByDates['dt'] as $index => $date) {
+            foreach ($profitabilities as $profitability) {
+                $active = $activePrsByDates[$profitability][$index];
+
+                $paused = $pausedPrsByDates[$profitability][$index];
+
+                $prsByDates[$profitability][] = $active + $paused;
+            }
+        }
+
+        return [
+            'active' => $activePrsByDates,
+            'paused' => $pausedPrsByDates,
+            'total' => $prsByDates
+        ];
     }
 }

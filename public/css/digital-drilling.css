@@ -567,6 +567,7 @@ input.rangeInput {
     border: 1px solid #545580;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 40px;
 }
 
@@ -583,7 +584,48 @@ input.rangeInput {
 .contentBlock__map-search-block{
     display: flex;
     align-items: center;
-    margin-left: auto;
+}
+.all-graph{
+    cursor: pointer;
+}
+.all-graph span{
+    margin-left: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    text-decoration-line: underline;
+    color: #FFFFFF;
+}
+.all-graph-modal{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.5);
+}
+.all-graph-modal-img{
+    width: 1400px;
+    height: 850px;
+    position: relative;
+}
+.all-graph-modal .close{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    background: #656A8A;
+    height: 26px;
+    width: 86px;
+    color: #FFFFFF;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
 }
 .contentBlock__map-search-input{
     background: #272953;
@@ -1004,6 +1046,7 @@ input.rangeInput {
     text-align: center;
     padding: 0 7px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .digitalDrillingTablesPage table{
     margin-bottom: 20px;
@@ -1035,7 +1078,7 @@ input.rangeInput {
     justify-content: space-between;
 }
 .daily_raport_block-header-first{
-    width: 250px;
+    width: 300px;
     background-color: #323370;
     padding: 8px 0;
     display: flex;
@@ -1073,7 +1116,7 @@ input.rangeInput {
     color: #FFFFFF;
     font-weight: bold;
     height: 98px;
-    width: calc(100% - 450px);
+    width: calc(100% - 500px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1097,8 +1140,9 @@ input.rangeInput {
 .daily_raport_block table thead th{
     background-color: #323370;
     border: 1px solid #454D7D;
-    padding: 5px;
+    padding: 10px  5px;
     text-align: center;
+    font-size: 15px;
 }
 .bg{
     background-color: #323370!important;
@@ -1106,10 +1150,10 @@ input.rangeInput {
 .daily_raport_block table tbody td{
     background-color: #272953;
     border: 1px solid #454D7D;
-    /*width: 8.33%;*/
     text-align: center;
     padding: 5px;
     height: 21px!important;
+    font-size: 12px;
 }
 .daily_raport_block table tbody td:last-of-type {
     border-right: 1px solid #454D7D!important;

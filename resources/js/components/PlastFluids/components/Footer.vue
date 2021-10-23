@@ -1,42 +1,9 @@
 <template>
   <div class="plast-fluids-footer">
-    <div class="footer-block">
-      <img src="/img/digital-drilling/foot5.svg" alt="" />
+    <div class="footer-block" v-for="(province, index) in provinces" :key="index">
+      <div class="footer-icon" :style="'background-color: ' + province.color"></div>
       <p>
-        {{ trans("plast_fluids.actual_oil_pipeline") }}
-      </p>
-    </div>
-    <div class="footer-block">
-      <img src="/img/digital-drilling/foot6.svg" alt="" />
-      <p>
-        {{ trans("plast_fluids.actual_gas_pipeline") }}
-      </p>
-    </div>
-    <div class="footer-block">
-      <img src="/img/PlastFluids/constructionGas.svg" alt="" />
-      <p>
-        {{ trans("plast_fluids.construction_gas_pipeline") }}
-      </p>
-    </div>
-    <div class="footer-double-icon-block">
-      <div>
-        <img src="/img/PlastFluids/oilExploration.svg" alt="" />
-        <img src="/img/digital-drilling/foot2.svg" alt="" />
-      </div>
-      <p>
-        {{ trans("plast_fluids.exploration_and_production") }}
-      </p>
-    </div>
-    <div class="footer-block">
-      <img src="/img/PlastFluids/processing.svg" alt="" />
-      <p>
-        {{ trans("plast_fluids.processing") }}
-      </p>
-    </div>
-    <div class="footer-block">
-      <img src="/img/PlastFluids/factories.svg" alt="" />
-      <p>
-        {{ trans("plast_fluids.subsidiaries_affiliates_factories") }}
+        {{ trans(`plast_fluids.${province.name}`) }}
       </p>
     </div>
   </div>
@@ -45,6 +12,17 @@
 <script>
 export default {
   name: "Footer",
+  data() {
+    return {
+      provinces: [
+        { color: "#5970A8", name: "caspian_ngp" },
+        { color: "#804C6B", name: "mangistau_ngp" },
+        { color: "#895D5D", name: "central_ngp" },
+        { color: "#487B65", name: "west_ngp" },
+        { color: "#938364", name: "east_ngp" },
+      ],
+    };
+  },
 };
 </script>
 
@@ -68,17 +46,10 @@ export default {
   color: rgba(255, 255, 255, 0.5);
 }
 
-img {
+.footer-icon {
   width: 20px;
   height: 20px;
-}
-
-.footer-double-icon-block > div {
-  display: flex;
-  align-items: center;
-}
-
-.footer-double-icon-block > div > img:last-child {
-  margin-left: 10px;
+  border-radius: 50%;
+  border: 1px solid #7581C5;
 }
 </style>
