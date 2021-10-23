@@ -77,6 +77,10 @@ Route::group(
                 Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
 
                 Route::post('map-constructor/import', 'MapConstructor@importFile');
+                Route::get('/ceo-module-state', 'ModuleStateController@ceoModuleState');
+                Route::get('/get-module-state', 'ModuleStateController@getStates');
+                Route::get('/get-module-header', 'ModuleStateController@getHeader');
+                Route::get('/ceo-module-state-input', 'ModuleStateController@ceoModuleStateInput');
             }
         );
         Auth::routes(

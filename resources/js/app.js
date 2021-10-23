@@ -244,6 +244,8 @@ Vue.component('water-flooding-management-forecasting', require('./components/wat
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
 Vue.component('upload-historical-data', require('./components/visualcenter3/historical/index.vue').default);
+Vue.component('ceo-module-state', require('./components/moduleState/index.vue').default);
+Vue.component('ceo-module-state-input', require('./components/moduleState/stateInput.vue').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
