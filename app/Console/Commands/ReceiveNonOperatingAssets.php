@@ -58,6 +58,7 @@ class receiveNonOperatingAssets extends Command
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
         'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
     );
+    private $date = null;
 
     /**
      * The console command description.
@@ -298,7 +299,7 @@ class receiveNonOperatingAssets extends Command
             $productionFieldName => $row[$columnMapping['oilProduction']],
             $deliveryFieldName => $row[$columnMapping['oilDelivery']],
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty')
+            'date' => $this->date
         );
     }
 
@@ -323,7 +324,7 @@ class receiveNonOperatingAssets extends Command
             'condensate_production_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateProduction']],
             'condensate_delivery_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty'),
+            'date' => $this->date,
             'oil_production_fact_absolute' => $row[$columnMapping['KPOoilProduction']],
             'oil_delivery_fact_absolute' => $row[$columnMapping['KPOoilDelivery']]
         );
@@ -345,7 +346,7 @@ class receiveNonOperatingAssets extends Command
             'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
             'oil_delivery_fact' => $deliverySummary,
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty'),
+            'date' => $this->date,
         );
     }
 
@@ -382,7 +383,10 @@ class receiveNonOperatingAssets extends Command
 
     public function insertDataToDB ($data)
     {
-        DzoImportData::create($data);
+        $newRec = DzoImportData::create($data);
+        $correctedDate = $newRec->created_at->addHour();
+        $newRec->created_at = $correctedDate;
+        $newRec->save();
     }
 
     /**
@@ -392,6 +396,7 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
+        $this->date = Carbon::now('Asia/Almaty')->subDays(1);
         $this->processGDUEmail();
         sleep(5);
         $this->processInboundEmail();
