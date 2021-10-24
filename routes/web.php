@@ -81,6 +81,7 @@ Route::group(
                 Route::get('/get-module-state', 'ModuleStateController@getStates');
                 Route::get('/get-module-header', 'ModuleStateController@getHeader');
                 Route::get('/ceo-module-state-input', 'ModuleStateController@ceoModuleStateInput');
+                Route::post('/store-module-state', 'ModuleStateController@storeStates');
             }
         );
         Auth::routes(

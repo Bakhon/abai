@@ -20,7 +20,19 @@ class ModuleStateController extends Controller
     public function getStates()
     {
         return ModuleState::query()
-            ->select()
+            ->select(
+                [
+                    'id',
+                    'name',
+                    'current_execution_percent',
+                    'current_ready_percent',
+                    'planning_execution_percent',
+                    'planning_ready_percent',
+                    'result',
+                    'is_header',
+                    'is_sub_section'
+                ]
+            )
             ->where('is_header', false)
             ->get()
             ->toArray();
@@ -28,8 +40,24 @@ class ModuleStateController extends Controller
     public function getHeader()
     {
         return ModuleState::query()
-            ->select()
+            ->select(['date','is_header'])
             ->where('is_header', true)
             ->first();
+    }
+    public function storeStates(Request $request)
+    {
+        $params = $request->request->all();
+        foreach($params['params']['states'] as $module) {
+            ModuleState::find($module['id'])->update($module);
+        }
+        $this->storeDate($params['params']['date']);
+    }
+    private function storeDate($updatedDate)
+    {
+        return ModuleState::query()
+            ->select()
+            ->where('is_header', true)
+            ->first()
+            ->update(['date' => $updatedDate]);
     }
 }

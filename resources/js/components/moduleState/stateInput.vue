@@ -1,6 +1,9 @@
 <template>
     <div class="page-wrapper">
         <div class="block-container">
+            <div class="d-flex p-3 justify-content-end">
+                <div class="menu-buttons p-2" @click="handleSaveStates()">Сохранить</div>
+            </div>
             <div class="row m-0 p-3 main-table">
                 <table class="col-12 module-state_table">
                     <tr>
@@ -111,63 +114,80 @@
 </template>
 
 <script>
-    import moment from "moment";
+import moment from "moment";
+import {globalloadingMutations} from '@store/helpers';
 
-    export default {
-        data: function () {
-            return {
-                rows: [],
-                date: null,
-                additionalWidth: 20,
-                lineHeight: 22,
-                bigElementLength: 65
+export default {
+    data: function () {
+        return {
+            rows: [],
+            date: null,
+            additionalWidth: 20,
+            lineHeight: 22,
+            bigElementLength: 65
+        };
+    },
+    methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+        async getStates() {
+            let uri = this.localeUrl("/get-module-state");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
+        async getHeader() {
+            let uri = this.localeUrl("/get-module-header");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data.date;
+        },
+        getIndex(rowIndex) {
+            if (rowIndex < 4) {
+                return rowIndex + 1;
+            } else if (rowIndex > 5) {
+                return rowIndex - 1;
+            } else {
+                return '';
+            }
+        },
+        getAreaHeight(comments) {
+            if (comments === null) {
+                return this.lineHeight;
+            }
+            let bitElementsCount = 0;
+            let splitted = comments.split('\n');
+            for (let i in splitted) {
+                if (splitted[i].length > this.bigElementLength) {
+                    bitElementsCount++;
+                }
+            }
+            return (splitted.length * this.lineHeight) + (bitElementsCount * this.additionalWidth);
+        },
+        async handleSaveStates() {
+            this.SET_LOADING(true);
+            let uri = this.localeUrl("/store-module-state");
+            let queryOptions = {
+                'states': this.rows,
+                'date': this.date
             };
-        },
-        methods: {
-            async getStates() {
-                let uri = this.localeUrl("/get-module-state");
-                const response = await axios.get(uri);
-                if (response.status !== 200) {
-                    return [];
-                }
-                return response.data;
-            },
-            async getHeader() {
-                let uri = this.localeUrl("/get-module-header");
-                const response = await axios.get(uri);
-                if (response.status !== 200) {
-                    return [];
-                }
-                return response.data.date;
-            },
-            getIndex(rowIndex) {
-                if (rowIndex < 4) {
-                    return rowIndex + 1;
-                } else if (rowIndex > 5) {
-                    return rowIndex - 1;
-                } else {
-                    return '';
-                }
-            },
-            getAreaHeight(comments) {
-                if (comments === null) {
-                    return this.lineHeight;
-                }
-                let bitElementsCount = 0;
-                let splitted = comments.split('\n');
-                for (let i in splitted) {
-                    if (splitted[i].length > this.bigElementLength) {
-                        bitElementsCount++;
-                    }
-                }
-                return (splitted.length * this.lineHeight) + (bitElementsCount * this.additionalWidth);
-            },
-        },
-        async mounted() {
-            this.rows = await this.getStates();
-            this.date = await this.getHeader();
+            await axios.post(uri, {params:queryOptions});
+            this.showToast('Данные успешно обновлены!', 'Успешно', 'success');
+            this.SET_LOADING(false);
         }
+    },
+    async mounted() {
+        this.SET_LOADING(true);
+        this.rows = await this.getStates();
+        this.date = await this.getHeader();
+        this.SET_LOADING(false);
     }
+}
 </script>
 
 <style scoped lang="scss">
@@ -280,5 +300,16 @@
 }
 .percent-indicator {
     margin-top: 5px;
+}
+.menu-buttons {
+    background: #656A8A;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.menu-buttons:hover {
+    background: #3A4280;
+    border-radius: 5px;
 }
 </style>
