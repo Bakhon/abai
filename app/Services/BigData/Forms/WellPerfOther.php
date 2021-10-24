@@ -5,22 +5,17 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use App\Traits\BigData\Forms\DepthValidationTrait;
 use Illuminate\Support\Facades\DB;
 
 class WellPerfOther extends WellPerf
 {
     protected $configurationFileName = 'well_perf_other';
-    use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
-            $errors['depth'] = trans('bd.validation.depth');
-        }
         if (!$this->isValidDate(
             $this->request->get('well'),
             $this->request->get('perf_date'),
