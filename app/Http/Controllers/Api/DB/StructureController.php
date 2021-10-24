@@ -3,10 +3,25 @@
 namespace App\Http\Controllers\Api\DB;
 
 use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 
 class StructureController
 {
+
+    public function getOrgIdsByWellId(StructureService $structureService, Well $well)
+    {
+        $orgIds = [];
+        $orgs = $well->orgs;
+        foreach ($orgs as $org) {
+            $orgWithParents = $structureService->getPath($org->id, 'org')->pluck('id')->toArray();
+            $orgIds = array_merge($orgIds, $orgWithParents);
+        }
+
+        return [
+            'orgs' => $orgIds
+        ];
+    }
 
     public function getDzo(StructureService $structureService)
     {
