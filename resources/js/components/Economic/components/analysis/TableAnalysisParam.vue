@@ -22,7 +22,7 @@ import SelectLog from "../SelectLog";
 import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
 
 export default {
-  name: "AnalysisParamTable",
+  name: "TableAnalysisParam",
   components: {
     VueTableDynamic,
     SelectLog

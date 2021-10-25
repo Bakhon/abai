@@ -21,7 +21,7 @@
         </a>
       </div>
 
-      <analysis-param-table
+      <table-analysis-param
           v-if="isVisibleEconomicTable"
           class="mt-2"/>
     </div>
@@ -47,7 +47,7 @@
         </a>
       </div>
 
-      <technical-well-forecast-table
+      <table-technical-well-forecast
           v-if="isVisibleTechTable"
           class="mt-2"/>
     </div>
@@ -59,15 +59,15 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
-import AnalysisParamTable from "../components/analysis/AnalysisParamTable";
-import TechnicalWellForecastTable from "../components/analysis/TechnicalWellForecastTable";
+import TableAnalysisParam from "../components/analysis/TableAnalysisParam";
+import TableTechnicalWellForecast from "../components/analysis/TableTechnicalWellForecast";
 
 export default {
   name: "economic-data-analysis-component",
   components: {
     VueTableDynamic,
-    AnalysisParamTable,
-    TechnicalWellForecastTable,
+    TableAnalysisParam,
+    TableTechnicalWellForecast,
   },
   data: () => ({
     EconomicDataLogTypeModel,

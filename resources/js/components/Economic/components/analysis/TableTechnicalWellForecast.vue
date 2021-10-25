@@ -22,7 +22,7 @@ import SelectLog from "../SelectLog";
 import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
 
 export default {
-  name: "TechnicalWellForecastTable",
+  name: "TableTechnicalWellForecast",
   components: {
     VueTableDynamic,
     SelectLog
