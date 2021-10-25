@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center">
-        <a href="{{ route('economic.well_forecast.index')}}"
+        <a href="{{ route('economic.analysis.input_params')}}"
            class="btn btn-info">
             {{ __('economic_reference.return_menu') }}
         </a>
@@ -37,7 +37,7 @@
 
         <form method="post"
               enctype="multipart/form-data"
-              action="{{ route('economic.well_forecast.import') }}">
+              action="{{ route('economic.technical.well_forecast.import') }}">
             {{ csrf_field() }}
             <div class="form-group">
                 <input type="file"
@@ -50,7 +50,7 @@
                         {{ __('economic_reference.upload')}}
                     </button>
 
-                    <a href="/eco_refs_well_forecast.xlsx"
+                    <a href="/technical_well_forecast.xlsx"
                        class="btn btn-primary float-right"
                        download>
                         {{ __('economic_reference.download_example')}}
