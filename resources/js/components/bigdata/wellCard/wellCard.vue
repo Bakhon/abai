@@ -725,7 +725,7 @@ export default {
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.liquid : null,
           'neigbor_2': this.well.measLiq != null ? this.well.measLiq.liquid.toFixed(1) : null,
           'name': 'Дебит жидкости, м3/сут (режим/факт)',
-          'data': ''
+          'data': '',
           'name': this.trans('well.injection_pressure'),
           'data': agentVol,
           'type': ['nag']
