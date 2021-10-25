@@ -242,6 +242,7 @@ import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
 
+
 const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
