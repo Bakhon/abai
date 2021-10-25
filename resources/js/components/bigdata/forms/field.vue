@@ -246,11 +246,15 @@ export default {
       return this.$store.getters['bdform/dict'](code);
     },
     changeDate(date) {
+
+      if (date === null) {
+        this.updateValue(null)
+        return
+      }
+
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:mm:ss Z')
         this.updateValue(formatedDate)
-      } else {
-        this.updateValue(null)
       }
     },
     updateValue(value) {

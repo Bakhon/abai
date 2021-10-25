@@ -227,10 +227,6 @@ export default {
     props: ['userId'],
     async mounted() {
         this.SET_LOADING(true);
-        this.fillPlanColumns();
-        this.fillPlanRows();
-        this.plans = await this.getDzoPlans();
-        this.handlePlans();
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
@@ -244,7 +240,11 @@ export default {
         if ( this.selectedDzo.ticker === 'КОА') {
             this.addColumnsToGrid();
         }
-
+        this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
+        this.fillPlanColumns();
+        this.fillPlanRows();
+        this.plans = await this.getDzoPlans();
+        this.handlePlans();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();

@@ -173,7 +173,9 @@ class GasProduction {
     private function getSortedByPlan($data)
     {
         $sorted = array_column($data, 'plan');
-        array_multisort($sorted, SORT_DESC, $data);
+        if (count($data) === count($sorted)) {
+            array_multisort($sorted, SORT_DESC, $data);
+        }
         return $data;
     }
 

@@ -28,10 +28,10 @@
             <div class="col-4"></div>
             <div class="row col-4 report-table">
                 <div class="col-6 p-2">
-                    Загружено записей: {{storedRecords}}
+                    Создано записей: {{operation.create}}
                 </div>
                 <div class="col-6 p-2">
-                    Ошибка при загрузке: {{errors}}
+                    Обновленно записей: {{operation.update}}
                 </div>
             </div>
             <div class="col-4"></div>
@@ -41,6 +41,7 @@
 
 <script>
     import moment from "moment-timezone";
+    import {globalloadingMutations} from '@store/helpers';
 
     export default {
         data: function () {
@@ -70,16 +71,21 @@
                 types: {
                     'OTM': 'DzoImportOtm',
                     'Химизация': 'DzoImportChemistry',
-                    'Производственные показатели': 'DzoImportData'
+                    'Производственные показатели': 'DzoImportData',
+                    'Причины простоя': 'DzoImportDowntimeReason'
+                },
+                operation: {
+                    create: 0,
+                    update: 0
                 }
             }
         },
         methods: {
             selectFile(event) {
                 this.inputFile = event.target.files[0];
-                console.log(this.inputFile);
             },
             async store() {
+                this.SET_LOADING(true);
                 let uri = this.localeUrl("/store-historical-data");
                 let formData = new FormData();
                 formData.append("file", this.inputFile);
@@ -90,13 +96,19 @@
                         'Content-Type': 'multipart/form-data',
                     }
                 }).then((response) => {
-                    if (response.status === 200) {
-                        console.log('200')
-                    } else {
-                        console.log('error')
+                    if (response.status !== 200) {
+                        this.showToast('Проверьте вложенный файл и тип данных.','Ошибка!','danger');
+                        return;
                     }
+                    this.showToast('Данные успешно сохранены/обновлены.','Успешно','success');
+                    this.operation.create = response.data.create;
+                    this.operation.update = response.data.update;
+                    this.SET_LOADING(false);
                 });
             },
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
         }
     }
 </script>

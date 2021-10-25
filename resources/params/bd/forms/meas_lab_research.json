@@ -1,9 +1,5 @@
 {
   "type": "table",
-  "edit": {
-    "active": true,
-    "form": "research_lab_research"
-  },
   "filter": [
     {
       "code": "research_type",
@@ -26,9 +22,17 @@
       "is_editable": false
     },
     {
-      "code": "oil_viscosity",
-      "column": "oil_viscosity",
-      "table": "prod.pvt_data",
+      "code": "OVC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OVC"
+          }
+        }
+      },
       "type": "float",
       "title": "oil",
       "validation": "gte:0|lte:1000000",
@@ -43,9 +47,17 @@
       "is_editable": true
     },
     {
-      "code": "water_viscosity",
-      "column": "water_viscosity",
-      "table": "prod.pvt_data",
+      "code": "WVC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WVC"
+          }
+        }
+      },
       "type": "float",
       "title": "water",
       "validation": "gte:0|lte:100000",
@@ -60,9 +72,17 @@
       "is_editable": true
     },
     {
-      "code": "volume_coef",
-      "column": "volume_coef",
-      "table": "prod.pvt_data",
+      "code": "VOCF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VOCF"
+          }
+        }
+      },
       "type": "float",
       "title": "volume",
       "validation": "gte:0.9|lte:10",
@@ -77,9 +97,17 @@
       "is_editable": true
     },
     {
-      "code": "oil_density",
-      "column": "oil_density",
-      "table": "prod.pvt_data",
+      "code": "ODEN",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ODEN"
+          }
+        }
+      },
       "type": "float",
       "title": "r_oil",
       "validation": "gte:0.7|lte:1.05",
@@ -94,9 +122,17 @@
       "is_editable": true
     },
     {
-      "code": "water_density",
-      "column": "water_density",
-      "table": "prod.pvt_data",
+      "code": "WDEN",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WDEN"
+          }
+        }
+      },
       "type": "float",
       "title": "r_water",
       "validation": "gte:0.7|lte:2",
@@ -111,9 +147,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_pressure",
-      "column": "gas_pressure",
-      "table": "prod.pvt_data",
+      "code": "OGPS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OGPS"
+          }
+        }
+      },
       "type": "float",
       "title": "pnac",
       "validation": "gte:0|lte:1500",
@@ -128,9 +172,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_factor",
-      "column": "gas_factor",
-      "table": "prod.pvt_data",
+      "code": "GFM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GFM"
+          }
+        }
+      },
       "type": "float",
       "title": "gf",
       "validation": "gte:0",
@@ -145,9 +197,17 @@
       "is_editable": true
     },
     {
-      "code": "temp_pl",
-      "column": "temp_pl",
-      "table": "prod.pvt_data",
+      "code": "TRS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TRS"
+          }
+        }
+      },
       "type": "float",
       "title": "tpl",
       "validation": "gte:0|lte:250",
@@ -162,9 +222,17 @@
       "is_editable": true
     },
     {
-      "code": "res_pressure",
-      "column": "res_pressure",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "RP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RP"
+          }
+        }
+      },
       "type": "float",
       "title": "pres_plast",
       "validation": "gte:0|lte: 200",
@@ -179,9 +247,17 @@
       "is_editable": true
     },
     {
-      "code": "res_temp",
-      "column": "res_temp",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TRS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TRS"
+          }
+        }
+      },
       "type": "float",
       "title": "temp_plast",
       "validation": "gte:0|lte: 250",
@@ -196,9 +272,17 @@
       "is_editable": true
     },
     {
-      "code": "sat_press_oil_gas",
-      "column": "sat_press_oil_gas",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "OGPS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OGPS"
+          }
+        }
+      },
       "type": "float",
       "title": "pres_gas",
       "validation": "gte:0|lte:150",
@@ -213,9 +297,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_share_m3t",
-      "column": "gas_share_m3t",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GSR",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GSR"
+          }
+        }
+      },
       "type": "float",
       "title": "gas_t",
       "validation": "gte:0|lte:1000000",
@@ -230,9 +322,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_share_m3m3",
-      "column": "gas_share_m3m3",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GSRM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GSRM"
+          }
+        }
+      },
       "type": "float",
       "title": "gas_m3",
       "validation": "gte:0|lte:1000000",
@@ -247,9 +347,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_volume_coef",
-      "column": "stand_sep_volume_coef",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "VCSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VCSS"
+          }
+        }
+      },
       "type": "float",
       "title": "koeff",
       "validation": "gte:0.9|lte:10",
@@ -264,9 +372,17 @@
       "is_editable": true
     },
     {
-      "code": "shrinkage",
-      "column": "shrinkage",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SHRN",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SHRN"
+          }
+        }
+      },
       "type": "float",
       "title": "usadka",
       "validation": "gte:0",
@@ -281,9 +397,17 @@
       "is_editable": true
     },
     {
-      "code": "sol_coef_gas_oil",
-      "column": "sol_coef_gas_oil",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SCGO",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SCGO"
+          }
+        }
+      },
       "type": "float",
       "title": "k_gasoil",
       "validation": "gte:0",
@@ -298,9 +422,17 @@
       "is_editable": true
     },
     {
-      "code": "comp_coef_res_oil",
-      "column": "comp_coef_res_oil",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SFRO",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SFRO"
+          }
+        }
+      },
       "type": "float",
       "title": "k_plastoil",
       "validation": "gte:0.0001|lte:0.05",
@@ -315,9 +447,17 @@
       "is_editable": true
     },
     {
-      "code": "res_oil_viscosity",
-      "column": "res_oil_viscosity",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ROV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ROV"
+          }
+        }
+      },
       "type": "float",
       "title": "plast_oil",
       "validation": "gte:0.7|lte: 1000000",
@@ -332,9 +472,17 @@
       "is_editable": true
     },
     {
-      "code": "res_oil_density",
-      "column": "res_oil_density",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ROD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ROD"
+          }
+        }
+      },
       "type": "float",
       "title": "density_oil",
       "validation": "gte:0.7|lte:1.05",
@@ -349,9 +497,17 @@
       "is_editable": true
     },
     {
-      "code": "sep_oil_density20c",
-      "column": "sep_oil_density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SOD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SOD"
+          }
+        }
+      },
       "type": "float",
       "title": "density_20",
       "validation": "gte:0.5|lte:1.1",
@@ -366,9 +522,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_density20c",
-      "column": "gas_density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GTD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GTD"
+          }
+        }
+      },
       "type": "float",
       "title": "density_gas_20",
       "validation": "gte:0.0001|lte:0.01",
@@ -383,9 +547,17 @@
       "is_editable": true
     },
     {
-      "code": "water_share",
-      "column": "water_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "WATC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WATC"
+          }
+        }
+      },
       "type": "float",
       "title": "water_share",
       "validation": "gte:0|lte:100",
@@ -400,9 +572,17 @@
       "is_editable": true
     },
     {
-      "code": "dehyd_water_share",
-      "column": "dehyd_water_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ADWS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ADWS"
+          }
+        }
+      },
       "type": "float",
       "title": "dehyd_water_share",
       "validation": "gte:0|lte:100",
@@ -417,9 +597,17 @@
       "is_editable": true
     },
     {
-      "code": "density20c",
-      "column": "density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TDD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TDD"
+          }
+        }
+      },
       "type": "float",
       "title": "density20c",
       "validation": "gte:0.5|lte:1.1",
@@ -434,9 +622,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_40c",
-      "column": "cinem_visc_40c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVTF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVTF"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_40c",
       "validation": "gte:0",
@@ -451,9 +647,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_50c",
-      "column": "cinem_visc_50c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVFF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVFF"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_50c",
       "validation": "gte:0",
@@ -468,9 +672,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_60c",
-      "column": "cinem_visc_60c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVTS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVTS"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_60c",
       "validation": "gte:0",
@@ -485,9 +697,17 @@
       "is_editable": true
     },
     {
-      "code": "solid_temp",
-      "column": "solid_temp",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CTC"
+          }
+        }
+      },
       "type": "float",
       "title": "solid_temp",
       "validation": "gte:-100|lte:100",
@@ -502,9 +722,17 @@
       "is_editable": true
     },
     {
-      "code": "molecular_weight",
-      "column": "molecular_weight",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "MLW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MLW"
+          }
+        }
+      },
       "type": "float",
       "title": "molecular_weight",
       "validation": "gte:0",
@@ -519,9 +747,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_share",
-      "column": "sulf_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TSS"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_share",
       "validation": "gte:0|lte:100",
@@ -536,9 +772,17 @@
       "is_editable": true
     },
     {
-      "code": "res_pressure",
-      "column": "res_pressure",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "RP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RP"
+          }
+        }
+      },
       "type": "float",
       "title": "pres_plast",
       "validation": "gte:0|lte:200",
@@ -553,9 +797,17 @@
       "is_editable": true
     },
     {
-      "code": "res_temp",
-      "column": "res_temp",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TRS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TRS"
+          }
+        }
+      },
       "type": "float",
       "title": "temp_plast",
       "validation": "gte:0|lte:250",
@@ -570,9 +822,17 @@
       "is_editable": true
     },
     {
-      "code": "sat_press_oil_gas",
-      "column": "sat_press_oil_gas",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "OGPS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OGPS"
+          }
+        }
+      },
       "type": "float",
       "title": "pres_gas",
       "validation": "gte:0|lte:150",
@@ -587,9 +847,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_share_m3t",
-      "column": "gas_share_m3t",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GSR",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GSR"
+          }
+        }
+      },
       "type": "float",
       "title": "gas_t",
       "validation": "gte:0|lte:1000000",
@@ -604,9 +872,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_share_m3m3",
-      "column": "gas_share_m3m3",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GSRM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GSRM"
+          }
+        }
+      },
       "type": "float",
       "title": "gas_m3",
       "validation": "gte:0|lte:1000000",
@@ -621,9 +897,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_volume_coef",
-      "column": "stand_sep_volume_coef",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "VCSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VCSS"
+          }
+        }
+      },
       "type": "float",
       "title": "koeff",
       "validation": "gte:0.9|lte:10",
@@ -638,9 +922,17 @@
       "is_editable": true
     },
     {
-      "code": "shrinkage",
-      "column": "shrinkage",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SHRN",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SHRN"
+          }
+        }
+      },
       "type": "float",
       "title": "usadka",
       "validation": "gte:0",
@@ -655,9 +947,17 @@
       "is_editable": true
     },
     {
-      "code": "sol_coef_gas_oil",
-      "column": "sol_coef_gas_oil",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SCGO",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SCGO"
+          }
+        }
+      },
       "type": "float",
       "title": "k_gasoil",
       "validation": "gte:0",
@@ -672,9 +972,17 @@
       "is_editable": true
     },
     {
-      "code": "comp_coef_res_oil",
-      "column": "comp_coef_res_oil",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SFRO",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SFRO"
+          }
+        }
+      },
       "type": "float",
       "title": "k_plastoil",
       "validation": "gte:0.0001|lte:0.05",
@@ -689,9 +997,17 @@
       "is_editable": true
     },
     {
-      "code": "res_oil_viscosity",
-      "column": "res_oil_viscosity",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ROV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ROV"
+          }
+        }
+      },
       "type": "float",
       "title": "plast_oil",
       "validation": "gte:0|lte:1000000",
@@ -706,9 +1022,17 @@
       "is_editable": true
     },
     {
-      "code": "res_oil_density",
-      "column": "res_oil_density",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ROD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ROD"
+          }
+        }
+      },
       "type": "float",
       "title": "density_oil",
       "validation": "gte:0.7|lte:1.05",
@@ -723,9 +1047,17 @@
       "is_editable": true
     },
     {
-      "code": "sep_oil_density20c",
-      "column": "sep_oil_density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "SOD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SOD"
+          }
+        }
+      },
       "type": "float",
       "title": "density_20",
       "validation": "gte:0.5|lte:1.1",
@@ -740,9 +1072,17 @@
       "is_editable": true
     },
     {
-      "code": "gas_density20c",
-      "column": "gas_density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "GTD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GTD"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0.0001|lte:0.01",
       "title": "density_gas_20",
@@ -757,9 +1097,17 @@
       "is_editable": true
     },
     {
-      "code": "water_share",
-      "column": "water_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "WATC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WATC"
+          }
+        }
+      },
       "type": "float",
       "title": "water_share",
       "validation": "gte:0|lte:100",
@@ -774,9 +1122,17 @@
       "is_editable": true
     },
     {
-      "code": "dehyd_water_share",
-      "column": "dehyd_water_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "ADWS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ADWS"
+          }
+        }
+      },
       "type": "float",
       "title": "dehyd_water_share",
       "validation": "gte:0|lte:100",
@@ -791,9 +1147,17 @@
       "is_editable": true
     },
     {
-      "code": "density20c",
-      "column": "density20c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TDD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TDD"
+          }
+        }
+      },
       "type": "float",
       "title": "density20c",
       "validation": "gte:0.5|lte:1.1",
@@ -808,9 +1172,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_40c",
-      "column": "cinem_visc_40c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVTF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVTF"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_40c",
       "validation": "gte:0",
@@ -825,9 +1197,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_50c",
-      "column": "cinem_visc_50c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVFF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVFF"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_50c",
       "validation": "gte:0",
@@ -842,9 +1222,17 @@
       "is_editable": true
     },
     {
-      "code": "cinem_visc_60c",
-      "column": "cinem_visc_60c",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CVTS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVTS"
+          }
+        }
+      },
       "type": "float",
       "title": "cinem_visc_60c",
       "validation": "gte:0",
@@ -859,9 +1247,17 @@
       "is_editable": true
     },
     {
-      "code": "solid_temp",
-      "column": "solid_temp",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "CTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CTC"
+          }
+        }
+      },
       "type": "float",
       "title": "solid_temp",
       "validation": "gte:-100|lte:100",
@@ -876,9 +1272,17 @@
       "is_editable": true
     },
     {
-      "code": "molecular_weight",
-      "column": "molecular_weight",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "MLW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MLW"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0",
       "title": "molecular_weight",
@@ -893,9 +1297,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_share",
-      "column": "sulf_share",
-      "table": "prod.reservoir_oil_prob_analysis",
+      "code": "TSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TSS"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_share",
       "validation": "gte:0|lte:100",
@@ -910,9 +1322,17 @@
       "is_editable": true
     },
     {
-      "code": "water_share",
-      "column": "water_share",
-      "table": "prod.produced_water_analysis",
+      "code": "HTO",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HTO"
+          }
+        }
+      },
       "type": "float",
       "title": "water_sh",
       "validation": "gte:0|lte:100",
@@ -927,9 +1347,17 @@
       "is_editable": true
     },
     {
-      "code": "water_density",
-      "column": "water_density",
-      "table": "prod.produced_water_analysis",
+      "code": "PGC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PGC"
+          }
+        }
+      },
       "type": "float",
       "title": "water_density",
       "depends_on": [
@@ -943,9 +1371,17 @@
       "is_editable": true
     },
     {
-      "code": "ca_share",
-      "column": "ca_share",
-      "table": "prod.produced_water_analysis",
+      "code": "CAS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CAS"
+          }
+        }
+      },
       "type": "float",
       "title": "ca_share",
       "validation": "gte:0|lte:1000000",
@@ -960,9 +1396,17 @@
       "is_editable": true
     },
     {
-      "code": "cl_share",
-      "column": "cl_share",
-      "table": "prod.produced_water_analysis",
+      "code": "CLS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CLS"
+          }
+        }
+      },
       "type": "float",
       "title": "cl_share",
       "validation": "gte:0|lte:1000000",
@@ -977,9 +1421,17 @@
       "is_editable": true
     },
     {
-      "code": "mg_share",
-      "column": "mg_share",
-      "table": "prod.produced_water_analysis",
+      "code": "MGS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MGS"
+          }
+        }
+      },
       "type": "float",
       "title": "mg_share",
       "validation": "gte:0|lte:1000000",
@@ -994,9 +1446,17 @@
       "is_editable": true
     },
     {
-      "code": "salt_types",
-      "column": "salt_types",
-      "table": "prod.produced_water_analysis",
+      "code": "STT",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "STT"
+          }
+        }
+      },
       "type": "text",
       "title": "salt_types",
       "depends_on": [
@@ -1010,9 +1470,17 @@
       "is_editable": true
     },
     {
-      "code": "comments",
-      "column": "comments",
-      "table": "prod.produced_water_analysis",
+      "code": "COM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "COM"
+          }
+        }
+      },
       "type": "text",
       "title": "comments",
       "depends_on": [
@@ -1026,9 +1494,17 @@
       "is_editable": true
     },
     {
-      "code": "sea_water_share",
-      "column": "sea_water_share",
-      "table": "prod.produced_water_analysis",
+      "code": "SWC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SWC"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0",
       "title": "sea_water_share",
@@ -1043,9 +1519,17 @@
       "is_editable": true
     },
     {
-      "code": "alb_water_share",
-      "column": "alb_water_share",
-      "table": "prod.produced_water_analysis",
+      "code": "WAS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "WAS"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0",
       "title": "alb_water_share",
@@ -1060,9 +1544,17 @@
       "is_editable": true
     },
     {
-      "code": "res_water_share",
-      "column": "res_water_share",
-      "table": "prod.produced_water_analysis",
+      "code": "RWS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RWS"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0",
       "title": "res_water_share",
@@ -1077,9 +1569,17 @@
       "is_editable": true
     },
     {
-      "code": "mech_mixtures",
-      "column": "mech_mixtures",
-      "table": "prod.produced_water_analysis",
+      "code": "MIMP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MIMP"
+          }
+        }
+      },
       "type": "float",
       "title": "mech_mixtures",
       "validation": "gte:0|lte:100",
@@ -1094,9 +1594,17 @@
       "is_editable": true
     },
     {
-      "code": "sat_pressure",
-      "column": "sat_pressure",
-      "table": "prod.res_oil_char",
+      "code": "SATP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SATP"
+          }
+        }
+      },
       "type": "float",
       "title": "sat_pressure",
       "validation": "gte:0|lte:150",
@@ -1111,9 +1619,17 @@
       "is_editable": true
     },
     {
-      "code": "comp_coef",
-      "column": "comp_coef",
-      "table": "prod.res_oil_char",
+      "code": "CVOL",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CVOL"
+          }
+        }
+      },
       "type": "float",
       "title": "comp_coef",
       "validation": "gte:0.0001|lte:0.05",
@@ -1128,9 +1644,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_gas_share",
-      "column": "stand_sep_gas_share",
-      "table": "prod.res_oil_char",
+      "code": "SSGS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSGS"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_sep_gas_share",
       "validation": "gte:0|lte:10000000",
@@ -1145,9 +1669,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_volume_coef",
-      "column": "stand_sep_volume_coef",
-      "table": "prod.res_oil_char",
+      "code": "SSVC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSVC"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_sep_volume_coef",
       "validation": "gte:0.9|lte:10",
@@ -1162,9 +1694,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_res_oil_density",
-      "column": "stand_sep_res_oil_density",
-      "table": "prod.res_oil_char",
+      "code": "SSOD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSOD"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_sep_res_oil_density",
       "validation": "gte:0.7|lte:1.05",
@@ -1179,9 +1719,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_sep_oil_density",
-      "column": "stand_sep_sep_oil_density",
-      "table": "prod.res_oil_char",
+      "code": "SSSD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSSD"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_sep_sep_oil_density",
       "validation": "gte:0.5|lte:1.1",
@@ -1196,9 +1744,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_sep_sep_gas_density",
-      "column": "stand_sep_sep_gas_density",
-      "table": "prod.res_oil_char",
+      "code": "SSGD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSGD"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_sep_sep_gas_density",
       "validation": "gte:0.0001|lte:0.01",
@@ -1213,9 +1769,17 @@
       "is_editable": true
     },
     {
-      "code": "step_sep_gas_factor",
-      "column": "step_sep_gas_factor",
-      "table": "prod.res_oil_char",
+      "code": "SSGF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSGF"
+          }
+        }
+      },
       "type": "float",
       "title": "step_sep_gas_factor",
       "validation": "gte:0",
@@ -1230,9 +1794,17 @@
       "is_editable": true
     },
     {
-      "code": "step_sep_volume_coef",
-      "column": "step_sep_volume_coef",
-      "table": "prod.res_oil_char",
+      "code": "SSV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSV"
+          }
+        }
+      },
       "type": "float",
       "title": "step_sep_volume_coef",
       "validation": "gte:0.9|lte:10",
@@ -1247,9 +1819,17 @@
       "is_editable": true
     },
     {
-      "code": "step_sep_sep_oil_density",
-      "column": "step_sep_sep_oil_density",
-      "table": "prod.res_oil_char",
+      "code": "SSPD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SSPD"
+          }
+        }
+      },
       "type": "float",
       "title": "step_sep_sep_oil_density",
       "validation": "gte:0.5|lte:1.1",
@@ -1264,9 +1844,17 @@
       "is_editable": true
     },
     {
-      "code": "res_oil_viscosity",
-      "column": "res_oil_viscosity",
-      "table": "prod.res_oil_char",
+      "code": "ROV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ROV"
+          }
+        }
+      },
       "type": "float",
       "title": "res_oil_viscosity",
       "validation": "gte:0|lte:10000000",
@@ -1281,9 +1869,17 @@
       "is_editable": true
     },
     {
-      "code": "paraf_sat_temp",
-      "column": "paraf_sat_temp",
-      "table": "prod.res_oil_char",
+      "code": "PSTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PSTC"
+          }
+        }
+      },
       "type": "float",
       "title": "paraf_sat_temp",
       "validation": "gte:0",
@@ -1298,9 +1894,17 @@
       "is_editable": true
     },
     {
-      "code": "horizone",
-      "column": "horizone",
-      "table": "prod.surf_oil_characteristics",
+      "code": "HOR",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HOR"
+          }
+        }
+      },
       "type": "float",
       "title": "horizone",
       "depends_on": [
@@ -1314,9 +1918,17 @@
       "is_editable": true
     },
     {
-      "code": "depth",
-      "column": "depth",
-      "table": "prod.surf_oil_characteristics",
+      "code": "DEP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "DEP"
+          }
+        }
+      },
       "type": "float",
       "title": "depth",
       "validation": "lte:10000",
@@ -1331,9 +1943,17 @@
       "is_editable": true
     },
     {
-      "code": "viscosity_20c",
-      "column": "viscosity_20c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "VTW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VTW"
+          }
+        }
+      },
       "type": "float",
       "title": "viscosity_20c",
       "validation": "gte:0",
@@ -1348,9 +1968,17 @@
       "is_editable": true
     },
     {
-      "code": "viscosity_50c",
-      "column": "viscosity_50c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "VFF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VFF"
+          }
+        }
+      },
       "type": "float",
       "title": "viscosity_50c",
       "validation": "gte:0",
@@ -1365,9 +1993,17 @@
       "is_editable": true
     },
     {
-      "code": "solid_temp",
-      "column": "solid_temp",
-      "table": "prod.surf_oil_characteristics",
+      "code": "CTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CTC"
+          }
+        }
+      },
       "type": "float",
       "title": "solid_temp",
       "validation": "gte:-100|lte:100",
@@ -1382,9 +2018,17 @@
       "is_editable": true
     },
     {
-      "code": "paraf_sat_temp",
-      "column": "paraf_sat_temp",
-      "table": "prod.surf_oil_characteristics",
+      "code": "PSTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PSTC"
+          }
+        }
+      },
       "type": "float",
       "title": "paraf_sat_temp",
       "validation": "gte:0",
@@ -1399,9 +2043,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_weight",
-      "column": "sulf_weight",
-      "table": "prod.surf_oil_characteristics",
+      "code": "SFW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SFW"
+          }
+        }
+      },
       "type": "float",
       "validation": "gte:0",
       "title": "sulf_weight",
@@ -1416,9 +2068,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_share",
-      "column": "sulf_share",
-      "table": "prod.surf_oil_characteristics",
+      "code": "SULF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SULF"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_share",
       "validation": "gte:0|lte:100",
@@ -1433,9 +2093,17 @@
       "is_editable": true
     },
     {
-      "code": "selik_smol_weight",
-      "column": "selik_smol_weight",
-      "table": "prod.surf_oil_characteristics",
+      "code": "SELW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SELW"
+          }
+        }
+      },
       "type": "float",
       "title": "selik_smol_weight",
       "validation": "gte:0",
@@ -1450,9 +2118,17 @@
       "is_editable": true
     },
     {
-      "code": "selik_smol_share",
-      "column": "selik_smol_share",
-      "table": "prod.surf_oil_characteristics",
+      "code": "SELS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SELS"
+          }
+        }
+      },
       "type": "float",
       "title": "selik_smol_share",
       "validation": "gte:0|lte:100",
@@ -1467,9 +2143,17 @@
       "is_editable": true
     },
     {
-      "code": "asphalten_weight",
-      "column": "asphalten_weight",
-      "table": "prod.surf_oil_characteristics",
+      "code": "ASPW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ASPW"
+          }
+        }
+      },
       "type": "float",
       "title": "asphalten_weight",
       "validation": "gte:0",
@@ -1484,9 +2168,17 @@
       "is_editable": true
     },
     {
-      "code": "asphalten_share",
-      "column": "asphalten_share",
-      "table": "prod.surf_oil_characteristics",
+      "code": "ASPS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ASPS"
+          }
+        }
+      },
       "type": "float",
       "title": "asphalten_share",
       "validation": "gte:0|lte:100",
@@ -1501,9 +2193,17 @@
       "is_editable": true
     },
     {
-      "code": "paraf_weight",
-      "column": "paraf_weight",
-      "table": "prod.surf_oil_characteristics",
+      "code": "PARW",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PARW"
+          }
+        }
+      },
       "type": "float",
       "title": "paraf_weight",
       "validation": "gte:0",
@@ -1518,9 +2218,17 @@
       "is_editable": true
     },
     {
-      "code": "paraf_share",
-      "column": "paraf_share",
-      "table": "prod.surf_oil_characteristics",
+      "code": "PARS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PARS"
+          }
+        }
+      },
       "type": "float",
       "title": "paraf_share",
       "validation": "gte:0|lte:100",
@@ -1535,9 +2243,17 @@
       "is_editable": true
     },
     {
-      "code": "fractions_100c",
-      "column": "fractions_100c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "FRAC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FRAC"
+          }
+        }
+      },
       "type": "float",
       "title": "fractions_100c",
       "validation": "gte:0|lte:100",
@@ -1552,9 +2268,17 @@
       "is_editable": true
     },
     {
-      "code": "fractions_150c",
-      "column": "fractions_150c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "FRCV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FRCV"
+          }
+        }
+      },
       "type": "float",
       "title": "fractions_150c",
       "validation": "gte:0|lte:100",
@@ -1569,9 +2293,17 @@
       "is_editable": true
     },
     {
-      "code": "fractions_200c",
-      "column": "fractions_200c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "FRCC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FRCC"
+          }
+        }
+      },
       "type": "float",
       "title": "fractions_200c",
       "validation": "gte:0|lte:100",
@@ -1586,9 +2318,17 @@
       "is_editable": true
     },
     {
-      "code": "fractions_300c",
-      "column": "fractions_300c",
-      "table": "prod.surf_oil_characteristics",
+      "code": "FRTC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FRTC"
+          }
+        }
+      },
       "type": "float",
       "title": "fractions_300c",
       "validation": "gte:0|lte:100",
@@ -1603,9 +2343,17 @@
       "is_editable": true
     },
     {
-      "code": "cond_begin_pressure",
-      "column": "cond_begin_pressure",
-      "table": "prod.res_gas_char",
+      "code": "CBP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CBP"
+          }
+        }
+      },
       "type": "float",
       "title": "cond_begin_pressure",
       "validation": "gte:0|lte:150",
@@ -1620,9 +2368,17 @@
       "is_editable": true
     },
     {
-      "code": "density",
-      "column": "density",
-      "table": "prod.res_gas_char",
+      "code": "DENS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "DENS"
+          }
+        }
+      },
       "type": "float",
       "title": "density",
       "validation": "gte:0|lte:1",
@@ -1637,9 +2393,17 @@
       "is_editable": true
     },
     {
-      "code": "sep_volume_coef",
-      "column": "sep_volume_coef",
-      "table": "prod.res_gas_char",
+      "code": "VCSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VCSS"
+          }
+        }
+      },
       "type": "float",
       "title": "sep_volume_coef",
       "validation": "gte:0|lte:500",
@@ -1654,9 +2418,17 @@
       "is_editable": true
     },
     {
-      "code": "viscosity",
-      "column": "viscosity",
-      "table": "prod.res_gas_char",
+      "code": "VISC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VISC"
+          }
+        }
+      },
       "type": "float",
       "title": "viscosity",
       "validation": "gte:0|lte:10",
@@ -1671,9 +2443,17 @@
       "is_editable": true
     },
     {
-      "code": "stable_cond_share",
-      "column": "stable_cond_share",
-      "table": "prod.res_gas_char",
+      "code": "SCD",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SCD"
+          }
+        }
+      },
       "type": "float",
       "title": "stable_cond_share",
       "validation": "gte:0",
@@ -1688,9 +2468,17 @@
       "is_editable": true
     },
     {
-      "code": "cond_sep_factor",
-      "column": "cond_sep_factor",
-      "table": "prod.res_gas_char",
+      "code": "CFSC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CFSC"
+          }
+        }
+      },
       "type": "float",
       "title": "cond_sep_factor",
       "validation": "gte:0",
@@ -1705,9 +2493,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_hydro_mol",
-      "column": "sulf_hydro_mol",
-      "table": "prod.petro_gas_char",
+      "code": "HSM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HSM"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_hydro_mol",
       "validation": "gte:0",
@@ -1722,9 +2518,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_hydro_share",
-      "column": "sulf_hydro_share",
-      "table": "prod.petro_gas_char",
+      "code": "HSS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HSS"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_hydro_share",
       "validation": "gte:0|lte:100",
@@ -1739,9 +2543,17 @@
       "is_editable": true
     },
     {
-      "code": "co2_mol",
-      "column": "co2_mol",
-      "table": "prod.petro_gas_char",
+      "code": "MCOT",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MCOT"
+          }
+        }
+      },
       "type": "float",
       "title": "co2_mol",
       "validation": "gte:0",
@@ -1756,9 +2568,17 @@
       "is_editable": true
     },
     {
-      "code": "co2_share",
-      "column": "co2_share",
-      "table": "prod.petro_gas_char",
+      "code": "MCOS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MCOS"
+          }
+        }
+      },
       "type": "float",
       "title": "co2_share",
       "validation": "gte:0|lte:100",
@@ -1773,9 +2593,17 @@
       "is_editable": true
     },
     {
-      "code": "nitro_rare_mol",
-      "column": "nitro_rare_mol",
-      "table": "prod.petro_gas_char",
+      "code": "RNM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RNM"
+          }
+        }
+      },
       "type": "float",
       "title": "nitro_rare_mol",
       "validation": "gte:0",
@@ -1790,9 +2618,17 @@
       "is_editable": true
     },
     {
-      "code": "nitro_rare_share",
-      "column": "nitro_rare_share",
-      "table": "prod.petro_gas_char",
+      "code": "RNS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RNS"
+          }
+        }
+      },
       "type": "float",
       "title": "nitro_rare_share",
       "validation": "gte:0|lte:100",
@@ -1807,9 +2643,17 @@
       "is_editable": true
     },
     {
-      "code": "metan_mol",
-      "column": "metan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "CHFM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CHFM"
+          }
+        }
+      },
       "type": "float",
       "title": "metan_mol",
       "validation": "gte:0",
@@ -1824,9 +2668,17 @@
       "is_editable": true
     },
     {
-      "code": "metan_share",
-      "column": "metan_share",
-      "table": "prod.petro_gas_char",
+      "code": "CHFS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CHFS"
+          }
+        }
+      },
       "type": "float",
       "title": "metan_share",
       "validation": "gte:0|lte:100",
@@ -1841,9 +2693,17 @@
       "is_editable": true
     },
     {
-      "code": "etan_mol",
-      "column": "etan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "ETHM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ETHM"
+          }
+        }
+      },
       "type": "float",
       "title": "etan_mol",
       "validation": "gte:0",
@@ -1858,9 +2718,17 @@
       "is_editable": true
     },
     {
-      "code": "etan_share",
-      "column": "etan_share",
-      "table": "prod.petro_gas_char",
+      "code": "ETHS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ETHS"
+          }
+        }
+      },
       "type": "float",
       "title": "etan_share",
       "validation": "gte:0|lte:100",
@@ -1875,9 +2743,17 @@
       "is_editable": true
     },
     {
-      "code": "propan_mol",
-      "column": "propan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "PROM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PROM"
+          }
+        }
+      },
       "type": "float",
       "title": "propan_mol",
       "validation": "gte:0",
@@ -1892,9 +2768,17 @@
       "is_editable": true
     },
     {
-      "code": "propan_share",
-      "column": "propan_share",
-      "table": "prod.petro_gas_char",
+      "code": "PROS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PROS"
+          }
+        }
+      },
       "type": "float",
       "title": "propan_share",
       "validation": "gte:0|lte:100",
@@ -1909,9 +2793,17 @@
       "is_editable": true
     },
     {
-      "code": "isobutan_mol",
-      "column": "isobutan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "ISOM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ISOM"
+          }
+        }
+      },
       "type": "float",
       "title": "isobutan_mol",
       "validation": "gte:0",
@@ -1926,9 +2818,17 @@
       "is_editable": true
     },
     {
-      "code": "isobutan_share",
-      "column": "isobutan_share",
-      "table": "prod.petro_gas_char",
+      "code": "ISOS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ISOS"
+          }
+        }
+      },
       "type": "float",
       "title": "isobutan_share",
       "validation": "gte:0|lte:100",
@@ -1943,9 +2843,17 @@
       "is_editable": true
     },
     {
-      "code": "h_butan_mol",
-      "column": "h_butan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "HBM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HBM"
+          }
+        }
+      },
       "type": "float",
       "title": "h_butan_mol",
       "validation": "gte:0",
@@ -1960,9 +2868,17 @@
       "is_editable": true
     },
     {
-      "code": "h_butan_share",
-      "column": "h_butan_share",
-      "table": "prod.petro_gas_char",
+      "code": "HBS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HBS"
+          }
+        }
+      },
       "type": "float",
       "title": "h_butan_share",
       "validation": "gte:0|lte:100",
@@ -1977,9 +2893,17 @@
       "is_editable": true
     },
     {
-      "code": "heksan_mol",
-      "column": "heksan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "HEXM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HEXM"
+          }
+        }
+      },
       "type": "float",
       "title": "heksan_mol",
       "validation": "gte:0",
@@ -1994,9 +2918,17 @@
       "is_editable": true
     },
     {
-      "code": "heksan_share",
-      "column": "heksan_share",
-      "table": "prod.petro_gas_char",
+      "code": "HEXS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HEXS"
+          }
+        }
+      },
       "type": "float",
       "title": "heksan_share",
       "validation": "gte:0|lte:100",
@@ -2011,9 +2943,17 @@
       "is_editable": true
     },
     {
-      "code": "heptan_mol",
-      "column": "heptan_mol",
-      "table": "prod.petro_gas_char",
+      "code": "HEPM",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HEPM"
+          }
+        }
+      },
       "type": "float",
       "title": "heptan_mol",
       "validation": "gte:0",
@@ -2028,9 +2968,17 @@
       "is_editable": true
     },
     {
-      "code": "heptan_share",
-      "column": "heptan_share",
-      "table": "prod.petro_gas_char",
+      "code": "HEPS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HEPS"
+          }
+        }
+      },
       "type": "float",
       "title": "heptan_share",
       "validation": "gte:0|lte:100",
@@ -2045,9 +2993,17 @@
       "is_editable": true
     },
     {
-      "code": "resid_mol",
-      "column": "resid_mol",
-      "table": "prod.petro_gas_char",
+      "code": "RESS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RESS"
+          }
+        }
+      },
       "type": "float",
       "title": "resid_mol",
       "validation": "gte:0",
@@ -2062,9 +3018,17 @@
       "is_editable": true
     },
     {
-      "code": "resid_share",
-      "column": "resid_share",
-      "table": "prod.petro_gas_char",
+      "code": "RSSP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RSSP"
+          }
+        }
+      },
       "type": "float",
       "title": "resid_share",
       "validation": "gte:0|lte:100",
@@ -2079,9 +3043,17 @@
       "is_editable": true
     },
     {
-      "code": "molar_mol",
-      "column": "molar_mol",
-      "table": "prod.petro_gas_char",
+      "code": "MMT",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MMT"
+          }
+        }
+      },
       "type": "float",
       "title": "molar_mol",
       "validation": "gte:0",
@@ -2096,9 +3068,17 @@
       "is_editable": true
     },
     {
-      "code": "molar_share",
-      "column": "molar_share",
-      "table": "prod.petro_gas_char",
+      "code": "MMR",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MMR"
+          }
+        }
+      },
       "type": "float",
       "title": "molar_share",
       "validation": "gte:0|lte:100",
@@ -2113,9 +3093,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_density",
-      "column": "stand_density",
-      "table": "prod.petro_gas_char",
+      "code": "SCDT",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SCDT"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_density",
       "validation": "gte:0.0001|lte:0.01",
@@ -2130,9 +3118,17 @@
       "is_editable": true
     },
     {
-      "code": "stand_density_resid",
-      "column": "stand_density_resid",
-      "table": "prod.petro_gas_char",
+      "code": "SCDR",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SDCR"
+          }
+        }
+      },
       "type": "float",
       "title": "stand_density_resid",
       "validation": "gte:0.0001|lte: 0.01",
@@ -2147,9 +3143,17 @@
       "is_editable": true
     },
     {
-      "code": "sat_pressure",
-      "column": "sat_pressure",
-      "table": "prod.res_water_char",
+      "code": "SATP",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SATP"
+          }
+        }
+      },
       "type": "float",
       "title": "sat_pressure",
       "validation": "gte:0",
@@ -2164,9 +3168,17 @@
       "is_editable": true
     },
     {
-      "code": "sulf_hydro",
-      "column": "sulf_hydro",
-      "table": "prod.res_water_char",
+      "code": "HSV",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HSV"
+          }
+        }
+      },
       "type": "float",
       "title": "sulf_hydro",
       "validation": "gte:0",
@@ -2181,9 +3193,17 @@
       "is_editable": true
     },
     {
-      "code": "volume_coef",
-      "column": "volume_coef",
-      "table": "prod.res_water_char",
+      "code": "VOCF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VOCF"
+          }
+        }
+      },
       "type": "float",
       "title": "volume_coef",
       "validation": "gte:0.98|lte: 1.07",
@@ -2198,9 +3218,17 @@
       "is_editable": true
     },
     {
-      "code": "viscosity",
-      "column": "viscosity",
-      "table": "prod.res_water_char",
+      "code": "VISC",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "VISC"
+          }
+        }
+      },
       "type": "float",
       "title": "viscosity",
       "validation": "gte:0|lte:100000",
@@ -2215,9 +3243,17 @@
       "is_editable": true
     },
     {
-      "code": "total_mineralization",
-      "column": "total_mineralization",
-      "table": "prod.res_water_char",
+      "code": "TMG",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "TMG"
+          }
+        }
+      },
       "type": "float",
       "title": "total_mineralization",
       "validation": "gte:0|lte: 1000",
@@ -2232,9 +3268,17 @@
       "is_editable": true
     },
     {
-      "code": "density",
-      "column": "density",
-      "table": "prod.res_water_char",
+      "code": "DENS",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "DENS"
+          }
+        }
+      },
       "type": "float",
       "title": "density",
       "validation": "gte:0.9|lte:2",
@@ -2249,9 +3293,17 @@
       "is_editable": true
     },
     {
-      "code": "cl_ion",
-      "column": "cl_ion",
-      "table": "prod.res_water_char",
+      "code": "ICL",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "ICL"
+          }
+        }
+      },
       "type": "float",
       "title": "cl_ion",
       "validation": "gte:0|lte:1000000",
@@ -2266,9 +3318,17 @@
       "is_editable": true
     },
     {
-      "code": "so4_ion",
-      "column": "so4_ion",
-      "table": "prod.res_water_char",
+      "code": "SOF",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "SOF"
+          }
+        }
+      },
       "type": "float",
       "title": "so4_ion",
       "validation": "gte:0|lte:1000000",
@@ -2283,9 +3343,17 @@
       "is_editable": true
     },
     {
-      "code": "hso3_ion",
-      "column": "hso3_ion",
-      "table": "prod.res_water_char",
+      "code": "HSOI",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "HSOI"
+          }
+        }
+      },
       "type": "float",
       "title": "hso3_ion",
       "validation": "gte:0|lte:1000000",
@@ -2300,9 +3368,17 @@
       "is_editable": true
     },
     {
-      "code": "ca_ion",
-      "column": "ca_ion",
-      "table": "prod.res_water_char",
+      "code": "CAI",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "CAI"
+          }
+        }
+      },
       "type": "float",
       "title": "ca_ion",
       "validation": "gte:0|lte:1000000",
@@ -2317,9 +3393,17 @@
       "is_editable": true
     },
     {
-      "code": "mg_ion",
-      "column": "mg_ion",
-      "table": "prod.res_water_char",
+      "code": "MGI",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MGI"
+          }
+        }
+      },
       "type": "float",
       "title": "mg_ion",
       "validation": "gte:0|lte:1000000",
@@ -2334,9 +3418,17 @@
       "is_editable": true
     },
     {
-      "code": "nak_ion",
-      "column": "nak_ion",
-      "table": "prod.res_water_char",
+      "code": "NAKI",
+      "table": "prod.lab_research_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "NAKI"
+          }
+        }
+      },
       "type": "float",
       "title": "nak_ion",
       "validation": "gte:0|lte:1000000",
