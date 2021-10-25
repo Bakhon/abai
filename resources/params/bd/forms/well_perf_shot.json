@@ -50,10 +50,8 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
-                "title": "marka",
-                "validation": "nullable|exists:tbd.dict.patron_type,id"
+                "type": "text",
+                "title": "marka"
               },
               {
                 "code": "liquid",
