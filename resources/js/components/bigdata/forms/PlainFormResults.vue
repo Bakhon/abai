@@ -287,7 +287,7 @@ export default {
           .then(result => {
             if (result === true) {
               this.axios.delete(this.localeUrl(`/api/bigdata/forms/${this.code}/${row.id}`)).then(({data}) => {
-                this.rows.splice(rowIndex, 1)
+                this.updateResults()
               })
             }
           })
