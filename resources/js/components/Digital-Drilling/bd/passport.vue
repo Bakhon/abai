@@ -163,7 +163,6 @@
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/passport/'+
                         this.currentWell.id).then((response) => {
                         let data = response.data;
-                        console.log(data)
                         if (data) {
                             this.passportWell.all_info.child =  data.Общая_информация
                         } else {
