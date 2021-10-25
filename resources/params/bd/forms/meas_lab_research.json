@@ -4,7 +4,7 @@
     {
       "code": "research_type",
       "type": "dict",
-      "dict": "lab_research_type",
+      "dict": "res_type_dict",
       "title": "research_type"
     },
     {
