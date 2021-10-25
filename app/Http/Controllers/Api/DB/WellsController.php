@@ -11,6 +11,8 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
+use App\Models\BigData\MeasWaterCut;
+use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
@@ -36,11 +38,12 @@ class WellsController extends Controller
 
     public function wellInfo($well)
     {
-        $well = Well::select('id', 'uwi', 'drill_start_date', 'drill_end_date')->find($well);
+      
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }
-
+        }     
+       
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -60,6 +63,7 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
+            'meas_water_inj' => $this->measLiqInjection($well),            
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
@@ -73,7 +77,7 @@ class WellsController extends Controller
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
         ];
-
+        
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
@@ -139,6 +143,7 @@ class WellsController extends Controller
             ->WherePivot('casing_type', '=', '9')
             ->get(['prod.well_constr.od']);
     }
+
 
     private function category(Well $well)
     {
@@ -263,6 +268,13 @@ class WellsController extends Controller
         return $well->measLiq()
             ->orderBy('dbeg', 'desc')
             ->first('liquid');
+    }
+
+    private function measLiqInjection(Well $well)
+    {
+        return $well->measLiqInjection()
+            ->orderBy('dbeg', 'desc')
+            ->first('water_inj_val', 'pressure_inj');
     }
 
     private function wellPerfActual(Well $well)
