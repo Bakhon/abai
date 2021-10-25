@@ -75,6 +75,7 @@ export default {
       "SET_REPORT_DUPLICATED_STATUS",
       "SET_DOWNLOAD_FILE_DATA",
     ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
     ...mapActions("plastFluidsLocal", ["HANDLE_FILE_LOG"]),
     async handleFileUpload() {
       this.state = "uploading";
@@ -85,7 +86,7 @@ export default {
       try {
         const log = await uploadTemplate(PostData);
         const { template, status, description, user, sheets, ...rest } = log;
-        sheets ? this.HANDLE_FILE_LOG(sheets) : '';
+        sheets ? this.HANDLE_FILE_LOG(sheets) : "";
         this.SET_DOWNLOAD_FILE_DATA({
           template,
           status,
@@ -93,6 +94,7 @@ export default {
           description,
         });
         this.state = "file chosen";
+        if (status === "ok") this.UPDATE_CURRENT_SUBSOIL_FIELD("resetField");
       } catch (error) {
         this.state = "error";
         this.error =

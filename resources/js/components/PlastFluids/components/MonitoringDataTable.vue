@@ -38,7 +38,7 @@ export default {
   },
   props: {
     currentSubsoil: Object,
-    currentSubsoilField: Object,
+    currentSubsoilField: [Object, String],
   },
   data() {
     return {

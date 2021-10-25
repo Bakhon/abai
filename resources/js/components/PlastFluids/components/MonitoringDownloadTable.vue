@@ -63,6 +63,14 @@ export default {
     ]),
     ...mapState("plastFluids", ["currentSubsoilField"]),
   },
+  watch: {
+    currentSubsoilField: {
+      handler(value) {
+        this.handleTableData({ field_id: value[0].field_id });
+      },
+      deep: true,
+    },
+  },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableData"]),
     isEmpty(obj) {

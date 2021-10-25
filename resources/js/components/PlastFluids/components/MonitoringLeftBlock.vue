@@ -10,10 +10,15 @@
           :placeholder="trans('plast_fluids.subsurface_user')"
           :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
           dropKey="owner_name"
-          @dropdown-select="updateCurrentSubsoil"
+          @dropdown-select="UPDATE_CURRENT_SUBSOIL"
         />
         <Dropdown
           :items="subsoilFields"
+          :class="{
+            focus:
+              currentSubsoilField.length &&
+              currentSubsoilField[0] === 'resetField',
+          }"
           :placeholder="trans('plast_fluids.field')"
           :selectedValue="
             currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
@@ -22,7 +27,7 @@
           :parentShortName="
             currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
           "
-          @dropdown-select="updateCurrentSubsoilField"
+          @dropdown-select="UPDATE_CURRENT_SUBSOIL_FIELD"
         />
       </div>
     </div>
@@ -41,7 +46,9 @@
         </ul>
       </div>
     </div>
-    <p v-show="collapsed" class="vertical-text">{{ trans("plast_fluids.choose_section") }}</p>
+    <p v-show="collapsed" class="vertical-text">
+      {{ trans("plast_fluids.choose_section") }}
+    </p>
   </div>
 </template>
 
@@ -61,6 +68,15 @@ export default {
       collapsed: false,
     };
   },
+  watch: {
+    currentSubsoilField: {
+      handler(value) {
+        if (value[0] === "resetField")
+          setTimeout(() => this.UPDATE_CURRENT_SUBSOIL_FIELD(undefined), 1000);
+      },
+      deep: true,
+    },
+  },
   computed: {
     ...mapState("plastFluids", [
       "subsoils",
@@ -75,14 +91,6 @@ export default {
       "UPDATE_CURRENT_SUBSOIL",
       "UPDATE_CURRENT_SUBSOIL_FIELD",
     ]),
-    ...mapActions("plastFluidsLocal", ["handleTableData"]),
-    updateCurrentSubsoil(value) {
-      this.UPDATE_CURRENT_SUBSOIL(value);
-    },
-    updateCurrentSubsoilField(value) {
-      this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
-      this.handleTableData({ field_id: value.field_id });
-    },
   },
   components: {
     Dropdown,
@@ -112,6 +120,10 @@ export default {
 
 .dropdown__sidebar {
   margin: 10px;
+}
+
+.dropdown__sidebar > div {
+  transition: 0.5s ease-in-out;
 }
 
 .sectors {
@@ -182,5 +194,10 @@ label {
   margin: 0;
   font-size: 16px;
   color: #fff;
+}
+
+.focus {
+  background: #3366ff;
+  transition: 0.3s ease-in-out;
 }
 </style>

@@ -32,8 +32,8 @@
       <button
         @click="downloadLog"
         class="log-button"
-        :disabled="!fileLog"
-        :class="{ disabled: !fileLog }"
+        :disabled="isButtonDisabled"
+        :class="{ disabled: isButtonDisabled }"
       >
         {{ trans("plast_fluids.download_status_log") }}
       </button>
@@ -52,6 +52,9 @@ export default {
       "reportDuplicated",
       "downloadFileData",
     ]),
+    isButtonDisabled() {
+      return !this.fileLog?.length;
+    },
   },
   methods: {
     downloadLog() {
