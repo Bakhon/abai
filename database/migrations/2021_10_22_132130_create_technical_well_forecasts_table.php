@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEcoRefsWellForecastsTable extends Migration
+class CreateTechnicalWellForecastsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEcoRefsWellForecastsTable extends Migration
      */
     public function up()
     {
-        Schema::create('eco_refs_well_forecasts', function (Blueprint $table) {
+        Schema::create('technical_well_forecasts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('log_id');
@@ -53,6 +53,6 @@ class CreateEcoRefsWellForecastsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eco_refs_well_forecasts');
+        Schema::dropIfExists('technical_well_forecasts');
     }
 }

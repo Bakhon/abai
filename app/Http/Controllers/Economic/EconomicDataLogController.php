@@ -10,7 +10,7 @@ use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
-use App\Models\Refs\EcoRefsWellForecast;
+use App\Models\Refs\TechnicalWellForecast;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -49,7 +49,7 @@ class EconomicDataLogController extends Controller
 
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
-                    EcoRefsWellForecast::query()->whereLogId($log->id)->delete();
+                    TechnicalWellForecast::query()->whereLogId($log->id)->delete();
 
                     break;
             }

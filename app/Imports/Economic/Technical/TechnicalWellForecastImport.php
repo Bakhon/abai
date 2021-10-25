@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Imports\Economic;
+namespace App\Imports\Economic\Technical;
 
 use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
-use App\Models\Refs\EcoRefsWellForecast;
+use App\Models\Refs\TechnicalWellForecast;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class EconomicWellForecastImport implements ToModel, WithBatchInserts, WithChunkReading
+class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChunkReading
 {
     protected $userId;
 
@@ -45,13 +45,13 @@ class EconomicWellForecastImport implements ToModel, WithBatchInserts, WithChunk
         ])->id;
     }
 
-    public function model(array $row): ?EcoRefsWellForecast
+    public function model(array $row): ?TechnicalWellForecast
     {
         if (!isset($row[self::COLUMNS['uwi']]) || ($row[self::COLUMNS['uwi']] === 'Скважина')) {
             return null;
         }
 
-        return new EcoRefsWellForecast([
+        return new TechnicalWellForecast([
             'uwi' => $row[self::COLUMNS['uwi']],
             'date' => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
             'oil' => round($row[self::COLUMNS['oil']], 2),

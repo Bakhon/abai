@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Economic\WellForecast;
+namespace App\Http\Requests\Economic\Technical\WellForecast;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EconomicWellForecastDataRequest extends FormRequest
+class TechnicalWellForecastDataRequest extends FormRequest
 {
     public function rules()
     {

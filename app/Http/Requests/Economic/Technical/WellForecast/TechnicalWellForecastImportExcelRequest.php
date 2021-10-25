@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Economic\WellForecast;
+namespace App\Http\Requests\Economic\Technical\WellForecast;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EconomicWellForecastImportExcelRequest extends FormRequest
+class TechnicalWellForecastImportExcelRequest extends FormRequest
 {
     const MIME_TYPES = '.xls,.xlsx';
 

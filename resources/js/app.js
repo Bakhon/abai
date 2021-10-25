@@ -96,7 +96,7 @@ Vue.component('visual-center-menu', require('./components/visualcenter/VisualCen
 Vue.component('economic-data-cost-component', require('./components/Economic/data/cost.vue').default);
 Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
 Vue.component('economic-data-gtm-component', require('./components/Economic/data/gtm.vue').default);
-Vue.component('economic-data-well-forecast-component', require('./components/Economic/data/forecast.vue').default);
+Vue.component('economic-data-analysis-component', require('./components/Economic/data/analysis.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);

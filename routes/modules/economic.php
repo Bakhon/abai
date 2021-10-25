@@ -214,20 +214,16 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                         'destroy' => 'economic.technical.field.destroy',
                     ]);
             });
-        });
 
-        Route::group([], function () {
             Route::group(['prefix' => 'well_forecast'], function () {
-                Route::get('get-data', 'EconomicWellForecastController@getData');
-                Route::get('upload-excel', 'EconomicWellForecastController@uploadExcel')
-                    ->name('economic.well_forecast.upload');
-                Route::post('import-excel', 'EconomicWellForecastController@importExcel')
-                    ->name('economic.well_forecast.import');
+                Route::get('get-data', 'TechnicalWellForecastController@getData');
+                Route::get('upload-excel', 'TechnicalWellForecastController@uploadExcel');
+                Route::post('import-excel', 'TechnicalWellForecastController@importExcel')
+                    ->name('economic.technical.well_forecast.import');
             });
-
-            Route::resource('well_forecast', 'EconomicWellForecastController')
-                ->only(['index'])
-                ->names(['index' => 'economic.well_forecast.index']);
         });
+
+        Route::get('analysis/input', 'EconomicAnalysisController@inputParams')
+            ->name('economic.analysis.input_params');
     });
 });

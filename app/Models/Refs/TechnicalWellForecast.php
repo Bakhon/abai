@@ -5,7 +5,7 @@ namespace App\Models\Refs;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class EcoRefsWellForecast extends Model
+class TechnicalWellForecast extends Model
 {
     protected $fillable = [
         'uwi', 'date', 'active_days', 'paused_days', 'prs_portion',

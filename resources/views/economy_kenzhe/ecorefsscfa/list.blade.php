@@ -81,9 +81,9 @@
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
                     </a>
-                    <a href="{{ route('economic.well_forecast.index') }}"
+                    <a href="{{ route('economic.analysis.input_params') }}"
                        class="text-primary list-group-item list-group-item-action">
-                        {{__('economic_reference.table_well_forecast_title')}}
+                        {{__('economic_reference.input_params_for_afo')}}
                     </a>
                     <a href="{{url('/')}}/ru/module_economy/ecorefsmacro"
                        class="list-group-item list-group-item-action text-primary">

@@ -1,13 +1,7 @@
 <template>
-  <div class="container p-4 bg-light" style="max-width: 90vw">
-    <subtitle class="text-center">
-      {{ trans('economic_reference.table_well_forecast_title') }}
-    </subtitle>
-
-    <vue-table-dynamic
-        :params="params"
-        class="height-fit-content"/>
-  </div>
+  <vue-table-dynamic
+      :params="params"
+      class="height-fit-content"/>
 </template>
 
 <script>
@@ -15,16 +9,13 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
-import Subtitle from "../components/Subtitle";
-
 export default {
-  name: "economic-data-well-forecast-component",
+  name: "TechTable",
   components: {
     VueTableDynamic,
-    Subtitle,
   },
   data: () => ({
-    data: [],
+    data: []
   }),
   created() {
     this.getData()
@@ -58,7 +49,7 @@ export default {
   },
   computed: {
     url() {
-      return this.localeUrl('economic/well_forecast/get-data')
+      return this.localeUrl('economic/technical/well_forecast/get-data')
     },
 
     params() {
@@ -162,8 +153,9 @@ export default {
       ]
     },
   }
-};
+}
 </script>
+
 <style scoped>
 .height-fit-content >>> .v-table-body {
   height: fit-content !important;
