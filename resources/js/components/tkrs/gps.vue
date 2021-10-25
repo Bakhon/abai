@@ -28,25 +28,21 @@
                 <tbody>
                     <tr>
                       <td >Дата отчета</td>
-                      <td class="input-form">29.05.2020 г.</td>
-                      <td>Скважина № 283</td>
-                      <td>м/р. Акшабулак </td>
+                      <td class="input-form-auto">29.05.2020 г.</td>
+                      <td class="input-form-auto">Скважина № 283</td>
+                      <td class="input-form-auto">м/р. Акшабулак </td>
                       <td>Начало бурения:</td>
-                      <td>10.08.2012г</td>
+                      <td class="input-form-auto">10.08.2012г</td>
                       <td>Конец бурения:</td>
-                      <td>31.08.2012г</td>
+                      <td class="input-form-auto">31.08.2012г</td>
                     </tr>
-                </tbody>
-              </table>
-               <table>
-                <tbody>
                     <tr>
                       <td> № отчета:</td>
-                      <td>1</td>
+                      <td class="input-form-auto">1</td>
                       <td>Задание по программе:</td>
-                      <td>
+                      <td class="input-form-auto" colspan="2">
                             <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" style="background: #eeeef0; color: black; border: none;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn btn-secondary dropdown-toggle input-form-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Переход на низлежащий горизонт (ПНЛГ)
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -57,14 +53,14 @@
 </div>
                       </td>
                       <td>Тип скважины:</td>
-                      <td>эксплуатационная</td>
+                      <td class="input-form-auto" colspan="2">эксплуатационная</td>
                     </tr>
                     <tr>
                       <td colspan="2">Тип станка:</td>
-                      <td>
+                      <td class="input-form-auto">
 
                         <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" style="background: #eeeef0; color: black; border: none;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn btn-secondary dropdown-toggle input-form-dropdown"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     УПА-80  kz 146 АL 11
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -74,27 +70,23 @@
   </div>
 </div>
                       </td>
-                      <td>Подрядчик:</td>
-                      <td colspan="2">ТОО "Zhanros-Drilling"</td>
+                      <td colspan="2">Подрядчик:</td>
+                      <td colspan="3" class="input-form-auto">ТОО "Zhanros-Drilling"</td>
                     </tr>
                 </tbody>
               </table>
               <table>
                 <tbody>
                     <tr>
-                      <td>Параметры (давления) по скважине </td>
+                      <td colspan="6">Параметры (давления) по скважине </td>
                     </tr>
-                </tbody>
-              </table>
-              <table>
-                <tbody>
                     <tr>
                       <td>Трубное давление:</td>
-                      <td> 0 атм</td>
+                      <td class="input-form-auto"> 0 атм</td>
                       <td>Затрубное давление:</td>
-                      <td>0 атм</td>
+                      <td class="input-form-auto">0 атм</td>
                       <td>Межколонное давление:</td>
-                      <td>0 атм</td>
+                      <td class="input-form-auto">0 атм</td>
                     </tr>
                 </tbody>
               </table>
@@ -112,36 +104,32 @@
                     <tr>
                       <td>6:00</td>
                       <td>8:00</td>
-                      <td>2:00</td>
-                      <td><input style="width: 100%; height: 22px;" /></td>
+                      <td class="input-form-auto">2:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>8:00</td>
                       <td>11:00</td>
-                      <td>3:00</td>
-                      <td>Параметры скважины: Ртр-10атм. Рзтр-15атм. Рм/к-0атм. Стравливание трубного и
-                         затрубного пространство на выходе газ без жидкостью. Подъём полированного штока до 6-метров. 
-                         Глушение скважины через трубного пространство тех.водой в объёме-40м3 на выходе газ с жидкостью в объёме-21м3. 
-                         На заполнение закачено-17м3.Циркуляция скважины до выхода чистой воды 1,5-цикла. Поглошение-2м3.Наблюдение за скважиной на перелив. 
-                         Перелив отсутствует.</td>
+                      <td class="input-form-auto">3:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>11:00</td>
                       <td>14:00</td>
-                      <td>3:00</td>
-                      <td>Монтаж станка УПА-80. (Обеденный перерыв от 12:00 до 12:30)</td>
+                      <td class="input-form-auto">3:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>14:00</td>
                       <td>15:00</td>
-                      <td>1:00</td>
-                      <td>Демонтаж СУСГ и полированного штока. Монтаж штанговой ПВО.</td>
+                      <td class="input-form-auto">1:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>15:00</td>
                       <td>18:00</td>
-                      <td>3:00</td>
-                      <td>Подъём штанги ф22мм и ф19мм с вставным насосом в количестве-120шт из них ф22мм 71шт и ф19мм-49шт.</td>
+                      <td class="input-form-auto">3:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td colspan="3">Ночное время</td>
@@ -150,22 +138,20 @@
                     <tr>
                       <td>18:00</td>
                       <td>21:30</td>
-                      <td>3:30</td>
-                      <td>Инструктаж по ТБ и ОТ. Доподъём штанги ф22мм с вставным насосом в количестве- 90шт. 
-                        Всего поднято штанги ф22мм и 19мм-210шт из них ф22мм-  71шт и ф19мм- 139шт.</td>
+                      <td class="input-form-auto">3:30</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>21:30</td>
                       <td>1:00</td>
-                      <td>3:30</td>
-                      <td>Демонтаж штанговой ПВО и планшайбы. Монтаж ПВО и опрессовка ПВО на 130 атм в присутствии представителя КФ РГП на ПХВ "ПВАСС". 
-                        Результат-герметично. Получено письменное разрешение для дальнейших работ.(Обеденный перерыв от 00:00 до 00:30)</td>
+                      <td class="input-form-auto">3:30</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       <td>1:00</td>
                       <td>6:00</td>
-                      <td>5:00</td>
-                      <td>Подъём замковый опоры и газосеператора на ВНКТ ф73мм в количестве 110шт c тугим отваротом.</td>
+                      <td class="input-form-auto">5:00</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -173,7 +159,7 @@
                 <tbody>
                     <tr>
                       <td>Всего за сутки:</td>
-                      <td>24</td>
+                      <td class="input-form-auto">24</td>
                       <td>Сегодня</td>
                       <td>Предыдущее</td>
                       <td>Итого</td>
@@ -181,11 +167,11 @@
                     </tr>
                     <tr>
                       <td colspan="2">Всего часов, в т.ч:</td>
-                      <td>24,0</td>
-                      <td>0,0</td>
-                      <td>24,0</td>
+                      <td class="input-form-auto">24,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">24,0</td>
                       <td>Превышение стола ротора, м</td>
-                      <td></td>
+                      <td class="input-form-auto"></td>
                       <td>наружный диаметр, мм</td>
                       <td>толщина стенки, мм</td>
                       <td>глубина спуска, м</td>
@@ -193,46 +179,46 @@
                     </tr>
                     <tr>
                       <td colspan="2">Производительное время:</td>
-                      <td>23,0</td>
-                      <td>0,0</td>
-                      <td>23,0</td>
+                      <td class="input-form-auto">23,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">23,0</td>
                       <td colspan="2"> Эксплуатационная колонна</td>
-                      <td>168,3</td>
-                      <td>8,94</td>
-                      <td>0-1869м</td>
-                      <td>17,76</td>
+                      <td class="input-form-auto">168,3</td>
+                      <td class="input-form-auto">8,94</td>
+                      <td class="input-form-auto">0-1869м</td>
+                      <td class="input-form-auto">17,76</td>
                     </tr>
                     <tr>
                       <td colspan="2">прочее (ОЗЦ и т.д)</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
                       <td colspan="6">Примечание</td>
                     </tr>
                     <tr>
                       <td colspan="2">Непроизводительное время в т.ч:</td>
-                      <td>1,0</td>
-                      <td>0,0</td>
-                      <td>1,0</td>
+                      <td class="input-form-auto">1,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">1,0</td>
                       <td colspan="2">Искусственный забой, м</td>
-                      <td>1856</td>
+                      <td class="input-form-auto">1856</td>
                       <td colspan="2">Текущий забой, м</td>
-                      <td>1851м</td>
+                      <td class="input-form-auto">1851м</td>
                     </tr>
                     <tr>
                       <td colspan="2">обеденный перерыв</td>
-                      <td>1,0</td>
-                      <td>0,0</td>
-                      <td>1,0</td>
+                      <td class="input-form-auto">1,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">1,0</td>
                       <td colspan="2">Интервал перфорации</td>
-                      <td colspan="4">1700-1710м.</td>
+                      <td colspan="4" class="input-form-auto">1700-1710м.</td>
                     </tr>
                     <tr>
                       <td colspan="2">ремонт оборудования</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td colspan="6" rowspan="4">Завоз тех.воды с плотностью 1,01г/см3 в объеме-60м3.Параметры скважины: Ртр-10атм. Рзтр-15атм. Рм/к-0атм. 
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto">Завоз тех.воды с плотностью 1,01г/см3 в объеме-60м3.Параметры скважины: Ртр-10атм. Рзтр-15атм. Рм/к-0атм. 
                         Стравливание трубного и затрубного пространство на выходе газ без жидкостью. Подъём полированного штока до 6-метров. 
                         Глушение скважины через трубного пространство тех.водой в объёме-40м3 на выходе газ с жидкостью в объёме-21м3. На заполнение закачено-17м3.
                         Циркуляция скважины до выхода чистой воды 1,5-цикла. Поглошение-2м3.Наблюдение за скважиной на перелив. Перелив отсутствует.Монтаж станка УПА-80. 
@@ -242,21 +228,21 @@
                     </tr>
                     <tr>
                       <td colspan="2">метеоусловия</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
                     </tr>
                     <tr>
                       <td colspan="2"> ожидание по вине Подрядчика</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
                     </tr>
                     <tr>
                       <td colspan="2">ожидание по вине третьей стороны</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
-                      <td>0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
+                      <td class="input-form-auto">0,0</td>
                     </tr>
                 </tbody>
               </table>
@@ -264,7 +250,7 @@
                 <tbody>
                     <tr>
                       <td rowspan="3">Начальник Б и РС ТОО СП "КГМ"</td>
-                      <td rowspan="3">Кушкинбаев Б. / Сапаров М. </td>
+                      <td rowspan="3" class="input-form-auto">Кушкинбаев Б. / Сапаров М. </td>
                       <td>подпись</td>
                       <td>Мастер КПРС</td>
                       <td>ФИО</td>
@@ -275,17 +261,17 @@
                       
                       <td></td>
                       <td>дневная смена</td>
-                      <td>Мусрепов Ж</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                       <td></td>
-                      <td>8-777-067-76-77</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                     <tr>
                       
                       <td></td>
                       <td>ночная смена</td>
-                      <td>Есболганов О</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                       <td></td>
-                      <td>8-777-336-34-33</td>
+                      <td class="manual-edit"><input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -345,7 +331,23 @@ table {
 table, th, td {
   border:1px solid black;
 }
-.input-form {
-background: #FFFFFF
+.input-form-auto{
+background: #eaf3fa
+}
+.input-form-dropdown {
+background: #eaf3fa !important; 
+color: black !important; 
+border: none !important;
+}
+.manual-edit {
+  background: #ffff;
+}
+.manual-input {
+  width: 100%; 
+  height: 22px;
+  border: none;
+}
+.manual-input:hover {
+  border: none;
 }
 </style>
