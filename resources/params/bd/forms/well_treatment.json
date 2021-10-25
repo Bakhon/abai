@@ -10,6 +10,12 @@
             "title": "",
             "items": [
               {
+                "code": "treat_date",
+                "title": "date",
+                "type": "date",
+                "validation": "required"
+              },
+              {
                 "code": "treatment_type",
                 "title": "treat_type",
                 "type": "dict",
@@ -71,13 +77,7 @@
                 "code": "scraper_income",
                 "type": "numeric",
                 "validation": "required|gte:0|lte:10000"
-              },
-              {
-                "code": "treat_date",
-                "title": "date",
-                "type": "date",
-                "validation": "required"
-              }
+              }              
             ]
           }
         ]

@@ -25,7 +25,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "casing_running_depth",
-                "validation": "required|numeric"
+                "validation": "required|numeric|lte:10000"
               },
               {
                 "code": "sidetrack",

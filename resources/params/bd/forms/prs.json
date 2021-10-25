@@ -45,7 +45,13 @@
                 "type": "dict",
                 "title": "contractor",
                 "dict": "companies",
-                "validation": "required_unless:by_ourselves,true"
+                "validation": "required_unless:by_ourselves,true",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": false
+                  }
+                ]
               },
               {
                 "code": "brigadier",
@@ -58,7 +64,8 @@
                     "field": "by_ourselves",
                     "value": true
                   }
-                ]
+                ],
+                "filter_by_well_orgs": true
               },
               {
                 "code": "brigadier",

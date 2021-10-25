@@ -7,11 +7,11 @@
       <AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
       <AwGisColumn
           @resized="init"
-          v-for="(element, key) in getElements"
-          :ref="element.replace(/ /, '').trim()"
-          v-bind="$attrs"
+          v-for="(group, key) in getGroups"
           :key="key"
-          :elements="element.split('/')"
+          v-bind="$attrs"
+          :elements="group"
+          v-show="isShow(group)"
       />
     </div>
   </div>
@@ -25,8 +25,9 @@ export default {
   name: "AwGisBlock",
   props: {
     blockName: String,
+    blockId: String | Number,
     blocksMargin: Number,
-    elements: Array,
+    groups: Array | Object,
     blocksScrollY: Number
   },
   components: {
@@ -57,41 +58,18 @@ export default {
     getElements() {
       return this.$store.state.geologyGis.selectedGisCurves;
     },
+    getGroups() {
+      return Object.values(this.groups).map((a) => a.filter((b) => b.data.wellID.includes(this.blockId))).filter((a) => a?.length);
+    },
   },
   methods: {
+    isShow(el){
+      return el.some((a)=> this.getElements.includes(a.data.name))
+    },
     init() {
-      let draw = ()=>{
-        Object.keys(this.$refs).forEach((curveName)=>{
-          console.log(curveName);
-        })
+      let draw = () => {
       }
       draw();
-      for (const columnName of Object.keys(this.$refs)) {
-        let column = this.$refs[columnName][0];
-        let columnCtx = column.ctx;
-        this.getElements.forEach((ee) => {
-          if (ee === columnName && columnCtx) {
-            let curve = this.$store.state.geologyGis.gisDataCurves[ee];
-            this.clearCanvas(columnCtx);
-            this.drawCurve(curve, columnCtx, columnName)
-          }
-        })
-      }
-    },
-    drawCurve(curve = [], ctx, columnName) {
-      let axisSize = 10;
-      let canvasHeight = ctx.canvas.height / axisSize;
-      let offsetY = this.offsetY;
-      canvasHeight = canvasHeight += offsetY;
-      ctx.beginPath();
-      for (let i = offsetY; i < canvasHeight; i++) {
-        let y = (i * axisSize) - offsetY * axisSize;
-        let x = curve[i];
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setTransform(1,0,0,1,0,0);
     },
     clearCanvas(ctx) {
       if (ctx) ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
