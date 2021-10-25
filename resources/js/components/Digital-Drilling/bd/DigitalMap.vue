@@ -78,10 +78,10 @@
              async getCoordinates(){
                     this.SET_LOADING(true);
                     try{
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/').then((response) => {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/1069/').then((response) => {
                             let data = response.data;
                             if (data) {
-                                this.coordinates = data.slice(0, 20);
+                                this.coordinates = data;
                             } else {
                                 console.log('No data');
                             }
