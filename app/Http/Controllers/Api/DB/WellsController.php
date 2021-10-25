@@ -63,7 +63,7 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
-            'meas_water_inj' => $this->MeasLiqInjection($well),            
+            'meas_water_inj' => $this->measLiqInjection($well),            
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
@@ -282,9 +282,9 @@ class WellsController extends Controller
             ->first('liquid');
     }
 
-    private function MeasLiqInjection(Well $well)
+    private function measLiqInjection(Well $well)
     {
-        return $well->MeasLiqInjection()
+        return $well->measLiqInjection()
             ->orderBy('dbeg', 'desc')
             ->first('water_inj_val', 'pressure_inj');
     }

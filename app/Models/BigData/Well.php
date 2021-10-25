@@ -119,7 +119,7 @@ class Well extends TBDModel
         return $this->hasMany(MeasWaterCut::class, 'well', 'id');
     }
 
-    public function MeasLiqInjection()
+    public function measLiqInjection()
     {
         return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
     }
