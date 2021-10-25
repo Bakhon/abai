@@ -42,49 +42,95 @@ export default {
                     format: formatMappingKOA,
                     cells: cellsMappingKOA,
                     id: 110,
-                    requiredRows: 28
+                    requiredRows: [1,6,11,16,21,26],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1,
+                        21: 1,
+                    }
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
                     format: formatMappingKTM,
                     cells: cellsMappingKTM,
                     id: 107,
-                    requiredRows: 23
+                    requiredRows: [1,6,11,16,21],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1
+                    }
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
                     format: formatMappingKBM,
                     cells: cellsMappingKBM,
                     id: 106,
-                    requiredRows: 13
+                    requiredRows: [1,4,7,10,13],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        10: 3,
+                    }
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
                     format: formatMappingMMG,
                     cells: cellsMappingMMG,
                     id: 109,
-                    requiredRows: 27
+                    requiredRows: [1,6,11,15,20,25],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        15: 1,
+                        20: 1,
+                    }
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
                     format: formatMappingOMG,
                     cells: cellsMappingOMG,
                     id: 112,
-                    requiredRows: 19
+                    requiredRows: [1,4,7,10,13,16,19],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        13: 1,
+                        16: 1,
+                    }
                 },
                 "УО" : {
                     rows: initialRowsYO,
                     format: formatMappingYO,
                     cells: cellsMappingYO,
                     id: 111,
-                    requiredRows: 21
+                    requiredRows:[1,7,12,18],
+                    isNotNull: {
+                        1: 1,
+                        7: 1,
+                        12: 1
+                    }
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
                     id: 113,
-                    requiredRows: 26
+                    requiredRows: [1,8,15,22,29],
+                    isNotNull: {
+                        1: 1,
+                        8: 1,
+                        15: 1,
+                        22: 1
+                    }
                 },
             },
             dzoCompanies: [
@@ -174,7 +220,8 @@ export default {
                 }
             },
             dzoUsers: [],
-            requiredRows: 0
+            requiredRows: 0,
+            isNotNullRows: {}
         };
     },
     props: ['userId'],
@@ -249,6 +296,7 @@ export default {
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
             this.requiredRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].requiredRows);
+            this.isNotNullRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].isNotNull);
             this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
             this.columnsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
             this.rowsCount = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows).length + 2;
@@ -376,7 +424,11 @@ export default {
                 let cellValue = $(selector).text();
                 cellValue = this.getFormattedNumber(cellValue);
                 cellValue = parseFloat(cellValue);
-                if ((isNaN(cellValue) || cellValue < 0) && row.rowIndex <= this.requiredRows) {
+                if ((isNaN(cellValue) || cellValue < 0) && this.requiredRows.includes(row.rowIndex)) {
+                    this.turnErrorForCell(selector);
+                    continue;
+                }
+                if (this.isNotNullRows[row.rowIndex] && this.isNotNullRows[row.rowIndex] === columnIndex && !(cellValue > 0)) {
                     this.turnErrorForCell(selector);
                     continue;
                 }

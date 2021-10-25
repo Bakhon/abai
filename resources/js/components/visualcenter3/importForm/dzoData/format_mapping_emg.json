@@ -1,13 +1,13 @@
 {
   "rowsFormatMapping": {
-    "title": [0,7,14,21,28,60,70],
-    "subTitle": [29]
+    "title": [0,7,14,21,28,35,67,77],
+    "subTitle": [36]
   },
   "columnsFormatMapping": {
-    "twoColumns": [],
-    "threeColumns": [0,14,21,28,60],
-    "fourColumns": [28,29,50],
+    "twoColumns": [7],
+    "threeColumns": [0,21,28,67],
+    "fourColumns": [35,36,50],
     "fiveColumns": [],
-    "sixColumns": [7,70]
+    "sixColumns": [14,77]
   }
 }

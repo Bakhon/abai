@@ -194,7 +194,7 @@ export default {
                 this.isPlanValidateError = true;
             }
         },
-        beforeRangeEdit(e) {
+        beforePlanRangeEdit(e) {
             if (e.detail.data) {
                 let row = parseInt(Object.keys(e.detail.data)[0]);
                 let column = Object.keys(e.detail.data[row]);
