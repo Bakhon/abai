@@ -86,7 +86,7 @@ export default {
         rowHeight: 50,
         columnWidth: this.headers.map((header, index) => ({
           column: index,
-          width: header.isAuthor ? 180 : 120
+          width: header.isUser || header.isStatus ? 180 : 120
         }))
       }
     },

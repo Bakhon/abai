@@ -7,6 +7,12 @@
           {{ trans('economic_reference.economic_data') }}
         </h4>
 
+        <a :href="localeUrl(`/economic/log?type_id=${EconomicDataLogTypeModel.ANALYSIS_PARAM}`)"
+           target="_blank"
+           class="text-decoration-none text-primary mr-3">
+          {{ trans('economic_reference.delete_wrong_uploaded_data') }}
+        </a>
+
         <a :href="localeUrl('/economic/analysis/param/upload-excel')"
            target="_blank"
            class="text-decoration-none text-primary">
@@ -15,7 +21,7 @@
         </a>
       </div>
 
-      <economic-analysis-param-table
+      <analysis-param-table
           v-if="isVisibleEconomicTable"
           class="mt-2"/>
     </div>
@@ -26,6 +32,12 @@
             @click="isVisibleTechTable = !isVisibleTechTable">
           {{ trans('economic_reference.technical_data') }}
         </h4>
+
+        <a :href="localeUrl(`/economic/log?type_id=${EconomicDataLogTypeModel.WELL_FORECAST}`)"
+           target="_blank"
+           class="text-decoration-none text-primary mr-3">
+          {{ trans('economic_reference.delete_wrong_uploaded_data') }}
+        </a>
 
         <a :href="localeUrl('/economic/technical/well_forecast/upload-excel')"
            target="_blank"
@@ -45,17 +57,20 @@
 <script>
 import VueTableDynamic from 'vue-table-dynamic';
 
-import EconomicAnalysisParamTable from "../components/analysis/EconomicAnalysisParamTable";
+import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
+
+import AnalysisParamTable from "../components/analysis/AnalysisParamTable";
 import TechnicalWellForecastTable from "../components/analysis/TechnicalWellForecastTable";
 
 export default {
   name: "economic-data-analysis-component",
   components: {
     VueTableDynamic,
-    EconomicAnalysisParamTable,
+    AnalysisParamTable,
     TechnicalWellForecastTable,
   },
   data: () => ({
+    EconomicDataLogTypeModel,
     isVisibleEconomicTable: false,
     isVisibleTechTable: false,
   }),

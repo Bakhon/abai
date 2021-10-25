@@ -353,4 +353,13 @@ return array (
   'paused_hours' => 'Часы в простое',
   'cause_of_loss' => 'Причина потерь',
   'status' => 'Статус',
+  'plan' => 'План',
+  'variable_cost' => 'Условно-переменные расходы',
+  'avg_cost_prs' => 'Средняя стоимость ПРС',
+  'oil_density' => 'Плотность нефти',
+  'days_in_month' => 'Дней в месяце',
+  'with_fot' => 'с ФОТ',
+  'without_fot' => 'без ФОТ',
+  'for_stopped_wells' => 'Для отключаемых скважин',
+  'proposed' => 'Предлагаемый',
 );
