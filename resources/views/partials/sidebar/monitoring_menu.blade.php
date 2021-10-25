@@ -1,5 +1,5 @@
 <li class="left-menu-li">
-    <a class="d-flex justify-content-between" href="{{route('monitor')}}">
+    <a class="d-flex justify-content-between" href="{{route('tech-map.index')}}">
         <div>
             <img src="/img/icons/monitor_gray.svg" class="companyLogo">
             {{ trans('monitoring.monitoring_module') }}
@@ -15,6 +15,11 @@
         <li class="left-menu-li">
             <ul>
                 @if(auth()->user()->can('monitoring view main'))
+                    <li class="left-menu-li">
+                        <a href="{{route('monitor')}}">
+                            {{ trans('monitoring.gu-scheme') }}
+                        </a>
+                    </li>
                     <li class="left-menu-li">
                         <a href="{{route('omgca.index')}}">
                             {{ trans('monitoring.omgca.menu') }}

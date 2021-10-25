@@ -266,7 +266,7 @@ class ManualHydroCalc extends CrudController
         return ['pipes' => $pipes, 'alerts' => $alerts];
     }
 
-    public function getcalculatedPipeIds (ManualHydroCalcResult $calculatedPipes): array
+    public function getcalculatedPipeIds (\Illuminate\Database\Eloquent\Collection $calculatedPipes): array
     {
         $calculatedPipesIds = [];
 

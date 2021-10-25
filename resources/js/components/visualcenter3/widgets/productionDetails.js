@@ -65,6 +65,12 @@ export default {
                 })
             }
             this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
+            if (!this.isOneDzoSelected) {
+                this.dzoMenu.productionFond.push({
+                    ticker: 'УО',
+                    name: this.trans("visualcenter.uo")
+                });
+            }
         },
     }
 }

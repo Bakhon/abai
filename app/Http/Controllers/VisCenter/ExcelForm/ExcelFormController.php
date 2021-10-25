@@ -33,18 +33,18 @@ class ExcelFormController extends Controller
     private $host = 'mail.kmg.kz';
     private $emailSubject = 'Заявка на изменение суточных данных в ИС ABAI';
     private $kmgEmails = array (
-        'firstMaster' => 's.sugal@kmg.kz',
-        'secondMaster' => 's.sugal@kmg.kz',
-        'mainMaster' => 's.sugal@kmg.kz',
+        'firstMaster' => 'A.Sensizbay@kmg.kz',
+        'secondMaster' => 'N.Kenzhebayev@kmg.kz',
+        'mainMaster' => 'a.kutzhanov@kmg.kz',
     );
     private $dzoEmails = array (
-        'ЭМГ' => 's.sugal@kmg.kz',
-        'УО' => 's.sugal@kmg.kz',
-        'КБМ' => 's.sugal@kmg.kz',
-        'КОА' => 's.sugal@kmg.kz',
-        'ОМГ' => 's.sugal@kmg.kz',
-        'КТМ' => 's.sugal@kmg.kz',
-        'ММГ' => 's.sugal@kmg.kz',
+        'ЭМГ' => 'cits@emg.kmgep.kz',
+        'УО' => 'nachsmeny@urikhtau.kz',
+        'КБМ' => 'F_Dispatcher@kbm.kz',
+        'КОА' => 'dispatchers22@koa.kz',
+        'ОМГ' => 'cits2@umg.kmgep.kz',
+        'КТМ' => 'Sairan.Nurmagambetov@aktm.kz',
+        'ММГ' => 'cits@mmg.kz',
     );
 
     public function getDzoCurrentData(Request $request)
@@ -260,6 +260,7 @@ class ExcelFormController extends Controller
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportData::where('id',$request->actualId)->delete();
         $updateOptions['is_corrected'] = null;
+        $updateOptions['user_id'] = $request->userId;
 
         DzoImportData::query()
             ->where('id', $request->currentId)
@@ -290,7 +291,8 @@ class ExcelFormController extends Controller
             ->update(
                 [
                     'is_corrected' => false,
-                    'is_approved' => false
+                    'is_approved' => false,
+                    'user_id' => $request->userId
                 ]
             );
     }

@@ -22,7 +22,7 @@ class CrudController extends Controller
 
     public function list (IndexTableRequest $request) {
         $input = $request->validated();
-        $model_name_filter = $input['model_name'].'_filter';
+        $model_name_filter = $this->modelName.'_filter';
         session([$model_name_filter => $input]);
     }
 

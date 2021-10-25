@@ -63,7 +63,7 @@ export default {
 <style scoped>
 .data-analysis-data-table {
   margin-top: 10px;
-  height: 350px;
+  max-height: 350px;
   display: flex;
   flex-flow: column;
   transition: 0.2s ease-in;

@@ -99,6 +99,11 @@ export default {
                     'name': this.trans('visualcenter.associatedGasExpenses'),
                     'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
                 },
+                'processingAssociatedGas': {
+                    'head': this.trans('visualcenter.pererabotkapoputGazDynamic'),
+                    'name': this.trans('visualcenter.pererabotkapoputGaz'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
                 'waterInjection': {
                     'head': this.trans('visualcenter.injectionWaterChartName'),
                     'name': this.trans('visualcenter.liq'),
@@ -122,6 +127,11 @@ export default {
                 'streamWaterInjection': {
                     'head': this.trans('visualcenter.dynamicStreamInjection'),
                     'name': this.trans('visualcenter.streamInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'volgaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicVolgaWater'),
+                    'name': this.trans('visualcenter.volgaWaterInjection'),
                     'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
                 },
             },

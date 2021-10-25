@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 class DigitalRatingContoller extends Controller
 {
    const WELL_STATUS_TYPE_ID = [3,4];
@@ -153,7 +154,6 @@ class DigitalRatingContoller extends Controller
          $well_id[] = $item->well_id;
       }
    
-
       $injection_wells =   DB::connection('tbd')->table('tbdi.well')
                ->whereIn('tbdi.well.id',$well_id)
                ->join('tbdi.water_inj', 'tbdi.water_inj.well_id', '=', 'tbdi.well.id')
@@ -181,7 +181,6 @@ class DigitalRatingContoller extends Controller
       return response()->json($injection_wells,200,$headers,JSON_UNESCAPED_UNICODE);
    
    }
-
- 
+   
   
 };

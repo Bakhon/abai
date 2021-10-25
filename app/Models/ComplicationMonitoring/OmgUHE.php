@@ -22,7 +22,7 @@ class OmgUHE extends Model
 
     public function getCurrentDosageAttribute($value)
     {
-        return $value ? round($value, 1) : $value;
+        return $value ? round($value, 2) : $value;
     }
 
     public function ngdu()

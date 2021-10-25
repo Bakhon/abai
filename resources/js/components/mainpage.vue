@@ -10,7 +10,7 @@
           <span>Поиск</span>
         </button>
       </div>
-      <div class="blocks-holder d-flex justify-content-start w-100">
+      <div class="blocks-holder w-100">
         <MainPageModuleBlock
           v-for="(block, index) in filteredBlocks"
           :key="index"
@@ -74,7 +74,7 @@ export default {
         {
           name: "Мониторинг осложнений",
           icon: "monitor.svg",
-          url: this.localeUrl("/monitor"),
+          url: this.localeUrl("/tech-map"),
         },
         {
           name: "Подбор и АЭГТМ",
@@ -121,15 +121,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .blocks-holder {
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(9, 96px);
+  grid-template-rows: auto;
+  row-gap: 20px;
+  justify-content: space-between;
 }
 
 .blocks-holder > div {
   margin-right: 60px;
-}
-
-.blocks-holder > div:nth-of-type(9n) {
-  margin-right: 0;
 }
 
 .toggle-btn {

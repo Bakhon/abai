@@ -115,7 +115,8 @@
                   "field": "by_ourselves",
                   "value": true
                 }
-              ]
+              ],
+              "filter_by_well_orgs": true
             },
             {
               "code": "brigadier",

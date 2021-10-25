@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import {digitalDrillingState} from '@store/helpers';
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import VueApexCharts from "vue-apexcharts";
     import MainContent from '../components/MainContent'
     export default {
@@ -107,6 +107,7 @@
                 inclino: [],
                 d2_Show: true,
                 d3_Show: false,
+                maxValue: 50,
                 series: [
                     {
                     name: "Desktops",
@@ -121,27 +122,20 @@
                 ],
                 chartOptions: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
-                        toolbar: {
-                            show: true,
-                        },
+
                         zoom: {
                             enabled: true,
                             type: 'x',
-                            autoScaleYaxis: false,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                            autoScaleYaxis: true,
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         }
                     },
                     dataLabels: {
@@ -215,28 +209,21 @@
 
                     },
                 },
+                chartOptionsAboveLast: {},
                 chartOptionsAbove: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
-                        toolbar: {
-                            show: true,
-                        },
                         zoom: {
                             enabled: true,
-                            type: 'x',
+                            type: 'y',
                             autoScaleYaxis: true,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         },
                         background: '#2B2E5E',
 
@@ -298,6 +285,7 @@
                     },
                     yaxis:{
                         opposite: true,
+                        max: 50,
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -328,6 +316,9 @@
             }
         },
         methods:{
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
             setParametersChartSideView(){
                 let coordinates = []
                 let coordinate = {}
@@ -338,7 +329,15 @@
                     }
                     coordinates.push(coordinate)
                 }
-                this.series[0].data = coordinates
+                coordinates.push({
+                    x: 9 * this.inclino[this.inclino.length-1].HD,
+                    y: null
+                })
+                // this.series[0].data = coordinates
+                this.series=[{
+                    name: "Desktops",
+                        data: coordinates
+                }]
             },
             setParametersChartAboveView(){
                 let coordinates = []
@@ -350,9 +349,121 @@
                     }
                     coordinates.push(coordinate)
                 }
-                this.seriesAbove[0].data = coordinates
+
+                let first = this.inclino[0].N_S
+                let last = this.inclino[this.inclino.length-1].N_S
+                if(first<0){
+                    first = -1 * first
+                }
+                if(last<0){
+                    last = -1 * last
+                }
+                if(last < first){
+                    this.maxValue = first
+                }else{
+                    this.maxValue = last
+                }
+                this.seriesAbove = [{
+                    name: "Desktops",
+                        data: coordinates
+                }]
+                this.chartOptionsAbove = {
+                    chart: {
+                        animations: {
+                            enabled: false,
+                        },
+                        height: 500,
+                            type: 'line',
+                            zoom: {
+                                enabled: true,
+                                type: 'y',
+                                autoScaleYaxis: true,
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
+                        },
+                        background: '#2B2E5E',
+
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    colors: ['#2E50E9', '#E3000F'],
+                        stroke: {
+                        curve: 'smooth',
+                    },
+                    legend:{
+                        labels: {
+                            colors: ['#FFFFFF']
+                        },
+                        show: false,
+                    },
+                    tooltip: {
+                        fillSeriesColor: true,
+                    },
+                    grid: {
+                        show: true,
+                            borderColor: '#454D7D',
+                            strokeDashArray: 0,
+                            position: 'back',
+                            xaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true
+                            },
+                        },
+                        row: {
+                            colors: ['transparent'],
+                                opacity: 0.5
+                        },
+                        column: {
+                            colors: ['transparent'],
+                                opacity: 0.5
+                        },
+                        padding: {
+                            top: 0,
+                                right: 0,
+                                bottom: 0,
+                                left: 0
+                        },
+                    },
+                    xaxis: {
+                        max: 2* this.maxValue,
+                        min: -2 * this.maxValue,
+                        labels: {
+                            style: {
+                                colors: '#FFFFFF'
+                            },
+                        },
+                        tickAmount: 9,
+                        position: 'bottom',
+                    },
+                    yaxis:{
+                        opposite: true,
+                        max: 2*this.maxValue,
+                        min: -2 * this.maxValue,
+                        labels: {
+                        style: {
+                            colors: '#FFFFFF'
+                        },
+
+                        formatter: function(val) {
+                            if (val == null)
+                                return 0;
+                            return val.toFixed(0);
+                        },
+                        },
+
+                    },
+                }
+
             },
             async getInclinoByWell(){
+                this.SET_LOADING(true);
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/'+
                         this.currentWell.id).then((response) => {
@@ -370,15 +481,19 @@
                     console.log(e)
                     this.inclino = []
                 }
+                this.SET_LOADING(false);
             },
         },
     }
 </script>
 
 <style scoped>
+    .inc__charts{
+        color: black!important;
+    }
     .apexcharts-tooltip {
-        background: #f3f3f3;
-        color: orange;
+        background: #f3f3f3!important;
+        color: orange!important;
     }
 
     th, td{

@@ -161,9 +161,9 @@ class CalculateHydroDynamics implements ShouldQueue
                 continue;
             }
 
-            if (!$points[$key]->omgngdu->pump_discharge_pressure ||
-                !$points[$key]->omgngdu->daily_fluid_production ||
-                !$points[$key]->omgngdu->bsw) {
+            if (is_null($points[$key]->omgngdu->pump_discharge_pressure) ||
+                is_null($points[$key]->omgngdu->daily_fluid_production) ||
+                is_null($points[$key]->omgngdu->bsw)) {
                 $isErrors = true;
                 break;
             }

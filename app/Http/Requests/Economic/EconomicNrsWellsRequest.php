@@ -20,8 +20,9 @@ class EconomicNrsWellsRequest extends FormRequest
                 'required',
                 'string',
                 Rule::in([
-                    Granularity::MONTH,
                     Granularity::DAY,
+                    Granularity::MONTH,
+                    Granularity::YEAR,
                 ])
             ],
         ];

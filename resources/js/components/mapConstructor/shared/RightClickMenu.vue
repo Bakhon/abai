@@ -40,7 +40,7 @@
                     <li>{{ trans('map_constructor.line') }}</li>
                     <li>{{ trans('map_constructor.color') }}</li>
                     <li>{{ trans('map_constructor.palette') }}</li>
-                    <li>{{ trans('map_constructor.tex') }}</li>
+                    <li>{{ trans('map_constructor.text') }}</li>
                     <li>{{ trans('map_constructor.size') }}</li>
                     <li>{{ trans('map_constructor.map_name') }}</li>
                     <li>{{ trans('map_constructor.outline_labels') }}</li>

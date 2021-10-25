@@ -301,7 +301,7 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, globalloadingMutations} from '@store/helpers'
+import {bdFormActions, globalloadingActions} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import BigDataPlainForm from './PlainForm'
@@ -390,15 +390,15 @@ export default {
     ...bdFormActions([
       'updateForm'
     ]),
-    ...globalloadingMutations([
-      'SET_LOADING'
+    ...globalloadingActions([
+      'setLoading'
     ]),
     updateTableData() {
 
       this.formError = null
       if (!this.filter || !this.id || !this.type) return
 
-      this.SET_LOADING(true)
+      this.setLoading(true)
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/results`), {
         params: {
           filter: this.filter,
@@ -430,7 +430,7 @@ export default {
             this.formError = error.response.data.message
           })
           .finally(() => {
-            this.SET_LOADING(false)
+            this.setLoading(false)
           })
 
     },
@@ -553,7 +553,7 @@ export default {
 
           data[column.code] = row[column.code].value
 
-          this.SET_LOADING(true)
+          this.setLoading(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -565,12 +565,12 @@ export default {
                 if (this.formParams.update_after_edit !== false) {
                   this.updateTableData()
                 } else {
-                  this.SET_LOADING(false)
+                  this.setLoading(false)
                 }
               })
               .catch(error => {
                 Vue.set(this.errors, column.code, error.response.data.errors)
-                this.SET_LOADING(false)
+                this.setLoading(false)
               })
         } else {
           this.editableCell = {
@@ -583,7 +583,7 @@ export default {
     },
     async submitFile(row, column) {
 
-      this.SET_LOADING(true)
+      this.setLoading(true)
       let formData = new FormData()
 
       formData.append('row', JSON.stringify(row))
@@ -610,12 +610,12 @@ export default {
             if (this.formParams.update_after_edit !== false) {
               this.updateTableData()
             } else {
-              this.SET_LOADING(false)
+              this.setLoading(false)
             }
           })
           .catch(error => {
             Vue.set(this.errors, column.code, error.response.data.errors)
-            this.SET_LOADING(false)
+            this.setLoading(false)
           })
     },
     checkLimits(row, column) {
@@ -648,7 +648,7 @@ export default {
       document.body.classList.remove('fixed')
     },
     showHistoricalDataForRow(row, column) {
-      this.SET_LOADING(true)
+      this.setLoading(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history`), {
         params: {
@@ -665,11 +665,11 @@ export default {
         })
 
         this.rowHistoryColumns = columns
-        this.SET_LOADING(false)
+        this.setLoading(false)
       })
     },
     showHistoryGraphDataForRow(row, column) {
-      this.SET_LOADING(true)
+      this.setLoading(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history-graph`), {
         params: {
@@ -678,7 +678,7 @@ export default {
           date: this.filter.date
         }
       }).then(({data}) => {
-        this.SET_LOADING(false)
+        this.setLoading(false)
         this.rowHistoryGraph = data
       })
     },
@@ -692,7 +692,7 @@ export default {
       })
           .then(result => {
             if (result === true) {
-              this.SET_LOADING(true)
+              this.setLoading(true)
               this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/copy`), {
                 params: {
                   well_id: row.id,
@@ -700,7 +700,7 @@ export default {
                   date: this.filter.date
                 }
               }).then(({data}) => {
-                this.SET_LOADING(false)
+                this.setLoading(false)
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value

@@ -199,8 +199,10 @@
             },
 
             getFormattedNumber(num) {
-                if (num >= 1000) {
+                if (num >= 10000) {
                     num = (num / 1000).toFixed(0);
+                }  else if (num >= 1000) {
+                    num = (num / 100).toFixed(2);
                 } else if (num >= 100) {
                     num = Math.round((num / 1000) * 10) / 10;
                 } else if (num >= 10) {

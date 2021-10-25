@@ -88,11 +88,15 @@ class OvensController extends CrudController
             $params['links']['export'] = route('ovens.export');
         }
 
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.ovens.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
+        parent::list($request);
+
         $query = Oven::query()
             ->with('gu');
 

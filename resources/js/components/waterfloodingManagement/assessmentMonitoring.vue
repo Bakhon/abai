@@ -11,8 +11,27 @@
               </a>
             </div>
             <div class="block" style="height: 92%">
-              <div style="height: 100%; background-color: #fff;">
-              </div>
+              <MglMap v-if="injWellList"
+                      ref="mgl-map"
+                      :accessToken="accessToken"
+                      :mapStyle ="mapStyle"
+                      :center="center"
+                      :boxZoom="true"
+                      @load="onMapLoaded"
+                      :zoom=11>
+                <mgl-navigation-control position="bottom-right" />
+                <MglMarker  v-for="c in getWells"
+                            ref="mgl-marker"
+                            :key="c[0]"
+                            :coordinates="c.coordinate">
+                  <div slot="marker">
+                    <map-pie-chart :data_value="c.value"
+                                   :wellName="c.well"
+                                   :type="c.type"
+                                   :radiusWidth="c.radius" />
+                  </div>
+                </MglMarker>
+              </MglMap>
             </div>
           </div>
         </div>
@@ -27,15 +46,11 @@
               </div>
               <div class="block block-graphic">
                 <div>
-                  <img src="/img/waterfloodingManagement/Group 1199 (1).png" class="w-100" alt="" style="padding:20px; height: 200px" >
-                </div>
-                <div class="row graphic-prompt">
-                  <div class="col-md-6 col-xl-6 m-0 p-0 " v-for="items in prediction">
-                    <div class="graphic-text w-100 d-flex align-items-center" v-for="item in items">
-                      <img src="/img/waterfloodingManagement/lines/green_line.svg" alt="" style="width:40px" >
-                      <p class="p-0 " style=""> {{ item }}</p>
-                    </div>
-                  </div>
+                  <apexchart
+                      type="line"
+                      height="260"
+                      :options="chartOptions"
+                      :series="series"/>
                 </div>
               </div>
             </div>
@@ -143,19 +158,124 @@
 </template>
 <script>
 import listTable from './list-table'
+import {MglMap, MglNavigationControl, MglMarker} from 'vue-mapbox'
+import {waterfloodingManagementMapGetters} from '@store/helpers';
+import MapPieChart from "./mapPieChart";
+import VueApexCharts from 'vue-apexcharts'
+import axios from "axios";
+
 export default {
   components: {
-    listTable
+    listTable,
+    "apexchart": VueApexCharts,
+    MglMap,
+    MglNavigationControl,
+    MglMarker,
+    MapPieChart
   },
   name: "assessmentMonitoring",
   data: function () {
     return {
-      prediction: [
-        ['Базовый прогноз дебита жидкости', 'Фактический дебит жидкости', 'Оптимизированный прогноз дебита жидкости'],
-        ['Базовый прогноз дебита нефти', 'Фактический дебит нефти', 'Оптимизированный прогноз дебита нефти']
-      ]
+      series: [{
+        name: "Desktops",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      }],
+      chartOptions: {
+        chart: {
+          height: 260,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'],
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        }
+      },
+      center: [65.72577732, 45.96753508],
+      accessToken: process.env.MIX_MAPBOX_TOKEN,
+      mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+      injWellList: null,
     }
   },
+  computed: {
+    ...waterfloodingManagementMapGetters([
+      'wellList'
+    ]),
+    getWells(){ return this.wellList }
+  },
+  created() {
+    this.map = null;
+    this.drawLineList();
+  },
+  methods:{
+    onMapLoaded(event){
+      this.map = event.map
+      for(let i=0;i<this.injWellList.length;i++){
+        let prod = this.injWellList[i].prod
+        for(let j=0;j<prod.length;j++){
+          let lineColor = '';
+          if (prod[j].coef >= 0.4) lineColor = 'green'
+          else if (prod[j].coef < 0.4 &&
+              prod[j].coef > 0.1 ) lineColor = 'yellow'
+          else if (prod[j].coef <= 0.1) lineColor = 'red'
+          let routeId = 'route' + i + j
+          this.map.addSource(routeId, {
+            'type': 'geojson',
+            'data': {
+              'type': 'Feature',
+              'properties': {},
+              'geometry': {
+                'type': 'LineString',
+                'coordinates': [
+                  this.injWellList[i].coordinate,
+                  prod[j].coordinate
+                ]
+              }
+            }
+          });
+          this.map.addLayer({
+            'id': routeId,
+            'type': 'line',
+            'source': routeId,
+            'layout': {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            'paint': {
+              'line-color': lineColor,
+              'line-width': 3
+            }
+          });
+        }
+      }
+    },
+    drawLineList(){
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/draw-line/'
+      axios.get(url)
+          .then((response) =>{
+            this.injWellList = response.data
+          }).catch((error) => {
+        console.log(error)
+      });
+    }
+  }
 }
 </script>
 <style scoped>
@@ -167,7 +287,6 @@ export default {
   margin: 5px;
   width: calc(100% - 10px);
 }
-
 .table-cell,
 table th,
 table td,
