@@ -164,8 +164,7 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
+                "type": "text",
                 "title": "marka"
               },
               {
