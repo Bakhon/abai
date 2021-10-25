@@ -11,12 +11,12 @@ class TechnicalWellForecast extends Model
         'uwi', 'date', 'active_hours', 'paused_hours', 'prs_portion',
         'oil', 'oil_forecast', 'oil_loss', 'oil_tech_loss',
         'liquid', 'liquid_forecast', 'liquid_loss', 'liquid_tech_loss',
-        'status_id', 'loss_status_id', 'author_id', 'log_id'
+        'status_id', 'loss_status_id', 'user_id', 'log_id'
     ];
 
-    public function author()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function status()

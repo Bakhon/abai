@@ -7,7 +7,7 @@
           {{ trans('economic_reference.economic_data') }}
         </h4>
 
-        <a :href="localeUrl('/economic/analysis/input/eco/upload-excel')"
+        <a :href="localeUrl('/economic/analysis/param/upload-excel')"
            target="_blank"
            class="text-decoration-none text-primary">
           {{ trans('economic_reference.upload') }}
@@ -15,7 +15,9 @@
         </a>
       </div>
 
-      <economic-table v-if="isVisibleEconomicTable" class="mt-2"/>
+      <economic-analysis-param-table
+          v-if="isVisibleEconomicTable"
+          class="mt-2"/>
     </div>
 
     <div class="container p-4 bg-light max-width-90vw">
@@ -33,7 +35,9 @@
         </a>
       </div>
 
-      <tech-table v-if="isVisibleTechTable" class="mt-2"/>
+      <technical-well-forecast-table
+          v-if="isVisibleTechTable"
+          class="mt-2"/>
     </div>
   </div>
 </template>
@@ -41,15 +45,15 @@
 <script>
 import VueTableDynamic from 'vue-table-dynamic';
 
-import EconomicTable from "../../gno/modals/EconomicTable";
-import TechTable from "../components/analysis/TechTable";
+import EconomicAnalysisParamTable from "../components/analysis/EconomicAnalysisParamTable";
+import TechnicalWellForecastTable from "../components/analysis/TechnicalWellForecastTable";
 
 export default {
   name: "economic-data-analysis-component",
   components: {
     VueTableDynamic,
-    EconomicTable,
-    TechTable,
+    EconomicAnalysisParamTable,
+    TechnicalWellForecastTable,
   },
   data: () => ({
     isVisibleEconomicTable: false,

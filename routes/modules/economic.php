@@ -223,7 +223,16 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             });
         });
 
-        Route::get('analysis/input', 'EconomicAnalysisController@inputParams')
-            ->name('economic.analysis.input_params');
+        Route::group(['prefix' => 'analysis'], function () {
+            Route::get('input', 'EconomicAnalysisController@inputParams')
+                ->name('economic.analysis.input_params');
+
+            Route::group(['prefix' => 'param'], function () {
+                Route::get('get-data', 'EconomicAnalysisParamController@getData');
+                Route::get('upload-excel', 'EconomicAnalysisParamController@uploadExcel');
+                Route::post('import-excel', 'EconomicAnalysisParamController@importExcel')
+                    ->name('economic.analysis.param.import');
+            });
+        });
     });
 });

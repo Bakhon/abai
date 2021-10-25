@@ -12,12 +12,15 @@ class EconomicDataLogType extends Model
 
     const WELL_FORECAST = 3;
 
+    const ANALYSIS_PARAM = 4;
+
     public static function ids(): array
     {
         return [
             self::COST,
             self::GTM,
             self::WELL_FORECAST,
+            self::ANALYSIS_PARAM,
         ];
     }
 

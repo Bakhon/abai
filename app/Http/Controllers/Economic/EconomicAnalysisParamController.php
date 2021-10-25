@@ -1,33 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Economic\Technical;
+namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastDataRequest;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastImportExcelRequest;
-use App\Imports\Economic\Technical\TechnicalWellForecastImport;
-use App\Models\Refs\TechnicalWellForecast;
+use App\Imports\Economic\EconomicAnalysisParamImport;
+use App\Models\Refs\EcoRefsAnalysisParam;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
-class TechnicalWellForecastController extends Controller
+class EconomicAnalysisParamController extends Controller
 {
     public function getData(TechnicalWellForecastDataRequest $request): array
     {
-        $query = TechnicalWellForecast::query();
+        $query = EcoRefsAnalysisParam::query();
 
         if ($request->log_id) {
             $query->whereLogId($request->log_id);
         }
 
-        if ($request->uwi) {
-            $query->whereUwi($request->uwi);
-        }
-
         return $query
-            ->with(['user', 'status', 'lossStatus'])
+            ->with(['user'])
             ->get()
             ->toArray();
     }
@@ -36,7 +32,7 @@ class TechnicalWellForecastController extends Controller
     {
         $mimeTypes = TechnicalWellForecastImportExcelRequest::MIME_TYPES;
 
-        return view('economic.technical.well_forecast.import_excel', compact('mimeTypes'));
+        return view('economic.analysis.param.import_excel', compact('mimeTypes'));
     }
 
     public function importExcel(TechnicalWellForecastImportExcelRequest $request): RedirectResponse
@@ -48,7 +44,7 @@ class TechnicalWellForecastController extends Controller
             );
 
             Excel::import(
-                new TechnicalWellForecastImport(auth()->id(), $fileName),
+                new EconomicAnalysisParamImport(auth()->id(), $fileName),
                 $request->file
             );
         });

@@ -2,7 +2,7 @@
   <div>
     <select-log
         :form="form"
-        :fetch-params="{type_id: EconomicDataLogTypeModel.WELL_FORECAST}"
+        :fetch-params="{type_id: EconomicDataLogTypeModel.ANALYSIS_PARAM}"
         class="mt-3"
         @change="getData()"/>
 
@@ -22,7 +22,7 @@ import SelectLog from "../SelectLog";
 import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
 
 export default {
-  name: "TechTable",
+  name: "EconomicAnalysisParamTable",
   components: {
     VueTableDynamic,
     SelectLog
@@ -48,8 +48,8 @@ export default {
         let row = []
 
         this.headers.forEach(header => {
-          if (header.isAuthor) {
-            return row.push(well.author ? `${well.created_at} ${well.author.name}` : '')
+          if (header.isUser) {
+            return row.push(well[header.key] ? `${well.created_at} ${well[header.key].name}` : '')
           }
 
           if (header.isStatus) {
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     url() {
-      return this.localeUrl('economic/technical/well_forecast/get-data')
+      return this.localeUrl('economic/analysis/param/get-data')
     },
 
     params() {
@@ -175,8 +175,8 @@ export default {
         },
         {
           label: this.trans('economic_reference.added_date_author'),
-          key: 'author',
-          isAuthor: true
+          key: 'user',
+          isUser: true
         },
       ]
     },

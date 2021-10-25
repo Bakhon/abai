@@ -8,6 +8,7 @@ use App\Http\Requests\Economic\Log\EconomicDataLogRequest;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
+use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
 use App\Models\Refs\TechnicalWellForecast;
@@ -50,6 +51,10 @@ class EconomicDataLogController extends Controller
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
                     TechnicalWellForecast::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::ANALYSIS_PARAM:
+                    EcoRefsAnalysisParam::query()->whereLogId($log->id)->delete();
 
                     break;
             }

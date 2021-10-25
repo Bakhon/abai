@@ -31,8 +31,8 @@ class CreateTechnicalWellForecastsTable extends Migration
                 ->references('id')
                 ->on('technical_well_loss_statuses');
 
-            $table->unsignedBigInteger('author_id');
-            $table->foreign('author_id')
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
 

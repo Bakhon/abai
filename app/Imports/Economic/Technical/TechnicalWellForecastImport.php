@@ -46,11 +46,10 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::create([
-            'author_id' => $userId,
-            'name' => $fileName,
-            'type_id' => EconomicDataLogType::WELL_FORECAST
-        ])->id;
+        $this->logId = EconomicDataLog::firstOrCreate(
+            ['name' => $fileName, 'type_id' => EconomicDataLogType::WELL_FORECAST],
+            ['author_id' => $userId]
+        )->id;
     }
 
     public function model(array $row): ?TechnicalWellForecast
@@ -75,7 +74,7 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
             'liquid_tech_loss' => round($row[self::COLUMNS['liquid_tech_loss']], 2),
             'status_id' => $this->getStatusId($row),
             'loss_status_id' => $this->getLossStatusId($row),
-            'author_id' => $this->userId,
+            'user_id' => $this->userId,
             'log_id' => $this->logId
         ]);
     }
