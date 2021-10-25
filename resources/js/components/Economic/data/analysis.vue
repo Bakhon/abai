@@ -58,4 +58,7 @@ export default {
 };
 </script>
 <style scoped>
+.max-width-90vw {
+  max-width: 90vw;
+}
 </style>

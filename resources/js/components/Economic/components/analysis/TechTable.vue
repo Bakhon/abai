@@ -1,7 +1,15 @@
 <template>
-  <vue-table-dynamic
-      :params="params"
-      class="height-fit-content"/>
+  <div>
+    <select-log
+        :form="form"
+        :fetch-params="{type_id: EconomicDataLogTypeModel.WELL_FORECAST}"
+        class="mt-3"
+        @change="getData()"/>
+
+    <vue-table-dynamic
+        :params="params"
+        class="height-fit-content"/>
+  </div>
 </template>
 
 <script>
@@ -9,17 +17,23 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
+import SelectLog from "../SelectLog";
+
+import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
+
 export default {
   name: "TechTable",
   components: {
     VueTableDynamic,
+    SelectLog
   },
   data: () => ({
+    EconomicDataLogTypeModel,
+    form: {
+      log_id: null
+    },
     data: []
   }),
-  created() {
-    this.getData()
-  },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
@@ -28,7 +42,7 @@ export default {
 
       this.data = [this.headers.map(header => header.label)]
 
-      const {data} = await this.axios.get(this.url)
+      const {data} = await this.axios.get(this.url, {params: this.form})
 
       data.forEach(well => {
         let row = []
@@ -36,6 +50,10 @@ export default {
         this.headers.forEach(header => {
           if (header.isAuthor) {
             return row.push(well.author ? `${well.created_at} ${well.author.name}` : '')
+          }
+
+          if (header.isStatus) {
+            return row.push(well[header.key] ? well[header.key].name : '')
           }
 
           row.push(well[header.key])
@@ -98,16 +116,26 @@ export default {
           key: 'liquid'
         },
         {
-          label: this.trans('economic_reference.active_days'),
-          key: 'active_days'
+          label: this.trans('economic_reference.active_hours'),
+          key: 'active_hours'
         },
         {
-          label: this.trans('economic_reference.paused_days'),
-          key: 'paused_days'
+          label: this.trans('economic_reference.paused_hours'),
+          key: 'paused_hours'
+        },
+        {
+          label: this.trans('economic_reference.status'),
+          key: 'status',
+          isStatus: true,
         },
         {
           label: this.trans('economic_reference.prs_portions'),
           key: 'prs_portion'
+        },
+        {
+          label: this.trans('economic_reference.cause_of_loss'),
+          key: 'loss_status',
+          isStatus: true,
         },
         {
           label: `

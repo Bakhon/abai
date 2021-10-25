@@ -21,6 +21,16 @@ class CreateTechnicalWellForecastsTable extends Migration
                 ->references('id')
                 ->on('economic_data_logs');
 
+            $table->unsignedSmallInteger('status_id')->nullable();
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('technical_well_statuses');
+
+            $table->unsignedSmallInteger('loss_status_id')->nullable();
+            $table->foreign('loss_status_id')
+                ->references('id')
+                ->on('technical_well_loss_statuses');
+
             $table->unsignedBigInteger('author_id');
             $table->foreign('author_id')
                 ->references('id')
@@ -29,8 +39,8 @@ class CreateTechnicalWellForecastsTable extends Migration
             $table->string('uwi');
             $table->date('date');
 
-            $table->unsignedInteger('active_days');
-            $table->unsignedInteger('paused_days');
+            $table->unsignedInteger('active_hours');
+            $table->unsignedInteger('paused_hours');
 
             $table->float('prs_portion', 12, 2);
             $table->float('oil', 12, 2);

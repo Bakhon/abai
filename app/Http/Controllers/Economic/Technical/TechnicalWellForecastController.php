@@ -18,12 +18,16 @@ class TechnicalWellForecastController extends Controller
     {
         $query = TechnicalWellForecast::query();
 
+        if ($request->log_id) {
+            $query->whereLogId($request->log_id);
+        }
+
         if ($request->uwi) {
             $query->whereUwi($request->uwi);
         }
 
         return $query
-            ->with('author')
+            ->with(['author', 'status', 'lossStatus'])
             ->get()
             ->toArray();
     }

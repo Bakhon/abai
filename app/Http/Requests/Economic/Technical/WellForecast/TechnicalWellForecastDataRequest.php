@@ -10,6 +10,7 @@ class TechnicalWellForecastDataRequest extends FormRequest
     {
         return [
             'uwi' => 'nullable|string',
+            'log_id' => 'nullable|integer|min:1',
         ];
     }
 }

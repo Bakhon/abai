@@ -8,14 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class TechnicalWellForecast extends Model
 {
     protected $fillable = [
-        'uwi', 'date', 'active_days', 'paused_days', 'prs_portion',
+        'uwi', 'date', 'active_hours', 'paused_hours', 'prs_portion',
         'oil', 'oil_forecast', 'oil_loss', 'oil_tech_loss',
         'liquid', 'liquid_forecast', 'liquid_loss', 'liquid_tech_loss',
-        'author_id', 'log_id'
+        'status_id', 'loss_status_id', 'author_id', 'log_id'
     ];
 
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(TechnicalWellStatus::class, 'status_id');
+    }
+
+    public function lossStatus()
+    {
+        return $this->belongsTo(TechnicalWellLossStatus::class, 'loss_status_id');
     }
 }
