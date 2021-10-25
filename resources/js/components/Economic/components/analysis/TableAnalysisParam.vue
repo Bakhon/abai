@@ -44,15 +44,15 @@ export default {
 
       const {data} = await this.axios.get(this.url, {params: this.form})
 
-      data.forEach(well => {
+      data.forEach(item => {
         let row = []
 
         this.headers.forEach(header => {
           if (header.isUser) {
-            return row.push(well[header.key] ? `${well.created_at} ${well[header.key].name}` : '')
+            return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
           }
 
-          row.push(well[header.key])
+          row.push(item[header.key])
         })
 
         this.data.push(row)
