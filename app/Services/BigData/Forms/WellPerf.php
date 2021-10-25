@@ -156,6 +156,9 @@ class WellPerf extends PlainForm
             }
 
             $this->submittedData['table_fields'][$field['code']] = [];
+            if (!is_array($this->request->get($field['code']))) {
+                continue;
+            }
             foreach ($this->request->get($field['code']) as $data) {
                 $data[$field['parent_column']] = $id;
                 $data['dbeg'] = $this->request->get('perf_date');
@@ -164,5 +167,21 @@ class WellPerf extends PlainForm
                 DB::connection('tbd')->table($field['table'])->insert($data);
             }
         }
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        $data = array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        if (isset($data['actual_intervals'])) {
+            unset($data['actual_intervals']);
+        }
+        return $data;
     }
 }
