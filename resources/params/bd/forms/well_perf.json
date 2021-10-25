@@ -128,7 +128,7 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "asc"
+      "order": "desc"
     }
   ],
   "tabs": [
