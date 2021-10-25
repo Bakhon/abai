@@ -114,7 +114,8 @@ export default {
             reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
-            additionalCompanies: ['ОМГК','АГ']
+            additionalCompanies: ['ОМГК','АГ'],
+            missedCompanies: []
         };
     },
     methods: {
@@ -250,6 +251,14 @@ export default {
                 this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
                 this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
             }
+        },
+        async getMissedCompanies() {
+            let uri = this.localeUrl("/get-missed-companies");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
         }
     },
     mixins: [
@@ -274,6 +283,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.oneDzoSelected = this.getDzoTicker();
+        this.missedCompanies = await this.getMissedCompanies();
         if (this.oneDzoSelected !== null) {
             this.isOneDzoSelected = true;
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);

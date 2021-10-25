@@ -1,10 +1,23 @@
 export default class TElements {
-    constructor() {
-    }
 
     #__elements = new Set();
     #__elementsOptions = new Map();
     #__elementsData = new Map();
+    #__old = {};
+
+    save(){
+        this.#__old = {
+            elements: new Set(this.#__elements),
+            elementsData: new Map(this.#__elementsData),
+            elementsOptions: new Map(this.#__elementsOptions)
+        }
+    }
+
+    reset(){
+        this.#__elements = new Set(this.#__old.elements);
+        this.#__elementsData = new Map(this.#__old.elementsData);
+        this.#__elementsOptions = new Map(this.#__old.elementsOptions);
+    }
 
     get getElements() {
         return [...this.#__elements.keys()]

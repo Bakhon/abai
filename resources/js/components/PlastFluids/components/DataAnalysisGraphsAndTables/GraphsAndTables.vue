@@ -108,8 +108,19 @@ export default {
       );
     },
   },
+  watch: {
+    currentSubsoilField: {
+      handler(value) {
+        this.handleTableGraphData({ field_id: value[0].field_id });
+      },
+      deep: true,
+    },
+  },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
+    ...mapActions("plastFluidsLocal", [
+      "handleTableGraphData",
+      "handleBlocksFilter",
+    ]),
     setConfig() {},
     getMaxMin(arrayData) {
       const max = Math.max(...arrayData);
@@ -117,11 +128,12 @@ export default {
       return [min, max];
     },
   },
-  mounted() {
+  async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {
-      this.handleTableGraphData({
+      await this.handleTableGraphData({
         field_id: this.currentSubsoilField[0].field_id,
       });
+      this.handleBlocksFilter(this.currentSubsoilHorizon);
     }
   },
 };
@@ -145,6 +157,7 @@ export default {
 .graph-holder {
   display: flex;
   flex-flow: column;
+  flex: 2 1 auto;
 }
 
 .heading-title {
