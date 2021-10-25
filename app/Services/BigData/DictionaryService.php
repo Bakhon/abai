@@ -112,7 +112,8 @@ class DictionaryService
         ],
         'brigades' => [
             'class' => Brigade::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'name_ru',
+            'additional_fields' => ['org']
         ],
         'brigadiers' => [
             'class' => Brigadier::class,
@@ -523,14 +524,18 @@ class DictionaryService
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
+        $selectFields = ['id'];
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $selectFields[] = 'code';
+        }
+        if (!empty(self::DICTIONARIES[$dict]['additional_fields'])) {
+            $selectFields = array_merge($selectFields, self::DICTIONARIES[$dict]['additional_fields']);
+        }
+
         $query = $dictClass::query()
-            ->select('id')
+            ->select($selectFields)
             ->selectRaw("$nameField as name")
             ->orderBy('name', 'asc');
-
-        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
-            $query->selectRaw('code');
-        }
 
         $result = $query->get()->toArray();
 

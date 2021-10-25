@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Cache;
 
 class VisualCenterController extends Controller
 {
+    private $allCompanies = array('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','ПКИ','КПО','ПКК','ТП','АГ');
 
     public function __construct()
     {
@@ -633,5 +634,23 @@ class VisualCenterController extends Controller
             $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay();
             echo '<br><br>';
         }
+    }
+
+    public function getMissedCompanies()
+    {
+        $presentCompanies = DzoImportData::query()
+            ->select('dzo_name')
+            ->whereDate('date',Carbon::yesterday())
+            ->whereNull('is_corrected')
+            ->get()
+            ->pluck('dzo_name');
+        $diff = array_values(array_diff($this->allCompanies,reset($presentCompanies)));
+        if (in_array('ОМГ', $diff)) {
+            array_push($diff,'ОМГК');
+        }
+        if (in_array('КГМ', $diff)) {
+            array_push($diff,'КГМКМГ');
+        }
+        return $diff;
     }
 }
