@@ -1,9 +1,9 @@
 <template>
   <div class="column" ref="column" :style="{height: `${heightContainer - columnTopPadding}px`}">
     <div class="column__header d-flex flex-column" :style="{height: `${headerHeight}px`}">
-      <div  v-if="Array.isArray(elements)" v-for="el in elements">
+      <div v-for="(el, i) in elements" :key="i" v-show="getElements.includes(el.data.name)||el.data.name === 'SSTVD'">
         <div class="column__header_info">
-          {{ el }}
+          {{ el.data.name }}
         </div>
         <div class="column__header_info">
           1: 0
@@ -38,6 +38,9 @@ export default {
     }
   },
   computed:{
+    getElements() {
+      return this.$store.state.geologyGis.selectedGisCurves;
+    },
     getOffsetDepth: {
       get() {
         return this.offsetDepth;

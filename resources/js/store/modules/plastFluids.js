@@ -40,7 +40,7 @@ const plastFluids = {
     },
   },
   actions: {
-    UPDATE_CURRENT_SUBSOIL({ state, commit }, value) {
+    UPDATE_CURRENT_SUBSOIL({ commit }, value) {
       commit("SET_CURRENT_SUBSOIL", value);
       commit("SET_CURRENT_SUBSOIL_FIELD", {});
       commit("SET_CURRENT_SUBSOIL_HORIZON", []);
@@ -52,6 +52,7 @@ const plastFluids = {
       commit("SET_CURRENT_SUBSOIL_FIELD", value);
       commit("SET_CURRENT_SUBSOIL_HORIZON", []);
       commit("SET_SUBSOIL_HORIZONS", value?.horizons ?? []);
+      commit("plastFluidsLocal/SET_CURRENT_BLOCKS", [], { root: true });
       if (value?.field_id) await dispatch("GET_SUBSOIL_FIELD_COUNTERS");
     },
     async GET_SUBSOIL_FIELD_COUNTERS({ state, commit }) {

@@ -11,6 +11,8 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
+use App\Models\BigData\MeasWaterCut;
+use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
@@ -24,7 +26,7 @@ class WellsController extends Controller
 
     private $wellCardGraphRepo;
 
-    public function  __construct(WellCardGraphRepository $wellCardGraphRepo)
+    public function __construct(WellCardGraphRepository $wellCardGraphRepo)
     {
         $this->wellCardGraphRepo = $wellCardGraphRepo;
     }
@@ -36,11 +38,12 @@ class WellsController extends Controller
 
     public function wellInfo($well)
     {
+      
         $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }
-
+        }     
+       
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -60,6 +63,7 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
+            'meas_water_inj' => $this->measLiqInjection($well),            
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
@@ -73,7 +77,7 @@ class WellsController extends Controller
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
         ];
-
+        
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
@@ -89,34 +93,27 @@ class WellsController extends Controller
         $allParents = [];
         $parent = null;
         $item = $well->getGeo($this->getToday());
-        if(isset($item))
-        {
+        if (isset($item)) {
             $geo_tree = $geo_object->parentTree($item->id);
-            $not_duplicate=[];
-            $count_tree = count($geo_tree)-1;
-            foreach($geo_tree as $key=>$geo_item)
-            {
-                if(!in_array($geo_item->geo,$not_duplicate))
-                {
+            $not_duplicate = [];
+            $count_tree = count($geo_tree) - 1;
+            foreach ($geo_tree as $key => $geo_item) {
+                if (!in_array($geo_item->geo, $not_duplicate)) {
                     $parents_id[] = $geo_item->geo;
                     $not_duplicate[] = $geo_item->geo;
                 }
-                if($key==$count_tree)
-                {
+                if ($key == $count_tree) {
                     $parents_id[] = $geo_item->parent;
                 }
             }
 
-            if(isset($parents_id))
-            {
+            if (isset($parents_id)) {
                 $items = $geo_object->getItems($parents_id);
-                foreach($items as $item)
-                {
-                        $key = array_search($item->id, $parents_id);
-                        $allParents[$key] = $item;
+                foreach ($items as $item) {
+                    $key = array_search($item->id, $parents_id);
+                    $allParents[$key] = $item;
                 }
             }
-
         }
         return $allParents;
     }
@@ -146,6 +143,7 @@ class WellsController extends Controller
             ->WherePivot('casing_type', '=', '9')
             ->get(['prod.well_constr.od']);
     }
+
 
     private function category(Well $well)
     {
@@ -180,15 +178,12 @@ class WellsController extends Controller
         $tech = new Tech();
         $allParents = [];
         $item = $well->getRelationTech($this->getToday());
-        if ($item)
-        {
+        if ($item) {
             $dict_techs = $tech->parentTree($item->id);
-            foreach($dict_techs as $dict_tech)
-            {
+            foreach ($dict_techs as $dict_tech) {
                 $allParents[]['name_ru'] = $dict_tech->name;
             }
-            if(!empty($allParents))
-            {
+            if (!empty($allParents)) {
                 $allParents = array_reverse($allParents);
             }
         }
@@ -215,11 +210,9 @@ class WellsController extends Controller
         $org_object = new Org();
         $allParents = [];
         $item = $well->getRelationOrg($this->getToday());
-        if (isset($item))
-        {
+        if (isset($item)) {
             $dict_orgs = $org_object->parentTree($item->id);
-            foreach($dict_orgs as $dict_org)
-            {
+            foreach ($dict_orgs as $dict_org) {
                 $allParents[]['name_ru'] = $dict_org->name;
             }
         }
@@ -277,6 +270,13 @@ class WellsController extends Controller
             ->first('liquid');
     }
 
+    private function measLiqInjection(Well $well)
+    {
+        return $well->measLiqInjection()
+            ->orderBy('dbeg', 'desc')
+            ->first('water_inj_val', 'pressure_inj');
+    }
+
     private function wellPerfActual(Well $well)
     {
         return $well->wellPerfActual()
@@ -292,7 +292,9 @@ class WellsController extends Controller
 
     private function getKrsPrs(Well $well, $code)
     {
-        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(
+            ['dbeg', 'dend']
+        );
         if (isset($wellWorkover)) {
             return $wellWorkover;
         }
@@ -449,7 +451,7 @@ class WellsController extends Controller
 
     public function search(StructureService $service, Request $request): array
     {
-        if (empty($request->get('query'))) {
+        if (empty($request->get('query')) || strlen($request->get('query')) < 2) {
             return [];
         }
         $selectedUserDzo = $request->get('selectedUserDzo');
@@ -457,22 +459,34 @@ class WellsController extends Controller
         $orgsTree = $service->getTree(Carbon::now());
         if ($selectedUserDzo) {
             $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
-        } else {
-            $userDzoIds = array_map(function ($item) {
-                return substr($item, strpos($item, ":") + 1);
-            }, auth()->user()->org_structure);
-            foreach ($userDzoIds as $userDzoId) {
-                $childrenIds = array_merge($childrenIds, $service::getChildIds($orgsTree, $userDzoId));
-            }
         }
-        $wells = Well::query()
-            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'");
+
+        $wellQuery = Well::query()
+            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'")
+            ->with('orgs');
         if ($childrenIds) {
-            $wells->whereHas('orgs', function ($query) use ($childrenIds) {
+            $wellQuery->whereHas(
+                'orgs',
+                function ($query) use ($childrenIds) {
                     $query->whereIn('org.id', $childrenIds);
-                });
+                }
+            );
         }
-        $wells = $wells->paginate(30);
+        $wells = $wellQuery->limit(50)->get();
+
+        $orgsToFilter = [];
+        $userDzoIds = array_map(function ($item) {
+            return substr($item, strpos($item, ":") + 1);
+        }, auth()->user()->org_structure);
+        foreach ($userDzoIds as $userDzoId) {
+            $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
+        }
+        if (!empty($orgsToFilter)) {
+            $wells = $wells->filter(function ($well) use ($orgsToFilter) {
+                $wellOrgs = $well->orgs->pluck('id')->toArray();
+                return !empty(array_intersect($wellOrgs, $orgsToFilter));
+            });
+        }
 
         return [
             'items' => WellSearchResource::collection($wells)
@@ -483,10 +497,11 @@ class WellsController extends Controller
      * @param Request $request
      * @return array
      */
-    public function getProductionWellsScheduleData(Request $request):object {
+    public function getProductionWellsScheduleData(Request $request): object
+    {
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        $result = $this->wellCardGraphRepo->wellItems($wellId, $period);
         return response()->json($result);
     }
 
@@ -495,66 +510,67 @@ class WellsController extends Controller
         $measLiqs = MeasLiq::where('well', $wellId)
             ->orderBy('dbeg', 'asc')
             ->get();
-        $groupedLiq = $measLiqs->groupBy(function($val) {
+        $groupedLiq = $measLiqs->groupBy(function ($val) {
             return Carbon::parse($val->dbeg)->format('Y');
         });
         $liqByMonths = array();
-        foreach($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
-                   return Carbon::parse($val->dbeg)->format('m');
+        foreach ($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
+                return Carbon::parse($val->dbeg)->format('m');
             });
         }
 
         $result = array();
-        foreach($liqByMonths as $yearNumber => $monthes) {
-           foreach($monthes as $monthNumber => $month) {
-              $result[$yearNumber][$monthNumber] = array();
-              foreach($month as $dayNumber => $day) {
-                 $date = Carbon::parse($day['dbeg']);
-                 $dateEnd = Carbon::parse($day['dend']);
+        foreach ($liqByMonths as $yearNumber => $monthes) {
+            foreach ($monthes as $monthNumber => $month) {
+                $result[$yearNumber][$monthNumber] = array();
+                foreach ($month as $dayNumber => $day) {
+                    $date = Carbon::parse($day['dbeg']);
+                    $dateEnd = Carbon::parse($day['dend']);
 
-                 array_push($result[$yearNumber][$monthNumber], array (
-                    'liq' => $day['liquid'],
-                    'date' => $date->format('Y-m-d'),
-                    'workHours' => $date->diffInDays($dateEnd),
-                 ));
-              }
-           }
+                    array_push($result[$yearNumber][$monthNumber], array(
+                        'liq' => $day['liquid'],
+                        'date' => $date->format('Y-m-d'),
+                        'workHours' => $date->diffInDays($dateEnd),
+                    ));
+                }
+            }
         }
         return $result;
     }
 
-    public function getActivityByWell(Request $request,$wellId)
+    public function getActivityByWell(Request $request, $wellId)
     {
-
         $wellWorkover = WellWorkover::query()
-            ->select(['dbeg','well','repair_type','work_plan','well_status'])
-            ->whereIn('repair_type', [1,3])
-            ->whereYear('dbeg',$request->year)
-            ->whereMonth('dbeg',$request->month)
-            ->where('well',$wellId)
+            ->select(['dbeg', 'well', 'repair_type', 'work_plan', 'well_status'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dbeg', $request->year)
+            ->whereMonth('dbeg', $request->month)
+            ->where('well', $wellId)
             ->get();
         $wellWorkoverEnd = WellWorkover::query()
-            ->select(['dend','well','repair_type','well_status','work_list'])
-            ->whereIn('repair_type', [1,3])
-            ->whereYear('dend',$request->year)
-            ->whereMonth('dend',$request->month)
-            ->where('well',$wellId)
+            ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dend', $request->year)
+            ->whereMonth('dend', $request->month)
+            ->where('well', $wellId)
             ->get();
-        foreach($wellWorkoverEnd as $workEnd) {
+        foreach ($wellWorkoverEnd as $workEnd) {
             $wellWorkover->push($workEnd);
         }
         $gtms = Gtm::query()
-            ->select(['param_result','gtm_type','dbeg'])
+            ->select(['param_result', 'gtm_type', 'dbeg'])
             ->where('well', $wellId)
-            ->whereYear('dbeg',$request->year)
-            ->whereMonth('dbeg',$request->month)
+            ->whereYear('dbeg', $request->year)
+            ->whereMonth('dbeg', $request->month)
             ->get();
-        foreach($gtms as $gtm) {
-            $wellWorkover->push(array(
-                'dbeg' => $gtm->dbeg,
-                'repair_type' => $gtm->gtm_type->name_ru
-            ));
+        foreach ($gtms as $gtm) {
+            $wellWorkover->push(
+                array(
+                    'dbeg' => $gtm->dbeg,
+                    'repair_type' => $gtm->gtm_type->name_ru
+                )
+            );
         }
         return $wellWorkover;
     }
