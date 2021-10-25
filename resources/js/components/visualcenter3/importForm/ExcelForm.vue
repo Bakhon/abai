@@ -156,7 +156,7 @@
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -262,7 +262,7 @@
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
                         @beforeEdit="beforePlanEdit"
-                        @beforeRangeEdit="beforeRangeEdit"
+                        @beforeRangeEdit="beforePlanRangeEdit"
                 ></v-grid>
 
             </div>
