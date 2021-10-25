@@ -49,7 +49,7 @@
         <accordion title="digital_rating.horizon">
           <ul class="list">
             <li
-                v-for="(item, index) in objects" :key="index"
+                v-for="(item, index) in horizons" :key="index"
                 @click="selectPanelItem('horizon', item)"
                 :class="{'active': item.id === horizonNumber}"
             >

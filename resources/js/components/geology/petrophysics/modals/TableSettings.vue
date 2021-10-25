@@ -75,7 +75,7 @@ import AwTab from "../../components/awTab/AwTab";
 import AwTabContent from "../../components/awTab/AwTabContent";
 import AwInput from "../../components/form/AwInput";
 import dropdown from "../../components/dropdowns/dropdown";
-import {SET_SELECTED_WELL_CURVES, SET_WELL_NAME} from "../../../../store/modules/geologyGis.const";
+import {GET_TREE_CURVES, SET_SELECTED_WELL_CURVES, SET_WELL_NAME} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "TableSettings",
@@ -108,7 +108,7 @@ export default {
         iconType: 'oilTower',
         iconFill: 'red',
         isOpen: true,
-        children: this.$store.state?.geologyGis.gisData.curves||[]
+        children: this.$store.getters[GET_TREE_CURVES]||[]
       }
     }
   },

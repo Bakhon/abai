@@ -226,7 +226,7 @@ export default {
 
         getThousandMetricNameByCategorySelected() {
             if (!this.isConsolidatedCategoryActive()) {
-                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubic');
             } else {
                 return this.trans("visualcenter.dzoThousandTon");
             }

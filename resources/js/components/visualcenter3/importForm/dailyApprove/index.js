@@ -18,7 +18,8 @@ export default {
                 'is_approved_by_first_master',
                 'is_approved_by_second_master',
                 'created_at',
-                'updated_at'
+                'updated_at',
+                'user_position'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
@@ -65,7 +66,8 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
-                'isFinalApprove': master.isFinalApprove
+                'isFinalApprove': master.isFinalApprove,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -81,6 +83,7 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -120,6 +123,7 @@ export default {
                     'dzoName': approveItem.dzo_name,
                     'userName': approveItem.user_name,
                     'reason': approveItem.change_reason,
+                    'position': approveItem.user_position,
                     'selected': false,
                     'currentId': approveItem.id,
                     'actualId': actual.id,
@@ -203,5 +207,6 @@ export default {
         this.allProduction = await this.getForApprove();
         this.compared = this.getCompared();
         this.SET_LOADING(false);
-    }
+    },
+    props: ['userId'],
 }

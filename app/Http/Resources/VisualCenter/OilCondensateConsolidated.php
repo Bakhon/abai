@@ -38,13 +38,15 @@ class OilCondensateConsolidated {
             "КГМ" => "1.5.",
             "КТМ" => "1.6.",
             "КОА" => "1.7.",
-            "ТШО" => "1.8.",
-            "НКО" => "1.9.",
-            "ПКИ" => "1.10.",
+            'УО' => '1.8.',
+            "ТШО" => "1.9.",
+            "НКО" => "1.10.",
+            'КПО' => '1.11.',
+            "ПКИ" => "1.12.",
             "КГМКМГ" => "",
             "ПККР" => "",
             "ТП" => "",
-            "АГ" => "1.11."
+            "АГ" => "1.13."
         ),
     );
     private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ','ПКК','ТП','АГ');
@@ -146,7 +148,7 @@ class OilCondensateConsolidated {
         return $dzo->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMapping[$type][$dzoName]);
     }
 
-    public function getChartData($fact,$plan,$dzoName,$type)
+    public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
     {
         $dataType = 'production';
         if (str_contains($type, 'delivery')) {
@@ -164,6 +166,6 @@ class OilCondensateConsolidated {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType);
     }
 }

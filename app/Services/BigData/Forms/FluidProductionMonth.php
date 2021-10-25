@@ -352,8 +352,13 @@ class FluidProductionMonth extends MeasLogByMonth
         $well,
         CarbonImmutable $date
     ) {
+        $row = [];
+        $row['tech'] = [
+            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil : null
+        ];
+
         $liquidRow = $this->getLiquidRowData($well, $date);
-        $bswRow = $this->getLiquidRowData($well, $date);
+        $bswRow = $this->getBswRowData($well, $date);
         $oilDensity = $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil_density : 0;
 
         $count = $sum = 0;
@@ -363,7 +368,11 @@ class FluidProductionMonth extends MeasLogByMonth
 
             $liquidValue = isset($liquidRow[$day]) ? $liquidRow[$day]['value'] : 0;
             $bswValue = isset($bswRow[$day]) ? $bswRow[$day]['value'] : 0;
-            $oil = $liquidValue * (1 - $bswValue / 100) * $oilDensity;
+
+            $oil = 0;
+            if ($bswValue && $liquidValue) {
+                $oil = $liquidValue * (1 - $bswValue / 100) * $oilDensity;
+            }
 
             $row[$day] = [
                 'is_editable' => false,

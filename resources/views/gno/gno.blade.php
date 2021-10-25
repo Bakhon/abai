@@ -17,7 +17,6 @@
 @endsection
 @section('module_title', 'Подбор ГНО')
 @section('sidebar_menu_additional')
-    @include('partials.sidebar.gno_menu')
 @endsection
 @section('content')
     <div>

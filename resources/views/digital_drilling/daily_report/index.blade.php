@@ -7,7 +7,7 @@
 @endsection
 @section('module_title', trans('digital_drilling.module_title'))
 @section('content')
-    <link rel="stylesheet" href="/css/digital_drilling.css">
+    <link rel="stylesheet" href="/css/digital-drilling.css">
     <div class="row digital_drilling">
         <daily-raport />
     </div>

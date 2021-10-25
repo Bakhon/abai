@@ -12,7 +12,7 @@ class RemoveUnusedPipeTypes extends Migration
      */
     public function up()
     {
-        PipeType::doesntHave('oilPipes')->where('id', '>', 8)->delete();
+
     }
 
     /**

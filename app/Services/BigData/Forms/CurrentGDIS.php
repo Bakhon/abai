@@ -6,6 +6,9 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
+use App\Services\AttachmentService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -60,36 +63,36 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RPL',
-        'RZAB',
-        'PMAX',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'PRIV',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR'
+        'TBP',
+        'OTP',
+        'OTPM',
+        'STLV',
+        'FLVL',
+        'BHP',
+        'RP',
+        'RRP',
+        'MLP',
+        'BP',
+        'STP',
+        'RSVT',
+        'INJR',
+        'FLRT',
+        'FLRD',
+        'GASR',
+        'ADMCF',
+        'PDCF',
+        'RSD',
+        'PRDK',
+        'DBD',
+        'SLHDM',
+        'PSHDM',
+        'PSD',
+        'TPDM',
+        'PLST',
+        'PMPR',
+        'SHDMD',
+        'SHDME',
+        'RPM',
     ];
 
     protected $fieldsOrder = [
@@ -97,40 +100,48 @@ class CurrentGDIS extends TableForm
         'device',
         'conclusion',
         'transcript_dynamogram',
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RZAB',
-        'RPL',
-        'PRIV',
-        'PMAX',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR',
+        'TBP',
+        'OTP',
+        'OTPM',
+        'STLV',
+        'FLVL',
+        'BHP',
+        'RP',
+        'RRP',
+        'MLP',
+        'BP',
+        'STP',
+        'RSVT',
+        'INJR',
+        'FLRT',
+        'FLRD',
+        'GASR',
+        'ADMCF',
+        'PDCF',
+        'RSD',
+        'PRDK',
+        'DBD',
+        'SLHDM',
+        'PSHDM',
+        'PSD',
+        'TPDM',
+        'PLST',
+        'PMPR',
+        'SHDMD',
+        'SHDME',
+        'RPM',
         'note',
         'conclusion_text',
         'file_dynamogram'
     ];
+
+    protected $attachmentService;
+
+    public function __construct(Request $request)
+    {
+        $this->attachmentService = app()->make(AttachmentService::class);
+        parent::__construct($request);
+    }
 
     public function getResults(): array
     {
@@ -166,17 +177,21 @@ class CurrentGDIS extends TableForm
         }
         $oldestDate = $dates->last()->meas_date;
 
-        return GdisCurrent::query()
+        $gdisCurrent = GdisCurrent::query()
             ->where('well', $wellId)
             ->where('meas_date', '>=', $oldestDate)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')
-            ->get()
+            ->get();
+
+        $files = $this->getFiles($gdisCurrent);
+
+        return $gdisCurrent
             ->groupBy(function ($item) {
                 return $item->meas_date->format('d.m.Y');
             })
-            ->map(function ($items, $date) {
+            ->map(function ($items, $date) use ($files) {
                 $result = [
                     'date' => $date
                 ];
@@ -184,8 +199,13 @@ class CurrentGDIS extends TableForm
                 foreach ($this->gdisFields as $field) {
                     $item = $items->whereNotNull($field['code'])->first();
                     if (!empty($item)) {
+                        $value = $item->{$field['code']};
+                        if ($field['code'] === 'file_dynamogram' && $value) {
+                            $value = $files->where('id', $value);
+                        }
+
                         $result['fields'][$field['code']] = [
-                            'value' => $item->{$field['code']},
+                            'value' => $value,
                         ];
                         if ($field['params']) {
                             $result['fields'][$field['code']] = array_merge(
@@ -236,14 +256,16 @@ class CurrentGDIS extends TableForm
                 ],
                 'last_measure_date' => ['name' => null],
                 'last_measure_value' => [
-                    'value' => null,
+                    'value' => $field['params']['type'] === 'file' ? [] : null,
                     'params' => [
                         'type' => 'field',
                         'code' => $field['code']
                     ]
                 ],
             ];
+
             $row['last_measure_value'] = array_merge($row['last_measure_value'], $field['params']);
+
             foreach ($measurements as $date => $measurement) {
                 if (isset($measurement['fields'][$field['code']])) {
                     $row[$date] = $measurement['fields'][$field['code']];
@@ -327,6 +349,48 @@ class CurrentGDIS extends TableForm
         }
 
         return $columns;
+    }
+
+    protected function uploadFile(array $row, array $column, array $filter)
+    {
+        $date = Carbon::parse($filter['date'], 'Asia/Almaty');
+        $query = [
+            'origin' => 'dynamogramm',
+            'user_id' => auth()->id(),
+        ];
+        $files = $this->attachmentService->upload($this->request->uploads, $query);
+
+        $measurement = GdisCurrent::query()
+            ->where('well', $row['id'])
+            ->where('meas_date', $date)
+            ->first();
+
+        if (empty($measurement)) {
+            GdisCurrent::create(
+                [
+                    'well' => $row['id'],
+                    'meas_date' => $date,
+                    $row['code'] => reset($files)
+                ]
+            );
+        } else {
+            $measurement->update(
+                [
+                    $row['code'] => reset($files)
+                ]
+            );
+        }
+
+        return $this->attachmentService->getInfo($files);
+    }
+
+    private function getFiles(Collection $gdisCurrent): Collection
+    {
+        $fileIds = $gdisCurrent->pluck('file_dynamogram')->filter()->toArray();
+        if (!empty($fileIds)) {
+            return $this->attachmentService->getInfo($fileIds);
+        }
+        return collect();
     }
 
     protected function saveSingleFieldInDB(array $params): void

@@ -15,6 +15,10 @@ class PlanGDIS extends TableForm
 
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        }
+
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
             return ['rows' => []];

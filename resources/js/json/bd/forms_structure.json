@@ -104,7 +104,8 @@
           "research_lab_research",
           "well_mark",
           "gdis",
-          "current_g_d_i_s"
+          "current_g_d_i_s",
+          "gis_type"
         ]
       },
       {
@@ -114,7 +115,8 @@
         "type": "dir",
         "isVisible": true,
         "forms": [
-          "well_treat"
+          "well_treat",
+          "well_treatment"
         ]
       },
       {
@@ -140,7 +142,7 @@
       }
     ],
     "forms": [
-      "gis_type"
+      
     ]
   },
   {

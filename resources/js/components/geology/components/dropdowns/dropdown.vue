@@ -65,7 +65,7 @@ export default {
     },
     cSelected: {
       get() {
-        return this.cOptions.find(({value}) => value === this.selectedValue||this.selectedLocal)||{};
+        return this.cOptions.find(({value}) => value === (this.selectedValue||this.selectedLocal))||{};
       },
       set(option) {
         this.selectedLocal = option.value;

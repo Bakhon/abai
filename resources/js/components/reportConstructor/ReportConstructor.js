@@ -17,6 +17,8 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
+            frontendApiVersion: "1.01",
+            microserviceApiVersion: null,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -26,12 +28,13 @@ export default {
             attributesForObject: null,
             attributesByHeader: null,
             sheetTypesDescription: {
-                "well": "скважины",
+                "well_production": "добывающие скважины",
+                "well_pump": "нагнетающие скважины",
                 "object": "объекты",
                 "well_summary": "суммарные данные по скважинам",
                 "object_summary": "суммарные данные по объекту",
             },
-            sheetTypes: ["well", "object", "well_summary", "object_summary"],
+            sheetTypes: ["well_production", "well_pump", "object", "well_summary", "object_summary"],
             activeTab: 0,
             activeButtonId: 1,
             currentStructureType: 'org',
@@ -44,6 +47,11 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            wellSheetTypes: {
+                'well_production': 'Добывающие скважины',
+                'well_pump': 'Нагнетательные скважины'
+            },
+            wellTypeSelected: 'well_production',
             selectedObjects: {'org': {}, 'geo': {}, 'tech': {}},
             startDate: null,
             endDate: null,
@@ -54,7 +62,8 @@ export default {
             storableParameters: [
                 "startDate", "endDate", "selectedObjects",
                 "activeTab", "activeButtonId", "currentStructureType",
-                "currentItemType", "currentOption", "attributesByHeader"
+                "currentItemType", "currentOption", "attributesByHeader",
+                "wellTypeSelected"
             ]
         }
     },
@@ -62,6 +71,7 @@ export default {
         this.$nextTick(function () {
             this.SET_LOADING(false);
         });
+        this.setMicroserviceApiVersion()
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
         }
@@ -72,6 +82,26 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        setMicroserviceApiVersion() {
+            this.SET_LOADING(true)
+            this.axios.get(this.baseUrl + "api_version", {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.microserviceApiVersion = response.data['version']
+                } else {
+                    console.log("No data");
+                }
+                this.SET_LOADING(false);
+            }).catch((error) => {
+                console.log(error)
+                this.SET_LOADING(false)
+            });
+
+        },
         loadStructureTypes(type) {
             this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
@@ -184,6 +214,7 @@ export default {
         async loadStatistics() {
             this.SET_LOADING(true)
             this.statistics = null;
+            let wellTypeSelectedAtRequest = this.copyString(this.wellTypeSelected)
 
             try {
                 this.validateStatisticsParams()
@@ -201,7 +232,9 @@ export default {
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
-                this.statistics = response.data
+                this.statistics = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest);
+                this.setActiveTab(wellTypeSelectedAtRequest)
+
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
@@ -288,12 +321,16 @@ export default {
             let fields = await this.getSelectedAttributes();
             let dates = await this.getDates();
             let currentStructureType = this.currentStructureType;
+            fields['well'] = fields[this.wellTypeSelected]
 
             return {
                 "fields": fields,
                 "selectedObjects": selectedObjects,
                 "structureType": currentStructureType,
-                "dates": dates
+                "dates": dates,
+                "filters": {
+                    "wellFilter": this.wellTypeSelected
+                }
             }
         },
         async getSelectedObjects() {
@@ -357,6 +394,19 @@ export default {
             }
             return dates
         },
+        copyString(originalString) {
+            return (' ' + originalString).slice(1)
+        },
+        postProcessStatistics(statistics, wellTypeSelectedAtRequest)
+        {
+            statistics[wellTypeSelectedAtRequest] = statistics['well']
+            delete statistics['well']
+            return statistics
+        },
+        setActiveTab(wellTypeSelectedAtRequest)
+        {
+            this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
+        },
         getStatisticsColumnNames(attributes) {
             let columns = []
             for (let attribute of attributes) {
@@ -395,50 +445,51 @@ export default {
         },
         getHeaders(sheetType) {
             let attributes = this.getSelectedAttributes()
-            this.maxDepthOfSelectedAttributes[sheetType] = this._getMaxDepthOfTree(attributes[sheetType])
-            return this._convertTreeToLayersOfAttributes(attributes[sheetType], this.maxDepthOfSelectedAttributes[sheetType])
+            this.maxDepthOfSelectedAttributes[sheetType] = this.getMaxDepthOfTree(attributes[sheetType])
+            let layers_of_headers = this.convertTreeToLayersOfAttributes(attributes[sheetType], this.maxDepthOfSelectedAttributes[sheetType])
+            return this.remove_first_header_row(layers_of_headers)
         },
-        _getMaxDepthOfTree(attributes) {
+        getMaxDepthOfTree(attributes) {
             let maxChildrenDepth = 0
             for (let attribute of attributes) {
                 if (!this._hasChildren(attribute)) {
                     continue
                 }
-                let childrenDepth = this._getMaxDepthOfTree(attribute.children)
+                let childrenDepth = this.getMaxDepthOfTree(attribute.children)
                 if (maxChildrenDepth < childrenDepth) {
                     maxChildrenDepth = childrenDepth
                 }
             }
             return maxChildrenDepth + 1
         },
-        _convertTreeToLayersOfAttributes(attributes, layerDepth) {
+        convertTreeToLayersOfAttributes(attributes, layerDepth) {
             let layers = []
             for (let i = 0; i < layerDepth; i++) {
-                layers.push(this._getAttributesOnDepth(attributes, i))
+                layers.push(this.getAttributesOnDepth(attributes, i))
             }
             return layers
         },
-        _getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
+        getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
             let attributesOnTargetDepth = []
             for (let attribute of attributes) {
                 if (startingDepth === targetDepth) {
                     attributesOnTargetDepth.push({
                         'label': attribute.label,
-                        'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
+                        'maxChildrenNumber': this.getMaxChildrenNumber(attribute)
                     })
                     continue
                 }
                 if (!this._hasChildren(attribute)) {
                     continue
                 }
-                let attributesOnDepth = this._getAttributesOnDepth(
+                let attributesOnDepth = this.getAttributesOnDepth(
                     attribute.children, targetDepth, startingDepth + 1
                 )
                 attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
             }
             return attributesOnTargetDepth
         },
-        _getMaxChildrenNumber(originalAttribute) {
+        getMaxChildrenNumber(originalAttribute) {
             let maxChildrenNumber = 0;
             if (!this._hasChildren(originalAttribute)) {
                 return maxChildrenNumber
@@ -447,9 +498,13 @@ export default {
                 if (!this._hasChildren(attribute)) {
                     maxChildrenNumber += 1
                 }
-                maxChildrenNumber += this._getMaxChildrenNumber(attribute)
+                maxChildrenNumber += this.getMaxChildrenNumber(attribute)
             }
             return maxChildrenNumber
+        },
+        remove_first_header_row(layers_of_headers) {
+            layers_of_headers.shift()
+            return layers_of_headers
         },
         getRowHeightSpan(attribute, currentDepth, sheetType) {
             if (attribute.maxChildrenNumber > 0) {
@@ -471,9 +526,12 @@ export default {
             this.currentOption = null;
             this.currentItemType = null;
         },
-        onClickOption(structureType) {
+        onSelectStructureType(structureType) {
             this.currentOption = structureType;
             this.currentItemType = structureType.id;
+        },
+        onSelectWellSheetType(sheetType) {
+            this.wellTypeSelected = sheetType
         },
         onYearClick() {
             if (this.currentDatePickerFilter === 'year') {
@@ -625,6 +683,21 @@ export default {
             }
 
             return string
-        }
+        },
+        isDisplayParametersOfSheet(sheetType)
+        {
+            if (!(sheetType in this.wellSheetTypes)) {
+                return this.isDisplayParameterBuilder
+            }
+
+            if (!this.isDisplayParameterBuilder) {
+                return false
+            }
+            return this.wellTypeSelected === sheetType
+        },
+        isStatisticsForSheetTypeExists(sheetType)
+        {
+            return this.statistics[sheetType] && this.statistics[sheetType].length > 0
+        },
     }
 }

@@ -52,10 +52,11 @@
                     labels: []
                 };
                 let self = this;
-
+                let summaryOpek = 0;
                 _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
                     formattedChartSummary.labels.push(self.getFormattedDate(item.time));
                     formattedChartSummary.plan.push(item.productionPlanForChart2);
+                    summaryOpek+=item.productionPlanForChart2;
                     formattedChartSummary.fact.push(item.productionFactForChart);
                     formattedChartSummary.planOpec.push(item.productionPlanForChart);
                     formattedChartSummary.monthlyPlan.push(item.monthlyPlan);
@@ -133,8 +134,10 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
                 };
-
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
+                if (isNaN(summaryOpek)) {
+                    datasets = [factChartOptions,planOpecChartOptions];
+                }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
@@ -196,8 +199,10 @@
             },
 
             getFormattedNumber(num) {
-                if (num >= 1000) {
+                if (num >= 10000) {
                     num = (num / 1000).toFixed(0);
+                }  else if (num >= 1000) {
+                    num = (num / 100).toFixed(2);
                 } else if (num >= 100) {
                     num = Math.round((num / 1000) * 10) / 10;
                 } else if (num >= 10) {

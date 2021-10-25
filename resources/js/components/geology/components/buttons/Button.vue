@@ -1,8 +1,14 @@
 <template>
-  <button :class="getClasses"
-          @click="$emit('click', $event)">
-    <AwIcon :width="iWidth" :height="iHeight" v-if="icon"
-          :style="{marginRight: (icon&&$slots.default&&$slots.default.length)&&'10px'}" :name="icon" />
+  <button
+      :class="getClasses"
+      @click="!disabled?$emit('click', $event):''">
+    <AwIcon
+        v-if="icon&&!loading"
+        :width="iWidth"
+        :height="iHeight"
+        :style="{marginRight: (icon&&$slots.default&&$slots.default.length)&&'10px'}"
+        :name="icon" />
+    <AwIcon :width="iWidth" :height="iHeight" name="loading" v-if="loading"/>
     <slot />
   </button>
 </template>
@@ -25,7 +31,8 @@ export default {
         ...this.classes,
         [this.color]: !color,
         [`active-btn__${this.activeColor}`]: color,
-        [`icon-color__${this.activeColor || this.color}`]: this.activeColor || this.color
+        [`icon-color__${this.activeColor || this.color}`]: this.activeColor || this.color,
+        "disabled": this.disabled
       }
     }
 

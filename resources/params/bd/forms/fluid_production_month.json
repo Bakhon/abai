@@ -7,31 +7,41 @@
       "code": "uwi",
       "type": "text",
       "is_editable": false,
-      "title": "uwi"
+      "title": "uwi",
+      "freezed": true,
+      "width": 75
     },
     {
       "code": "other_uwi",
       "type": "text",
       "is_editable": false,
-      "title": "other_uwi"
+      "title": "other_uwi",
+      "freezed": true,
+      "width": 75
     },
     {
       "code": "tap",
       "type": "text",
       "is_editable": false,
-      "title": "tap"
+      "title": "tap",
+      "freezed": true,
+      "width": 75
     },
     {
       "code": "indicator",
       "type": "text",
       "is_editable": false,
-      "title": "indicators"
+      "title": "indicators",
+      "freezed": true,
+      "width": 130
     },
     {
       "code": "tech",
       "type": "text",
       "is_editable": false,
-      "title": "tech"
+      "title": "tech",
+      "freezed": true,
+      "width": 75
     }
   ]
 }

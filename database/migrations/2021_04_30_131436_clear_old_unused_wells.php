@@ -12,7 +12,7 @@ class ClearOldUnusedWells extends Migration
      */
     public function up()
     {
-        Well::whereNull('ngdu_id')->delete();
+        Well::whereNull('ngdu_id')->forceDelete();
     }
 
     /**

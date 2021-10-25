@@ -19,18 +19,15 @@
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <div class="row p-2 reason-header">
-                        <span class="col-5">{{ trans("visualcenter.dzo") }}</span>
-                        <span class="col-7">{{ trans("visualcenter.importForm.reason") }}</span>
-                    </div>
                     <div class="reason-container row p-2">
                         <div
                                 class="row col-12 p-0"
                                 v-for="(item, index) in reasons"
                         >
-                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-5 font-weight-bold">{{getDzoName(index)}}</span>
-                                <span class="col-7">{{reason}}</span>
+                            <div class="col-12 p-2 reason-description text-center reason-header">{{getDzoName(index)}}</div>
+                            <hr>
+                            <div class="col-12 p-2 reason-description" v-for="(reason,reasonIndex) in item">
+                                <span class="">{{reasonIndex+1}}. {{reason}}</span>
                             </div>
                         </div>
                     </div>
@@ -107,10 +104,7 @@ export default {
     }
 }
 .reason-header {
-    background: #2E50E9;
-    span:first-child {
-        border-right: 1px solid #272953;
-    }
+    background: #3B406F;
 }
 .reason-description {
     border-bottom: 1px solid #4C537E;

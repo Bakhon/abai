@@ -12,12 +12,12 @@
         <img src="/img/PlastFluids/settings.svg" alt="customize table" />
       </div>
       <div class="header-hide-expand-buttons">
-        <button @click="setTableState('common')">
+        <button @click="SET_TABLE_STATE('default')">
           <img
             src="/img/PlastFluids/tableArrow.svg"
             alt="expand table"
           /></button
-        ><button @click="setTableState('hidden')">
+        ><button @click="SET_TABLE_STATE('hidden')">
           <img src="/img/PlastFluids/tableArrow.svg" alt="hide table" />
         </button>
       </div>
@@ -38,12 +38,10 @@
 <script>
 import BaseTable from "./BaseTable.vue";
 import SmallCatLoader from "./SmallCatLoader.vue";
-import { mapState } from "vuex";
-import { handleTableChange } from "../mixins";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "DataAnalysisDataTable",
-  mixins: [handleTableChange],
   props: {
     tableTitle: String,
     items: [Array, Object],
@@ -54,7 +52,10 @@ export default {
     SmallCatLoader,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading"]),
+    ...mapState("plastFluidsLocal", ["loading", "tableState"]),
+  },
+  methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_TABLE_STATE"]),
   },
 };
 </script>
@@ -62,7 +63,7 @@ export default {
 <style scoped>
 .data-analysis-data-table {
   margin-top: 10px;
-  height: 350px;
+  max-height: 350px;
   display: flex;
   flex-flow: column;
   transition: 0.2s ease-in;

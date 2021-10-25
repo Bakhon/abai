@@ -18,15 +18,15 @@ class OmgNgduTableDropIndexes extends Migration
             $doctrineTable = $sm->listTableDetails('omg_n_g_d_u_s_1');
 
             if ($doctrineTable->hasIndex('omg_n_g_d_u_s_1_gu_id_foreign')) {
-                $table->dropIndex('omg_n_g_d_u_s_1_gu_id_foreign');
+                $table->dropForeign('omg_n_g_d_u_s_1_gu_id_foreign');
             }
 
             if ($doctrineTable->hasIndex('omg_n_g_d_u_s_1_zu_id_foreign')) {
-                $table->dropIndex('omg_n_g_d_u_s_1_zu_id_foreign');
+                $table->dropForeign('omg_n_g_d_u_s_1_zu_id_foreign');
             }
 
             if ($doctrineTable->hasIndex('omg_n_g_d_u_s_1_well_id_foreign')) {
-                $table->dropIndex('omg_n_g_d_u_s_1_well_id_foreign');
+                $table->dropForeign('omg_n_g_d_u_s_1_well_id_foreign');
             }
         });
     }

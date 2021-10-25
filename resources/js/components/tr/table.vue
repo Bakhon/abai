@@ -58,8 +58,8 @@
 
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm oil-height"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm oil-height"><span>{{trans('tr.q_liquid')}}</span></td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
@@ -1025,6 +1025,9 @@ position: static;
 }
 .fix_colunn_full_table_blg {
   min-width: 106px;
+}
+.oil-height {
+  height: 45px !important;
 }
 
 </style>

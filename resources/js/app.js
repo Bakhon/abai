@@ -228,12 +228,10 @@ Vue.component('visual-center-daily-approve', require('./components/visualcenter3
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/oilDynamic/index.vue').default);
 
-Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
-Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
-Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
+Vue.component('digital-drilling', require('./components/Digital-Drilling/DigitalDrilling').default);
 
-Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
-Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
+Vue.component('daily-raport', require('./components/Digital-Drilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/Digital-Drilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
@@ -246,6 +244,8 @@ Vue.component('water-flooding-management-forecasting', require('./components/wat
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
 Vue.component('upload-historical-data', require('./components/visualcenter3/historical/index.vue').default);
+Vue.component('ceo-module-state', require('./components/moduleState/index.vue').default);
+Vue.component('ceo-module-state-input', require('./components/moduleState/stateInput.vue').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

@@ -2,166 +2,130 @@
   <div class="row m-0 p-0">
     <div class="wft__right__side m-0 p-0">
       <div class="row m-0 p-0">
-        <div class="col-md-12 col-lg-12 col-xl-6 m-0 p-0">
-          <div class="card-block">
+        <div class="col-md-12 col-lg-12 col-xl-12 m-0 p-0">
+          <div class="card-block" style="height: 500px">
             <div class="card-title justify-content-between">
               <p class="p-0 m-0 ">{{ trans('waterflooding_management.map_selection_object') }}</p>
               <a href="">
                 <img src="/img/waterfloodingManagement/transition.svg" alt="">
               </a>
             </div>
-            <div class="block">
-              <div>
-                <img src="/img/waterfloodingManagement/map_selection_object.png" class="w-100" alt="" >
-              </div>
-            </div>
-            <div class="block">
-              <table class="map-table">
-                <thead>
-                  <tr>
-                    <th class="map-table-first"></th>
-                    <th v-for="n in 30" class="map-table-first-split"> {{ n }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(item, index) in map_tables_data">
-                    <td class="map-table-first">{{ item.title }}</td>
-                    <td v-for="n in 30" :class="index%2==1 ? 'map-table-first-split': ''"> {{ n + 1}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="block d-flex" style="">
-              <div class="d-flex align-items-end histogram__rotate__text">
-                <span>
-                  Кол-во элементов
-                </span>
-              </div>
-              <div class="histogram__number">
-                <div v-for="n in 8" >{{n}}</div>
-              </div>
-              <div class="w-100">
-                <div class="table-cell">
-                  <div v-for="n in 8" class="cell-row"></div>
-                  <div class="w-100 d-flex table-cell__histogram">
-                    <div class="d-flex align-items-end histogram__scale" v-for="n in 30" style="">
-                      <div class='w-100' style="height: calc(100%/8*4); "></div>
-                    </div>
+            <div class="block" style="height: 92%">
+              <MglMap v-if="injWellList"
+                      ref="mgl-map"
+                      :accessToken="accessToken"
+                      :mapStyle ="mapStyle"
+                      :center="center"
+                      :boxZoom="true"
+                      @load="onMapLoaded"
+                      :zoom=11>
+                <mgl-navigation-control position="bottom-right" />
+                <MglMarker  v-for="c in getWells"
+                            ref="mgl-marker"
+                            :key="c[0]"
+                            :coordinates="c.coordinate">
+                  <div slot="marker">
+                    <map-pie-chart :data_value="c.value"
+                                   :wellName="c.well"
+                                   :type="c.type"
+                                   :radiusWidth="c.radius" />
                   </div>
-                </div>
-                <div class="w-100 d-flex histogram__scale__number">
-                  <div class="d-flex justify-content-center align-items-center" v-for="n in 30">{{n}}</div>
-                </div>
-              </div>
-            </div>
-            <div class="block d-flex justify-content-center">
-              <div class="graphic-text w-100 d-flex align-items-center justify-content-center">
-                <img src="/img/waterfloodingManagement/lines/green_line.svg" alt=""  >
-                <p class="p-0 " style="">Оптимизированные</p>
-              </div>
-              <div class="graphic-text w-100 d-flex align-items-center justify-content-center">
-                <img src="/img/waterfloodingManagement/lines/green_line.svg" alt=""  >
-                <p class="p-0 " style="">Перспективные</p>
-              </div>
+                </MglMarker>
+              </MglMap>
             </div>
           </div>
         </div>
-        <div class="col-md-6 m-0 p-0">
-          <div class="card-block">
-            <div class="card-title justify-content-between ">
-              <p class="p-0 m-0 ">{{ trans('waterflooding_management.production_forecast') }}</p>
-              <a href="">
-                <img src="/img/waterfloodingManagement/transition.svg" alt="">
-              </a>
-            </div>
-            <div class="block block-graphic">
-              <div>
-                <img src="/img/waterfloodingManagement/Group 1199 (1).png" class="w-100" alt="" style="padding:20px" >
+        <div class="w-100 row m-0 p-0">
+          <div class="col-md-6  m-0 p-0">
+            <div class="card-block w-100 mr-5">
+              <div class="card-title justify-content-between ">
+                <p class="p-0 m-0 ">{{ trans('waterflooding_management.production_forecast') }}</p>
+                <a href="">
+                  <img src="/img/waterfloodingManagement/transition.svg" alt="">
+                </a>
               </div>
-              <div class="row graphic-prompt">
-                <div class="col-md-6 col-xl-6 m-0 p-0 " v-for="items in prediction">
-                  <div class="graphic-text w-100 d-flex align-items-center" v-for="item in items">
-                    <img src="/img/waterfloodingManagement/lines/green_line.svg" alt="" style="width:40px" >
-                    <p class="p-0 " style=""> {{ item }}</p>
-                  </div>
+              <div class="block block-graphic">
+                <div>
+                  <apexchart
+                      type="line"
+                      height="260"
+                      :options="chartOptions"
+                      :series="series"/>
                 </div>
               </div>
             </div>
-            <div class="card-title justify-content-between" style="margin-top: 0.75rem">
-              <p class="p-0 m-0 ">{{ trans('waterflooding_management.recommendation')}}</p>
-              <a href="">
-                <img src="/img/waterfloodingManagement/transition.svg" alt="">
-              </a>
-            </div>
-            <div class="block">
-              <table class="recomendation-table w-100">
-                <thead>
-                <tr>
-                  <th>№ {{ trans('waterflooding_management.recommendation')}}</th>
-                  <th>{{ trans('waterflooding_management.injection_wells')}}</th>
-                  <th>{{ trans('waterflooding_management.current_injective_wells')}}</th>
-                  <th>{{ trans('waterflooding_management.target_injective_wells')}}</th>
-                  <th>{{ trans('waterflooding_management.difference')}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="n in 4" :class="n==2? 'recomendation-table-green' : ''">
-                  <td v-for="k in 5">10</td>
-                </tr>
-                </tbody>
-              </table>
+          </div>
+          <div class="col-md-6  m-0 p-0">
+            <div class="card-block">
+              <div class="card-title justify-content-between" style="margin-top: 0.75rem">
+                <p class="p-0 m-0 ">{{ trans('waterflooding_management.recommendation')}}</p>
+                <a href="">
+                  <img src="/img/waterfloodingManagement/transition.svg" alt="">
+                </a>
+              </div>
+              <div class="block">
+                <table class="recomendation-table w-100">
+                  <thead>
+                  <tr>
+                    <th>№ {{ trans('waterflooding_management.recommendation')}}</th>
+                    <th>{{ trans('waterflooding_management.injection_wells')}}</th>
+                    <th>{{ trans('waterflooding_management.current_injective_wells')}}</th>
+                    <th>{{ trans('waterflooding_management.target_injective_wells')}}</th>
+                    <th>{{ trans('waterflooding_management.difference')}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="n in 4" :class="n==2? 'recomendation-table-green' : ''">
+                    <td v-for="k in 5">10</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="wft__left__side p-0">
-      <div class="card-block">
+      <div class="card-block mt-0">
         <div class="card-title justify-content-between">
-          <p class="p-0 m-0">{{ trans('waterflooding_management.option_name')}}</p>
-        </div>
-        <div class="block">
-          <v-select
-              :options="dzosForFilter"
-              label="name"
-              :placeholder="placeholder"
-          ></v-select>
+          <p class="p-0 m-0">{{ trans('waterflooding_management.selected_forecast_option')}}</p>
         </div>
         <div class="block d-flex justify-content-between">
-          <WFM-list-table
+          <button class="period-btn variant__btn w-100 d-flex justify-content-between align-items-center">
+            <span>Вариант 1</span>
+          </button>
+        </div>
+        <div class="block d-flex justify-content-between">
+          <listTable
               v-bind:data="[
                         {title: this.trans('waterflooding_management.selected_object')},
                         {title: this.trans('waterflooding_management.first_object')},
                         {title: this.trans('waterflooding_management.selected_polygon')},
                         {title: this.trans('waterflooding_management.polygon_1')}
                         ]">
-
-          </WFM-list-table>
+          </listTable>
         </div>
       </div>
-
       <div class="card-block">
-        <WFM-list-table
+        <listTable
             v-bind:data="[
                         {title: this.trans('waterflooding_management.selected_forecast_model')},
                         {title: this.trans('waterflooding_management.hybrid')},
                         {title: this.trans('waterflooding_management.optimization_task')},
                         {title: this.trans('waterflooding_management.maximizing_oil_production')}
                         ]">
-
-        </WFM-list-table>
+        </listTable>
       </div>
-
       <div class="card-block">
         <div class="card-title">
           <p class="p-0 m-0">{{ trans('waterflooding_management.motiring_period')}}</p>
         </div>
         <div class="block d-flex ">
-            <WFM-button-data-picker class="w-100" style="margin-right: 10px;"></WFM-button-data-picker>
-            <WFM-button-data-picker class="w-100"></WFM-button-data-picker>
+          <WFM-button-data-picker class="w-100" style="margin-right: 10px;"></WFM-button-data-picker>
+          <WFM-button-data-picker class="w-100"></WFM-button-data-picker>
         </div>
       </div>
-
       <div class="card-block">
         <div class="card-title justify-content-between">
           <p class="p-0 m-0 ">{{ trans('waterflooding_management.plan_fact') }}</p>
@@ -172,18 +136,18 @@
         <div class="block">
           <table class="plan-fact-table w-100">
             <thead class="">
-              <tr>
-                <th></th>
-                <th>План</th>
-                <th>Факт</th>
-              </tr>
+            <tr>
+              <th></th>
+              <th>План</th>
+              <th>Факт</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in ['Количество', 'Закачка', 'Добыча жидкости', 'Добыча нефти']">
-                <td> {{ item }}</td>
-                <td>{{ index + 3}}</td>
-                <td>{{ index * 2 }}</td>
-              </tr>
+            <tr v-for="(item, index) in ['Количество', 'Закачка', 'Добыча жидкости', 'Добыча нефти']">
+              <td> {{ item }}</td>
+              <td>{{ index + 3}}</td>
+              <td>{{ index * 2 }}</td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -193,91 +157,135 @@
   </div>
 </template>
 <script>
-import vSelect from 'vue-select'
+import listTable from './list-table'
+import {MglMap, MglNavigationControl, MglMarker} from 'vue-mapbox'
+import {waterfloodingManagementMapGetters} from '@store/helpers';
+import MapPieChart from "./mapPieChart";
+import VueApexCharts from 'vue-apexcharts'
+import axios from "axios";
+
 export default {
   components: {
-    vSelect
+    listTable,
+    "apexchart": VueApexCharts,
+    MglMap,
+    MglNavigationControl,
+    MglMarker,
+    MapPieChart
   },
   name: "assessmentMonitoring",
   data: function () {
     return {
-      dzosForFilter: [
-        { name: 'Вариант 1'},
-        { name: 'Вариант 2'},
-        { name: 'Вариант 3'},
-        { name: 'Вариант 4'},
-        { name: 'Вариант 5'},
-        { name: 'Вариант 6'},
-        { name: 'Вариант 7'}
-      ],
-      map_tables_data: [
-        {title: this.trans('waterflooding_management.daily_oil_production_t')},
-        {title: this.trans('waterflooding_management.daily_oil_production')},
-        {title: this.trans('waterflooding_management.optimization_evolution')}
-      ],
-      prediction: [
-          ['Базовый прогноз дебита жидкости', 'Фактический дебит жидкости', 'Оптимизированный прогноз дебита жидкости'],
-          ['Базовый прогноз дебита нефти', 'Фактический дебит нефти', 'Оптимизированный прогноз дебита нефти']
-      ]
+      series: [{
+        name: "Desktops",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      }],
+      chartOptions: {
+        chart: {
+          height: 260,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'],
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        }
+      },
+      center: [65.72577732, 45.96753508],
+      accessToken: process.env.MIX_MAPBOX_TOKEN,
+      mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+      injWellList: null,
     }
   },
   computed: {
-    placeholder: function(){
-      return 'Загрузите вариант'
-    }
+    ...waterfloodingManagementMapGetters([
+      'wellList'
+    ]),
+    getWells(){ return this.wellList }
   },
+  created() {
+    this.map = null;
+    this.drawLineList();
+  },
+  methods:{
+    onMapLoaded(event){
+      this.map = event.map
+      for(let i=0;i<this.injWellList.length;i++){
+        let prod = this.injWellList[i].prod
+        for(let j=0;j<prod.length;j++){
+          let lineColor = '';
+          if (prod[j].coef >= 0.4) lineColor = 'green'
+          else if (prod[j].coef < 0.4 &&
+              prod[j].coef > 0.1 ) lineColor = 'yellow'
+          else if (prod[j].coef <= 0.1) lineColor = 'red'
+          let routeId = 'route' + i + j
+          this.map.addSource(routeId, {
+            'type': 'geojson',
+            'data': {
+              'type': 'Feature',
+              'properties': {},
+              'geometry': {
+                'type': 'LineString',
+                'coordinates': [
+                  this.injWellList[i].coordinate,
+                  prod[j].coordinate
+                ]
+              }
+            }
+          });
+          this.map.addLayer({
+            'id': routeId,
+            'type': 'line',
+            'source': routeId,
+            'layout': {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            'paint': {
+              'line-color': lineColor,
+              'line-width': 3
+            }
+          });
+        }
+      }
+    },
+    drawLineList(){
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/draw-line/'
+      axios.get(url)
+          .then((response) =>{
+            this.injWellList = response.data
+          }).catch((error) => {
+        console.log(error)
+      });
+    }
+  }
 }
 </script>
 <style scoped>
+.variant__btn{
+  margin-bottom: 15px;
+  padding: 15px;
+}
 .prediction-btn {
   margin: 5px;
   width: calc(100% - 10px);
-}
-.cell-row{
-  height: 14px;
-  border-top: 1px solid #454D7D;
-}
-.table-cell{
-  position: relative;
-}
-.table-cell__histogram{
-  position: absolute;
-  top:0;
-  left:0;
-  height: 100%;
-}
-.histogram__rotate__text{
-  width: 14px;
-}
-.histogram__rotate__text span{
-  display: inline-block;
-  white-space:nowrap;
-  transform: rotate(-90deg);
-  transform-origin: left center;
-}
-.histogram__number{
-  width: 5px;
-  margin:5px;
-}
-.histogram__number div{
-  font-size: 12px;
-  line-height: 14px;
-}
-.table-cell__histogram .histogram__scale{
-  width:calc( 100% / 30 - 5px );
-  height: 100%;
-  background-color: #EFBD74;
-  margin: 0 2.5px
-}
-.table-cell__histogram .histogram__scale div{
-  background-color: #6EBB71;
-}
-.histogram__scale__number div{
-  width:calc( 100% / 30 - 5px );
-  height: 10px;
-  font-size: 12px;
-  line-height: 14px;
-  margin:2.5px;
 }
 .table-cell,
 table th,
@@ -287,31 +295,6 @@ table{
 }
 .plan-fact-table{
   border: 1px solid #454D7D;
-}
-
-.map-table{
-  margin: 20px 0px;
-}
-.map-table th,
-.map-table td{
-  font-weight: normal;
-  font-size: 10px;
-  line-height: 10px;
-  vertical-align: center;
-  text-align: center;
-  height: 31px;
-}
-.map-table th{
-  height: 19px;
-}
-.map-table .map-table-first{
-  width: 13%;
-  font-weight: bold;
-  line-height: 12px;
-  background: #333975;
-}
-.map-table-first-split{
-  background: rgba(69, 77, 125, 0.32);
 }
 .plan-fact-table td,
 .plan-fact-table th{
@@ -352,12 +335,5 @@ table{
 }
 .recomendation-table-green td{
   background-color: #6EBB71;
-}
-
-.v-select{
-  margin: 4px 0;
-  border-radius: 1px;
-  border: 1px solid #454D7D;
-  background: transparent;
 }
 </style>

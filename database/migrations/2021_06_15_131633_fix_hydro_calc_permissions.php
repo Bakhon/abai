@@ -29,15 +29,17 @@ class FixHydroCalcPermissions extends Migration
         $permissionIds = Permission::whereIn('name', $this->permissions)->pluck('id');
         $role = Role::where('name', 'Администратор модуля Мониторинг')->first();
 
-        DB::table('role_has_permissions')
-            ->whereIn('permission_id', $permissionIds)
-            ->delete();
+        if ($role) {
+            DB::table('role_has_permissions')
+                ->whereIn('permission_id', $permissionIds)
+                ->delete();
 
-        foreach ($permissionIds as $permissionId) {
-            DB::table('role_has_permissions')->insert([
-                'permission_id' => $permissionId,
-                'role_id' => $role->id
-            ]);
+            foreach ($permissionIds as $permissionId) {
+                DB::table('role_has_permissions')->insert([
+                    'permission_id' => $permissionId,
+                    'role_id' => $role->id
+                ]);
+            }
         }
     }
 

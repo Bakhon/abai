@@ -119,6 +119,11 @@ class Well extends TBDModel
         return $this->hasMany(MeasWaterCut::class, 'well', 'id');
     }
 
+    public function measLiqInjection()
+    {
+        return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
+    }
+
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -181,6 +186,50 @@ class Well extends TBDModel
             }
         );
 
+        return $query;
+    }
+
+    public function getRelationTech(string $date)
+    {
+       return $this->techs()
+                    ->wherePivot('dend', '>',$date)
+                    ->withPivot('dend', 'dbeg', 'tap as tap')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getRelationOrg(string $date)
+    {
+        return $this->orgs()
+                    ->wherePivot('dend', '>', $date)
+                    ->withPivot('dend', 'dbeg')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getGeo(string $date)
+    {
+       return  $this->geo()->wherePivot('dend', '>', $date)
+            ->wherePivot('dbeg', '<=', $date)
+            ->withPivot('dend', 'dbeg')
+            ->first();
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return array|null
+     */
+    public function wellData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('date','liquid','wcut','oil','hdin')
+                          ->orderBy('date')->get();
         return $query;
     }
 }

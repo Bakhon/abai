@@ -60,8 +60,8 @@ class MeasWaterInj extends MeasLogByMonth
                 return $items->map(function ($item) {
                     $item = $item->first();
                     return [
-                        'pressure' => round($item->pressure_inj, 2),
-                        'water_inj' => round($item->water_inj_val, 2),
+                        'pressure' => round((int)$item->pressure_inj, 2),
+                        'water_inj' => round((int)$item->water_inj_val, 2),
                     ];
                 });
             });
@@ -86,7 +86,8 @@ class MeasWaterInj extends MeasLogByMonth
         ];
         $waterInjRow = [
             'id' => $well->id,
-            'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')]
+            'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')],
+            'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->agent_vol : 0]
         ];
         $workTime = $workTimes[$well->id] ?? null;
         $monthDay = $date->startOfMonth();
