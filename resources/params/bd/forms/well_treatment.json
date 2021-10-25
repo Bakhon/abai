@@ -60,10 +60,8 @@
               },
               {
                 "code": "chemical_reagent_type",
-                "type": "dict",
-                "dict": "chemical_reagent_types",
-                "title": "ch_reagent_type",
-                "validation": "exists:tbd.dict.chemical_reagent_type,id"
+                "type": "text",
+                "title": "ch_reagent_type"
               },
               {
                 "code": "reason",
