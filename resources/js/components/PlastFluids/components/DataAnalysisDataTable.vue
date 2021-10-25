@@ -28,7 +28,7 @@
         v-else
         :fields="fields"
         :items="items"
-        :isAnalysisTable="true"
+        tableType="analysis"
         :sticky="true"
       />
     </div>
