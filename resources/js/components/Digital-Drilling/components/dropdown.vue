@@ -40,7 +40,6 @@
                 query: '',
             }
         },
-
         methods:{
             changeCurrentItem(item){
                 this.isOpen = false
@@ -52,7 +51,6 @@
                 this.$emit('search', this.query)
             },
         },
-
     }
 </script>
 

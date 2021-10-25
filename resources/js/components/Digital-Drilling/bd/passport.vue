@@ -28,19 +28,6 @@
                        </tbody>
                    </table>
                </div>
-               <div class="table">
-                   <table class="table defaultTable mb-0">
-                       <tbody>
-                       <tr>
-                           <th colspan="2">{{trans('digital_drilling.passport.drilling_summary')}}</th>
-                       </tr>
-                       </tbody>
-                   </table>
-                   <div class="date-picker">
-                       <span>{{trans('digital_drilling.passport.select_date')}}</span>
-                       <date-picker />
-                   </div>
-               </div>
             </div>
             <div class="col-sm-8 leftTable">
                 <div class="table">
@@ -63,13 +50,11 @@
 </template>
 
 <script>
-    import  DatePicker from '../components/DatePicker'
     import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
 
     export default {
         name: "passport",
         components:{
-            DatePicker
         },
         data() {
             return{

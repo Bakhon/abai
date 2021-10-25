@@ -21,6 +21,14 @@
             </div>
         </div>
         <div class="map__content">
+            <div class="map-filter">
+                <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
+                <dropdown title="Месторождение" :options="fields" class="dropdown__area"
+                          :search="true"
+                          @search="filterField"
+                          @updateList="updateField"
+                />
+            </div>
             <MglMap
                     :accessToken="accessToken"
                     :mapStyle="mapStyle"
@@ -33,7 +41,7 @@
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/menu3.svg" alt="">
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="">
                     </div>
                 </MglMarker>
             </MglMap>
@@ -53,6 +61,7 @@
 
 <script>
     import {globalloadingMutations} from '@store/helpers';
+    import Dropdown from '../components/dropdown'
 
     import {
         MglMap,
@@ -60,28 +69,33 @@
     } from 'vue-mapbox'
     export default {
         name: "DigitalMap",
-        components:{ MglMap, MglMarker},
+        components:{ MglMap, MglMarker, Dropdown},
         data() {
             return {
                 allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-                center: [54.0, 47.0],
-                zoom: 5,
-                coordinates: []
+                center: [54.1278133495231, 46.5861065487464],
+                zoom: 11,
+                coordinates: [],
+                dzo: [],
+                fields: [],
+                currentDZO: null,
+                currentField: null,
             }
         },
         mounted(){
-            this.getCoordinates()
+            this.getDZO()
         },
         methods:{
              async getCoordinates(){
                     this.SET_LOADING(true);
                     try{
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/1069/').then((response) => {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/").then((response) => {
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
+                                this.center = [this.coordinates[0].Y, this.coordinates[0].X]
                             } else {
                                 console.log('No data');
                             }
@@ -91,6 +105,53 @@
                         console.log(e)
                     }
                     this.SET_LOADING(false);
+
+            },
+            async filterField(query){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'?q='+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                        if (data.length>0){
+                            this.currentField = data[0].id;
+                        }
+
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
+            getDZO(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search').then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.dzo = data;
+                        this.currentDZO = data[0];
+                        this.getField('')
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
+            updateField(item){
+                this.currentField = item
+                this.getCoordinates()
+            },
+            async getField(item){
+                if (item!=''){
+                    this.currentDZO = item
+                }
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                        this.currentField = data[0];
+                        this.getCoordinates()
+                    } else {
+                        console.log('No data');
+                    }
+                });
 
             },
             ...globalloadingMutations([
