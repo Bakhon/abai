@@ -6,6 +6,7 @@
 
     export default {
         extends: Line,
+        props: ['isDecreaseReasonActive'],
         data: function () {
             return {
                 monthMapping: [
@@ -35,6 +36,9 @@
                     fact: this.trans("visualcenter.Fact"),
                     deviation: this.trans("visualcenter.deviation"),
                 },
+                datasets: [],
+                labels: [],
+                pointHitRadius: 15
             }
         },
         methods: {
@@ -105,7 +109,8 @@
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.plan,
-                    pointRadius: 0,
+                    pointHitRadius: this.pointHitRadius,
+                    pointRadius: 0
                 };
                 let factChartOptions = {
                     label: chartLabels.fact,
@@ -113,7 +118,8 @@
                     fill: false,
                     showLine: true,
                     data: formattedChartSummary.fact,
-                    pointRadius: 0,
+                    pointHitRadius: this.pointHitRadius,
+                    pointRadius: 0
                 };
 
                 let planOpecChartOptions = {
@@ -122,8 +128,9 @@
                     fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
-                    data: formattedChartSummary.planOpec,
                     pointRadius: 0,
+                    data: formattedChartSummary.planOpec,
+                    pointHitRadius: this.pointHitRadius
                 };
                 let monthlyPlan = {
                     label: chartLabels.monthlyPlan,
@@ -131,8 +138,9 @@
                     fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
-                    data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
+                    data: formattedChartSummary.monthlyPlan,
+                    pointHitRadius: this.pointHitRadius
                 };
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
                 if (isNaN(summaryOpek)) {
@@ -141,12 +149,15 @@
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
+                this.datasets = datasets;
+                this.labels = formattedChartSummary.labels;
 
                 this.renderChart(
                     {
                         labels: formattedChartSummary.labels,
                         datasets,
                     },
+
                     {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -159,6 +170,7 @@
                                 }
                             },
                         },
+                        onClick: this.handleClick,
                         scales: {
                             yAxes: [
                                 {
@@ -184,7 +196,7 @@
                             ],
                         },
                         tooltips: {
-                            intersect: false,
+                            intersect: true,
                             callbacks: {
                                 label: (tooltipItem,data) => {
                                     if (data.datasets.length !== 4) {
@@ -193,9 +205,19 @@
                                     return this.getFormattedNumber(tooltipItem.value);
                                 }
                             }
-                        }
+                        },
                     }
                 );
+            },
+
+            handleClick(point, event) {
+                let c = this._data._chart;
+                let item = event[0];
+                let factData = this.datasets[0].data;
+                if (item && this.isDecreaseReasonActive) {
+                    console.log(factData[item._index + 1]);
+                    console.log(this.labels[item._index]);
+                }
             },
 
             getFormattedNumber(num) {

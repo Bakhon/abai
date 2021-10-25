@@ -759,8 +759,6 @@
                     </ul>
                   </div>
                 </div>
-
-
               </div>
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
@@ -795,12 +793,16 @@
                   </ul>
                 </div>
               </div>
+              <div
+                      v-if="mainMenu.oilCondensateProduction && periodRange > 0"
+                      :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
+                      @click="switchDecreaseReasonExplanations()"
+              ></div>
             </div>
-
             <div class="d-flex mh-60 mt-3">
               <div
-                      class="col-sm-7 vis-table"
-                      :class="periodRange === 0 ? 'main-table__scroll' : ''"
+                      class=""
+                      :class="[isDecreaseReasonActive ? 'd-none vis-table' : 'col-sm-7 vis-table',periodRange === 0 ? 'main-table__scroll' : '']"
               >
                 <table
                         v-if="productionTableData.length"
@@ -1210,18 +1212,18 @@
 
               </div>
               <div
-                      class="pl-3 col-sm-5"
+                      :class="isDecreaseReasonActive ? 'pl-3 col-sm-12' : 'pl-3 col-sm-5'"
                       v-if="periodRange > 0"
               >
                 <div
 
-                        class="oil-condensate-chart-secondary-name"
+                        :class="isDecreaseReasonActive ? 'mt_7 oil-condensate-chart-secondary-name' : 'mt_dynamic oil-condensate-chart-secondary-name'"
                 >
                   {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
-                <vc-chart :height="465"> </vc-chart>
+                <vc-chart :class="isDecreaseReasonActive ? 'ml-1' : ''" :height="465" :isDecreaseReasonActive="isDecreaseReasonActive"> </vc-chart>
               </div>
             </div>
           </div>
@@ -2950,11 +2952,16 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: calc(100% - 500px);
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .mt_dynamic {
+    margin-top: calc(100% - 500px);
+  }
+  .mt_7 {
+    margin-top: 7%;
   }
   .emergency-situations {
     background: #333975 60%;
@@ -3104,4 +3111,15 @@
   .color__yellow {
     color: #FFC607;
   }
+  .chart-reason-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason.svg) no-repeat;
+    background-color: #333975;
+  }
+  .chart-reason-active-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
+    background-color: #333975;
+  }
+
 </style>
