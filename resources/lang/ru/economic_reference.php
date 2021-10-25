@@ -340,4 +340,5 @@ return array (
   'scaled' => 'Scaled',
   'profit' => 'Прибыль',
   'loss' => 'Убыток',
+  'day' => 'День',
 );
