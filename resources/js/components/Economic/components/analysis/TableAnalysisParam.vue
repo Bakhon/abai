@@ -38,7 +38,7 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
 
       this.data = [this.headers.map(header => header.label)]
 
@@ -58,7 +58,7 @@ export default {
         this.data.push(row)
       })
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
   },
   computed: {
