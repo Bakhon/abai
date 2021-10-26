@@ -142,15 +142,11 @@ class Dzo {
         }
         if ($periodType === 'year') {
             $companySummary = $this->getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan);
-            //$summary['yearlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
         }
 
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
         $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
-        if ($dzoName === 'ОМГ') {
-         //   dd($summary);
-        }
         return $summary;
     }
 
