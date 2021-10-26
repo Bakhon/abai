@@ -1,5 +1,8 @@
 <template>
-  <div class="table-container" :style="isAnalysisTable ? 'height: 100%;' : ''">
+  <div
+    class="table-container"
+    :style="tableType === 'analysis' ? 'height: 100%;' : ''"
+  >
     <div class="table-div" :style="!pagination ? 'height: 100%' : ''">
       <div>
         <table>
@@ -41,6 +44,13 @@
                 </div>
                 <p v-else>{{ isObjectArray ? heading.name : heading }}</p>
               </th>
+              <th
+                v-if="tableType === 'upload'"
+                style="padding: 13px 10px 13px 22px"
+                :style="sticky ? 'position: sticky; top: -1px;' : ''"
+              >
+                {{ trans("plast_fluids.actions") }}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -49,9 +59,15 @@
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
                   {{ item[fieldKey] }}
                 </td>
+                <td v-if="tableType === 'upload'">
+                  <button @click="handleReportDownload(item)">
+                    <img src="/img/PlastFluids/downloadTableIcon.svg" alt="download">
+                    <p>{{ trans("plast_fluids.download") }}</p>
+                  </button>
+                </td>
               </tr>
             </template>
-            <template v-else-if="isAnalysisTable">
+            <template v-else-if="tableType === 'analysis'">
               <tr v-for="(item, index) in items" :key="index">
                 <td v-for="(itemTD, ind) in item.table_data" :key="ind">
                   {{ itemTD }}
@@ -107,6 +123,9 @@
 </template>
 
 <script>
+import { downloadUserReport } from "../services/templateService";
+import { mapMutations } from "vuex";
+
 export default {
   name: "BaseTable",
   props: {
@@ -118,7 +137,7 @@ export default {
     fields: Array,
     items: Array,
     handlePageChange: Function,
-    isAnalysisTable: Boolean,
+    tableType: String,
   },
   data() {
     return {
@@ -133,8 +152,30 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_LOADING"]),
     emitArrowFilter(key, type) {
       this.$emit("sort-by-arrow-filter", { key, type });
+    },
+    async handleReportDownload(item) {
+      try {
+        this.SET_LOADING(true);
+        const postData = new FormData();
+        postData.append("file_id", item.file_id);
+        const report = await downloadUserReport(postData);
+        let link = document.createElement("a");
+
+        link.download = item.file_name;
+        const blob = new Blob([report.data], {
+          type: "application/vnd.ms-excel",
+        });
+
+        link.href = URL.createObjectURL(blob);
+        link.click();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.SET_LOADING(false);
+      }
     },
   },
   computed: {

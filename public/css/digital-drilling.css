@@ -683,6 +683,17 @@ input.rangeInput {
     position: relative;
     overflow: hidden;
 }
+.map__content .dropdown__area{
+    margin-bottom: 15px;
+}
+.map-filter{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    z-index: 5000;
+}
 .contentBlock__map-bottom{
     padding: 0 4px 4px;
     border: 6px solid #272953;

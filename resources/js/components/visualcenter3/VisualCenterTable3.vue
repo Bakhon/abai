@@ -971,6 +971,7 @@
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -980,6 +981,7 @@
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -3098,5 +3100,8 @@
   .button__disabled{
     opacity: 0.4;
     pointer-events: none;
+  }
+  .color__yellow {
+    color: #FFC607;
   }
 </style>
