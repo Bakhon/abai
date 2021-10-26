@@ -127,11 +127,13 @@
           <ScatterGraphApproximationLabelInput
             :inputText.sync="aheadPredict"
             labelTransKey="approximation_ahead_predict"
+            :graphType="graphType"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="backwardPredict"
             labelTransKey="approximation_backward_predict"
+            :graphType="graphType"
           />
           <div class="configure-intersection-holder">
             <ScatterGraphApproximationLabelCheckbox
@@ -148,7 +150,8 @@
               v-show="isConfigureIntersection"
               type="number"
               step="0.1"
-              placeholder="0,0"
+              placeholder="0.0"
+              @blur="updateIntersection"
               v-model="intersection"
             />
           </div>
@@ -242,12 +245,12 @@ export default {
       isOpen: true,
       aheadPredict: "",
       backwardPredict: "",
-      intersection: "",
       isConfigureIntersection: false,
       isShowEquationOnChart: false,
       isPlaceValueOfR2: false,
       abscissaFrom: "",
       abscissaTo: "",
+      intersection: "",
       ordinateFrom: "",
       ordinateTo: "",
       polynomialDegree: 2,
@@ -289,6 +292,8 @@ export default {
   watch: {
     series: {
       handler(data) {
+        this.x = [];
+        this.y = [];
         data.forEach((item) => {
           this.x.push(item.x);
           this.y.push(item.y);
@@ -313,6 +318,10 @@ export default {
       if (e.target.value <= 2) {
         this.polynomialDegree = 2;
       }
+    },
+    updateIntersection(e) {
+      if (Number(e.target.value) < this.minY) this.intersection = this.minY;
+      if (Number(e.target.value) > this.maxY) this.intersection = this.maxY;
     },
     closeApproximation() {
       this.$emit("close-approximation");
@@ -370,8 +379,6 @@ export default {
               return `${prev} ${polynomial}`;
             }, "");
           emitData.approximation.function = approximationFunction;
-        }
-        if (this.isConfigureIntersection) {
         }
       }
       if (this.isAxisTyped) {
