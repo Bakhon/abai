@@ -72,7 +72,6 @@
                             </td>
                             <td colspan="2">
                                 <select-add :options="drillingContractors" @addItem="addItemRig"/>
-                                <!--<select-input :options="drillingContractors" name="name"/>-->
                             </td>
                         </tr>
                         <tr>
@@ -1883,23 +1882,39 @@
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
-                    <table class="table defaultTable modalTable">
+                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
+                        <tbody>
+                            <tr>
+                                <th>Название</th>
+                                <th>Значение</th>
+                            </tr>
+                            <tr>
+                                <td>{{rigCharacteristic[0][0].parameter}}</td>
+                                <td> <select-add :options="drillingContractors" @addItem="addItemRig"/></td>
+                            </tr>
+                            <tr>
+                                <td>{{rigCharacteristic[0][1].parameter}}</td>
+                                <td><input type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
                         <tbody>
                             <tr>
                                 <th>Параметры</th>
                                 <th>Ед.измерения</th>
                                 <th>Значение</th>
                             </tr>
-                            <tr v-for="i in 30">
-                                <td></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
+                            <tr v-for="rig in rigCharacteristic[1]">
+                                <td>{{rig.parameter}}</td>
+                                <td>{{rig.unit}}</td>
+                                <td><input type="text" v-model="rig.value" :class="{error: rig.value=='' && addRigModalError}"></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="characteristic_body-save">
-                    <button>{{trans('app.save')}}</button>
+                    <button @click="uploadRig">{{trans('app.save')}}</button>
                 </div>
             </div>
         </div>
@@ -1927,7 +1942,9 @@
                     },
                 ],
                 well:[],
+                rigCharacteristic: [],
                 addRigModal: false,
+                addRigModalError: false,
                 currentOrgId: null,
                 currentGeoId: null,
                 fields: [],
@@ -2031,13 +2048,33 @@
             this.getBHAelements()
         },
         methods: {
+            uploadRig(){
+                for (let i=0; i<this.rigCharacteristic.length; i++){
+                    if (this.rigCharacteristic[1][i].value == ""){
+                        this.addRigModalError = true
+                        break
+                    }
+                }
+                if (this.rigCharacteristic[0][1].value == ""){
+                    this.addRigModalError = true
+                }
+
+            },
             addItemRig(){
                 if (this.addRigModal){
                     this.addRigModal = false
                 } else{
                     document.body.overflow = 'hidden'
                     this.addRigModal = true
+                    this.getRigCharacteristic()
                 }
+            },
+            getRigCharacteristic(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/rig').then((response) => {
+                    let data = response.data;
+                    this.rigCharacteristic = data
+                });
+
             },
             getDeviceType(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/device_type/').then((response) => {
@@ -2152,7 +2189,7 @@
 
             },
             getThreadTypes(){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_type/').then((response) => {
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_size/').then((response) => {
                     let data = response.data;
                     this.threadTypes = data
                 });
@@ -2427,5 +2464,8 @@
 
     .characteristic img{
         margin-left: 5px;
+    }
+    .error{
+        border: 1px solid red!important;
     }
 </style>

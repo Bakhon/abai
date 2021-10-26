@@ -105,6 +105,7 @@
     }
     .dropdown-body ul li{
         padding: 5px;
+        cursor: pointer;
     }
     .dropdown-body ul li.active,
     .dropdown-body ul li:hover{

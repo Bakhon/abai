@@ -1230,6 +1230,10 @@ td.border-right-none{
 .decryption-content-right{
     margin-left: 100px;
 }
+.daily-report.dropdown-menu {
+    width: 332px !important;
+    min-height: 80px !important;
+}
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;
