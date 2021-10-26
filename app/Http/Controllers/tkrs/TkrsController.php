@@ -28,6 +28,10 @@ class TkrsController extends Controller
     public function video()
     {
         return view('video.video');
+    }
+    public function videoSurveillance()
+    {
+        return view('videoSurveillance.videoSurveillance');
     } 
 
 }

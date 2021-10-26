@@ -6,51 +6,33 @@
                 <thead>
                   <tr>
                     <th>№</th>
-                    <th>Активность</th>
-                    <th>Связь</th>
-                    <th>Бригада</th>
-                    <th>Месторождение</th>
-                    <th>Скважина</th>
-                    <th>Тип ремонта</th>
-                    <th>Вид ремонта</th>
-                    <th>Оповощение</th>
-                    <th>GPS</th>
-                    <th>Видео</th>
-                    <th>Датчик силы</th>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Нормативное значение</th>
+                    <th>Фактическое значение</th>
+                    <th>Отклонение</th>
+                    <th>Тип превышения</th>
                   </tr>
                 </thead>
                 <tbody>
                   
-                    <tr>
+                    <tr class="work_limit">
                       <td>1</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></td>
-                      <td><img class="cursor-pointer" @click="brigada_modal()" data-toggle="modal" 
-                data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Бригада №11 ТОО "Жанрос Дриллинг</td>
-                      <td>Акшабулак Восточный</td>
-                      <td><img class="cursor-pointer" @click="well_modal()" data-toggle="modal" 
-                data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Акш 40</td>
-                      <td>КРС/ПРС</td>
-                      <td>Ремонтно-изоляционные работы (РИР)</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/notification_good.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/gps.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/video.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/force_sensor.svg" alt=""></td>
+                      <td>08.10.2021</td>
+                      <td>11:43</td>
+                      <td>40</td>
+                      <td>43</td>
+                      <td>-3</td>
+                      <td>Рабочий предел</td>
                     </tr>
-                    <tr>
+                    <tr class="tech_limit">
                       <td>1</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></td>
-                      <td><img class="cursor-pointer" @click="brigada_modal()" data-toggle="modal" 
-                data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Бригада №11 ТОО "Жанрос Дриллинг</td>
-                      <td>Акшабулак Восточный</td>
-                      <td>Акш 40</td>
-                      <td>КРС/ПРС</td>
-                      <td>Ремонтно-изоляционные работы (РИР)</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/notification_good.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/gps.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/video.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/force_sensor.svg" alt=""></td>
+                      <td>08.10.2021</td>
+                      <td>11:43</td>
+                      <td>40</td>
+                      <td>43</td>
+                      <td>-3</td>
+                      <td>Технологический предел</td>
                     </tr>
                 
                   
@@ -71,5 +53,10 @@ export default {
 </script>
 <style lang="scss" scoped src="../BaseTableStyles.scss"></style>
 <style>
-
+.work_limit {
+  background: #A4673BE5 !important;
+}
+.tech_limit {
+  background: #752747 !important;
+}
 </style>

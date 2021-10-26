@@ -11,6 +11,7 @@ Route::group(
                 Route::get('/hookWeightSensorAnalyse', 'tkrs\TkrsController@hookWeightSensorAnalyse')->name('hookWeightSensorAnalyse');
                 Route::get('/gps', 'tkrs\TkrsController@gps')->name('gps');
                 Route::get('/video', 'tkrs\TkrsController@gps')->name('video');
+                Route::get('/videoSurveillance', 'tkrs\TkrsController@videoSurveillance')->name('videoSurveillance');
             }
         );
     }
