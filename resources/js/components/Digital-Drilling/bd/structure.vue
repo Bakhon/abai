@@ -17,8 +17,19 @@
                     <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
                     <th>{{ trans('digital_drilling.structure.packer') }}</th>
                 </tr>
-                <tr v-for="i in 20">
-                    <td v-for="i in 12"></td>
+                <tr v-for="structure in structures">
+                    <td>{{structure.Вид_трубы}}</td>
+                    <td>{{structure.Вид_колонны}}</td>
+                    <td>{{structure.Интервал_от}}</td>
+                    <td>{{structure.Интервал_до}}</td>
+                    <td>{{structure.Боковой_ствол}}</td>
+                    <td>{{structure.Количество_труб}}</td>
+                    <td>{{structure.Объем_цемента}}</td>
+                    <td>{{structure.Высота_цемента}}</td>
+                    <td>{{structure.Пакер_от}}</td>
+                    <td>{{structure.Пакер_до}}</td>
+                    <td>{{structure.Глубина_спуска}}</td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>
@@ -27,8 +38,51 @@
 </template>
 
 <script>
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
+
     export default {
-        name: "structure"
+        name: "structure",
+        data(){
+            return{
+                structures: [],
+            }
+        },
+        computed: {
+            ...digitalDrillingState([
+                'currentWell'
+            ]),
+        },
+        mounted(){
+            this.getStructureByWell()
+        },
+        methods:{
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
+            async getStructureByWell(){
+                this.SET_LOADING(true);
+                try{
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/structure/'+
+                        this.currentWell.id).then((response) => {
+                        let data = response.data;
+                        if (data) {
+                            this.structures =  data
+                        } else {
+                            console.log('No data');
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log(e)
+                }
+                this.SET_LOADING(false);
+            },
+        },
+        watch: {
+            currentWell: function (val) {
+                this.getStructureByWell()
+            }
+        },
     }
 </script>
 
