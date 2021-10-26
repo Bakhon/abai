@@ -72,6 +72,8 @@ Route::group(
                     'gtm'
                 );
 
+                Route::get('/prod-planning', 'ProdPlanning\ProdPlanningController@index');
+
                 Route::post('attachments', 'AttachmentController@upload')->name('attachment.upload');
                 Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
                 Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
