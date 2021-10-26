@@ -296,6 +296,7 @@ export default {
         'geo': {'name_ru': null},
         'tubeNom': null,
         'measLiq': null,
+        'meas_water_inj': null,
         'tech_mode_inj': null,
         'techModeProdOil': null,
         'techModeProdLiquid': null,
@@ -316,7 +317,7 @@ export default {
         'gdisCurrentValueFlvl': {'value_double': null},
         'gdisCurrentValueStatic': {'value_double': null},
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
-        'gdisComplex': {'value_double': null, 'research_date': null},
+        'gdisComplex': {'value_double': null, 'dbeg': null},
         'gis': {'gis_date': null},
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
@@ -352,7 +353,7 @@ export default {
         'org': 'org',
         'geo': 'geo',
         'tubeNom': 'tube_nom',
-        'measLiq': 'meas_liq',
+        'measLiq': 'measLiq',
         'meas_water_inj': 'meas_water_inj',
         'tech_mode_inj': 'tech_mode_inj',
         'techModeProdOil': 'techModeProdOil',
@@ -366,7 +367,7 @@ export default {
         'artificialBottomHole': 'artificial_bottom_hole',
         'perfActual': 'well_perf_actual',
         'treatmentSko': 'well_treatment_sko',
-        'gdisCurrent': 'gdis_current',
+        'gdisCurrent': 'gdisCurrent',
         'gdisConclusion': 'gdis_conclusion',
         'gdisCurrentValue': 'gdis_current_value',
         'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
@@ -382,7 +383,7 @@ export default {
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
         'gu': 'gu',
-        'agms': 'agms',
+        'agms': 'agms',       
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -441,8 +442,8 @@ export default {
     ),
     selectWell(well) {
       this.SET_LOADING(true);
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {                       
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {        
+        try {                                
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
@@ -450,21 +451,14 @@ export default {
           }
           if (data.geo[0] != null) {
             this.wellGeo = data.geo[0]
-          }
-          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }         
-          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+          }          
           if (data.spatial_object.coord_point != null) {
             let spatialObject
-            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            spatialObject = spatialObject.split(',')
+            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')            
+            spatialObject = spatialObject.split(',')           
             this.wellSaptialObjectX = spatialObject[0]
-            this.wellSaptialObjectY = spatialObject[1]
-          }
+            this.wellSaptialObjectY = spatialObject[1]           
+          }          
           if (data.spatial_object_bottom.coord_point != null) {
             let spatialObjectBottom
             spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
@@ -472,6 +466,14 @@ export default {
             this.wellSaptialObjectBottomX = spatialObjectBottom[0]
             this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
+          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+          }                            
+          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
+          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+     
         } catch (e) {
             this.SET_LOADING(false);
         }
@@ -581,7 +583,7 @@ export default {
         {
           'description': this.well.wellInfo != null ? this.well.wellInfo.rte : null,
           'method': null,
-          'name': 'H ротора',
+          'name': 'Альтитуда устья, м / Н ротора, м',
           'data': ''
         },
         {
@@ -781,7 +783,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.perfActual != null ? this.getFormatedDate(this.well.perfActual.dbeg) : null,
           'method': null,
           'name': 'Дата перфорации',
           'data': ''
@@ -927,8 +929,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.gdisComplex != null ? this.well.gdisComplex.value_double : null,
-          'neigbor_2': this.well.gdisComplex != null ? this.well.gdisComplex.research_date : null,
+          'neigbor_1': this.well.gdisComplex != null ? this.well.gdisComplex.value_string.toFixed(1) : null,
+          'neigbor_2': this.well.gdisComplex != null ? this.getFormatedDate(this.well.gdisComplex.dbeg) : null,
           'name': 'Рпл (Сл. ГДИС)/(дата замера)',
           'data': ''
         },
