@@ -24,6 +24,7 @@ class ModuleStateController extends Controller
                 [
                     'id',
                     'name',
+                    'date',
                     'current_execution_percent',
                     'current_ready_percent',
                     'planning_execution_percent',

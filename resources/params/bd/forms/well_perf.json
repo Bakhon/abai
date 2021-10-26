@@ -128,7 +128,7 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "asc"
+      "order": "desc"
     }
   ],
   "tabs": [
@@ -164,8 +164,7 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
+                "type": "text",
                 "title": "marka"
               },
               {

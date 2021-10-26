@@ -287,7 +287,7 @@ export default {
           .then(result => {
             if (result === true) {
               this.axios.delete(this.localeUrl(`/api/bigdata/forms/${this.code}/${row.id}`)).then(({data}) => {
-                this.rows.splice(rowIndex, 1)
+                this.updateResults()
               })
             }
           })
@@ -309,6 +309,9 @@ export default {
             if (value.parent) {
               value = dict.find(dictItem => dictItem.id === value.parent)
               result.push(value.label)
+              if (column.dict === 'geos') {
+                if (value.type === 'FLD') break;
+              }
               continue;
             }
             break;

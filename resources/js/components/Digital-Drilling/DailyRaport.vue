@@ -71,7 +71,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <select-add :options="drillingContractors" @addItem="addItemRig"/>
+                                <select-add :options="drillingContractors" @addItem="openCatalog('Буровой подрядчик', 'company')"/>
                             </td>
                         </tr>
                         <tr>
@@ -1890,7 +1890,7 @@
                             </tr>
                             <tr>
                                 <td>{{rigCharacteristic[0][0].parameter}}</td>
-                                <td> <select-add :options="drillingContractors" @addItem="addItemRig"/></td>
+                                <td> <select-add :options="drillingContractors" @addItem="openCatalog('Буровой подрядчик', 'company')"/></td>
                             </tr>
                             <tr>
                                 <td>{{rigCharacteristic[0][1].parameter}}</td>
@@ -1918,6 +1918,24 @@
                 </div>
             </div>
         </div>
+        <div class="catalog-add" v-if="catalogModal">
+            <div class="catalog-add-inner">
+                <div class="catalog-add-form">
+                    <div class="catalog-add-header">
+                        <div class="catalog-add-title">
+                            {{currentCatalogAdd.name}}
+                        </div>
+                        <div class="catalog-add-close" @click="catalogModal=false">
+                            Закрыть
+                        </div>
+                    </div>
+                    <div class="catalog-add-content">
+                        <input type="text" :class="{error: catalogError && catalog==''}"  v-model="catalog">
+                        <button @click="saveCatalog">{{trans('app.save')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -1941,6 +1959,13 @@
                         active: false
                     },
                 ],
+                catalog: '',
+                currentCatalogAdd: {
+                    name: '',
+                    url: '',
+                },
+                catalogError: false,
+                catalogModal: false,
                 well:[],
                 rigCharacteristic: [],
                 addRigModal: false,
@@ -2048,6 +2073,18 @@
             this.getBHAelements()
         },
         methods: {
+            saveCatalog(){
+                if (this.catalog != '') {
+                    this.catalogModal = false
+                }else{
+                    this.catalogError = true
+                }
+            },
+            openCatalog(name, url){
+                this.currentCatalogAdd.name = name
+                this.currentCatalogAdd.url = url
+                this.catalogModal = true
+            },
             uploadRig(){
                 for (let i=0; i<this.rigCharacteristic.length; i++){
                     if (this.rigCharacteristic[1][i].value == ""){
@@ -2347,7 +2384,7 @@
         padding: 8px;
 
     }
-    .characteristic__modal{
+    .characteristic__modal, .catalog-add{
         position: fixed;
         top: 0;
         left: 0;
@@ -2355,6 +2392,69 @@
         height: 100vh;
         z-index: 20000;
         background: rgba(0, 0, 0, 0.5);
+    }
+    .catalog-add-inner{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .catalog-add-form{
+        min-width: 300px;
+        width: max-content;
+        height: 200px;
+        background: #272953;
+        border: 2px solid #656A8A;
+        border-radius: 8px;
+        padding: 20px 14px;
+    }
+    .catalog-add-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        color: #FFFFFF;
+    }
+    .catalog-add-title{
+    }
+    .catalog-add-close{
+        flex: 0 0 90px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #656A8A;
+        border-radius: 6px;
+        font-size: 16px;
+        line-height: 19px;
+        cursor: pointer;
+    }
+    .catalog-add-content input{
+        display: block;
+        width: 100%;
+        margin-bottom: 30px;
+        background: #1F2142;
+        border: 1px solid #454FA1;
+        border-radius: 4px;
+        padding: 7px;
+    }
+    .catalog-add-content input.error{
+        border-color: red;
+    }
+    .catalog-add-content input:focus{
+        outline: none;
+    }
+    .catalog-add-content button{
+        background: rgba(46, 80, 233, 0.5);
+        border: 0;
+        margin: 0 auto;
+        display: block;
+        padding: 8px 40px;
+        border-radius: 6px;
     }
     .characteristic_content{
         max-width: 600px;
