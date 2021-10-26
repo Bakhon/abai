@@ -75,6 +75,7 @@ export default {
       "SET_REPORT_DUPLICATED_STATUS",
       "SET_DOWNLOAD_FILE_DATA",
     ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
     ...mapActions("plastFluidsLocal", ["HANDLE_FILE_LOG"]),
     async handleFileUpload() {
       this.state = "uploading";
@@ -84,17 +85,16 @@ export default {
       PostData.append("file", this.file);
       try {
         const log = await uploadTemplate(PostData);
-        const {
-          Template,
-          "report is duplicated": duplicated,
-          status_post,
+        const { template, status, description, user, sheets, ...rest } = log;
+        sheets ? this.HANDLE_FILE_LOG(sheets) : "";
+        this.SET_DOWNLOAD_FILE_DATA({
+          template,
+          status,
           user,
-          ...rest
-        } = log;
-        this.HANDLE_FILE_LOG(rest);
-        this.SET_REPORT_DUPLICATED_STATUS(duplicated === "True" ? true : false);
-        this.SET_DOWNLOAD_FILE_DATA({ template: Template, status: status_post, user: user });
+          description,
+        });
         this.state = "file chosen";
+        if (status === "ok") this.UPDATE_CURRENT_SUBSOIL_FIELD("resetField");
       } catch (error) {
         this.state = "error";
         this.error =
