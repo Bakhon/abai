@@ -39,7 +39,7 @@ class WellsController extends Controller
     public function wellInfo($well)
     {
     
-        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     

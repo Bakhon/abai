@@ -293,6 +293,7 @@ export default {
         'techsName': null,
         'labResearchValue': {'value_double': null},
         'wellType': {'name_ru': null},
+        'whc_alt': null,
         'org': null,
         'geo': {'name_ru': null},
         'tubeNom': null,
@@ -342,6 +343,7 @@ export default {
       wellTransform: {
         'name': 'wellInfo.uwi',
         'wellInfo': 'wellInfo',
+        'whc_alt': 'whc_alt',
         'measWaterCut': 'meas_water_cut',
         'status': 'status',
         'category': 'category',
@@ -448,6 +450,7 @@ export default {
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
       let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru : (this.well.labResearchValue ? this.well.labResearchValue : ''))
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : ''
+      let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +'/'+ this.well.wellInfo.whc_h.toFixed(1) : ''
       let wellTechsName = this.wellTechsName ? this.wellTechsName : ''
       let tap = this.well.tap ? this.well.tap.tap : ''
       let gu_agsu = this.well.gu.name_ru && this.well.agms.name_ru ? this.well.gu.name_ru+'/'+this.well.agms.name_ru
@@ -508,7 +511,7 @@ export default {
       let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +'/'+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
       let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
-      let main_org_code = this.well_all_data.main_org_code      
+      let main_org_code = this.well_all_data.main_org_code          
       this.well_passport = [
         {
           'name': this.trans('well.well'),
@@ -532,7 +535,7 @@ export default {
         },
         {
           'name': this.trans('well.h_rotor'),
-          'data': wellInfo,
+          'data': wellrot,
           'type': ['all']
         },
         {
