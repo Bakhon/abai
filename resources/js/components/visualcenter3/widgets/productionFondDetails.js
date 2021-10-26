@@ -66,6 +66,12 @@ export default {
                     isVisible: true
                 },
                 {
+                    name: this.trans("visualcenter.trialOperating"),
+                    code: 'trial_operating_production_fond',
+                    fact: 0,
+                    isVisible: true
+                },
+                {
                     name: this.trans("visualcenter.waitingUndergroundRepairFond"),
                     code: 'prs_wait_downtime_production_wells_count',
                     fact: 0,
@@ -130,7 +136,8 @@ export default {
                 'active_production_fond',
                 'inactive_production_fond',
                 'developing_production_fond',
-                'pending_liquidation_production_fond'
+                'pending_liquidation_production_fond',
+                'trial_operating_production_fond'
             ],
             productionFondIdleFields: [
                 'prs_wait_downtime_production_wells_count',
@@ -240,6 +247,9 @@ export default {
 
         changeSelectedProductionFondCompanies(e) {
             this.productionFondSelectedCompany = e.target.value;
+            if (e.target.value === 'УО') {
+                this.fondsFilter.isProductionIdleActive = false;
+            }
             this.updateProductionFondWidget();
         },
 

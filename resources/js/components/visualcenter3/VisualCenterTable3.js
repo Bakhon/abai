@@ -24,6 +24,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 import productionParams from './productionParams/index';
 import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.json";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
@@ -32,7 +33,10 @@ Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').
 
 
 export default {
-    props: ['userId'],
+    props: ['userId','oilDynamicRoute'],
+    components: {
+        "date-picker": DatePicker
+    },
     data: function () {
         return {
             dzoMapping : {
@@ -110,7 +114,8 @@ export default {
             reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
-            additionalCompanies: ['ОМГК','АГ']
+            additionalCompanies: ['ОМГК','АГ'],
+            missedCompanies: []
         };
     },
     methods: {
@@ -246,6 +251,14 @@ export default {
                 this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
                 this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
             }
+        },
+        async getMissedCompanies() {
+            let uri = this.localeUrl("/get-missed-companies");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
         }
     },
     mixins: [
@@ -270,6 +283,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.oneDzoSelected = this.getDzoTicker();
+        this.missedCompanies = await this.getMissedCompanies();
         if (this.oneDzoSelected !== null) {
             this.isOneDzoSelected = true;
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);

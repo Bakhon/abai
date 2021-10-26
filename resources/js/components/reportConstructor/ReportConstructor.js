@@ -445,50 +445,51 @@ export default {
         },
         getHeaders(sheetType) {
             let attributes = this.getSelectedAttributes()
-            this.maxDepthOfSelectedAttributes[sheetType] = this._getMaxDepthOfTree(attributes[sheetType])
-            return this._convertTreeToLayersOfAttributes(attributes[sheetType], this.maxDepthOfSelectedAttributes[sheetType])
+            this.maxDepthOfSelectedAttributes[sheetType] = this.getMaxDepthOfTree(attributes[sheetType])
+            let layers_of_headers = this.convertTreeToLayersOfAttributes(attributes[sheetType], this.maxDepthOfSelectedAttributes[sheetType])
+            return this.remove_first_header_row(layers_of_headers)
         },
-        _getMaxDepthOfTree(attributes) {
+        getMaxDepthOfTree(attributes) {
             let maxChildrenDepth = 0
             for (let attribute of attributes) {
                 if (!this._hasChildren(attribute)) {
                     continue
                 }
-                let childrenDepth = this._getMaxDepthOfTree(attribute.children)
+                let childrenDepth = this.getMaxDepthOfTree(attribute.children)
                 if (maxChildrenDepth < childrenDepth) {
                     maxChildrenDepth = childrenDepth
                 }
             }
             return maxChildrenDepth + 1
         },
-        _convertTreeToLayersOfAttributes(attributes, layerDepth) {
+        convertTreeToLayersOfAttributes(attributes, layerDepth) {
             let layers = []
             for (let i = 0; i < layerDepth; i++) {
-                layers.push(this._getAttributesOnDepth(attributes, i))
+                layers.push(this.getAttributesOnDepth(attributes, i))
             }
             return layers
         },
-        _getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
+        getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
             let attributesOnTargetDepth = []
             for (let attribute of attributes) {
                 if (startingDepth === targetDepth) {
                     attributesOnTargetDepth.push({
                         'label': attribute.label,
-                        'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
+                        'maxChildrenNumber': this.getMaxChildrenNumber(attribute)
                     })
                     continue
                 }
                 if (!this._hasChildren(attribute)) {
                     continue
                 }
-                let attributesOnDepth = this._getAttributesOnDepth(
+                let attributesOnDepth = this.getAttributesOnDepth(
                     attribute.children, targetDepth, startingDepth + 1
                 )
                 attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
             }
             return attributesOnTargetDepth
         },
-        _getMaxChildrenNumber(originalAttribute) {
+        getMaxChildrenNumber(originalAttribute) {
             let maxChildrenNumber = 0;
             if (!this._hasChildren(originalAttribute)) {
                 return maxChildrenNumber
@@ -497,9 +498,13 @@ export default {
                 if (!this._hasChildren(attribute)) {
                     maxChildrenNumber += 1
                 }
-                maxChildrenNumber += this._getMaxChildrenNumber(attribute)
+                maxChildrenNumber += this.getMaxChildrenNumber(attribute)
             }
             return maxChildrenNumber
+        },
+        remove_first_header_row(layers_of_headers) {
+            layers_of_headers.shift()
+            return layers_of_headers
         },
         getRowHeightSpan(attribute, currentDepth, sheetType) {
             if (attribute.maxChildrenNumber > 0) {

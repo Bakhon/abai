@@ -4,7 +4,7 @@ namespace App\Models\BigData;
 
 use App\Models\TBDModel;
 
-class MeasLiqInjection extends TBDModel
+class MeasLiqProduction extends TBDModel
 {
     protected $table = 'prod.meas_water_prod';
 }

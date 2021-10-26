@@ -132,10 +132,17 @@
                 </div>
                 <select
                         class="form-select col-12 mt-3 status-block status-block_little"
-                        v-if="!dzoUsers.includes(parseInt(userId))"
+                        v-if="!dzoUsers.includes(parseInt(userId)) && (category.isArchieveActive || category.isFactActive)"
                         @change="switchCompany($event)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                </select>
+                <select
+                        class="form-select col-12 mt-3 status-block status-block_little"
+                        v-else-if="!dzoUsers.includes(parseInt(userId)) && category.isPlanActive"
+                        @change="switchDzo($event)"
+                >
+                    <option v-for="company in planCompanies" :value="company.ticker">{{company.name}}</option>
                 </select>
                 <div v-else class="col-12 mt-3 status-block status-block_little">
                     &nbsp;
@@ -149,7 +156,7 @@
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -255,6 +262,7 @@
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
                         @beforeEdit="beforePlanEdit"
+                        @beforeRangeEdit="beforePlanRangeEdit"
                 ></v-grid>
 
             </div>
@@ -380,7 +388,7 @@
     }
     .main-layout {
         background: #272953;
-        max-width: 1838px;
+        max-width: 1834px;
     }
     .menu__button {
         background: #656A8A;
@@ -508,6 +516,9 @@
     }
     .opacity-0 {
         opacity: 0;
+    }
+    ::-webkit-scrollbar {
+        width: '';
     }
 
 </style>

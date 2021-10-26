@@ -60,13 +60,12 @@
         },
         methods: {
             async filterField(query){
-                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'?q='+query).then((response) => {
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'?q='+query).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.fields = data;
                         if (data.length>0){
                             this.currentField = data[0].id;
-                            this.getWELL('')
                         }
 
                     } else {
@@ -75,7 +74,7 @@
                 });
             },
             filterWell(query){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'/'+this.currentField+'?q='+query).then((response) => {
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id+'?q='+query).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.well = data;

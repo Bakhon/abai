@@ -135,7 +135,7 @@
           "template": "<div><compare-drilling></compare-drilling></div>",
           "parentType": "digitalRating"
         },
-        "icon": "/img/GTM/sector_icon.svg",
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
         "url": "/digital-rating/compare-drilling"
       }
     ]

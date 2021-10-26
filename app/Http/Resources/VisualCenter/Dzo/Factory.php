@@ -44,7 +44,8 @@ class Factory {
         'seaWaterInjection' => 'WaterInjection',
         'wasteWaterInjection' => 'WaterInjection',
         'artezianWaterInjection' => 'WaterInjection',
-        'streamWaterInjection' => 'WaterInjection'
+        'streamWaterInjection' => 'WaterInjection',
+        'volgaWaterInjection' => 'WaterInjection'
     );
 
     public function make($dzoName)

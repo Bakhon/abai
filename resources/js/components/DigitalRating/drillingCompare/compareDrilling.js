@@ -2,6 +2,9 @@ import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
 import {rowsOil,rowsHorizon,horizons,actualIndicators} from '../json/data';
 import apexchart from 'vue-apexcharts';
+import maps from '../mixins/maps.js';
+import wellList from "../json/wells/13.json";
+import owcList from '../json/owc_out_uzn_13_osn.json'
 
 export default {
   name: 'CompareDrilling',
@@ -10,6 +13,8 @@ export default {
     BtnDropdown,
     apexchart
   },
+
+  mixins: [maps],
 
   data() {
     return {
@@ -31,8 +36,14 @@ export default {
           title: '150 м'
         }
       ],
-      horizon: 12,
+      horizon: 13,
     }
+  },
+
+  async mounted() {
+    await this.initMap('wellMap');
+    await this.initWellOnMap();
+    await this.initContourOnMap();
   },
 
   computed: {
@@ -61,7 +72,7 @@ export default {
           labels: {
             style: {
               colors: this.getColors(6, '#fff')
-            }
+            },
           }
         },
         grid: this.getGrid
@@ -172,18 +183,39 @@ export default {
   },
 
   methods: {
-    menuClick(data) {
-      const path = window.location.pathname.slice(3);
-      if (data?.url && data.url !== path) {
-        window.location.href = this.localeUrl(data.url);
+    initWellOnMap() {
+      for(let i = 0; i < wellList.length; i++) {
+        const coordinate = this.xy(wellList[i]['x'], wellList[i]['y']);
+        switch (wellList[i]['type']) {
+          case 1:
+            this.setCircleMarker(coordinate, wellList[i]['well'], '#fcad00');
+            break;
+          case 4:
+            this.setTriangleMarker(coordinate, wellList[i]['well'], '#fcad00');
+            break;
+        }
       }
     },
+
+    initContourOnMap() {
+      for (let i = 0; i < owcList.length; i++) {
+        owcList[i].reverse();
+      }
+
+      L.polyline(owcList, {
+        renderer: this.renderer,
+        color: 'white',
+        weight: 1,
+        smoothFactor: 1
+      }).addTo(this.map);
+    },
+
     getColors(count, color) {
       let colors = [];
       for (let i = 0; i < count; i++) {
         colors.push(color);
       }
       return colors;
-    }
+    },
   }
 }

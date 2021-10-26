@@ -23,16 +23,6 @@
     ]
   },
   {
-    "code": "well_exploitation",
-    "name": "Освоение, обустройство",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "well_exploitation"
-    ]
-  },
-  {
     "code": "well_file",
     "name": "Дело скважины",
     "icon_name": "dir.svg",
@@ -107,17 +97,8 @@
           "current_g_d_i_s",
           "gis_type"
         ]
-      },
-      {
-        "code": "well_treats",
-        "name": "Обработка",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "well_treat"
-        ]
-      },
+      },     
+          
       {
         "code": "repair",
         "name": "Ремонт",
@@ -141,37 +122,10 @@
       }
     ],
     "forms": [
-      
+      "well_treatment",
+      "gtm_register",  
+      "well_document", 
+      "well_perf"    
     ]
-  },
-  {
-    "code": "gtm_registers",
-    "name": "ГТМ",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "gtm_register"
-    ]
-  },
-  {
-    "code": "well_documents",
-    "name": "Документы скважины",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "well_document"
-    ]
-  },
-  {
-    "code": "well_perfs",
-    "name": "Интервалы перфорации",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "well_perf"
-    ]
-  }
+  }      
 ]

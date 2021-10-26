@@ -527,12 +527,12 @@ export default {
           iconAtlas = '/img/icons/map/gu.png';
           break;
         case "well":
-          iconAtlas = '/img/icons/map/well_normal.png';
+          iconAtlas = '/img/icons/map/well_black.png';
           break;
       }
 
       let name = this.getObjectName(type);
-      let marker = {x: 0, y: 0, width: 160, height: 160};
+      let marker = {x: 0, y: 0, width: 168, height: 168};
 
       return new IconLayer({
         id: layerId,
@@ -543,7 +543,7 @@ export default {
           marker
         },
         getIcon: d => 'marker',
-        sizeScale: type == 'gu' ? 30 : 20,
+        sizeScale: type == 'gu' ? 60 : 40,
         getPosition: (d) => [
           parseFloat(d.lon.toString().replace(',', '.')),
           parseFloat(d.lat.toString().replace(',', '.'))

@@ -53,7 +53,7 @@ class ManualHydroCalcExportResultSheet implements FromView, ShouldAutoSize, With
             'columnNames' => $columnNames
         ];
 
-        return view('exports.manual_calculate_export', [
+        return view('exports.manual_calculate_export_to_excel', [
             'data' => $data
         ]);
     }

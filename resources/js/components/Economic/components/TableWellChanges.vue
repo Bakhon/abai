@@ -5,16 +5,16 @@
     </subtitle>
 
     <div v-if="wells" id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
-      <div v-for="(chunk, index) in chunks"
-           :key="index">
+      <div v-for="(chunk, chunkIndex) in chunks"
+           :key="chunkIndex">
         <div :style="`width: ${columnWidth}px`"
              class="text-center border-grey d-flex bg-header">
-          <div class="text-center border-grey flex-100px">
+          <div class="text-center border-grey flex-150px">
             {{ trans('economic_reference.well_short') }}
           </div>
 
           <div v-for="price in oilPrices"
-               :key="`${index}_${price}`"
+               :key="`${chunkIndex}_${price}`"
                class="text-center border-grey flex-30px">
             {{ (+price).toLocaleString() }}$
           </div>
@@ -22,9 +22,9 @@
           <div class="text-center border-grey flex-30px"></div>
         </div>
 
-        <div v-for="uwi in chunk" :key="uwi" class="d-flex">
-          <div class="text-center border-grey flex-100px">
-            {{ uwi }}
+        <div v-for="(uwi, uwiIndex) in chunk" :key="uwi" class="d-flex">
+          <div class="text-center border-grey flex-150px text-truncate">
+            {{ `${chunkIndex*chunkStep+uwiIndex+1}. ${uwi}` }}
           </div>
 
           <div v-for="price in oilPrices"
@@ -235,7 +235,7 @@ export default {
     },
 
     columnWidth() {
-      return 130 + this.oilPrices.length * 30
+      return 180 + this.oilPrices.length * 30
     },
   },
   watch: {
@@ -272,8 +272,8 @@ export default {
   background: #333975;
 }
 
-.flex-100px {
-  flex: 0 0 100px;
+.flex-150px {
+  flex: 0 0 150px;
 }
 
 .flex-30px {

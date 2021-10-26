@@ -358,7 +358,7 @@ class CurrentGDIS extends TableForm
             'origin' => 'dynamogramm',
             'user_id' => auth()->id(),
         ];
-        $files = json_decode($this->attachmentService->upload($this->request->uploads, $query));
+        $files = $this->attachmentService->upload($this->request->uploads, $query);
 
         $measurement = GdisCurrent::query()
             ->where('well', $row['id'])
