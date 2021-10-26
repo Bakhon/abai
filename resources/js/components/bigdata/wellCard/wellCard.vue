@@ -308,7 +308,7 @@ export default {
         'treatmentDate': {'treat_date': null},
         'actualBottomHole': null,
         'artificialBottomHole': null,
-        'perfActual': {'top': null, 'base': null},
+        'perfActual': {'top': null, 'base': null, 'dbeg': null},
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
         'gdisCurrent': {'meas_date': null, 'note': null,},
@@ -442,7 +442,7 @@ export default {
         350
     ),
     setWellPassport()
-    {
+    {          
       let well = this.wellUwi
       let wellType= this.well.wellType ? this.well.wellType.name_ru : ''
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
@@ -504,10 +504,11 @@ export default {
           (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
 
       let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
-      let injPressure = this.well.injPressure ? this.well.injPressure : ''
-      let agentVol = this.well.agentVol ? this.well.agentVol : ''
+      let injPressure = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.inj_pressure +'/'+ this.well.meas_water_inj.pressure_inj: ''
+      let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +'/'+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
+      let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
-      let main_org_code = this.well_all_data.main_org_code
+      let main_org_code = this.well_all_data.main_org_code      
       this.well_passport = [
         {
           'name': this.trans('well.well'),
@@ -713,17 +714,17 @@ export default {
         },
         {
           'name': this.trans('well.date_perforation'),
-          'data': '',
+          'data': perfActualDate,
           'type': ['all']
         },
         {
           'name': this.trans('well.pickup'),
-          'data': injPressure,
+          'data': agentVol,
           'type': ['nag']
         },
         {
           'name': this.trans('well.injection_pressure'),
-          'data': agentVol,
+          'data': injPressure,
           'type': ['nag']
         },
         {
@@ -877,7 +878,7 @@ export default {
     selectWell(well) {
       this.SET_LOADING(true);
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {
+        try {          
           this.well_all_data = data
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
@@ -887,13 +888,6 @@ export default {
           if (data.geo[0] != null) {
             this.wellGeo = data.geo[0]
           }
-          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }
-          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
           if (data.spatial_object.coord_point != null) {
             let spatialObject
             spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
@@ -908,6 +902,15 @@ export default {
             this.wellSaptialObjectBottomX = spatialObjectBottom[0]
             this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
+          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+          }
+         
+          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
+          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+
         } catch (e) {
             this.SET_LOADING(false);
         }

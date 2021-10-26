@@ -44,6 +44,7 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
         
+        $orgs = $this->org($well);
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -75,7 +76,7 @@ class WellsController extends Controller
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),                 
-            'gdisCurrent' => $this->gdisCurrent($well),     
+            'gdisCurrent' => $this->gdisCurrent($well),               
             'rzatr_atm' => $this->gdisCurrentValueOtp($well),                     
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
