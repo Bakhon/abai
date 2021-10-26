@@ -29,6 +29,7 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
 Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').default);
+Vue.component('chart-modal', require('./widgets/chartModal.vue').default);
 
 
 
@@ -115,7 +116,8 @@ export default {
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
             additionalCompanies: ['ОМГК','АГ'],
-            missedCompanies: []
+            missedCompanies: [],
+            chartReasons: []
         };
     },
     methods: {
@@ -259,6 +261,10 @@ export default {
                 return [];
             }
             return response.data;
+        },
+        getChartReasons(reasons) {
+            this.chartReasons = reasons;
+            this.$modal.show('chartModal');
         }
     },
     mixins: [

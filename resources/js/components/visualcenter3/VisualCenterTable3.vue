@@ -1223,7 +1223,13 @@
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
-                <vc-chart :class="isDecreaseReasonActive ? 'ml-1' : ''" :height="465" :isDecreaseReasonActive="isDecreaseReasonActive"> </vc-chart>
+                <vc-chart
+                        :class="isDecreaseReasonActive ? 'ml-1' : ''"
+                        :height="465"
+                        :isDecreaseReasonActive="isDecreaseReasonActive"
+                        :selectedCompanies="selectedDzoCompanies"
+                        @chartReasons="getChartReasons"
+                ></vc-chart>
               </div>
             </div>
           </div>
@@ -2433,6 +2439,7 @@
       </div>
     </div>
     <modal-reasons :reasons="reasonExplanations"></modal-reasons>
+    <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
 

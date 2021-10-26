@@ -1,12 +1,14 @@
 <script>
     import {Line, mixins} from "vue-chartjs";
     import moment from "moment";
+    import {globalloadingMutations} from '@store/helpers';
+    import Vue from "vue";
 
     const {reactiveProp} = mixins;
 
     export default {
         extends: Line,
-        props: ['isDecreaseReasonActive'],
+        props: ['isDecreaseReasonActive','selectedCompanies'],
         data: function () {
             return {
                 monthMapping: [
@@ -38,7 +40,9 @@
                 },
                 datasets: [],
                 labels: [],
-                pointHitRadius: 15
+                pointHitRadius: 15,
+                reasons: {},
+                dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
             }
         },
         methods: {
@@ -210,14 +214,39 @@
                 );
             },
 
-            handleClick(point, event) {
-                let c = this._data._chart;
+            async handleClick(point, event) {
                 let item = event[0];
-                let factData = this.datasets[0].data;
                 if (item && this.isDecreaseReasonActive) {
-                    console.log(factData[item._index + 1]);
-                    console.log(this.labels[item._index]);
+                    this.reasons = await this.getDecreaseReasons(moment(this.labels[item._index],'DD / MMM / YYYY').format('DD.MM.YYYY'),this.selectedCompanies);
+                    this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
+                    this.$emit('chartReasons', this.reasons);
                 }
+
+            },
+
+            async getDecreaseReasons(date,dzo) {
+                let queryOptions = {
+                    'date': date,
+                    'companies': dzo
+                };
+                let uri = this.localeUrl("/get-decrease-reasons-by-date");
+                const response = await axios.get(uri,{params:queryOptions});
+                if (response.status !== 200) {
+                    return [];
+                }
+                return response.data;
+            },
+
+            getUpdatedByOpekRestrictionReasons(reasons) {
+                let presentCompanies = Object.keys(this.reasons);
+                _.forEach(this.dzoWithOpekRestriction, (dzo) => {
+                    if (presentCompanies.includes(dzo)) {
+                        this.reasons[dzo].push(this.trans('visualcenter.opekExplanationReason'));
+                    } else {
+                        this.reasons[dzo] = [this.trans('visualcenter.opekExplanationReason')];
+                    }
+                });
+                return reasons;
             },
 
             getFormattedNumber(num) {
@@ -261,6 +290,10 @@
                 let date = new Date(Number(timestamp));
                 return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();
             },
+
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
         },
         created: function () {
             this.$parent.$on("data", this.updateChartOptions);
