@@ -373,8 +373,8 @@ export default {
             .then((response) => {
                 let data = response.data;
                 this.year = yyyy;
-                this.selectYear = yyyy;
-                this.month = mm;
+                this.selectYear = year;
+                this.month = month;
                 this.currentMonth = mm;
                 this.currentYear = yyyy;
                 this.$store.commit("globalloading/SET_LOADING", false);
