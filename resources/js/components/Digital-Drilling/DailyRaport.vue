@@ -1760,8 +1760,8 @@
                             <td>{{trans('digital_drilling.daily_raport.density_material')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.mass_consumption')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.availability_rig')}}</td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.receiving_per_day')}}</td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.consumption_per_day')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.receiving_per_day')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.consumption_per_day')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.remaining_rig')}}</td>
                         </tr>
                         <tr v-for="(composition, i) in componentComposition">
@@ -1770,7 +1770,7 @@
                                             @selectOption="selectOption"
                                             @addItem="openCatalog('Наименование химреагентов', 'mud_composition', 'chemical_name'+i)"/>
                             </td>
-                            <td v-for="i in 9"><input type="text"></td>
+                            <td v-for="i in 8"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1818,29 +1818,28 @@
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.lithology')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_plas')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_GRP')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.old')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.sampling_interval')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.plan')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.fact_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.takeaway')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.old')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.sampling_interval')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.plan')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.fact_m')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.takeaway')}}</td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.plan')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.fact_m')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.powerful')}}</td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
                         </tr>
-                        <tr v-for="i in 10">
+                        <tr v-for="(geological, i) in geologicalInformation">
                             <td>
-                                <select-input :options="stratigraphy" name="name" />
+                                <select-add :options="stratigraphy" :name="'stratigraphy'+i" :header="geological.stratigraphy"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Стратиграфия', 'stratigraphy', 'stratigraphy'+i)"/>
                             </td>
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="lithology" name="name" />
+                                <select-add :options="lithology" :name="'lithology'+i" :header="geological.lithology"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Литология', 'lithology', 'lithology'+i)"/>
                             </td>
                             <td v-for="i in 7"><input type="text"></td>
                         </tr>
@@ -2043,6 +2042,7 @@
     import SelectAdd from  './components/SelectAdd'
     import NozzlesTable from  './components/NozzlesTable'
     import componentComposition from './core/componentComposition'
+    import geologicalInformation from './core/geologicalInformation'
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd},
@@ -2059,6 +2059,7 @@
                     },
                 ],
                 componentComposition: componentComposition,
+                geologicalInformation: geologicalInformation,
                 catalog: '',
                 catalogCompany: {
                     name_ru: '',
@@ -2281,7 +2282,27 @@
                                     }
                                     this.getNameChemicals()
                                     break
+                                case "stratigraphy":
+                                    for (let i=0; i<this.geologicalInformation.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'stratigraphy'+i){
+                                            this.geologicalInformation[i].stratigraphy = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getStratigraphy()
+                                    break
+                                case "lithology":
+                                    for (let i=0; i<this.geologicalInformation.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'lithology'+i){
+                                            this.geologicalInformation[i].lithology = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getLithology()
+                                    break
                             }
+                            this.catalogError = false
+                            this.catalog = ""
                         } else {
                             console.log("No data");
                         }
@@ -2366,6 +2387,16 @@
                         break
                     }
                 }
+                for (let i=0; i<this.geologicalInformation.length; i++) {
+                    if (name == 'stratigraphy'+i){
+                        this.geologicalInformation[i].stratigraphy = item
+                        break
+                    }else if(name =="lithology"+i){
+                        this.geologicalInformation[i].lithology = item
+                        break
+                    }
+                }
+                console.log(name)
             },
             uploadRig(){
                 this.rigCharacteristic[0][0].value = this.companyName.id
