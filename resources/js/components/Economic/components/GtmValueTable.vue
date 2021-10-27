@@ -8,7 +8,7 @@
         v-if="form.author_id"
         :form="form"
         :fetch-params="{author_id: form.author_id, type_id: EconomicDataLogTypeModel.GTM}"
-        class="mt-3"
+        class="mt-2"
         @change="getData()"/>
 
     <vue-table-dynamic
