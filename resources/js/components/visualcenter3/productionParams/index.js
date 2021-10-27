@@ -286,6 +286,16 @@ export default {
     },
     computed: {
         summaryYearlyPlan() {
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                console.log('filtered')
+                return _.sumBy(filtered, 'yearlyPlan');
+            }
             return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {

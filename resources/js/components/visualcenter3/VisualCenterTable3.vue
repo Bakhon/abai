@@ -937,7 +937,7 @@
                             :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
                       <div class="font">
-                        {{ formatDigitToThousand(item.yearlyPlan) }}
+                        {{ getFormattedNumber(item.yearlyPlan) }}
                       </div>
                     </td>
                     <td
@@ -949,7 +949,15 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue && item.name === 'КПО'"
+                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
+                    >
+                      <div class="font">
+                        866
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
@@ -957,7 +965,15 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
+                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
+                    >
+                      <div class="font">
+                        866
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
@@ -965,7 +981,17 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive()"
+                            v-if="isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
+                    >
+                      <div class="font">
+                        829
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
@@ -985,7 +1011,22 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
+                      <div
+                              v-if="item.plan - item.fact  !== 0"
+                              :class="item.plan > item.fact || item.fact === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
+                      ></div>
+                      <div class="font dynamic" >
+                        37
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
                       <div
@@ -1015,7 +1056,23 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive && buttonYearlyTab && item.name === 'КПО'"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
+                    >
+                      <div
+                              v-if="item.opek - item.fact  !== 0"
+                              :class="item.opek > item.fact || item.fact === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
+                      ></div>
+                      <div class="font dynamic">
+                        37
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
                     >
