@@ -118,7 +118,7 @@ import {globalloadingMutations} from "@store/helpers";
 import {geologyState} from "../../../store/helpers";
 import {
   FETCH_WELLS_CURVES,
-  SET_GIS_DATA,
+  SET_GIS_DATA, SET_GIS_DATA_FOR_GRAPH,
   SET_SELECTED_WELL_CURVES_FORCE
 } from "../../../store/modules/geologyGis.const";
 
@@ -246,12 +246,15 @@ export default {
 
       let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
         let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
-        let curves = Object.values(findElement.data.curve_id);
-        let hasCurve = curves.find((item) => Object.keys(loadedCurves).includes(item.toString()));
-        if (!hasCurve) acc.push(...curves)
+        if(findElement&&findElement.data){
+          let curves = Object.values(findElement.data.curve_id);
+          let hasCurve = curves.find((item) => Object.keys(loadedCurves).includes(item.toString()));
+          if (!hasCurve) acc.push(...curves);
+        }
         return acc;
       }, []);
       await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
+      this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
       this.SET_LOADING(false);
     },
 
