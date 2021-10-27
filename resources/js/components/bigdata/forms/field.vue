@@ -14,6 +14,18 @@
           placeholder=""
       >
     </template>
+    <template v-if="item.type === 'textarea'">
+      <textarea
+          :class="{'error': error}"
+          :name="item.code"
+          class="form-control"
+          placeholder=""
+          v-bind:value="formatValue(value)"
+          v-on:change="updateValue($event.target.value)"
+          v-on:input="updateValue($event.target.value)"
+      >
+      </textarea>
+    </template>
     <template v-else-if="item.type === 'list'">
       <v-select
           :value="value"
@@ -352,6 +364,14 @@ export default {
     &.date {
       width: 156px;
     }
+  }
+
+  textarea.form-control {
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #fff;
   }
 
   .vdatetime {
