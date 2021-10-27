@@ -240,9 +240,6 @@ export default {
             }
             this.reasonExplanations = this.getReasonExplanations();
             //this.productionData = _.cloneDeep(this.productionTableData);
-            console.log(category);
-            console.log(isFilterChanged)
-            console.log(this.previousCategory)
             if (category === 'oilCondensateProductionWithoutKMG' && this.periodRange > 100 && this.mainMenu[category]) {
                 this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProductionWithoutKMG);
             } else if (category === 'oilCondensateProductionWithoutKMG' && this.periodRange > 100 && !this.mainMenu[category]) {
