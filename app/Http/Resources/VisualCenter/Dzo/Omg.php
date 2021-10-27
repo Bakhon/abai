@@ -22,7 +22,7 @@ class Omg extends Dzo {
             $condensateSummary['monthlyPlan'] = $companySummary['condensatePlan'] * $daysInMonth;
         }
         if ($periodType === 'year') {
-            $condensateSummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$fieldName);
+            $condensateSummary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
             $condensateSummary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
             $condensateSummary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         }
