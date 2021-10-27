@@ -937,7 +937,7 @@
                             :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
                       <div class="font">
-                        {{ getFormattedNumber(item.yearlyPlan) }}
+                        {{ formatDigitToThousand(item.yearlyPlan) }}
                       </div>
                     </td>
                     <td
@@ -952,7 +952,10 @@
                             v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue && item.name === 'КПО'"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
-                      <div class="font">
+                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
+                        8 660
+                      </div>
+                      <div v-else class="font">
                         866
                       </div>
                     </td>
@@ -968,7 +971,10 @@
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
                     >
-                      <div class="font">
+                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
+                        8 660
+                      </div>
+                      <div v-else class="font">
                         866
                       </div>
                     </td>
@@ -985,9 +991,11 @@
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
-                      <div class="font">
+                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
+                        8 290
+                      </div>
+                      <div v-else class="font">
                         829
-                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -1021,7 +1029,10 @@
                                 'triangle growth-indicator-production-data'
                               "
                       ></div>
-                      <div class="font dynamic" >
+                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
+                        369
+                      </div>
+                      <div v-else class="font">
                         37
                       </div>
                     </td>
@@ -1067,7 +1078,10 @@
                                 'triangle growth-indicator-production-data'
                               "
                       ></div>
-                      <div class="font dynamic">
+                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
+                        369
+                      </div>
+                      <div v-else class="font">
                         37
                       </div>
                     </td>
