@@ -77,4 +77,5 @@
   'tech_mode_prod' => '\\App\\Services\\BigData\\Forms\\TechModeProd',
   'tech_mode_inj' => '\\App\\Services\\BigData\\Forms\\TechModeInj',
   'water_production_month' => '\\App\\Services\\BigData\\Forms\\WaterProductionMonth',
+  'production_plan' => '\\App\\Services\\BigData\\Forms\\ProductionPlan',
 );
