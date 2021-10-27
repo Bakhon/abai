@@ -186,7 +186,7 @@ Vue.component('hook-weight-sensor-analyse', require('./components/tkrs/hookWeigh
 Vue.component('gps', require('./components/tkrs/gps.vue').default);
 Vue.component('video-main', require('./components/tkrs/video.vue').default);
 Vue.component('video-surveillance', require('./components/tkrs/videoSurveillance.vue').default);
-
+Vue.component('gps-positioning', require('./components/tkrs/gpsPositioning.vue').default);
 
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);

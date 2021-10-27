@@ -6,7 +6,9 @@
         
         <div class="tkrs-content">
             <div>
-                <Plotly :data="areaChartData" :layout="layout" :display-mode-bar="false"></Plotly>
+                <Plotly :data="areaChartData" :displaylogo="false" 
+                :layout="layout" :display-mode-bar="true" 
+                :mode-bar-buttons-to-remove="buttonsToRemove"></Plotly>
                 <div>
                     <ul class="nav nav-tabs all-tabs">
                         <li class="nav-item">
@@ -67,8 +69,33 @@ export default {
       calendarDate: '2020-06-17',
       Date1: null,
       areaChartData: [],
-      layout:{
-        title: "My graph"
+      buttonsToRemove: [
+        'hoverClosestCartesian',
+        'hoverCompareCartesian',
+        'toggleSpikelines',
+        'resetScale2d',
+        'autoScale2d',
+      ],
+      layout: {
+        paper_bgcolor: "#272953",
+        plot_bgcolor: "#272953",
+        xaxis: {
+          color: "#FFFFFF",
+          
+          rangeslider: true,
+        
+        },
+        yaxis: {
+          color: "#FFFFFF",
+          linecolor: "#EF5350",
+        },
+        
+        
+  
+      
+       
+       
+    
       },
     }
   },
@@ -158,5 +185,11 @@ table, th, td {
 }
 .nav-link.active {
   background: #2E50E9;
+}
+
+.js-plotly-plot .plotly .modebar {
+    position: absolute;
+    top: 16px;
+    right: 2px;
 }
 </style>

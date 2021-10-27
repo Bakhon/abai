@@ -12,6 +12,7 @@ Route::group(
                 Route::get('/gps', 'tkrs\TkrsController@gps')->name('gps');
                 Route::get('/video', 'tkrs\TkrsController@gps')->name('video');
                 Route::get('/videoSurveillance', 'tkrs\TkrsController@videoSurveillance')->name('videoSurveillance');
+                Route::get('/gpsPositioning', 'tkrs\TkrsController@gpsPositioning')->name('gpsPositioning');
             }
         );
     }

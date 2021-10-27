@@ -1,4 +1,4 @@
-@extends('layouts.tr')
+@extends('layouts.tkrs')
 @section('content')
     <div class="col px-4 tkrs_page"  >
         <a href="{{url('/')}}/ru/export" class="float-right">

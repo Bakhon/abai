@@ -32,6 +32,10 @@ class TkrsController extends Controller
     public function videoSurveillance()
     {
         return view('videoSurveillance.videoSurveillance');
-    } 
+    }
+    public function gpsPositioning()
+    {
+        return view('gpsPositioning.gpsPositioning');
+    }  
 
 }
