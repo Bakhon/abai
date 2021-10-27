@@ -794,7 +794,7 @@
                   <td rowspan="3" class="th">
                     <span>{{trans('tr.monthly_liquid_production')}}</span>
                   </td>
-                  <td class="colspan th" colspan="2">
+                  <td class="colspan th fix_colunn_full_table_ch_regime" colspan="2">
                     <span>{{trans('tr.regime_changes')}}</span>
                   </td>
                   <td rowspan="3" class="th fix_colunn_full_table_blg">
@@ -6862,6 +6862,9 @@ table::-webkit-scrollbar-corner {
 }
 .fix_colunn_full_table_nm {
   min-width: 70px;
+}
+.fix_colunn_full_table_ch_regime {
+  min-width: 130px;
 }
 .fix_colunn_full_table_blg {
   min-width: 106px;

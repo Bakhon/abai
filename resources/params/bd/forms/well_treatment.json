@@ -10,6 +10,12 @@
             "title": "",
             "items": [
               {
+                "code": "treat_date",
+                "title": "date",
+                "type": "date",
+                "validation": "required"
+              },
+              {
                 "code": "treatment_type",
                 "title": "treat_type",
                 "type": "dict",
@@ -54,10 +60,8 @@
               },
               {
                 "code": "chemical_reagent_type",
-                "type": "dict",
-                "dict": "chemical_reagent_types",
-                "title": "ch_reagent_type",
-                "validation": "exists:tbd.dict.chemical_reagent_type,id"
+                "type": "text",
+                "title": "ch_reagent_type"
               },
               {
                 "code": "reason",
@@ -71,13 +75,7 @@
                 "code": "scraper_income",
                 "type": "numeric",
                 "validation": "required|gte:0|lte:10000"
-              },
-              {
-                "code": "treat_date",
-                "title": "date",
-                "type": "date",
-                "validation": "required"
-              }
+              }              
             ]
           }
         ]

@@ -133,6 +133,7 @@ export default {
         },
 
         async switchView(view) {
+            this.selectAllDzoCompanies();
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
             this.buttonMonthlyTab = "";
@@ -166,8 +167,14 @@ export default {
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
-            this.productionData = _.cloneDeep(this.productionTableData);
-            this.productionData = this.getFilteredTableData();
+            this.reasonExplanations = this.getReasonExplanations();
+            if (view === 'year') {
+                this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProduction);
+            } else {
+                this.productionData = _.cloneDeep(this.productionTableData);
+            }
+            //this.productionData = _.cloneDeep(this.productionTableData);
+            //this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
         },
 
@@ -187,6 +194,7 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.selectAllDzoCompanies();
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
             this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
@@ -231,7 +239,15 @@ export default {
                 this.selectedCategory = parent;
             }
             this.reasonExplanations = this.getReasonExplanations();
-            this.productionData = _.cloneDeep(this.productionTableData);
+            //this.productionData = _.cloneDeep(this.productionTableData);
+            if (category === 'oilCondensateProductionWithoutKMG' && this.periodRange > 100 && this.mainMenu[category]) {
+                this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProductionWithoutKMG);
+            } else if (category === 'oilCondensateProductionWithoutKMG' && this.periodRange > 100 && !this.mainMenu[category]) {
+                this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProduction);
+            } else {
+                this.productionData = _.cloneDeep(this.productionTableData);
+            }
+
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
@@ -283,19 +299,58 @@ export default {
     },
     computed: {
         summaryYearlyPlan() {
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'yearlyPlan');
+            }
             return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {
             return _.sumBy(this.productionData, 'monthlyPlan');
         },
         summaryFact() {
-            return this.getSummaryFact(this.productionData,'fact');
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'fact');
+            }
+            return _.sumBy(this.productionData, 'fact');
+            //return this.getSummaryFact(this.productionData,'fact');
         },
         summaryPlan() {
-            return this.getSummaryFact(this.productionData,'plan');
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'plan');
+            }
+            return _.sumBy(this.productionData, 'plan');
+            //return this.getSummaryFact(this.productionData,'plan');
         },
         summaryOpek() {
-            return this.getSummaryFact(this.productionData,'opek');
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'opek');
+            }
+            return _.sumBy(this.productionData, 'opek');
+            //return this.getSummaryFact(this.productionData,'opek');
         },
         summaryDifference() {
             return _.sumBy(this.productionData, 'plan') - _.sumBy(this.productionData, 'fact');

@@ -29,6 +29,7 @@
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
+      :seriesNames="seriesNames"
       :graphType="graphType"
       :minX="minXAxisBorder"
       :maxX="maxXAxisBorder"
@@ -37,20 +38,32 @@
       @close-approximation="isApproximationOpen = false"
       @get-approximation="getApproximation"
     />
+    <BaseModal
+      v-show="isRemoveModalOpen"
+      @close-modal="isRemoveModalOpen = false"
+      @modal-response="handleModalResponse"
+      type="delete"
+      :heading="heading"
+    />
   </div>
 </template>
 
 <script>
 import ScatterGraphApproximation from "./ScatterGraphApproximation.vue";
+import BaseModal from "./BaseModal.vue";
 import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
 import _ from "lodash";
+import { mapState } from "vuex";
+import { convertToFormData, between } from "../helpers";
+import { getCorrelationData } from "../services/graphService";
 
 export default {
   name: "ScatterGraph",
   components: {
     ApexCharts: VueApexCharts,
     ScatterGraphApproximation,
+    BaseModal,
   },
   props: {
     series: Object,
@@ -61,7 +74,9 @@ export default {
     return {
       type: "scatter",
       isApproximationOpen: false,
+      isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
+      currentSeries: null,
       graphSeries: [],
       approximation: [],
       minXAxisBorder: "",
@@ -75,7 +90,14 @@ export default {
         stroke: {
           show: true,
         },
-        colors: ["#82BAFF", "#CF3630", "#F27E31"],
+        colors: [
+          "#82BAFF",
+          "#CF3630",
+          "#F27E31",
+          "#82BAFF",
+          "#CF3630",
+          "#F27E31",
+        ],
         chart: {
           toolbar: {
             show: false,
@@ -95,6 +117,9 @@ export default {
         legend: {
           show: true,
           showForSingleSeries: true,
+          onItemClick: {
+            toggleDataSeries: false,
+          },
         },
         noData: {
           text: this.trans("plast_fluids.no_data"),
@@ -226,8 +251,40 @@ export default {
           type: obj.type,
           data: filtered,
         });
+        this.chartOptions = {
+          ...this.chartOptions,
+          chart: {
+            ...this.chartOptions.chart,
+            type: "scatter",
+          },
+        };
+        this.type = "scatter";
       },
       immediate: true,
+    },
+  },
+  computed: {
+    ...mapState("plastFluids", [
+      "currentSubsoilHorizon",
+      "currentSubsoilField",
+    ]),
+    ...mapState("plastFluidsLocal", [
+      "currentSelectedCorrelation_ps",
+      "currentSelectedCorrelation_bs",
+      "currentSelectedCorrelation_ms",
+      "currentBlocks",
+    ]),
+    heading() {
+      return this.currentSeries
+        ? `${this.trans("plast_fluids.sure_want_to_delete_optional")} "${
+            this.graphSeries[this.currentSeries].name
+          }" ?`
+        : this.trans("plast_fluids.sure_want_to_delete");
+    },
+    seriesNames() {
+      const names = this.graphSeries.map((series) => series.name);
+      names.shift();
+      return names;
     },
   },
   methods: {
@@ -248,6 +305,9 @@ export default {
           : ""
       );
     },
+    r2AndEquationHelper(value, acc) {
+      return value === acc || value === acc + 3;
+    },
     getMaxMinInObjectArray(obj, property) {
       let max = Number.NEGATIVE_INFINITY;
       let min = Number.POSITIVE_INFINITY;
@@ -261,7 +321,17 @@ export default {
       if (data.approximation) {
         this.chartOptions.markers.size.push(0);
         this.type = "line";
-        this.chartOptions.stroke.curve = "smooth";
+        this.chartOptions = {
+          ...this.chartOptions,
+          chart: {
+            ...this.chartOptions.chart,
+            type: "line",
+          },
+          stroke: {
+            ...this.chartOptions.stroke,
+            curve: "smooth",
+          },
+        };
         this.graphSeries.push(data.approximation);
         this.currentAnnotationColorIndex++;
         if (data.approximation.r2 || data.approximation.function) {
@@ -276,12 +346,11 @@ export default {
             ? (this.currentAnnotationColorIndex = 0)
             : "";
           const pushObject = {
-            x:
-              this.currentAnnotationColorIndex === 1
-                ? this.minXAxisBorder
-                : this.currentAnnotationColorIndex === 2
-                ? this.maxXAxisBorder
-                : this.maxXAxisBorder / 2,
+            x: this.r2AndEquationHelper(this.currentAnnotationColorIndex, 1)
+              ? this.minXAxisBorder
+              : this.r2AndEquationHelper(this.currentAnnotationColorIndex, 2)
+              ? this.maxXAxisBorder
+              : this.maxXAxisBorder / 2,
             y: this.maxYAxisBorder,
             seriesIndex: data.approximation.name,
             marker: {
@@ -290,35 +359,39 @@ export default {
             label: {
               borderColor: temp.colors[this.currentAnnotationColorIndex],
               offsetY: 0,
-              offsetX:
-                this.currentAnnotationColorIndex === 1
-                  ? 5
-                  : this.currentAnnotationColorIndex === 2
-                  ? -5
-                  : 0,
+              offsetX: this.r2AndEquationHelper(
+                this.currentAnnotationColorIndex,
+                1
+              )
+                ? 5
+                : this.r2AndEquationHelper(this.currentAnnotationColorIndex, 2)
+                ? -5
+                : 0,
               style: {
                 color: "#fff",
                 background: temp.colors[this.currentAnnotationColorIndex],
                 cssClass: "show",
               },
-              textAnchor:
-                this.currentAnnotationColorIndex === 1
-                  ? "start"
-                  : this.currentAnnotationColorIndex === 2
-                  ? "end"
-                  : "middle",
-              text: '',
+              textAnchor: this.r2AndEquationHelper(
+                this.currentAnnotationColorIndex,
+                1
+              )
+                ? "start"
+                : this.r2AndEquationHelper(this.currentAnnotationColorIndex, 2)
+                ? "end"
+                : "middle",
+              text: "",
             },
           };
-          if(r2) {
+          if (r2) {
             let r2Push = _.cloneDeep(pushObject);
             r2Push.label.text = r2;
             temp.annotations.points.push(r2Push);
           }
-          if(equation) {
+          if (equation) {
             let equationPush = _.cloneDeep(pushObject);
             equationPush.label.text = equation;
-            r2 ? equationPush.label.offsetY = 20 : '';
+            r2 ? (equationPush.label.offsetY = 20) : "";
             temp.annotations.points.push(equationPush);
           }
           this.chartOptions = temp;
@@ -365,16 +438,80 @@ export default {
     ) {
       console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
     },
-    toggleApproximationR2AndEquation(chartContext, seriesIndex, config) {
+    handleModalResponse() {
+      this.removeSeries(this.currentSeries);
+      this.currentSeries = null;
+    },
+    removeSeries(seriesIndex) {
       const temp = _.cloneDeep(this.chartOptions);
-      temp.annotations.points.forEach((point) => {
-        if (point.seriesIndex === this.graphSeries[seriesIndex].name) {
-          point.label.style.cssClass =
-            point.label.style.cssClass === "hide" ? "show" : "hide";
-          point.marker.radius = {};
-        }
-      });
+      let larger = false;
+      temp.annotations.points = temp.annotations.points.reduce(
+        (initial, point) => {
+          if (point.seriesIndex === this.graphSeries[seriesIndex].name) {
+            larger = true;
+          }
+          if (larger) {
+            point.label.borderColor = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
+            point.label.style.background = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
+            point.x = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? this.minXAxisBorder
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? this.maxXAxisBorder
+              : this.maxXAxisBorder / 2;
+            point.label.offsetX = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? 5
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? -5
+              : 0;
+            point.label.textAnchor = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? "start"
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? "end"
+              : "middle";
+          }
+          if (point.seriesIndex !== this.graphSeries[seriesIndex].name) {
+            initial.push(point);
+          }
+          return initial;
+        },
+        []
+      );
+      this.graphSeries.splice(seriesIndex, 1);
+      if (this.graphSeries.length === 1) {
+        this.type = "scatter";
+        temp.markers.size.pop();
+        temp.chart.type = "scatter";
+      }
+      this.currentAnnotationColorIndex--;
       this.chartOptions = temp;
+    },
+    openRemoveModal(chartContext, seriesIndex, config, a) {
+      if (seriesIndex !== 0) {
+        this.currentSeries = seriesIndex;
+        this.isRemoveModalOpen = true;
+      }
     },
     saveToPng() {
       const exprt = new Export(this.$refs.scatterGraph.chart);
@@ -382,11 +519,75 @@ export default {
     },
     setEvents() {
       this.chartOptions.chart.events.markerClick = this.handleMarkerClick;
-      this.chartOptions.chart.events.legendClick = this.toggleApproximationR2AndEquation;
+      this.chartOptions.chart.events.legendClick = this.openRemoveModal;
+    },
+
+    async handleCorrelationAdd() {
+      const horizonIDs = this.currentSubsoilHorizon.length
+        ? this.currentSubsoilHorizon.map((horizon) => horizon.horizon_id)
+        : "None";
+
+      const blockIDs = this.currentBlocks.length
+        ? this.currentBlocks.map((block) => block.block_id)
+        : "None";
+      const postTemp = {
+        field_id: this.currentSubsoilField[0].field_id,
+        correlations_type: this.graphType.toLowerCase(),
+        func_id: this[
+          "currentSelectedCorrelation_" + this.graphType.toLowerCase()
+        ].func_id,
+        horizons: horizonIDs,
+        blocks: blockIDs,
+      };
+      const postData = convertToFormData(postTemp);
+      const correlationData = await getCorrelationData(postData);
+      const correlationSeries = {
+        name: this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
+          .name,
+        type: "line",
+        data: [],
+      };
+      this.chartOptions.markers.size.push(0);
+      this.type = "line";
+      this.chartOptions = {
+        ...this.chartOptions,
+        chart: {
+          ...this.chartOptions.chart,
+          type: "line",
+        },
+      };
+      correlationSeries.data = correlationData[
+        this.graphType.toLowerCase()
+      ].chart.reduce((result, xy) => {
+        const entry = Object.entries(xy)[0];
+        if (
+          between(Number(entry[0]), this.minXAxisBorder, this.maxXAxisBorder) &&
+          between(Number(entry[1]), this.minYAxisBorder, this.maxYAxisBorder)
+        ) {
+          const objectToPush = { x: Number(entry[0]), y: Number(entry[1]) };
+          result.push(objectToPush);
+        }
+        return result;
+      }, []);
+      this.currentAnnotationColorIndex++;
+      this.graphSeries.push(correlationSeries);
     },
   },
   created() {
     this.setEvents();
+    this.$watch(
+      "currentSelectedCorrelation_" + this.graphType.toLowerCase(),
+      () => this.handleCorrelationAdd()
+    );
+  },
+  mounted() {
+    this.chartOptions = {
+      ...this.chartOptions,
+      xaxis: {
+        ...this.chartOptions.xaxis,
+        max: this.maxXAxisBorder,
+      },
+    };
   },
 };
 </script>
@@ -410,10 +611,6 @@ export default {
 
 .graph-holder::v-deep .show {
   display: block;
-}
-
-.graph-holder::v-deep .hide {
-  display: none;
 }
 
 .approx-button {
