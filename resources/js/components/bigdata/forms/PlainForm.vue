@@ -216,7 +216,7 @@ export default {
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = [...JSON.parse(data.files), ...existedFiles]
+            files[key] = [...data.files, ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })

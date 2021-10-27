@@ -29,6 +29,7 @@ use App\Models\BigData\Dictionaries\GeoRockType;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
 use App\Models\BigData\Dictionaries\GisMethodType;
+use App\Models\BigData\Dictionaries\GisType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
@@ -111,7 +112,8 @@ class DictionaryService
         ],
         'brigades' => [
             'class' => Brigade::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'name_ru',
+            'additional_fields' => ['org']
         ],
         'brigadiers' => [
             'class' => Brigadier::class,
@@ -447,10 +449,16 @@ class DictionaryService
                     break;
                 case 'res_type_dict':
                     $dict = $this->getResTypeDict();
-                    break; 
+                    break;
                 case 'res_method_dict':
                     $dict = $this->getResMethodDict();
-                    break;        
+                    break;
+                case 'gis_method_types_gis_type':
+                    $dict = $this->getGisMethodTypesForGisTypeForm();
+                    break;
+                case 'gis_kinds_gis_type':
+                    $dict = $this->getGisKindsForGisTypeForm();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -516,14 +524,18 @@ class DictionaryService
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
+        $selectFields = ['id'];
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $selectFields[] = 'code';
+        }
+        if (!empty(self::DICTIONARIES[$dict]['additional_fields'])) {
+            $selectFields = array_merge($selectFields, self::DICTIONARIES[$dict]['additional_fields']);
+        }
+
         $query = $dictClass::query()
-            ->select('id')
+            ->select($selectFields)
             ->selectRaw("$nameField as name")
             ->orderBy('name', 'asc');
-
-        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
-            $query->selectRaw('code');
-        }
 
         $result = $query->get()->toArray();
 
@@ -571,10 +583,10 @@ class DictionaryService
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent')
+            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent', 'gt.code as type')
             ->distinct()
-            ->orderBy('parent', 'asc')
-            ->orderBy('label', 'asc')
+            ->orderBy('parent')
+            ->orderBy('label')
             ->leftJoin(
                 'dict.geo_parent as gp',
                 function ($join) {
@@ -583,6 +595,7 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->leftJoin('dict.geo_type as gt', 'g.geo_type', 'gt.id')
             ->get()
             ->map(
                 function ($item) {
@@ -591,7 +604,29 @@ class DictionaryService
             )
             ->toArray();
 
-        return $this->generateTree((array)$items);
+        $tree = [];
+        $items = $this->generateTree($items);
+        $geoPermissionsIds = $this->getUserGeoPermissionIds();
+        $this->filterTree($items, $tree, $geoPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserGeoPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_geo as og')
+                ->select('og.geo as geo')
+                ->where('og.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->geo;
+        }, $result));
+        return $result;
     }
 
     private function getWellTechsDict(): array
@@ -612,7 +647,7 @@ class DictionaryService
         $this->filterTree($items, $tree, $techPermissionsIds);
         return $tree;
     }
-
+    
     public function getUserTechPermissionIds() {
         $orgIds = $this->getUserOrgPermissionIds();
         $result = [];
@@ -850,5 +885,30 @@ class DictionaryService
             )
             ->toArray();
         return $items;
+    }
+
+    private function getGisMethodTypesForGisTypeForm()
+    {
+        $dict = $this->get('gis_method_types');
+        return array_filter($dict, function ($item) {
+            return !in_array($item['code'], ['GATR']);
+        });
+    }
+
+    private function getGisKindsForGisTypeForm()
+    {
+        $gisType = GisType::where('code', 'WLS')->first();
+        return DB::connection('tbd')
+            ->table('dict.gis_kind')
+            ->select('id', 'name_ru as name')
+            ->where('gis_type', $gisType->id)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
     }
 }    

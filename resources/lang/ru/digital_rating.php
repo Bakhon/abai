@@ -65,5 +65,12 @@ return array (
   'comparisonActualDrillingPoints' => 'Сравнение фактических точек бурения с ПТД',
   'coincidencePlannedWellsWithin' => 'Совпадение проектных скважин в пределах',
   'year' => 'Год',
-  'comparisonDesignActualIndicators' => 'Сравнение проектных и фактических показателей'
+  'comparisonDesignActualIndicators' => 'Сравнение проектных и фактических показателей',
+  'wellsCommissioningDrilling' => 'Ввод скважин из бурения',
+  'units' => 'ед.',
+  'oilProduction' => 'Добыча нефти',
+  'thousandTons' => 'тыс. т',
+  'project' => 'Проект',
+  'fact' => 'Факт',
+  'deviation' => 'Отклонение'
 );

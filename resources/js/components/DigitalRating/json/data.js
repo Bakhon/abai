@@ -43,30 +43,6 @@ const histories = [
     }
 ]
 
-const indicatorList = [
-    {
-        uwi: 'UZN_0001',
-        liquid: 32,
-        water: 45,
-        oil: '14,8',
-        level: 550
-    },
-    {
-        number: 'UZN_0002',
-        liquid: 45,
-        water: 60,
-        oil: '15,1',
-        level: 420
-    },
-    {
-        number: 'UZN_0003',
-        liquid: 50,
-        water: 80,
-        oil: '16,5',
-        level: 700
-    }
-]
-
 const secondIndicators = [
     {
         number: 'UZN_1001',
@@ -130,7 +106,7 @@ const legends = [
     }
 ]
 
-const maps = [
+const mapList = [
     {
         id: 1,
         title: 'Карта пробуренного фонда скважин'
@@ -145,7 +121,7 @@ const maps = [
     }
 ]
 
-const objects = [
+const horizons = [
     {
         id: 13,
         title: '13 горизонт'
@@ -209,14 +185,192 @@ const mapActions = [
     { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
 ]
 
+const rowsOil = [
+    {
+        year: '2007',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-73,3'
+    },
+    {
+        year: '2008',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-78,6'
+    },
+    {
+        year: '2009',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2010',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2011',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-5,4'
+    },
+    {
+        year: '2012',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2013',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2014',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2015',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2016',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2017',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2018',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2019',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2020',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+];
+
+const rowsHorizon = [
+    {
+        key: 'Пробуренный фонд на 31.12.2012',
+        value: 1002
+    },
+    {
+        key: 'Действующий проектный документ',
+        value: 'Проект разработки 2007 г.'
+    },
+    {
+        key: 'ПТД',
+        value: 'Авторский надзор 2012 г.'
+    },
+    {
+        key: 'Проектные скважины ПР-2007',
+        value: 731
+    },
+    {
+        key: 'Пробуренный фонд до 2007г',
+        value: 545
+    },
+    {
+        key: 'Пробуренный фонд после 2007г',
+        value: 324
+    },
+    {
+        key: 'Плотность сетки, га/скв',
+        value: '18,3'
+    },
+    {
+        key: 'Расстояние между скважинами, м',
+        value1: 50,
+        value2: 100,
+        value3: 200
+    },
+    {
+        key: 'Кол-во пробуренных точек после 2007, ед.',
+        value1: 57,
+        value2: 197,
+        value3: 239
+    },
+    {
+        key: 'Совпадение точек после 2007г, %',
+        value1: '74,3%',
+        value2: '62,2%',
+        value3: '49%'
+    }
+];
+
+const actualIndicators = [
+    {
+        id: 1,
+        title: 'Добыча нефти, тыс.т'
+    },
+    {
+        id: 2,
+        title: 'Добыча нефти по новым скважинам, тыс.т'
+    },
+    {
+        id: 3,
+        title: 'Добыча жидкости, тыс.т'
+    },
+    {
+        id: 4,
+        title: 'Обводненность, %'
+    },
+    {
+        id: 5,
+        title: 'Дебит нефти, т/сут'
+    },
+    {
+        id: 6,
+        title: 'Дебит нефти по новым скважинам, т/сут'
+    },
+    {
+        id: 7,
+        title: 'Ввод скважин, ед.'
+    },
+    {
+        id: 8,
+        title: 'Ввод добывающих скважин из бурения, ед.'
+    },
+    {
+        id: 9,
+        title: 'Ввод нагнетательных скважин скважин из бурения, ед.'
+    }
+]
+
 export {
     overviews,
     histories,
     secondIndicators,
     legends,
-    maps,
+    mapList,
     properties,
-    objects,
+    horizons,
     fileActions,
-    mapActions
+    mapActions,
+    rowsOil,
+    rowsHorizon,
+    actualIndicators
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\Metric;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -16,64 +16,35 @@ class ResearchLabResearch extends PlainForm
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
 
-    const TABLES_BY_TYPE = [
-        'PVTD' => 'prod.pvt_data',
-        'ADSPO' => 'prod.reservoir_oil_prob_analysis',
-        'AEF' => 'prod.produced_water_analysis',
-        'OCRC' => 'prod.res_oil_char',
-        'COSC' => 'prod.surf_oil_characteristics',
-        'CPG' => 'prod.petro_gas_char',
-        'CRG' => 'prod.res_gas_char',
-        'CPIW' => 'prod.res_water_char',
-        'ARSPO' => 'prod.reservoir_oil_prob_analysis'
-    ];
-
     protected $configurationFileName = 'research_lab_research';
 
     protected function getRows(): Collection
     {
-        $wellId = (int)$this->request->get('well_id');
-        $query = DB::connection('tbd')
-            ->table('prod.lab_research as lr')
-            ->select('lr.id', 'research_type', 'research_date', 'lrt.code as research_type_code')
-            ->where('well', $wellId)
-            ->join('dict.lab_research_type as lrt', 'lr.research_type', 'lrt.id')
-            ->orderBy('id', 'desc');
+        $rows = parent::getRows();
 
-        $rows = $query->get();
+        $researchValues = DB::connection('tbd')
+            ->table('prod.lab_research_value as lrv')
+            ->select('lrv.value_double', 'lrv.value_text', 'lrv.research', 'm.code')
+            ->join('dict.metric as m', 'lrv.param', 'm.id')
+            ->whereIn('lrv.research', $rows->pluck('id')->toArray())
+            ->get()
+            ->groupBy('research');
 
-        if (!empty($this->params()['sort'])) {
-            foreach ($this->params()['sort'] as $sort) {
-                if ($sort['order'] === 'desc') {
-                    $rows->sortByDesc($sort['field']);
-                } else {
-                    $rows->sortBy($sort['field']);
-                }
-            }
-        }
-
-        $rows->map(function ($row) {
-            if (!isset(self::TABLES_BY_TYPE[$row->research_type_code])) {
+        $rows->map(function ($row) use ($researchValues) {
+            $rowResearchValues = $researchValues->get($row->id);
+            if (empty($rowResearchValues)) {
                 return $row;
             }
-            $additionalData = DB::connection('tbd')
-                ->table(self::TABLES_BY_TYPE[$row->research_type_code])
-                ->where('well', $row->id)
-                ->first();
-            unset($additionalData->id, $additionalData->well);
 
             $researchResults = [];
-            if (!empty($additionalData)) {
-                foreach ($additionalData as $key => $value) {
-                    $field = $this->getFields()->where('code', $key)->first();
-                    $researchResults[] = ($field ? $field['title'] : $key) . ': ' . $value;
-                }
+            foreach ($rowResearchValues as $rowResearchValue) {
+                $field = $this->getFields()->where('code', $rowResearchValue->code)->first();
+                $value = $rowResearchValue->value_double ?? $rowResearchValue->value_text;
+                $researchResults[] = ($field ? $field['title'] : $rowResearchValue->code) . ': ' . $value;
+                $row->{$rowResearchValue->code} = $value;
             }
             $row->research_results = implode(', ', $researchResults);
 
-            foreach ((array)$additionalData as $key => $value) {
-                $row->$key = $value;
-            }
             return $row;
         });
 
@@ -106,6 +77,49 @@ class ResearchLabResearch extends PlainForm
                 return empty($field['depends_on']);
             });
 
+        $data = $this->request->all();
+        $mainData = array_filter(
+            $data,
+            function ($value, $key) use ($mainFields) {
+                if (in_array($key, ['research_results'])) {
+                    return false;
+                }
+                if ($key === 'well') {
+                    return true;
+                }
+                return $mainFields->where('code', $key)->isNotEmpty();
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            $this->checkFormPermission('update');
+
+            $researchId = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $researchId);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($mainData);
+
+            $this->submittedData['fields'] = $mainData;
+            $this->submittedData['id'] = $researchId;
+        } else {
+            $this->checkFormPermission('create');
+
+            $researchId = $dbQuery->insertGetId($mainData);
+        }
+
+        $this->saveDependentFields($researchId, $researchType, $data);
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $researchId)->first();
+    }
+
+    private function saveDependentFields(int $researchId, LabResearchType $researchType, array $data)
+    {
         $dependentFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
                 if (empty($field['depends_on'])) {
@@ -119,20 +133,6 @@ class ResearchLabResearch extends PlainForm
                 return false;
             });
 
-        $dependentTable = self::TABLES_BY_TYPE[$researchType->code];
-
-        $data = $this->request->all();
-        $mainData = array_filter(
-            $data,
-            function ($value, $key) use ($mainFields) {
-                if ($key === 'well') {
-                    return true;
-                }
-                return $mainFields->where('code', $key)->isNotEmpty();
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-
         $dependentData = array_filter(
             $data,
             function ($value, $key) use ($dependentFields) {
@@ -141,86 +141,41 @@ class ResearchLabResearch extends PlainForm
             ARRAY_FILTER_USE_BOTH
         );
 
+        $metrics = Metric::whereIn('code', $dependentFields->pluck('code')->toArray())->get();
 
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+        $dependentRows = DB::connection('tbd')
+            ->table('prod.lab_research_value as lrv')
+            ->select('lrv.id', 'lrv.value_double', 'lrv.value_text', 'lrv.research', 'm.code')
+            ->join('dict.metric as m', 'lrv.param', 'm.id')
+            ->where('lrv.research', $researchId)
+            ->get();
 
-        if (!empty($data['id'])) {
-            $this->checkFormPermission('update');
+        foreach ($dependentData as $key => $value) {
+            $metric = $metrics->where('code', $key)->first();
+            $dependentRow = $dependentRows->where('code', $key)->first();
+            $dependentField = $dependentFields->where('code', $key)->first();
+            $valueColumn = $dependentField['type'] === 'numeric' ? 'value_double' : 'value_text';
 
-            $id = $data['id'];
-            unset($data['id']);
-
-            $dbQuery = $dbQuery->where('id', $id);
-
-            $this->originalData = $dbQuery->first();
-            $dbQuery->update($mainData);
-
-            $this->submittedData['fields'] = $mainData;
-            $this->submittedData['id'] = $id;
-        } else {
-            $this->checkFormPermission('create');
-
-            $id = $dbQuery->insertGetId($mainData);
-        }
-
-        $dependentRow = DB::connection('tbd')
-            ->table($dependentTable)
-            ->where('well', $id)
-            ->first();
-
-        if (empty($dependentRow)) {
-            DB::connection('tbd')
-                ->table($dependentTable)
-                ->insert(
-                    array_merge(
+            if (empty($dependentRow)) {
+                DB::connection('tbd')
+                    ->table('prod.lab_research_value as lrv')
+                    ->insert(
                         [
-                            'well' => $id
-                        ],
-                        $dependentData
-                    )
-                );
-        } else {
-            DB::connection('tbd')
-                ->table($dependentTable)
-                ->where('id', $dependentRow->id)
-                ->update($dependentData);
+                            'research' => $researchId,
+                            'param' => $metric->id,
+                            $valueColumn => $value
+                        ]
+                    );
+            } else {
+                DB::connection('tbd')
+                    ->table('prod.lab_research_value as lrv')
+                    ->where('id', $dependentRow->id)
+                    ->update(
+                        [
+                            $valueColumn => $value
+                        ]
+                    );
+            }
         }
-
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-    }
-
-    public function getFormParamsToEdit(array $params)
-    {
-        $row = DB::connection('tbd')
-            ->table('prod.lab_research as lr')
-            ->select('lr.id', 'research_type', 'research_date', 'lr.well', 'lrt.code as research_type_code')
-            ->where('lr.id', $params['id'])
-            ->join('dict.lab_research_type as lrt', 'lr.research_type', 'lrt.id')
-            ->first();
-
-        if (Carbon::parse($row->research_date) != Carbon::parse($params['filter']['date'])) {
-            return [
-                'well_id' => $row->well,
-                'values' => [
-                    'research_date' => $params['filter']['date'],
-                    'research_type' => $row->research_type
-                ]
-            ];
-        }
-
-        $additionalData = DB::connection('tbd')
-            ->table(self::TABLES_BY_TYPE[$row->research_type_code])
-            ->where('well', $row->id)
-            ->first();
-        unset($additionalData->id, $additionalData->well);
-
-        foreach ((array)$additionalData as $key => $value) {
-            $row->$key = $value;
-        }
-
-        return [
-            'well_id' => $row->well,
-            'values' => (array)$row
-        ];
     }
 }

@@ -55,6 +55,20 @@ label {
   margin-left: 2px;
 }
 
+.customization-category {
+  width: calc(50% - 2px);
+}
+
+.customization-category > div {
+  background: #363b68;
+  border: 1px solid #545580;
+  width: 100%;
+}
+
+.customization-category > div:first-of-type {
+  margin-bottom: 5px;
+}
+
 .correlations-holder {
   background: rgba(255, 255, 255, 0.04);
   padding: 6px;

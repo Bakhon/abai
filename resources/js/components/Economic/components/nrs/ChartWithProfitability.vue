@@ -24,13 +24,25 @@
           {{ trans(`economic_reference.in_pause`) }}
         </label>
       </div>
+
+      <div class="form-check ml-2">
+        <input v-model="isStacked"
+               id="stacked"
+               type="checkbox"
+               class="form-check-input cursor-pointer">
+
+        <label class="form-check-label cursor-pointer"
+               for="stacked">
+          {{ trans(`economic_reference.stacked`) }}
+        </label>
+      </div>
     </div>
 
     <apexchart
         ref="chart"
         :options="options"
         :series="chartSeries"
-        :height="545"/>
+        :height="chartHeight"/>
   </div>
 </template>
 

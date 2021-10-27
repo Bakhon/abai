@@ -8,6 +8,8 @@
           v-bind="settings"
           :key="key"
           :block-name="well.name"
+          :block-id="well.name"
+          :groups="getGroups"
       />
       <canvas ref="infoCanvas" id="awGisCanvas" :height="settings.heightContainer" />
     </div>
@@ -16,8 +18,7 @@
 
 <script>
 import AwGisBlock from "./AwGisBlock";
-import AwGisClass from "./utils/AwGisClass";
-import {ADD_BLOCK, FETCH_GIS_DATA} from "../../../../../store/modules/geologyGis.const";
+import {GET_GIS_GROUPS} from "../../../../../store/modules/geologyGis.const";
 
 export default {
   name: "awGis",
@@ -28,7 +29,6 @@ export default {
     return {
       awGis: null,
       gisData: null,
-      gisGroups: [],
       gisWells: [],
       groupSettingDefault: {},
       blocksScrollY: 0,
@@ -42,45 +42,22 @@ export default {
       }
     }
   },
+
   async mounted() {
-    this.awGis = new AwGisClass();
-    await this.$store.dispatch(FETCH_GIS_DATA);
-    for (let i = 0; i <1; i++) {
-      this.$store.commit(ADD_BLOCK, `well ${i}`);
-    }
-    setTimeout(()=>{this.setInfoCanvasSize();}, 1)
+    setTimeout(() => {
+      this.setInfoCanvasSize();
+    }, 1)
   },
+
   computed: {
-    getGroups() {
-      return this.gisGroups;
+    getGroups(){
+      return this.$store.getters[GET_GIS_GROUPS];
     },
-    getWellsBlock(){
+    getWellsBlock() {
       return this.$store.state.geologyGis.gisWells;
     }
   },
-
   methods: {
-    addGroup(bockName, opt){
-      this.awGis.addGroup(bockName, {...this.groupSettingDefault, ...opt});
-      this.update();
-    },
-
-    selectCurve(curveName, curve, groupName) {
-      if (groupName) {
-        if(this.awGis.hasElementInGroup(groupName, curveName)) this.awGis.removeElementFromGroup(groupName, curveName)
-        else this.awGis.addElementToGroup(groupName, curveName, curve)
-      }
-      this.update();
-    },
-
-    getGroupElementsWithData(groupName) {
-      return this.awGis.getGroupElementsWithData(groupName)
-    },
-
-    getElement(elName) {
-      return this.awGis.getElement(elName);
-    },
-
     update() {
       this.gisGroups = this.awGis.getGroupsWithData;
     },
@@ -103,7 +80,6 @@ export default {
     return {
       awGis: this.awGis,
       update: this.update,
-      addGroup: this.addGroup
     }
   }
 }

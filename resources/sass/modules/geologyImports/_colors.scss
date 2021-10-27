@@ -104,6 +104,12 @@ $colorsArray: (
         color: if((length($btnColor)==4 and nth($btnColor, 4)), nth($btnColor, 4), nth($btnColor, 2));
       }
     }
-
+  }
+  &.disabled{
+    cursor: not-allowed;
+    background: #838383;
+    &:hover{
+      background: darken( #838383, $darkenPercent);
+    }
   }
 }

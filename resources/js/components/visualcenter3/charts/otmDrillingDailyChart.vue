@@ -62,6 +62,7 @@ export default {
                 legend: {
                     show: false,
                 },
+                colors: ['#999DC0','#2E50E9'],
                 dataLabels: {
                     enabled: false,
                 },
@@ -82,6 +83,7 @@ export default {
                 plotOptions: {
                     bar: {
                         horizontal: true,
+                        distributed: true
                     }
                 },
             };

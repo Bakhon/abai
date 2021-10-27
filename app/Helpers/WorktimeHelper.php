@@ -13,7 +13,7 @@ class WorktimeHelper
         CarbonImmutable $endOfDay,
         $wellId
     ): int {
-        $hours = 0;
+        $minutes = 0;
         $dailyStatuses = $wellStatuses
             ->where('dbeg', '<=', $endOfDay)
             ->where('dend', '>=', $startOfDay)
@@ -21,13 +21,17 @@ class WorktimeHelper
 
         foreach ($dailyStatuses as $status) {
             if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
+                $minutes += 24 * 60;
             } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
+                $minutes +=
+                    $status->dbeg->diffInMinutes(
+                        $status->dend < $endOfDay ? $status->dend : $endOfDay
+                    );
             } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
+                $minutes += $startOfDay->diffInMinutes($status->dend);
             }
         }
+        $hours = round($minutes / 60);
         return min($hours, 24);
     }
 }

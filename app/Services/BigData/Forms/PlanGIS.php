@@ -27,7 +27,7 @@ class PlanGIS extends TableForm
 
         $org = $this->getOrganization();
         $orgChild = Org::find($this->request->get('id'));
-        $orgChildren = $org->children()->get();
+        $orgChildren = $org->children()->orderBy('name_ru')->get();
 
         if(!$this->isOrganization($orgChild) && $orgChild->parentOrg->type->code === 'SUBC') {
             $tmp[] = $orgChild;

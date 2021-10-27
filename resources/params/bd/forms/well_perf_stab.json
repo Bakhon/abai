@@ -50,10 +50,8 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
-                "title": "marka",
-                "validation": "exists:tbd.dict.patron_type,id"
+                "type": "text",
+                "title": "marka"
               },
               {
                 "code": "liquid",
@@ -117,6 +115,40 @@
                     "type": "numeric",
                     "title": "base",
                     "validation": "required|numeric|gte:0|lte:10000"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_perf_file",
+                  "local_key": "well_perf",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }

@@ -90,7 +90,18 @@ class VisualCenterController extends Controller
         if (!is_null($this->dzoName)) {
             $query->where('dzo', $this->dzoName);
         }
-        return $query->orderBy('date', 'asc')->get();
+        $result = $query->orderBy('date', 'asc')->get();
+        if ($this->periodType !== 'year') {
+            foreach ($result as $dzoItem) {
+                foreach($dzoItem->getAttributes() as $key => $item) {
+                    if (is_numeric($item)) {
+                        $dzoItem[$key] = $item * ($this->periodRange + 1);
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
     private function getData($fact,$plan,$historicalFact,$historicalPlan)
@@ -99,7 +110,7 @@ class VisualCenterController extends Controller
         $chartData = array();
 
         if ($this->periodRange > 0) {
-            $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category);
+            $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category,$this->periodRange + 1,$this->periodType);
         }
 
         return array (
@@ -132,11 +143,20 @@ class VisualCenterController extends Controller
 
     private function getYearlyPlan()
     {
+        $daysCountFromYearStart = $this->periodStart->diffInDays($this->periodEnd) + 1;
         $query = DzoPlan::query()
             ->whereYear('date', $this->periodStart->year);
         if (!is_null($this->dzoName)) {
             $query->where('dzo', $this->dzoName);
         }
-        return $query->orderBy('date', 'asc')->get();
+        $result = $query->orderBy('date', 'asc')->get();
+        foreach ($result as $dzoItem) {
+            foreach($dzoItem->getAttributes() as $key => $item) {
+                if (is_numeric($item)) {
+                    $dzoItem[$key] = $item * $daysCountFromYearStart;
+                }
+            }
+        }
+        return $result;
     }
 }

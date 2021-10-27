@@ -7,71 +7,85 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 class DigitalRatingContoller extends Controller
 {
    const WELL_STATUS_TYPE_ID = [3,4];
-   const WELL_CATEGORY_TYPE_ID = 1;
-   const PARAM_GDIS_HDIN_id = 217;
-   const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
+   const WELL_ENVIRONMENY_CATEGORY_TYPE_ID = 1;
+   const WELL_INJECTION_CATEGORY_TYPE_ID = 2;
+   const PARAM_GDIS_HDIN_ID= [217,5000000587];
 
-   public function get_wells(array $neighboring_wells) : object  
+   public function get_environment(Request $request):JsonResponse
    {
+
+         $sector_number = $request->input('sector');
+         $horizon = $request->input('horizon');
+
+         $neighboring_wells = $this->search_wells($sector_number,$horizon,self::WELL_ENVIRONMENY_CATEGORY_TYPE_ID);
+
+         if(is_null($neighboring_wells)) {
+            return response()->json(['message' => 'Well not found']);
+         }
          foreach ($neighboring_wells as $item) {
-            $well_uwi[] = $item['well'];
+            $well_id[] = $item->well_id;
          }
          $wells =   DB::connection('tbd')->table('tbdi.well')
-               ->whereIn('tbdi.well.uwi',$well_uwi)
-               ->join('tbdi.well_status', 'tbdi.well.id', '=', 'tbdi.well_status.well_id')
-               ->whereIn('tbdi.well_status.well_status_type_id',  self::WELL_STATUS_TYPE_ID)   
-               ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-               ->where('tbdi.well_category.well_category_type_id', self::WELL_CATEGORY_TYPE_ID)
-               ->join('tbdi.liquid_prod', 'tbdi.well_status.well_id', '=', 'tbdi.liquid_prod.well_id')
+               ->whereIn('tbdi.well.id',$well_id)
+               ->join('tbdi.liquid_prod', 'tbdi.well.id', '=', 'tbdi.liquid_prod.well_id')
                ->join('tbdi.bsw_prod', 'tbdi.liquid_prod.well_id', '=', 'tbdi.bsw_prod.well_id')
-               ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id')
-               ->selectRaw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average')
-               ->selectRaw('AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average')
+               ->selectRaw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average,tbdi.liquid_prod.well_id,AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average,well.uwi')
                ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
                ->whereDate('tbdi.bsw_prod.dend', '>', Carbon::now()->subDays(90))
-               ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id')
+               ->groupBy('tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id','well.uwi')
                ->get();
 
+                
+         $params_gdis = DB::connection('tbd')->
+         select("SELECT *
+         FROM tbdi.current_gdis_value cgv
+         INNER JOIN (
+            SELECT well_id, param_gdis_id, max( dbeg)
+            FROM tbdi.current_gdis_value 
+            where 1=1
+            and param_gdis_id in (".implode(',',self::PARAM_GDIS_HDIN_ID).")
+            and well_id in (".implode(',',$well_id).")
+            GROUP BY well_id, param_gdis_id
+         ) b ON cgv.well_id = b.well_id AND cgv.param_gdis_id = b.param_gdis_id AND cgv.dbeg = b.max
+         ");
+           
          foreach ($wells as $key => $item) {
-            if($item->well_status_type_id == 3) {
-               $params_gdis = DB::connection('tbd')->select('select * from tbdi.current_gdis_value 
-               where well_id = :id AND param_gdis_id IN(:PARAM_GDIS_HDIN_id,:PARAM_GDIS_CONCLUSION_GDM_ID) 
-               ORDER BY dbeg DESC LIMIT 2', 
-               ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,
-               'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
-               foreach ($params_gdis as $param) {
+            foreach ($params_gdis as $param) {
+               if($param->well_id == $item->well_id) {
                   if($param->param_gdis_id == 217) {
-                     $param_gdis_hdin = $param->value_double;
+                       $wells[$key]->param_value_double  = number_format( $param->value_double);
                   }else {
-                     $gdis_conclusion = $param->gdis_conclusion;
+                     $wells[$key]->param_gdis_conclusion  = $param->gdis_conclusion;
                   }
-                 
                }
-
-               $result = $item->liquid_val_average * (100 - $item->bsw_val_average ) / 100 *0.839;
-               $wells[$key]->result = number_format( $result, 2);
-               $wells[$key]->liquid_val_average  = number_format( $item->liquid_val_average, 2);
-               $wells[$key]->bsw_val_average  = number_format( $item->bsw_val_average, 2);
-               $wells[$key]->gdis_conclusion = $gdis_conclusion;
-               $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
-
             }
-         }
 
-         return $wells;                
+            $result = $item->liquid_val_average * (100 - $item->bsw_val_average ) / 100 * 0.839;
+            $wells[$key]->result = number_format( $result, 1);
+            $wells[$key]->liquid_val_average  = number_format( $item->liquid_val_average);
+            $wells[$key]->bsw_val_average  = number_format( $item->bsw_val_average);
+        
+         }
+         $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+         return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
+          
    }
 
  
-   public function search_wells(Request $request):JsonResponse
-   {
-      
-      $sector_number = $request->input('sector');
-      $horizon = $request->input('horizon');
-      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'), 'r');
+   public function search_wells(int $sector_number,int  $horizon,int $category_id) : ?object  
+   {  
+     
+      if(file_exists(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'))){
+         $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'), 'r');
+      } else {  
+         return null;
+      }
+     
       $sectors_points= json_decode($sectors_json_points, true);
 
       foreach ($sectors_points as $item) {
@@ -79,30 +93,94 @@ class DigitalRatingContoller extends Controller
             $sector = $item;
          }
       }
+      if(empty($sector)){
+         return null;
+      }
+      $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
+      $weels_points= json_decode($weels_json_points, true);
+      $sectorX  = $sector['x1']+100;
+      $sectorY = $sector['y1']+100;
+      $radius = 500;
+      $neighboring_wells = [];
 
-
-         $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
-         $weels_points= json_decode($weels_json_points, true);
-         $sectorX  = $sector['x1'];
-         $sectorY = $sector['y1'];
-         $radius =500;
-         $neighboring_wells = [];
-
-         foreach ($weels_points as $item) {
-            if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
-            if($item['horizon'] == $horizon)
-               $neighboring_wells[] = $item;
+      foreach ($weels_points as $item) {
+         if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
+            if($item['horizon'] == $horizon){
+               $neighboring_wells_uwi[] = $item['well'];
             }
-         };
-
-         if(empty($neighboring_wells)){
-            return response()->json(['message' => 'Well not found']);
          }
-         $wells = $this->get_wells($neighboring_wells);
-         $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
-         return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
+      };
+
+      $neighboring_wells =   DB::connection('tbd')->table('tbdi.well')
+         ->whereIn('tbdi.well.uwi',$neighboring_wells_uwi)
+         ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
+         ->whereDate('tbdi.well_geo.dend', '>', Carbon::now())
+         ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
+         ->where('tbdi.geo.name',   $horizon)  
+         ->join('tbdi.well_status', 'tbdi.well.id', '=', 'tbdi.well_status.well_id')
+         ->whereDate('tbdi.well_status.dend', '>', Carbon::now())
+         ->where('tbdi.well_status.well_status_type_id',  self::WELL_STATUS_TYPE_ID)   
+         ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
+         ->whereDate('tbdi.well_category.dend', '>', Carbon::now())
+         ->where('tbdi.well_category.well_category_type_id', $category_id)
+         ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id','tbdi.well_geo.geo_id','tbdi.geo.name')
+         ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.well_geo.geo_id','tbdi.geo.name')
+         ->get();
+
+         if(!sizeof($neighboring_wells )){
+            return null;
+         }
+          
+         
+         return $neighboring_wells;
+         
+        
    }
 
   
+  
+   public function get_injection_wells(Request $request):JsonResponse 
+   {  
+     
+      $sector_number = $request->input('sector');
+      $horizon = $request->input('horizon');
+
+      $neighboring_wells = $this->search_wells($sector_number,$horizon,self::WELL_INJECTION_CATEGORY_TYPE_ID);
+
+      if(is_null($neighboring_wells)) {
+         return response()->json(['message' => 'Well not found']);
+      }
+      foreach ($neighboring_wells as $item) {
+         $well_id[] = $item->well_id;
+      }
    
+      $injection_wells =   DB::connection('tbd')->table('tbdi.well')
+               ->whereIn('tbdi.well.id',$well_id)
+               ->join('tbdi.water_inj', 'tbdi.water_inj.well_id', '=', 'tbdi.well.id')
+               ->whereIn('tbdi.water_inj.well_id',$well_id)
+               ->selectRaw("SUM(tbdi.water_inj.water_inj_val) as waterinj_val,tbdi.water_inj.well_id,tbdi.well.id,tbdi.well.uwi")
+               ->whereDate('tbdi.water_inj.dbeg', '>', Carbon::now()->subDays(90))
+               ->groupBy('tbdi.water_inj.well_id','tbdi.well.uwi','tbdi.well.id')
+               ->get();
+      $injection_wells_status =   DB::connection('tbd')->table('tbdi.well_status')
+               ->whereIn('tbdi.well_status.well_id',$well_id)
+               ->whereDate('tbdi.well_status.dend', '>', Carbon::now()->subDays(90))
+               ->selectRaw("well_id,SUM(DATE_PART('day', tbdi.well_status.dend::date) - DATE_PART('day', tbdi.well_status.dbeg::date) ) AS not_work_days ")
+               ->where('tbdi.well_status.well_status_type_id', 4) 
+               ->groupBy('well_status.well_id')
+               ->get();      
+             
+      foreach ($injection_wells as $key => $item) {
+         foreach ($injection_wells_status as $iws) {
+            if($item->well_id == $iws->well_id ) { 
+               $injection_wells[$key]->avg_waterinj = number_format( $item->waterinj_val / (90 -  abs($iws->not_work_days)), 2) ;
+            }
+         }
+      }
+      $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+      return response()->json($injection_wells,200,$headers,JSON_UNESCAPED_UNICODE);
+   
+   }
+   
+  
 };

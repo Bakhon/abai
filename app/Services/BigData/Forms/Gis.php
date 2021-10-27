@@ -101,8 +101,11 @@ class Gis extends PlainForm
             ->map(function ($group) use ($filesInfo) {
                 return $group
                     ->map(function ($file) use ($filesInfo) {
-                        $file->info = $filesInfo->where('id', $file->file)->first();
-                        $file->filename = $file->info->filename;
+                        $fileInfo = $filesInfo->where('id', $file->file)->first();
+                        $file->info = $fileInfo;
+                        if ($fileInfo) {
+                            $file->filename = $file->info->file_name;
+                        }
                         return $file;
                     })
                     ->groupBy('document_id')

@@ -127,9 +127,9 @@ export default {
             let self = this;
             columnsList.forEach(function(columnIndex) {
                 if (action === 'add') {
-                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                    self.setClassToElement($('#factGrid').find('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
                 } else {
-                    self.removeClassFromElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                    self.removeClassFromElement($('#factGrid').find('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
                 }
             });
         },

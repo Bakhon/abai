@@ -1,6 +1,6 @@
 <a href="#" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
-        <img src="/img/gno/download.png" width="25" height="25" class="companyLogo">
+        <img src="/img/gno/download.png" class="companyLogo">
         <span class="menu-collapsed companyName d-none"></span>
     </div>
 </a>
@@ -18,7 +18,13 @@
             </div>
         </a>
     </div>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu dropdown-menu__fifth">
+       <div class="menu-header justify-content-between">
+                <div class="d-flex align-items-center">
+                    <img src="/img/icons/sidebar_modules_blue.svg" class="companyLogo">
+                    {{ trans('bd.bigdata_module') }}
+                </div>
+            </div>
         <div class="move-menu">
             <li class="left-menu-li">
                 <a href="{{route('bigdata.wells.index')}}">Формы ввода</a>

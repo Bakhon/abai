@@ -128,7 +128,7 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "asc"
+      "order": "desc"
     }
   ],
   "tabs": [
@@ -164,8 +164,7 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
+                "type": "text",
                 "title": "marka"
               },
               {
@@ -224,6 +223,40 @@
                 "code": "well",
                 "type": "numeric",
                 "title": "well_e"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_perf_file",
+                  "local_key": "well_perf",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }

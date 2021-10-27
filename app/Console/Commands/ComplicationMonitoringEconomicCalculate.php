@@ -130,7 +130,7 @@ class ComplicationMonitoringEconomicCalculate extends Command
 
     public function economicalEffectCalculate(object $item, object $guDataByDay): float
     {
-        $result = ($guDataByDay->ca->plan_dosage/1000 - $item->current_dosage/1000) * $this->inhibitorPrice * $guDataByDay->ca->q_v * 2.74 / 1000;
+        $result = ($guDataByDay->ca->plan_dosage/1000 - $item->current_dosage/1000) * $this->inhibitorPrice * $guDataByDay->ngdu->daily_water_production / 1000;
 
         return $result;
     }

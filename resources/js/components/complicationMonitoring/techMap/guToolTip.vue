@@ -4,7 +4,7 @@
       {{ gu.name }}
     </p>
     <p>
-      {{ trans('app.date') }} : {{ getValueOrNoData(gu.last_omgngdu.date) }}
+      {{ trans('app.date') }} : {{ gu.last_omgngdu.date }}
     </p>
     <p>
       {{ trans('monitoring.gu.fields.daily_fluid_production') }} :
