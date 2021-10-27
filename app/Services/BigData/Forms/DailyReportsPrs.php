@@ -78,7 +78,7 @@ class DailyReportsPrs extends TableForm
             ->leftJoin('dict.tech as t', 'wt.tech', 't.id')
             ->whereIn('w.id', $wellIds)
             ->where('ww.dbeg', '<=', $filter->date)
-            ->where('ww.dend', '>', $filter->date)
+            ->where('ww.dend', '>=', $filter->date)
             ->where('wrt.code', $this->repairType)
             ->where('wt.dbeg', '<=', $filter->date)
             ->where('wt.dend', '>', $filter->date)
