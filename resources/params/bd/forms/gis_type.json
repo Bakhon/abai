@@ -9,11 +9,13 @@
   "table_fields": [
     "gis_date",
     "gis_type",
+    "contractor",
     "matering_from",
     "matering_to",
     "process_from",
     "process_to",
     "conclusion",
+    "gis_method",
     "table"
   ],
   "tabs": [
