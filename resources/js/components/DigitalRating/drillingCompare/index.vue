@@ -39,7 +39,7 @@
           </div>
           <div class="d-flex">
             <div
-              v-if="type.includes('oil_production', 'liquid_val', 'avg_debit')"
+              v-if="['oil_production', 'liquid_val', 'avg_debit'].includes(type)"
               class="rating-compare__chart mr-10px" style="width: 100%;"
             >
               <p>{{ indicatorTitle }}</p>
@@ -51,7 +51,7 @@
               />
             </div>
             <div
-              v-if="type.includes('water_inj', 'drilling_unit', 'fds_operational_unit')"
+              v-if="['water_inj', 'drilling_unit', 'fds_operational_unit'].includes(type)"
               class="rating-compare__chart" style="width: 100%;"
             >
               <p>{{ indicatorTitle }}</p>
