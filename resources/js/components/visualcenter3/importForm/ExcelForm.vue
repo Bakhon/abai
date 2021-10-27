@@ -331,8 +331,13 @@
         flex-wrap: wrap;
         display: inline-block;
     }
-    revo-grid {
+    #factGrid {
         height: 782px;
+        font-size: 12px;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+    }
+    #planGrid {
+        height: 582px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }

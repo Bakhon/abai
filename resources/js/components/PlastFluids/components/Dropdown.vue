@@ -97,5 +97,20 @@ button {
   top: calc(100% + 2px);
   left: 0;
   z-index: 2;
+  max-height: 130px;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
 }
 </style>

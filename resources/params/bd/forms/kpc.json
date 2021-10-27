@@ -6,6 +6,19 @@
       "order": "desc"
     }
   ],
+  "table_fields": [
+    "request_date",
+    "dbeg",
+    "dend",
+    "repair_work_type",
+    "work_list",
+    "by_ourselves",
+    "contractor",
+    "reason_equip_fail",
+    "add_reason_equip_fail",
+    "more_info_reason_fail",
+    "documents"
+  ],
   "tabs": [
     {
       "title": "request",
@@ -15,7 +28,7 @@
             "title": "repair",
             "items": [
               {
-              "code": "request_date",
+                "code": "request_date",
               "type":"date",
               "title":"request_date",
               "is_editable": true,
@@ -325,21 +338,20 @@
               "code": "reason_equip_fail",
               "type": "dict",
               "title": "cause_h_failure",
-              "validation": "required|exists:tbd.dict.reason,id",
+              "validation": "nullable|exists:tbd.dict.reason,id",
               "dict": "reason_ref"
             },
             {
               "code": "add_reason_equip_fail",
               "type": "dict",
               "title": "add_f",
-              "validation": "required|exists:tbd.dict.reason_equip_fail,id",
+              "validation": "nullable|exists:tbd.dict.reason_equip_fail,id",
               "dict": "reason_equip_fail"
             },
             {
               "code": "more_info_reason_fail",
               "type": "text",
-              "title": "reason_type",
-              "validation": "required"
+              "title": "reason_type"
             }
           ]
         }
@@ -347,7 +359,7 @@
     ]
     },
     {
-      "title": "conclusion",
+      "title": "doc",
       "blocks": [
         [
           {
