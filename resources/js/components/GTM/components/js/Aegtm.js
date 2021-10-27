@@ -250,12 +250,12 @@ export default {
                     data.forEach((item) => {
                         this.gtmIndicators.push([
                             item.gtm,
-                            item.plan,
-                            item.fact,
+                            item.count_plan,
+                            item.count_fact,
                             '-',
                             '-',
-                            '-',
-                            '-',
+                            item.add_prod_plan,
+                            item.add_prod_fact,
                         ])
                     });
                 }

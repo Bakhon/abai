@@ -31,7 +31,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('can:paegtm view main')->only('index');
+        $this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
