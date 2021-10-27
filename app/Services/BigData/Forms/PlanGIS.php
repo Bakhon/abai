@@ -197,7 +197,7 @@ class PlanGIS extends TableForm
         usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
 
         for($i = 0; $i < count($rows); $i++) {
-            $rows[$i]['num'] = ['value' => $i+1];
+            $rows[$i]['num']['value'] = $i+1;
         }
         return $rows;
     }
