@@ -128,6 +128,7 @@ class PlanGIS extends TableForm
             $code = $child->id . '_total';
             $totalColumnCodes[] = $code;
             $formula = $this->getSumFormula($childCodesByMonths[$child->id]);
+            if(count($children) <= 1) continue;
 
             $columns[] = [
                 'code' => $code,
@@ -194,6 +195,10 @@ class PlanGIS extends TableForm
         }
         $rows = array_slice($rows, 1);
         usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
+        $cnt = 1;
+        foreach($rows as $row) {
+            $row['num'] = ['value' => $cnt]; ++$cnt;
+        }
         return $rows;
     }
 
