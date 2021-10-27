@@ -333,7 +333,6 @@
                     x: 9 * this.inclino[this.inclino.length-1].HD,
                     y: null
                 })
-                // this.series[0].data = coordinates
                 this.series=[{
                     name: "Desktops",
                         data: coordinates
@@ -480,6 +479,14 @@
                 catch (e) {
                     console.log(e)
                     this.inclino = []
+                    this.seriesAbove = [{
+                        name: "Desktops",
+                        data: []
+                    }]
+                    this.series = [{
+                        name: "Desktops",
+                        data: []
+                    }]
                 }
                 this.SET_LOADING(false);
             },
