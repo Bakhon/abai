@@ -167,6 +167,7 @@ export default {
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
@@ -285,6 +286,16 @@ export default {
     },
     computed: {
         summaryYearlyPlan() {
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                console.log('filtered')
+                return _.sumBy(filtered, 'yearlyPlan');
+            }
             return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {

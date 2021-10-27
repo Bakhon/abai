@@ -43,6 +43,30 @@ class Dzo {
             'associatedPlan' => 'plan_poput_gas'
         ),
     );
+    private $yearlyPlans = array (
+        'production' => array(
+            'fact' => 'oil_production_fact',
+            'plan' => 'oil_plan',
+            'opek' => 'oil_opek_plan',
+            'condensateFact' => 'condensate_production_fact',
+            'condensatePlan' => 'gk_plan',
+            'condensateOpek' => 'gk_plan'
+        ),
+        'delivery' => array (
+            'fact' => 'oil_delivery_fact',
+            'plan' => 'oil_dlv_plan',
+            'opek' => 'oil_dlv_opek_plan',
+            'condensateFact' => 'condensate_delivery_fact',
+            'condensatePlan' => 'gk_plan',
+            'condensateOpek' => 'gk_plan'
+        ),
+        'gasProduction' => array(
+            'naturalFact' => 'natural_gas_production_fact',
+            'associatedFact' => 'associated_gas_production_fact',
+            'naruralPlan' => 'dobycha_gaza_prirod_plan',
+            'associatedPlan' => 'plan_poput_gas'
+        ),
+    );
 
     private $dzoMultiplier = array (
         'ПКК' => 0.33,
@@ -141,12 +165,14 @@ class Dzo {
             $companySummary = $this->getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth);
         }
         if ($periodType === 'year') {
-            $summary['yearlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
+            $companySummary = $this->getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan);
+            $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan']);
+            $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek']);
         }
 
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
-        $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
         return $summary;
     }
 
@@ -250,8 +276,14 @@ class Dzo {
 
     protected function getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan)
     {
+        $planFieldName = 'plan';
+        $condensateCompanies = ['АГ','ОМГК'];
+        if (in_array($companySummary['name'],$condensateCompanies)) {
+            $planFieldName = 'condensatePlan';
+        }
         $summary = $companySummary;
-        $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['plan']);
+
+        $summary['yearlyPlan'] = $filteredYearlyPlan->first()->oil_plan;
         $summary['condensatePlan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
         $summary['condensateOpek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         return $summary;
