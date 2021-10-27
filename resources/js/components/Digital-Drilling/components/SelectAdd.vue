@@ -2,7 +2,7 @@
     <div class="select__add">
         <div class="select__add-dropdown">
             <button class="dropdown-header" ref="menu" @click="openClose($event)">
-                {{ selected.name_ru }}
+                {{ header.name_ru }}
             </button>
             <div class="dropdown-body defaultScroll" ref="body" v-if="isOpen">
                 <ul>
@@ -19,7 +19,7 @@
 <script>
     export default {
         name: "SelectAdd",
-        props: ['options'],
+        props: ['options', 'name', 'header'],
         data(){
             return{
                 selected: '',
@@ -29,6 +29,7 @@
         methods:{
             selectOption(option){
                 this.selected = option
+                this.$emit('selectOption', option, this.name)
             },
             addItem(){
                 this.$emit('addItem')
@@ -95,10 +96,12 @@
         background: #454D7D;
         min-width: 100%;
         width: max-content;
-        height: 200px;
+        height: auto;
+        max-height: 200px;
         overflow-x: hidden;
         overflow-y: scroll;
         text-align: left;
+        z-index: 1000;
     }
     .dropdown-body ul{
         list-style: none;
