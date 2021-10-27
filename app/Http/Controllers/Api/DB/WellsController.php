@@ -13,6 +13,7 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
+use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
@@ -44,6 +45,7 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
         
+       ;
         $orgs = $this->org($well);
         $wellInfo = [
             'wellInfo' => $well,
@@ -64,6 +66,7 @@ class WellsController extends Controller
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
+            'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
             'tech_mode_inj' => $this->techModeInj($well),
             'meas_water_inj' => $this->measLiqInjection($well),
             'meas_water_cut' => $this->measWaterCut($well),    
@@ -175,7 +178,7 @@ class WellsController extends Controller
     {
         return $well->wellExpl()
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg', 'desc')
+            ->orderBy('dbeg', 'asc')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
@@ -278,6 +281,13 @@ class WellsController extends Controller
     private function artificialBottomHole(Well $well)
     {
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
+    }
+
+    private function dmartDailyProd(Well $well)
+    {
+        return $well->dmartDailyProd()
+            ->orderBy('date', 'desc')
+            ->first('oil');
     }
 
     private function labResearchValue(Well $well)
@@ -446,7 +456,7 @@ class WellsController extends Controller
             ->where('metric_otp.code', '=', $method)
             ->first();
     }
-
+  
     private function gdisComplex(Well $well)
     {
         return $well->gdisComplex()
