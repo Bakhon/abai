@@ -313,6 +313,7 @@ export default {
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
         'dmart_daily_prod_oil': { 'oil': null},
+        'dinzamer': {'value_double': null},
         'gdisCurrent': {'meas_date': null, 'note': null,},
         'gdisConclusion': {'name_ru': null,},
         'gdisCurrentValue': {'value_double': null},
@@ -358,6 +359,7 @@ export default {
         'org': 'org',
         'geo': 'geo',
         'tubeNom': 'tube_nom',
+        'dinzamer': 'dinzamer',
         'measLiq': 'measLiq',
         'meas_water_inj': 'meas_water_inj',
         'tech_mode_inj': 'tech_mode_inj',
@@ -495,7 +497,7 @@ export default {
       let gdisConclusion = this.well.gdisConclusion.name_ru ? this.well.gdisConclusion.name_ru : ''
       let gdisCurrentValue = this.well.gdisCurrentValue.value_double ? this.well.gdisCurrentValue.value_double : ''
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double ? this.well.gdisCurrentValuePmpr.value_double : ''
-      let gdisCurrentValueFlvl = this.well.gdisCurrentValueFlvl.value_double ? this.well.gdisCurrentValueFlvl.value_double : ''
+      let gdisCurrentValueFlvl = this.well.dinzamer.value_double ? this.well.dinzamer.value_double : ''
       let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double ? this.well.gdisCurrentValueStatic.value_double : ''
       let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date) : ''
       let gdisComplex = this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg ?
@@ -516,7 +518,7 @@ export default {
      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.measWaterCut && this.well.measLiq   
      ? (  main_org_code == 'KGM' ? this.well.techModeProdOil.oil + ' / ' + this.well.dmart_daily_prod_oil.oil :this.well.techModeProdOil.oil.toFixed(1)+' / '+(this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) )
      : ( this.well.measWaterCut && this.well.measLiq ? 
-     (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )                   
+     (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )               
       this.well_passport = [
         {
           'name': this.trans('well.well'),
