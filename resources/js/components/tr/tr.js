@@ -373,8 +373,8 @@ export default {
             .then((response) => {
                 let data = response.data;
                 this.year = yyyy;
-                this.selectYear = yyyy;
-                this.month = mm;
+                this.selectYear = year;
+                this.month = month;
                 this.currentMonth = mm;
                 this.currentYear = yyyy;
                 this.$store.commit("globalloading/SET_LOADING", false);
@@ -858,7 +858,7 @@ export default {
     saveadd() {
           if(this.rowExpMeth == '') {          
           } else {
-            this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+            this.notificationAdd(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
             let output = {};
             this.$refs.editTable[0].children.forEach((el) => {
                 output[el.children[0].dataset.key] = el.children[0].value;
@@ -889,7 +889,7 @@ export default {
   },
 
     deleteWell() {
-        this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+        this.notificationDelete(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
             this.axios
                 .post(
@@ -920,6 +920,24 @@ export default {
     notification(val) {
       this.$bvToast.toast(val, {
         title: this.trans('app.error'),
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: false,
+        variant: 'danger',
+      });
+    },
+    notificationAdd(val) {
+      this.$bvToast.toast(val, {
+        title: this.trans('tr.well_add'),
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: false,
+        variant: 'success',
+      });
+    },
+    notificationDelete(val) {
+      this.$bvToast.toast(val, {
+        title: this.trans('tr.delete_well'),
         toaster: "b-toaster-top-center",
         solid: true,
         appendToast: false,

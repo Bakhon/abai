@@ -242,7 +242,7 @@ export default {
                 this.isPlanValidateError = true;
             }
         },
-        beforeRangeEdit(e) {
+        beforePlanRangeEdit(e) {
             let cellOptions = e.detail.data;
             if (!cellOptions) {
                 return;

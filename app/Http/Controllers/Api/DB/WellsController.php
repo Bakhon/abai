@@ -11,6 +11,8 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
+use App\Models\BigData\MeasWaterCut;
+use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
@@ -36,11 +38,13 @@ class WellsController extends Controller
 
     public function wellInfo($well)
     {
-        $well = Well::select('id', 'uwi', 'drill_start_date', 'drill_end_date')->find($well);
+    
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }
-
+        }     
+        
+        $orgs = $this->org($well);
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -51,7 +55,8 @@ class WellsController extends Controller
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'well_type' => $this->wellType($well),
-            'org' => $this->org($well),
+            'org' => $this->structureOrg($orgs),
+            'main_org_code'=>$this->orgCode($orgs),
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
@@ -60,6 +65,9 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
+            'meas_water_inj' => $this->measLiqInjection($well),
+            'meas_water_cut' => $this->measWaterCut($well),    
+            'measLiq' => $this->measLiq($well),        
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
@@ -67,13 +75,15 @@ class WellsController extends Controller
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
-            'gtm' => $this->gtm($well),
-            'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
+            'gtm' => $this->gtm($well),                 
+            'gdisCurrent' => $this->gdisCurrent($well),               
+            'rzatr_atm' => $this->gdisCurrentValueOtp($well),                     
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
+            'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
         ];
-
+        
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
@@ -140,6 +150,7 @@ class WellsController extends Controller
             ->get(['prod.well_constr.od']);
     }
 
+
     private function category(Well $well)
     {
         return $well->category()
@@ -166,6 +177,16 @@ class WellsController extends Controller
             ->withPivot('dend as dend', 'dbeg as dbeg')
             ->orderBy('dbeg', 'desc')
             ->first(['name_ru', 'dend', 'dbeg']);
+    }
+
+    private function wellEquipParam(Well $well)
+    {
+        return $well->wellEquipParam()
+               ->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
+               ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
+               ->where('prod.well_equip_param', '=', '7')
+               ->orderBy('prod.well_equip_param.dbeg')
+               ->first('value_string');
     }
 
     private function techs(Well $well)
@@ -202,14 +223,34 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
+        $dict_orgs = [];
         $org_object = new Org();
-        $allParents = [];
         $item = $well->getRelationOrg($this->getToday());
         if (isset($item)) {
             $dict_orgs = $org_object->parentTree($item->id);
-            foreach ($dict_orgs as $dict_org) {
-                $allParents[]['name_ru'] = $dict_org->name;
+        }
+
+        return $dict_orgs;
+    }
+
+    private function orgCode(array $dict_orgs)
+    {
+        foreach($dict_orgs as $dict_org)
+        {
+            if(!$dict_org->parent)
+            {
+                return $dict_org->code;
             }
+        }
+        return null;
+    }
+
+    private function structureOrg(array $dict_orgs)
+    {
+        $allParents = [];
+        foreach($dict_orgs as $dict_org)
+        {
+            $allParents[]['name_ru'] = $dict_org->name;
         }
 
         return $allParents;
@@ -265,10 +306,18 @@ class WellsController extends Controller
             ->first('liquid');
     }
 
+    private function measLiqInjection(Well $well)
+    {
+        return $well->measLiqInjection()
+            ->orderBy('dbeg', 'desc')
+            ->first(['water_inj_val', 'pressure_inj']);
+    }
+
     private function wellPerfActual(Well $well)
     {
         return $well->wellPerfActual()
-            ->first();
+            ->orderBy('dbeg', 'desc')
+            ->first(['dbeg', 'top', 'base']);
     }
 
     private function measWaterCut(Well $well)
@@ -378,13 +427,22 @@ class WellsController extends Controller
             ->first(['value_double', 'meas_date']);
     }
 
+    private function gdisCurrentValueOtp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'OTP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
     private function gdisCurrentValueRzatr(Well $well, $method)
     {
         return $well->gdisCurrentValue()
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
             ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
-            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->where('metric_otp.code', '=', 'OTP')
+            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')           
             ->where('metric_otp.code', '=', $method)
             ->first();
     }
@@ -393,10 +451,10 @@ class WellsController extends Controller
     {
         return $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
-            ->withPivot('research_date as research_date')
-            ->where('metric.code', '=', 'RP')
-            ->orderBy('research_date', 'desc')
-            ->first(['value_double', 'research_date']);
+            ->withPivot('dbeg')
+            ->where('metric.code', '=', 'PVOP')
+            ->orderBy('dbeg', 'desc')
+            ->first(['value_string', 'dbeg']);     
     }
 
     private function gis(Well $well)
@@ -489,8 +547,8 @@ class WellsController extends Controller
     {
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $result = $this->wellCardGraphRepo->wellItems($wellId, $period);
-        return response()->json($result);
+        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        return  response()->json($result);
     }
 
     public function getInjectionHistory($wellId)
