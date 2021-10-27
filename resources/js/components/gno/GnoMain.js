@@ -11,7 +11,6 @@ import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from "vue";
 import FullPageLoader from "@ui-kit/FullPageLoader";
-import * as htmlToImage from "html-to-image";
 import Tabs from "./components/tabs/Tabs.vue";
 import { globalloadingMutations } from "@store/helpers";
 import _ from 'lodash'
@@ -811,44 +810,6 @@ export default {
       }
 
       this.mainSettings.activeRightTabName = val;
-    },
-    takePhoto() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
-    },
-    takePhotoOldNewWell() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart-new-old-well"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
     },
   },
 

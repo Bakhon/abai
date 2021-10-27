@@ -17,6 +17,9 @@ export const paegtmMutations = {
     CHANGE_DATE_END (state, value) {
         state.dateEnd = value;
     },
+    CHANGE_TREE_DATE (state, value) {
+        state.treeDate = value
+    },
     CHANGE_DATE_RANGE (state, value) {
         state.dateRange = value
     },

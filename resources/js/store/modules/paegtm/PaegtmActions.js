@@ -23,6 +23,9 @@ export const paegtmActions = {
     changeDateRange ({commit}, value) {
         commit('CHANGE_DATE_RANGE', value)
     },
+    changeTreeDate ({commit}, value) {
+        commit('CHANGE_TREE_DATE', value)
+    },
     changeDzoId ({commit}, value) {
         commit('CHANGE_DZO_ID', value);
     },

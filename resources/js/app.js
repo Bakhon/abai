@@ -140,6 +140,8 @@ Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default)
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
+Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
+
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);

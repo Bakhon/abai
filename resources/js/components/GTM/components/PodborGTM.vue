@@ -52,8 +52,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="c in table.main_data.data" @click="onClickWell(c[0])">
-                          <th class="bg-body" v-for="row in c">{{ row }}</th>
+                        <tr  v-for="(c, index) in table.main_data.data" @click="onClickWell(c[0], 1)" >
+                          <th class="bg-body" :class="{ active: active_el }" v-for="row in c" @click="active_el = !activate" >{{ index }} {{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -158,7 +158,7 @@
           <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("paegtm.factor_analysis") }}
+                {{ this.trans("paegtm.factor_analyse") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -224,30 +224,25 @@
             </div>
 
           </div>
-          <div class="d-flex">
-            <div class="d-flex calendar-filter-block fl-1">
-              {{ this.dataRangeInfo.begin_date }}
-            </div>
-            <div style="width: 5px;"></div>
-            <div class="d-flex calendar-filter-block fl-1">
-              {{ this.dataRangeInfo.end_date }}
-            </div>
-            <div style="width: 5px;"></div>
+          <div class="d-flex gap-10">
+            <gtm-tree-date-picker class="flex-1"></gtm-tree-date-picker>
+<!--            <div class="d-flex calendar-filter-block fl-1">-->
+<!--              {{ this.dataRangeInfo.begin_date }}-->
+<!--            </div>-->
+<!--            <div style="width: 5px;"></div>-->
+<!--            <div class="d-flex calendar-filter-block fl-1">-->
+<!--              {{ this.dataRangeInfo.end_date }}-->
+<!--            </div>-->
+<!--            <div style="width: 5px;"></div>-->
+<!--            <div class="d-flex calendar-filter-block show-block"  @click="myEvent">-->
+<!--              <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">-->
+<!--            </div>-->
             <div class="d-flex calendar-filter-block show-block"  @click="myEvent">
               <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
             </div>
-
-<!--            <div v-if="isHidden" class="asdasd">-->
-<!--              <div style="text-align: center">-->
-<!--                Выберите {{ trans('paegtm.period') }}-->
-<!--              </div>-->
-<!--              <div class="pl-1">-->
-<!--                <input class="mt-7px pl-1" type="checkbox" value="" v-model="this.dataRange.is_days_group">-->
-<!--                <label class="pl-1">Шаг</label>-->
-<!--                <input class="period-settings-input" type="text" v-model="this.dataRange.days" :disable="!this.dataRange.is_days_group">-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
+          <div style="width: 5px;"></div>
+
 
         </div>
 
@@ -446,6 +441,10 @@
   bottom: 176px;
 }
 
+.gap-10 {
+  gap: 10px;
+}
+
 ::-webkit-scrollbar {
   height: 10px;
   width: 10px;
@@ -531,6 +530,11 @@ tr:nth-child(even) td {
 
 .fl-1 {
   flex: 1
+}
+
+.active {
+  color:red;
+  font-weight:bold;
 }
 
 </style>

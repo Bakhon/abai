@@ -1,9 +1,10 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-import {globalloadingMutations} from "../../../../store/helpers";
+import {globalloadingMutations, paegtmMapActions} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
 import {toNumber} from "lodash/lang";
+import moment from "moment"
 
 
 export default {
@@ -189,18 +190,24 @@ export default {
             treeSettingComponent: null,
             treeChildrenComponent: null,
             isMinimize: true,
-            days: null
+            days: null,
+            index: 1,
+            active_el: false
         };
     },
     computed: {
         ...paegtmMapState([
             'clickable',
+            'treeDate'
         ]),
     },
     watch: {},
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
+        ]),
+        ...paegtmMapActions([
+            'changeTreeDate',
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -217,30 +224,34 @@ export default {
         onMyEvent() {
             console.log('as')
         },
+        activate(el) {
+            this.active_el = el;
+        },
         onClickableValue() {
             console.log('clickable')
-            // const body = {
-            //     action_type: 'finder_item_clicked',
-            //     main_data: this.clickable,
-            // }
-            // console.log('asd in gtm')
-            // console.log(body.main_data)
-            // this.SET_LOADING(true);
-            // axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
-            //     .then((res) => {
-            //         this.table.main_data.header = res.data.main_data.header
-            //         this.table.main_data.data = res.data.main_data.data
-            //         if (res.status === 200) {
-            //             this.setNotify("Данные получены", "Success", "success")
-            //         } else {
-            //             this.setNotify("Что-то пошло не так", "Error", "danger")
-            //         }
-            //     })
-            //     .finally(() => {
-            //         this.SET_LOADING(false);
-            //     })
+            const body = {
+                action_type: 'finder_item_clicked',
+                main_data: this.clickable,
+            }
+            console.log('asd in gtm')
+            console.log(body.main_data)
+            this.SET_LOADING(true);
+            axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
+                .then((res) => {
+                    this.table.main_data.header = res.data.main_data.header
+                    this.table.main_data.data = res.data.main_data.data
+                    if (res.status === 200) {
+                        this.setNotify("Данные получены", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
         },
-        onClickWell(v) {
+        onClickWell(v, el) {
+            this.active_el = el;
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
 
@@ -333,44 +344,57 @@ export default {
                     console.log('after request', this.dataRangeInfo)
                 })
             console.log('after finally', this.dataRangeInfo);
+            this.changeTreeDate(this.dataRangeInfo);
+            console.log(this.treeDate)
+            moment(this.treeDate.begin_date).format('YYYY/MM/DD')
+            moment(this.treeDate.end_date).format('YYYY/MM/DD')
         },
         onChangeDays1(e) {
             this.dataRangeInfo.days = toNumber(e.target.value)
             console.log(this.dataRangeInfo)
+            // console.log(moment(this.treeDate.begin_date && this.treeDate.end_date).format('YYYY/MM/DD'))
         },
         myEvent() {
             this.isHidden = !this.isHidden
             console.log(this.isHidden)
         },
         postTreeData(v) {
-            const body = {
-                action_type: 'calc_button_pressed',
-                date_range_model: this.dataRangeInfo,
-                fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            }
-            console.log(this.dataRangeInfo.days)
-            this.SET_LOADING(true);
-            axios.post(this.url, {
-                action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            })
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.setNotify("Информация о скважинах получена", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+            this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY/MM/DD').toString()
+            this.dataRangeInfo.end_date =moment(this.treeDate.end_date).format('YYYY/MM/DD').toString()
+            this.dataRangeInfo = _.clone(this.treeDate)
+            this.changeTreeDate(this.dataRangeInfo);
+            moment(this.dataRangeInfo.begin_date).format('YYYY-MM-DD')
+            moment(this.dataRangeInfo.end_date).format('YYYY-MM-DD')
+            this.treeDate = _.clone(this.dataRangeInfo)
+            console.log(this.dataRangeInfo)
+            // const body = {
+            //     action_type: 'calc_button_pressed',
+            //     date_range_model: this.dataRangeInfo,
+            //     fieldName: this.fieldName,
+            //     finder_model: {
+            //         name: "root",
+            //         children: v
+            //     }
+            // }
+            // console.log(this.dataRangeInfo.days)
+            // this.SET_LOADING(true);
+            // axios.post(this.url, {
+            //     action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
+            //     finder_model: {
+            //         name: "root",
+            //         children: v
+            //     }
+            // })
+            //     .then((res) => {
+            //         if (res.status === 200) {
+            //             this.setNotify("Информация о скважинах получена", "Success", "success")
+            //         } else {
+            //             this.setNotify("Что-то пошло не так", "Error", "danger")
+            //         }
+            //     })
+            //     .finally(() => {
+            //         this.SET_LOADING(false);
+            //     })
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);

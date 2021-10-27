@@ -1,0 +1,199 @@
+<template>
+  <div>
+    <div class="d-flex gap-10">
+      <div class="calendar-filter-block d-flex f-1 text-center">
+        <div class="d-flex block-date">
+          <datetime
+              type="date"
+              v-model="treeDate.begin_date"
+              class="start-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_start_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :max-datetime="treeDate.end_date"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          ></datetime>
+        </div>
+        <div>
+          <img src="/img/GTM/calendar_icon.svg" alt="">
+        </div>
+      </div>
+
+      <div class="calendar-filter-block d-flex text-center f-1 ml-5px">
+        <div class="d-flex block-date">
+          <datetime
+              type="date"
+              v-model="treeDate.end_date"
+              @input="onDateRangeChange"
+              class="end-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_end_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :min-datetime="treeDate.begin_date"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          >
+          </datetime>
+        </div>
+        <div>
+          <img src="/img/GTM/calendar_icon.svg" alt="">
+        </div>
+
+      </div>
+
+      <div class="ml-1 calendar-filter-block d-flex" v-if="showSettings" @click="showModal('modalPeriod')">
+        <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+<script>
+
+import {paegtmMapGetters, paegtmMapActions, paegtmMapState} from '@store/helpers';
+
+export default {
+  props: {
+    showSettings: false,
+    showPeriodTitle: false,
+  },
+  data: function () {
+    return {
+      isDatePickerShow: false,
+      dateFlow: ['year', 'month', 'date'],
+      // treeDate: {
+      //   beginDate: Date,
+      //   endDate: Date,
+      // }
+      // dateStartGtm: this.getDateStart(),
+      // dateEndGtm: this.getDateEnd(),
+    }
+  },
+  computed: {
+    ...paegtmMapState([
+      'treeDate'
+    ]),
+  },
+  methods: {
+    ...paegtmMapGetters([
+      'getTreeDate'
+    ]),
+    ...paegtmMapActions([
+      'changeTreeDate',
+    ]),
+    onDateRangeChange() {
+      this.isDatePickerShow = false;
+      this.changeTreeDate(this.treeDate);
+      this.$emit('dateChanged')
+    },
+    showModal(modalName) {
+      this.$modal.show(modalName);
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+    },
+  },
+}
+</script>
+<style scoped>
+.gear-icon-svg:hover {
+  content: "";
+  opacity: 100;
+  -webkit-animation: gear-icon-svg 3s infinite both;
+  animation: gear-icon-svg 3s infinite both;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.mt-7px {
+  margin-top: 7px;
+}
+
+@-webkit-keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
+@keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
+.modal-bign-wrapper {
+  left: 815px;
+  top: -340px;
+}
+
+.period-settings-input {
+  background: #494AA5;
+  border: 1px solid #272953;
+  outline: none;
+  max-width: 30px;
+  height: 22px;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 3px;
+  line-height: 25px !important;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.period-settings-input:focus {
+  background: #5657c7;
+}
+
+.period-settings-input:disabled {
+  color: #928f8f;
+  background: #353e70;
+}
+
+.block-date {
+  justify-content: space-around;
+}
+
+.start-date-gtm .vdatetime-input, .end-date-gtm .vdatetime-input {
+  float: left;
+}
+
+.f-1 {
+  flex: 1;
+  justify-content: space-around;
+}
+
+.fd {
+  flex-direction: column;
+}
+</style>
