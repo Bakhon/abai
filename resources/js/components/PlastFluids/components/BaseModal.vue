@@ -11,10 +11,20 @@
           :class="type === 'delete' ? 'delete-button' : 'save-button'"
           @click="save"
         >
-          {{ trans(`plast_fluids.${type === "delete" ? "delete" : "save"}`) }}
+          {{
+            trans(
+              `plast_fluids.${
+                type === "delete" ? "delete" : type === "notify" ? "ok" : "save"
+              }`
+            )
+          }}
         </button>
-        <button class="cancel-button" @click="$emit('close-modal')">
-          Отмена
+        <button
+          v-if="type !== 'notify'"
+          class="cancel-button"
+          @click="$emit('close-modal')"
+        >
+          {{ trans("plast_fluids.cancel") }}
         </button>
       </div>
     </div>
@@ -42,11 +52,13 @@ export default {
   },
   methods: {
     closeModal(e) {
+      e.stopPropagation();
       if (e.target.innerHTML === this.$refs.modal.innerHTML) {
         this.$emit("close-modal");
       }
     },
-    save() {
+    save(e) {
+      e.stopPropagation();
       this.$emit("modal-response");
       this.$emit("close-modal");
     },

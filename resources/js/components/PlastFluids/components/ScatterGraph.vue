@@ -29,6 +29,7 @@
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
+      :seriesNames="seriesNames"
       :graphType="graphType"
       :minX="minXAxisBorder"
       :maxX="maxXAxisBorder"
@@ -280,6 +281,11 @@ export default {
           }" ?`
         : this.trans("plast_fluids.sure_want_to_delete");
     },
+    seriesNames() {
+      const names = this.graphSeries.map((series) => series.name);
+      names.shift();
+      return names;
+    },
   },
   methods: {
     comparePositives(max, min) {
@@ -440,13 +446,50 @@ export default {
       const temp = _.cloneDeep(this.chartOptions);
       let larger = false;
       temp.annotations.points = temp.annotations.points.reduce(
-        (initial, point, index) => {
+        (initial, point) => {
           if (point.seriesIndex === this.graphSeries[seriesIndex].name) {
             larger = true;
           }
           if (larger) {
-            point.label.borderColor = this.chartOptions.colors[index];
-            point.label.style.background = this.chartOptions.colors[index];
+            point.label.borderColor = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
+            point.label.style.background = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
+            point.x = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? this.minXAxisBorder
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? this.maxXAxisBorder
+              : this.maxXAxisBorder / 2;
+            point.label.offsetX = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? 5
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? -5
+              : 0;
+            point.label.textAnchor = this.r2AndEquationHelper(
+              this.currentAnnotationColorIndex - 1,
+              1
+            )
+              ? "start"
+              : this.r2AndEquationHelper(
+                  this.currentAnnotationColorIndex - 1,
+                  2
+                )
+              ? "end"
+              : "middle";
           }
           if (point.seriesIndex !== this.graphSeries[seriesIndex].name) {
             initial.push(point);

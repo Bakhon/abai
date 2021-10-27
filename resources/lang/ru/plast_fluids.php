@@ -135,4 +135,6 @@ return array (
   'delete' => 'Удалить',
   'sure_want_to_delete' => 'Действительно хотите удалить данные?',
   'sure_want_to_delete_optional' => 'Действительно хотите удалить',
+  'ok' => 'ок',
+  'approximation_name_cannot_be_repeated' => 'Название аппроксимации обязательно и не может повторяться!',
 );
