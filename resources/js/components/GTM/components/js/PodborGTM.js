@@ -6,7 +6,6 @@ import {paegtmMapState} from "@store/helpers";
 import {toNumber} from "lodash/lang";
 import moment from "moment"
 
-
 export default {
     components: {
         vSelect,
@@ -41,41 +40,6 @@ export default {
                 action_type: 'page_initialized',
                 main_data: "\"название страницы\""
             },
-            dzosForFilter: [
-                {name: 'АО "Озенмунайгаз"', code: 'omg'},
-                {name: 'АО "ЭмбаМунайГаз"', code: 'emba'},
-                {name: 'АО "Мангистаумунайгаз"', code: 'mmg'},
-                {name: 'АО "Каражанбасмунай"', code: 'krm'},
-                {name: 'ТОО "СП "Казгермунай"', code: 'kazger'},
-                {name: 'ТОО "Казтуркмунай"', code: 'ktm'},
-                {name: 'ТОО "Казахойл Актобе"', code: 'koa'},
-            ],
-            oilFieldsForFilter: [
-                {name: 'Акшабулак', code: 'oil_1'},
-                {name: 'Актобе', code: 'oil_2'},
-                {name: 'Алтыколь', code: 'oil_3'},
-                {name: 'Жетыбай', code: 'oil_4'},
-                {name: 'Жыланды', code: 'oil_5'},
-                {name: 'Жыланды', code: 'oil_6'},
-                {name: 'Каламкас', code: 'oil_7'},
-                {name: 'Каражанбас', code: 'oil_8'},
-            ],
-            objectsForFilter: [{name: 'Вариант 1'}],
-            structuresForFilter: [{name: 'Вариант 1'}],
-            gusForFilter: [{name: 'Вариант 1'}],
-            candidates: [
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-            ],
             treeData: [],
             waterFallChartOptions: {
                 chart: {
@@ -88,7 +52,6 @@ export default {
                     width: 1,
                     colors: ['#808080'],
                     curve: 'smooth',
-                    lineCap: 'butt'
                 },
                 plotOptions: {
                     bar: {
@@ -98,7 +61,7 @@ export default {
                 dataLabels: {
                     enabled: true,
                     // formatter: v => v.toFixed()
-                }
+                },
             },
             waterFallChartSeries: null,
             lineChartSeries: null,
@@ -118,6 +81,12 @@ export default {
                 dataLabels: {
                     enabled: false
                 },
+                stroke: {
+                    // lineCap: 'butt',
+                    // width: [5, 7, 5],
+                    curve: 'straight',
+                    dashArray: [0, 0, 2]
+                },
                 xaxis: {
                     categories: null,
                     tickAmount: 6,
@@ -126,7 +95,6 @@ export default {
                         tickAmount: 20,
                         min: 10,
                         max: 20,
-
                     },
                     labels: {
                         style: {
@@ -191,8 +159,10 @@ export default {
             treeChildrenComponent: null,
             isMinimize: true,
             days: null,
-            index: 1,
-            active_el: false
+            dzosForFilter: [],
+            oilFieldsForFilter: [],
+            horizontsForFilter: [],
+            objectsForFilter: [],
         };
     },
     computed: {
@@ -221,14 +191,7 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onMyEvent() {
-            console.log('as')
-        },
-        activate(el) {
-            this.active_el = el;
-        },
         onClickableValue() {
-            console.log('clickable')
             const body = {
                 action_type: 'finder_item_clicked',
                 main_data: this.clickable,
@@ -250,8 +213,10 @@ export default {
                     this.SET_LOADING(false);
                 })
         },
-        onClickWell(v, el) {
-            this.active_el = el;
+        onClick1(row){
+            console.log(row.target)
+        },
+        onClickWell(e) {
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
 
@@ -264,6 +229,9 @@ export default {
                             name: res.data.main_data.labels.liquid_rate,
                             data: Object.values(res.data.main_data.liquid_rate),
                             showLine: false,
+                            stroke: {
+                                dashArray: 2
+                            }
                         },
                         {
                             name: res.data.main_data.labels.oil_rate,
@@ -341,60 +309,48 @@ export default {
                     this.fieldName = res.data.field_name;
                 }).finally(() => {
                     this.SET_LOADING(false);
-                    console.log('after request', this.dataRangeInfo)
                 })
-            console.log('after finally', this.dataRangeInfo);
             this.changeTreeDate(this.dataRangeInfo);
-            console.log(this.treeDate)
-            moment(this.treeDate.begin_date).format('YYYY/MM/DD')
-            moment(this.treeDate.end_date).format('YYYY/MM/DD')
         },
         onChangeDays1(e) {
             this.dataRangeInfo.days = toNumber(e.target.value)
-            console.log(this.dataRangeInfo)
-            // console.log(moment(this.treeDate.begin_date && this.treeDate.end_date).format('YYYY/MM/DD'))
         },
         myEvent() {
             this.isHidden = !this.isHidden
             console.log(this.isHidden)
         },
         postTreeData(v) {
-            this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY/MM/DD').toString()
-            this.dataRangeInfo.end_date =moment(this.treeDate.end_date).format('YYYY/MM/DD').toString()
             this.dataRangeInfo = _.clone(this.treeDate)
+            this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
+            this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
             this.changeTreeDate(this.dataRangeInfo);
-            moment(this.dataRangeInfo.begin_date).format('YYYY-MM-DD')
-            moment(this.dataRangeInfo.end_date).format('YYYY-MM-DD')
-            this.treeDate = _.clone(this.dataRangeInfo)
-            console.log(this.dataRangeInfo)
-            // const body = {
-            //     action_type: 'calc_button_pressed',
-            //     date_range_model: this.dataRangeInfo,
-            //     fieldName: this.fieldName,
-            //     finder_model: {
-            //         name: "root",
-            //         children: v
-            //     }
-            // }
-            // console.log(this.dataRangeInfo.days)
-            // this.SET_LOADING(true);
-            // axios.post(this.url, {
-            //     action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
-            //     finder_model: {
-            //         name: "root",
-            //         children: v
-            //     }
-            // })
-            //     .then((res) => {
-            //         if (res.status === 200) {
-            //             this.setNotify("Информация о скважинах получена", "Success", "success")
-            //         } else {
-            //             this.setNotify("Что-то пошло не так", "Error", "danger")
-            //         }
-            //     })
-            //     .finally(() => {
-            //         this.SET_LOADING(false);
-            //     })
+            const body = {
+                action_type: 'calc_button_pressed',
+                date_range_model: this.dataRangeInfo,
+                fieldName: this.fieldName,
+                finder_model: {
+                    name: "root",
+                    children: v
+                }
+            }
+            this.SET_LOADING(true);
+            axios.post(this.url, {
+                action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
+                finder_model: {
+                    name: "root",
+                    children: v
+                }
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        this.setNotify("Информация о скважинах получена", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
@@ -447,6 +403,5 @@ export default {
     },
     mounted() {
         this.getTreeData();
-        this.$root.$refs
     },
 }
