@@ -276,7 +276,6 @@ class receiveNonOperatingAssets extends Command
             } else if ($fileType === 'gdu') {
                 if ($trimmedColumn === 'SC "PetroKazakhstan Kumkol Resources"') {
                     $data = $this->getPKK($row,'ПКК',$sheet,$rowIndex,$columnIndex+2);
-                    dd($data);
                     $this->insertDataToDB($data);
                 }
 
