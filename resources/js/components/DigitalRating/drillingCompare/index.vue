@@ -9,12 +9,12 @@
       <div class="rating-compare__title">
         <span>{{ trans('digital_rating.comparisonActualDrillingPoints') }}</span>
         <div class="d-flex align-items-center">
-          <btn-dropdown :list="horizonList" class="mr-10px">
+          <btn-dropdown :list="horizonList" @select="handleSelectHorizon" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.horizon') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="getYearList" class="mr-10px">
+          <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.year') }}
             </template>
@@ -40,7 +40,7 @@
           <div class="d-flex">
             <div
               v-if="['oil_production', 'liquid_val', 'avg_debit'].includes(type)"
-              class="rating-compare__chart mr-10px" style="width: 100%;"
+              class="rating-compare__chart" style="width: 100%;"
             >
               <p>{{ indicatorTitle }}</p>
               <apexchart
@@ -133,7 +133,7 @@
 
     &-maps {
       display: flex;
-      width: 53%;
+      width: 50%;
       flex-direction: column;
 
       h5 {
@@ -198,5 +198,9 @@
 
 .leaflet-container {
   background: transparent;
+}
+
+.rating-content__wrapper {
+  height: calc(100% - 500px);
 }
 </style>

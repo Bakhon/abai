@@ -4,7 +4,8 @@ import {rowsHorizon,horizons,actualIndicators} from '../json/data';
 import apexchart from 'vue-apexcharts';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
-import owcList from '../json/owc_out_uzn_13_osn.json'
+import owcList from '../json/owc_out_uzn_13_osn.json';
+import { globalloadingMutations } from '@store/helpers';
 
 export default {
   name: 'CompareDrilling',
@@ -57,6 +58,12 @@ export default {
 
   watch: {
     type() {
+      this.fetchData();
+    },
+    horizon() {
+      this.fetchData();
+    },
+    year() {
       this.fetchData();
     }
   },
@@ -173,12 +180,15 @@ export default {
 
   methods: {
     async fetchData() {
-      const res = await axios.get(this.localeUrl(
-        `digital-rating/api/get_compaer_data?horizon=${this.horizon}&year=${this.year}&type=${this.type}`
-      ));
-      if (!res.error) {
+      try {
+        this.SET_LOADING(true);
+        const res = await axios.get(this.localeUrl(
+          `digital-rating/api/get_compaer_data?horizon=${this.horizon}&year=${this.year}&type=${this.type}`
+        ));
         this.rowsOil = res.data;
         this.setDiagramData(res.data);
+      } finally {
+        this.SET_LOADING(false);
       }
     },
 
@@ -234,5 +244,17 @@ export default {
         this.type = indicator.value;
       }
     },
+
+    handleSelectHorizon(horizon) {
+      this.horizon = horizon?.id;
+    },
+
+    handleSelectYear(year) {
+      this.year = year;
+    },
+
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
   }
 }
