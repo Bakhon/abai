@@ -232,6 +232,18 @@
           "ЦИТС/ГС"
         ]
       }
+    },
+    {
+      "title": "note",
+      "code": "comment",
+      "type": "text",
+      "is_editable": true,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС",
+          "ЦИТС"
+        ]
+      }
     }
   ]
 }
