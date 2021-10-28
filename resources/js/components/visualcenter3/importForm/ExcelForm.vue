@@ -126,9 +126,8 @@
             </div>
             <div v-else class="col-4 mt-3 row ml-1"></div>
             <div class="col-2 row mt-3 ml-1">
-                <div class="col-12 status-block status-block_little status-label">
-                    <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
-                    <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+                <div class="col-12 status-block status-block_little">
+                    &nbsp;
                 </div>
                 <select
                         class="form-select col-12 mt-3 status-block status-block_little"
