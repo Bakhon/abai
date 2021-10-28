@@ -241,9 +241,9 @@ export default {
             ).then((response) => {
                 let data = response.data;
                 if (data) {
-                    console.log(data);
-                    if (typeof data == 'undefined' || !data.length) {
-                        this.setNotify("Отсутствуют данные по плановым и фактическим показателям. Попробуйте изменить параметры фильтра.", "Ошибка", "danger")
+                    if (typeof data != 'object' || !data.length) {
+                        this.setNotify(this.trans('paegtm.aegtm_invalid_data'), this.trans('app.error'), "danger")
+                        return false;
                     }
 
                     this.gtmIndicators = [];
@@ -252,8 +252,8 @@ export default {
                             item.gtm,
                             item.count_plan,
                             item.count_fact,
-                            '-',
-                            '-',
+                            '0',
+                            item.avg_increase_fact,
                             item.add_prod_plan,
                             item.add_prod_fact,
                         ])

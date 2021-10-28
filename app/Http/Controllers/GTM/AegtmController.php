@@ -27,7 +27,8 @@ class AegtmController extends Controller
         $techEfficiencyQuery->select(
             'gtm',
             'uwi',
-            DB::raw('sum(actual_production_month) as sum_actual_production_month')
+            DB::raw('sum(actual_production_month) as sum_actual_production_month'),
+            DB::raw('avg(cast(NULLIF(actual_increase_month, 0) AS DOUBLE PRECISION)) AS avg_actual_increase_month')
         );
 
         $techEfficiencyQuery->when($request->filled('dzoName'), function ($q) use ($request) {
@@ -39,7 +40,8 @@ class AegtmController extends Controller
             return $q->whereBetween('month', [
                 $request->input('dateStart'),
                 $request->input('dateEnd'),
-            ])->whereBetween('date_start_after_gtm', [
+            ])
+            ->whereBetween('date_start_after_gtm', [
                 $request->input('dateStart'),
                 $request->input('dateEnd'),
             ]);
@@ -85,15 +87,17 @@ class AegtmController extends Controller
 
         if ($techEfficiencyResult) {
             foreach ($techEfficiencyResult as $gtm => $gtmCountFact) {
-                $gtmProdFact = 0;
+                $gtmProdFact = $gtmAvgIncreaseFact = 0;
 
                 if(isset($techEfficiencyResultGrouped[$gtm])) {
                     $gtmProdFact = array_sum(array_column($techEfficiencyResultGrouped[$gtm],'sum_actual_production_month'));
+                    $gtmAvgIncreaseFact = array_sum(array_column($techEfficiencyResultGrouped[$gtm],'avg_actual_increase_month'));
                 }
 
                 $gtmInfo['gtm'] = $gtm;
                 $gtmInfo['count_fact'] = $gtmCountFact;
-                $gtmInfo['add_prod_fact'] = $gtmProdFact ? round($gtmProdFact / 1000, 2) : 0;
+                $gtmInfo['add_prod_fact'] = $gtmProdFact ? round($gtmProdFact / 1000, 1) : 0;
+                $gtmInfo['avg_increase_fact'] = $gtmAvgIncreaseFact && count($techEfficiencyResultGrouped[$gtm]) ? round($gtmAvgIncreaseFact / count($techEfficiencyResultGrouped[$gtm]), 1) : 0;
 
                 $result[] = $gtmInfo;
             }
@@ -102,19 +106,19 @@ class AegtmController extends Controller
                 switch ($gtmItem['gtm']) {
                     case 'ПВР':
                         $result[$key]['count_plan'] = $pvrPlan;
-                        $result[$key]['add_prod_plan'] = round($pvrProdPlan, 2);
+                        $result[$key]['add_prod_plan'] = round($pvrProdPlan, 1);
                         break;
                     case 'ГРП':
                         $result[$key]['count_plan'] = $grpPlan;
-                        $result[$key]['add_prod_plan'] = round($grpProdPlan, 2);
+                        $result[$key]['add_prod_plan'] = round($grpProdPlan, 1);
                         break;
                     case 'ВПС':
                         $result[$key]['count_plan'] = $vpsPlan;
-                        $result[$key]['add_prod_plan'] = round($vpsProdPlan, 2);
+                        $result[$key]['add_prod_plan'] = round($vpsProdPlan, 1);
                         break;
                     case 'ПВЛГ':
                         $result[$key]['count_plan'] = $pvlgPlan;
-                        $result[$key]['add_prod_plan'] = round($pvlgProdPlan, 2);
+                        $result[$key]['add_prod_plan'] = round($pvlgProdPlan, 1);
                         break;
                 }
             }

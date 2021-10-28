@@ -173,4 +173,5 @@ return array (
   'upload_validation_error' => 'Ошибка загрузки файла',
   'import_data_from_excel' => 'Импорт данных из Excel в базу данных MySQL',
   'gtm_decline_rate' => 'Темпы падения',
+  'aegtm_invalid_data' => 'Отсутствуют данные по плановым и фактическим показателям. Попробуйте изменить параметры фильтра.',
 );
