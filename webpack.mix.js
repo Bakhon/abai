@@ -27,4 +27,3 @@ mix.js('resources/js/app.js', 'public/js')
         .copyDirectory('resources/sass/font', 'public/fonts')
         .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
 
-mix.disableSuccessNotifications();
