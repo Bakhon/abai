@@ -27,7 +27,6 @@ use App\Services\DruidService;
 use App\Services\MapService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class TechMapController extends Controller
 {
