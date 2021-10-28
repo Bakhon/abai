@@ -8,7 +8,7 @@ use App\Models\BigData\Dictionaries\PerfType;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Illuminate\Support\Facades\DB;
 
-class WellPerfBridgePlug extends PlainForm
+class WellPerfBridgePlug extends WellPerf
 {
     protected $configurationFileName = 'well_perf_bridge_plug';
     use DateMoreThanValidationTrait;
@@ -17,9 +17,6 @@ class WellPerfBridgePlug extends PlainForm
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-
-
-       
 
         if (!$this->isValidDate(
             $this->request->get('well'),

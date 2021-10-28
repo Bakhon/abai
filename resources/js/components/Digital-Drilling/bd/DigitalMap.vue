@@ -41,7 +41,8 @@
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="">
+                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-if="coordinate.Status == 'В Бурении'">
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-else>
                     </div>
                 </MglMarker>
             </MglMap>
