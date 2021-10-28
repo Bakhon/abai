@@ -881,47 +881,50 @@ export default {
       return well_passport_data
     },
     selectWell(well) {
-      this.SET_LOADING(true);
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {          
-          this.well_all_data = data
-          this.well.id = data.wellInfo.id
-          this.wellUwi = data.wellInfo.uwi
-          if (data.geo[Object.keys(data.geo).length - 1] != null) {
-            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
-          }
-          if (data.geo[0] != null) {
-            this.wellGeo = data.geo[0]
-          }
-          if (data.spatial_object.coord_point != null) {
-            let spatialObject
-            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            spatialObject = spatialObject.split(',')
-            this.wellSaptialObjectX = spatialObject[0]
-            this.wellSaptialObjectY = spatialObject[1]
-          }
-          if (data.spatial_object_bottom.coord_point != null) {
-            let spatialObjectBottom
-            spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-            spatialObjectBottom = spatialObjectBottom.split(',')
-            this.wellSaptialObjectBottomX = spatialObjectBottom[0]
-            this.wellSaptialObjectBottomY = spatialObjectBottom[1]
-          }
-          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }
-         
-          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+      if(well)
+      {
+        this.SET_LOADING(true);
+        this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+          try {
+            this.well_all_data = data
+            this.well.id = data.wellInfo.id
+            this.wellUwi = data.wellInfo.uwi
+            if (data.geo[Object.keys(data.geo).length - 1] != null) {
+              this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
+            }
+            if (data.geo[0] != null) {
+              this.wellGeo = data.geo[0]
+            }
+            if (data.spatial_object.coord_point != null) {
+              let spatialObject
+              spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+              spatialObject = spatialObject.split(',')
+              this.wellSaptialObjectX = spatialObject[0]
+              this.wellSaptialObjectY = spatialObject[1]
+            }
+            if (data.spatial_object_bottom.coord_point != null) {
+              let spatialObjectBottom
+              spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+              spatialObjectBottom = spatialObjectBottom.split(',')
+              this.wellSaptialObjectBottomX = spatialObjectBottom[0]
+              this.wellSaptialObjectBottomY = spatialObjectBottom[1]
+            }
+            for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+              this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+            }
 
-        } catch (e) {
+            this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+            this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+            this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
+            this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+
+          } catch (e) {
             this.SET_LOADING(false);
-        }
-        this.setWellPassport()
+          }
+          this.setWellPassport()
           this.SET_LOADING(false);
-      })
+        })
+      }
     },
     getMultipleValues(objectName, objectKey) {
       let value = ''
