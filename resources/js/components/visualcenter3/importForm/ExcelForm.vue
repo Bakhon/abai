@@ -32,7 +32,7 @@
                     <span>{{trans('visualcenter.importForm.yesterdayDate')}}:</span><br>
                     <span class="dzo-name">{{currentDate}}</span><br>
                 </div>
-                <div class="col-12 status-block dzoname-label status-label">
+                <div class="col-12 status-block currentdate-label status-label mt-1">
                     <span class="dzo-name">{{selectedDzo.name}}</span>
                 </div>
             </div>
@@ -373,7 +373,6 @@
         color: #82BAFF;
     }
     .status-block .dzo-name {
-        font-size: 22px;
         color: #82BAFF;
     }
     .button-block {
@@ -397,23 +396,9 @@
     .status-label {
         border: 1px solid #656A8A;
     }
-    .dzoname-label {
-        bottom: 0;
-        position: absolute;
-        width: 90%;
-        font-size: 16px;
-        span.dzo-name {
-            font-size: 16px;
-        }
-    }
     .currentdate-label {
-        position: absolute;
-        width: 90%;
-        height: 65%;
-        span.dzo-name {
-            bottom: 0;
-            position: absolute;
-            left: 27%;
+        span {
+            font-size: 16px;
         }
     }
     @keyframes rotate {
