@@ -91,7 +91,13 @@
                 trans("plast_fluids.auto")
               }}</label>
             </div>
-            <p>
+            <p
+              :style="
+                alreadyExists && approximationSelected
+                  ? 'border-bottom: 3px solid red'
+                  : ''
+              "
+            >
               {{
                 approximationSelected
                   ? trans(`plast_fluids.${approximationSelected}`)
@@ -111,6 +117,9 @@
               }}</label>
             </div>
             <input
+              :class="{
+                error: alreadyExists && approximationNameType === 'custom',
+              }"
               v-model="approximationCustomName"
               :disabled="approximationNameType !== 'custom'"
               type="text"
@@ -218,12 +227,21 @@
         {{ trans("plast_fluids.done") }}
       </button>
     </div>
+    <BaseModal
+      v-if="alreadyExists"
+      v-show="baseModalOpen"
+      @close-modal="baseModalOpen = false"
+      @modal-response="baseModalOpen = false"
+      :heading="trans('plast_fluids.approximation_name_cannot_be_repeated')"
+      type="notify"
+    />
   </div>
 </template>
 
 <script>
 import ScatterGraphApproximationLabelCheckbox from "./ScatterGraphApproximationLabelCheckbox.vue";
 import ScatterGraphApproximationLabelInput from "./ScatterGraphApproximationLabelInput.vue";
+import BaseModal from "./BaseModal.vue";
 import { getGraphApproximation } from "../services/graphService";
 
 export default {
@@ -231,6 +249,7 @@ export default {
   props: {
     series: Array,
     graphType: String,
+    seriesNames: Array,
     minX: [String, Number],
     maxX: [String, Number],
     minY: [String, Number],
@@ -239,10 +258,12 @@ export default {
   components: {
     ScatterGraphApproximationLabelCheckbox,
     ScatterGraphApproximationLabelInput,
+    BaseModal,
   },
   data() {
     return {
       isOpen: true,
+      baseModalOpen: false,
       aheadPredict: "",
       backwardPredict: "",
       isConfigureIntersection: false,
@@ -266,6 +287,7 @@ export default {
       y: [],
       approximationNameType: "auto",
       approximationCustomName: "",
+      alreadyExists: false,
     };
   },
   computed: {
@@ -287,6 +309,20 @@ export default {
     },
     isPolynomialSelected() {
       return this.approximationSelected === "polynomial";
+    },
+    isNameRepeated() {
+      if (
+        this.approximationNameType === "custom" &&
+        !Boolean(this.approximationCustomName)
+      ) {
+        return true;
+      } else {
+        return this.seriesNames.includes(
+          this.approximationNameType === "custom"
+            ? this.approximationCustomName
+            : this.trans("plast_fluids." + this.approximationSelected)
+        );
+      }
     },
   },
   watch: {
@@ -311,6 +347,13 @@ export default {
     },
   },
   methods: {
+    resetState() {
+      this.approximationSelected = "";
+      this.isPlaceValueOfR2 = false;
+      this.isShowEquationOnChart = false;
+      this.approximationNameType = "auto";
+      this.approximationCustomName = "";
+    },
     updatePolynomialDegreeValue(e) {
       if (e.target.value >= 3) {
         this.polynomialDegree = 3;
@@ -328,7 +371,7 @@ export default {
     },
     async drawApproximation() {
       const emitData = {};
-      if (this.approximationSelected) {
+      if (this.approximationSelected && !this.isNameRepeated) {
         if (this.backwardPredict) {
           const min = Math.min(...this.x);
           this.x.push(Number(min - this.backwardPredict));
@@ -389,11 +432,17 @@ export default {
           ordinateTo: this.ordinateTo,
         };
       }
-      this.$emit("get-approximation", emitData);
-      this.approximationSelected = "";
-      this.isPlaceValueOfR2 = false;
-      this.isShowEquationOnChart = false;
-      this.closeApproximation();
+      if (
+        this.approximationSelected ? !this.isNameRepeated : this.isAxisTyped
+      ) {
+        this.$emit("get-approximation", emitData);
+        this.resetState();
+        this.alreadyExists = false;
+        this.closeApproximation();
+      } else {
+        this.alreadyExists = true;
+        this.baseModalOpen = true;
+      }
     },
   },
 };

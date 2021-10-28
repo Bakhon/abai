@@ -36,15 +36,15 @@
     <div class="correlations-holder">
       <div
         class="correlation"
-        v-for="(correlation, index) in correlationList"
-        :key="index"
+        v-for="(correlations, key) in correlationList"
+        :key="key"
       >
-        <p>{{ correlation.name }}</p>
+        <p>{{ trans(`plast_fluids.correlation_${key}`) }}</p>
         <Dropdown
+          :selectedValue="getCurrentSelectedCorrelation(key).name"
+          @dropdown-select="updateCurrentCorrelation(key, ...arguments)"
           :placeholder="trans('plast_fluids.choose')"
-          :items="correlation.children"
-          :selectedValue="getCurrentSelectedCorrelation(index)"
-          @dropdown-select="updateCurrentCorrelation(index, ...arguments)"
+          :items="correlations"
           dropKey="name"
         />
       </div>
@@ -77,6 +77,11 @@
 <script>
 import LeftMenuGraphCustomization from "./LeftMenuGraphCustomization.vue";
 import Dropdown from "../Dropdown.vue";
+import {
+  getCorrelations,
+  getCorrelationData,
+} from "../../services/graphService";
+import { convertToFormData } from "../../helpers";
 import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -87,9 +92,6 @@ export default {
   },
   data() {
     return {
-      currentSelectedCorrelation1: "",
-      currentSelectedCorrelation2: "",
-      currentSelectedCorrelation3: "",
       currentSelectedCorrelation4: "",
       categoryList: [
         {
@@ -108,57 +110,7 @@ export default {
           children: ["Ps", "Rs", "Bo", "Do", "mo", "po", "mod"],
         },
       ],
-      correlationList: [
-        {
-          name: "Корреляция Ps-Rs",
-          children: [
-            { name: "Al-Marhoun" },
-            { name: "Al-Shammasi" },
-            { name: "Dindoruk" },
-            { name: "Ghetto" },
-            { name: "Glaso" },
-            { name: "Kartoatmodjo" },
-            { name: "Lasater" },
-            { name: "Moradi" },
-            { name: "Standing" },
-            { name: "Valko-McCain" },
-            { name: "Vazquez-Beggs" },
-            { name: "Velarde" },
-          ],
-        },
-        {
-          name: "Корреляция Bs-Rs",
-          children: [
-            { name: "Al-Marhoun_92" },
-            { name: "Almehaideb" },
-            { name: "Al-Shammasi" },
-            { name: "Dindoruk" },
-            { name: "Dokla-Osman" },
-            { name: "Glaso" },
-            { name: "Kartoatmodjo" },
-            { name: "Petrosky" },
-            { name: "Standing" },
-            { name: "Vazquez-Beggs" },
-            { name: "Velarde" },
-          ],
-        },
-        {
-          name: "Корреляция ms-Rs",
-          children: [
-            { name: "Beggs-Robinson" },
-            { name: "Chew-Connally" },
-            { name: "Labedi" },
-            { name: "Kahn et al" },
-            { name: "Kartoatmodjo" },
-            { name: "Petrosky-Farshad" },
-            { name: "Dindoruk" },
-          ],
-        },
-        {
-          name: "Модель EOS",
-          children: [{ name: "Модель-1" }, { name: "Модель-2" }],
-        },
-      ],
+      correlationList: {},
       tableCustomizationOptions: [
         {
           name: "properties",
@@ -176,8 +128,16 @@ export default {
     };
   },
   computed: {
-    ...mapState("plastFluids", ["currentSubsoilField"]),
-    ...mapState("plastFluidsLocal", ["graphType"]),
+    ...mapState("plastFluids", [
+      "currentSubsoilField",
+      "currentSubsoilHorizon",
+    ]),
+    ...mapState("plastFluidsLocal", [
+      "graphType",
+      "currentSelectedCorrelation_ps",
+      "currentSelectedCorrelation_bs",
+      "currentSelectedCorrelation_ms",
+    ]),
     currentGraphic: {
       get() {
         return this.graphType;
@@ -193,13 +153,34 @@ export default {
   },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
-    ...mapMutations("plastFluidsLocal", ["SET_GRAPH_TYPE"]),
-    getCurrentSelectedCorrelation(index) {
-      return this["currentSelectedCorrelation" + (index + 1)];
+    ...mapMutations("plastFluidsLocal", [
+      "SET_GRAPH_TYPE",
+      "SET_CURRENT_CORRELATION_PS",
+      "SET_CURRENT_CORRELATION_BS",
+      "SET_CURRENT_CORRELATION_MS",
+    ]),
+    getCurrentSelectedCorrelation(key) {
+      return this["currentSelectedCorrelation_" + key];
     },
-    updateCurrentCorrelation(index, args) {
-      this["currentSelectedCorrelation" + (index + 1)] = args.name;
+    async updateCurrentCorrelation(key, args) {
+      this["SET_CURRENT_CORRELATION_" + key.toUpperCase()](args);
     },
+    async getCorrelationList() {
+      const correlations = await getCorrelations();
+      for (let key in correlations) {
+        let correlationChildren = correlations[key].map(
+          (correlationFunction) => {
+            const entry = Object.entries(correlationFunction)[0];
+            return { func_id: entry[0], name: entry[1] };
+          }
+        );
+        correlations[key] = correlationChildren;
+      }
+      this.correlationList = correlations;
+    },
+  },
+  mounted() {
+    this.getCorrelationList();
   },
 };
 </script>
