@@ -10,7 +10,7 @@
                 </tr>
                 <tr v-for="report in reports" v-if="reports.length>0">
                     <td>
-                        {{ report.file_id }}
+                        №{{ report.document_num }}
                     </td>
                     <td>
                         {{ report.document_date }}
