@@ -43,6 +43,30 @@ class Dzo {
             'associatedPlan' => 'plan_poput_gas'
         ),
     );
+    private $yearlyPlans = array (
+        'production' => array(
+            'fact' => 'oil_production_fact',
+            'plan' => 'oil_plan',
+            'opek' => 'oil_opek_plan',
+            'condensateFact' => 'condensate_production_fact',
+            'condensatePlan' => 'gk_plan',
+            'condensateOpek' => 'gk_plan'
+        ),
+        'delivery' => array (
+            'fact' => 'oil_delivery_fact',
+            'plan' => 'oil_dlv_plan',
+            'opek' => 'oil_dlv_opek_plan',
+            'condensateFact' => 'condensate_delivery_fact',
+            'condensatePlan' => 'gk_plan',
+            'condensateOpek' => 'gk_plan'
+        ),
+        'gasProduction' => array(
+            'naturalFact' => 'natural_gas_production_fact',
+            'associatedFact' => 'associated_gas_production_fact',
+            'naruralPlan' => 'dobycha_gaza_prirod_plan',
+            'associatedPlan' => 'plan_poput_gas'
+        ),
+    );
 
     private $dzoMultiplier = array (
         'ПКК' => 0.33,
@@ -142,6 +166,8 @@ class Dzo {
         }
         if ($periodType === 'year') {
             $companySummary = $this->getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan);
+            $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan']);
+            $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek']);
         }
 
         $factory = new Factory();
@@ -256,7 +282,8 @@ class Dzo {
             $planFieldName = 'condensatePlan';
         }
         $summary = $companySummary;
-        $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type][$planFieldName]);
+
+        $summary['yearlyPlan'] = $filteredYearlyPlan->first()->oil_plan;
         $summary['condensatePlan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
         $summary['condensateOpek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         return $summary;
