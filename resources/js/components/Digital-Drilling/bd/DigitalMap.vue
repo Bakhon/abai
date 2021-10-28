@@ -8,7 +8,7 @@
                 </div>
                 <div class="all-graph" @click="allGraphModal=true">
                     <img src="/img/digital-drilling/all-graph.svg" alt="">
-                    <span>ОБЩИЙ ГРАФИК БУРЕНИЯ</span>
+                    <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
                 </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">
@@ -41,8 +41,8 @@
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-if="coordinate.Status == 'В Бурении'">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-else>
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В Бурении'">
+                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
                     </div>
                 </MglMarker>
             </MglMap>
@@ -76,7 +76,7 @@
                 allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-                center: [54.1278133495231, 46.5861065487464],
+                center: [46.5861065487464, 54.1278133495231],
                 zoom: 11,
                 coordinates: [],
                 dzo: [],
