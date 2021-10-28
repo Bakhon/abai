@@ -331,6 +331,11 @@ export default {
         'rzatrAtm': {'value_double': null},
         'gu': {'name_ru': null},
         'agms': {'name_ru': null},
+        'well_equip_param': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'pump_code': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'depth_nkt': {'value_double': null, 'value_string': null, 'equip_param': null},  
+        'type_sk': {'value_double': null, 'value_string': null, 'equip_param': null}         
       },
       wellParent: null,
       tubeNomOd: null,
@@ -390,7 +395,12 @@ export default {
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
         'gu': 'gu',
-        'agms': 'agms',       
+        'agms': 'agms', 
+        'well_equip_param': 'well_equip_param',
+        'pump_code': 'pump_code',
+        'diametr_pump': 'diametr_pump',
+        'depth_nkt': 'depth_nkt',
+        'type_sk': 'type_sk'     
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -516,9 +526,14 @@ export default {
       let category_id = this.well.categoryLast.pivot.category
       let main_org_code = this.well_all_data.main_org_code        
      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.measWaterCut && this.well.measLiq   
-     ? (  main_org_code == 'KGM' ? this.well.techModeProdOil.oil + ' / ' + this.well.dmart_daily_prod_oil.oil :this.well.techModeProdOil.oil.toFixed(1)+' / '+(this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) )
+     ? (  main_org_code == 'KGM' ? this.well.techModeProdOil.oil + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1) :this.well.techModeProdOil.oil.toFixed(1)+' / '+(this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) )
      : ( this.well.measWaterCut && this.well.measLiq ? 
-     (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )               
+     (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )         
+     let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
+     let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
+     let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
+     let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''
+     let type_sk = this.well.type_sk ? this.well.type_sk.value_string : ''    
       this.well_passport = [
         {
           'name': this.trans('well.well'),
@@ -653,17 +668,17 @@ export default {
         },
         {
           'name': this.trans('well.type_pump'),
-          'data': '',
+          'data': pump_code,
           'type': ['dob_oil']
         },
         {
           'name': this.trans('well.diameter_pump'),
-          'data': '',
+          'data': diameter_pump,
           'type': ['dob_oil']
         },
         {
           'name': this.trans('well.pump_depth'),
-          'data': '',
+          'data': well_equip_param,
           'type': ['dob_oil']
         },
         {
@@ -673,7 +688,7 @@ export default {
         },
         {
           'name': this.trans('well.sk'),
-          'data': '',
+          'data': type_sk,
           'type': ['dob_oil'],
           'exp': 1 // шгн
         },
@@ -708,7 +723,7 @@ export default {
         },
         {
           'name': this.trans('well.depth_down'),
-          'data': '',
+          'data': depth_nkt,
           'type': ['all']
         },
         {
