@@ -1321,7 +1321,6 @@ export default {
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
     },
     calcualteHydroDinamycs(date) {
-      console.log('date', date);
       this.SET_LOADING(true);
       this.axios.post(this.localeUrl("/tech-map/calculate"), {gu_id: this.selectedGu.id, date}).then((response) => {
         let interval = setInterval(() => {
@@ -1346,12 +1345,11 @@ export default {
               this.SET_LOADING(false);
 
               if (!isError) {
-                this.selectedDate = date;
-                this.activeFilter = 'speedFlow';
-                this.$bvModal.hide('calc-form');
-                this.applyFilter();
+                this.loadCalculatedData(date);
               }
-            } else if (response.data.job.status === 'failed') {
+            }
+
+            if (response.data.job.status === 'failed') {
               this.SET_LOADING(false);
               clearInterval(interval)
               alert(this.trans('monitoring.map.calculate_error'))
@@ -1364,6 +1362,12 @@ export default {
             this.SET_LOADING(false);
           });
 
+    },
+    loadCalculatedData(date) {
+      this.selectedDate = date;
+      this.activeFilter = 'speedFlow';
+      this.$bvModal.hide('calc-form');
+      this.applyFilter();
     }
   }
 }
