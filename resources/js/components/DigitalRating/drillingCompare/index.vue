@@ -9,12 +9,12 @@
       <div class="rating-compare__title">
         <span>{{ trans('digital_rating.comparisonActualDrillingPoints') }}</span>
         <div class="d-flex align-items-center">
-          <btn-dropdown :list="horizonList" class="mr-10px">
+          <btn-dropdown :list="horizonList" @select="handleSelectHorizon" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.horizon') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="getYearList" class="mr-10px">
+          <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.year') }}
             </template>
@@ -24,7 +24,7 @@
               {{ trans('digital_rating.coincidencePlannedWellsWithin') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="actualIndicators">
+          <btn-dropdown :list="actualIndicators" @select="handleSelectIndicator">
             <template #title>
               {{ trans('digital_rating.comparisonDesignActualIndicators') }}
             </template>
@@ -38,21 +38,27 @@
             <div id="wellMap"></div>
           </div>
           <div class="d-flex">
-            <div class="rating-compare__chart mr-10px" style="width: 100%; ">
-              <p>{{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}</p>
+            <div
+              v-if="['oil_production', 'liquid_val', 'avg_debit'].includes(type)"
+              class="rating-compare__chart" style="width: 100%;"
+            >
+              <p>{{ indicatorTitle }}</p>
               <apexchart
                 :height="300"
                 type="area"
-                :series="seriesArea"
+                :series="diagramData"
                 :options="chartOptionsArea"
               />
             </div>
-            <div class="rating-compare__chart" style="width: 100%;">
-              <p>{{ trans('digital_rating.wellsCommissioningDrilling') }}</p>
+            <div
+              v-if="['water_inj', 'drilling_unit', 'fds_operational_unit'].includes(type)"
+              class="rating-compare__chart" style="width: 100%;"
+            >
+              <p>{{ indicatorTitle }}</p>
               <apexchart
                 :height="300"
                 type="bar"
-                :series="series"
+                :series="diagramData"
                 :options="chartOptions"
               />
             </div>
@@ -83,7 +89,7 @@
               <tr>
                 <th class="align-middle" rowspan="2">{{ trans('digital_rating.year') }}</th>
                 <th class="align-middle" colspan="3">
-                  {{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}
+                  {{ indicatorTitle }}, {{ trans('digital_rating.thousandTons') }}
                 </th>
               </tr>
               <tr>
@@ -96,8 +102,8 @@
               <tr v-for="(item, itemIdx) in rowsOil" :key="itemIdx">
                 <td>{{ item.year }}</td>
                 <td>{{ item.project }}</td>
-                <td>{{ item.fact }}</td>
-                <td :class="Number(item.rejection) ? '' : 'alert'">{{ item.rejection }}</td>
+                <td>{{ item.actual }}</td>
+                <td :class="Number(item.total) ? '' : 'alert'">{{ item.total }}</td>
               </tr>
             </tbody>
           </table>
@@ -127,7 +133,7 @@
 
     &-maps {
       display: flex;
-      width: 53%;
+      width: 50%;
       flex-direction: column;
 
       h5 {
@@ -192,5 +198,9 @@
 
 .leaflet-container {
   background: transparent;
+}
+
+.rating-content__wrapper {
+  height: calc(100% - 500px);
 }
 </style>
