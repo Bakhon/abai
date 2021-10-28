@@ -276,6 +276,7 @@ class receiveNonOperatingAssets extends Command
             } else if ($fileType === 'gdu') {
                 if ($trimmedColumn === 'SC "PetroKazakhstan Kumkol Resources"') {
                     $data = $this->getPKK($row,'ПКК',$sheet,$rowIndex,$columnIndex+2);
+                    dd($data);
                     $this->insertDataToDB($data);
                 }
 
@@ -335,19 +336,34 @@ class receiveNonOperatingAssets extends Command
             'oil_production_fact' => 5,
             'oil_delivery_fact' => 9
         );
-        $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
-        $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
-        $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
-        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;
-        $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $fieldsSummary = $this->getFieldsSummary($rowIndex,$sheet,$columnMapping['oil_production_fact']);
+        $kolpanSummary = $this->getKolpanSummary($rowIndex,$sheet,$columnMapping['oil_production_fact']);
         $deliverySummary = $this->getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping);
-        $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
         return array (
-            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
+            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $fieldsSummary + $kolpanSummary,
             'oil_delivery_fact' => $deliverySummary,
             'dzo_name' => $dzoName,
             'date' => $this->date,
         );
+    }
+
+    private function getFieldsSummary($index,$sheet,$column)
+    {
+        $summary = 0;
+        $summary += $sheet[$index + 1][$column];
+        foreach(range(2, 6) as $i) {
+            $summary += $sheet[$index + $i][$column] * 0.5;
+        }
+        return $summary;
+    }
+
+    private function getKolpanSummary($index,$sheet,$column)
+    {
+        $summary = 0;
+        foreach(range(9, 12) as $i) {
+            $summary += $sheet[$index + $i][$column];
+        }
+        return $summary * 0.75;
     }
 
     private function getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping)
