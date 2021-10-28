@@ -10,7 +10,6 @@ export default class TCanvas {
         this.#__context = canvas.getContext('2d');
         this.#tCoords.setCanvas = canvas;
         this.#tCoords.setParams();
-        this.#tCoords.setOrigin = 0;
     }
 
     get getContext() {
@@ -24,17 +23,18 @@ export default class TCanvas {
     drawCurve(curve, {options, wellID}) {
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
         let coord = this.#tCoords;
+        let max = options.max[wellID];
+        let min = options.min[wellID];
         ctx.save()
         ctx.beginPath();
-        ctx.translate(-options.min[wellID], 0)
         let i = 0;
         for (const c of curve) {
             if (c !== null) {
-                ctx.moveTo(coord.positionX(lastX), coord.positionY(lastY));
-                ctx.lineTo(coord.positionX(c), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(lastX, max), coord.positionY(lastY));
+                ctx.lineTo(coord.percentPositionX(c, max), coord.positionY(y));
                 lastX = c
             } else {
-                ctx.moveTo(coord.positionX(0), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(0, max), coord.positionY(y));
             }
             i++;
             lastY = y
