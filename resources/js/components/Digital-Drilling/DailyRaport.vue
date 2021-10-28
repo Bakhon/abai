@@ -568,7 +568,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes0" :header="threadTypesJson[0].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes0')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -605,7 +608,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes1" :header="threadTypesJson[1].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes1')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -644,7 +650,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes2" :header="threadTypesJson[2].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes2')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -676,7 +685,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes3" :header="threadTypesJson[3].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes3')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -797,7 +809,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes4" :header="threadTypesJson[4].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes4')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -828,7 +843,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes5" :header="threadTypesJson[5].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes5')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -859,7 +877,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes6" :header="threadTypesJson[6].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes6')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -890,7 +911,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes7" :header="threadTypesJson[7].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes7')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -921,7 +945,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes8" :header="threadTypesJson[8].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes8')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -952,7 +979,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes9" :header="threadTypesJson[9].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes9')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -983,7 +1013,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes10" :header="threadTypesJson[10].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes10')"
+                                />
                             </td>
 
                             <td >
@@ -1015,7 +1048,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes11" :header="threadTypesJson[11].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes11')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -1060,7 +1096,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes12" :header="threadTypesJson[12].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes12')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -1078,7 +1117,10 @@
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes13" :header="threadTypesJson[13].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes13')"
+                                />
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1095,7 +1137,10 @@
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes14" :header="threadTypesJson[14].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes14')"
+                                />
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1862,14 +1907,18 @@
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
-                        <tr v-for="i in 20">
+                        <tr v-for="(incl, i) in inclino">
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="deviceType" name="name" />
+                                <select-add :options="deviceType" :name="'inclino1'+i" :header="incl.instrument1"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип прибора', 'device_type', 'inclino1'+i)"/>
                             </td>
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="deviceType" name="name" />
+                                <select-add :options="deviceType" :name="'inclino2'+i" :header="incl.instrument2"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип прибора', 'device_type', 'inclino2'+i)"/>
                             </td>
                         </tr>
                     </tbody>
@@ -1984,10 +2033,12 @@
                                 <th>Ед.измерения</th>
                                 <th>Значение</th>
                             </tr>
-                            <tr v-for="rig in rigCharacteristic[1]">
+                            <tr v-for="(rig, i) in rigCharacteristic[1]">
                                 <td>{{rig.parameter}}</td>
                                 <td>{{rig.unit}}</td>
-                                <td><input type="text" v-model="rig.value"></td>
+                                <td>
+                                    <input type="text" v-model="rig.value" :class="{error: addRigModalError && rig.value=='' && i==0}">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -2028,7 +2079,7 @@
                     </div>
                     <div class="catalog-add-content">
                         <input type="text" :class="{error: catalogError && catalogCompany.name_ru==''}"  v-model="catalogCompany.name_ru" placeholder="Напишите назание">
-                        <input type="text" :class="{error: catalogError && catalogCompany.bin==''}"  v-model="catalogCompany.bin" placeholder="Напишите БИН">
+                        <input type="number" :class="{error: (catalogError && catalogCompany.bin=='') || (catalogError && catalogCompany.bin.toString().length !=12)}"  v-model="catalogCompany.bin" placeholder="Напишите БИН, число, 12 цифр">
                         <button @click="saveCatalogCompany">{{trans('app.save')}}</button>
                     </div>
                 </div>
@@ -2043,6 +2094,8 @@
     import NozzlesTable from  './components/NozzlesTable'
     import componentComposition from './core/componentComposition'
     import geologicalInformation from './core/geologicalInformation'
+    import threadTypesJson from './core/threadType'
+    import inclino from './core/inclino'
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd},
@@ -2060,6 +2113,8 @@
                 ],
                 componentComposition: componentComposition,
                 geologicalInformation: geologicalInformation,
+                inclino: inclino,
+                threadTypesJson: threadTypesJson,
                 catalog: '',
                 catalogCompany: {
                     name_ru: '',
@@ -2237,6 +2292,14 @@
                             this.catalogModal = false
                             switch (this.currentCatalogAdd.url) {
                                 case "manufacturer":
+                                    switch (this.currentCatalogAdd.type){
+                                        case "manufacturer1":
+                                            this.manufacturer1 = response.data
+                                            break
+                                        case "manufacturer2":
+                                            this.manufacturer2 = response.data
+                                            break
+                                    }
                                     this.getManufacturers()
                                     break
                                 case "pump_barrel":
@@ -2300,6 +2363,27 @@
                                     }
                                     this.getLithology()
                                     break
+                                case "device_type":
+                                    for (let i=0; i<this.inclino.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'inclino1'+i){
+                                            this.inclino[i].instrument1 = response.data
+                                            break
+                                        }else if(this.currentCatalogAdd.type == 'inclino2'+i){
+                                            this.inclino[i].instrument2 = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getDeviceType()
+                                    break
+                                case "screw_size":
+                                    for (let i=0; i<this.threadTypesJson.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'threadTypes'+i){
+                                            this.threadTypesJson[i].type = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getThreadTypes()
+                                    break
                             }
                             this.catalogError = false
                             this.catalog = ""
@@ -2313,7 +2397,7 @@
                 }
             },
             saveCatalogCompany(){
-                if (this.catalogCompany.name_ru == '' || this.catalogCompany.bin == '') {
+                if (this.catalogCompany.name_ru == '' || this.catalogCompany.bin == '' || this.catalogCompany.bin.toString().length !=12) {
                     this.catalogError = true
                 }else{
                     this.catalogError = false
@@ -2328,11 +2412,9 @@
                         }
                     })
                         .catch((error) => console.log(error))
-
                 }
             },
             openCatalog(name, url, catalog){
-                console.log(catalog)
                 if (name == "Буровой подрядчик") {
                     this.catalogModalCompany = true
                 }else{
@@ -2387,6 +2469,12 @@
                         break
                     }
                 }
+                for (let i=0; i<this.threadTypesJson.length; i++) {
+                    if (name == 'threadTypes'+i){
+                        this.threadTypesJson[i].type = item
+                        break
+                    }
+                }
                 for (let i=0; i<this.geologicalInformation.length; i++) {
                     if (name == 'stratigraphy'+i){
                         this.geologicalInformation[i].stratigraphy = item
@@ -2396,7 +2484,15 @@
                         break
                     }
                 }
-                console.log(name)
+                for (let i=0; i<this.inclino.length; i++) {
+                    if (name == 'inclino1'+i){
+                        this.inclino[i].instrument1 = item
+                        break
+                    }else if(name =="inclino2"+i){
+                        this.inclino[i].instrument2 = item
+                        break
+                    }
+                }
             },
             uploadRig(){
                 this.rigCharacteristic[0][0].value = this.companyName.id
@@ -2406,7 +2502,11 @@
                 }else{
                     this.addRigModalError = false
                 }
-
+                if(this.rigCharacteristic[1][0].value==''){
+                    this.addRigModalError = true
+                }else{
+                    this.addRigModalError = false
+                }
                 if (!this.addRigModalError) {
                     this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/rig',{array: this.rigCharacteristic}).then((response) => {
                         if (response.data) {
@@ -2897,5 +2997,10 @@
     }
     .error{
         border: 1px solid red!important;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 </style>
