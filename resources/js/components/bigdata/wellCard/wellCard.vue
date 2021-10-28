@@ -532,7 +532,8 @@ export default {
      let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
      let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
      let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
-     let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''    
+     let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''
+     let type_sk = this.well.type_sk ? this.well.type_sk.value_string : ''    
       this.well_passport = [
         {
           'name': this.trans('well.well'),
