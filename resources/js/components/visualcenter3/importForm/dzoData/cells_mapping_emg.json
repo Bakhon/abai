@@ -174,7 +174,10 @@
       "НГДУ \"Жаикмунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
-          "associated_gas_delivery_fact"
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
         ],
         "rowIndex": 16,
         "rowLength": 5
@@ -182,7 +185,10 @@
       "НГДУ \"Жылоймунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
-          "associated_gas_delivery_fact"
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
         ],
         "rowIndex": 17,
         "rowLength": 5
@@ -190,7 +196,10 @@
       "НГДУ \"Доссормунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
-          "associated_gas_delivery_fact"
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
         ],
         "rowIndex": 18,
         "rowLength": 5
@@ -198,7 +207,10 @@
       "НГДУ \"Кайнармунайгаз\"": {
         "fields": [
           "associated_gas_production_fact",
-          "associated_gas_delivery_fact"
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
         ],
         "rowIndex": 19,
         "rowLength": 5

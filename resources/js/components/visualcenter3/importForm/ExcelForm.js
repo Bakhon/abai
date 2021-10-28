@@ -237,9 +237,6 @@ export default {
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
-        if ( this.selectedDzo.ticker === 'КОА') {
-            this.addColumnsToGrid();
-        }
         this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
         this.fillPlanColumns();
         this.fillPlanRows();
@@ -256,23 +253,6 @@ export default {
         this.SET_LOADING(false);
     },
     methods: {
-        addColumnsToGrid() {
-            for (let i = 7; i < 9; i++) {
-                this.columns.push(
-                    {
-                        prop: "column" + i,
-                        size: 280,
-                        cellProperties: ({prop, model, data, column}) => {
-                            return {
-                                style: {
-                                    border: '1px solid #F4F4F6'
-                                },
-                            };
-                        },
-                    }
-                );
-            }
-        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -468,7 +448,7 @@ export default {
             return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
-            this.setClassToElement($(selector),'cell__color-red');
+            this.setClassToElement($('#factGrid').find(selector),'cell__color-red');
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
@@ -499,13 +479,16 @@ export default {
                 this.updateTroubledCompaniesByFactorOptions();
             }
 
-            this.axios.post(uri, this.excelData).then((response) => {
-                if (response.status === 200) {
-                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
-                } else {
-                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
-                }
-            });
+            this.axios.post(uri, this.excelData)
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
+                        this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                    }
+                })
+                .catch((error) => {
+                    this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+                });
         },
 
         updateTroubledCompaniesByFactorOptions() {
