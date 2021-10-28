@@ -374,6 +374,16 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
@@ -487,6 +497,7 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {
