@@ -80,7 +80,7 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),                 
             'gdisCurrent' => $this->gdisCurrent($well),               
             'rzatr_atm' => $this->gdisCurrentValueOtp($well),  
-            'dinzamer' => $this->gdisCurrentValueFlvl($well),                   
+            'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),                   
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
