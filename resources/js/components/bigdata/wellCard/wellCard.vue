@@ -333,7 +333,9 @@ export default {
         'agms': {'name_ru': null},
         'well_equip_param': {'value_double': null, 'value_string': null, 'equip_param': null},
         'pump_code': {'value_double': null, 'value_string': null, 'equip_param': null},
-        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null}        
+        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'depth_nkt': {'value_double': null, 'value_string': null, 'equip_param': null},  
+        'type_sk': {'value_double': null, 'value_string': null, 'equip_param': null}         
       },
       wellParent: null,
       tubeNomOd: null,
@@ -396,7 +398,9 @@ export default {
         'agms': 'agms', 
         'well_equip_param': 'well_equip_param',
         'pump_code': 'pump_code',
-        'diametr_pump': 'diametr_pump'      
+        'diametr_pump': 'diametr_pump',
+        'depth_nkt': 'depth_nkt',
+        'type_sk': 'type_sk'     
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -527,7 +531,8 @@ export default {
      (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )         
      let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
      let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
-     let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : ''     
+     let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
+     let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''    
       this.well_passport = [
         {
           'name': this.trans('well.well'),
@@ -682,7 +687,7 @@ export default {
         },
         {
           'name': this.trans('well.sk'),
-          'data': '',
+          'data': type_sk,
           'type': ['dob_oil'],
           'exp': 1 // шгн
         },
@@ -717,7 +722,7 @@ export default {
         },
         {
           'name': this.trans('well.depth_down'),
-          'data': '',
+          'data': depth_nkt,
           'type': ['all']
         },
         {
