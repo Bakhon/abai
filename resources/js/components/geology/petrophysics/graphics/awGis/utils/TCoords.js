@@ -15,6 +15,7 @@ export default class TCoords {
 
     set setCanvas(canvas) {
         this.#canvas = canvas;
+        this.setParams();
     }
 
     get getCanvas() {
@@ -22,8 +23,8 @@ export default class TCoords {
     }
 
     set setOrigin(origin) {
-        this.#__settings.centerX = +origin.x || +origin[0] || +origin;
-        this.#__settings.centerY = +origin.y || +origin.x || +origin[1] || +origin[0] || +origin;
+        this.#__settings.centerX = origin.x === 'default' ? this.#__settings.width / 2 : +origin.x ?? +origin[0] ?? +origin;
+        this.#__settings.centerY = origin.y === 'default' ? this.#__settings.height / 2 : +origin.y ?? +origin.x ?? +origin[1] ?? +origin[0] ?? +origin;
     }
 
     set setOffsetY(offsetY) {

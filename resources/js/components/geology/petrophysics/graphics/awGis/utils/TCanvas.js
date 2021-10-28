@@ -23,6 +23,7 @@ export default class TCanvas {
     drawCurve(curve, {options, wellID}) {
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
         let coord = this.#tCoords;
+        coord.setOrigin = {y: 0, x: 'default'};
         let max = options.max[wellID];
         let min = options.min[wellID];
         ctx.save()
