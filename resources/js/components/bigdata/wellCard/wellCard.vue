@@ -525,7 +525,7 @@ export default {
       let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
       let main_org_code = this.well_all_data.main_org_code        
-      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.dmart_daily_prod_oil ? this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil :  ''         
+      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.dmart_daily_prod_oil ? this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1) :  ''         
       let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
       let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
       let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
