@@ -37,7 +37,7 @@
             >
                 <MglMarker
                         v-for="(coordinate, i)  in coordinates"
-                        :coordinates="[coordinate.Y, coordinate.X]"
+                        :coordinates="[coordinate.X, coordinate.Y]"
                         :key="i"
                 >
                     <div slot="marker">
@@ -96,7 +96,7 @@
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
-                                this.center = [this.coordinates[0].Y, this.coordinates[0].X]
+                                this.center = [this.coordinates[0].X, this.coordinates[0].Y]
                             } else {
                                 console.log('No data');
                             }
