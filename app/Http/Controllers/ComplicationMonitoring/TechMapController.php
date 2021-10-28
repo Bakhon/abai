@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexTableRequest;
+use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
@@ -25,6 +27,7 @@ use App\Services\DruidService;
 use App\Services\MapService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TechMapController extends Controller
 {
@@ -658,5 +661,17 @@ class TechMapController extends Controller
                 $pipe->save();
             }
         }
+    }
+
+    public function calculate (IndexTableRequest $request)
+    {
+        $job = new ManualCalculateHydroDynamics($request->validated());
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 }

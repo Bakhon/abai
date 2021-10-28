@@ -140,6 +140,21 @@
       <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu"/>
     </b-modal>
 
+    <b-modal
+        size="sm"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="calc-form"
+        :title="trans('monitoring.map.calculate-hydro')"
+        :ok-only="true"
+        @ok="resetSelectedObjects()"
+    >
+      <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
+    </b-modal>
+
     <div v-show="false">
       <gu-tool-tip ref="guToolTip" :gu="objectHovered"/>
       <well-tool-tip ref="wellToolTip" :well="objectHovered"/>
@@ -171,6 +186,7 @@ import guOmgNgduForm from "./guOmgNgduForm"
 import zuOmgNgduForm from "./zuOmgNgduForm"
 import turfLength from '@turf/length';
 import {lineString as turfLineString} from "@turf/helpers";
+import calcForm from "./calcForm";
 
 export default {
   name: "tech-map",
@@ -186,7 +202,8 @@ export default {
     pipeLongInfo,
     wellOmgNgduForm,
     guOmgNgduForm,
-    zuOmgNgduForm
+    zuOmgNgduForm,
+    calcForm
   },
   data() {
     return {
@@ -248,7 +265,8 @@ export default {
       selectedPipe: null,
       selectedWell: null,
       selectedGu: null,
-      selectedZu: null
+      selectedZu: null,
+      calcAlerts: []
     };
   },
   created() {
@@ -730,14 +748,25 @@ export default {
       this.$bvModal.show('pipe-calc-modal');
     },
     onShowOmgNgduWellForm(option) {
+      this.selectedGu = null;
+      this.selectedZu = null;
       this.selectedWell = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
     onShowOmgNgduGuForm(option) {
+      this.selectedZu = null;
+      this.selectedWell = null;
       this.selectedGu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
+    onShowCalcForm(option) {
+      this.calcAlerts = [];
+      this.selectedGu = option.mapObject.object;
+      this.$bvModal.show('calc-form');
+    },
     onShowOmgNgduZuForm(option) {
+      this.selectedGu = null;
+      this.selectedWell = null;
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
@@ -1290,6 +1319,51 @@ export default {
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
+    },
+    calcualteHydroDinamycs(date) {
+      console.log('date', date);
+      this.SET_LOADING(true);
+      this.axios.post(this.localeUrl("/tech-map/calculate"), {gu_id: this.selectedGu.id, date}).then((response) => {
+        let interval = setInterval(() => {
+          this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
+            if (response.data.job.status === 'finished') {
+              this.calcAlerts = [];
+              clearInterval(interval)
+              let isError = false;
+
+              if (response.data.job.output) {
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
+                  isError = true;
+                }
+
+                if (response.data.job.output.alerts) {
+                  this.calcAlerts = response.data.job.output.alerts;
+                  isError = true;
+                }
+              }
+
+              this.SET_LOADING(false);
+
+              if (!isError) {
+                this.selectedDate = date;
+                this.activeFilter = 'speedFlow';
+                this.$bvModal.hide('calc-form');
+                this.applyFilter();
+              }
+            } else if (response.data.job.status === 'failed') {
+              this.SET_LOADING(false);
+              clearInterval(interval)
+              alert(this.trans('monitoring.map.calculate_error'))
+            }
+          })
+        }, 2000)
+      })
+          .catch((error) => this.showToast(error, this.trans('app.error'), 'danger'))
+          .finally(() => {
+            this.SET_LOADING(false);
+          });
+
     }
   }
 }
