@@ -58,13 +58,12 @@
                 <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
             </div>
             <div class="analyticsBlock">
-                <p class="num"><span>14251</span>метров</p>
+                <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
                 <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
             </div>
             <div class="operatingCosts">
                 <div class="operatingCosts-title">
-                    Затраты на эксплуатационное
-                    бурение по ЭМГ
+                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
                 </div>
                 <div class="operatingCosts-statistics">
                     <div class="operatingCosts-single" v-for="costs in operatingCosts">
@@ -80,7 +79,7 @@
                             </div>
                         </div>
                         <div class="operatingCosts-single-tg">
-                            тыс.тг.
+                            {{ trans('digital_drilling.default.thousands_tenge') }}
                         </div>
                     </div>
                 </div>

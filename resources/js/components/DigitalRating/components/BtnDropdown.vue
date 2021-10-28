@@ -9,7 +9,7 @@
     </div>
     <div class="dropdown-menu btn-dropdown__area">
       <ul class="btn-dropdown__area-list">
-        <li v-for="(item, index) in list" :key="index">
+        <li v-for="(item, index) in list" :key="index" @click="$emit('select', item)">
           <i :class="`fas fa-${item.icon}`"/>
           <span>{{ item.title ? trans(item.title) : trans(item) }}</span>
         </li>

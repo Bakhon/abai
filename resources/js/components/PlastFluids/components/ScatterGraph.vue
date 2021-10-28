@@ -1,30 +1,39 @@
 <template>
-  <div class="scatter-graph">
-    <div class="scatter-graph-header">
-      <p>{{ title }}</p>
-      <div class="scatter-graph-toolbar">
-        <img
-          @click.stop="isApproximationOpen = true"
-          src="/img/PlastFluids/settings.svg"
-          alt="customize graph"
-        />
-        <img
-          src="/img/PlastFluids/download.svg"
-          @click="saveToPng"
-          width="14"
-          height="14"
-        />
-        <img src="/img/PlastFluids/openModal.svg" width="14" />
+  <div :class="isFullScreen ? 'fullscreen' : 'scatter-graph'">
+    <div
+      :class="isFullScreen ? 'fullscreen-graph' : 'graph-content-wrapper'"
+      v-click-outside="exitFullScreen"
+    >
+      <div class="scatter-graph-header">
+        <p>{{ title }}</p>
+        <div class="scatter-graph-toolbar">
+          <img
+            @click.stop="isApproximationOpen = true"
+            src="/img/PlastFluids/settings.svg"
+            alt="customize graph"
+          />
+          <img
+            src="/img/PlastFluids/download.svg"
+            @click.stop="saveToPng"
+            width="14"
+            height="14"
+          />
+          <img
+            @click.stop="isFullScreen = true"
+            src="/img/PlastFluids/openModal.svg"
+            width="14"
+          />
+        </div>
       </div>
-    </div>
-    <div class="graph-holder">
-      <ApexCharts
-        ref="scatterGraph"
-        :options="chartOptions"
-        :series="graphSeries"
-        :type="type"
-        height="100%"
-      ></ApexCharts>
+      <div class="graph-holder">
+        <ApexCharts
+          ref="scatterGraph"
+          :options="chartOptions"
+          :series="graphSeries"
+          :type="type"
+          height="100%"
+        ></ApexCharts>
+      </div>
     </div>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
@@ -35,7 +44,7 @@
       :maxX="maxXAxisBorder"
       :minY="minYAxisBorder"
       :maxY="maxYAxisBorder"
-      @close-approximation="isApproximationOpen = false"
+      @close-approximation="closeApproximation"
       @get-approximation="getApproximation"
     />
     <BaseModal
@@ -73,6 +82,7 @@ export default {
   data() {
     return {
       type: "scatter",
+      isFullScreen: false,
       isApproximationOpen: false,
       isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
@@ -288,6 +298,12 @@ export default {
     },
   },
   methods: {
+    exitFullScreen() {
+      this.isFullScreen = false;
+    },
+    closeApproximation() {
+      this.isApproximationOpen = false;
+    },
     comparePositives(max, min) {
       return Math.abs(max) > Math.abs(min);
     },
@@ -602,6 +618,32 @@ export default {
   overflow: auto;
 }
 
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+}
+
+.fullscreen-graph {
+  width: 80%;
+  height: 80%;
+  padding: 0;
+  min-height: 0;
+}
+
+.graph-content-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
 .graph-holder {
   width: 100%;
   height: calc(100% - 30px);
@@ -627,6 +669,7 @@ export default {
   align-items: center;
   background-color: #323370;
   height: 30px;
+  width: 100%;
   padding: 0 10px;
 }
 

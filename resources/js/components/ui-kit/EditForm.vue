@@ -117,9 +117,6 @@ export default {
   computed: {
     _() {
       return _;
-    },
-    test () {
-      return this.$v;
     }
   },
   watch: {
