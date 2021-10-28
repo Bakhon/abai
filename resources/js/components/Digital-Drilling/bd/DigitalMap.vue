@@ -8,7 +8,7 @@
                 </div>
                 <div class="all-graph" @click="allGraphModal=true">
                     <img src="/img/digital-drilling/all-graph.svg" alt="">
-                    <span>ОБЩИЙ ГРАФИК БУРЕНИЯ</span>
+                    <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
                 </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">

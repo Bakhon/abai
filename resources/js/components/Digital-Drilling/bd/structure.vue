@@ -5,7 +5,7 @@
                 <tbody>
                 <tr>
                     <th>{{ trans('digital_drilling.structure.column_view') }}</th>
-                    <th>Номинальный диаметр</th>
+                    <th>{{ trans('digital_drilling.default.nominal_diameter') }}</th>
                     <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
                     <th>{{ trans('digital_drilling.structure.number_pipes') }}</th>
                     <th>{{ trans('digital_drilling.structure.column_running_interval_from') }}</th>

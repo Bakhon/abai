@@ -3,9 +3,9 @@
         <table class="table defaultTable">
             <tbody>
                 <tr>
-                    <th>№ суточного рапорта</th>
+                    <th>{{ trans('digital_drilling.default.daily_report_number') }}</th>
                     <th>Дата</th>
-                    <th class="raport">Суточный рапорт</th>
+                    <th class="raport">{{ trans('digital_drilling.default.daily_report') }}</th>
                     <th></th>
                 </tr>
                 <tr v-for="report in reports" v-if="reports.length>0">

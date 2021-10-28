@@ -18,16 +18,16 @@
                             <th colspan="10">Факт</th>
                         </tr>
                         <tr>
-                            <th>Глубина по стволу, м</th>
-                            <th>Зенитный угол, гр°</th>
-                            <th>Дирекционный азимут, гр°</th>
-                            <th>Глубина по вертикали, м</th>
-                            <th>Интенсивность искривления, гр°/30м</th>
-                            <th>Интенсивность набора угла.</th>
-                            <th>Интенсивность разворота</th>
-                            <th>Север / Юг , м</th>
-                            <th>Восток / Запад , м</th>
-                            <th>Горизонтальное смещение, м</th>
+                            <th>{{trans("digital_drilling.inclino.measured_depth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.inclination_angle")}}</th>
+                            <th>{{trans("digital_drilling.inclino.directional_azimuth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.true_vertical_depth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.dogleg_severity")}}</th>
+                            <th>{{trans("digital_drilling.inclino.build_up_rate")}}</th>
+                            <th>{{trans("digital_drilling.inclino.turn_rate")}}</th>
+                            <th>{{trans("digital_drilling.inclino.North_South")}}</th>
+                            <th>{{trans("digital_drilling.inclino.East_West")}}</th>
+                            <th>{{trans("digital_drilling.inclino.horizontal_displacement")}}</th>
                         </tr>
                         <tr v-for="item in inclino ">
                             <td>{{item.Measured_Depth}}</td>
@@ -51,7 +51,7 @@
                         :class="{not_active: !d2_Show}"
                     >
                         <div class="inc__2d-title">2D</div>
-                        <div class="inc__2d-name">окно</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
                         <div class="inc__2d-close" v-if="d2_Show">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
@@ -60,7 +60,7 @@
                          :class="{not_active: !d3_Show}"
                     >
                         <div class="inc__2d-title">3D</div>
-                        <div class="inc__2d-name">окно</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
                         <div class="inc__2d-close" v-if="d3_Show">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
@@ -73,16 +73,16 @@
                 >
                     <div class="inc__charts-left" v-if="d2_Show">
                         <div class="inc__charts-left-graph">
-                            <div class="inc__charts-name">Вид сбоку</div>
+                            <div class="inc__charts-name">{{trans("digital_drilling.default.side_view")}}</div>
                             <apexchart height="500" :options="chartOptions" :series="series" v-if="series[0].data.length>0"></apexchart>
                         </div>
                         <div class="inc__charts-left-graph">
-                            <div class="inc__charts-name">Вид сверху</div>
+                            <div class="inc__charts-name">{{trans("digital_drilling.default.view_from_above")}}</div>
                             <apexchart height="500" :options="chartOptionsAbove" :series="seriesAbove" v-if="seriesAbove[0].data.length>0"></apexchart>
                         </div>
                     </div>
                     <div class="inc__charts-right" v-if="d3_Show">
-                        <div class="inc__charts-name">Трехмерный вид</div>
+                        <div class="inc__charts-name">{{trans("digital_drilling.default.3D_view")}}</div>
                         <apexchart height="700" :options="chartOptions" :series="series"></apexchart>
                     </div>
                 </div>
