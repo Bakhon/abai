@@ -1,9 +1,10 @@
 <template>
-  <div class="scatter-graph-approximation">
-    <div
-      class="approximation-content-holder"
-      v-click-outside="closeApproximation"
-    >
+  <div
+    ref="approximation"
+    class="scatter-graph-approximation"
+    @click="closeApproximation"
+  >
+    <div class="approximation-content-holder">
       <div class="approximation-header">
         <p>{{ trans("plast_fluids.trendline_format") }}</p>
         <button @click="$emit('close-approximation')">
@@ -366,8 +367,10 @@ export default {
       if (Number(e.target.value) < this.minY) this.intersection = this.minY;
       if (Number(e.target.value) > this.maxY) this.intersection = this.maxY;
     },
-    closeApproximation() {
-      this.$emit("close-approximation");
+    closeApproximation(e) {
+      e.stopPropagation();
+      if (e.target.innerHTML === this.$refs.approximation.innerHTML)
+        this.$emit("close-approximation");
     },
     async drawApproximation() {
       const emitData = {};
@@ -438,7 +441,7 @@ export default {
         this.$emit("get-approximation", emitData);
         this.resetState();
         this.alreadyExists = false;
-        this.closeApproximation();
+        this.$emit("close-approximation");
       } else {
         this.alreadyExists = true;
         this.baseModalOpen = true;
