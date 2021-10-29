@@ -168,10 +168,15 @@ class Gdis extends PlainForm
                 }
             }
 
+            $researchResults = [];
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
+                $field = $this->getFields()->where('code', $value->code)->first();
+                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_string;
                 $row->{$value->code} = $value->value_string;
             }
+
+            $row->research_results = implode(', ', $researchResults);
 
             return $row;
         });
