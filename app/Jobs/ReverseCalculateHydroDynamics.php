@@ -2,12 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Exports\ManualCalculateExportCalc;
-use App\Exports\PipeLineCalcExport;
 use App\Exports\PipeLineReverseCalcExport;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Carbon\Carbon;
