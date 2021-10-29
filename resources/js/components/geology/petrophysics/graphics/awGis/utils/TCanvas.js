@@ -21,11 +21,17 @@ export default class TCanvas {
     }
 
     drawCurve(curve, {options, options: {customParams}, wellID}) {
+        console.log(customParams, customParams.direction)
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
-        let coord = this.#tCoords;
+        let coord = this.#tCoords, max, min;
 
-        let min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
-        let max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
+        let minValue = min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
+        let maxValue = max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
+
+        if(customParams?.direction&&customParams.direction.value === "reverse"){
+            max = minValue;
+            min = maxValue;
+        }
 
         ctx.save();
         ctx.beginPath();

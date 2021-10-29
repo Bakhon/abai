@@ -7,7 +7,7 @@
       <AwIcon width="20" height="20" name="loading" v-else/>
     </Button>
     <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target customScroll">
-      <button :disabled="disabled" @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
+      <button v-bind="$attrs" :disabled="disabled" @click="selectOption(option, $event)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
         {{ option.label || option.value  }}
       </button>
       <slot />
@@ -79,7 +79,9 @@ export default {
     closeDropDown() {
       this.dropDownOpened = false
     },
-    selectOption(option) {
+    selectOption(option, e) {
+      console.log(this.cSelected, option, this.$attrs, e);
+      if(this.cSelected.value !== option.value) this.$emit('change', option.value, e, option)
       this.cSelected = option;
       this.closeDropDown();
     }

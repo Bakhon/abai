@@ -26,24 +26,29 @@
                     <input type="checkbox" class="mr-2" name="min" @change="setToggleUsageProperty">
                     <span>Min value</span>
                   </label>
-                  <AwInput type="number" class="w-100" prop-name="min" @change="setValueProperty"/>
+                  <AwInput type="number" class="w-100" prop-name="min" @change="setValueProperty" />
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
                     <input type="checkbox" class="mr-2" name="max" @change="setToggleUsageProperty">
                     <span>Max value</span>
                   </label>
-                  <AwInput type="number" class="w-100" prop-name="max" @change="setValueProperty"/>
+                  <AwInput type="number" class="w-100" prop-name="max" @change="setValueProperty" />
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
                     <span>Direction</span>
                   </label>
-                  <dropdown class="w-100" button-text="Выбрать" :options="[
-                  {label: 'option 1', value: 1},
-                  {label: 'option 2', value: 2},
-                  {label: 'option 3', value: 3}
-                ]" />
+                  <dropdown
+                      @change="setValueProperty"
+                      prop-name="direction"
+                      class="w-100"
+                      button-text="Выбрать"
+                      :options="[
+                        {label: 'Normal', value: 'normal'},
+                        {label: 'Reverse', value: 'reverse'}
+                      ]"
+                  />
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
@@ -118,8 +123,9 @@ export default {
       this.$store.commit(SET_CURVE_OPTIONS, [name, {use: checked}])
     },
     setValueProperty(value, e) {
+      console.log(arguments)
       let name = e.target.getAttribute('prop-name');
-      this.$store.commit(SET_CURVE_OPTIONS,[name, {value}])
+      this.$store.commit(SET_CURVE_OPTIONS, [name, {value}])
     }
   }
 }
