@@ -55,11 +55,20 @@
                     <input type="checkbox" class="mr-2">
                     <span>Max Wrap</span>
                   </label>
-                  <dropdown class="w-100" button-text="Выбрать" disabled :options="[
-                  {label: 'option 1', value: 1},
-                  {label: 'option 2', value: 2},
-                  {label: 'option 3', value: 3}
-                ]" />
+                  <dropdown
+                      class="w-100"
+                      button-text="Выбрать"
+                      @change="setValueProperty"
+                      prop-name="dash"
+                      :options="[
+                        {label: 'Normal', value: []},
+                        {label: 'Dash 1', value: [1, 1]},
+                        {label: 'Dash 2', value: [10, 10]},
+                        {label: 'Dash 3', value: [20, 5]},
+                        {label: 'Dash 4', value: [15, 3,3,3]},
+                        {label: 'Dash 5', value: [20, 3, 3, 3, 3, 3, 3, 3]},
+                      ]"
+                  />
                 </div>
               </div>
 
@@ -123,7 +132,6 @@ export default {
       this.$store.commit(SET_CURVE_OPTIONS, [name, {use: checked}])
     },
     setValueProperty(value, e) {
-      console.log(arguments)
       let name = e.target.getAttribute('prop-name');
       this.$store.commit(SET_CURVE_OPTIONS, [name, {value}])
     }

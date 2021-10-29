@@ -27,25 +27,30 @@ export default class TCanvas {
         let minValue = min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
         let maxValue = max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
 
-        if(customParams?.direction&&customParams.direction.value === "reverse"){
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
+
+        if (customParams?.dash && customParams.dash.value) {
+            ctx.setLineDash(customParams.dash.value);
+        }
+
+        if (customParams?.direction && customParams.direction.value === "reverse") {
             max = minValue;
             min = maxValue;
         }
 
-        ctx.save();
-        ctx.beginPath();
-
         for (const c of curve) {
             if (c !== null) {
-                ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
                 ctx.lineTo(coord.percentPositionX(c, max, min), coord.positionY(y));
                 lastX = c
             } else {
-                ctx.moveTo(coord.percentPositionX(0, max, min), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(y));
             }
             lastY = y
             y++
         }
+
         ctx.stroke();
         ctx.restore();
     }
