@@ -79,7 +79,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   flex-flow: column;
-  height: 799px;
+  height: 865px;
   background: #272953;
   color: #fff;
 }

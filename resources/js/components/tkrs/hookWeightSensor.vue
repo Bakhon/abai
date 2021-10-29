@@ -6,19 +6,75 @@
         
         <div class="tkrs-content">
             <div>
+                <div class="hws-header">
+                  <div class="hws-header-info">
+                    <img class="hws-tab-img"
+                    src="/img/tkrs/back.svg"
+                    />
+                    
+                    <a class="hws-header-info-name back-icon"><img class="hws-tab-img"
+                    src="/img/tkrs/brigada_table.svg"
+                    />Бригада №11</a>
+                    <a class="hws-header-info-name">Месторождение: 0</a>
+                    <a class="hws-header-info-name">Скважина: 417</a>
+                    <img class="hws-tab-img comp-charts-icon"
+                    src="/img/tkrs/comparison-charts.svg"
+                    />
+                  </div>
+                  <div class="calendar">
+                    <a class="hws-header-info-name">Дата:</a>
+                    <input type="date" class="form-control calendar-input" style="background: #333975 !important;" v-model="calendarDate" />
+                    <button  v-on:click="chooseDate" class="calendar-form">Сформировать</button>
+                  </div>
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle input-form-dropdown calendar-form"  
+                    type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false">Датчик силы
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                  <button class="calendar-form">Анализ ПВ/НПВ</button>
+                  
+                </div>
                 <Plotly :data="areaChartData" :displaylogo="false" 
                 :layout="layout" :display-mode-bar="true" 
-                :mode-bar-buttons-to-remove="buttonsToRemove"></Plotly>
+                :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
                 <div>
-                    <ul class="nav nav-tabs all-tabs">
+                    <div class="nav nav-tabs all-tabs">
+                      <div style="display:flex">
                         <li class="nav-item">
-                            <a class="nav-link active tab-header" @click="selectTab(1)" href="#">События</a>
+                            <a class="nav-link active tab-header" 
+                            @click="selectTab(1)" href="#">
+                            <img class="hws-tab-img"
+                              src="/img/tkrs/event.svg"
+                              
+                            /><a>События</a></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link tab-header " @click="selectTab(2)" href="#">Превышения</a>
+                            <a class="nav-link tab-header " 
+                            @click="selectTab(2)" href="#">
+                            <img class="hws-tab-img"
+                              src="/img/tkrs/excess.svg"
+                              
+                            /><a>Превышения</a></a>
                         </li>
-                        
-                    </ul>
+                      </div>
+                        <div class="header-hide-expand-buttons">
+                          <button @click="cancelChat()">
+                            <img
+                              src="/img/PlastFluids/tableArrow.svg"
+                              
+                            /></button
+                          ><button @click="returnChat()">
+                            <img src="/img/PlastFluids/tableArrow.svg" />
+                          </button>
+                        </div>
+                       
+                    </div>
 
                   <div v-if="currentTab == 1">
                       <event></event>
@@ -27,6 +83,8 @@
                   <div v-if="currentTab == 2">
                       <excess></excess>
                   </div>
+
+                  
 
 
                 </div>
@@ -64,8 +122,6 @@ export default {
   data(){
     return {
       currentTab: 1,
-      fields: ['№', 'Начало', 'Конец', 'Продолжительность', 'Количество превышений', 'Событие'],
-      items: [['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '], ['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг ']],
       calendarDate: '2020-06-17',
       Date1: null,
       areaChartData: [],
@@ -77,26 +133,51 @@ export default {
         'autoScale2d',
       ],
       layout: {
+        shapes: [{
+          type: 'line',
+      x0: '2020-06-18 00:00:00',
+      y0: 14,
+      x1: '2020-06-18 23:59:00',
+      y1: 14,
+      line: {
+        color: '#EF5350',
+        width: 2,
+        dash: 'dashdot'
+          }
+        },
+        {
+          type: 'line',
+      x0: '2020-06-18 00:00:00',
+      y0: 12,
+      x1: '2020-06-18 23:59:00',
+      y1: 12,
+      line: {
+        color: '#D77D2A',
+        width: 2,
+        dash: 'dashdot'
+          }
+        }],
+        width: 1550,
+        height: 600,
         paper_bgcolor: "#272953",
         plot_bgcolor: "#272953",
         xaxis: {
           color: "#FFFFFF",
-          
+          title: 'Время',
+          range: ['2020-06-18 00:00:00', '2020-06-18 23:59:00'],
+          type: 'date',
           rangeslider: true,
         
         },
         yaxis: {
+          title: 'W (TC)',
           color: "#FFFFFF",
           linecolor: "#EF5350",
         },
-        
-        
-  
-      
-       
-       
+   
     
       },
+      isChart: true,
     }
   },
   created: async function () {
@@ -104,7 +185,7 @@ export default {
     console.log("TEST")  
     await this.axios
       .get(
-          'http://172.20.103.203:8090/db/17/6/2020/'
+          'http://172.20.103.203:8090/db1/'
         )
       .then((response) => {
         console.log("TEST2")  
@@ -125,9 +206,16 @@ export default {
     },
   
   methods: {
+    cancelChat() {
+        this.isChart = false;
+    },
+    returnChat() {
+      this.isChart = true;
+    },
+    
     selectTab(selectedTab) {
             this.currentTab = selectedTab
-        },
+    },
     chooseDate() {
       const { calendarDate} = this;
       var Date1 = new Date(calendarDate)
@@ -166,6 +254,7 @@ export default {
   display: flex;
   width: 100%;
   height: calc(100vh - 143px);
+  padding-left: 5px;
 }
 table {
   color: white;
@@ -176,6 +265,10 @@ table, th, td {
 }
 .all-tabs {
   background: #323370;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
 }
 .tab-header {
   color: white !important;
@@ -189,7 +282,65 @@ table, th, td {
 
 .js-plotly-plot .plotly .modebar {
     position: absolute;
-    top: 16px;
+    top: 22px;
     right: 2px;
+}
+.header-hide-expand-buttons {
+  width: 42px;
+  border: 1px solid #545580;
+  border-radius: 4px;
+  margin-left: 4px;
+  height: 100%;
+}
+
+.header-hide-expand-buttons > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  border: 1px solid #545580;
+  background-color: #333975;
+}
+
+.header-hide-expand-buttons > button:nth-of-type(2) > img {
+  transform: rotate(180deg);
+}
+.hws-tab-img {
+  padding-right: 6px;
+}
+.hws-header {
+  background: #323370;
+  width: 100%;
+  height: 37px;
+  display: flex;
+  justify-content: space-between;
+}
+.hws-header-info {
+  padding-top: 7px;
+}
+.calendar {
+  display: flex;
+}
+.hws-header-info-name {
+  color: #ffff;
+  padding-left: 53px;
+  padding-top: 7px;
+}
+.back-icon {
+  padding-left: 3px;
+}
+.calendar-form {
+  background: #20274F;
+  border: none;
+  color: #ffff;
+  padding-left: 14px;
+  height: 33px
+}
+.calendar-input {
+  color: #ffff;
+}
+.comp-charts-icon {
+  padding-left: 22px;
 }
 </style>
