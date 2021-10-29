@@ -1,48 +1,15 @@
 import moment from "moment-timezone";
-import planRowEmg from "../dzoData/plan_rows_emg.json";
-import planRowYo from "../dzoData/plan_rows_yo.json";
-import planRowKbm from "../dzoData/plan_rows_kbm.json";
-import planRowKoa from "../dzoData/plan_rows_koa.json";
-import planRowKtm from "../dzoData/plan_rows_ktm.json";
-import planRowMmg from "../dzoData/plan_rows_mmg.json";
-import planRowOmg from "../dzoData/plan_rows_omg.json";
-import planRowKgm from "../dzoData/plan_rows_kgm.json";
-import planRowAg from "../dzoData/plan_rows_ag.json";
-import planRowPkk from "../dzoData/plan_rows_pkk.json";
 
 export default {
     data: function () {
         return {
-            planDzoMapping : {
-                "КОА" : planRowKoa,
-                "КТМ" : planRowKtm,
-                "КБМ" : planRowKbm,
-                "ММГ" : planRowMmg,
-                "ОМГ" : planRowOmg,
-                "УО" : planRowYo,
-                "ЭМГ" : planRowEmg,
-                "КГМ" : planRowKgm,
-                "АГ" : planRowAg,
-                "ПКК" : planRowPkk,
-                "ТП" : planRowPkk,
-                "КПО" : planRowPkk,
-                "НКО" : planRowPkk,
-                "ПКИ" : planRowPkk,
-                "ТШО" : planRowPkk,
-            },
-            planColumns: [],
-            planRows: _.cloneDeep(planRowEmg),
-            plans: [],
-            currentPlan: {
-                rows: [],
-                cells: [],
-                columns: [],
-                year: moment()
-            },
-            outputPlans: [],
-            isPlanValidateError: false,
-            isPlanFilled: false,
-            planCompanies: [
+            monthColumns: [],
+            monthRows: [],
+            monthFact: [],
+            outputFixed: [],
+            isOutputValidateError: false,
+            isOutputFilled: false,
+            monthCompanies: [
                 {
                     ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"'
@@ -104,10 +71,14 @@ export default {
                     name: 'ТОО "Тенгизшевройл"'
                 },
             ],
+            companiesWithCondensate: ['КОА','ОМГ','АГ'],
+            companiesWithOil: ['КОА','ОМГ','ТШО','ПКИ','НКО','КПО','ТП','ПКК','КГМ','УО','ММГ','КБМ','КТМ','ЭМГ'],
+            monthColumnsCount: 5,
+            monthDate: moment()
         };
     },
     methods: {
-        async getDzoPlans() {
+        async getDzoFactByPeriod() {
             let uri = this.localeUrl("/get-plans-by-dzo");
             let queryOptions = {
                 'dzo': this.selectedDzo.ticker,
@@ -119,8 +90,8 @@ export default {
             }
             return [];
         },
-        fillPlanColumns() {
-            for (let i=1;i<=13;i++) {
+        fillMonthColumns() {
+            for (let i=1;i<=this.monthColumnsCount;i++) {
                 let backgroundColor = '';
                 let color = 'black';
                 let size = 200;
@@ -145,36 +116,43 @@ export default {
                         };
                     },
                 };
-                this.currentPlan.columns.push(column);
+                this.monthColumns.push(column);
             }
         },
-        fillPlanRows() {
-            this.currentPlan.rows = [];
+        fillMonthRows() {
+            this.monthRows = [];
             let header = {
-                "column1": "Показатель",
-                "column2": 'Январь',
-                "column3": 'Февраль',
-                "column4": 'Март',
-                "column5": 'Апрель',
-                "column6": 'Май',
-                "column7": 'Июнь',
-                "column8": 'Июль',
-                "column9": 'Август',
-                "column10": 'Сентябрь',
-                "column11": 'Октябрь',
-                "column12": 'Ноябрь',
-                "column13": 'Декабрь',
+                "column1": "Дата"
             };
-            this.currentPlan.rows.push(header);
-            for (let y in this.planRows) {
+            if (this.companiesWithOil.includes(this.selectedDzo.ticker)) {
+                header['column2'] = 'Добыча нефти';
+                header['column3'] = 'Сдача нефти';
+            }
+            if (this.companiesWithCondensate.includes(this.selectedDzo.ticker)) {
+                let currentIndex = Object.keys(header).length + 1;
+                header['column'+(Object.keys(header).length + 1)] = 'Добыча конденсата';
+                header['column'+(Object.keys(header).length + 1)] = 'Сдача конденсата';
+            }
+            this.monthColumnsCount = (Object.keys(header).length + 1);
+            console.log(this.monthColumnsCount);
+            console.log(header);
+            this.monthRows.push(header);
+            let currentDate = moment();
+            let daysCount = currentDate.subtract(1,'days').date();
+            if (currentDate.date() <= 10) {
+                currentDate = currentDate.subtract(1,'month').startOf('month');
+                daysCount = currentDate.daysInMonth();
+            }
+
+            for (let i=1;i<=daysCount;i++) {
                 let row = {
-                    'column1': y
+                    'column1': currentDate.date(i).format('DD.MM.YYYY')
+                };
+                for (let y=2; y < this.monthColumnsCount; y++) {
+                    row['column'+y] = 0;
                 }
-                for (let i=2;i<=13;i++) {
-                    row['column'+i] = 0;
-                }
-                row['fieldName'] = this.planRows[y];
-                this.currentPlan.rows.push(row);
+                //row['fieldName'] = this.planRows[y];
+                this.monthRows.push(row);
             }
         },
         handlePlans() {
@@ -230,7 +208,7 @@ export default {
             this.isPlanFilled = false;
             this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
         },
-        beforePlanEdit(e) {
+        beforeMonthEdit(e) {
             let cell = e.detail;
             let rowIndex = cell.rowIndex;
             let colIndex = cell.prop.replace(/\D/g, "") - 1;
@@ -242,7 +220,7 @@ export default {
                 this.isPlanValidateError = true;
             }
         },
-        beforePlanRangeEdit(e) {
+        beforeMonthRangeEdit(e) {
             let cellOptions = e.detail.data;
             if (!cellOptions) {
                 return;
@@ -262,53 +240,13 @@ export default {
             }
             e.detail.data[row][columnName] = value;
         },
-        disableErrorHighlight(row,col) {
-            this.removeClassFromElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
+        disableErrorHighlightByMonth(row,col) {
+            this.removeClassFromElement($('#monthGrid').find('div[data-row="' + row + '"][data-col="' + col + '"]'),'cell__color-red');
         },
-        async handleYearChange() {
-            this.currentPlan.year = moment(this.currentPlan.year);
-            this.SET_LOADING(true);
-            this.plans = await this.getDzoPlans();
-            if (this.plans.length > 0) {
-                this.handlePlans();
-            } else {
-                this.fillPlanRows();
+        disableColumnHighlightByMonth() {
+            for (let i=1; i <=this.monthColumnsCount; i++) {
+                this.removeClassFromElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
             }
-            document.querySelector('#planGrid').refresh('all');
-            this.SET_LOADING(false);
-        },
-        async switchDzo(e) {
-            this.SET_LOADING(true);
-            this.selectedDzo.ticker = e.target.value;
-            this.selectedDzo.name = this.getCompanyName();
-            if (this.category.isPlanActive) {
-                this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
-                this.fillPlanRows();
-                this.plans = await this.getDzoPlans();
-                this.handlePlans();
-                document.querySelector('#planGrid').refresh('all');
-            } else if (this.category.isCloseMonthActive) {
-                this.disableColumnHighlightByMonth();
-                this.monthColumnsCount = (Object.keys(this.monthRows[0]).length + 1);
-                this.fillMonthRows();
-                for (let i=0; i < (this.monthColumnsCount-1); i++) {
-                   // console.log(this.monthColumnsCount)
-                    this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
-                }
-                document.querySelector('#monthGrid').refresh('all');
-            }
-
-            this.SET_LOADING(false);
-        },
-        getCompanyName() {
-            let dzoName = '';
-            let self = this;
-            _.forEach(this.planCompanies, function(dzo) {
-                if (dzo.ticker === self.selectedDzo.ticker) {
-                    dzoName = dzo.name;
-                }
-            });
-            return dzoName;
-        },
+        }
     }
 }
