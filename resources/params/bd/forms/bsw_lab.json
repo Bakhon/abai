@@ -3,7 +3,7 @@
   "table": "prod.bsw_lab",
   "sort": [
     {
-      "field": "insert_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -16,7 +16,7 @@
             "title": "main",
             "items": [
               {
-                "code": "insert_date",
+                "code": "dbeg",
                 "type": "date",
                 "title": "data",
                 "validation": "required"
