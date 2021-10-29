@@ -15,6 +15,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
+
 class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
@@ -129,6 +130,11 @@ class Well extends TBDModel
         return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
     }
 
+    public function dmartDailyProd()
+    {
+        return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -163,6 +169,11 @@ class Well extends TBDModel
     {
         return $this->hasMany(Gis::class, 'well', 'id');
     }
+
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
 
     public function zone()
     {

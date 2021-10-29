@@ -299,6 +299,13 @@ export default {
       ) {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
+        if (column.multiple) {
+          return row[column.code].map(itemId => {
+            let value = dict.find(dictItem => dictItem.id === itemId)
+            return value.name || value.label
+          }).join(', ')
+        }
+
         let value = dict.find(dictItem => dictItem.id === row[column.code])
 
         if (!value) return null
@@ -367,6 +374,16 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
@@ -480,6 +497,7 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {

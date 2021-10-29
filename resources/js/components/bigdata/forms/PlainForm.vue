@@ -385,6 +385,10 @@ export default {
 
       let isShowField = true
       field.depends_on.forEach(dependency => {
+        if (dependency.value === false && !this.formValues[dependency.field]) {
+          return;
+        }
+
         if (this.formValues[dependency.field] !== dependency.value) {
           isShowField = false
         }
