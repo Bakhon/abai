@@ -11,10 +11,6 @@
                         <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
                         <input type="text">
                     </div>
-                    <div class="daily_raport_block-header-input">
-                        <label for="">{{trans('digital_drilling.daily_raport.page')}}</label>
-                        <input type="text">
-                    </div>
                 </div>
                 <div class="daily_raport_block-header-center">
                     {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
@@ -1155,124 +1151,49 @@
                             <td colspan="2">0,00</td>
                         </tr>
                         <tr>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2">0,00</td>
-                        </tr>
-                        <tr>
                             <td colspan="5" class="bg">{{trans('digital_drilling.daily_raport.solution_cleaning_system')}}</td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.centrifuge_operating_hours')}}</td>
                             <td colspan="2"><input type="text"></td>
-                            <td colspan="7">{{trans('digital_drilling.daily_raport.total_length_drill_string')}} </td>
-                            <td colspan="2">0,00</td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №1</td>
-                            <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №2</td>
                             <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №3</td>
-                            <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.sand_separator_work_hour')}}</td>
                             <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.sludge_separator_work_hour')}}</td>
-                            <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.dispenser_hour')}}</td>
                             <td colspan="2"><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td colspan="2"></td>
-                            <td colspan="3"></td>
-                            <td colspan="2"></td>
-                            <td v-for="i in 4"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <table >
+                <table class="tables table defaultTable">
+                    <thead>
+                    <tr>
+                        <th colspan="19">
+                            {{trans('digital_drilling.daily_raport.removal_solid_liquid_phase')}}
+                        </th>
+
+                    </tr>
+                    </thead>
                     <tbody>
-                        <tr>
-                            <td colspan="3"><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td colspan="7">{{trans('digital_drilling.daily_raport.total_length_drill_string_kelly')}}</td>
-                            <td colspan="2">0.00</td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="7">
-                                {{trans('digital_drilling.daily_raport.removal_solid_liquid_phase')}}
-                            </td>
-                            <td colspan="12" class="text-left">
-                                {{trans('digital_drilling.daily_raport.HSE_status')}}
-                            </td>
-                        </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.name')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.ED')}}</td>
@@ -1280,7 +1201,10 @@
                             <td colspan="2">{{trans('digital_drilling.daily_raport.previous')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.per_day')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.total')}}</td>
-                            <td colspan="12" class="border-bottom-0 text-left align-bottom">{{trans('digital_drilling.daily_raport.application_required')}}</td>
+                            <td colspan="12" class="text-left">
+                                {{trans('digital_drilling.daily_raport.HSE_status')}}
+                            </td>
+
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.TF')}}</td>
@@ -1289,9 +1213,8 @@
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
-                            <td rowspan="4" colspan="12" class="border-top-0">
-                                <textarea name=""  cols="30" rows="10"></textarea>
-                            </td>
+                            <td colspan="12" class="border-bottom-0 text-left align-bottom">{{trans('digital_drilling.daily_raport.application_required')}}</td>
+
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.ZHF_OBR')}}</td>
@@ -1300,6 +1223,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
+                            <td rowspan="3" colspan="12" class="border-top-0">
+                                <textarea name=""  cols="30" rows="10"></textarea>
+                            </td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.TBO')}}</td>

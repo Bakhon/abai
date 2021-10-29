@@ -1120,7 +1120,7 @@ input.rangeInput {
     outline: none;
 }
 .daily_raport_block-header-save{
-    height: 98px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1131,7 +1131,7 @@ input.rangeInput {
     background-color: #323370;
     color: #FFFFFF;
     font-weight: bold;
-    height: 98px;
+    height: 70px;
     width: calc(100% - 500px);
     display: flex;
     align-items: center;
