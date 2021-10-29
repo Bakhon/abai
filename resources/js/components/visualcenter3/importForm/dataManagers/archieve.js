@@ -51,6 +51,7 @@ export default {
            this.isDataExist = false;
            this.isDataReady = false;
            this.disableHighlightOnCells();
+           this.turnOffErrorHighlight();
            if (name === 'isPlanActive') {
                await this.sleep(100);
                for (let i=0; i <=12; i++) {
@@ -67,9 +68,6 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
-            if (this.selectedDzo.ticker === 'КОА') {
-                this.addColumnsToGrid();
-            }
             this.changeDefaultDzo();
             this.handleSwitchFilter();
             this.addListeners();
