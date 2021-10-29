@@ -29,7 +29,7 @@
         <span
             class="aw-tree__list-item__label"
             @dblclick="ontoggle"
-            @click="select(item)">
+            @click="selectCurve(item.name)">
           {{ item.name }}
         </span>
       </div>
@@ -50,7 +50,7 @@
 
 <script>
 import AwTreeItemsMixins from "./AwTreeItemsMixins";
-import {SET_DRAG_PARAMS, SET_SELECTED_WELL_CURVES} from "../../../../store/modules/geologyGis.const";
+import {SET_DRAG_PARAMS, SET_SELECTED_WELL_CURVES, SET_CURVE_NAME} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "AwTreeItem2",
@@ -74,6 +74,9 @@ export default {
     }
   },
   methods: {
+    selectCurve(curveName){
+      this.$store.commit(SET_CURVE_NAME, curveName);
+    },
     dragStart(e, a) {
       this.$store.commit(SET_DRAG_PARAMS, ['dragElement', a.name]);
       if (e.target === this.$el) this.$store.commit(SET_DRAG_PARAMS, ['fromGroup', a.groupID]);
