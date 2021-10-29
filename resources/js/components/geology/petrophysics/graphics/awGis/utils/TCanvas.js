@@ -20,15 +20,15 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    drawCurve(curve, {options, wellID}) {
+    drawCurve(curve, {options, options:{customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
         let coord = this.#tCoords;
-        coord.setOrigin = {y: 0, x: 'default'};
-        let max = options.max[wellID];
-        let min = options.min[wellID];
+        let min = customParams?.min?.use?+customParams.min?.value??0:0;
+        let max = customParams?.max?.use?+customParams.max?.value??options.max[wellID]:options.max[wellID];
+
         ctx.save()
         ctx.beginPath();
-        let i = 0;
+        ctx.translate(-(min*2), 0)
         for (const c of curve) {
             if (c !== null) {
                 ctx.moveTo(coord.percentPositionX(lastX, max), coord.positionY(lastY));
@@ -37,7 +37,6 @@ export default class TCanvas {
             } else {
                 ctx.moveTo(coord.percentPositionX(0, max), coord.positionY(y));
             }
-            i++;
             lastY = y
             y++
         }

@@ -9,7 +9,7 @@ export const GET_CURVES = 'geology/petrophysics/GET_CURVES';
 
 //mutations
 export const SET_GIS_DATA = 'geology/mutation/petrophysics/SET_GIS_DATA';
-export const SET_WELL_NAME = 'geology/mutation/petrophysics/SET_WELL_NAME';
+export const SET_CURVE_NAME = 'geology/mutation/petrophysics/SET_CURVE_NAME';
 export const SET_SELECTED_WELL_CURVES_FORCE = 'geology/mutation/petrophysics/SET_SELECTED_WELL_CURVES_FORCE';
 export const SET_SELECTED_WELL_CURVES = 'geology/mutation/petrophysics/SET_SELECTED_WELL_CURVES';
 export const SET_SCROLL_BLOCK_Y = 'geology/mutation/petrophysics/SET_SCROLL_BLOCK_Y';
@@ -22,6 +22,7 @@ export const SET_MNEMONICS_FOR_TREE = 'geology/mutation/petrophysics/SET_MNEMONI
 export const SET_DRAG_PARAMS = 'geology/mutation/petrophysics/SET_DRAG_PARAMS';
 export const SET_CURVES = 'geology/mutation/petrophysics/SET_CURVES';
 export const SET_GIS_DATA_FOR_GRAPH = 'geology/mutation/petrophysics/SET_GIS_DATA_FOR_GRAPH';
+export const SET_CURVE_OPTIONS = 'geology/mutation/petrophysics/SET_CURVE_OPTIONS';
 
 //actions
 export const FETCH_GIS_DATA = 'geology/action/petrophysics/FETCH_GIS_DATA';

@@ -12,12 +12,13 @@ import {
     SET_DRAG_PARAMS,
     SET_SELECTED_WELL_CURVES_FORCE,
     SET_GIS_DATA,
-    SET_WELL_NAME,
+    SET_CURVE_NAME,
     SET_SELECTED_WELL_CURVES,
     SET_DZOS,
     SET_SCROLL_BLOCK_Y,
     SET_CURVES,
     SET_GIS_DATA_FOR_GRAPH,
+    SET_CURVE_OPTIONS,
 
     GET_CURVES,
     GET_WELLS_OPTIONS,
@@ -43,7 +44,7 @@ const geologyGis = {
         gisDataCurves: {},
         gisData: [],
         gisGroups: [],
-        wellName: null,
+        curveName: null,
         selectedGisCurvesOld: [],
         selectedGisCurves: [],
         awGis: new AwGisClass(),
@@ -140,13 +141,14 @@ const geologyGis = {
             state.blocksScrollY = y;
         },
 
-        [SET_WELL_NAME](state, wellName) {
-            state.wellName = wellName;
+        [SET_CURVE_NAME](state, curveName) {
+            state.curveName = curveName;
         },
 
         [SET_SELECTED_WELL_CURVES_FORCE](state, value) {
             state.selectedGisCurves = value;
         },
+
         [SET_SELECTED_WELL_CURVES](state, value) {
             // TODO Переделать в нормальный код.
             value = value.split('/');
@@ -202,25 +204,32 @@ const geologyGis = {
             for (const curveName of state.selectedGisCurves) {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
-                    let curveOptions = {min:{}, max: {}, sum: {},startX:{}};
+                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}};
                     state.awGis.editElementData(curveName, {
                         curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
                             let curve = state.CURVES_OF_SELECTED_WELLS[id];
-                            let curveWithoutNull = [...curve.filter((x)=>+x)]
+                            let curveWithoutNull = [...curve.filter((x) => +x)]
                             curveOptions.startX[key] = curveWithoutNull[0];
                             curveOptions.min[key] = Math.min(...curveWithoutNull);
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
-                            curveOptions.sum[key] = curveWithoutNull.reduce((acc, i)=>(acc+i), 0);
+                            curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
 
                             if (curve) acc[key] = curve;
                             return acc
                         }, {})
                     })
-
                     state.awGis.editElementOptions(curveName, {...curveOptions});
                 }
             }
             state.changeGisData = Date.now();
+        },
+
+        [SET_CURVE_OPTIONS](state, [propName, props]) {
+            if (state.awGis.hasElement(state.curveName)) {
+                let {options: {customParams = {}}} = state.awGis.getElement(state.curveName);
+                customParams = Object.assign(customParams, {[propName]:{...customParams[propName],...props}})
+                state.awGis.editElementOptions(state.curveName, {customParams});
+            }
         }
     },
 
@@ -247,7 +256,7 @@ const geologyGis = {
         },
 
         async [FETCH_WELLS_CURVES]({commit, state}, payload) {
-            if (payload.length) commit(SET_CURVES, await Fetch_Curves(payload));
+            if (payload.length) return commit(SET_CURVES, await Fetch_Curves(payload));
         },
     }
 }
