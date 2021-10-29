@@ -1,8 +1,8 @@
 <template>
     <div class="digitalDrillingWindow">
         <main-content
-            left_content="digital_drilling.project_data.tabular_data"
-            right_content="digital_drilling.project_data.visualization"
+            :left_content="left_content"
+            :right_content="right_content"
         >
             <template #left_function>
                 <div class="inc__left_functions">
@@ -108,6 +108,8 @@
                 d2_Show: true,
                 d3_Show: false,
                 maxValue: 50,
+                left_content: "digital_drilling.project_data.tabular_data",
+                right_content: "digital_drilling.project_data.visualization",
                 series: [
                     {
                     name: "Desktops",
