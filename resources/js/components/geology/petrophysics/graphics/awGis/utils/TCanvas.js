@@ -20,28 +20,29 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    drawCurve(curve, {options, options:{customParams}, wellID}) {
+    drawCurve(curve, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
         let coord = this.#tCoords;
-        let min = customParams?.min?.use?+customParams.min?.value??0:0;
-        let max = customParams?.max?.use?+customParams.max?.value??options.max[wellID]:options.max[wellID];
 
-        ctx.save()
+        let min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
+        let max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
+
+        ctx.save();
         ctx.beginPath();
-        ctx.translate(-(min*2), 0)
+
         for (const c of curve) {
             if (c !== null) {
-                ctx.moveTo(coord.percentPositionX(lastX, max), coord.positionY(lastY));
-                ctx.lineTo(coord.percentPositionX(c, max), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
+                ctx.lineTo(coord.percentPositionX(c, max, min), coord.positionY(y));
                 lastX = c
             } else {
-                ctx.moveTo(coord.percentPositionX(0, max), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(0, max, min), coord.positionY(y));
             }
             lastY = y
             y++
         }
         ctx.stroke();
-        ctx.restore()
+        ctx.restore();
     }
 
     clearCanvas() {
