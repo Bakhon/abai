@@ -202,9 +202,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $filePath = 'public/export/' . $fileName;
         Excel::store(new ManualCalculateExportCalc($data), $filePath);
 
-        $client = new \GuzzleHttp\Client();
-
-        $request = $this->calcRequest($client, $calcUrl, $filePath, $fileName);
+        $request = $this->calcRequest($calcUrl, $filePath, $fileName);
 
         $data = json_decode($request->getBody()->getContents());
         $short = $data->short->data;
@@ -220,9 +218,11 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    public function calcRequest($client, string $url, string $filePath, string $fileName)
+    public function calcRequest(string $url, string $filePath, string $fileName)
     {
         try {
+            $client = new \GuzzleHttp\Client();
+
             return $client->post(
                 $url,
                 [
