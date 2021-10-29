@@ -80,7 +80,6 @@ export default {
       this.dropDownOpened = false
     },
     selectOption(option, e) {
-      console.log(this.cSelected, option, this.$attrs, e);
       if(this.cSelected.value !== option.value) this.$emit('change', option.value, e, option)
       this.cSelected = option;
       this.closeDropDown();

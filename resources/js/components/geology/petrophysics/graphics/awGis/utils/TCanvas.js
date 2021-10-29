@@ -21,7 +21,6 @@ export default class TCanvas {
     }
 
     drawCurve(curve, {options, options: {customParams}, wellID}) {
-        console.log(customParams, customParams.direction)
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
         let coord = this.#tCoords, max, min;
 
