@@ -1,8 +1,8 @@
 <template>
     <div class="digitalDrillingWindow">
         <main-content
-            left_content="Табличные данные"
-            right_content="Визуализация"
+            left_content="digital_drilling.project_data.tabular_data"
+            right_content="digital_drilling.project_data.visualization"
         >
             <template #left_function>
                 <div class="inc__left_functions">
@@ -15,7 +15,7 @@
                     <table class="table defaultTable">
                         <tbody>
                         <tr>
-                            <th colspan="10">Факт</th>
+                            <th colspan="10">{{trans('digital_drilling.fact')}}</th>
                         </tr>
                         <tr>
                             <th>{{trans("digital_drilling.inclino.measured_depth")}}</th>
