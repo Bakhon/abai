@@ -128,8 +128,24 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "asc"
+      "order": "desc"
     }
+  ],
+  "table_fields": [
+    "perf_date",
+    "perf_type",
+    "company",
+    "perforator_type",
+    "patron_type",
+    "hole_count",
+    "hole_diameter",
+    "packer_type",
+    "depth",
+    "iso_material_type",
+    "intervals",
+    "actual_intervals",
+    "well",
+    "documents"
   ],
   "tabs": [
     {
@@ -164,8 +180,7 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
+                "type": "text",
                 "title": "marka"
               },
               {

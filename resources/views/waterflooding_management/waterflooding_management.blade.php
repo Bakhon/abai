@@ -4,5 +4,6 @@
 @endsection
 @section('module_title', trans('waterflooding_management.module_title'))
 @section('content')
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
     <water-flooding-management-main></water-flooding-management-main>
 @endsection

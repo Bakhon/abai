@@ -1,11 +1,6 @@
 {
   "type": "plain",
-  "table": "prod.well_constr",
-  "table_fields": [
-    "equip_type",
-    "depth",
-    "casing_type"
-  ],
+  "table": "prod.well_constr",  
   "tabs": [
     {
       "title": "well_design_project",

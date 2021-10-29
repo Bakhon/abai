@@ -111,6 +111,7 @@ class OilCondensateConsolidatedWithoutKmg {
         if ($dzoName === 'ПКК') {
             $dzoName = 'ПККР';
         }
+
         if (!array_key_exists($dzoName,$this->consolidatedNumberMappingWithoutKmg[$type])) {
             return [];
         }
@@ -118,7 +119,7 @@ class OilCondensateConsolidatedWithoutKmg {
         return $dzo->getSummaryWithoutKMG($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMappingWithoutKmg[$type][$dzoName]);
     }
 
-    public function getChartData($fact,$plan,$dzoName,$type,$periodRange)
+    public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
     {
         $dataType = 'production';
         if (str_contains($type, 'delivery')) {
@@ -136,6 +137,6 @@ class OilCondensateConsolidatedWithoutKmg {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType);
     }
 }

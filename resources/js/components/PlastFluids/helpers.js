@@ -1,4 +1,4 @@
-function convertTemplateData(dataset, lang) {
+export const convertTemplateData = (dataset, lang) => {
   const hash = {};
   dataset.forEach((template) => {
     hash[template["type_" + lang]] = {
@@ -12,19 +12,29 @@ function convertTemplateData(dataset, lang) {
 
   const dataTree = Object.values(hash);
   return dataTree;
-}
+};
 
-function handleSearch(arrayForSearch, query, type) {
+export const handleSearch = (arrayForSearch, query, type) => {
   let name = "owner_name";
   if (type === "field") name = "field_name";
   const filtered = arrayForSearch.filter((item) =>
     item[name].toLowerCase().includes(query?.toLowerCase()) ? item : ""
   );
   return filtered;
-}
+};
 
-function compareNumbers(a, b) {
-  return a - b;
-}
+export const between = (x, min, max) => {
+  return x >= min && x <= max;
+};
 
-export { handleSearch, convertTemplateData, compareNumbers };
+export const convertToFormData = (convertObject) => {
+  const postData = new FormData();
+  for (let key in convertObject) {
+    if (!Array.isArray(convertObject[key])) {
+      postData.append(key, convertObject[key]);
+    } else {
+      convertObject[key].forEach((item) => postData.append(key, item));
+    }
+  }
+  return postData;
+};

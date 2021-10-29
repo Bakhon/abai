@@ -228,7 +228,7 @@
               <th scope="col">Макс</th>
             </tr>
             </thead>
-            <tbody
+            <tbody>
             <tr v-for="items in window_limitation.body">
               <td v-for="item in items">{{ item }}</td>
             </tr>
@@ -237,16 +237,205 @@
         </div>
       </div>
     </div>
+    <div  v-if="modal_name=='object_1'"  class="wft__modal__window d-flex justify-content-center align-items-center ">
+      <div class="wft__modal card-block object__modal">
+        <div class="card-title justify-content-between m-0">
+          <div class="d-flex">
+            <p>
+              Диогнастические графики по <span>объекту I</span>
+            </p>
+          </div>
+          <button class="wft__modal__close" @click="modalClose" >
+            Закрыть
+          </button>
+        </div>
+        <div class="wft__modal__body">
+          <div class="d-flex  justify-content-center flex-wrap ">
+            <div class="object_graphic ">
+              <h2 class="w-100 d-flex justify-content-center">КИН от MOPVinj</h2>
+              <apexchart
+                  type="line"
+                  height="250"
+                  :options="chartOptionsKin"
+                  :series="seriesMopInj"
+              />
+              <h2 class="w-100 d-flex justify-content-center">MOPVinj,д.ед.</h2>
+            </div>
+            <div class="object_graphic ">
+              <h2 class="w-100 d-flex justify-content-center">КИН от Обводненности</h2>
+              <apexchart
+                  type="line"
+                  height="250"
+                  :options="chartOptionsKin2"
+                  :series="seriesWaterCut"
+              />
+              <h2 class="w-100 d-flex justify-content-center">Обводненность, %</h2>
+            </div>
+            <div class="object_graphic ">
+              <h2 class="w-100 d-flex justify-content-center">КИН от Evol</h2>
+              <apexchart
+                  type="line"
+                  height="250"
+                  :options="chartOptionsKin2"
+                  :series="seriesEVol"
+              />
+              <h2 class="w-100 d-flex justify-content-center">Evol,д.ед.</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-title justify-content-between m-0">
+          <div class="">
+            <p>
+              MOPVinj – промытый поровый объем нефти
+            </p>
+            <p>
+              Evol – коэффициент охвата заводнением по объему
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+import VueApexCharts from 'vue-apexcharts'
+import {waterfloodingManagementMapGetters} from '@store/helpers';
 export default {
   name: "modal",
   props :[
-    'modal_name'
+    'modal_name',
+    'r_object'
   ],
+  components: {
+    "apexchart": VueApexCharts,
+  },
   data(){
     return {
+      seriesMopInj: [],
+      seriesWaterCut: [
+        { type: 'line', data: []},
+        { type: 'line', data: []}
+      ],
+      seriesEVol: [],
+      chartOptionsKin:{
+        chart: {
+          height: 250,
+          type: 'line',
+          toolbar: { show: false },
+        },
+        legend: {
+          show: false,
+        },
+        colors: ['#5b9bd5', '#FBC02D'],
+        stroke: {
+          width: [3, 3],
+          curve: 'smooth',
+          dashArray: [0, 5]
+        },
+        tooltip: {
+          shared: false,
+          intersect: true,
+        },
+        grid: {
+          borderColor: '#3C4270',
+          strokeDashArray: 0,
+          xaxis: {
+            lines: {
+              show: true,
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true,
+            }
+          },
+        },
+        xaxis: {
+          tickAmount: 6,
+          min: 0,
+          max: 1,
+          labels: {
+            style: {
+              colors: '#fff'
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            formatter: function(val) {
+              return val.toFixed(0);
+            },
+            style: {
+              colors: '#fff'
+            }
+          },
+          title: {
+            text: "КИН, %",
+            style: {
+              color: '#fff'
+            }
+          }
+        }
+      },
+      chartOptionsKin2:{
+        chart: {
+          height: 350,
+          type: 'line',
+          toolbar: { show: false },
+        },
+        legend: {
+          show: false,
+        },
+        colors: ['#5b9bd5', '#FBC02D'],
+        stroke: {
+          width: [3, 3],
+          curve: 'smooth',
+          dashArray: [0, 5]
+        },
+        tooltip: {
+          shared: false,
+          intersect: true,
+        },
+        grid: {
+          borderColor: '#3C4270',
+          strokeDashArray: 0,
+          xaxis: {
+            lines: {
+              show: true,
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true,
+            }
+          },
+        },
+        xaxis: {
+          tickAmount: 6,
+          labels: {
+            style: {
+              colors: '#fff'
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            formatter: function(val) {
+              return val.toFixed(0);
+            },
+            style: {
+              colors: '#fff'
+            }
+          },
+          title: {
+            text: "КИН, %",
+            style: {
+              color: '#fff'
+            }
+          }
+        }
+      },
       recommendation_modal :{
         title: this.trans('waterflooding_management.recommendation'),
         head:[
@@ -308,15 +497,140 @@ export default {
       }
     }
   },
+  computed:{
+    ...waterfloodingManagementMapGetters([
+      'kin',
+    ]),
+  },
+  mounted() {
+    if(this.modal_name == "object_1"){
+      this.getKinLine(this.r_object.id)
+      this.getMopInj(this.r_object.id)
+      this.getWaterCut(this.r_object.id)
+      this.getEVol(this.r_object.id)
+    }
+  },
   methods:{
     modalClose() {
       this.$emit('modalClose')
-      // this.modal_show = false;
+    },
+    getKinLine(fieldObject){
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT +  'object_selections/field-object-kin/' + fieldObject + '/';
+      axios.get(url)
+          .then((response) =>{
+            this.kinLine = response.data.kin;
+          }).catch((error) => {
+        console.log(error)
+      })
+    },
+    getWaterCut(fieldObject){
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/water-cut/'+ fieldObject + '/'
+      axios.get(url)
+          .then((response) =>{
+            response.data.forEach((element, index) => {
+              this.seriesWaterCut[0].data.push({
+                x: element,
+                y: this.kin[index]
+              })
+            })
+            let max = Math.max.apply(Math, this.kin)
+            let x_max = Math.max.apply(Math, response.data)
+            this.seriesWaterCut[1].data.push({
+              x: 0,
+              y: max
+            })
+            this.seriesWaterCut[1].data.push({
+              x: x_max,
+              y: max
+            })
+          }).catch((error) => {
+        console.log(error)
+      })
+    },
+    getMopInj(fieldObject){
+      let series = [
+          { type: 'line', data: []},
+          { type: 'line', data: []}
+      ]
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/mop-inj/'+ fieldObject + '/'
+      axios.get(url)
+          .then((response) =>{
+            response.data.forEach((element, index) => {
+              series[0].data.push({
+                x: element,
+                y: this.kin[index]
+              })
+            })
+            let max = Math.max.apply(Math, this.kin)
+            series[1].data.push({
+              x: 0,
+              y: max
+            })
+            series[1].data.push({
+              x: 1,
+              y: max
+            })
+            this.seriesMopInj = series
+            return series
+          }).catch((error) => {
+        console.log(error)
+      })
+    },
+    getEVol(fieldObject){
+      let series = [
+          { type: 'line', data: []},
+          {type: 'line', data: []}
+      ]
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/e-vol/'+ fieldObject + '/'
+      axios.get(url)
+          .then((response) =>{
+            let data = response.data;
+            let kinline = (this.kinLine * 100) / data.length
+            let kinLineY = kinline
+            data.forEach((element, index) => {
+              series[0].data.push({
+                x:element,
+                y: this.kin[index]
+              })
+              series[1].data.push({
+                x: (index + 1)/ data.length,
+                y: kinLineY
+              })
+              kinLineY += kinline
+            })
+            this.seriesEVol = series;
+          }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
 </script>
 <style scoped>
+.object__modal{
+  background: linear-gradient(0deg, rgba(13, 43, 77, 0) 48%, #0d2b4d 50%, rgba(13, 43, 77, 0) 52%),
+  linear-gradient(-90deg, rgba(13, 43, 77, 0) 48%, #0d2b4d 50%, rgba(13, 43, 77, 0) 52%);
+  background-size: 3em 3em;
+  background-color: #272953;
+}
+.wft__modal__body__scroll{
+  max-height: 780px;
+  overflow: auto;
+  margin-top: 20px;
+}
+.window_limitation__scroll{
+  max-height: 480px;
+  overflow: auto;
+  margin-top: 20px;
+}
+.wft__modal__body__scroll table,
+.window_limitation__scroll table
+{
+  margin: 0;
+}
+.bg__card__color{
+  background-color: #2B2E5E;
+}
 .window_limitation__table td{
   width: 12%;
 }
@@ -360,6 +674,8 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #fff;
+  text-align: center;
+  padding: 10px;
 }
 .window_limitation_cell_out{
   border: 1px solid #fff;
@@ -370,6 +686,17 @@ export default {
   width: 36.08px;
   background-color: #666666;
   border-left: 1px solid #fff;
+}
+.window__limitation__well,
+.window_limitation__table input{
+  background: #323370;
+  border: 0.4px solid #272953;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #fff;
+  height: 36px;
+  width: 114px;
+  padding: 10px;
 }
 .window_limitation_cell_green{
   background-color: #6EBB71;
@@ -394,12 +721,17 @@ export default {
 }
 .wft__modal{
   width: 67%;
-  /*padding: 10px;*/
   border: 2px solid #656A8A;
   box-sizing: border-box;
   border-radius: 8px;
 }
-
+.wft__variant____modal{
+  width: 516px;
+  padding: 20px;
+  border: 2px solid #656A8A;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
 .wft__modal__close{
   display: flex;
   justify-content: center;
@@ -411,6 +743,10 @@ export default {
   color: #fff;
   outline: none;
   border: none;
+  margin-left: 10px;
+}
+.wft__modal__save{
+  background: #0ac71e;
 }
 .wft__modal__table{
   border-collapse: collapse;
@@ -419,7 +755,6 @@ export default {
 }
 .wft__modal__table td,
 .wft__modal__table th{
-  /*width: 33%;*/
   height: 60px;
   text-align: center;
   vertical-align: middle;
@@ -435,5 +770,131 @@ export default {
 .period-btn{
   width: 90px!important;
   margin: 5px;
+}
+.object_graphic{
+  margin-top: 20px;
+  height: 400px;
+  width: 45%;
+}
+.object_graphic img{
+  height: 100%;
+}
+.object_graphic h2{
+  font-size: 14px;
+}
+.variant__title{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+}
+.variant__btn{
+  background: #40467E;
+  border: none;
+  height: 44px;
+  padding: 0 34px;
+  background: #333975;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+  margin: 10px;
+}
+.variant__input{
+  background: #1F2142;
+  border: 0.5px solid #454FA1;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 14px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 0.4);
+}
+.variant__card__block{
+  margin-top: 10px;
+}
+.variant__dw__btn{
+  background-color: #3366FF;
+}
+.table__graphic__modal{
+  height: 803px;
+}
+.btn__table__graphic{
+  width: 138px;
+  height: 30px;
+  background: #31335F;
+  border: none;
+  margin: 5px 5px 0 5px;
+  border-radius: 5px 5px 0 0;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8389AF;
+}
+.btn__table__graphic__active{
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 0;
+  width: 143px;
+  height: 35px;
+}
+.table__graphic__modal__body{
+  padding: 10px;
+  background: #363B68;
+  border-radius: 5px;
+}
+.tb__table{
+  padding: 10px;
+  background-color: #363B68;
+}
+.tb__table td{
+  height: 28px;
+}
+.tb__table__first{
+  background-color: rgba(69, 77, 125, 0.32);
+}
+.tb__table__second{
+  background-color: #272953;
+}
+.tb__table table{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+.tb__table table tbody{
+}
+.tb__table__out{
+  height: 688px;
+  width: 100%;
+  overflow: auto;
+}
+.tb__table .tb__table__out::-webkit-scrollbar {
+  width: 7px;
+}
+.tb__table .tb__table__out::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  background: #656A8A;
+  border-radius: 10px;
+  box-shadow: inset 0 3px 3px rgba(0,0,0,0);
+}
+.tb__table .tb__table__out::-webkit-scrollbar-track {
+  background-color: #20274F;
+}
+.tb__table__graphic{
+  padding: 10px;
+  background-color: #272953;
+}
+.tb__table__grShow{
+  background: #2B2E5E;
+  border: 0.5px solid #545580;
 }
 </style>

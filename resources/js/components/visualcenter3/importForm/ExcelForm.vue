@@ -32,7 +32,7 @@
                     <span>{{trans('visualcenter.importForm.yesterdayDate')}}:</span><br>
                     <span class="dzo-name">{{currentDate}}</span><br>
                 </div>
-                <div class="col-12 status-block dzoname-label status-label">
+                <div class="col-12 status-block currentdate-label status-label mt-1">
                     <span class="dzo-name">{{selectedDzo.name}}</span>
                 </div>
             </div>
@@ -126,19 +126,18 @@
             </div>
             <div v-else class="col-4 mt-3 row ml-1"></div>
             <div class="col-2 row mt-3 ml-1">
-                <div class="col-12 status-block status-block_little status-label">
-                    <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
-                    <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+                <div class="col-12 status-block status-block_little">
+                    &nbsp;
                 </div>
                 <select
-                        class="form-select col-12 mt-3 status-block status-block_little"
+                        class="form-select col-12 mt-3 status-block status-block_little text-left"
                         v-if="!dzoUsers.includes(parseInt(userId)) && (category.isArchieveActive || category.isFactActive)"
                         @change="switchCompany($event)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
                 </select>
                 <select
-                        class="form-select col-12 mt-3 status-block status-block_little"
+                        class="form-select col-12 mt-3 status-block status-block_little text-left"
                         v-else-if="!dzoUsers.includes(parseInt(userId)) && category.isPlanActive"
                         @change="switchDzo($event)"
                 >
@@ -156,7 +155,7 @@
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -262,7 +261,7 @@
                         :source="currentPlan.rows"
                         :columns="currentPlan.columns"
                         @beforeEdit="beforePlanEdit"
-                        @beforeRangeEdit="beforeRangeEdit"
+                        @beforeRangeEdit="beforePlanRangeEdit"
                 ></v-grid>
 
             </div>
@@ -331,8 +330,13 @@
         flex-wrap: wrap;
         display: inline-block;
     }
-    revo-grid {
+    #factGrid {
         height: 782px;
+        font-size: 12px;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+    }
+    #planGrid {
+        height: 582px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
@@ -374,7 +378,6 @@
         color: #82BAFF;
     }
     .status-block .dzo-name {
-        font-size: 22px;
         color: #82BAFF;
     }
     .button-block {
@@ -398,23 +401,9 @@
     .status-label {
         border: 1px solid #656A8A;
     }
-    .dzoname-label {
-        bottom: 0;
-        position: absolute;
-        width: 90%;
-        font-size: 16px;
-        span.dzo-name {
-            font-size: 16px;
-        }
-    }
     .currentdate-label {
-        position: absolute;
-        width: 90%;
-        height: 65%;
-        span.dzo-name {
-            bottom: 0;
-            position: absolute;
-            left: 27%;
+        span {
+            font-size: 16px;
         }
     }
     @keyframes rotate {
