@@ -73,7 +73,7 @@ class OmgNGDUWellController extends CrudController
                     'title' => trans('monitoring.omgngdu_well.fields.daily_oil_production'),
                     'type' => 'numeric',
                 ],
-                'gas_factor' => [
+                'daily_gas_production' => [
                     'title' => trans('monitoring.omgngdu_well.fields.gas_factor'),
                     'type' => 'numeric',
                 ],

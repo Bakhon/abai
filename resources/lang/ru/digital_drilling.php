@@ -10,7 +10,7 @@ return array (
   'open_hole_logging' => 'ГИС в открытом стволе',
   'survey' => 'Инклинометрия',
   'well_design_menu' => 'Конструкция скважины',
-  'project_fact_data' => 'Проекты/фактические данные',
+  'project_fact_data' => 'Проектные/фактические данные',
   'designing' => 'Проектирование',
   'hole_profile' => 'Профиль скважины',
   'design_calculation' => 'Расчет конструкции',
