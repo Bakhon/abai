@@ -48,6 +48,7 @@ const geologyGis = {
         selectedGisCurvesOld: [],
         selectedGisCurves: [],
         awGis: new AwGisClass(),
+        awGisElementsCount: 0,
         gisWells: [],
         blocksScrollY: 0,
         wellTreeParam: {
@@ -194,6 +195,7 @@ const geologyGis = {
         [SET_GIS_DATA](state) {
             state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS, state]);
             state.gisGroups = state.awGis.getGroupList
+            state.awGisElementsCount = state.awGis.getElementsCount
         },
 
         [SET_CURVES](state, curves) {
@@ -218,7 +220,7 @@ const geologyGis = {
                             return acc
                         }, {})
                     })
-                    state.awGis.editElementOptions(curveName, {...curveOptions});
+                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify(curveOptions)));
                 }
             }
             state.changeGisData = Date.now();
@@ -227,7 +229,7 @@ const geologyGis = {
         [SET_CURVE_OPTIONS](state, [propName, props]) {
             if (state.awGis.hasElement(state.curveName)) {
                 let {options: {customParams = {}}} = state.awGis.getElement(state.curveName);
-                customParams = Object.assign(customParams, {[propName]: {...customParams[propName], ...props}})
+                customParams = Object.assign({...customParams}, {[propName]: {...customParams[propName], ...props}})
                 state.awGis.editElementOptions(state.curveName, {customParams});
             }
         }
