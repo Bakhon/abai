@@ -46,6 +46,7 @@ export const CURVE_ELEMENT_OPTIONS = {
     customParams: {
         min: {use: false, value: ''},
         max: {use: false, value: ''},
+        curveColor: {use: false, value: ''},
         direction: {value: 'normal'},
         dash: {value: ''}
     }

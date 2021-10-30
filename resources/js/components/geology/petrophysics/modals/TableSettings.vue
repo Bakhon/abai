@@ -58,6 +58,22 @@
                       ]"
                   />
                 </div>
+
+              </div>
+
+            </AwTabContent>
+            <AwTabContent tab-id="tab4">
+              <div class="style-tab p-2">
+
+                <div class="d-flex align-items-center p-2 w-100">
+                  <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
+                    <input :disabled="!getSelectedCurveName" :checked="getCurveOptions.curveColor.use" type="checkbox" class="mr-2" name="curveColor"
+                           @change="setToggleUsageProperty">
+                    <span>Curve color</span>
+                  </label>
+                  <AwInput :disabled="!getSelectedCurveName" :value="getCurveOptions.curveColor.value" type="color" class="mr-2" prop-name="curveColor"
+                         @change="setValueProperty" />
+                </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
                     <span>Line dash</span>
@@ -72,10 +88,9 @@
                       :options="getDashLineOptions"
                   />
                 </div>
-              </div>
 
+              </div>
             </AwTabContent>
-            <AwTabContent tab-id="tab4"></AwTabContent>
           </AwTab>
         </div>
       </div>
