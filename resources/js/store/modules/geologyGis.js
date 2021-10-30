@@ -25,7 +25,7 @@ import {
     GET_TREE_CURVES,
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
-    GET_GIS_GROUPS,
+    GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
 } from "./geologyGis.const";
 
 import {uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
@@ -227,7 +227,7 @@ const geologyGis = {
         [SET_CURVE_OPTIONS](state, [propName, props]) {
             if (state.awGis.hasElement(state.curveName)) {
                 let {options: {customParams = {}}} = state.awGis.getElement(state.curveName);
-                customParams = Object.assign(customParams, {[propName]:{...customParams[propName],...props}})
+                customParams = Object.assign(customParams, {[propName]: {...customParams[propName], ...props}})
                 state.awGis.editElementOptions(state.curveName, {customParams});
             }
         }
@@ -308,7 +308,7 @@ function mnemonicsSort(data, state) {
                     wellID: [wellID],
                     isShow: true,
                     curve_id: {[wellID]: curve_id},
-                })
+                }, JSON.parse(JSON.stringify(CURVE_ELEMENT_OPTIONS)))
             }
 
             if (!this.hasElementInGroup(groupsIds.get(name), name)) {

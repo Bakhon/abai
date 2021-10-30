@@ -17,33 +17,41 @@
             {id: 'tab3', label: 'Limits'},
             {id: 'tab4', label: 'Style'},
         ]">
-            <AwTabContent tab-id="tab1"></AwTabContent>
+            <AwTabContent tab-id="tab1">
+              <pre>{{ getCurveOptions }}</pre>
+            </AwTabContent>
             <AwTabContent tab-id="tab2"></AwTabContent>
             <AwTabContent tab-id="tab3">
               <div class="limits-tab">
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2" name="min" @change="setToggleUsageProperty">
+                    <input :disabled="!getSelectedCurveName" :checked="getCurveOptions.min.use" type="checkbox" class="mr-2" name="min"
+                           @change="setToggleUsageProperty">
                     <span>Min value</span>
                   </label>
-                  <AwInput type="number" class="w-100" prop-name="min" @change="setValueProperty" />
+                  <AwInput :disabled="!getSelectedCurveName" :value="getCurveOptions.min.value" type="number" class="w-100" prop-name="min"
+                           @change="setValueProperty" />
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2" name="max" @change="setToggleUsageProperty">
+                    <input :disabled="!getSelectedCurveName" :checked="getCurveOptions.max.use" type="checkbox" class="mr-2" name="max"
+                           @change="setToggleUsageProperty">
                     <span>Max value</span>
                   </label>
-                  <AwInput type="number" class="w-100" prop-name="max" @change="setValueProperty" />
+                  <AwInput :disabled="!getSelectedCurveName" :value="getCurveOptions.max.value" type="number" class="w-100" prop-name="max"
+                           @change="setValueProperty" />
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
                     <span>Direction</span>
                   </label>
                   <dropdown
+                      :disabled="!getSelectedCurveName"
                       @change="setValueProperty"
                       prop-name="direction"
                       class="w-100"
                       button-text="Выбрать"
+                      :selectedValue="getCurveOptions.direction.value"
                       :options="[
                         {label: 'Normal', value: 'normal'},
                         {label: 'Reverse', value: 'reverse'}
@@ -52,22 +60,16 @@
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2">
-                    <span>Max Wrap</span>
+                    <span>Line dash</span>
                   </label>
                   <dropdown
+                      :disabled="!getSelectedCurveName"
                       class="w-100"
                       button-text="Выбрать"
                       @change="setValueProperty"
                       prop-name="dash"
-                      :options="[
-                        {label: 'Normal', value: []},
-                        {label: 'Dash 1', value: [1, 1]},
-                        {label: 'Dash 2', value: [10, 10]},
-                        {label: 'Dash 3', value: [20, 5]},
-                        {label: 'Dash 4', value: [15, 3,3,3]},
-                        {label: 'Dash 5', value: [20, 3, 3, 3, 3, 3, 3, 3]},
-                      ]"
+                      :selectedValue="getCurveOptions.dash.value"
+                      :options="getDashLineOptions"
                   />
                 </div>
               </div>
@@ -89,7 +91,12 @@ import AwTab from "../../components/awTab/AwTab";
 import AwTabContent from "../../components/awTab/AwTabContent";
 import AwInput from "../../components/form/AwInput";
 import dropdown from "../../components/dropdowns/dropdown";
-import {GET_TREE_CURVES, SET_CURVE_OPTIONS, SET_SELECTED_WELL_CURVES} from "../../../../store/modules/geologyGis.const";
+import {
+  CANVAS_DASH_LINES_TYPES, CURVE_ELEMENT_OPTIONS,
+  GET_TREE_CURVES,
+  SET_CURVE_OPTIONS,
+  SET_SELECTED_WELL_CURVES
+} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "TableSettings",
@@ -106,15 +113,29 @@ export default {
   data() {
     return {
       tableSettingsSelected: [],
+      tableSettingsOptions: {options: {}},
       gisData: [],
     }
   },
   watch: {
+    "$store.state.geologyGis.curveName"() {
+      this.updateOptions();
+    },
     tableSettingsSelected(val) {
       this.$store.commit(SET_SELECTED_WELL_CURVES, val);
     }
   },
   computed: {
+    getSelectedCurveName(){
+      return this.$store.state.geologyGis.curveName
+    },
+    getDashLineOptions() {
+      return Object.entries(CANVAS_DASH_LINES_TYPES).map(([label, value]) => ({label, value: value.join(',')}))
+    },
+    getCurveOptions() {
+      let {options: {customParams = {...CURVE_ELEMENT_OPTIONS.customParams}}} = this.tableSettingsOptions;
+      return customParams;
+    },
     getCurves() {
       return {
         id: 1,
@@ -126,14 +147,22 @@ export default {
       }
     }
   },
+  mounted() {
+    this.updateOptions();
+  },
   methods: {
     setToggleUsageProperty(e) {
       let {checked, name} = e.target;
       this.$store.commit(SET_CURVE_OPTIONS, [name, {use: checked}])
+      this.updateOptions()
     },
     setValueProperty(value, e) {
       let name = e.target.getAttribute('prop-name');
       this.$store.commit(SET_CURVE_OPTIONS, [name, {value}])
+      this.updateOptions()
+    },
+    updateOptions() {
+      if(this.getSelectedCurveName) this.tableSettingsOptions = this.$store.state.geologyGis.awGis.getElement(this.getSelectedCurveName);
     }
   }
 }

@@ -26,13 +26,13 @@ export default class TCanvas {
 
         let minValue = min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
         let maxValue = max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
-
+        let dashLine = customParams?.dash&&Array.isArray(customParams?.dash.value)?customParams?.dash.value:customParams?.dash.value.split(',');
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
 
-        if (customParams?.dash && customParams.dash.value) {
-            ctx.setLineDash(customParams.dash.value);
+        if (customParams?.dash && dashLine) {
+            ctx.setLineDash(dashLine);
         }
 
         if (customParams?.direction && customParams.direction.value === "reverse") {

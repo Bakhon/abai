@@ -31,3 +31,22 @@ export const FETCH_FIELDS = 'geology/action/petrophysics/FETCH_FIELDS';
 export const FETCH_WELLS = 'geology/action/petrophysics/FETCH_WELLS';
 export const FETCH_WELLS_MNEMONICS = 'geology/action/petrophysics/FETCH_WELLS_MNEMONICS';
 export const FETCH_WELLS_CURVES = 'geology/action/petrophysics/FETCH_WELLS_CURVES';
+
+//Other
+export const CANVAS_DASH_LINES_TYPES = {
+    'Normal': [],
+    'Dash 1': [1, 1],
+    'Dash 2': [10, 10],
+    'Dash 3': [20, 5],
+    'Dash 4': [15, 3, 3, 3],
+    'Dash 5': [20, 3, 3, 3, 3, 3, 3, 3]
+}
+
+export const CURVE_ELEMENT_OPTIONS = {
+    customParams: {
+        min: {use: false, value: ''},
+        max: {use: false, value: ''},
+        direction: {value: 'normal'},
+        dash: {value: ''}
+    }
+}

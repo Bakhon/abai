@@ -23,7 +23,7 @@ import AwIcon from "../icons/AwIcon.vue"
 export default {
   name: "dropdown",
   props: {
-    selectedValue: [String, Number],
+    selectedValue: [String, Number, Array, Object],
     buttonText: String,
     block: Boolean,
     position: String,
@@ -65,7 +65,7 @@ export default {
     },
     cSelected: {
       get() {
-        return this.cOptions.find(({value}) => value === (this.selectedValue||this.selectedLocal))||{};
+        return this.cOptions.find(({value}) => value === (this.selectedValue??this.selectedLocal))||{};
       },
       set(option) {
         this.selectedLocal = option.value;
