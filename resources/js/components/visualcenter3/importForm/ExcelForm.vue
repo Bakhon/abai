@@ -63,6 +63,26 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled opacity-0"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        class="col-12 status-block status-block_little menu__button mt-3"
+                        @click="validateMonthlyFact()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isMonthFactFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
+                        @click="saveMonthlyFact()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
             <div v-else-if="category.isFactActive" class="col-2 row mt-3 ml-1">
                 <div
                         class="col-12 status-block status-block_little menu__button rainbow"

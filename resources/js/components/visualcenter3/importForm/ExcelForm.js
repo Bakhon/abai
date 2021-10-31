@@ -245,6 +245,8 @@ export default {
         this.handlePlans();
         this.fillMonthColumns();
         this.fillMonthRows();
+        this.monthlyFact = await this.getDzoFactByPeriod();
+        this.handleMonthFact();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();

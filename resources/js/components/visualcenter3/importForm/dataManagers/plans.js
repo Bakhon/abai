@@ -292,9 +292,10 @@ export default {
                 this.monthColumnsCount = (Object.keys(this.monthRows[0]).length + 1);
                 this.fillMonthRows();
                 for (let i=0; i < (this.monthColumnsCount-1); i++) {
-                   // console.log(this.monthColumnsCount)
                     this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
                 }
+                this.monthlyFact = await this.getDzoFactByPeriod();
+                this.handleMonthFact();
                 document.querySelector('#monthGrid').refresh('all');
             }
 

@@ -74,15 +74,20 @@ export default {
             companiesWithCondensate: ['КОА','ОМГ','АГ'],
             companiesWithOil: ['КОА','ОМГ','ТШО','ПКИ','НКО','КПО','ТП','ПКК','КГМ','УО','ММГ','КБМ','КТМ','ЭМГ'],
             monthColumnsCount: 5,
-            monthDate: moment()
+            monthDate: moment(),
+            monthlyFact: [],
+            factFieldsMapping: {},
+            isMonthValidateError: false,
+            isMonthFactFilled: false
         };
     },
     methods: {
         async getDzoFactByPeriod() {
-            let uri = this.localeUrl("/get-plans-by-dzo");
+            let uri = this.localeUrl("/get-fact-by-month");
             let queryOptions = {
                 'dzo': this.selectedDzo.ticker,
-                'year': this.currentPlan.year.year()
+                'year': this.monthDate.year(),
+                'month': this.monthDate.month()+1,
             };
             const response = await axios.get(uri, {params:queryOptions});
             if (response.status === 200) {
@@ -124,18 +129,22 @@ export default {
             let header = {
                 "column1": "Дата"
             };
+            this.factFieldsMapping['1'] = 'date';
             if (this.companiesWithOil.includes(this.selectedDzo.ticker)) {
                 header['column2'] = 'Добыча нефти';
                 header['column3'] = 'Сдача нефти';
+                this.factFieldsMapping['2'] = 'oil_production_fact';
+                this.factFieldsMapping['3'] = 'oil_delivery_fact';
+
             }
             if (this.companiesWithCondensate.includes(this.selectedDzo.ticker)) {
                 let currentIndex = Object.keys(header).length + 1;
                 header['column'+(Object.keys(header).length + 1)] = 'Добыча конденсата';
+                this.factFieldsMapping[Object.keys(header).length] = 'condensate_production_fact';
                 header['column'+(Object.keys(header).length + 1)] = 'Сдача конденсата';
+                this.factFieldsMapping[Object.keys(header).length] = 'condensate_delivery_fact';
             }
             this.monthColumnsCount = (Object.keys(header).length + 1);
-            console.log(this.monthColumnsCount);
-            console.log(header);
             this.monthRows.push(header);
             let currentDate = moment();
             let daysCount = currentDate.subtract(1,'days').date();
@@ -151,60 +160,52 @@ export default {
                 for (let y=2; y < this.monthColumnsCount; y++) {
                     row['column'+y] = 0;
                 }
-                //row['fieldName'] = this.planRows[y];
                 this.monthRows.push(row);
             }
         },
-        handlePlans() {
-            for (let i=1;i<this.currentPlan.rows.length; i++) {
-                let row = this.currentPlan.rows[i];
-                for (let y=2;y<Object.keys(row).length;y++) {
-                    let plan = this.plans.find(month => moment(month.date).month()+1 === y-1);
-                    let daysCount = moment().year(this.currentPlan.year.year()).month(y-2).daysInMonth();
-                    row['column'+y] = Math.round(plan[row['fieldName']] * daysCount);
+        handleMonthFact() {
+            for (let i=1;i<this.monthRows.length; i++) {
+                let row = this.monthRows[i];
+                let cellDate = moment(row['column1'],'DD.MM.YYYY');
+                for (let y=2;y<=Object.keys(row).length;y++) {
+                     let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
+                     row['column'+y] = fact[this.factFieldsMapping[y]];
                 }
             }
         },
-        validatePlan() {
-            let systemColumns = ['column1', 'fieldName'];
-            this.outputPlans = this.getValidatedPlan();
-            if (this.isPlanValidateError) {
-                this.isPlanFilled = false;
+        validateMonthlyFact() {
+            let systemColumns = ['column1'];
+            this.monthFact = this.getValidatedMonthlyFact();
+            if (this.isMonthValidateError) {
+                this.isMonthFactFilled = false;
                 this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
             } else {
                 this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
-                this.isPlanFilled = true;
+                this.isMonthFactFilled = true;
             }
-            this.isPlanValidateError = false;
+            this.isMonthValidateError = false;
         },
 
-        getValidatedPlan() {
+        getValidatedMonthlyFact() {
             let output = [];
-            for (let i = 1; i < 13; i++) {
-                let date = moment().year(this.currentPlan.year.year()).month(i - 1).startOf('month').startOf('day');
+            for (let row in this.monthRows) {
+                if (row == 0) {
+                    continue;
+                }
                 let fields = {
-                    date: date.format("YYYY-MM-DD HH:mm:ss"),
-                    dzo: this.selectedDzo.ticker,
+                    dzo_name: this.selectedDzo.ticker,
                 };
-                for (let y = 1; y < this.currentPlan.rows.length; y++) {
-                    let row = this.currentPlan.rows[y];
-                    let plan = row['column' + (i + 1)] / date.daysInMonth();
-                    if (plan === 0) {
-                        plan = null;
-                    }
-                    fields[row['fieldName']] = plan;
+                for (let field in this.monthRows[row]) {
+                    let columnIndex = field.replace(/\D/g, "");
+                    fields[this.factFieldsMapping[columnIndex]] = this.monthRows[row][field];
                 }
                 output.push(fields);
             }
             return output;
         },
-        async savePlan() {
-            let uri = this.localeUrl("/store-yearly-plans");
-            let queryOptions = {
-                'dzo': this.selectedDzo.ticker,
-                'plans': this.outputPlans
-            };
-            await axios.post(uri, {params:queryOptions});
+        async saveMonthlyFact() {
+            let uri = this.localeUrl("/store-fact-by-month");
+            await axios.post(uri, {params:this.monthFact});
             this.isPlanFilled = false;
             this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
         },
@@ -214,10 +215,10 @@ export default {
             let colIndex = cell.prop.replace(/\D/g, "") - 1;
             let value = cell.val.replace(',','.');
             value = parseFloat(value);
-            this.disableErrorHighlight(rowIndex,colIndex);
+            this.disableErrorHighlightByMonth(rowIndex,colIndex);
             if (isNaN(value) || value < 0) {
-                this.setClassToElement($('#planGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
-                this.isPlanValidateError = true;
+                this.setClassToElement($('#monthGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
+                this.isMonthValidateError = true;
             }
         },
         beforeMonthRangeEdit(e) {
@@ -233,10 +234,10 @@ export default {
             value = value.replace(/ /g, '');
             value = value.replace(',', '.');
             value = parseFloat(value);
-            this.disableErrorHighlight(row,column);
+            this.disableErrorHighlightByMonth(row,column);
             if (isNaN(value) || value < 0) {
-                this.setClassToElement($('#planGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
-                this.isPlanValidateError = true;
+                this.setClassToElement($('#monthGrid').find('div[data-row="' + row + '"][data-col="' + column + '"]'),'cell__color-red');
+                this.isMonthValidateError = true;
             }
             e.detail.data[row][columnName] = value;
         },
