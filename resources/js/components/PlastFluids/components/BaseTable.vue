@@ -53,7 +53,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="tableBody">
             <template v-if="isObjectArray">
               <tr v-for="item in items" :key="item.id">
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
@@ -61,14 +61,29 @@
                 </td>
                 <td v-if="tableType === 'upload'">
                   <button @click="handleReportDownload(item)">
-                    <img src="/img/PlastFluids/downloadTableIcon.svg" alt="download">
+                    <img
+                      src="/img/PlastFluids/downloadTableIcon.svg"
+                      alt="download"
+                    />
                     <p>{{ trans("plast_fluids.download") }}</p>
                   </button>
                 </td>
               </tr>
             </template>
             <template v-else-if="tableType === 'analysis'">
-              <tr v-for="(item, index) in items" :key="index">
+              <tr
+                tabindex="0"
+                v-for="(item, index) in items"
+                :key="index"
+                :style="
+                  currentSelectedSamples &&
+                  currentSelectedSamples.includes(index)
+                    ? 'background-color: #009000;'
+                    : ''
+                "
+                style="cursor: pointer"
+                @click="selectTableRow(item)"
+              >
                 <td v-for="(itemTD, ind) in item.table_data" :key="ind">
                   {{ itemTD }}
                 </td>
@@ -77,7 +92,7 @@
             <template v-else>
               <tr v-for="(item, index) in items" :key="index">
                 <template v-if="typeof item === 'string'">
-                  <td style="background-color: #272953;">
+                  <td style="background-color: #272953">
                     {{ item }}
                   </td>
                 </template>
@@ -124,7 +139,7 @@
 
 <script>
 import { downloadUserReport } from "../services/templateService";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "BaseTable",
@@ -138,6 +153,7 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
+    selectedDataPoint: Object,
   },
   data() {
     return {
@@ -150,11 +166,22 @@ export default {
         this.$emit("show-items-per-page", Number(val));
       },
     },
+    currentSelectedSamples(value) {
+      if (value.length) {
+        this.$refs.tableBody.children[value[value.length - 1]].focus();
+      }
+    },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_LOADING"]),
+    ...mapMutations("plastFluidsLocal", [
+      "SET_LOADING",
+      "SET_CURRENT_SELECTED_SAMPLES",
+    ]),
     emitArrowFilter(key, type) {
       this.$emit("sort-by-arrow-filter", { key, type });
+    },
+    selectTableRow(row) {
+      this.SET_CURRENT_SELECTED_SAMPLES(row.key);
     },
     async handleReportDownload(item) {
       try {
@@ -179,6 +206,7 @@ export default {
     },
   },
   computed: {
+    ...mapState("plastFluidsLocal", ["currentSelectedSamples"]),
     computedPagesCount() {
       return [
         ...Array(this.allPageCount > 6 ? this.allPageCount : 6).keys(),

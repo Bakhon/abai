@@ -30,6 +30,7 @@
         :items="items"
         tableType="analysis"
         :sticky="true"
+        :selectedDataPoint="currentSelectedDataPoint"
       />
     </div>
   </div>
@@ -52,7 +53,11 @@ export default {
     SmallCatLoader,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading", "tableState"]),
+    ...mapState("plastFluidsLocal", [
+      "loading",
+      "tableState",
+      "currentSelectedDataPoint",
+    ]),
   },
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_TABLE_STATE"]),
