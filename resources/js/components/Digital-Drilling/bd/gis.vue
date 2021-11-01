@@ -3,7 +3,7 @@
         <div class="gis-header">
             <span>ДЗО</span>
             <span>Месторождение</span>
-            <span>Скважина 411</span>
+            <span>Скважина</span>
         </div>
         <div class="gis-graph">
             <table class="table default-table gis-table">

@@ -2,11 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Exports\PipeLineCalcExport;
 use App\Exports\PipeLineReverseCalcExport;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Carbon\Carbon;
@@ -101,6 +99,24 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             'ГУ-22'
         ];
 
+        $guData = [
+            'ГУ-107' => [
+                'gas' => 106,
+                'bsw' => 79,
+                'sg_oil' => 0.8450
+            ],
+            'ГУ-22' => [
+                'gas' => 120,
+                'bsw' => 86,
+                'sg_oil' => 0.8531
+            ],
+            'ГУ-24' => [
+                'gas' => 101,
+                'bsw' => 83,
+                'sg_oil' => 0.8542
+            ],
+        ];
+
         $pipes = OilPipe::with('gu, pipeType', 'firstCoords', 'lastCoords', 'well.omgngdu_well')->whereHas('gu', function($q) use ($guNames){
             $q->whereIn('name', $guNames);
         })->get();
@@ -146,7 +162,8 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
         $data = [
             'pipes' => $pipes,
-            'columnNames' => $this->columnNames
+            'columnNames' => $this->columnNames,
+            'guData' => $guData
         ];
 
         $fileName = 'pipeline_reverse_calc_input.xlsx';

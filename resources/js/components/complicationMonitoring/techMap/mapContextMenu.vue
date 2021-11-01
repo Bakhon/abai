@@ -106,6 +106,13 @@ export default {
             type: 'redirect',
             editMode: this.clickedObject.type
           });
+        } else {
+          options.push({
+            name: this.trans('monitoring.map.calculate-chain') + ' ' + this.clickedObject.object.name,
+            mapObject: this.clickedObject,
+            type: 'showCalcForm',
+            editMode: this.clickedObject.type
+          });
         }
 
         options.push({

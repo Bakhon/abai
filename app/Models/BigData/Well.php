@@ -170,6 +170,11 @@ class Well extends TBDModel
         return $this->hasMany(Gis::class, 'well', 'id');
     }
 
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');

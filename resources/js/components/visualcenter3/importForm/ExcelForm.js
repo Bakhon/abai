@@ -30,6 +30,7 @@ import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
 import {globalloadingMutations} from '@store/helpers';
 import Plans from "./dataManagers/plans";
+import CloseMonth from "./dataManagers/closeMonth";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -41,43 +42,96 @@ export default {
                     rows: initialRowsKOA,
                     format: formatMappingKOA,
                     cells: cellsMappingKOA,
-                    id: 110
+                    id: 110,
+                    requiredRows: [1,6,11,16,21,26],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1,
+                        21: 1,
+                    }
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
                     format: formatMappingKTM,
                     cells: cellsMappingKTM,
-                    id: 107
+                    id: 107,
+                    requiredRows: [1,6,11,16,21],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1
+                    }
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
                     format: formatMappingKBM,
                     cells: cellsMappingKBM,
-                    id: 106
+                    id: 106,
+                    requiredRows: [1,4,7,10,13],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        10: 3,
+                    }
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
                     format: formatMappingMMG,
                     cells: cellsMappingMMG,
-                    id: 109
+                    id: 109,
+                    requiredRows: [1,6,11,15,20,25],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        15: 1,
+                        20: 1,
+                    }
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
                     format: formatMappingOMG,
                     cells: cellsMappingOMG,
-                    id: 112
+                    id: 112,
+                    requiredRows: [1,4,7,10,13,16,19],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        13: 1,
+                        16: 1,
+                    }
                 },
                 "УО" : {
                     rows: initialRowsYO,
                     format: formatMappingYO,
                     cells: cellsMappingYO,
-                    id: 111
+                    id: 111,
+                    requiredRows:[1,7,12,18],
+                    isNotNull: {
+                        1: 1,
+                        7: 1,
+                        12: 1
+                    }
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
-                    id: 113
+                    id: 113,
+                    requiredRows: [1,8,15,22,29],
+                    isNotNull: {
+                        1: 1,
+                        8: 1,
+                        15: 1,
+                        22: 1
+                    }
                 },
             },
             dzoCompanies: [
@@ -95,7 +149,7 @@ export default {
                 },
                 {
                     ticker: 'КБМ',
-                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
+                    name: 'АО "Каражанбасмунай"'
                 },
                 {
                     ticker: 'ММГ',
@@ -166,7 +220,9 @@ export default {
                     'formula': (value) => value * 1000
                 }
             },
-            dzoUsers: []
+            dzoUsers: [],
+            requiredRows: 0,
+            isNotNullRows: {}
         };
     },
     props: ['userId'],
@@ -182,14 +238,18 @@ export default {
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
-        if ( this.selectedDzo.ticker === 'КОА') {
-            this.addColumnsToGrid();
-        }
         this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
         this.fillPlanColumns();
         this.fillPlanRows();
         this.plans = await this.getDzoPlans();
         this.handlePlans();
+        if (this.monthDate.date() <= 10) {
+            this.monthDate = this.monthDate.subtract(1,'month').endOf('month');
+        }
+        this.fillMonthColumns();
+        this.fillMonthRows();
+        this.monthlyFact = await this.getDzoFactByPeriod();
+        this.handleMonthFact();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
@@ -201,23 +261,6 @@ export default {
         this.SET_LOADING(false);
     },
     methods: {
-        addColumnsToGrid() {
-            for (let i = 7; i < 9; i++) {
-                this.columns.push(
-                    {
-                        prop: "column" + i,
-                        size: 280,
-                        cellProperties: ({prop, model, data, column}) => {
-                            return {
-                                style: {
-                                    border: '1px solid #F4F4F6'
-                                },
-                            };
-                        },
-                    }
-                );
-            }
-        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -240,6 +283,8 @@ export default {
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
+            this.requiredRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].requiredRows);
+            this.isNotNullRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].isNotNull);
             this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
             this.columnsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
             this.rowsCount = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows).length + 2;
@@ -324,7 +369,9 @@ export default {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
+                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
             } else {
+                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
             }
             if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
@@ -363,15 +410,15 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text();
-                if (!this.isNumberCellValid(cellValue,selector)) {
+                cellValue = this.getFormattedNumber(cellValue);
+                cellValue = parseFloat(cellValue);
+                if ((isNaN(cellValue) || cellValue < 0) && this.requiredRows.includes(row.rowIndex)) {
                     this.turnErrorForCell(selector);
                     continue;
                 }
-                if (cellValue.trim().length === 0) {
-                    cellValue = null;
-                }
-                if (cellValue) {
-                    cellValue = this.getFormattedNumber(cellValue);
+                if (this.isNotNullRows[row.rowIndex] && this.isNotNullRows[row.rowIndex] === columnIndex && !(cellValue > 0)) {
+                    this.turnErrorForCell(selector);
+                    continue;
                 }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
@@ -409,7 +456,7 @@ export default {
             return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
-            this.setClassToElement($(selector),'cell__color-red');
+            this.setClassToElement($('#factGrid').find(selector),'cell__color-red');
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
@@ -440,13 +487,16 @@ export default {
                 this.updateTroubledCompaniesByFactorOptions();
             }
 
-            this.axios.post(uri, this.excelData).then((response) => {
-                if (response.status === 200) {
-                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
-                } else {
-                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
-                }
-            });
+            this.axios.post(uri, this.excelData)
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
+                        this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                    }
+                })
+                .catch((error) => {
+                    this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+                });
         },
 
         updateTroubledCompaniesByFactorOptions() {
@@ -471,5 +521,5 @@ export default {
     components: {
         VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans,CloseMonth],
 };

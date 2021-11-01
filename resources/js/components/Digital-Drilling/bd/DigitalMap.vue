@@ -8,7 +8,7 @@
                 </div>
                 <div class="all-graph" @click="allGraphModal=true">
                     <img src="/img/digital-drilling/all-graph.svg" alt="">
-                    <span>ОБЩИЙ ГРАФИК БУРЕНИЯ</span>
+                    <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
                 </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">
@@ -24,10 +24,11 @@
             <div class="map-filter">
                 <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
                 <dropdown title="Месторождение" :options="fields" class="dropdown__area"
-                          :search="true"
+                          :search="false"
                           @search="filterField"
                           @updateList="updateField"
                 />
+                <dropdown title="Статус" :options="wellStatus" class="dropdown__area" @updateList="filterMap"/>
             </div>
             <MglMap
                     :accessToken="accessToken"
@@ -37,12 +38,12 @@
             >
                 <MglMarker
                         v-for="(coordinate, i)  in coordinates"
-                        :coordinates="[coordinate.Y, coordinate.X]"
+                        :coordinates="[coordinate.X, coordinate.Y]"
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-if="coordinate.Status == 'В Бурении'">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-else>
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В бурении'">
+                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
                     </div>
                 </MglMarker>
             </MglMap>
@@ -62,7 +63,7 @@
 
 <script>
     import {globalloadingMutations} from '@store/helpers';
-    import Dropdown from '../components/dropdown'
+    import Dropdown from '../components/dropdownMapFilter'
 
     import {
         MglMap,
@@ -76,13 +77,29 @@
                 allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-                center: [54.1278133495231, 46.5861065487464],
+                center: [46.5861065487464, 54.1278133495231],
                 zoom: 11,
                 coordinates: [],
                 dzo: [],
                 fields: [],
+                query: '',
                 currentDZO: null,
                 currentField: null,
+                currentStatus: 'drilling',
+                wellStatus:[
+                    {
+                        id: "drilling",
+                        name: 'В бурении'
+                    },
+                    {
+                        id: "",
+                        name: 'Все скважины'
+                    },
+                    {
+                        id: "not_drilling",
+                        name: 'Пробуренные'
+                    }
+                ]
             }
         },
         mounted(){
@@ -92,11 +109,11 @@
              async getCoordinates(){
                     this.SET_LOADING(true);
                     try{
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/").then((response) => {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/" + this.query).then((response) => {
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
-                                this.center = [this.coordinates[0].Y, this.coordinates[0].X]
+                                this.center = [this.coordinates[0].X, this.coordinates[0].Y]
                             } else {
                                 console.log('No data');
                             }
@@ -148,12 +165,19 @@
                     if (data) {
                         this.fields = data;
                         this.currentField = data[0];
-                        this.getCoordinates()
+                        this.filterMap('')
                     } else {
                         console.log('No data');
                     }
                 });
 
+            },
+            filterMap(item){
+                 this.query = '?status=drilling'
+                 if (item != ''){
+                     this.query = '?status=' + item.id
+                 }
+                this.getCoordinates()
             },
             ...globalloadingMutations([
                 'SET_LOADING'

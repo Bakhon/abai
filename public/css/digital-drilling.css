@@ -885,6 +885,7 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+
 }
 .well_body-form-input select, .well_body-form-input input{
     background: #334296;
@@ -894,6 +895,7 @@ input.rangeInput {
     width: 224px;
     height: 28px;
     margin-left: 10px;
+    max-width: 200px;
 }
 .well_body-form-input input{
     background: #1F2142;
@@ -931,6 +933,9 @@ input.rangeInput {
 .well_body-form-coordinates{
     display: flex;
     align-items: center;
+}
+.coordinates-title{
+    text-align: right;
 }
 .well_body-form-coordinates:last-child{
     margin-top: 14px;

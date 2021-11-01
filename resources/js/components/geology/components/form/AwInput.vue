@@ -3,7 +3,8 @@
     <label v-if="label" :for="getUID">{{ label }}</label>
     <input v-bind="$attrs"
            :readonly="readonly || plaintext"
-           v-on="listeners" :type="type" :id="getUID" type="text"
+           v-on="listeners" :type="type" :id="getUID"
+           :value="value"
            @input="onInput($event)"
            @change="onChange($event)"
     >

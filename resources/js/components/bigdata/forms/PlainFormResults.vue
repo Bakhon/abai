@@ -374,11 +374,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -421,7 +429,9 @@ export default {
   &-column-header {
     background-color: #505684;
     min-height: 50px;
+    position: sticky;
     text-align: center;
+    top: 0;
 
     .row {
       flex-wrap: nowrap;
@@ -487,6 +497,7 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {

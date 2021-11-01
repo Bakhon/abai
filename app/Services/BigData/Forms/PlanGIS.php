@@ -112,9 +112,6 @@ class PlanGIS extends TableForm
                 ];
             }
 
-            $orgCode = "date_{$date->format('n_Y')}_" . $org->id;
-            $formula = $this->getSumFormula($childCodes);
-
             $date->addMonth();
         }
 
@@ -124,10 +121,12 @@ class PlanGIS extends TableForm
         ];
 
         $totalColumnCodes = [];
+        $totalFormula = [];
         foreach ($children as $child) {
             $code = $child->id . '_total';
             $totalColumnCodes[] = $code;
             $formula = $this->getSumFormula($childCodesByMonths[$child->id]);
+            $totalFormula[] = $formula;
             if(count($children) <= 1) continue;
 
             $columns[] = [
@@ -139,13 +138,12 @@ class PlanGIS extends TableForm
             ];
         }
 
-        $formula = $this->getSumFormula($totalColumnCodes);
         $columns[] = [
             'code' => 'dzo_total',
             'title' => trans('bd.forms.plan_g_i_s.total'),
             'parent_column' => 'total',
             'type' => 'calc',
-            'formula' => $formula
+            'formula' => implode(' + ', $totalFormula)
         ];
 
         return [

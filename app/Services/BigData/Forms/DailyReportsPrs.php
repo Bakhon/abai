@@ -69,6 +69,7 @@ class DailyReportsPrs extends TableForm
                 'ww.repair_work_type',
                 'rodr.machine_type',
                 'rodr.work_done',
+                'rodr.comment',
                 't.name_ru as tech',
             )
             ->leftJoin('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')

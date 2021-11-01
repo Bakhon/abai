@@ -3,7 +3,6 @@ import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
-import {toArray} from "html-to-image/es/util";
 
 
 export default {
