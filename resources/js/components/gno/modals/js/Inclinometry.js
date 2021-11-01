@@ -109,7 +109,7 @@ export default {
       'analysisSettings',
       'inclinometry',
       'centralizer',
-      'centralizer_range',
+      'centralizerRange',
     ]),
     ...pgnoMapGetters([
       'shgnSettings'

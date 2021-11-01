@@ -1,86 +1,96 @@
+<script src="../../../../../../webpack.mix.js"></script>
 <template>
   <div>
-      <ul class="nav nav-tabs">
-          <li class="nav-item">
-              <a class="nav-link active" @click="selectTab(1)" href="#">{{trans('pgno.shgn')}}</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link disabled" @click="selectTab(2)" href="#">{{trans('pgno.ecn')}}</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link disabled" @click="selectTab(3)" href="#">{{trans('pgno.fon')}}</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link disabled" @click="selectTab(4)" href="#">{{trans('pgno.develop')}}</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link disabled" @click="selectTab(5)" href="#">{{trans('pgno.economic')}}</a>
-          </li>
+    <div class="container">
+      <ul class="tabs-choose">
+        <li @click="activeTab = '1'" :class="[activeTab === '1' ? 'active' : '']">{{ trans('pgno.shgn') }}</li>
+        <li @click="activeTab = '2'" :class="[activeTab === '2' ? 'active' : '']">{{trans('pgno.ecn')}}</li>
       </ul>
-
-    <div v-if="currentTab == 1">
-        <shgn @on-submit-params="onPushParams()" :calcKpodTrigger="calcKpodTrigger"></shgn>
+      <div class="tabs-content">
+        <div class="content-shgn" v-if="activeTab === '1'"><shgn @on-submit-params="onPushParams()" :calcKpodTrigger="calcKpodTrigger"></shgn></div>
+        <div class="content" v-if="activeTab === '2'"><ecn></ecn></div>
+      </div>
     </div>
-
-    <div v-if="currentTab == 2">
-        <ecn></ecn>
-    </div>
-
-    <div v-if="currentTab == 3">
-        <fon></fon>
-    </div>
-
-    <div v-if="currentTab == 4">
-        <develop></develop>
-    </div>
-
-    <div v-if="currentTab == 5">
-        <economic></economic>
-    </div>
-
   </div>
 </template>
-
 <script>
 import Economic from './components/Economic.vue'
 import Shgn from './components/Shgn.vue'
 import Ecn from './components/Ecn.vue'
 import Develop from './components/Develop.vue'
 import Fon from './components/Fon.vue'
+
 export default {
-    components: { Shgn, Ecn, Fon, Develop, Economic },
-    props: {"calcKpodTrigger": Boolean},
-    data: function() {
-        return {
-            currentTab: 1,
-            hover: false
-        }
-    },
-    methods: {
-        selectTab(selectedTab) {
-            this.currentTab = selectedTab
-        },
-        onPushParams() {
-            this.$emit('onPushParams')
-        }
+  props: {"calcKpodTrigger": Boolean},
+  components: { Shgn, Ecn, Fon, Develop, Economic },
+  data: function () {
+    return {
+      activeTab: "1"
     }
+  },
+  methods: {
+    onPushParams() {
+      this.$emit('onPushParams')
+      }
+  }
 }
 </script>
-
-<style scoped>
-.nav-link {
-    color: white;
-    outline: none !important;
+<style scoped lang="scss">
+.container {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .tabs-choose {
+    margin-bottom: 0;
+    li {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #363b68;
+      color: white;
+      cursor: pointer;
+      opacity: 0.3;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      margin-right: 15px;
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+  .tabs-content {
+    border: 12px solid #363b68;
+    padding: 5px;
+  }
 }
 
-.tab__content {
-    color: white;
+.links-urls {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  .link {
+    padding: 10px 20px;
+    display: block;
+    background-color: #EEE;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #777;
+  }
 }
 
-.nav-link.active {
-    color: white;
-    background-color: transparent;
-    border-color: #dee2e6 #dee2e6 white;
+.content {
+  padding-inline: 10px;
+  width: 960px;
+  font-weight: bold;
 }
+
+.content-shgn {
+  padding-inline: 10px;
+  width: 960px;
+  font-weight: bold;
+  height: 735px;
+}
+
 
 </style>

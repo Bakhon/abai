@@ -35,6 +35,9 @@ export const pgnoActions = {
     setIntervals({ commit }, payload) {
         commit("SET_INTERVALS", payload)
     },
+    setCentralizersResult({ commit }, payload){
+        commit("SET_CENTRALIZER_RESULT", payload)
+    },
     async setDefault({ commit }) {
         commit("SET_POST_RESPONSE_DATA", {})
         commit("SET_WELL", {})
@@ -44,6 +47,48 @@ export const pgnoActions = {
         commit("SET_LINES_ANALYSIS", {})
         commit("SET_POINTS_ANALYSIS", {})
         commit("UPDATE_CURVE_SETTINGS", {})
+        commit("SET_CENTRALIZER_RESULT", {
+            data: {},
+            result:[[null, "Ø 19 мм", "Ø 22 мм", "Ø _ мм"],
+            ["С центратом", 0, 0, 0],
+            ["Без центратом", 0, 0, 0],
+            ["Всего", 0, 0, 0]]})
+        commit("SET_CENTRALIZER_SETTINGS", {
+            hasRotarTableElevation: false,
+            rotarTableElevation: 0,
+            hasLowerRod: false,
+            lowerRod: null,
+            hasCentralizer: true,
+            hasRequiredIntervals:true,
+            requiredRanges: [],
+            hasRecommendedIntervals: true,
+            recommendedRanges: [],
+            hasAbrasionIntervals: true,
+            pumpAccuracy: 0,
+            intervalCombining: 0,
+            abrasionIntervals: {
+              row1: {
+                value1: null,
+                value2: null,
+              },
+              row2: {
+                value1: null,
+                value2: null,
+              },
+              row3: {
+                value1: null,
+                value2: null,
+              },
+              row4: {
+                value1: null,
+                value2: null,
+              },
+              row5: {
+                value1: null,
+                value2: null,
+              },
+            },
+          },)
         commit("UPDATE_ANALYSIS_SETTINGS", {
             analysisOld: [
                 "analysisOldPres",
