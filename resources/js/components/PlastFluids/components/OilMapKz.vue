@@ -135,7 +135,7 @@ export default {
     },
     zoomToFeature({ target }) {
       if (target === "previous") {
-        if (this.zoomLevel === "NGP") {
+        if (this.zoomLevel === "NGP" || this.prevBounds.length === 1) {
           this.map.fitBounds(this.rk.getBounds());
           this.zoomLevel = "global";
         } else {
@@ -249,14 +249,10 @@ export default {
         }
 
         this.fields.eachLayer((layer) => {
-          if (
-            layer.feature.properties.parent_id === this.currentProvinceChild
-          ) {
-            layer.bindTooltip(
-              layer.feature.properties["name_" + this.currentLang],
-              this.tooltipOptions
-            );
-          }
+          layer.bindTooltip(
+            layer.feature.properties["name_" + this.currentLang],
+            this.tooltipOptions
+          );
         });
       }
     },
