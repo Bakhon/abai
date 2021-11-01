@@ -1,54 +1,133 @@
 <template>
   <div class="all-contents">
-    <div class="row well-card__wrapper">
+    <div class="well-card_tab-head">
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+     <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+    </div>
+    <div class=" well-card__wrapper">
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
-          class="left-column"
+          class="left-column "
       >
-        <div class="bg-dark scrollable">
-          <div class="row">
-            <div class="col">
-              <div class="well-deal">
-                <div class="well-deal__header">
-                  <div class="title">
-                    <div class="icon-ierarchy"></div>
-                    <h2>Дело скважины</h2>
-                  </div>
-                  <div class="icon-all" style="margin-left: auto;"
-                       @click="onColumnFoldingEvent('left')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="directory text-white pt-0 mt-0">
-              <ul id="myUL">
-                <well-card-tree
-                    v-for="(item, index) in formsStructure"
-                    :key="index"
-                    :active-form-code="activeForm ? activeForm.code : null"
-                    :data="item"
-                    :switch-form-by-code="switchFormByCode">
-                </well-card-tree>
-              </ul>
-            </div>
+          <div class="well-deal__header">
+            Дело скважины
           </div>
-          <div v-if="isLeftColumnFolded" class="row">
+          <form  action="" class="search-bd">
+              <button class="search-btn-bd">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z" fill="#9EA4C9"/>
+                  </svg>
+              </button>
+              <input type="text" class="search-input-bd" placeholder="Поиск">
+          </form>
+          <div class="directory text-white  bg-dark">
+            <ul id="myUL">
+              <well-card-tree
+                  v-for="(item, index) in formsStructure"
+                  :key="index"
+                  :active-form-code="activeForm ? activeForm.code : null"
+                  :data="item"
+                  :switch-form-by-code="switchFormByCode">
+              </well-card-tree>
+            </ul>
+          </div>
+          <div v-if="isLeftColumnFolded" class="left-text">
             <div class="rotate" style="color: white">
               Дело скважины
             </div>
           </div>
-        </div>
+        <div class="icon-all"
+                       @click="onColumnFoldingEvent('left')">
+                    <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+                </svg>
+                  </div>
       </div>
       <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded && !isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible}"
            class="right-column__inner bg-dark" style="display:none"></div>
       <div :class="[isInjectionWellsHistoricalVisible || isProductionWellsHistoricalVisible ? 'fixed-mid-col' : 'mid-col','col-md-6']">
-        <div class="row mid-col__main">
+        <div class="row mid-col__main" :class="{'min_history_table': isLeftColumnFolded || isRightColumnFolded,'small_history_table' : isBothColumnFolded}">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
               <div class="col-4">
@@ -155,52 +234,29 @@
         </div>
       </div>
       <div v-if="!isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible" :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
-        <div class="bg-dark-transparent">
+        <div class="bg-dark-transparent  doc-pasport">
           <template>
-            <div>
-              <div class="col">
+            <div v-if="wellUwi" class="doc-pasport-head">
                 <div class="heading">
-                  <div class="icon-all"
-                       @click="onColumnFoldingEvent('right')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
                   <p v-if="wellUwi">Паспорт скважины</p>
                 </div>
-                <div class="title-container">
-                  <div v-if="wellUwi" class="sheare-icon">
-                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                          d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
-                          stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
-                      <path d="M12.9067 4.5V8.51961C12.9067 9.07189 13.3545 9.51961 13.9067 9.51961H17.8391"
-                            stroke="white" stroke-linejoin="round" stroke-width="1.4"/>
-                      <path
-                          d="M8.23505 15.02C8.52838 15.02 8.76705 15.1147 8.95105 15.304C9.13505 15.4907 9.22705 15.7347 9.22705 16.036C9.22705 16.0947 9.22438 16.148 9.21905 16.196H7.87505C7.87505 16.3053 7.91238 16.3987 7.98705 16.476C8.06171 16.5507 8.15371 16.588 8.26305 16.588C8.41238 16.588 8.51771 16.528 8.57905 16.408H9.20305C9.13638 16.608 9.02438 16.768 8.86705 16.888C8.70971 17.008 8.50438 17.068 8.25105 17.068C7.96571 17.068 7.72305 16.9733 7.52305 16.784C7.32571 16.5947 7.22705 16.3453 7.22705 16.036C7.22705 15.7427 7.31505 15.5 7.49105 15.308C7.66971 15.116 7.91771 15.02 8.23505 15.02ZM8.22705 15.456C8.12838 15.456 8.04838 15.4867 7.98705 15.548C7.92571 15.6067 7.88971 15.68 7.87905 15.768H8.57505C8.56438 15.6773 8.52705 15.6027 8.46305 15.544C8.40171 15.4853 8.32305 15.456 8.22705 15.456ZM9.29055 17L9.97855 16.044L9.32655 15.084H10.0705L10.2585 15.424C10.2905 15.4827 10.3199 15.552 10.3465 15.632H10.3625C10.3999 15.52 10.4239 15.4533 10.4345 15.432L10.6065 15.084H11.3465L10.6985 16.032L11.3665 17H10.5945L10.4105 16.66C10.3652 16.572 10.3399 16.5 10.3345 16.444H10.3185C10.3025 16.5027 10.2732 16.576 10.2305 16.664L10.0465 17H9.29055ZM12.4348 15.02C12.6908 15.02 12.9015 15.0987 13.0668 15.256C13.2322 15.4107 13.3308 15.5933 13.3628 15.804H12.7108C12.6975 15.7373 12.6642 15.684 12.6108 15.644C12.5602 15.604 12.4988 15.584 12.4268 15.584C12.3095 15.584 12.2228 15.6267 12.1668 15.712C12.1135 15.7973 12.0868 15.9067 12.0868 16.04C12.0868 16.1733 12.1162 16.284 12.1748 16.372C12.2335 16.4573 12.3215 16.5 12.4388 16.5C12.5135 16.5 12.5762 16.4787 12.6268 16.436C12.6802 16.3907 12.7162 16.3333 12.7348 16.264H13.3988C13.3402 16.5067 13.2282 16.7013 13.0628 16.848C12.9002 16.9947 12.6882 17.068 12.4268 17.068C12.1415 17.068 11.8988 16.9733 11.6988 16.784C11.5015 16.5947 11.4028 16.3453 11.4028 16.036C11.4028 15.748 11.4962 15.5067 11.6828 15.312C11.8695 15.1173 12.1202 15.02 12.4348 15.02ZM14.6218 15.02C14.9151 15.02 15.1538 15.1147 15.3378 15.304C15.5218 15.4907 15.6138 15.7347 15.6138 16.036C15.6138 16.0947 15.6111 16.148 15.6058 16.196H14.2618C14.2618 16.3053 14.2991 16.3987 14.3738 16.476C14.4484 16.5507 14.5404 16.588 14.6498 16.588C14.7991 16.588 14.9044 16.528 14.9658 16.408H15.5898C15.5231 16.608 15.4111 16.768 15.2538 16.888C15.0964 17.008 14.8911 17.068 14.6378 17.068C14.3524 17.068 14.1098 16.9733 13.9098 16.784C13.7124 16.5947 13.6138 16.3453 13.6138 16.036C13.6138 15.7427 13.7018 15.5 13.8778 15.308C14.0564 15.116 14.3044 15.02 14.6218 15.02ZM14.6138 15.456C14.5151 15.456 14.4351 15.4867 14.3738 15.548C14.3124 15.6067 14.2764 15.68 14.2658 15.768H14.9618C14.9511 15.6773 14.9138 15.6027 14.8498 15.544C14.7884 15.4853 14.7098 15.456 14.6138 15.456ZM15.9683 17V14.12H16.6443V17H15.9683Z"
-                          fill="white"/>
+                <div v-if="wellUwi" class="sheare-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 11.3848V15.5C3 15.7762 3.22386 16 3.5 16H16.5C16.7761 16 17 15.7762 17 15.5V11.3848" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+                      <path d="M10 4V11.3844" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+                      <path d="M7 9.53906L10 12.3082L13 9.53906" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
                     </svg>
-                  </div>
-                  <div v-if="wellUwi" class="sheare-text">
-                    Скачать в MS-Excel
-                  </div>
                 </div>
-              </div>
             </div>
           </template>
           <div class="info">
             <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
             <div class="info-element">
-              <div class="row">
-                <div class="col">
+                <div v-if="wellUwi" class="info-element-head">
+                      Общая информация
+                </div>
                   <table v-if="wellUwi">
-                    <tr>
-                      <th colspan="3">Общая информация</th>
-                    </tr>
+                   
                     <tr v-for="(item, index) in this.tableData">
                       <td>{{ index + 1 }}</td>
                       <td>{{ item.name }}</td>
@@ -209,9 +265,14 @@
                       </td>
                     </tr>
                   </table>
-                </div>
-              </div>
+               
             </div>
+          </div>
+          <div class="icon-all"
+                       @click="onColumnFoldingEvent('right')">
+            <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5.96851 6.41919C6.0105 6.46494 6.0105 6.53512 5.96851 6.58119L1 12" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+            </svg>
           </div>
         </div>
       </div>
@@ -960,17 +1021,118 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$leftColumnWidth: 385px;
-$leftColumnFoldedWidth: 84px;
-$rightColumnWidth: 348px;
-$rightColumnFoldedWidth: 84px;
+$leftColumnWidth: 300px;
+$leftColumnFoldedWidth:50px;
+$rightColumnWidth: 300px;
+$rightColumnFoldedWidth: 50px;
+.well-card_tab-head {
+    display: flex;
+    background: #272953;
+    margin-bottom: 5px;
+    overflow-y:auto;
+    width: 1465px;
+    &::-webkit-scrollbar {
+      width: 4px;
+  }
+    &::-webkit-scrollbar-track {
+      background: #181837;
+      height: 4px!important;
+      width: 4px!important;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #656A8A;
+      border-radius: 10px;
+       height: 2px!important;
+      width: 2px!important;
+      border: 3px solid #181837;
+    }
+}
+.well-card_tab-head__item {
+    color: #Fff;
+    padding: 6px 25px 6px 7px;
+    position: relative;
+    margin-right: 2px;
+    position: relative;
+    background: #363B68;
+    font-weight: bold;
+    font-size: 11px;
+    white-space: nowrap;
+    & span{
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-image: url(/img/bd/close_tab.svg);
+      width: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    &.active,&:hover {
+      background:#2E50E9;
+      cursor: pointer;
+    }
+}
+.info-element-head {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 15px;
+    text-align: center;
+}
+.doc-pasport-head {
+    display: flex;
+    padding: 6px 8px;
+    align-items: center;
+    border-bottom: 2px solid #363B68;
+        display: flex;
+ font-size: 14px;
+    color: #fff;
+}
+.doc-pasport .bg-dark-transparent {
+    padding-bottom: 0;
+  }
+  .doc-pasport  {
+    position: relative;
+    .icon-all {
+        left: 0;
+        border-radius: 0px 5px 5px 0px;
+    }
+  }
+.search-bd {
+        display: flex;
+        background: #121227;
+        border: 1px solid #363B68;
+        margin-bottom:2px;
+    }
+.search-btn-bd {
+        border: none;
+        background: none;
+        width: 27px;
+        height: 27px;
+    }
+    .search-input-bd {
+        width: 100%;
+        width: calc(100% - 30px);
+        border: none;
+        background: #0000;
+        border-left: 0.6px solid #363B68;
+        padding: 0 6px;
+        outline: none;
+        color:#fff;
+    }
+    .search-input-bd::placeholder {
+        color: #fff;
+    }
 .well-card {
   &__wrapper {
-    height: calc(100vh - 90px);
+    height: calc(100vh - 135px);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
   }
 }
 .fixed-mid-col {
-  min-width: calc(100% - 385px - 348px - 24px);
+  min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
   height: calc(100vh - 90px);
 }
@@ -1156,14 +1318,15 @@ h4 {
   padding: 15px 19px;
 
   &__header {
-    border-bottom: 1px solid #555BA6;
-    display: flex;
-    height: 45px;
-    width: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #FFFFFF;
+    background: #272953;
+    border: 1px solid #2E325C;
+    padding: 6px 8px;
+    margin-bottom: 2px;
 
-    .title {
-      display: flex;
-    }
+    
   }
 
   h2 {
@@ -1272,11 +1435,11 @@ h4 {
 }
 
 .directory {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 40px 10px 25px;
-
+    display: block;
+    width: 100%;
+    padding: 10px 17px 10px 7px;
+    height: calc(100% - 67px);
+    overflow-y: auto;
   ul {
     list-style: none;
   }
@@ -1334,20 +1497,17 @@ h4 {
 }
 
 .heading {
-  margin-left: 11.19px;
-  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-  color: white;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 700;
-  display: flex;
-  height: 48px;
+  // margin-left: 11.19px;
+  // font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+  // color: white;
+  // font-size: 16px;
+  // line-height: 18px;
+  // font-weight: 700;
+  // display: flex;
+  // height: 48px;
 
   p {
-    margin: auto;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19px;
+    margin:0;
   }
 }
 
@@ -1567,31 +1727,27 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 169px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
 
   table {
-    margin: 0px 10px;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-    border-collapse: collapse;
-    width: 100%;
-
-    th {
-      background: #333975;
-    }
+    background: #FFFF99;
+    color: #000;
+        font-size: 14px;
   }
 
   td, th {
     border: 1px solid #454D7D;
     text-align: left;
-    padding: 8px;
+    padding: 2px;
+    font-size:13px;
   }
 
-  tr:nth-child(2n) {
-    background-color: #2B2E5E;
-  }
+  // tr:nth-child(2n) {
+  //   background-color: #2B2E5E;
+  // }
 
   .heading {
     padding: 11px 0 15px 13px;
@@ -1610,14 +1766,12 @@ h4 {
   }
 
   .rotate {
-    transform: rotate(-90deg);
-    margin-top: 100px;
-    margin-bottom: 10px;
+    transform: rotate(-90deg) translateY(-35px);
     display: flex;
     white-space: nowrap;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -1628,13 +1782,18 @@ h4 {
 }
 
 .icon-all {
-  float: left;
-  height: 20px;
-  width: 20px;
-  border-radius: 15px;
-  margin-top: auto;
-  margin-bottom: auto;
-
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2B3384;
+  border-radius: 5px 0px 0px 5px;
+  top: 50%;
+  transform:translateY(-50%);
   :hover {
     cursor: pointer;
   }
@@ -1826,7 +1985,8 @@ h4 {
 
 .bg-dark {
   padding-bottom: 20px;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
+  // height: 100%;
 }
 
 .center {
@@ -1849,7 +2009,6 @@ h4 {
 
 .bg-dark-transparent {
   background-color: rgba(39, 41, 83, 0.85);
-  padding-bottom: 20px;
 
   .graphics {
     height: 333px;
@@ -1863,7 +2022,7 @@ h4 {
 
 .scrollable {
   &::-webkit-scrollbar {
-    height: 10px;
+    height: 4px;
     width: 4px;
   }
 
@@ -1936,6 +2095,8 @@ h4 {
 
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 24px) !important;
+      max-width: none!important;
+      min-width: none!important;
     }
 
   }
@@ -1948,29 +2109,25 @@ h4 {
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
-  padding: 0 0 0 15px;
-  margin-right: 15px;
+  position: relative;
   margin-bottom: 0;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-
   .rotate {
     color: white;
     white-space: nowrap;
-    transform: rotate(-90deg);
+    transform: rotate(-90deg) translateY(-30px);
     display: flex;
-    padding-bottom: 50px;
-    padding-right: 20px;
     font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 500;
   }
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
-
+    background: #272953;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     .icon-all {
       transform: rotate(180deg);
     }
@@ -1979,7 +2136,7 @@ h4 {
       border: none;
     }
 
-    .title, .directory {
+    .title, .directory,.well-deal__header ,.search-bd{
       display: none;
     }
 
@@ -2017,9 +2174,8 @@ h4 {
 
   &__inner {
     height: 100%;
-    margin-left: 15px;
-    min-width: 340px;
-    max-width: 340px;
+        background: rgba(39, 41, 83, 0.85);
+    width: 300px;
   }
 
   &_folded {
@@ -2027,18 +2183,25 @@ h4 {
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
     margin: 0px;
-    padding: 0px 15px;
-
+    background: #272953;
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px);
+      
+    } 
+   
+    & .info[data-v-b1a5f7e2] {
+      align-items: center;
+      display: flex;
     }
-
     .icon-all {
       transform: rotate(180deg);
-      padding-bottom: 25px;
     }
-
-    p {
+    
+      .small_history_table .historical-info-parent {
+          width: 810px;
+          /* overflow: hidden; */
+      }
+    p ,.heading,.doc-pasport-head{
       display: none;
     }
 
@@ -2065,11 +2228,11 @@ h4 {
 .mid-col {
   min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 24px);
   padding: 0 15px;
-  height: calc(100vh - 90px);
-
+  height: calc(100vh - 135px);
+      overflow-y: auto;
   &__main {
-    height: 100%;
-    overflow: hidden;
+    // height: 100%;
+    // overflow: hidden;
 
     &-inner {
       margin-bottom: 0;

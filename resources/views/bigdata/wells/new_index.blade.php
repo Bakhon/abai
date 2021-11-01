@@ -721,15 +721,24 @@
                 </svg>
             </div>
         </div>
-        <div class="content-db empty">
-            <div class="org-select-info">
+        <div class="content-db ">
+            <div class="content-db__tab_head">
+                <div class="tab-head-title">
+                    ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
+                </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+            </div>
+            <!-- <div class="org-select-info">
                 <div class="org-select-info__icon">
                     <img src="/img/bd/org_icon.svg" alt="">
                 </div>
                 <div class="org-select-info__text  ">
                     Выберите оргструктуру
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 @endsection
@@ -746,7 +755,7 @@
         margin-left: 5px;
         margin-bottom: 7px;
     }
-
+    
     .asside-db-form__list {
         list-style: none;
     }
@@ -801,7 +810,46 @@
     }
     .content-db {
         width: calc(100% - 305px);
+        background: #181837;
+    }
+    .content-db__tab_head {
+        width: 100%;
         background: #272953;
+        display: flex;
+        font-size: 12px;
+    }
+    .tab-head-title {
+        padding: 6px;
+        border: 1px solid #6D76AB;
+        font-size: 12px;
+        color: #A0A5CC;
+    }
+    .content-db__tab_head__item {
+        padding: 6px 20px 6px 13px;
+        background: #363B68;
+        color: #fff;
+        position: relative;
+    }
+    .content-db__tab_head__item:after {
+        content:'';
+        width: 4px;
+        height: 4px;
+        background: #9EA4C9;
+        position: absolute;
+        left:3px;
+        top:50%;
+        transform:translateY(-50%);
+        border-radius:50%;
+    }
+    .content-db__tab_head__item span {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-image: url(/img/bd/close_tab.svg);
+        width: 20px;
+        background-repeat: no-repeat;
+        background-position: center;
     }
     .org-select-info {
         display: inline-flex;

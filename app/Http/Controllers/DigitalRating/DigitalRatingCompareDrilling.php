@@ -88,7 +88,6 @@ class DigitalRatingCompareDrilling extends Controller
     $project_wells_count =   DB::connection('tbd')->table('digital_rating.project_points')
         ->where('digital_rating.project_points.horizon',   $horizon)  
         ->count();
-    dd($)
     $data['actual_wells_count'] = $actual_wells_count;
     $data['project_wells_count'] = $project_wells_count;
 

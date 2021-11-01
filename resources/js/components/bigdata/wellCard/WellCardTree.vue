@@ -1,12 +1,12 @@
 <template>
   <li>
-    <p @click.stop="isDirOpened = !isDirOpened">
+    <div class="direcotory_parent" @click.stop="isDirOpened = !isDirOpened">
       <img
-          src="/img/bd/arrow.svg"
+          src="/img/bd/arrow_bottom_directory.svg"
           :class="{'arrow-right': !isDirOpened}"
       >
       <span class="dir" v-html="data.name"></span>
-    </p>
+    </div>
     <div v-if="data.children || data.forms" class="directory">
       <div class="custom-directory">
         <ul id="myUL" v-if="isDirOpened">
@@ -23,7 +23,7 @@
               :class="{'selected': activeFormCode === form.code}"
           >
             <p @click.stop="switchFormByCode(form)">
-              <span class="file cursor-pointer" v-html="form.name"></span>
+              <span class=" cursor-pointer" v-html="form.name"></span>
             </p>
           </li>
         </ul>
@@ -49,11 +49,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.direcotory_parent {
+    position: relative;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.3;
+    color: #FFFFFF;
+    margin-left: 5px;
+    margin-bottom: 7px;
+    img {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+}
+.custom-directory li p br {
+    display: none;
+}
 .custom-directory {
-  img {
-    padding-bottom: 5px;
+  #myUL > li {
+    margin-bottom: 3px;
   }
-
+  // img {
+  //   padding-bottom: 5px;
+  // }
+  
   ul, li {
     color: white;
     list-style: none;
@@ -61,20 +82,20 @@ export default {
     padding: 0;
   }
 
-  ul .nested {
-    border-top: 1px dashed #555BA6;
-    border-left: 0;
-  }
+  // ul .nested {
+  //   border-top: 1px dashed #555BA6;
+  //   border-left: 0;
+  // }
 
-  ul {
-    padding-left: 1em;
-    border: 0;
-  }
+  // ul {
+  //   padding-left: 1em;
+  //   border: 0;
+  // }
 
   li {
-    border: 1px dashed #555BA6;
-    padding-left: 1em;
-    border-width: 0 0 1px 1px;
+    // border: 1px dashed #555BA6;
+    // padding-left: 1em;
+    // border-width: 0 0 1px 1px;
 
     &.selected {
       font-size: 105%;
@@ -84,20 +105,34 @@ export default {
 
   li p {
     margin: 0;
-    background: #272953;
     position: relative;
-    bottom: 0.6em;
+    background: #B5D9ED;
+    padding: 7px 14px;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+    &:after{
+        content: '';
+        width: 4px;
+        height: 4px;
+        background: #000;
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 50%;
+    }
   }
 
-  li ul {
-    margin-left: -1em;
-    padding-left: 2em;
-  }
+  // li ul {
+  //   margin-left: -1em;
+  //   padding-left: 2em;
+  // }
 
-  ul li:last-child ul {
-    border-bottom: 0;
-    margin-left: -17px;
-  }
+  // ul li:last-child ul {
+  //   border-bottom: 0;
+  //   margin-left: -17px;
+  // }
 
   li:last-child {
     border-bottom: 0
@@ -106,7 +141,7 @@ export default {
   ul, #myUL {
     list-style-type: none;
   }
-
+  
   .caret {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -163,14 +198,14 @@ export default {
   padding-right: 10px;
 }
 
-.dir::before {
-  content: URL(/img/bd/dir.svg);
-  color: white;
-  display: inline-block;
-  padding-right: 10px;
-}
+// .dir::before {
+//   content: URL(/img/bd/dir.svg);
+//   color: white;
+//   display: inline-block;
+//   padding-right: 10px;
+// }
 
-.arrow-right {
+.direcotory_parent img.arrow-right {
   transform: rotate(-90deg);
 }
 </style>
