@@ -72,12 +72,14 @@ class Kgm extends Dzo {
         return $condensateSummary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
        $chartSummary = $daySummary;
-       $chartSummary['fact'] *= $this->condensateMultiplier;
-       $chartSummary['plan'] *= $this->condensateMultiplier;
-       $chartSummary['opek'] *= $this->condensateMultiplier;
+       if ($isSummary) {
+           $chartSummary['fact'] *= $this->condensateMultiplier;
+           $chartSummary['plan'] *= $this->condensateMultiplier;
+           $chartSummary['opek'] *= $this->condensateMultiplier;
+       }
        $condensateSummary = $this->getCondensateForChart($daySummary);
        $summary = array();
        array_push($summary,$condensateSummary);
