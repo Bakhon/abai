@@ -8,9 +8,9 @@
                     <div class="well_body-header-title">
                         {{ trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT') }}
                     </div>
-                    <div class="well_body-header-close" @click="closeReport">
+                    <a class="well_body-header-close" :href="this.localeUrl('/digital-drilling')">
                         {{ trans('digital_drilling.default.close') }}
-                    </div>
+                    </a>
                 </div>
                 <div class="well_body-content">
                     <div class="well_body-inner">
