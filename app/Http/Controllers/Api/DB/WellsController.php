@@ -46,6 +46,7 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
         
+
         $orgs = $this->org($well);
         $wellInfo = [
             'wellInfo' => $well,
