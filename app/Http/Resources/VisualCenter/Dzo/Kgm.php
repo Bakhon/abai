@@ -66,9 +66,9 @@ class Kgm extends Dzo {
         $condensateSummary = $daySummary;
         $condensateSummary['id'] = '';
         $condensateSummary['name'] = 'КГМКМГ';
-        $condensateSummary['fact'] *= $this->condensateMultiplier;
-        $condensateSummary['plan'] *= $this->condensateMultiplier;
-        $condensateSummary['opek'] *= $this->condensateMultiplier;
+        $condensateSummary['fact'] *= $this->oilCondensateMultiplier;
+        $condensateSummary['plan'] *= $this->oilCondensateMultiplier;
+        $condensateSummary['opek'] *= $this->oilCondensateMultiplier;
         return $condensateSummary;
     }
 

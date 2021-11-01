@@ -44,6 +44,9 @@ class Kpo extends Dzo {
     protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
     {
        $summary = array();
+       $daySummary['fact'] *= $this->oilCondensateMultiplier;
+       $daySummary['plan'] *= $this->oilCondensateMultiplier;
+       $daySummary['opek'] *= $this->oilCondensateMultiplier;
        array_push($summary,$daySummary);
        return $summary;
     }
