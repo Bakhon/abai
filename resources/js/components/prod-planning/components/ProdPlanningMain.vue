@@ -3,7 +3,7 @@
     <div class="main-block-nav">
 <!--   Навигация   -->
       <div class="block-nav">
-        <div class="nav-item pr-2" v-for="tab in tabs" @click="selected = tab.component;">
+        <div class="nav-item pr-2" :class="{ active: tab.active === true }" v-for="tab in tabs" @click="((selected = tab.component) && (tab.active = !tab.active))">
           <div class="nav-icon pl-2 pt-2">
             <img :src="tab.icon" alt="">
           </div>
@@ -165,10 +165,8 @@
           </div>
         </div>
       </div>
-      <div class="right-block d-flex">
-        <div>
+      <div class="right-block">
           <component :is="selected"></component>
-        </div>
       </div>
     </div>
   </div>
@@ -181,7 +179,7 @@ import baseProdForecast from "./BaseProdForecast";
 export default {
   name: 'prod-plan',
   data: function () {
-    return{
+    return {
       // tabs: ["BusPlan", "MonPlanFact"],
       selected: monitorPlanFact,
       tabs: [
@@ -189,27 +187,37 @@ export default {
           id: 1,
           title: "Мониторинг план-факт",
           component: monitorPlanFact,
-          icon: require('./icons/mon-plan-fact.svg')
+          icon: require('./icons/mon-plan-fact.svg'),
+          active: true
         },
         {
           id: 2,
           title: "Прогноз базовой добычи",
-          component: businessPlan,
-          icon: require('./icons/forecast.svg')
+          component: baseProdForecast,
+          icon: require('./icons/forecast.svg'),
+          active: false
         },
         {
           id: 3,
           title: "Бизнес-планирование",
-          component: baseProdForecast,
-          icon: require('./icons/bus-plan.svg')
+          component: businessPlan,
+          icon: require('./icons/bus-plan.svg'),
+          active: false
         },
         {
           id: 4,
           title: "Долгосрочная программа",
           component: 'BusPlan',
-          icon: require('./icons/program.svg')
+          icon: require('./icons/program.svg'),
+          active: false
         }
       ]
+    }
+  },
+  methods: {
+    selectedNav(e) {
+      this.selected = e.component;
+      e.active = !e.active
     }
   },
   components: {
@@ -261,6 +269,10 @@ export default {
   background: #2C44BD;;
 }
 
+.active {
+  background: #2C44BD;;
+}
+
 .nav-title {
   color: white;
   font-size: 16px;
@@ -268,7 +280,7 @@ export default {
 }
 
 .left-block{
-  background-color: #0c2e5a;
+  background-color: #272953;
   width: 300px;
   height: 936px;
   gap: 10px;
@@ -282,10 +294,9 @@ export default {
 }
 
 .right-block {
-  background-color: #272953;
+  display: flex;
   width: 100%;
-  height: 936px;
-
+  height: auto;
 }
 
 .period-well {
