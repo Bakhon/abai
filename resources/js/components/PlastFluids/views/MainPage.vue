@@ -108,14 +108,6 @@ export default {
       subsoilChildrenSearch: "",
       selectedField: null,
       checkedField: [],
-      fieldData: {
-        kozhasai: {
-          field: 60,
-          deep: 86,
-          recombine: 24,
-          estuarine: 86,
-        },
-      },
     };
   },
   computed: {
