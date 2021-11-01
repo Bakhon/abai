@@ -33,7 +33,7 @@ const digitalRating = {
 
   getters: {
     injDiagramIndicators: (state) => [state.injDiagramIndicators],
-    prodDiagramIndicators: (state) => [state.prodDiagramIndicators?.liquid_prod]
+    prodDiagramIndicators: (state) => [state.prodDiagramIndicators?.liquid_prod, state.prodDiagramIndicators?.oil_prod]
   },
 
   actions: {

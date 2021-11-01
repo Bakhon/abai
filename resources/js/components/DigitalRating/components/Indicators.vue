@@ -21,7 +21,7 @@
         </div>
       </table>
       <Plotly
-        :data="this.injDiagramIndicators"
+        :data="this.prodDiagramIndicators"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
@@ -109,7 +109,9 @@
     },
 
     async mounted() {
-      await this.fetchIndicators({});
+      if (!this.indicators) {
+        await this.fetchIndicators({});
+      }
     },
 
     methods: {

@@ -38,27 +38,6 @@
                 </template>
               </div>
             </template>
-
-
-<!--                <span class="dropdown-item submenu">1-й уровень</span>-->
-<!--                <div class="dropdown-menu">-->
-<!--                  <span class="dropdown-item">2-й уровень</span>-->
-<!--                  <span class="dropdown-item submenu">2-й уровень</span>-->
-<!--                  <div class="dropdown-menu">-->
-<!--                    <span class="dropdown-item">3-й уровень</span>-->
-<!--                    <span class="dropdown-item">3-й уровень</span>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              <ul class="btn-dropdown__area-list">-->
-<!--                <li-->
-<!--                  v-for="(item, index) in horizonList"-->
-<!--                  :key="index"-->
-<!--                  @click="$emit('select', item)"-->
-<!--                >-->
-<!--                  <i :class="`fas fa-${item.icon}`"/>-->
-<!--                  <span>{{ item.title ? trans(item.title) : trans(item) }}</span>-->
-<!--                </li>-->
-<!--              </ul>-->
           </btn-dropdown>
           <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
             <template #title>
