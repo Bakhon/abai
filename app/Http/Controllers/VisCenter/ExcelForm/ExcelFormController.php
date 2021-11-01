@@ -382,4 +382,34 @@ class ExcelFormController extends Controller
         $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$input->get('dzo_name')]);
         $this->sendEmail($messageOptions,$client);
     }
+
+    public function getFactByMonth(Request $request)
+    {
+     return DzoImportData::query()
+         ->select(['date','oil_production_fact','oil_delivery_fact','condensate_production_fact','condensate_delivery_fact'])
+         ->whereNull('is_corrected')
+         ->whereYear('date',$request->year)
+         ->whereMonth('date',$request->month)
+         ->where('dzo_name',$request->dzo)
+         ->get();
+    }
+
+    public function storeFactByMonth(Request $request)
+    {
+        $systemFields = ['dzo_name','date'];
+        $forUpdate = array();
+        $params = $request->request->all();
+         foreach(reset($params) as $fact) {
+            foreach($fact as $field => $value) {
+                if (!in_array($field, $systemFields)) {
+                    $forUpdate[$field] = $value;
+                }
+            }
+            DzoImportData::query()
+                ->where('dzo_name',$fact['dzo_name'])
+                ->whereDate('date',Carbon::parse($fact['date']))
+                ->first()
+                ->update($forUpdate);
+         }
+    }
 }
