@@ -491,7 +491,7 @@ export default {
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : ''
       let actualBottomHole = this.well.actualBottomHole ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : ''
       let artificialBottomHole = this.well.artificialBottomHole ? this.well.artificialBottomHole.depth : ''
-      let perfActual = this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+' - '+this.well.perfActual.base : ''
+      let perfActual =   this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+' - '+this.well.perfActual.base : ''
       let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+' / '+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
       let techModeProdOil_measWaterCut = this.well?.techModeProdOil?.wcut  && this.well?.measWaterCut?.water_cut
                                          ? this.well.techModeProdOil.wcut+' / '+this.well.measWaterCut.water_cut
@@ -520,7 +520,7 @@ export default {
           (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
 
       let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
-      let injPressure = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.inj_pressure +' / '+ this.well.meas_water_inj.pressure_inj: ''
+      let injPressure = this.getInjPressure(well)
       let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +' / '+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
       let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
@@ -721,7 +721,7 @@ export default {
         {
           'name': this.trans('well.depth_down'),
           'data': depth_nkt,
-          'type': ['all']
+          'type': ['dob_oil']          
         },
         {
           'name': this.trans('well.kshd'),
@@ -949,16 +949,45 @@ export default {
       }
       return (value)
     },
-    getTechmodeOil(well){    
-      if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
-        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+    getTechmodeOil(well){   
+      if(this.well.techModeProdOil && this.well.dmart_daily_prod_oil){
+        if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
+          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+        }
+        if(this.well.techModeProdOil.oil){
+          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+        }
+        if(this.well.dmart_daily_prod_oil.oil){
+          return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+        }
+      } 
+      return ''
+    },
+    getInjPressure(well){               
+      if(this.well.tech_mode_inj && this.well.meas_water_inj){
+          if(this.well.tech_mode_inj.inj_pressure != null && this.well.meas_water_inj.pressure_inj != null){
+             return this.well.tech_mode_inj.inj_pressure +' / '+ this.well.meas_water_inj.pressure_inj
+          }
+          if(this.well.tech_mode_inj.inj_pressure === null){
+            return '-' + ' / ' + this.well.meas_water_inj.pressure_inj
+          }
+          if(this.well.meas_water_inj.pressure_inj === null){
+            return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
+          }
+          return ''
       }
-      if(this.well.techModeProdOil.oil){
-        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+      if(this.well.tech_mode_inj === null){
+        return ''
       }
-      if(this.well.dmart_daily_prod_oil.oil){
-        return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      if(this.well.meas_water_inj === null){
+        return ''
       }
+      if(this.well.tech_mode_inj.inj_pressure){        
+        return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
+      }
+      if(this.well.meas_water_inj.pressure_inj){
+        return '-' + ' / ' + this.well.meas_water_inj.pressure_inj        
+      }      
       return ''
     },
     setWellObjectData(key, path, source) {
