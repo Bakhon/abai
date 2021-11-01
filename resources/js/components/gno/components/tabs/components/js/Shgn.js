@@ -12,6 +12,7 @@ export default {
 	props: {"calcKpodTrigger": Boolean},
 	data: function()  {
 		return {
+			isTailDisabled: false,
 			settings: {},
 			steelMark: null,
 			steelMarks: null,
@@ -182,11 +183,26 @@ export default {
 			this.settings.corrosion = e.target.value
 			this.settings.steelMark = []
 			this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
+		},
+		uncheck(e) {
+			if(this.curveSettings.mechanicalSeparation) {
+				this.e.target.checked = false
+			}
 		}
 	},
 	created: function() {
 		this.settings = _.cloneDeep(this.shgnSettings)
+		this.isTailDisabled = (this.curveSettings.mechanicalSeparation && this.curveSettings.separationMethod!=="input_value")
+		if (this.isTailDisabled && this.settings.komponovka.includes("hvostovik")) {
+			this.settings.komponovka = this.settings.komponovka.filter(e => e!=="hvostovik")
+		}
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
+		if(this.curveSettings.mechanicalSeparation) {
+			console.log('true')
+		}
+		console.log(this.curveSettings.mechanicalSeparation)
+
+
 		this.calKpod()
 	}
 }
