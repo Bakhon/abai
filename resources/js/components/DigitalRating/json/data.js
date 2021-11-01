@@ -169,6 +169,37 @@ const horizons = [
     }
 ]
 
+const objectList = [
+    {
+        id: 1,
+        title: 'УзенМунайГаз',
+        children: [
+            {
+                id: 13,
+                title: '13 горизонт',
+                children: [
+                    {
+                        id: 21,
+                        title: 'Хум'
+                    },
+                    {
+                        id: 22,
+                        title: 'Парс'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                title: '14 горизонт'
+            },
+        ]
+    },
+    {
+        id: 2,
+        title: 'КаражанбасМунай'
+    }
+]
+
 const properties = ['Значок', 'Шрифт', 'Палитра']
 
 const fileActions = [
@@ -375,5 +406,6 @@ export {
     mapActions,
     rowsOil,
     rowsHorizon,
-    actualIndicators
+    actualIndicators,
+    objectList
 }
