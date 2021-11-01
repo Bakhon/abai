@@ -24,10 +24,11 @@
             <div class="map-filter">
                 <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
                 <dropdown title="Месторождение" :options="fields" class="dropdown__area"
-                          :search="true"
+                          :search="false"
                           @search="filterField"
                           @updateList="updateField"
                 />
+                <dropdown title="Статус" :options="wellStatus" class="dropdown__area" @updateList="filterMap"/>
             </div>
             <MglMap
                     :accessToken="accessToken"
@@ -83,6 +84,21 @@
                 fields: [],
                 currentDZO: null,
                 currentField: null,
+                currentStatus: 'drilling',
+                wellStatus:[
+                    {
+                        id: "drilling",
+                        name: 'В бурение'
+                    },
+                    {
+                        id: "",
+                        name: 'Все'
+                    },
+                    {
+                        id: "not_drilling",
+                        name: 'В добыче'
+                    }
+                ]
             }
         },
         mounted(){
@@ -153,6 +169,9 @@
                         console.log('No data');
                     }
                 });
+
+            },
+            filterMap(){
 
             },
             ...globalloadingMutations([
