@@ -1,11 +1,14 @@
 <script>
     import {Line, mixins} from "vue-chartjs";
     import moment from "moment";
+    import {globalloadingMutations} from '@store/helpers';
+    import Vue from "vue";
 
     const {reactiveProp} = mixins;
 
     export default {
         extends: Line,
+        props: ['isDecreaseReasonActive','selectedCompanies'],
         data: function () {
             return {
                 monthMapping: [
@@ -35,6 +38,11 @@
                     fact: this.trans("visualcenter.Fact"),
                     deviation: this.trans("visualcenter.deviation"),
                 },
+                datasets: [],
+                labels: [],
+                pointHitRadius: 15,
+                reasons: {},
+                dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
             }
         },
         methods: {
@@ -105,7 +113,8 @@
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.plan,
-                    pointRadius: 0,
+                    pointHitRadius: this.pointHitRadius,
+                    pointRadius: 0
                 };
                 let factChartOptions = {
                     label: chartLabels.fact,
@@ -113,7 +122,8 @@
                     fill: false,
                     showLine: true,
                     data: formattedChartSummary.fact,
-                    pointRadius: 0,
+                    pointHitRadius: this.pointHitRadius,
+                    pointRadius: 0
                 };
 
                 let planOpecChartOptions = {
@@ -122,8 +132,9 @@
                     fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
-                    data: formattedChartSummary.planOpec,
                     pointRadius: 0,
+                    data: formattedChartSummary.planOpec,
+                    pointHitRadius: this.pointHitRadius
                 };
                 let monthlyPlan = {
                     label: chartLabels.monthlyPlan,
@@ -131,8 +142,9 @@
                     fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
-                    data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
+                    data: formattedChartSummary.monthlyPlan,
+                    pointHitRadius: this.pointHitRadius
                 };
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
                 if (isNaN(summaryOpek)) {
@@ -141,12 +153,15 @@
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
+                this.datasets = datasets;
+                this.labels = formattedChartSummary.labels;
 
                 this.renderChart(
                     {
                         labels: formattedChartSummary.labels,
                         datasets,
                     },
+
                     {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -159,6 +174,7 @@
                                 }
                             },
                         },
+                        onClick: this.handleClick,
                         scales: {
                             yAxes: [
                                 {
@@ -184,7 +200,7 @@
                             ],
                         },
                         tooltips: {
-                            intersect: false,
+                            intersect: true,
                             callbacks: {
                                 label: (tooltipItem,data) => {
                                     if (data.datasets.length !== 4) {
@@ -193,9 +209,44 @@
                                     return this.getFormattedNumber(tooltipItem.value);
                                 }
                             }
-                        }
+                        },
                     }
                 );
+            },
+
+            async handleClick(point, event) {
+                let item = event[0];
+                if (item && this.isDecreaseReasonActive) {
+                    this.reasons = await this.getDecreaseReasons(moment(this.labels[item._index],'DD / MMM / YYYY').format('DD.MM.YYYY'),this.selectedCompanies);
+                    this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
+                    this.$emit('chartReasons', this.reasons);
+                }
+
+            },
+
+            async getDecreaseReasons(date,dzo) {
+                let queryOptions = {
+                    'date': date,
+                    'companies': dzo
+                };
+                let uri = this.localeUrl("/get-decrease-reasons-by-date");
+                const response = await axios.get(uri,{params:queryOptions});
+                if (response.status !== 200) {
+                    return [];
+                }
+                return response.data;
+            },
+
+            getUpdatedByOpekRestrictionReasons(reasons) {
+                let presentCompanies = Object.keys(this.reasons);
+                _.forEach(this.dzoWithOpekRestriction, (dzo) => {
+                    if (presentCompanies.includes(dzo)) {
+                        this.reasons[dzo].push(this.trans('visualcenter.opekExplanationReason'));
+                    } else {
+                        this.reasons[dzo] = [this.trans('visualcenter.opekExplanationReason')];
+                    }
+                });
+                return reasons;
             },
 
             getFormattedNumber(num) {
@@ -239,6 +290,10 @@
                 let date = new Date(Number(timestamp));
                 return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();
             },
+
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
         },
         created: function () {
             this.$parent.$on("data", this.updateChartOptions);
