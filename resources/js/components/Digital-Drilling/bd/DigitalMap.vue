@@ -42,7 +42,7 @@
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В Бурении'">
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В бурении'">
                         <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
                     </div>
                 </MglMarker>
@@ -63,7 +63,7 @@
 
 <script>
     import {globalloadingMutations} from '@store/helpers';
-    import Dropdown from '../components/dropdown'
+    import Dropdown from '../components/dropdownMapFilter'
 
     import {
         MglMap,
@@ -82,21 +82,22 @@
                 coordinates: [],
                 dzo: [],
                 fields: [],
+                query: '',
                 currentDZO: null,
                 currentField: null,
                 currentStatus: 'drilling',
                 wellStatus:[
                     {
                         id: "drilling",
-                        name: 'В бурение'
+                        name: 'В бурении'
                     },
                     {
                         id: "",
-                        name: 'Все'
+                        name: 'Все скважины'
                     },
                     {
                         id: "not_drilling",
-                        name: 'В добыче'
+                        name: 'Пробуренные'
                     }
                 ]
             }
@@ -108,7 +109,7 @@
              async getCoordinates(){
                     this.SET_LOADING(true);
                     try{
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/").then((response) => {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/" + this.query).then((response) => {
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
@@ -164,15 +165,19 @@
                     if (data) {
                         this.fields = data;
                         this.currentField = data[0];
-                        this.getCoordinates()
+                        this.filterMap('')
                     } else {
                         console.log('No data');
                     }
                 });
 
             },
-            filterMap(){
-
+            filterMap(item){
+                 this.query = '?status=drilling'
+                 if (item != ''){
+                     this.query = '?status=' + item.id
+                 }
+                this.getCoordinates()
             },
             ...globalloadingMutations([
                 'SET_LOADING'
