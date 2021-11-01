@@ -243,6 +243,9 @@ export default {
         this.fillPlanRows();
         this.plans = await this.getDzoPlans();
         this.handlePlans();
+        if (this.monthDate.date() <= 10) {
+            this.monthDate = this.monthDate.subtract(1,'month').endOf('month');
+        }
         this.fillMonthColumns();
         this.fillMonthRows();
         this.monthlyFact = await this.getDzoFactByPeriod();

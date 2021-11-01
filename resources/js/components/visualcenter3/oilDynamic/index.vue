@@ -235,6 +235,7 @@ export default {
     methods: {
         async getDaily() {
             let uri = this.localeUrl("/oil-dynamic-daily");
+            console.log(this.selectedMonth)
             let queryOptions = {
                 'month': this.selectedMonth,
                 'type' : this.selectedDzo.ticker

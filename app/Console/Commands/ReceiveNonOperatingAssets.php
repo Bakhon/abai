@@ -314,7 +314,7 @@ class receiveNonOperatingAssets extends Command
         $yesterdayFact = $this->getYesterdayFact($dzoName);
         $oilFact = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction');
         $oilDelivery = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery');
-        if (Carbon::now()->day === 1) {
+        if (Carbon::now()->day === 2) {
             $oilFact = $row[$columnMapping['KPOoilProduction']];
             $oilDelivery = $row[$columnMapping['KPOoilDelivery']];
         }

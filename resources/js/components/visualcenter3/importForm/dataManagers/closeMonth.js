@@ -147,15 +147,14 @@ export default {
             this.monthColumnsCount = (Object.keys(header).length + 1);
             this.monthRows.push(header);
             let currentDate = moment();
-            let daysCount = currentDate.subtract(1,'days').date();
-            if (currentDate.date() <= 10) {
-                currentDate = currentDate.subtract(1,'month').startOf('month');
-                daysCount = currentDate.daysInMonth();
+            let daysCount = this.monthDate.daysInMonth();
+            if (this.monthDate.date() > 10 && this.monthDate.month() === moment().month()) {
+                daysCount = this.monthDate.clone().subtract(1,'days').date();
             }
 
             for (let i=1;i<=daysCount;i++) {
                 let row = {
-                    'column1': currentDate.date(i).format('DD.MM.YYYY')
+                    'column1': this.monthDate.clone().date(i).format('DD.MM.YYYY')
                 };
                 for (let y=2; y < this.monthColumnsCount; y++) {
                     row['column'+y] = 0;
