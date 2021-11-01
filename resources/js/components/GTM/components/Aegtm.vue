@@ -1,4 +1,3 @@
-<script src="js/AegtmEco.js"></script>
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm pt-1">
@@ -98,7 +97,6 @@
               :disabled="!oilFieldsForFilter.length"
           >
           </v-select>
-
           <v-select
               :options="horizontsForFilter"
               label="name"

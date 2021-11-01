@@ -5,7 +5,7 @@
         v-if="node.name"
         v-bind:class="{ 'cursor-pointer': pointerClass }"
         @click.stop="handleClick(node)">
-            <span v-if="nodeHasChildren" @click="toggleUl()">
+            <span v-if="nodeHasChildren" @click="toggleUl(1)">
               <span class="asd"><img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'"></span>
               <img width="20" height="20" src='../img/folder.svg'>
             </span>
@@ -43,8 +43,9 @@ export default {
       ...paegtmMapActions([
         'changeClickable',
       ]),
-        toggleUl: function () {
-            this.showChildren = !this.showChildren;
+        toggleUl: function (el) {
+          this.showChildren = !this.showChildren;
+          this.active_el = el;
         },
         toggleCheckState: function () {
           let clickable = this.node.clickable
@@ -72,6 +73,11 @@ export default {
         nodeHasChildren: function () {
             return this.node.children && this.node.children.length;
         },
+        selected() {
+          if (!this.active.length) return undefined;
+          const id = this.active[0];
+          return this.users.find(user => user.id === id);
+        },
       isLeaf: function(node) {
         if (node.hasOwnProperty('value')) {
           return true
@@ -80,3 +86,9 @@ export default {
     }
 }
 </script>
+<style>
+.active {
+  color:red;
+  font-weight:bold;
+}
+</style>

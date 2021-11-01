@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row mx-0 mt-lg-2 gtm">
+    <div class="row mx-0 mt-lg-2 gtm main-block-gtm">
       <div class="col-lg-9 lg-border-block" @mouseover="closeTree()">
         <div class="row col-12 p-0 m-0">
           <div :class="!isMinimize ? 'col-6 d-none d-lg-block p-0' : 'maximize-block d-none d-lg-block p-0'">
@@ -52,8 +52,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  v-for="(c, index) in table.main_data.data" @click="onClickWell(c[0], 1)" >
-                          <th class="bg-body" :class="{ active: active_el }" v-for="row in c" @click="active_el = !activate" >{{ index }} {{ row }}</th>
+                        <tr  v-for="c in table.main_data.data" @click="onClickWell(c[0])" >
+                          <th class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -182,7 +182,7 @@
             <div class="gtm-dark h-100">
               <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ this.trans("paegtm.factor_analysis") }}, {{ this.trans("measurements.thousand_tons") }}
+                  {{ this.trans("paegtm.factor_analyse") }}
                 </div>
 
                 <div class="d-flex">
@@ -226,61 +226,77 @@
           </div>
           <div class="d-flex gap-10">
             <gtm-tree-date-picker class="flex-1"></gtm-tree-date-picker>
-<!--            <div class="d-flex calendar-filter-block fl-1">-->
-<!--              {{ this.dataRangeInfo.begin_date }}-->
-<!--            </div>-->
-<!--            <div style="width: 5px;"></div>-->
-<!--            <div class="d-flex calendar-filter-block fl-1">-->
-<!--              {{ this.dataRangeInfo.end_date }}-->
-<!--            </div>-->
-<!--            <div style="width: 5px;"></div>-->
-<!--            <div class="d-flex calendar-filter-block show-block"  @click="myEvent">-->
-<!--              <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">-->
-<!--            </div>-->
             <div class="d-flex calendar-filter-block show-block"  @click="myEvent">
               <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
             </div>
           </div>
-          <div style="width: 5px;"></div>
-
-
         </div>
 
         <div class="block-header gtm-dark">
-          <div class="gtm-dark gtm-filter mt-2 p-2">
-            <v-select
-                :options="dzosForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_dzo')"
-            >
-            </v-select>
-            <v-select
-                :options="oilFieldsForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_oil_field')"
-            >
-            </v-select>
+          <div class="gtm-dark gtm-filter mt-2">
+            <div class="gtm-select-block pb-12px pt-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_dzo') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="objectsForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_object')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_oil_field') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="structuresForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_structure')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px  p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_object') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="gusForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_gu')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_structure') }}</option>
+              </select>
+            </div>
+
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_gu') }}</option>
+              </select>
+            </div>
+
+<!--            <v-select-->
+<!--                :options="dzosForFilter"-->
+<!--                label="name"-->
+<!--                :placeholder="this.trans('paegtm.select_dzo')"-->
+<!--            >-->
+<!--            </v-select>-->
+<!--            <v-select-->
+<!--                :options="oilFieldsForFilter"-->
+<!--                label="name"-->
+<!--                :placeholder="this.trans('paegtm.select_oil_field')"-->
+<!--            >-->
+<!--            </v-select>-->
+
+<!--            <v-select-->
+<!--                :options="objectsForFilter"-->
+<!--                label="name"-->
+<!--                :placeholder="this.trans('paegtm.select_object')"-->
+<!--            >-->
+<!--            </v-select>-->
+
+<!--            <v-select-->
+<!--                :options="structuresForFilter"-->
+<!--                label="name"-->
+<!--                :placeholder="this.trans('paegtm.select_structure')"-->
+<!--            >-->
+<!--            </v-select>-->
+
+<!--            <v-select-->
+<!--                :options="gusForFilter"-->
+<!--                label="name"-->
+<!--                :placeholder="this.trans('paegtm.select_gu')"-->
+<!--            >-->
+<!--            </v-select>-->
 
           </div>
         </div>
@@ -357,6 +373,11 @@
   min-height: 233px;
 }
 
+.main-block-gtm {
+  height: 100%;
+  align-items: stretch;
+}
+
 .period-settings-input {
   width: 60px;
   height: 24px;
@@ -396,7 +417,6 @@
 }
 .period-settings-input[type="number"]::-webkit-inner-spin-button,
 .period-settings-input[type="number"]::-webkit-outer-spin-button {
-  /*-webkit-appearance: none;*/
   margin: 0;
   color: #0E9A00;
 }
@@ -528,13 +548,82 @@ tr:nth-child(even) td {
   background: #272953 !important;
 }
 
-.fl-1 {
-  flex: 1
+.gear-icon-svg:hover {
+  content: "";
+  opacity: 100;
+  -webkit-animation: gear-icon-svg 3s infinite both;
+  animation: gear-icon-svg 3s infinite both;
 }
 
-.active {
-  color:red;
-  font-weight:bold;
+@-webkit-keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
 }
 
+@keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
+.select-well {
+  width: 100%;
+  height: 43.87px;
+  border-radius: 4px;
+  background-color: #333975;
+  outline: none;
+  border: none;
+  color: white;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.select-well option {
+  background-color: #333975;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+.select-well-option {
+  height: 43.87px;
+  background: #323370;
+}
+
+.pb-12px {
+  padding-bottom: 12px;
+}
+
+.pt-12px {
+  padding-top: 12px;
+}
+
+.p-i-12px {
+  padding-inline: 12px;
+}
+
+.gtm-select-block select {
+  outline: none;
+}
 </style>

@@ -12,7 +12,6 @@
               :title="trans('bd.choose_start_date')"
               :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
               :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-              :max-datetime="treeDate.end_date"
               :week-start="1"
               :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
               auto
@@ -36,7 +35,6 @@
               :title="trans('bd.choose_end_date')"
               :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
               :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-              :min-datetime="treeDate.begin_date"
               :week-start="1"
               :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
               auto
@@ -72,12 +70,6 @@ export default {
     return {
       isDatePickerShow: false,
       dateFlow: ['year', 'month', 'date'],
-      // treeDate: {
-      //   beginDate: Date,
-      //   endDate: Date,
-      // }
-      // dateStartGtm: this.getDateStart(),
-      // dateEndGtm: this.getDateEnd(),
     }
   },
   computed: {
@@ -97,23 +89,10 @@ export default {
       this.changeTreeDate(this.treeDate);
       this.$emit('dateChanged')
     },
-    showModal(modalName) {
-      this.$modal.show(modalName);
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-    },
   },
 }
 </script>
 <style scoped>
-.gear-icon-svg:hover {
-  content: "";
-  opacity: 100;
-  -webkit-animation: gear-icon-svg 3s infinite both;
-  animation: gear-icon-svg 3s infinite both;
-}
-
 .gap-10 {
   gap: 10px;
 }
@@ -122,62 +101,9 @@ export default {
   margin-top: 7px;
 }
 
-@-webkit-keyframes gear-icon-svg {
-  0% {
-    -webkit-transform: scale(1) rotateZ(0);
-    transform: scale(1) rotateZ(0);
-  }
-  50% {
-    -webkit-transform: scale(1) rotateZ(180deg);
-    transform: scale(1) rotateZ(180deg);
-  }
-  100% {
-    -webkit-transform: scale(1) rotateZ(360deg);
-    transform: scale(1) rotateZ(360deg);
-  }
-}
-
-@keyframes gear-icon-svg {
-  0% {
-    -webkit-transform: scale(1) rotateZ(0);
-    transform: scale(1) rotateZ(0);
-  }
-  50% {
-    -webkit-transform: scale(1) rotateZ(180deg);
-    transform: scale(1) rotateZ(180deg);
-  }
-  100% {
-    -webkit-transform: scale(1) rotateZ(360deg);
-    transform: scale(1) rotateZ(360deg);
-  }
-}
-
 .modal-bign-wrapper {
   left: 815px;
   top: -340px;
-}
-
-.period-settings-input {
-  background: #494AA5;
-  border: 1px solid #272953;
-  outline: none;
-  max-width: 30px;
-  height: 22px;
-  color: white;
-  box-sizing: border-box;
-  border-radius: 3px;
-  line-height: 25px !important;
-  padding-right: 5px;
-  padding-left: 5px;
-}
-
-.period-settings-input:focus {
-  background: #5657c7;
-}
-
-.period-settings-input:disabled {
-  color: #928f8f;
-  background: #353e70;
 }
 
 .block-date {
