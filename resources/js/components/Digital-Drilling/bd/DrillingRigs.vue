@@ -88,7 +88,7 @@
                                     <td class="w-150">{{rig.company}}</td>
                                     <td class="w-150">
                                         <div class="text-center mb-2">{{rig.name_ru}}</div>
-                                        <button class="characteristic" @click="openCharacteristicModal">
+                                        <button class="characteristic" @click="openCharacteristicModal(rig.id)">
                                             {{trans("digital_drilling.default.technical_description")}}
                                         </button>
                                     </td>
@@ -161,15 +161,31 @@
                 </div>
             </div>
         </div>
-        <div class="characteristic__modal" v-if="characteristicModal">
+        <div class="characteristic__modal" v-if="characteristicModal && technicalDescription.length>0">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>{{trans("digital_drilling.default.technical_description")}} ZJ-40</span>
-                    <div class="characteristic_header-close" @click="openCharacteristicModal">
+                    <span>{{trans("digital_drilling.default.technical_description")}} {{technicalDescription[2].value}}</span>
+                    <div class="characteristic_header-close" @click="closeCharacteristicModal">
                         {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
+                    <table class="table defaultTable modalTable">
+                        <tbody>
+                        <tr>
+                            <th>Название</th>
+                            <th>Значение</th>
+                        </tr>
+                        <tr>
+                            <td>{{technicalDescription[0].parameter}}</td>
+                            <td>{{technicalDescription[0].value}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{technicalDescription[1].parameter}}</td>
+                            <td>{{technicalDescription[1].value}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <table class="table defaultTable modalTable">
                         <tbody>
                             <tr>
@@ -177,10 +193,10 @@
                                 <th>Ед.измерения</th>
                                 <th>Значение</th>
                             </tr>
-                            <tr v-for="i in 20">
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr v-for="i in technicalDescription.length-3">
+                                <td>{{technicalDescription[i+2].parameter}}</td>
+                                <td>{{technicalDescription[i+2].unit}}</td>
+                                <td>{{technicalDescription[i+2].value}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -260,6 +276,7 @@
                 characteristicGraph: false,
                 characteristicScheme: false,
                 rigs: [],
+                technicalDescription: []
             }
         },
         mounted(){
@@ -278,13 +295,25 @@
                     console.log(er)
                 });
             },
-            openCharacteristicModal(){
-                if (this.characteristicModal){
-                    this.characteristicModal = false
-                } else{
-                    document.body.overflow = 'hidden'
-                    this.characteristicModal = true
-                }
+            async getRigsCharacteristics(id){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/rig_tech/'+id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.technicalDescription = data;
+                    } else {
+                        console.log('No data');
+                    }
+                }).catch((er)=>{
+                    console.log(er)
+                });
+            },
+            closeCharacteristicModal(){
+                this.characteristicModal = false
+            },
+            openCharacteristicModal(id){
+                this.getRigsCharacteristics(id)
+                document.body.overflow = 'hidden'
+                this.characteristicModal = true
             },
             openCharacteristicGraphModal(){
                 if (this.characteristicGraph){
