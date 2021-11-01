@@ -7,7 +7,8 @@ export default {
             category: {
                 'isArchieveActive': false,
                 'isFactActive': true,
-                'isPlanActive': false
+                'isPlanActive': false,
+                'isCloseMonthActive': false
             },
             period: moment().subtract(1,'days').format("YYYY-MM-DD HH:mm:ss"),
             datePickerOptions: {
@@ -51,10 +52,16 @@ export default {
            this.isDataExist = false;
            this.isDataReady = false;
            this.disableHighlightOnCells();
+           this.turnOffErrorHighlight();
            if (name === 'isPlanActive') {
                await this.sleep(100);
                for (let i=0; i <=12; i++) {
                    this.setClassToElement($('#planGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+               }
+           } else if (name === 'isCloseMonthActive') {
+               await this.sleep(100);
+               for (let i=0; i < (this.monthColumnsCount-1); i++) {
+                   this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
                }
            } else {
                await this.changeDefaultDzo();
@@ -67,9 +74,6 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
-            if (this.selectedDzo.ticker === 'КОА') {
-                this.addColumnsToGrid();
-            }
             this.changeDefaultDzo();
             this.handleSwitchFilter();
             this.addListeners();

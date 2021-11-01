@@ -9,11 +9,13 @@
   "table_fields": [
     "gis_date",
     "gis_type",
+    "contractor",
     "matering_from",
     "matering_to",
     "process_from",
     "process_to",
     "conclusion",
+    "gis_method",
     "table"
   ],
   "tabs": [
@@ -155,105 +157,9 @@
             "items": [
               {
                 "code": "conclusion",
-                "type": "text",
+                "type": "textarea",
                 "title": "zakl",
                 "validation": ""
-              },
-              {
-                "code": "liquid_level",
-                "type": "numeric",
-                "title": "liquid_level",
-                "validation": "nullable|gte:0"
-              },
-              {
-                "code": "income_devices",
-                "type": "numeric",
-                "title": "income_devices",
-                "validation": "nullable|lte:10000"
-              },
-              {
-                "code": "injection_pressure",
-                "type": "numeric",
-                "title": "injection_pressure",
-                "validation": "nullable|gte:0"
-              },
-              {
-                "code": "intake",
-                "type": "numeric",
-                "title": "intake",
-                "validation": "nullable|gte:0"
-              },
-              {
-                "code": "сement_bridge",
-                "type": "checkbox",
-                "title": "сement_bridge",
-                "validation": ""
-              },
-              {
-                "code": "volume_expense",
-                "type": "numeric",
-                "title": "volume_expense",
-                "validation": "nullable|gte:0"
-              },
-              {
-                "code": "zp_top",
-                "type": "numeric",
-                "title": "zp_top",
-                "validation": "nullable|lte:10000"
-              },
-              {
-                "code": "zp_bottom",
-                "type": "numeric",
-                "title": "zp_bottom",
-                "validation": "nullable|gte:zp_top"
-              },
-              {
-                "code": "in_top",
-                "type": "numeric",
-                "title": "in_top",
-                "validation": "nullable|lte:10000"
-              },
-              {
-                "code": "in_bottom",
-                "type": "numeric",
-                "title": "in_bottom",
-                "validation": "nullable|gte:in_top"
-              },
-              {
-                "code": "pm_top",
-                "type": "numeric",
-                "title": "pm_top",
-                "validation": "nullable|lte:10000"
-              },
-              {
-                "code": "pm_bottom",
-                "type": "numeric",
-                "title": "pm_bottom",
-                "validation": "nullable|gte:pm_top"
-              },
-              {
-                "code": "ip_top",
-                "type": "numeric",
-                "title": "ip_top",
-                "validation": "nullable|lte:10000"
-              },
-              {
-                "code": "ip_bottom",
-                "type": "numeric",
-                "title": "ip_bottom",
-                "validation": "nullable|gte:ip_top"
-              },
-              {
-                "code": "coverage",
-                "type": "numeric",
-                "title": "coverage",
-                "validation": "nullable|gte:0|lte:100"
-              },
-              {
-                "code": "distribution",
-                "type": "numeric",
-                "title": "distribution",
-                "validation": "nullable|gte:0|lte:100"
               }
             ]
           }

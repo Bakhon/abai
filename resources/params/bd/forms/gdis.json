@@ -30,9 +30,15 @@
               {
                 "code": "method",
                 "type": "dict",
-                "dict":"res_method_dict",
+                "dict": "res_method_dict",
                 "title": "research_type",
                 "validation": "required|exists:tbd.dict.research_method,id"
+              },
+              {
+                "code": "research_results",
+                "type": "label",
+                "title": "research_results",
+                "validation": ""
               },
               {
                 "code": "depth",
@@ -65,50 +71,8 @@
                     }
                   }
                 ]
-              },
-              {
-                "code": "PSAT",
-                "table": "prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "pressure",
-                "validation": "gte:0|lte:1500",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IPR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "RSMD",
-                "table": "prod.gdis_complex_value",
-                "type": "text",
-                "title": "plast_model",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IPR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "FBRD",
-                "table": "prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "plast",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IPR"
-                    }
-                  }
-                ]
-              },
+              },                          
+              
               {
                 "code": "SKFC",
                 "table": "prod.gdis_complex_value",
@@ -271,35 +235,7 @@
                     }
                   }
                 ]
-              },
-              {
-                "code": "WBMD",
-                "table": "prod.gdis_complex_value",
-                "type": "text",
-                "title": "plast_uwi",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IPR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "BRMD",
-                "table": "prod.gdis_complex_value",
-                "type": "text",
-                "title": "model_g",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IPR"
-                    }
-                  }
-                ]
-              },
+              },                 
               {
                 "code": "RPWZ",
                 "table": "prod.gdis_complex_value",
@@ -374,50 +310,9 @@
                   }
                 ]
               },
-              {
-                "code": "PSAT",
-                "type": "numeric",
-                "table":"prod.gdis_complex_value",
-                "title": "pressure",
-                "validation":"gte:0|lte:1500",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "RSMD",
-                "table":"prod.gdis_complex_value",
-                "type": "text",
-                "title": "plast_model",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "FBRD",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "plast",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+              
+              
+              
               {
                 "code": "BORD",
                 "table":"prod.gdis_complex_value",
@@ -433,37 +328,8 @@
                   }
                 ]
               },
-              {
-                "code": "PNT",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "pronicm",
-                "validation":"gte:0|lte:1000",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "SKFC",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "skin_f",
-                "validation":"gte:-7.5|lte:100",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
+              
+                {
                 "code": "RPC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
@@ -523,21 +389,8 @@
                   }
                 ]
               },
-              {
-                "code": "WTCD",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "hydro",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+             
+             
               {
                 "code": "PCND",
                 "table":"prod.gdis_complex_value",
@@ -567,22 +420,8 @@
                     }
                   }
                 ]
-              },
-              {
-                "code": "RSRD",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "rad",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+              },              
+              
               {
                 "code":"TET",
                 "table":"prod.gdis_complex_value",
@@ -613,79 +452,12 @@
                   }
                 ]
               },
-              {
-                "code": "VCL",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "koeff",
-                "validation":"gte:0|lte:10",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "LQVS",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "water",
-                "validation":"gte:0|lte:1000000",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "GCS",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "system",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "WBMD",
-                "table":"prod.gdis_complex_value",
-                "type": "text",
-                "title": "plast_uwi",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "BRMD",
-                "table":"prod.gdis_complex_value",
-                "type": "text",
-                "title": "model_g",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+             
+              
+              
+               
+             
+              
               {
                 "code": "RPWZ",
                 "table":"prod.gdis_complex_value",
@@ -731,21 +503,8 @@
                   }
                 ]
               },
-              {
-                "code": "CND",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "prov",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+              
+             
               {
                 "code": "PRCB",
                 "table":"prod.gdis_complex_value",
@@ -760,22 +519,7 @@
                     }
                   }
                 ]
-              },
-              {
-                "code": "CHL",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "dlina",
-                "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "code": "IDR"
-                    }
-                  }
-                ]
-              },
+              },               
               {
                 "code": "WWP",
                 "table":"prod.gdis_complex_value",
@@ -791,11 +535,11 @@
                 ]
               },
               {
-                "code": "PSAT",
+                "code": "CHL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
-                "title": "pressure",
-                "validation":"gte:0|lte:1500",
+                "title": "dlina",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1205,11 +949,11 @@
                 ]
               },
               {
-                "code": "PSAT",
+                "code": "CHL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
-                "title": "pressure",
-                "validation":"gte:0|lte:1500",
+                "title": "dlina",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1588,11 +1332,11 @@
               ]
             },
             {
-              "code": "PSAT",
+              "code": "CHL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
-              "title": "pressure",
-              "validation":"gte:0|lte:1500",
+              "title": "dlina",
+              "validation":"gte:0",
               "depends_on": [
                 {
                   "field": "method",
@@ -1971,11 +1715,11 @@
               ]
             },
             {
-              "code": "PSAT",
+              "code": "CHL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
-              "title": "pressure",
-              "validation":"gte:0|lte:1500",
+              "title": "dlina",
+              "validation":"gte:0",
               "depends_on": [
                 {
                   "field": "method",
@@ -2473,66 +2217,11 @@
                 }
               ]
             },
-            {
-              "code": "PNT",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "pronicm",
-              "validation":"gte:1|lte:1000",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSPR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "SKFC",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "skin_f",
-              "validation":"gte:-7.5|lte:100",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSPR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "WTCD",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "hydro",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSPR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "PCND",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "pz",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSPR"
-                  }
-                }
-              ]
-            },
+           
+            
+            
+           
+           
             {
               "code": "RTA",
               "table":"prod.gdis_complex_value",
@@ -2548,21 +2237,7 @@
                 }
               ]
             },
-            {
-              "code": "CND",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "prov",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSPR"
-                  }
-                }
-              ]
-            },
+           
             {
               "code": "MODE",
               "table":"prod.gdis_complex_value",
@@ -2696,67 +2371,7 @@
                   }
                 }
               ]
-            },
-            {
-              "code": "PNT",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "pronicm",
-              "validation":"gte:0|lte:1000",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSSR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "SKFC",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "skin_f",
-              "validation":"gte:-7.5|lte:100",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSSR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "WTCD",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "hydro",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSSR"
-                  }
-                }
-              ]
-            },
-            {
-              "code": "PCND",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "pz",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSSR"
-                  }
-                }
-              ]
-            },
+            },           
             {
               "code": "RTA",
               "table":"prod.gdis_complex_value",
@@ -2816,22 +2431,7 @@
                   }
                 }
               ]
-            },
-            {
-              "code": "CND",
-              "table":"prod.gdis_complex_value",
-              "type": "numeric",
-              "title": "prov",
-              "validation":"gte:0",
-              "depends_on": [
-                {
-                  "field": "method",
-                  "value": {
-                    "code": "SSSR"
-                  }
-                }
-              ]
-            },
+            },            
             {
               "code": "WWP",
               "table":"prod.gdis_complex_value",

@@ -683,6 +683,17 @@ input.rangeInput {
     position: relative;
     overflow: hidden;
 }
+.map__content .dropdown__area{
+    margin-bottom: 15px;
+}
+.map-filter{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    z-index: 5000;
+}
 .contentBlock__map-bottom{
     padding: 0 4px 4px;
     border: 6px solid #272953;
@@ -874,6 +885,7 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+
 }
 .well_body-form-input select, .well_body-form-input input{
     background: #334296;
@@ -883,6 +895,7 @@ input.rangeInput {
     width: 224px;
     height: 28px;
     margin-left: 10px;
+    max-width: 200px;
 }
 .well_body-form-input input{
     background: #1F2142;
@@ -920,6 +933,9 @@ input.rangeInput {
 .well_body-form-coordinates{
     display: flex;
     align-items: center;
+}
+.coordinates-title{
+    text-align: right;
 }
 .well_body-form-coordinates:last-child{
     margin-top: 14px;
@@ -1229,6 +1245,10 @@ td.border-right-none{
 }
 .decryption-content-right{
     margin-left: 100px;
+}
+.daily-report.dropdown-menu {
+    width: 332px !important;
+    min-height: 80px !important;
 }
 @media (max-width: 1625px) {
     .tables{

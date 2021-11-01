@@ -4,10 +4,10 @@
             <div class="well_body">
                 <div class="well_body-header">
                     <div class="well_body-header-title">
-                        Новая скважина
+                        {{ trans('digital_drilling.default.new_well') }}
                     </div>
                     <div class="well_body-header-close" @click="closeNewWell">
-                        Закрыть
+                        {{ trans('digital_drilling.default.close') }}
                     </div>
                 </div>
                 <div class="well_body-content">
@@ -17,44 +17,46 @@
                     <div class="well_body-inner">
                         <div class="well_body-form">
                             <div class="well_body-form-input">
-                                <label for="DZO">Наименование ДЗО:</label>
+                                <label for="DZO">{{ trans('digital_drilling.default.name_subsidiaries_affiliates') }}</label>
                                 <select name="" id="DZO">
-                                    <option value="" disabled selected="selected">Выбор ДЗО</option>
+                                    <option value="" disabled selected="selected">
+                                        {{ trans('digital_drilling.default.selection_subsidiaries_affiliates') }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="field">Месторождение:</label>
+                                <label for="field">{{ trans('digital_drilling.default.field') }}:</label>
                                 <select  id="field">
-                                    <option value="" disabled selected="selected">Выбор Месторождения</option>
+                                    <option value="" disabled selected="selected">{{ trans('digital_drilling.default.field_selection') }}</option>
                                 </select>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="well">Скважина:</label>
+                                <label for="well">{{ trans('digital_drilling.passport.well') }}:</label>
                                 <input type="text" placeholder="| Введите скважину" id="well">
                             </div>
                             <div class="well_body-form-checkbox">
                                 <div class="Ground">
-                                    <label for="ground">Наземная</label>
+                                    <label for="ground">{{ trans('digital_drilling.default.onshore') }}</label>
                                     <input type="checkbox" id="ground">
                                 </div>
                                 <div class="Marine">
-                                    <label for="marine">Морская</label>
+                                    <label for="marine">{{ trans('digital_drilling.default.offshore') }}</label>
                                     <input type="checkbox" id="marine">
                                 </div>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="height">Высота над уровнем моря:</label>
+                                <label for="height">{{ trans('digital_drilling.default.elevation_sea_level') }}</label>
                                 <input type="text" placeholder="| Высота" id="height">
                                 <span class="input-size">м.</span>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="sheight">Высота стола ротора:</label>
+                                <label for="sheight">{{ trans('digital_drilling.default.height_rotary_table') }}</label>
                                 <input type="text" placeholder="| Высота" id="sheight">
                                 <span class="input-size">м.</span>
                             </div>
                             <div class="well_body-form-coordinates">
                                 <div class="coordinates-title">
-                                    Координаты устья:
+                                    {{ trans('digital_drilling.default.wellhead_coordinates') }}
                                 </div>
                                 <div class="coordinates-form">
                                     <div class="coordinates-form-input">
@@ -69,7 +71,7 @@
                             </div>
                             <div class="well_body-form-coordinates">
                                 <div class="coordinates-title">
-                                    Координаты забоя:
+                                    {{ trans('digital_drilling.default.bottomhole_coordinates') }}
                                 </div>
                                 <div class="coordinates-form">
                                     <div class="coordinates-form-input">
@@ -86,7 +88,7 @@
                     </div>
                 </div>
                 <div class="well-create">
-                    Создать
+                    {{ trans('digital_drilling.default.create') }}
                 </div>
             </div>
         </div>

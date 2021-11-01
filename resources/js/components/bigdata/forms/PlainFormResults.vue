@@ -287,7 +287,7 @@ export default {
           .then(result => {
             if (result === true) {
               this.axios.delete(this.localeUrl(`/api/bigdata/forms/${this.code}/${row.id}`)).then(({data}) => {
-                this.rows.splice(rowIndex, 1)
+                this.updateResults()
               })
             }
           })
@@ -299,6 +299,13 @@ export default {
       ) {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
+        if (column.multiple) {
+          return row[column.code].map(itemId => {
+            let value = dict.find(dictItem => dictItem.id === itemId)
+            return value.name || value.label
+          }).join(', ')
+        }
+
         let value = dict.find(dictItem => dictItem.id === row[column.code])
 
         if (!value) return null
@@ -309,6 +316,9 @@ export default {
             if (value.parent) {
               value = dict.find(dictItem => dictItem.id === value.parent)
               result.push(value.label)
+              if (column.dict === 'geos') {
+                if (value.type === 'FLD') break;
+              }
               continue;
             }
             break;
@@ -364,11 +374,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -411,7 +429,9 @@ export default {
   &-column-header {
     background-color: #505684;
     min-height: 50px;
+    position: sticky;
     text-align: center;
+    top: 0;
 
     .row {
       flex-wrap: nowrap;
@@ -477,6 +497,7 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {

@@ -15,6 +15,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
+
 class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
@@ -96,7 +97,12 @@ class Well extends TBDModel
 
     public function wellPerfActual()
     {
-        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+        return $this->hasMany(WellPerfActual::class, 'well', 'id');
+    }
+
+    public function wellPerf()
+    {
+        return $this->hasMany(WellPerf::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -117,6 +123,16 @@ class Well extends TBDModel
     public function measWaterCut()
     {
         return $this->hasMany(MeasWaterCut::class, 'well', 'id');
+    }
+
+    public function measLiqInjection()
+    {
+        return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
+    }
+
+    public function dmartDailyProd()
+    {
+        return $this->hasMany(DmartDailyProd::class, 'well', 'id');
     }
 
     public function wellWorkover()
@@ -154,6 +170,11 @@ class Well extends TBDModel
         return $this->hasMany(Gis::class, 'well', 'id');
     }
 
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
@@ -168,7 +189,6 @@ class Well extends TBDModel
     {
         return $this->hasMany(Gtm::class, 'well', 'id');
     }
-
 
     public function scopeActive($query, $date)
     {
@@ -223,8 +243,53 @@ class Well extends TBDModel
             $query = $query->where('date','>=',$date);
         }
 
-        $query = $query->select('date','liquid','wcut','oil','hdin')
-                          ->orderBy('date')->get();
+        $query = $query->select(
+            'date',
+            'liquid',
+            'wcut',
+            'oil',
+            'hdin',
+            'activity',
+            'liquid_telemetry',
+            'pbuf',
+            'pzat',
+            'pbuf_before',
+            'pbuf_after',
+            'hdin',
+            'pzab',
+            'hstat',
+            'ppl',
+            'work_hours',
+            'well_status',
+            'well_expl',
+            'well_category',
+            'gdis_conclusion',
+            'reason_downtime',
+            'wcut_telemetry',
+            'oil_telemetry',
+            'gas_telemetry',
+            'gas_factor_telemetry',
+            'liquid_temp',
+            'park_indicator'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return object|null
+     */
+    public function eventsOfWell(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
         return $query;
     }
 }

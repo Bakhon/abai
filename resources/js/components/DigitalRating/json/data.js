@@ -49,21 +49,18 @@ const secondIndicators = [
         response: 100,
         pressure: 123,
         distance: 452,
-        diameter: 2
     },
     {
         number: 'UZN_0002',
         response: 200,
         pressure: 120,
         distance: 245,
-        diameter: 3
     },
     {
         number: 'UZN_0003',
         response: 500,
         pressure: 100,
         distance: 345,
-        diameter: 4
     }
 ]
 
@@ -169,6 +166,37 @@ const horizons = [
     {
         id: 24,
         title: '24 горизонт'
+    }
+]
+
+const objectList = [
+    {
+        id: 1,
+        title: 'УзенМунайГаз',
+        children: [
+            {
+                id: 13,
+                title: '13 горизонт',
+                children: [
+                    {
+                        id: 21,
+                        title: 'Хум'
+                    },
+                    {
+                        id: 22,
+                        title: 'Парс'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                title: '14 горизонт'
+            },
+        ]
+    },
+    {
+        id: 2,
+        title: 'КаражанбасМунай'
     }
 ]
 
@@ -324,7 +352,8 @@ const rowsHorizon = [
 const actualIndicators = [
     {
         id: 1,
-        title: 'Добыча нефти, тыс.т'
+        title: 'Добыча нефти, тыс.т',
+        value: 'oil_production'
     },
     {
         id: 2,
@@ -332,15 +361,18 @@ const actualIndicators = [
     },
     {
         id: 3,
-        title: 'Добыча жидкости, тыс.т'
+        title: 'Добыча жидкости, тыс.т',
+        value: 'liquid_val'
     },
     {
         id: 4,
-        title: 'Обводненность, %'
+        title: 'Обводненность, %',
+        value: 'water_inj'
     },
     {
         id: 5,
-        title: 'Дебит нефти, т/сут'
+        title: 'Дебит нефти, т/сут',
+        value: 'avg_debit'
     },
     {
         id: 6,
@@ -348,11 +380,13 @@ const actualIndicators = [
     },
     {
         id: 7,
-        title: 'Ввод скважин, ед.'
+        title: 'Ввод скважин, ед.',
+        value: 'drilling_unit'
     },
     {
         id: 8,
-        title: 'Ввод добывающих скважин из бурения, ед.'
+        title: 'Ввод добывающих скважин из бурения, ед.',
+        value: 'fds_operational_unit'
     },
     {
         id: 9,
@@ -372,5 +406,6 @@ export {
     mapActions,
     rowsOil,
     rowsHorizon,
-    actualIndicators
+    actualIndicators,
+    objectList
 }
