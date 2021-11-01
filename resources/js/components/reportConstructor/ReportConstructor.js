@@ -17,7 +17,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            frontendApiVersion: "1.02",
+            frontendApiVersion: "1.03",
             microserviceApiVersion: null,
             structureTypes: {
                 org: null,
@@ -39,15 +39,13 @@ export default {
                     mandatoryFields: ['prod.meas_liq.dbeg', 'prod.meas_liq.dend', 'dict.well.uwi'],
                     dateField: 'prod.meas_liq.dbeg',
                     uniqueField: 'dict.well.uwi',
-                    orderedDates: [],
-                    dailyParameters: [],
+                    orderedDates: []
                 },
                 well_pump: {
                     mandatoryFields: ['prod.meas_liq.dbeg', 'prod.meas_liq.dend', 'dict.well.uwi'],
                     dateField: 'prod.meas_liq.dbeg',
                     uniqueField: 'dict.well.uwi',
-                    orderedDates: [],
-                    dailyParameters: [],
+                    orderedDates: []
                 }
             },
             dailyParametersCategoryLabel: 'Параметры по дням',
@@ -479,6 +477,7 @@ export default {
             let sheetByDays = {}
             let uniqueField = this.sheetConfigurations[sheetType]['uniqueField']
             let columnsKeys = this.statisticsColumns[sheetType]
+            let dateField = this.sheetConfigurations[sheetType]['dateField']
             for (let row of statistics[sheetType]) {
                 let uniqueId = row[uniqueField]
                 if (!(uniqueId in sheetByDays)) {
@@ -491,7 +490,6 @@ export default {
                     }
                 }
 
-                let dateField = this.sheetConfigurations[sheetType]['dateField']
                 let day = row[dateField]
                 sheetByDays[uniqueId][day] = {}
                 for (let dailyParameter of columnsKeys['daily']) {
@@ -522,7 +520,7 @@ export default {
                 this.showToast(e.name, e.message, 'danger', 10000)
                 return
             }
-            let params = await this.getStatisticsRequestParams()
+            let params = await this.getStatisticsDownloadRequestParams()
             this.axios.post(
                 this.baseUrl + 'get_excel/',
                 JSON.stringify(params),
@@ -538,6 +536,12 @@ export default {
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.SET_LOADING(false));
+        },
+        async getStatisticsDownloadRequestParams() {
+            let params = await this.getStatisticsRequestParams()
+            params['sheetConfigurations'] = {'well': this.sheetConfigurations[this.wellTypeSelected]}
+            params['dailyParametersCategoryLabel'] = this.dailyParametersCategoryLabel
+            return params
         },
         getHeaders(sheetType) {
             let genericHeaders = this.getGenericHeaders(sheetType)
