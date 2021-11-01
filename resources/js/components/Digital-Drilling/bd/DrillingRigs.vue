@@ -56,6 +56,10 @@
                                 <img src="/img/digital-drilling/icon-map.png" alt="">
                                 <div class="title">{{trans("digital_drilling.default.drilling_rigs")}}</div>
                             </div>
+                            <div class="all-graph" @click="allGraphModal=true">
+                                <img src="/img/digital-drilling/all-graph.svg" alt="">
+                                <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
+                            </div>
                             <div class="contentBlock__map-search-block">
                                 <div class="contentBlock__map-search-input">
                                     <img src="/img/digital-drilling/search.png" alt="">
@@ -80,32 +84,31 @@
                                     <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
                                     <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
                                 </tr>
-                                <tr v-for="i in 12">
-                                    <td></td>
-                                    <td>
-                                        <div class="text-center mb-2">ZJ-40</div>
+                                <tr v-for="rig in rigs">
+                                    <td class="w-150">{{rig.company}}</td>
+                                    <td class="w-150">
+                                        <div class="text-center mb-2">{{rig.name_ru}}</div>
                                         <button class="characteristic" @click="openCharacteristicModal">
                                             {{trans("digital_drilling.default.technical_description")}}
                                         </button>
                                     </td>
 
-                                    <td v-for="i in 4"></td>
-                                    <td></td>
-                                    <td>
+                                    <td>{{rig.superintendent}}</td>
+                                    <td>{{rig.load_capacity}}</td>
+                                    <td>{{rig.nominal_drilling_depth}}</td>
+                                    <td>{{rig.installation_time}}</td>
+                                    <td>{{rig.dismantling_time}}</td>
+                                    <td class="w-150">
                                         <div class="text-center mb-2">
-                                            8-ая скв.
-                                            с 01.01.2021
                                         </div>
                                         <button class="characteristic" @click="openCharacteristicGraphModal">
                                             {{trans("digital_drilling.default.schedule")}}
                                             <img src="/img/digital-drilling/install-graph.svg" alt="">
                                         </button>
                                     </td>
-                                    <td>
+                                    <td class="w-150">
                                         <div class="text-center mb-2">
-                                            АО ЭМГ
-                                            М/е: Актобе
-                                            Скв.№112</div>
+                                        </div>
                                         <button class="characteristic" @click="openCharacteristicSchemeModal">
                                             {{trans("digital_drilling.default.scheme")}}
                                             <img src="/img/digital-drilling/install-cheme.svg" alt="">
@@ -230,6 +233,9 @@
                 </div>
             </div>
         </div>
+        <div class="all-graph-modal" v-if="allGraphModal">
+            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
+        </div>
     </div>
 </template>
 
@@ -245,6 +251,7 @@
         components:{ MglMap, MglMarker, MglGeojsonLayer},
         data(){
             return{
+                allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
                 center: [52.1108, 43.68999],
@@ -252,9 +259,25 @@
                 characteristicModal: false,
                 characteristicGraph: false,
                 characteristicScheme: false,
+                rigs: [],
             }
         },
+        mounted(){
+            this.getRigs()
+        },
         methods:{
+            async getRigs(){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs').then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.rigs = data;
+                    } else {
+                        console.log('No data');
+                    }
+                }).catch((er)=>{
+                    console.log(er)
+                });
+            },
             openCharacteristicModal(){
                 if (this.characteristicModal){
                     this.characteristicModal = false
@@ -284,6 +307,9 @@
 </script>
 
 <style scoped>
+    .w-150{
+        width: 180px!important;
+    }
     .characteristic__modal{
         position: fixed;
         top: 0;
