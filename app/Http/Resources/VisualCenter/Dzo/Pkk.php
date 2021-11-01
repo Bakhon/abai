@@ -11,11 +11,13 @@ class Pkk extends Dzo {
     protected $dzoName = 'ПКК';
     private $oilCondensateMultiplier = 0.33;
 
-   protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+   protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
    {
-       $daySummary['fact'] *= $this->oilCondensateMultiplier;
-       $daySummary['plan'] *= $this->oilCondensateMultiplier;
-       $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       if ($isSummary) {
+           $daySummary['fact'] *= $this->oilCondensateMultiplier;
+           $daySummary['plan'] *= $this->oilCondensateMultiplier;
+           $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       }
        $summary = array();
        array_push($summary,$daySummary);
        return $summary;

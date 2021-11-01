@@ -376,7 +376,7 @@
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     #monthGrid {
-        height: 782px;
+        height: 582px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
