@@ -227,6 +227,11 @@ export default {
           : this.zoom === 7
           ? "NGR"
           : "FLD";
+
+      if (this.zoomLevel === "global") {
+        this.prevBounds = this.prevBounds.slice(0, 1);
+        this.prevZoomLevel = this.prevZoomLevel.slice(0, 1);
+      }
       if (this.zoom < 7) {
         for (let key in this.provinceChilds) {
           this.provinceChilds[key].unbindTooltip().bindTooltip(
