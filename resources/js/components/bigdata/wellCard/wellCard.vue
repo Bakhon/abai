@@ -950,15 +950,16 @@ export default {
       return (value)
     },
     getTechmodeOil(well){    
-     if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
+      if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
         return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
-      }if(this.well.techModeProdOil.oil){
-        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
-      }if(this.well.dmart_daily_prod_oil.oil){
-        return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
-      }else{
-        return ''
       }
+      if(this.well.techModeProdOil.oil){
+        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+      }
+      if(this.well.dmart_daily_prod_oil.oil){
+        return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      }
+      return ''
     },
     setWellObjectData(key, path, source) {
       try {
