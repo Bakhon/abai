@@ -721,8 +721,7 @@ export default {
         {
           'name': this.trans('well.depth_down'),
           'data': depth_nkt,
-          'type': ['nag'],
-          'codes': ['KGM']
+          'type': ['dob_oil']          
         },
         {
           'name': this.trans('well.kshd'),
