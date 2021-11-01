@@ -9,7 +9,7 @@
       <div class="table-settings__content w-100">
         <div class="d-flex align-items-stretch h-100 w-100">
           <div class="customScroll tree-wrapper mr-2">
-            <AwTree :selected.sync="tableSettingsSelected" @selectItem="selectWell" variant="AwTreeItem2" :items="getCurves" />
+            <AwTree :selected.sync="tableSettingsSelected" variant="AwTreeItem2" :items="getCurves" />
           </div>
           <AwTab active="tab3" class="options-tabs w-100" :buttons="[
             {id: 'tab1', label: 'Info'},
@@ -23,17 +23,17 @@
               <div class="limits-tab">
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2">
+                    <input type="checkbox" class="mr-2" name="min" @change="setToggleUsageProperty">
                     <span>Min value</span>
                   </label>
-                  <AwInput class="w-100" />
+                  <AwInput type="number" class="w-100" prop-name="min" @change="setValueProperty"/>
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2">
+                    <input type="checkbox" class="mr-2" name="max" @change="setToggleUsageProperty">
                     <span>Max value</span>
                   </label>
-                  <AwInput class="w-100" />
+                  <AwInput type="number" class="w-100" prop-name="max" @change="setValueProperty"/>
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
@@ -75,7 +75,7 @@ import AwTab from "../../components/awTab/AwTab";
 import AwTabContent from "../../components/awTab/AwTabContent";
 import AwInput from "../../components/form/AwInput";
 import dropdown from "../../components/dropdowns/dropdown";
-import {GET_TREE_CURVES, SET_SELECTED_WELL_CURVES, SET_WELL_NAME} from "../../../../store/modules/geologyGis.const";
+import {GET_TREE_CURVES, SET_CURVE_OPTIONS, SET_SELECTED_WELL_CURVES} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "TableSettings",
@@ -95,26 +95,31 @@ export default {
       gisData: [],
     }
   },
-  watch:{
-    tableSettingsSelected(val){
+  watch: {
+    tableSettingsSelected(val) {
       this.$store.commit(SET_SELECTED_WELL_CURVES, val);
     }
   },
   computed: {
-    getCurves(){
+    getCurves() {
       return {
         id: 1,
         name: 'Vertical track',
         iconType: 'oilTower',
         iconFill: 'red',
         isOpen: true,
-        children: this.$store.getters[GET_TREE_CURVES]||[]
+        children: this.$store.getters[GET_TREE_CURVES] || []
       }
     }
   },
-  methods:{
-    selectWell(item){
-      this.$store.commit(SET_WELL_NAME, item.name);
+  methods: {
+    setToggleUsageProperty(e) {
+      let {checked, name} = e.target;
+      this.$store.commit(SET_CURVE_OPTIONS, [name, {use: checked}])
+    },
+    setValueProperty(value, e) {
+      let name = e.target.getAttribute('prop-name');
+      this.$store.commit(SET_CURVE_OPTIONS,[name, {value}])
     }
   }
 }

@@ -7,6 +7,15 @@
       "order": "desc"
     }
   ],
+  "table_fields": [
+    "gtm_type",
+    "dbeg",
+    "dend",
+    "company",
+    "param_result",
+    "new_technology",
+    "documents"
+  ],
   "tabs": [
     {
       "title": "Gtm_start",

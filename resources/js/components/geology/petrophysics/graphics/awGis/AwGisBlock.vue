@@ -6,12 +6,13 @@
     <div class="block__content d-flex">
       <AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
       <AwGisColumn
-          @resized="init"
           v-for="(group, key) in getGroups"
           :key="key"
           v-bind="$attrs"
           :elements="group"
-          v-show="isShow(group)"
+          :wellName="blockName"
+          :offset-y="offsetY"
+          :ref="`column_${key}`"
       />
     </div>
   </div>
@@ -43,38 +44,19 @@ export default {
       offsetX: 0,
     }
   },
-  watch: {
-    offsetY() {
-      this.init();
-    },
-    min() {
-      this.init();
-    },
-    max() {
-      this.init();
-    }
-  },
+
   computed: {
     getElements() {
       return this.$store.state.geologyGis.selectedGisCurves;
     },
     getGroups() {
-      return Object.values(this.groups).map((a) => a.filter((b) => b.data.wellID.includes(this.blockId))).filter((a) => a?.length);
+      return Object.values(this.groups).map((a) => {
+        return a.filter((b) => {
+          return b.data.wellID.includes(this.blockId)&&this.getElements.includes(b.data.name)
+        })
+      }).filter((a) => a?.length);
     },
   },
-  methods: {
-    isShow(el){
-      return el.some((a)=> this.getElements.includes(a.data.name))
-    },
-    init() {
-      let draw = () => {
-      }
-      draw();
-    },
-    clearCanvas(ctx) {
-      if (ctx) ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-  }
 }
 </script>
 

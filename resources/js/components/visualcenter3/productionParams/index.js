@@ -133,6 +133,7 @@ export default {
         },
 
         async switchView(view) {
+            this.isDecreaseReasonActive = false;
             this.selectAllDzoCompanies();
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
@@ -189,6 +190,7 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.isDecreaseReasonActive = false;
             this.selectAllDzoCompanies();
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
@@ -235,6 +237,7 @@ export default {
             }
             this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
+
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
@@ -286,6 +289,15 @@ export default {
     },
     computed: {
         summaryYearlyPlan() {
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'yearlyPlan');
+            }
             return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {

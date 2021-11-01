@@ -312,6 +312,8 @@ export default {
         'perfActual': {'top': null, 'base': null, 'dbeg': null},
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
+        'dmart_daily_prod_oil': { 'oil': null},
+        'dinzamer': {'value_double': null},
         'gdisCurrent': {'meas_date': null, 'note': null,},
         'gdisConclusion': {'name_ru': null,},
         'gdisCurrentValue': {'value_double': null},
@@ -319,7 +321,7 @@ export default {
         'gdisCurrentValueFlvl': {'value_double': null},
         'gdisCurrentValueStatic': {'value_double': null},
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
-        'gdisComplex': {'value_double': null, 'dbeg': null},
+        'gdisComplex': {'value_double': null, 'dbeg': null, 'value_string': null},
         'gis': {'gis_date': null},
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
@@ -329,6 +331,11 @@ export default {
         'rzatrAtm': {'value_double': null},
         'gu': {'name_ru': null},
         'agms': {'name_ru': null},
+        'well_equip_param': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'pump_code': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'depth_nkt': {'value_double': null, 'value_string': null, 'equip_param': null},  
+        'type_sk': {'value_double': null, 'value_string': null, 'equip_param': null}         
       },
       wellParent: null,
       tubeNomOd: null,
@@ -353,9 +360,11 @@ export default {
         'tap': 'tap',
         'labResearchValue': 'lab_research_value',
         'wellType': 'well_type',
+        'dmart_daily_prod_oil': 'dmart_daily_prod_oil',
         'org': 'org',
         'geo': 'geo',
         'tubeNom': 'tube_nom',
+        'dinzamer': 'dinzamer',
         'measLiq': 'measLiq',
         'meas_water_inj': 'meas_water_inj',
         'tech_mode_inj': 'tech_mode_inj',
@@ -386,7 +395,12 @@ export default {
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
         'gu': 'gu',
-        'agms': 'agms',       
+        'agms': 'agms', 
+        'well_equip_param': 'well_equip_param',
+        'pump_code': 'pump_code',
+        'diametr_pump': 'diametr_pump',
+        'depth_nkt': 'depth_nkt',
+        'type_sk': 'type_sk'     
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -444,13 +458,13 @@ export default {
         350
     ),
     setWellPassport()
-    {          
+    {                
       let well = this.wellUwi
       let wellType= this.well.wellType ? this.well.wellType.name_ru : ''
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
-      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru : (this.well.labResearchValue ? this.well.labResearchValue : ''))
+      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru + ' / ' + '-' : (this.well.labResearchValue ? this.well.labResearchValue : ''))
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : ''
-      let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +'/'+ this.well.wellInfo.whc_h.toFixed(1) : ''
+      let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +' / '+ this.well.wellInfo.whc_h.toFixed(1) : ''
       let wellTechsName = this.wellTechsName ? this.wellTechsName : ''
       let tap = this.well.tap ? this.well.tap.tap : ''
       let gu_agsu = this.well.gu.name_ru && this.well.agms.name_ru ? this.well.gu.name_ru+'/'+this.well.agms.name_ru
@@ -477,29 +491,28 @@ export default {
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : ''
       let actualBottomHole = this.well.actualBottomHole ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : ''
       let artificialBottomHole = this.well.artificialBottomHole ? this.well.artificialBottomHole.depth : ''
-      let perfActual = this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+'/'+this.well.perfActual.base : ''
-      let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+'/'+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
+      let perfActual = this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+' - '+this.well.perfActual.base : ''
+      let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+' / '+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
       let techModeProdOil_measWaterCut = this.well?.techModeProdOil?.wcut  && this.well?.measWaterCut?.water_cut
-                                         ? this.well.techModeProdOil.wcut+'/'+this.well.measWaterCut.water_cut
-                                         : (this.well?.techModeProdOil?.wcut ? this.well.techModeProdOil.wcut : (this.well?.measWaterCut?.water_cut ? this.well.measWaterCut.water_cut : ''))
-      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.measWaterCut && this.well.measLiq ? this.well.techModeProdOil.oil+'/'+(this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : ( this.well.measWaterCut && this.well.measLiq ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : '' )
-      let krsWorkover = this.well.krsWorkover.dbeg && this.well.krsWorkover.dend ? this.getFormatedDate(this.well.krsWorkover.dbeg)+'/'+this.getFormatedDate(this.well.krsWorkover.dend) : ''
+                                         ? this.well.techModeProdOil.wcut+' / '+this.well.measWaterCut.water_cut
+                                         : (this.well?.techModeProdOil?.wcut ? this.well.techModeProdOil.wcut : (this.well?.measWaterCut?.water_cut ? this.well.measWaterCut.water_cut : ''))     
+      let krsWorkover = this.well.krsWorkover.dbeg ? this.getFormatedDate(this.well.krsWorkover.dbeg) : ''
       let treatmentDate = this.well.treatmentDate.treat_date ? this.getFormatedDate(this.well.treatmentDate.treat_date) : ''
       let well_gtm = this.well.gtm.dbeg ? this.getFormatedDate(this.well.gtm.dbeg) : ''
       let treatmentSko = this.well.treatmentSko.treat_date ? this.getFormatedDate(this.well.treatmentSko.treat_date) : ''
       let well_gdisCurrent =  this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
-      let prsWellWorkover = this.well.prsWellWorkover.dbeg && this.well.prsWellWorkover.dend ? this.getFormatedDate(this.well.prsWellWorkover.dbeg)+'/'+this.getFormatedDate(this.well.prsWellWorkover.dend) : ''
+      let prsWellWorkover = this.well.prsWellWorkover.dbeg ? this.getFormatedDate(this.well.prsWellWorkover.dbeg) : ''
       let well_gis = this.well.gis.gis_date ? this.getFormatedDate(this.well.gis.gis_date) : ''
       let well_gdisCurrent2 =this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
       let gdisConclusion = this.well.gdisConclusion.name_ru ? this.well.gdisConclusion.name_ru : ''
       let gdisCurrentValue = this.well.gdisCurrentValue.value_double ? this.well.gdisCurrentValue.value_double : ''
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double ? this.well.gdisCurrentValuePmpr.value_double : ''
-      let gdisCurrentValueFlvl = this.well.gdisCurrentValueFlvl.value_double ? this.well.gdisCurrentValueFlvl.value_double : ''
+      let gdisCurrentValueFlvl = this.well.dinzamer.value_double ? this.well.dinzamer.value_double : ''
       let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double ? this.well.gdisCurrentValueStatic.value_double : ''
       let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date) : ''
-      let gdisComplex = this.well.gdisComplex.value_double && this.well.gdisComplex.research_date ?
-             this.well.gdisComplex.value_double+'/'+this.getFormatedDate(this.well.gdisComplex.research_date)
-           : (this.well.gdisComplex.value_double ? this.well.gdisComplex.value_double : (this.well.gdisComplex.research_date ? this.getFormatedDate(this.well.gdisComplex.research_date) : '') )
+      let gdisComplex = this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg ?
+             this.well.gdisComplex.value_string.toFixed(1)+' / '+this.getFormatedDate(this.well.gdisComplex.dbeg)
+           : (this.well.gdisComplex.value_string ? this.well.gdisComplex.value_string.toFixed(1) : (this.well.gdisComplex.dbeg ? this.getFormatedDate(this.well.gdisComplex.dbeg) : '') )
       let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : ''
       let gdisCurrent_note = this.well.gdisCurrent.note ? this.well.gdisCurrent.note : ''
       let gdisCurrentValueBhp = this.well.gdisCurrentValueBhp.value_double && this.well.gdisCurrentValueBhp.meas_date ? this.well.gdisCurrentValueBhp.value_double+'/'+"(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")"
@@ -507,11 +520,17 @@ export default {
           (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
 
       let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
-      let injPressure = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.inj_pressure +'/'+ this.well.meas_water_inj.pressure_inj: ''
-      let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +'/'+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
+      let injPressure = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.inj_pressure +' / '+ this.well.meas_water_inj.pressure_inj: ''
+      let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +' / '+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
       let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
-      let main_org_code = this.well_all_data.main_org_code          
+      let main_org_code = this.well_all_data.main_org_code        
+      let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well) 
+      let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
+      let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
+      let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
+      let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : ''    
       this.well_passport = [
         {
           'name': this.trans('well.well'),
@@ -646,17 +665,17 @@ export default {
         },
         {
           'name': this.trans('well.type_pump'),
-          'data': '',
+          'data': pump_code,
           'type': ['dob_oil']
         },
         {
           'name': this.trans('well.diameter_pump'),
-          'data': '',
+          'data': diameter_pump,
           'type': ['dob_oil']
         },
         {
           'name': this.trans('well.pump_depth'),
-          'data': '',
+          'data': well_equip_param,
           'type': ['dob_oil']
         },
         {
@@ -666,7 +685,7 @@ export default {
         },
         {
           'name': this.trans('well.sk'),
-          'data': '',
+          'data': type_sk,
           'type': ['dob_oil'],
           'exp': 1 // шгн
         },
@@ -701,7 +720,7 @@ export default {
         },
         {
           'name': this.trans('well.depth_down'),
-          'data': '',
+          'data': depth_nkt,
           'type': ['all']
         },
         {
@@ -777,12 +796,7 @@ export default {
           'name': this.trans('well.date_prc'),
           'data': prsWellWorkover,
           'type': ['all']
-        },
-        {
-          'name': this.trans('well.date_prc'),
-          'data': well_gis,
-          'type': ['all']
-        },
+        },   
         {
           'name': this.trans('well.date_last_gis'),
           'data': well_gdisCurrent2,
@@ -875,52 +889,55 @@ export default {
              }
             well_passport_data.push(item)
           }
-        })
+        })      
       return well_passport_data
     },
     selectWell(well) {
-      this.SET_LOADING(true);
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {          
-          this.well_all_data = data
-          this.well.id = data.wellInfo.id
-          this.wellUwi = data.wellInfo.uwi
-          if (data.geo[Object.keys(data.geo).length - 1] != null) {
-            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
-          }
-          if (data.geo[0] != null) {
-            this.wellGeo = data.geo[0]
-          }
-          if (data.spatial_object.coord_point != null) {
-            let spatialObject
-            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            spatialObject = spatialObject.split(',')
-            this.wellSaptialObjectX = spatialObject[0]
-            this.wellSaptialObjectY = spatialObject[1]
-          }
-          if (data.spatial_object_bottom.coord_point != null) {
-            let spatialObjectBottom
-            spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-            spatialObjectBottom = spatialObjectBottom.split(',')
-            this.wellSaptialObjectBottomX = spatialObjectBottom[0]
-            this.wellSaptialObjectBottomY = spatialObjectBottom[1]
-          }
-          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }
-         
-          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+      if(well)
+      {
+        this.SET_LOADING(true);
+        this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+          try {
+            this.well_all_data = data
+            this.well.id = data.wellInfo.id
+            this.wellUwi = data.wellInfo.uwi
+            if (data.geo[Object.keys(data.geo).length - 1] != null) {
+              this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
+            }
+            if (data.geo[0] != null) {
+              this.wellGeo = data.geo[0]
+            }
+            if (data.spatial_object.coord_point != null) {
+              let spatialObject
+              spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+              spatialObject = spatialObject.split(',')
+              this.wellSaptialObjectX = spatialObject[0]
+              this.wellSaptialObjectY = spatialObject[1]
+            }
+            if (data.spatial_object_bottom.coord_point != null) {
+              let spatialObjectBottom
+              spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+              spatialObjectBottom = spatialObjectBottom.split(',')
+              this.wellSaptialObjectBottomX = spatialObjectBottom[0]
+              this.wellSaptialObjectBottomY = spatialObjectBottom[1]
+            }
+            for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+              this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+            }
 
-        } catch (e) {
+            this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+            this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+            this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
+            this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+
+          } catch (e) {
             this.SET_LOADING(false);
-        }
-        this.setWellPassport()
+          }
+          this.setWellPassport()
           this.SET_LOADING(false);
-      })
-    },
+        })
+      }
+    }, 
     getMultipleValues(objectName, objectKey) {
       let value = ''
       for (let i = 0; i < Object.keys(objectName).length; i++) {
@@ -931,6 +948,18 @@ export default {
         }
       }
       return (value)
+    },
+    getTechmodeOil(well){    
+      if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
+        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      }
+      if(this.well.techModeProdOil.oil){
+        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+      }
+      if(this.well.dmart_daily_prod_oil.oil){
+        return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      }
+      return ''
     },
     setWellObjectData(key, path, source) {
       try {
