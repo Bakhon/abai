@@ -21,7 +21,7 @@
         </div>
       </table>
       <Plotly
-        :data="this.prodDiagramIndicators"
+        :data="this.injDiagramIndicators"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"

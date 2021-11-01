@@ -13,6 +13,52 @@
             <template #title>
               {{ trans('digital_rating.horizon') }}
             </template>
+            <template v-for="(object, objectIdx) in horizonList">
+              <span class="dropdown-item" :key="objectIdx" :class="{'submenu': getChildren(object)}">
+                {{ object.title }}
+              </span>
+              <div v-if="getChildren(object)" class="dropdown-menu">
+                <template v-for="(horizon, horizonIdx) in object.children">
+                  <span
+                    class="dropdown-item"
+                    :key="horizonIdx"
+                    :class="{'submenu': getChildren(horizon)}"
+                  >
+                    {{ horizon.title }}
+                  </span>
+                  <div v-if="getChildren(horizon)" class="dropdown-menu">
+                    <span
+                      class="dropdown-item"
+                      v-for="(item, itemIdx) in horizon.children"
+                      :key="itemIdx"
+                    >
+                      {{ item.title }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+
+<!--                <span class="dropdown-item submenu">1-й уровень</span>-->
+<!--                <div class="dropdown-menu">-->
+<!--                  <span class="dropdown-item">2-й уровень</span>-->
+<!--                  <span class="dropdown-item submenu">2-й уровень</span>-->
+<!--                  <div class="dropdown-menu">-->
+<!--                    <span class="dropdown-item">3-й уровень</span>-->
+<!--                    <span class="dropdown-item">3-й уровень</span>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              <ul class="btn-dropdown__area-list">-->
+<!--                <li-->
+<!--                  v-for="(item, index) in horizonList"-->
+<!--                  :key="index"-->
+<!--                  @click="$emit('select', item)"-->
+<!--                >-->
+<!--                  <i :class="`fas fa-${item.icon}`"/>-->
+<!--                  <span>{{ item.title ? trans(item.title) : trans(item) }}</span>-->
+<!--                </li>-->
+<!--              </ul>-->
           </btn-dropdown>
           <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
             <template #title>
@@ -202,5 +248,40 @@
 
 .rating-content__wrapper {
   height: calc(100% - 500px);
+}
+
+.leaflet-pane {
+  z-index: 90;
+}
+
+.dropdown-menu .dropdown-menu {
+  top: auto;
+  left: 100%;
+  transform: translateY(-2rem);
+}
+.dropdown-item + .dropdown-menu {
+  display: none;
+}
+.dropdown-item.submenu::after {
+  content: '▸';
+  margin-left: 6rem;
+}
+.dropdown-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #fff;
+  background: #4b4c66;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.dropdown-item {
+  padding: 8px;
+  color: #fff;
+}
+.dropdown-menu {
+  background-color: #5D5F7F;
+  padding: 0;
 }
 </style>
