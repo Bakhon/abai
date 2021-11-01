@@ -82,7 +82,7 @@
                     : ''
                 "
                 style="cursor: pointer"
-                @click="selectTableRow(item)"
+                @click="$emit('select-row', item)"
               >
                 <td v-for="(itemTD, ind) in item.table_data" :key="ind">
                   {{ itemTD }}
@@ -139,7 +139,7 @@
 
 <script>
 import { downloadUserReport } from "../services/templateService";
-import { mapState, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "BaseTable",
@@ -153,7 +153,7 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
-    selectedDataPoint: Object,
+    currentSelectedSamples: Array,
   },
   data() {
     return {
@@ -173,15 +173,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", [
-      "SET_LOADING",
-      "SET_CURRENT_SELECTED_SAMPLES",
-    ]),
+    ...mapMutations("plastFluidsLocal", ["SET_LOADING"]),
     emitArrowFilter(key, type) {
       this.$emit("sort-by-arrow-filter", { key, type });
-    },
-    selectTableRow(row) {
-      this.SET_CURRENT_SELECTED_SAMPLES(row.key);
     },
     async handleReportDownload(item) {
       try {
@@ -206,7 +200,6 @@ export default {
     },
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["currentSelectedSamples"]),
     computedPagesCount() {
       return [
         ...Array(this.allPageCount > 6 ? this.allPageCount : 6).keys(),
