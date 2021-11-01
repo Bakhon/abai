@@ -829,6 +829,7 @@
         background: #363B68;
         color: #fff;
         position: relative;
+        margin-right:5px;
     }
     .content-db__tab_head__item:after {
         content:'';
