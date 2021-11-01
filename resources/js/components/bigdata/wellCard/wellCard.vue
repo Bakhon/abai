@@ -976,6 +976,12 @@ export default {
           }
           return ''
       }
+      if(this.well.tech_mode_inj === null){
+        return ''
+      }
+      if(this.well.meas_water_inj === null){
+        return ''
+      }
       if(this.well.tech_mode_inj.inj_pressure){        
         return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
       }
