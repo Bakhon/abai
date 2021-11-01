@@ -25,7 +25,7 @@ import {
     GET_TREE_CURVES,
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
-    GET_GIS_GROUPS,
+    GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
 } from "./geologyGis.const";
 
 import {uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
@@ -48,6 +48,7 @@ const geologyGis = {
         selectedGisCurvesOld: [],
         selectedGisCurves: [],
         awGis: new AwGisClass(),
+        awGisElementsCount: 0,
         gisWells: [],
         blocksScrollY: 0,
         wellTreeParam: {
@@ -194,6 +195,7 @@ const geologyGis = {
         [SET_GIS_DATA](state) {
             state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS, state]);
             state.gisGroups = state.awGis.getGroupList
+            state.awGisElementsCount = state.awGis.getElementsCount
         },
 
         [SET_CURVES](state, curves) {
@@ -218,7 +220,7 @@ const geologyGis = {
                             return acc
                         }, {})
                     })
-                    state.awGis.editElementOptions(curveName, {...curveOptions});
+                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify(curveOptions)));
                 }
             }
             state.changeGisData = Date.now();
@@ -227,7 +229,7 @@ const geologyGis = {
         [SET_CURVE_OPTIONS](state, [propName, props]) {
             if (state.awGis.hasElement(state.curveName)) {
                 let {options: {customParams = {}}} = state.awGis.getElement(state.curveName);
-                customParams = Object.assign(customParams, {[propName]:{...customParams[propName],...props}})
+                customParams = Object.assign({...customParams}, {[propName]: {...customParams[propName], ...props}})
                 state.awGis.editElementOptions(state.curveName, {customParams});
             }
         }
@@ -308,7 +310,7 @@ function mnemonicsSort(data, state) {
                     wellID: [wellID],
                     isShow: true,
                     curve_id: {[wellID]: curve_id},
-                })
+                }, JSON.parse(JSON.stringify(CURVE_ELEMENT_OPTIONS)))
             }
 
             if (!this.hasElementInGroup(groupsIds.get(name), name)) {
