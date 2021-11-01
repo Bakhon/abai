@@ -11,7 +11,7 @@
         </div>
     </div>
 @endsection
-<link href="{{ asset('css/tkrsMain.scss')}}" rel="stylesheet">
+
 <style>
     .p-4{
         background-color: #0F1430;

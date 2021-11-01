@@ -13,4 +13,13 @@ return array (
   'analytics' => 'Аналитика',
   'analysis_pv_npv' => 'Анализ ПВ/НПВ',
   'documentation' => 'Документация',
+  'daily_summary' => 'Суточная сводка',
+  'library' => 'Библиотека',
+  'por' => 'ПОР',
+  'sensors' => 'Датчики',
+  'gps_positioning' => 'GPS позиционирование',
+  'video_surveillance' => 'Видеонаблюдение',
+  'analyze_pv_npv' => 'Анализ ПВ/НПВ',
+  'event' => 'События',
+  'excess' => 'Превышения',
 );

@@ -108,7 +108,7 @@ class RouteServiceProvider extends ServiceProvider
             'monitoring',
             'economy_kenzhe',
             'tr',
-            'tkrs',
+            'DigitalMonitoringWellInterventionAndWorkover',
             'monitoring',
             'paegtm',
             'ndo',

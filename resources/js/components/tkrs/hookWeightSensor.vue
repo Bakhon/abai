@@ -21,23 +21,18 @@
                     src="/img/tkrs/comparison-charts.svg"
                     />
                   </div>
-                  <div class="calendar">
-                    <a class="hws-header-info-name">Дата:</a>
-                    <input type="date" class="form-control calendar-input" style="background: #333975 !important;" v-model="calendarDate" />
-                    <button  v-on:click="chooseDate" class="calendar-form">Сформировать</button>
-                  </div>
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle input-form-dropdown calendar-form"  
                     type="button" id="dropdownMenuButton" data-toggle="dropdown" 
-                    aria-haspopup="true" aria-expanded="false">Датчик силы
+                    aria-haspopup="true" aria-expanded="false">{{trans('tkrs.sensors')}}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                      <a class="dropdown-item" href="#">{{trans('tkrs.gps_positioning')}}</a>
+                      <a class="dropdown-item" href="#">{{trans('tkrs.video_surveillance')}}</a>
+                      <a class="dropdown-item" href="#">{{trans('tkrs.sensors')}}</a>
                     </div>
                   </div>
-                  <button class="calendar-form">Анализ ПВ/НПВ</button>
+                  <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
                   
                 </div>
                 <Plotly :data="areaChartData" :displaylogo="false" 
@@ -52,7 +47,7 @@
                             <img class="hws-tab-img"
                               src="/img/tkrs/event.svg"
                               
-                            /><a>События</a></a>
+                            /><a>{{trans('tkrs.event')}}</a></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link tab-header " 
@@ -60,7 +55,7 @@
                             <img class="hws-tab-img"
                               src="/img/tkrs/excess.svg"
                               
-                            /><a>Превышения</a></a>
+                            /><a>{{trans('tkrs.excess')}}</a></a>
                         </li>
                       </div>
                         <div class="header-hide-expand-buttons">
@@ -83,8 +78,6 @@
                   <div v-if="currentTab == 2">
                       <excess></excess>
                   </div>
-
-                  
 
 
                 </div>
