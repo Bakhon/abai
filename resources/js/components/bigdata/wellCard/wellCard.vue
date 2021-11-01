@@ -462,7 +462,7 @@ export default {
       let well = this.wellUwi
       let wellType= this.well.wellType ? this.well.wellType.name_ru : ''
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
-      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru : (this.well.labResearchValue ? this.well.labResearchValue : ''))
+      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru + ' / ' + '-' : (this.well.labResearchValue ? this.well.labResearchValue : ''))
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : ''
       let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +' / '+ this.well.wellInfo.whc_h.toFixed(1) : ''
       let wellTechsName = this.wellTechsName ? this.wellTechsName : ''
@@ -525,7 +525,7 @@ export default {
       let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
       let category_id = this.well.categoryLast.pivot.category
       let main_org_code = this.well_all_data.main_org_code        
-      let techModeProdOil_measWaterCut2 = this.well.techModeProdOil && this.well.dmart_daily_prod_oil ? this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1) :  ''         
+      let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well) 
       let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
       let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
       let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
@@ -889,7 +889,7 @@ export default {
              }
             well_passport_data.push(item)
           }
-        })
+        })      
       return well_passport_data
     },
     selectWell(well) {
@@ -937,7 +937,7 @@ export default {
           this.SET_LOADING(false);
         })
       }
-    },
+    }, 
     getMultipleValues(objectName, objectKey) {
       let value = ''
       for (let i = 0; i < Object.keys(objectName).length; i++) {
@@ -948,6 +948,18 @@ export default {
         }
       }
       return (value)
+    },
+    getTechmodeOil(well){    
+      if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
+        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      }
+      if(this.well.techModeProdOil.oil){
+        return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+      }
+      if(this.well.dmart_daily_prod_oil.oil){
+        return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+      }
+      return ''
     },
     setWellObjectData(key, path, source) {
       try {
