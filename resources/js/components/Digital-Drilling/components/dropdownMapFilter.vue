@@ -1,6 +1,8 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen">
+        <div class="dropdown__header">
+            <button class="dropdown-header-button" ref="menu" @click="openClose($event)">
+            </button>
             <div class="dropdown__header-title">
                 <div class="dropdown__search" v-if="search">
                     <input type="text" v-model="query" v-on:input="changeSearch" placeholder="Введите текст |">
@@ -16,7 +18,7 @@
                 <img src="/img/digital-drilling/dropdown-toggle-icon.svg" alt="">
             </div>
         </div>
-        <div class="dropdown__body">
+        <div class="dropdown__body" ref="body" v-if="isOpen" >
             <div class="dropdown__content">
                 <ul v-if="options.length>0">
                     <li v-for="item in options" @click="changeCurrentItem(item)">{{item.name}}</li>
@@ -38,6 +40,7 @@
                 isOpen: false,
                 currentItem: null,
                 query: '',
+                isOpen: false,
             }
         },
         methods:{
@@ -49,6 +52,25 @@
             },
             changeSearch(){
                 this.$emit('search', this.query)
+            },
+            openClose(e) {
+                var _this = this
+                const closeListerner = (e) => {
+                    if ( _this.catchOutsideClick(e, _this.$refs.menu, _this.$refs.body ) ){
+                        window.removeEventListener('click', closeListerner) , _this.isOpen = false
+                    }
+                }
+                window.addEventListener('click', closeListerner)
+                this.isOpen = !this.isOpen
+            },
+            catchOutsideClick(event, dropdown, body)	{
+                if( dropdown == event.target ){
+                    return false
+                }
+
+                if( this.isOpen && dropdown != event.target){
+                    return true
+                }
             },
         },
     }
@@ -72,6 +94,16 @@
         height: 23px;
         padding: 0 15px 0 10px;
         cursor: pointer;
+        position: relative;
+    }
+    .dropdown-header-button{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background-color: transparent;
     }
     .dropdown .dropdown__header-icon{
         transition: 0.4s ease;
