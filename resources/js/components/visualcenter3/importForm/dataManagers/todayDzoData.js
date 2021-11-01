@@ -67,7 +67,6 @@ export default {
                 this.changeDefaultDzo();
                 return;
             }
-            this.isDataExist = true;
             let self = this;
             _.forEach(Object.keys(this.cellsMapping), function (key) {
                 if (self.otherCategories.includes(key)) {

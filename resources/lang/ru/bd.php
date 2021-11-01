@@ -718,6 +718,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_fluid_prod' => [
             'date' => 'Дата',
@@ -741,6 +742,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_gas_prod' => [
             'date' => 'Дата',
@@ -764,6 +766,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_oil_sale' => [
             'date' => 'Дата',
@@ -787,6 +790,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_prod' => [
             'date' => 'Дата',
@@ -810,6 +814,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_upload' => [
             'date' => 'Дата',
@@ -833,6 +838,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'well_tech' => [
             'title' => 'Технологическая структура',
@@ -1063,10 +1069,11 @@ return [
             'repair_work_type' => 'Вид ремонтных работ',
             'work_done' => 'Проделанные работы',
             'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
+            'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
+            'geo' => 'Горизонт',
+            'date' => 'Дата',
+            'note' => 'Примечание'
         ],
         'research_lab_research' => [
             'date' => 'Дата исследования',
@@ -1297,17 +1304,6 @@ return [
             'nak_ion' => 'Содержание ионов. Натрий+Калий (Na+K), мг/л',
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
         ],
-        'daily_drill_kpc' => [
-            'org' => 'Подразделение',
-            'company' => 'Подрядчик',
-            'repair_work_type' => 'Вид ремонтных работ',
-            'work_done' => 'Проделанные работы',
-            'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
-            'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
-        ],
         'plan_g_d_i_s' => [
             'date' => 'Дата с',
             'date_to' => 'Дата по',
@@ -1330,7 +1326,8 @@ return [
             'uwi' => 'Истинная глубина по вертикали',
             'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo' => 'Горизонт'
+            'geo' => 'Горизонт',
+            'note' => 'Примечание'
         ],
         'zu_gzu_production' => [
             'pf' => 'ПФ',

@@ -121,11 +121,12 @@ import {
   FETCH_WELLS,
   GET_WELLS_OPTIONS,
   SET_WELLS,
-  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS
+  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS, FETCH_WELLS_CURVES
 } from "../../../store/modules/geologyGis.const";
 
 export default {
   name: "Geology-LSide",
+  props:['saveTableSettings'],
   data() {
     return {
       dropdownValue: {
@@ -194,6 +195,7 @@ export default {
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
+      this.saveTableSettings()
     },
     selectWellsHandle(item, i) {
       let index = this.selectedWells.findIndex((a) => a.value === item.value);

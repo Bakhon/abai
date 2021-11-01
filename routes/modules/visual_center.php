@@ -99,6 +99,7 @@ Route::group(
                 Route::get('get-plans-by-dzo', 'VisCenter\ExcelForm\ExcelFormPlansController@getPlansByDzo');
                 Route::post('/store-yearly-plans', 'VisCenter\ExcelForm\ExcelFormPlansController@storePlans');
                 Route::get('/get-missed-companies', 'VisCenter\VisualCenterController@getMissedCompanies');
+                Route::get('/get-decrease-reasons-by-date', 'VisCenter\VisualCenterController@getDecreaseReasons');
             }
         );
     }
