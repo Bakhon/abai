@@ -133,6 +133,7 @@ export default {
         },
 
         async switchView(view) {
+            this.isDecreaseReasonActive = false;
             this.selectAllDzoCompanies();
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
@@ -189,6 +190,7 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.isDecreaseReasonActive = false;
             this.selectAllDzoCompanies();
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;

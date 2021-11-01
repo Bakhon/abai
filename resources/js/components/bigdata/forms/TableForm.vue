@@ -488,7 +488,7 @@ export default {
             value = cellRow[column.code].old_value || cellRow[column.code].value
           }
 
-          if (value !== null) {
+          if (typeof value !== 'undefined') {
             formula = formula.replace(`$${column.code}$`, value)
           }
         }

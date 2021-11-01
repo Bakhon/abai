@@ -339,12 +339,12 @@ abstract class PlainForm extends BaseForm
     {
         $columns = $this->getFields()->filter(
             function ($column) {
-                if (isset($column['depends_on'])) {
-                    return false;
-                }
-
                 if (isset($this->params()['table_fields'])) {
                     return in_array($column['code'], $this->params()['table_fields']);
+                }
+
+                if (isset($column['depends_on'])) {
+                    return false;
                 }
 
                 return $column['type'] !== 'table';
@@ -356,6 +356,7 @@ abstract class PlainForm extends BaseForm
                 return array_search($column['code'], $this->params()['table_fields']);
             });
         }
+
         return $columns->mapWithKeys(
             function ($item) {
                 return [$item['code'] => $item];
