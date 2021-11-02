@@ -1,6 +1,6 @@
 <template>
   <div class="all-contents">
-    <div class="well-card_tab-head">
+    <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
       <div class="well-card_tab-head__item">
         Скважина 1
         <span class="well-card_tab-head__item--close"></span>
@@ -168,7 +168,7 @@
         ]"
       >
         <div
-          class="row mid-col__main"
+          class="row mid-col__main "  ref="tableResize"
           :class="{
             min_history_table: isLeftColumnFolded || isRightColumnFolded,
             small_history_table: isBothColumnFolded,
@@ -176,28 +176,12 @@
         >
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
-              <div class="col-4">
-                <button class="transparent-select">
+              <div class="middle-block-head">
+                <div class="transparent-select">
                   {{ this.trans("well.well") }}:
                   <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg
-                    fill="none"
-                    height="8"
-                    viewBox="0 0 14 8"
-                    width="14"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 1L7 7L13 1"
-                      stroke="white"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.6"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div class="col-8">
+                  <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+                </div>
                 <form class="search-form d-flex align-items-center">
                   <select
                     class="select-dzo mr-2"
@@ -227,6 +211,17 @@
                     </template>
                   </v-select>
                 </form>
+                <div class="button-block">
+                  <div class="button-block__item">
+                    Легенда
+                  </div>
+                  <div class="button-block__item">
+                    График
+                  </div>
+                  <div class="button-block__item">
+                    Исторические сведения
+                  </div>
+                </div>
               </div>
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
@@ -385,9 +380,7 @@
               {{ this.trans("well.well_passport") }}
             </div>
             <div class="info-element">
-              <div v-if="wellUwi" class="info-element-head">
-                {{ this.trans("well.general_info") }}
-              </div>
+            
               <table v-if="wellUwi">
                 <tr v-for="(item, index) in this.tableData">
                   <td>{{ index + 1 }}</td>
@@ -631,6 +624,7 @@ export default {
       formsStructure: {},
       dzoSelectOptions: [],
       selectedUserDzo: null,
+      tabWidth:0,
     };
   },
   mounted() {
@@ -1414,6 +1408,11 @@ export default {
       this.options = [];
       this.wellUwi = null;
     },
+    updateWidth() {
+      this.tabWidth = window.innerWidth -77;
+      
+  
+    },
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -1424,19 +1423,24 @@ export default {
       return this.well_passport;
     },
   },
+  created() {
+    window.addEventListener('resize', this.updateWidth);
+    this.updateWidth();
+  },
+  
 };
 </script>
 <style lang="scss" scoped>
 $leftColumnWidth: 300px;
-$leftColumnFoldedWidth: 50px;
+$leftColumnFoldedWidth: 30px;
 $rightColumnWidth: 300px;
-$rightColumnFoldedWidth: 50px;
+$rightColumnFoldedWidth: 30px;
 .well-card_tab-head {
   display: flex;
   background: #272953;
   margin-bottom: 5px;
   overflow-y: auto;
-  width: 1465px;
+    width: calc(100% - 70px);
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -1889,12 +1893,18 @@ h4 {
 }
 
 .search-form {
-  padding: 10px 10px;
+  
+  
 
   .v-select {
-    background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
+    background: url(/img/bd/search.svg) 15px 12px
+ #121227 no-repeat!important;
     border: 1px solid #3b4a84;
     min-width: 0;
+    border: 1px solid #363B68;
+    border-radius: 0;
+    background-size: 14px;
+    width: 220px;
   }
 }
 
@@ -2010,20 +2020,34 @@ h4 {
     border: 0;
   }
 }
-
-.transparent-select {
-  padding: 10px 0;
-  color: white;
-  background: none;
-  border: none;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-  font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
+.middle-block-head {
+    display: flex;
+    padding: 0 10px;
+    width: 100%;
+    align-items: center;
+}
+.transparent-select{
+    padding: 5px 20px 5px 0;
+    color: #fff;
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 13px;
+    color: #FFFFFF;
+    position: relative;
+    margin-right:10px;
 
   &:focus {
     color: white;
     background: #20274f;
+  }
+   svg {
+    width: 10px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
@@ -2157,7 +2181,7 @@ h4 {
   }
 
   .rotate {
-    transform: rotate(-90deg) translateY(-35px);
+    transform: rotate(-90deg) translateY(-31px);
     display: flex;
     white-space: nowrap;
     font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
@@ -2504,7 +2528,7 @@ h4 {
   .rotate {
     color: white;
     white-space: nowrap;
-    transform: rotate(-90deg) translateY(-30px);
+    transform: rotate(-90deg) translateY(-40px);
     display: flex;
     font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 500;
@@ -2647,12 +2671,25 @@ h4 {
     line-height: 16px;
   }
 }
+.button-block__item {
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    background: #334296;
+    border-radius: 4px;
+    white-space: nowrap;
+    padding: 4px 20px;
+    margin-left: 10px;
+}
+.button-block {
+    display: flex;
+    margin-left: auto;
+}
 </style>
 <style lang="scss">
 .search-form {
   .v-select {
     border-radius: 10px;
-
     .vs__search {
       font-family: Roboto, sans-serif;
       font-size: 14px;
@@ -2699,13 +2736,13 @@ h4 {
 }
 
 .select-dzo {
-  height: 2.2rem;
-  background-color: #494aa5;
-  color: white;
-  outline: none;
-  border: 1px #494aa5 solid;
-  border-radius: 5px;
-  margin-top: -1px;
+    background-color: #494aa5;
+    color: #fff;
+    outline: none;
+    border: 1px solid #494aa5;
+    border-radius: 5px;
+    padding: 3px 10px;
+    width: 170px;
 }
 
 .select-dzo:hover {
