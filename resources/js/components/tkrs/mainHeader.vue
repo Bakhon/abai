@@ -55,8 +55,6 @@ export default {
           ],
         },
 
-        // name: this.trans('tkrs.documentation'),
-        //   imagePath: "/img/tkrs/document_header.svg",
         {
           name: this.trans('tkrs.documentation'),
           imagePath: "/img/tkrs/document_header.svg",

@@ -4,7 +4,7 @@
     <indicator />
     <search />
     <div class="tkrs-content">
-      <!-- <BaseTable :fields="fields" :items="items" :filter="true"/> -->
+
       <div class="table-div">
             <div>
               <table>
@@ -253,7 +253,8 @@
                           </b-col>
                           <b-col style="display:flex">
                             <b-form-input id="input-small" size="sm" style="width: 20%; height: 24px; background: #1A1D46;"></b-form-input>
-                            <img class="cursor-pointer" src="/img/tkrs/calendar.svg" alt="">
+                            <img class="cursor-pointer" src="/img/tkrs/calendar.svg" 
+                            alt="">
                           </b-col>
                         </b-row>
 

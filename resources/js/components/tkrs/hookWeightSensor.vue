@@ -135,30 +135,6 @@ export default {
   computed: {
     layoutData() {
       return {
-      //   shapes: [{
-      //     type: 'line',
-      // x0: '2020-06-18 00:00:00',
-      // y0: 14,
-      // x1: '2020-06-18 23:59:00',
-      // y1: 14,
-      // line: {
-      //   color: '#EF5350',
-      //   width: 2,
-      //   dash: 'dashdot'
-      //     }
-      //   },
-      //   {
-      //     type: 'line',
-      // x0: '2020-06-18 00:00:00',
-      // y0: 12,
-      // x1: '2020-06-18 23:59:00',
-      // y1: 12,
-      // line: {
-      //   color: '#D77D2A',
-      //   width: 2,
-      //   dash: 'dashdot'
-      //     }
-      //   }],
         width: 1550,
         height: 600,
         paper_bgcolor: "#272953",
@@ -217,9 +193,6 @@ export default {
           this.areaChartData = data.data;
           this.maximum = data.data[0].rangeSlider.max;
           this.minimum = data.data[0].rangeSlider.min;
-          console.log(data.data);
-          
-          
         } else {
           console.log("No data");
         }
@@ -268,7 +241,6 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wellDate = data;
-                    console.log(this.wellDate)
                     
                 } else {
                     console.log("No data");
@@ -286,7 +258,6 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wellDate = data;
-                    console.log(this.wellDate)
                     this.areaChartData = data.data;
                     this.maximum = data.data[0].rangeSlider.max;
                     this.minimum = data.data[0].rangeSlider.min;
@@ -310,18 +281,15 @@ export default {
       const { calendarDate} = this;
       var Date1 = new Date(calendarDate)
       this.Date1 = Date1.toLocaleDateString();
-      console.log(this.Date1);
       this.axios
         .get(
             'http://127.0.0.1:7580/db/' + Date1.toLocaleDateString("en-GB") + '/'
           )
         .then((response) => {
-          console.log("TEST2")  
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
             this.areaChartData = data.data;
-            console.log(data.data);
           } else {
             console.log("No data");
           }
