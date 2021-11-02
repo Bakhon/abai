@@ -122,7 +122,7 @@ class KrsPrs extends PlainForm
 
     protected function prepareDataToSubmit()
     {
-        $data = $this->request->except('well_status', 'documents');
+        $data = $this->request->except('well_status', 'documents', 'no_change_tech_status');
 
         $kpc = DB::connection('tbd')
             ->table('dict.well_repair_type')
