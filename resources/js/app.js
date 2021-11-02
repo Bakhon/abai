@@ -181,6 +181,14 @@ Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').de
 Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
+Vue.component('tkrs-main', require('./components/tkrs/tkrsMain.vue').default);
+Vue.component('hook-weight-sensor', require('./components/tkrs/hookWeightSensor.vue').default);
+Vue.component('hook-weight-sensor-analyse', require('./components/tkrs/hookWeightSensorAnalyse.vue').default);
+Vue.component('gps', require('./components/tkrs/gps.vue').default);
+Vue.component('video-surveillance', require('./components/tkrs/videoSurveillance.vue').default);
+Vue.component('gps-positioning', require('./components/tkrs/gpsPositioning.vue').default);
+
+
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
