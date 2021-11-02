@@ -54,8 +54,8 @@ export const pgnoActions = {
             ["Без центратом", 0, 0, 0],
             ["Всего", 0, 0, 0]]})
         commit("SET_CENTRALIZER_SETTINGS", {
-            hasRotarTableElevation: false,
-            rotarTableElevation: 0,
+            hasRotarTableElevation: true,
+            rotarTableElevation: 6,
             hasLowerRod: false,
             lowerRod: null,
             hasCentralizer: true,
@@ -64,8 +64,8 @@ export const pgnoActions = {
             hasRecommendedIntervals: true,
             recommendedRanges: [],
             hasAbrasionIntervals: true,
-            pumpAccuracy: 0,
-            intervalCombining: 0,
+            pumpAccuracy: 5,
+            intervalCombining: 2,
             abrasionIntervals: {
               row1: {
                 value1: null,
