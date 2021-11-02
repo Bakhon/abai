@@ -538,12 +538,12 @@ class WellsController extends Controller
         $wells = $wellQuery->limit(50)->get();
 
         $orgsToFilter = [];
-        //$userDzoIds = array_map(function ($item) {
-        //    return substr($item, strpos($item, ":") + 1);
-        //}, auth()->user()->org_structure);
-        //foreach ($userDzoIds as $userDzoId) {
-        //    $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
-        //}
+        $userDzoIds = array_map(function ($item) {
+            return substr($item, strpos($item, ":") + 1);
+        }, auth()->user()->org_structure);
+        foreach ($userDzoIds as $userDzoId) {
+            $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
+        }
         if (!empty($orgsToFilter)) {
             $wells = $wells->filter(function ($well) use ($orgsToFilter) {
                 $wellOrgs = $well->orgs->pluck('id')->toArray();

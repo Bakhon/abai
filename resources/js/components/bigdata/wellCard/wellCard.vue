@@ -1,8 +1,14 @@
 <template>
   <div class="all-contents">
-    <div v-for="(well,index) in wellsHistory" class="well-card_tab-head__item" @click="handleSelectHistoryWell(well)">
-        {{well.wellUwi}}
-        <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+    <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
+      <div
+              v-for="(well,index) in wellsHistory"
+              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well' : 'well-card_tab-head__item'"
+              @click="handleSelectHistoryWell(well)"
+      >
+          {{well.wellUwi}}
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+      </div>
     </div>
     <div class="well-card__wrapper">
       <div
@@ -130,14 +136,24 @@
                     </template>
                   </v-select>
                 </form>
-                <div class="button-block">
+                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
                   <div class="button-block__item">
                     Легенда
                   </div>
                   <div class="button-block__item">
                     График
                   </div>
-                  <div class="button-block__item">
+                  <div
+                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
+                          class="button-block__item"
+                  >
+                          Сформировать
+                  </div>
+                  <div
+                          v-else
+                          class="button-block__item"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
                     Исторические сведения
                   </div>
                 </div>
@@ -355,6 +371,7 @@ import camelCase from "lodash/camelCase";
 import {
   bigdatahistoricalVisibleState,
   globalloadingMutations,
+  bigdatahistoricalVisibleMutations
 } from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
@@ -559,6 +576,7 @@ export default {
       },
       wellsHistory: [],
       tabWidth:0,
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
     };
   },
   mounted() {
@@ -1357,27 +1375,30 @@ export default {
             summaryWellInfo[key] = null;
           }
       });
-      console.log('summaryWellInfo push')
-      console.log(summaryWellInfo)
-      console.log(summaryWellInfo)
-      console.log(this.activeForm)
-      console.log(this.activeFormComponentName)
       this.wellsHistory.push(summaryWellInfo);
     },
     handleDeleteWell(index) {
-      console.log(index)
+      this.wellsHistory.splice(index, 1);
     },
     handleSelectHistoryWell(well) {
-      console.log(well)
       this.activeForm = null;
       this.activeFormComponentName = null;
       _.forEach(Object.keys(well), (key) => {
           this[key] = well[key];
       });
+      this.SET_VISIBLE_PRODUCTION(false);
+      this.SET_VISIBLE_INJECTION(false);
+      this.isBothColumnFolded = false;
+      this.isLeftColumnFolded = false;
+      this.isRightColumnFolded = false;
     },
     updateWidth() {
       this.tabWidth = window.innerWidth -77;
     },
+    ...bigdatahistoricalVisibleMutations([
+      'SET_VISIBLE_INJECTION',
+      'SET_VISIBLE_PRODUCTION'
+    ]),
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -2713,5 +2734,8 @@ h4 {
 .select-dzo:hover {
   border: 1px solid transparent;
   box-shadow: inset 0 0px 0px 1px #ccc;
+}
+.selected-well {
+  background: #2e50e9 !important;
 }
 </style>
