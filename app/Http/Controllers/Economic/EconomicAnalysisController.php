@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Services\BigData\StructureService;
+use Illuminate\View\View;
 use Level23\Druid\DruidClient;
 
 class EconomicAnalysisController extends Controller
