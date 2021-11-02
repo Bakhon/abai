@@ -1,88 +1,9 @@
 <template>
   <div class="all-contents">
     <div class="well-card_tab-head">
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
+      <div v-for="(well,index) in wellsHistory" class="well-card_tab-head__item" @click="handleSelectHistoryWell(well)">
+        {{well.wellUwi}}
+        <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -631,6 +552,21 @@ export default {
       formsStructure: {},
       dzoSelectOptions: [],
       selectedUserDzo: null,
+      historyWellTemplate: {
+        summary: {
+          'wellUwi': null,
+          'well_passport': []
+        },
+        params: {
+          'category': null,
+          'wellOrgName': null,
+          'wellSaptialObjectX': null,
+          'wellSaptialObjectY': null,
+          'wellSaptialObjectBottomX': null,
+          'wellSaptialObjectBottomY': null
+        }
+      },
+      wellsHistory: []
     };
   },
   mounted() {
@@ -702,7 +638,7 @@ export default {
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.well.wellInfo
+      let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
         ? this.well.wellInfo.whc_alt.toFixed(1) +
           " / " +
           this.well.wellInfo.whc_h.toFixed(1)
@@ -877,7 +813,7 @@ export default {
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
-      let category_id = this.well.categoryLast.pivot.category;
+      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
@@ -1313,6 +1249,7 @@ export default {
               this.SET_LOADING(false);
             }
             this.setWellPassport();
+            this.storeWellToHistory();
             this.SET_LOADING(false);
           });
       }
@@ -1414,6 +1351,38 @@ export default {
       this.options = [];
       this.wellUwi = null;
     },
+    storeWellToHistory() {
+      let summaryWellInfo = {
+         'wellUwi': this.wellUwi,
+         'well_passport': this.tableData
+      };
+      _.forEach(Object.keys(this.historyWellTemplate.params), (key) => {
+          if (key === 'category') {
+             summaryWellInfo[key] = this.well.category;
+          } else if (this[key]) {
+              summaryWellInfo[key] = this[key];
+          } else {
+            summaryWellInfo[key] = null;
+          }
+      });
+      console.log('summaryWellInfo push')
+      console.log(summaryWellInfo)
+      console.log(summaryWellInfo)
+      console.log(this.activeForm)
+      console.log(this.activeFormComponentName)
+      this.wellsHistory.push(summaryWellInfo);
+    },
+    handleDeleteWell(index) {
+      console.log(index)
+    },
+    handleSelectHistoryWell(well) {
+      console.log(well)
+      this.activeForm = null;
+      this.activeFormComponentName = null;
+      _.forEach(Object.keys(well), (key) => {
+          this[key] = well[key];
+      });
+    }
   },
   computed: {
     ...bigdatahistoricalVisibleState([
