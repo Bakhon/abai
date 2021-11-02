@@ -90,41 +90,32 @@
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column "
       >
-        <div class="bg-dark scrollable">
-          <div class="row">
-            <div class="col">
-              <div class="well-deal">
-                <div class="well-deal__header">
-                  <div class="title">
-                    <div class="icon-ierarchy"></div>
-                    <h2>{{this.trans('well.well_passport')}}</h2>
-                  </div>
-                  <div class="icon-all" style="margin-left: auto;"
-                       @click="onColumnFoldingEvent('left')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="directory text-white pt-0 mt-0">
-              <ul id="myUL">
-                <well-card-tree
-                    v-for="(item, index) in formsStructure"
-                    :key="index"
-                    :active-form-code="activeForm ? activeForm.code : null"
-                    :data="item"
-                    :switch-form-by-code="switchFormByCode">
-                </well-card-tree>
-              </ul>
-            </div>
+          <div class="well-deal__header">
+            {{this.trans('well.well_passport')}}
           </div>
-          <div v-if="isLeftColumnFolded" class="row">
-            <div class="rotate" style="color: white">{{this.trans('well.download_excel')}}</div>
+          <form  action="" class="search-bd">
+              <button class="search-btn-bd">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z" fill="#9EA4C9"/>
+                  </svg>
+              </button>
+              <input type="text" class="search-input-bd" placeholder="Поиск">
+          </form>
+          <div class="directory text-white  bg-dark">
+            <ul id="myUL">
+              <well-card-tree
+                  v-for="(item, index) in formsStructure"
+                  :key="index"
+                  :active-form-code="activeForm ? activeForm.code : null"
+                  :data="item"
+                  :switch-form-by-code="switchFormByCode">
+              </well-card-tree>
+            </ul>
+          </div>
+          <div v-if="isLeftColumnFolded" class="left-text">
+            <div class="rotate" style="color: white">
+              {{this.trans('well.well_passport')}}
+            </div>
           </div>
         <div class="icon-all"
                        @click="onColumnFoldingEvent('left')">
@@ -247,16 +238,6 @@
           <template>
             <div v-if="wellUwi" class="doc-pasport-head">
                 <div class="heading">
-                  <div class="icon-all"
-                       @click="onColumnFoldingEvent('right')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
                   <p v-if="wellUwi">{{this.trans('well.well_passport')}}</p>
                 </div>
                 <div v-if="wellUwi" class="sheare-icon">
@@ -265,10 +246,6 @@
                       <path d="M10 4V11.3844" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
                       <path d="M7 9.53906L10 12.3082L13 9.53906" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
                     </svg>
-                  </div>
-                  <div v-if="wellUwi" class="sheare-text">
-                    {{this.trans('well.download_excel')}}
-                  </div>
                 </div>
             </div>
           </template>
@@ -276,12 +253,9 @@
             <div v-if="isRightColumnFolded" class="rotate">{{this.trans('well.well_passport')}}</div>
             <div class="info-element">
                 <div v-if="wellUwi" class="info-element-head">
-                      Общая информация
+                      {{this.trans('well.general_info')}}
                 </div>
                   <table v-if="wellUwi">
-                    <tr>
-                      <th colspan="3">{{this.trans('well.general_info')}}</th>
-                    </tr>
                     <tr v-for="(item, index) in this.tableData">
                       <td>{{ index + 1 }}</td>
                       <td>{{ item.name }}</td>
