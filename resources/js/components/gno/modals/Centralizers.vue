@@ -38,7 +38,7 @@
         <div class="block-2">
           <div class="pt-1 pl-2">
             <label>
-              <input class="checkbox3" v-model="centralizers.hasRequiredIntervals" @change="calculateRods" type="checkbox"/>
+              <input class="checkbox3" v-model="centralizers.hasRequiredIntervals" @change="calculateRods" :disabled="requiredRanges.length===0" type="checkbox"/>
               {{ trans('pgno.installation_intervals') }}
             </label>
           </div>
@@ -51,7 +51,7 @@
         <div class="block-2-1">
           <div class="pt-1 pl-2">
             <label>
-              <input class="checkbox3" v-model="centralizers.hasRecommendedIntervals" @change="calculateRods" checked="true" type="checkbox"/>
+              <input class="checkbox3" v-model="centralizers.hasRecommendedIntervals" @change="calculateRods" :disabled="recommendedRanges.length===0" type="checkbox"/>
               {{ trans('pgno.recomended_intervals') }}
             </label>
           </div>
@@ -88,27 +88,27 @@
               <div>
                 <input type="number" class="centralizers-input-small" v-model="centralizers.abrasionIntervals.row1.value2" 
                 @change="calculateRods"
-                :disabled="!centralizers.abrasionIntervals.row1.value1"/>
+                :disabled="!centralizers.abrasionIntervals.row1.value1 || !centralizers.hasAbrasionIntervals"/>
               </div>
               <div>
                 <input type="number" class="centralizers-input-small" v-model="centralizers.abrasionIntervals.row2.value2"
                 @change="calculateRods"
-                :disabled="!centralizers.abrasionIntervals.row2.value1"/>
+                :disabled="!centralizers.abrasionIntervals.row2.value1 || !centralizers.hasAbrasionIntervals"/>
               </div>
               <div>
                 <input type="number" class="centralizers-input-small" v-model="centralizers.abrasionIntervals.row3.value2"
                 @change="calculateRods"
-                :disabled="!centralizers.abrasionIntervals.row3.value1"/>
+                :disabled="!centralizers.abrasionIntervals.row3.value1 || !centralizers.hasAbrasionIntervals"/>
               </div>
               <div>
                 <input type="number" class="centralizers-input-small" v-model="centralizers.abrasionIntervals.row4.value2"
                 @change="calculateRods"
-                :disabled="!centralizers.abrasionIntervals.row4.value1"/>
+                :disabled="!centralizers.abrasionIntervals.row4.value1 || !centralizers.hasAbrasionIntervals"/>
               </div>
               <div>
                 <input type="number" class="centralizers-input-small" v-model="centralizers.abrasionIntervals.row5.value2"
                 @change="calculateRods"
-                :disabled="!centralizers.abrasionIntervals.row5.value1"/>
+                :disabled="!centralizers.abrasionIntervals.row5.value1 || !centralizers.hasAbrasionIntervals"/>
               </div>
             </div>
           </div>
