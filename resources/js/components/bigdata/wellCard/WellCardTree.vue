@@ -71,9 +71,6 @@ export default {
   #myUL > li {
     margin-bottom: 3px;
   }
-  // img {
-  //   padding-bottom: 5px;
-  // }
   
   ul, li {
     color: white;
@@ -82,21 +79,8 @@ export default {
     padding: 0;
   }
 
-  // ul .nested {
-  //   border-top: 1px dashed #555BA6;
-  //   border-left: 0;
-  // }
-
-  // ul {
-  //   padding-left: 1em;
-  //   border: 0;
-  // }
 
   li {
-    // border: 1px dashed #555BA6;
-    // padding-left: 1em;
-    // border-width: 0 0 1px 1px;
-
     &.selected {
       font-size: 105%;
       font-weight: bold;
@@ -123,16 +107,6 @@ export default {
         border-radius: 50%;
     }
   }
-
-  // li ul {
-  //   margin-left: -1em;
-  //   padding-left: 2em;
-  // }
-
-  // ul li:last-child ul {
-  //   border-bottom: 0;
-  //   margin-left: -17px;
-  // }
 
   li:last-child {
     border-bottom: 0
@@ -197,13 +171,6 @@ export default {
   display: inline-block;
   padding-right: 10px;
 }
-
-// .dir::before {
-//   content: URL(/img/bd/dir.svg);
-//   color: white;
-//   display: inline-block;
-//   padding-right: 10px;
-// }
 
 .direcotory_parent img.arrow-right {
   transform: rotate(-90deg);
