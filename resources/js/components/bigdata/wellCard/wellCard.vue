@@ -625,7 +625,6 @@ export default {
       dzoSelectOptions: [],
       selectedUserDzo: null,
       tabWidth:0,
-      tableWidht:0
     };
   },
   mounted() {
