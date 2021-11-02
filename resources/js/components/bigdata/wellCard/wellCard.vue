@@ -1412,7 +1412,7 @@ export default {
     updateWidth() {
       this.tabWidth = window.innerWidth -77;
       
-      // this.tableWidht = this.$refs.tableResize.clientHeight;
+  
     },
   },
   computed: {
