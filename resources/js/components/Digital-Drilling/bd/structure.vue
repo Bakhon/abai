@@ -8,9 +8,9 @@
                     <th>{{ trans('digital_drilling.default.nominal_diameter') }}</th>
                     <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
                     <th>{{ trans('digital_drilling.structure.number_pipes') }}</th>
-                    <th>Внутренний диаметр трубы</th>
-                    <th>Марка стали</th>
-                    <th>Погонный вес</th>
+                    <th>{{ trans('digital_drilling.structure.pipe_inner_diameter') }}</th>
+                    <th>{{ trans('digital_drilling.structure.steel_grade') }}</th>
+                    <th>{{ trans('digital_drilling.structure.weight_per_unit_length') }}</th>
                     <th>{{ trans('digital_drilling.structure.cement_lifting_height') }}</th>
                     <th>{{ trans('digital_drilling.structure.side_barrel') }}</th>
                 </tr>

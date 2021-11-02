@@ -61,11 +61,7 @@
                                 <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
                             </div>
                             <div class="contentBlock__map-search-block">
-                                <div class="contentBlock__map-search-input">
-                                    <img src="/img/digital-drilling/search.png" alt="">
-                                    <input type="text" :placeholder="trans('digital_drilling.window_head.search')">
-                                    <button>{{trans('digital_drilling.window_head.search')}}</button>
-                                </div>
+                                <button class="filter-btn" @click="filter=!filter">Подбор БУ</button>
                                 <button class="full"><img src="/img/digital-drilling/button2.svg" alt=""></button>
                             </div>
                         </div>
@@ -196,8 +192,8 @@
                     <table class="table defaultTable modalTable">
                         <tbody>
                         <tr>
-                            <th>Название</th>
-                            <th>Значение</th>
+                            <th>{{trans("digital_drilling.default.r_name")}}</th>
+                            <th>{{trans("digital_drilling.default.r_value")}}</th>
                         </tr>
                         <tr>
                             <td>{{technicalDescription[0].parameter}}</td>
@@ -212,9 +208,9 @@
                     <table class="table defaultTable modalTable">
                         <tbody>
                             <tr>
-                                <th>Параметры</th>
-                                <th>Ед.измерения</th>
-                                <th>Значение</th>
+                                <th>{{trans("digital_drilling.default.parameters")}}</th>
+                                <th>{{trans("digital_drilling.default.measurement_unit")}}</th>
+                                <th>{{trans("digital_drilling.default.r_value")}}</th>
                             </tr>
                             <tr v-for="i in technicalDescription.length-3">
                                 <td>{{technicalDescription[i+2].parameter}}</td>
@@ -229,7 +225,7 @@
         <div class="characteristic__modal graph" v-if="characteristicGraph">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>График бурения буровой установки ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <span>{{trans("digital_drilling.default.drilling_rig_moving_schedule")}} ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
                     <div class="characteristic_header-close" @click="openCharacteristicGraphModal">
                         {{trans("digital_drilling.default.close")}}
                     </div>
@@ -245,9 +241,9 @@
         <div class="characteristic__modal scheme" v-if="characteristicScheme">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>Схема передвижения буровой установки ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <span>{{trans("digital_drilling.default.drilling_rig_moving_scheme")}} ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
                     <div class="characteristic_header-close" @click="openCharacteristicSchemeModal">
-                        Закрыть
+                        {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
@@ -275,6 +271,48 @@
         <div class="all-graph-modal" v-if="allGraphModal">
             <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
         </div>
+        <div class="newWell" v-if="filter">
+            <div class="well_content">
+                <div class="well_body">
+                    <div class="well_body-header">
+                        <div class="well_body-header-title">
+                            Фильтр по поиску буровой установки
+                        </div>
+                        <div class="well_body-header-close" @click="filter=false">
+                            {{ trans('digital_drilling.default.close') }}
+                        </div>
+                    </div>
+                    <div class="well_body-content">
+                        <div class="well_body-inner">
+                            <div class="well_body-form">
+                                <div class="well_body-form-input">
+                                    <label for="DZO">Компания:</label>
+                                    <select name="" id="DZO">
+                                        <option value="" selected="selected">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="well_body-form-input">
+                                    <label for="field">Грузоподъёмность:</label>
+                                    <select  id="field">
+                                        <option value=""  selected="selected"></option>
+                                    </select>
+                                </div>
+                                <div class="well_body-form-input">
+                                    <label for="field">Номинальная глубина бурения::</label>
+                                    <select  id="field">
+                                        <option value=""  selected="selected"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well-create">
+                        Применить
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -298,6 +336,7 @@
                 characteristicModal: false,
                 characteristicGraph: false,
                 characteristicScheme: false,
+                filter: false,
                 rigs: [],
                 technicalDescription: [],
                 operatingCosts: [
@@ -385,6 +424,24 @@
 </script>
 
 <style scoped>
+    .filter-btn{
+        background: #3366FF;
+        border-radius: 2px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #FFFFFF;
+        border: 0;
+        height: 30px;
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .well_content{
+        min-height: 300px;
+    }
     .w-150{
         width: 180px!important;
     }

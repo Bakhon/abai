@@ -48,6 +48,12 @@ return array (
     ],
 
     'default' => [
+        'r_name' => 'Аты',
+        'r_value' => 'Мән',
+        'parameters' => 'Параметрлері',
+        'measurement_unit' => 'Өлшем бірлігі',
+        'drilling_rig_moving_schedule' => 'Бұрғылау қондырғысын бұрғылау кестесі',
+        'drilling_rig_moving_scheme' => 'Бұрғылау қондырғысының қозғалыс диаграммасы',
         'height' => '| Биіктігі',
         'enter_the_well' => '| Ұңғымасыны енгізіңіз',
         'well' => 'ұңғымалар',
@@ -200,6 +206,9 @@ return array (
         'packer_to' => 'Пакер бұрын',
         'column_running_depth' => 'Бағананың жүгіру тереңдігі',
         'packer' => 'Пакер',
+        'pipe_inner_diameter' => 'Құбырдың ішкі диаметрі',
+        'steel_grade' => 'Болат маркасы',
+        'weight_per_unit_length' => 'Сызықтық салмақ',
     ],
     'gis' => [
         'open_hole_logging' => 'ұңғымасының ашық шұңқырындағы геофизикалық зерттеулер',
