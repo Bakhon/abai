@@ -28,8 +28,10 @@
         v-else
         :fields="fields"
         :items="items"
-        :isAnalysisTable="true"
+        tableType="analysis"
         :sticky="true"
+        :currentSelectedSamples="currentSelectedSamples"
+        @select-row="selectTableRow"
       />
     </div>
   </div>
@@ -52,10 +54,20 @@ export default {
     SmallCatLoader,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading", "tableState"]),
+    ...mapState("plastFluidsLocal", [
+      "loading",
+      "tableState",
+      "currentSelectedSamples",
+    ]),
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_TABLE_STATE"]),
+    ...mapMutations("plastFluidsLocal", [
+      "SET_TABLE_STATE",
+      "SET_CURRENT_SELECTED_SAMPLES",
+    ]),
+    selectTableRow(row) {
+      this.SET_CURRENT_SELECTED_SAMPLES(row.key);
+    },
   },
 };
 </script>
@@ -63,7 +75,7 @@ export default {
 <style scoped>
 .data-analysis-data-table {
   margin-top: 10px;
-  height: 350px;
+  max-height: 350px;
   display: flex;
   flex-flow: column;
   transition: 0.2s ease-in;

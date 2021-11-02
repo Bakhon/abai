@@ -129,12 +129,18 @@ export default {
                     'name': this.trans('visualcenter.streamInjection'),
                     'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
                 },
+                'volgaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicVolgaWater'),
+                    'name': this.trans('visualcenter.volgaWaterInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
             },
             selectedChartCategory: {
                 'head': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'name': this.trans('visualcenter.oilCondensateProduction'),
                 'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
-            }
+            },
+            isDecreaseReasonActive: false
         };
     },
     methods: {
@@ -260,5 +266,9 @@ export default {
         setTotalFact(monthlyFact) {
             this.dzoYearlyData.totallyFact += monthlyFact;
         },
+
+        switchDecreaseReasonExplanations() {
+            this.isDecreaseReasonActive = !this.isDecreaseReasonActive;
+        }
     }
 }

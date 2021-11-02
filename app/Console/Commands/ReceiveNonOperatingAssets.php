@@ -58,6 +58,7 @@ class receiveNonOperatingAssets extends Command
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
         'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
     );
+    private $date = null;
 
     /**
      * The console command description.
@@ -298,7 +299,7 @@ class receiveNonOperatingAssets extends Command
             $productionFieldName => $row[$columnMapping['oilProduction']],
             $deliveryFieldName => $row[$columnMapping['oilDelivery']],
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty')
+            'date' => $this->date
         );
     }
 
@@ -313,7 +314,7 @@ class receiveNonOperatingAssets extends Command
         $yesterdayFact = $this->getYesterdayFact($dzoName);
         $oilFact = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction');
         $oilDelivery = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery');
-        if (Carbon::now()->day === 1) {
+        if (Carbon::now()->day === 2) {
             $oilFact = $row[$columnMapping['KPOoilProduction']];
             $oilDelivery = $row[$columnMapping['KPOoilDelivery']];
         }
@@ -323,7 +324,7 @@ class receiveNonOperatingAssets extends Command
             'condensate_production_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateProduction']],
             'condensate_delivery_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty'),
+            'date' => $this->date,
             'oil_production_fact_absolute' => $row[$columnMapping['KPOoilProduction']],
             'oil_delivery_fact_absolute' => $row[$columnMapping['KPOoilDelivery']]
         );
@@ -334,19 +335,34 @@ class receiveNonOperatingAssets extends Command
             'oil_production_fact' => 5,
             'oil_delivery_fact' => 9
         );
-        $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
-        $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
-        $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
-        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;
-        $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $fieldsSummary = $this->getFieldsSummary($rowIndex,$sheet,$columnMapping['oil_production_fact']);
+        $kolpanSummary = $this->getKolpanSummary($rowIndex,$sheet,$columnMapping['oil_production_fact']);
         $deliverySummary = $this->getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping);
-        $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
         return array (
-            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
+            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $fieldsSummary + $kolpanSummary,
             'oil_delivery_fact' => $deliverySummary,
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty'),
+            'date' => $this->date,
         );
+    }
+
+    private function getFieldsSummary($index,$sheet,$column)
+    {
+        $summary = 0;
+        $summary += $sheet[$index + 1][$column];
+        foreach(range(2, 6) as $i) {
+            $summary += $sheet[$index + $i][$column] * 0.5;
+        }
+        return $summary;
+    }
+
+    private function getKolpanSummary($index,$sheet,$column)
+    {
+        $summary = 0;
+        foreach(range(9, 12) as $i) {
+            $summary += $sheet[$index + $i][$column];
+        }
+        return $summary * 0.75;
     }
 
     private function getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping)
@@ -382,7 +398,10 @@ class receiveNonOperatingAssets extends Command
 
     public function insertDataToDB ($data)
     {
-        DzoImportData::create($data);
+        $newRec = DzoImportData::create($data);
+        $correctedDate = $newRec->created_at->addHour();
+        $newRec->created_at = $correctedDate;
+        $newRec->save();
     }
 
     /**
@@ -392,6 +411,7 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
+        $this->date = Carbon::now('Asia/Almaty')->subDays(1);
         $this->processGDUEmail();
         sleep(5);
         $this->processInboundEmail();

@@ -1,5 +1,11 @@
 <template>
-  <div class="box" v-show="loading">
+  <div
+    class="box"
+    v-show="loading"
+    :style="
+      page === 'upload' ? 'background: transparent;' : 'background: #454d7d99;'
+    "
+  >
     <div class="cat">
       <div class="cat__body"></div>
       <div class="cat__body"></div>
@@ -14,6 +20,7 @@ export default {
   name: "SmallCatLoader",
   props: {
     loading: Boolean,
+    page: String,
   },
 };
 </script>

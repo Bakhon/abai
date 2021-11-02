@@ -82,10 +82,8 @@
       "code": "chemical_reagent_type",
       "table": "prod.well_treatment",
       "column": "chemical_reagent_type",
-      "type": "dict",
-      "dict": "chemical_reagent_types",
+      "type": "text",
       "title": "ch_reagent_type",
-      "validation": "exists:tbd.dict.chemical_reagent_type,id",
       "is_editable": true
     },
     {

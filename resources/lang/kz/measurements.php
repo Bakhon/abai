@@ -41,4 +41,5 @@ return array (
   'kN' => 'кН',
   'unit' => 'ед.',
   'thousand_tons' => 'тыс. тонн',
+  'rods' => 'штанг',
 );

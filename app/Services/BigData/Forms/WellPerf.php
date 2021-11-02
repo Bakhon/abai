@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class WellPerf extends PlainForm
 {
     protected $configurationFileName = 'well_perf';
+
+    use WithDocumentsUpload;
 
     public function getFormByRow(array $row): array
     {
@@ -47,6 +50,17 @@ class WellPerf extends PlainForm
         return ['form' => $form];
     }
 
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
+        return $rows;
+    }
+
     protected function formatRows(Collection $wellPerforations): Collection
     {
         $wellPerforations = parent::formatRows($wellPerforations);
@@ -70,7 +84,7 @@ class WellPerf extends PlainForm
             $perf->actual_intervals = $this->formatIntervals($actualIntervals);
 
             $perf->well = $actualIntervals->map(function ($interval) {
-                return $interval->base - $interval->top;
+                return $interval->top - $interval->base;
             })->sum();
 
             return $perf;
@@ -81,7 +95,7 @@ class WellPerf extends PlainForm
     {
         return $intervals
             ->map(function ($interval) {
-                return (float)$interval->top . ' - ' . (float)$interval->base . ';';
+                return (float)$interval->base . ' - ' . (float)$interval->top . ';';
             })
             ->unique()
             ->join('<br>');
@@ -111,7 +125,7 @@ class WellPerf extends PlainForm
                     ->where('perf_date', '<=', $perfDate);
 
                 foreach ($intervalsToCompare as $intervalToCompare) {
-                    if ($intervalToCompare->top <= $interval->top && $intervalToCompare->base >= $interval->base) {
+                    if ($intervalToCompare->base <= $interval->base && $intervalToCompare->top >= $interval->top) {
                         return false;
                     }
                 }
@@ -128,19 +142,46 @@ class WellPerf extends PlainForm
 
     protected function insertInnerTable(int $id)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        $data['dbeg'] = $this->request->get('perf_date');
-                        $data['dend'] = Well::DEFAULT_END_DATE;
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
-                }
+        if (empty($this->tableFields)) {
+            return;
+        }
+
+        foreach ($this->tableFields as $field) {
+            if (empty($this->request->get($field['code']))) {
+                continue;
+            }
+            if ($field['code'] === 'documents') {
+                $this->submitFiles($id, $field);
+                continue;
+            }
+
+            $this->submittedData['table_fields'][$field['code']] = [];
+            if (!is_array($this->request->get($field['code']))) {
+                continue;
+            }
+            foreach ($this->request->get($field['code']) as $data) {
+                $data[$field['parent_column']] = $id;
+                $data['dbeg'] = $this->request->get('perf_date');
+                $data['dend'] = Well::DEFAULT_END_DATE;
+                $this->submittedData['table_fields'][$field['code']][] = $data;
+                DB::connection('tbd')->table($field['table'])->insert($data);
             }
         }
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        $data = array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        if (isset($data['actual_intervals'])) {
+            unset($data['actual_intervals']);
+        }
+        return $data;
     }
 }

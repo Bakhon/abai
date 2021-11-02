@@ -16,7 +16,10 @@
                 <td>{{ $item->oilPipe->lastCoords->m_distance }}</td>
                 <td>{{ $item->omgngdu ? $item->omgngdu->daily_fluid_production : ''}}</td>
                 <td>{{ $item->omgngdu ? $item->omgngdu->bsw : ''}}</td>
-                <td>{{ $item->gu ? 0 : ''}}</td>
+                <td>{{ ($item->omgngdu && $item->omgngdu->gas_factor && $item->omgngdu->bsw) ?
+                        $item->omgngdu->gas_factor :
+                        (isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['gas'] : null) }}
+                </td>
                 <td>{{ $item->omgngdu ? $item->omgngdu->pump_discharge_pressure + 1: ''}}</td>
                 <td></td>
                 <td>{{ $item->omgngdu ? $item->omgngdu->heater_output_temperature : '' }}</td>

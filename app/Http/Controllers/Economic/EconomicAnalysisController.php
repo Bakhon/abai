@@ -22,8 +22,13 @@ class EconomicAnalysisController extends Controller
         $this->structureService = $structureService;
     }
 
-    public function index()
+    public function index(): View
     {
-        return view('economic.analysis');
+        return view('economic.analysis.index');
+    }
+
+    public function inputParams(): View
+    {
+        return view('economic.analysis.input_params');
     }
 }

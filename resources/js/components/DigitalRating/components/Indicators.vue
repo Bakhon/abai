@@ -9,8 +9,8 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="indicators && indicators.length">
-          <tr v-for="(item, index) in indicators" :key="index">
+        <tbody v-if="getProdIndicators">
+          <tr v-for="(item, index) in indicators.df_prod_sum_well" :key="index">
             <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
@@ -21,7 +21,7 @@
         </div>
       </table>
       <Plotly
-        :data="data"
+        :data="this.prodDiagramIndicators"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
@@ -37,16 +37,19 @@
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="(item, index) in secondIndicators" :key="index">
+        <tbody v-if="getInjIndicators">
+          <tr v-for="(item, index) in indicators.df_inj_sum_well" :key="index">
             <td v-for="(col, colIdx) in secondColsIndicators" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
           </tr>
         </tbody>
+        <div v-else class="warning-empty">
+          <p>{{ trans('app.thereIsNoData') }}</p>
+        </div>
       </table>
       <Plotly
-        :data="data"
+        :data="this.injDiagramIndicators"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
@@ -57,9 +60,8 @@
 </template>
 
 <script>
-  import { secondIndicators } from '../json/data';
   import { Plotly } from 'vue-plotly';
-  import { digitalRatingState, digitalRatingActions } from '@store/helpers';
+  import { digitalRatingState, digitalRatingActions, digitalRatingGetters } from '@store/helpers';
 
   export default {
     name: "Indicators",
@@ -69,19 +71,8 @@
     },
     data() {
       return {
-        secondIndicators: secondIndicators,
-        data:[
-          {
-            x: [2015, 2016, 2017, 2018, 2019, 2020],
-            y: [1200, 1300, 1200, 1200, 1000, 1100],
-            type:"scatter"
-          },
-          {
-            x: [2015, 2016, 2017, 2018, 2019, 2020],
-            y: [352.38, 349.024, 302.04, 302.04, 234.92, 230.725],
-            type:"scatter"
-          }
-        ],
+        dataInj: [],
+        dataProd: [],
         layout: {
           height: 320,
           showlegend: true,
@@ -117,41 +108,54 @@
       }
     },
 
-    mounted() {
-      this.fetchIndicators({});
+    async mounted() {
+      if (!this.indicators) {
+        await this.fetchIndicators({});
+      }
     },
 
     methods: {
       ...digitalRatingActions([
-          'fetchIndicators'
+          'fetchIndicators',
       ]),
     },
 
     computed: {
       ...digitalRatingState([
         'indicators',
+        'prodDiagramIndicators'
       ]),
+      ...digitalRatingGetters([
+        'injDiagramIndicators',
+        'prodDiagramIndicators'
+      ]),
+      getInjIndicators() {
+        return this.indicators?.df_inj_sum_well?.length;
+      },
+      getProdIndicators() {
+        return this.indicators?.df_prod_sum_well?.length
+      },
       colsIndicator() {
         return [
           {
             title: this.trans('digital_rating.wellNumber'),
-            name: 'uwi'
+            name: 'well'
           },
           {
             title: this.trans('digital_rating.liquidFlowRate'),
-            name: 'liquid_val_average'
+            name: 'avg_liquid_rate'
           },
           {
             title: `${this.trans('digital_rating.waterCut')}, %`,
-            name: 'bsw_val_average'
+            name: 'avg_wc'
           },
           {
             title: `${this.trans('digital_rating.oilFlowRate')}, ${this.trans('digital_rating.tonDay')}`,
-            name: 'result'
+            name: 'avg_oil_rate'
           },
           {
             title: `${this.trans('digital_rating.dynamicLevel')}, м`,
-            name: 'param_gdis_hdin'
+            name: 'h_dyn'
           }
         ]
       },
@@ -159,11 +163,11 @@
         return [
           {
             title: this.trans('digital_rating.wellNumber'),
-            name: 'number'
+            name: 'well'
           },
           {
             title: `${this.trans('digital_rating.throttleResponse')}, ${this.trans('digital_rating.cubeDay')}`,
-            name: 'response'
+            name: 'avg_injection'
           },
           {
             title: `${this.trans('digital_rating.injectionPressure')}, атм`,
@@ -173,10 +177,6 @@
             title: `${this.trans('digital_rating.distance')}, м`,
             name: 'distance'
           },
-          {
-            title: `${this.trans('digital_rating.stitchDiameter')}, мм`,
-            name: 'diameter'
-          }
         ]
       }
     }

@@ -13,7 +13,7 @@
         :key="wellKey"
         :options="options"
         :series="chartSeries"
-        :height="535"/>
+        :height="520"/>
   </div>
 </template>
 

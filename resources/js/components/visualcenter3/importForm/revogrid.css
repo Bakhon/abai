@@ -23,3 +23,9 @@ revo-grid .header-wrapper {
 .cell__color-normal {
     background-color: white;
 }
+table.el-year-table a.cell {
+    background: transparent;
+}
+revogr-scroll-virtual.horizontal::-webkit-scrollbar-track {
+    background: transparent;
+}

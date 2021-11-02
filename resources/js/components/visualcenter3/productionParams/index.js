@@ -63,7 +63,8 @@ export default {
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,
                 'artezianWaterInjection': false,
-                'streamWaterInjection': false
+                'streamWaterInjection': false,
+                'volgaWaterInjection': false
             },
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
@@ -132,6 +133,8 @@ export default {
         },
 
         async switchView(view) {
+            this.isDecreaseReasonActive = false;
+            this.selectAllDzoCompanies();
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
             this.buttonMonthlyTab = "";
@@ -165,6 +168,7 @@ export default {
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
@@ -186,6 +190,8 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.isDecreaseReasonActive = false;
+            this.selectAllDzoCompanies();
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
             this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
@@ -231,6 +237,7 @@ export default {
             }
             this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
+
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
@@ -282,6 +289,15 @@ export default {
     },
     computed: {
         summaryYearlyPlan() {
+            let filtered = [];
+            _.forEach(this.productionData, (item) => {
+                if (!['ПККР','КГМКМГ','ТП'].includes(item.name)) {
+                    filtered.push(item);
+                }
+            });
+            if (this.mainMenu.oilCondensateProduction && !this.mainMenu.oilCondensateProductionWithoutKMG && !this.mainMenu.oilCondensateProductionCondensateOnly) {
+                return _.sumBy(filtered, 'yearlyPlan');
+            }
             return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {

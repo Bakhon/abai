@@ -93,9 +93,10 @@ Vue.component('vertical-indicators', require('./components/visualcenter3/Vertica
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
-Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
+Vue.component('economic-data-cost-component', require('./components/Economic/data/cost.vue').default);
 Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
 Vue.component('economic-data-gtm-component', require('./components/Economic/data/gtm.vue').default);
+Vue.component('economic-data-analysis-component', require('./components/Economic/data/analysis.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
@@ -105,6 +106,7 @@ Vue.component('economic-optimization', require('./components/Economic/optimizati
 Vue.component('economic-analysis', require('./components/Economic/analysis.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
+Vue.component('centralizers', require('./components/gno/modals/Centralizers.vue').default);
 Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
@@ -245,6 +247,8 @@ Vue.component('water-flooding-management-forecasting', require('./components/wat
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
 Vue.component('upload-historical-data', require('./components/visualcenter3/historical/index.vue').default);
+Vue.component('ceo-module-state', require('./components/moduleState/index.vue').default);
+Vue.component('ceo-module-state-input', require('./components/moduleState/stateInput.vue').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

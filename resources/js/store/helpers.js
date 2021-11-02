@@ -195,6 +195,12 @@ export const digitalRatingMutations = arrNames => ({
     ]),
 });
 
+export const digitalRatingGetters = arrNames => ({
+    ...mapGetters('digitalRating', [
+        ...arrNames
+    ])
+});
+
 export const digitalRatingActions = arrNames => ({
     ...mapActions('digitalRating', [
         ...arrNames

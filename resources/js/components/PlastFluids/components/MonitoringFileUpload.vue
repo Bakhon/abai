@@ -24,9 +24,10 @@
         <div v-if="state === 'file chosen'">
           <p class="file-name">{{ file.name }}</p>
         </div>
-        <div v-if="state === 'uploading'">
-          {{ trans("plast_fluids.uploading_file") }}...
-        </div>
+        <SmallCatLoader
+          v-if="state === 'uploading'"
+          :loading="state === 'uploading'"
+        />
         <div class="error" v-if="state === 'error'">
           {{ error }}
         </div>
@@ -50,12 +51,16 @@
 </template>
 
 <script>
+import SmallCatLoader from "./SmallCatLoader.vue";
 import { uploadTemplate } from "../services/templateService";
 import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "MonitoringFileUpload",
-  inject: ["name"],
+  inject: ["name", "id"],
+  components: {
+    SmallCatLoader,
+  },
   data() {
     return {
       formats: [".xls", ".xlsx", ".xlsm"],
@@ -68,24 +73,28 @@ export default {
     ...mapMutations("plastFluidsLocal", [
       "SET_FILE_LOG",
       "SET_REPORT_DUPLICATED_STATUS",
+      "SET_DOWNLOAD_FILE_DATA",
     ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
     ...mapActions("plastFluidsLocal", ["HANDLE_FILE_LOG"]),
     async handleFileUpload() {
       this.state = "uploading";
       const PostData = new FormData();
       PostData.append("user", this.name);
+      PostData.append("user_id", this.id);
       PostData.append("file", this.file);
       try {
         const log = await uploadTemplate(PostData);
-        const {
-          Template,
-          "report is duplicated": duplicated,
+        const { template, status, description, user, sheets, ...rest } = log;
+        sheets ? this.HANDLE_FILE_LOG(sheets) : "";
+        this.SET_DOWNLOAD_FILE_DATA({
+          template,
           status,
-          ...rest
-        } = log;
-        this.HANDLE_FILE_LOG(rest);
-        this.SET_REPORT_DUPLICATED_STATUS(duplicated === "True" ? true : false);
+          user,
+          description,
+        });
         this.state = "file chosen";
+        if (status === "ok") this.UPDATE_CURRENT_SUBSOIL_FIELD("resetField");
       } catch (error) {
         this.state = "error";
         this.error =

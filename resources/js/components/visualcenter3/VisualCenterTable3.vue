@@ -598,6 +598,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('volgaWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.volgaWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.volgaWaterInjection")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('streamWaterInjection','waterInjection')"
                       >
                         <div
@@ -744,8 +759,6 @@
                     </ul>
                   </div>
                 </div>
-
-
               </div>
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
@@ -780,12 +793,16 @@
                   </ul>
                 </div>
               </div>
+              <div
+                      v-if="mainMenu.oilCondensateProduction && periodRange > 0"
+                      :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
+                      @click="switchDecreaseReasonExplanations()"
+              ></div>
             </div>
-
             <div class="d-flex mh-60 mt-3">
               <div
-                      class="col-sm-7 vis-table"
-                      :class="periodRange === 0 ? 'main-table__scroll' : ''"
+                      class=""
+                      :class="[isDecreaseReasonActive ? 'd-none vis-table' : 'col-sm-7 vis-table',periodRange === 0 ? 'main-table__scroll' : '']"
               >
                 <table
                         v-if="productionTableData.length"
@@ -956,6 +973,7 @@
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -965,6 +983,7 @@
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
@@ -1193,18 +1212,24 @@
 
               </div>
               <div
-                      class="pl-3 col-sm-5"
+                      :class="isDecreaseReasonActive ? 'pl-3 col-sm-12' : 'pl-3 col-sm-5'"
                       v-if="periodRange > 0"
               >
                 <div
 
-                        class="oil-condensate-chart-secondary-name"
+                        :class="isDecreaseReasonActive ? 'mt_7 oil-condensate-chart-secondary-name' : 'mt_dynamic oil-condensate-chart-secondary-name'"
                 >
                   {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
-                <vc-chart :height="465"> </vc-chart>
+                <vc-chart
+                        :class="isDecreaseReasonActive ? 'ml-1' : ''"
+                        :height="465"
+                        :isDecreaseReasonActive="isDecreaseReasonActive"
+                        :selectedCompanies="selectedDzoCompanies"
+                        @chartReasons="getChartReasons"
+                ></vc-chart>
               </div>
             </div>
           </div>
@@ -1492,8 +1517,15 @@
 
                   <div class="col pl-2">
                     <div
+                            v-if="productionFondSelectedCompany !== 'УО'"
                             :class="fondsFilter.isProductionIdleActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="switchProductionFondFilter('isProductionIdleActive')"
+                    >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                    <div
+                            v-else
+                            class="button2 button__disabled"
                     >
                       {{ trans("visualcenter.inIdle") }}
                     </div>
@@ -2363,14 +2395,13 @@
               <div>
                 <table class="table emergency-table">
                   <tr class="d-flex">
-                    <td class="col-6">
-                      <div class="secondaryTitle">0</div>
-                      <div class="metric-title">
-                        {{ trans('visualcenter.chemistryMetricTon') }}
-                      </div>
-                      <div class="in-idle">
-                        {{ timeSelect }}
-                      </div>
+                    <td class="col-6 cursor-pointer">
+                      <a :href="oilDynamicRoute" class="secondaryTitle d-flex">
+                        <div class="col-9 p-0 oil-dynamic-icon"></div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </a>
                     </td>
                     <td
                             class="col-6 cursor-pointer emergency-block"
@@ -2388,7 +2419,7 @@
                   <tr class="d-flex">
                     <td class="col-6">
                       <div class="right-column_header">
-                        {{ trans('visualcenter.expectedProduction') }}
+                        {{ trans('visualcenter.dailyDynamic') }}
                       </div>
                     </td>
                     <td
@@ -2408,6 +2439,7 @@
       </div>
     </div>
     <modal-reasons :reasons="reasonExplanations"></modal-reasons>
+    <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
 
@@ -2927,11 +2959,16 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: calc(100% - 500px);
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .mt_dynamic {
+    margin-top: calc(100% - 500px);
+  }
+  .mt_7 {
+    margin-top: 7%;
   }
   .emergency-situations {
     background: #333975 60%;
@@ -3064,4 +3101,32 @@
     border-radius: 10px;
     padding: 2px 5px;
   }
+  .oil-dynamic-icon {
+    width: 70px;
+    height: 70px;
+    background: url(/img/visualcenter3/oil-graph.svg) no-repeat;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+  .button__disabled{
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .color__yellow {
+    color: #FFC607;
+  }
+  .chart-reason-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason.svg) no-repeat;
+    background-color: #333975;
+  }
+  .chart-reason-active-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
+    background-color: #333975;
+  }
+
 </style>

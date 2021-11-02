@@ -6,6 +6,7 @@ import { triangleMarker } from 'leaflet-triangle-marker';
 export default {
   data() {
     return {
+      map: null,
       circle: [],
       triangle: [],
       bounds: [[0, 15000], [0,15000]],
@@ -86,13 +87,13 @@ export default {
       return [[coordinateStart], [coordinateEnd]];
     },
 
-    setCircleMarker(coordinate, title) {
+    setCircleMarker(coordinate, title, color = '#000') {
       const circleMarker = L.circleMarker(coordinate,{
         renderer: this.renderer,
-        color: '#000',
+        color: color,
         opacity: 1,
         weight: 1,
-        fillColor: '#000',
+        fillColor: color,
         fillOpacity: 0,
         radius: 1,
       }).addTo(this.map).bindPopup(title);
@@ -107,11 +108,11 @@ export default {
       this.circle.push(circleMarker);
     },
 
-    setTriangleMarker(coordinate, title) {
+    setTriangleMarker(coordinate, title, color = '#000') {
       const triangleMarker = L.triangleMarker(coordinate, {
         renderer:   this.renderer,
-        color: '#000',
-        fillColor: '#000',
+        color: color,
+        fillColor: color,
         fillOpacity: 0,
         opacity: 1,
         weight: 1,

@@ -4,8 +4,8 @@
     "icon": "/img/waterfloodingManagement/water-flooding-management-group_1.svg",
     "component": {
       "name": "child-component",
-      "template": "<div><water-flooding-management-map></water-flooding-management-map></div>",
-      "parentType": "aegtm"
+      "template": "<water-flooding-management-map></water-flooding-management-map>",
+      "type": "choose_object_area"
     }
   },
   {
@@ -14,7 +14,7 @@
     "component": {
       "name": "child-component",
       "template": "<div><water-flooding-management-forecasting></water-flooding-management-forecasting></div>",
-      "parentType": "aegtm"
+      "type": "forecasting_optimization"
     }
   },
   {
@@ -23,7 +23,7 @@
     "component": {
       "name": "child-component",
       "template": "<div><water-flooding-management-assessment></water-flooding-management-assessment></div>",
-      "parentType": "aegtm"
+      "type": "assessment_monitoring"
     }
   }
 ]
