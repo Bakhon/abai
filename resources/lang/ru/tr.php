@@ -304,5 +304,6 @@ return array (
   'change_regime' => 'Изменения к режиму',
   'reset_all_filter' => 'Сбросить все фильтры',
   'all_well' => 'Все скважины',
-  'selected' => 'Выбрано'
+  'selected' => 'Выбрано',
+  'delete_well' => 'Удаление скважины',
 );

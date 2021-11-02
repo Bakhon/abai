@@ -98,7 +98,7 @@ class MeasLabResearch extends TableForm
                     }
                 }
                 return false;
-            });
+            })->values();
     }
 
     protected function saveSingleFieldInDB(array $params): void

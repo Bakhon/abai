@@ -21,7 +21,7 @@
                 </div>
                 <div class="daily_raport_block-header-save">
                     <button class="save">
-                        {{trans('digital_drilling.daily_raport.save')}}
+                        {{trans('app.save')}}
                     </button>
                 </div>
             </div>
@@ -35,7 +35,10 @@
                                 {{trans('digital_drilling.daily_raport.unit_name')}}
                             </td>
                             <td colspan="2">
-                                <select-add :options="drillingRig" @addItem="addItemRig"/>
+                                <select-add :options="drillingRig" name="Unit_Name"  :header="Unit_Name"
+                                            @addItem="addItemRig"
+                                            @selectOption="selectOption"
+                                />
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_mode')}}
@@ -71,7 +74,9 @@
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <select-input :options="drillingContractors" name="name"/>
+                                <select-add :options="drillingContractors" name="drillingContractors" :header="companyName"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Буровой подрядчик', 'company', 'companyName')"/>
                             </td>
                         </tr>
                         <tr>
@@ -372,13 +377,17 @@
                             <tbody>
                                 <tr v-for="i in 19">
                                     <td class="w-15">
-                                        <select-input :options="operation1" name="name"/>
+                                        <select name="" id="">
+                                            <option value="" v-for="operation in operation1">{{operation.name_ru}}</option>
+                                        </select>
                                     </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td class="w-20">
-                                        <select-input :options="operation2" name="name"/>
+                                        <select name="" id="">
+                                            <option value="" v-for="operation in operation2">{{operation.name_ru}}</option>
+                                        </select>
                                     </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
@@ -509,10 +518,14 @@
                                 {{trans('digital_drilling.daily_raport.chisel_type')}}
                             </td>
                             <td colspan="2">
-                                <select-input :options="bitTypes" name="name"/>
+                                <select name="" id="">
+                                    <option value="" v-for="type in bitTypes">{{type.name_ru}}</option>
+                                </select>
                             </td>
                             <td colspan="2">
-                                <select-input :options="bitTypes" name="name"/>
+                                <select name="" id="">
+                                    <option value="" v-for="type in bitTypes">{{type.name_ru}}</option>
+                                </select>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.BHA_elements')}}
@@ -544,7 +557,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -553,7 +568,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes0" :header="threadTypesJson[0].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes0')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -567,13 +585,21 @@
                                 {{trans('digital_drilling.daily_raport.manufacturer')}}
                             </td>
                             <td colspan="2">
-                                <select-input :options="manufacturers" name="name"/>
+                                <select-add :options="manufacturers" name="manufacturer1" :header="manufacturer1"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Производитель', 'manufacturer', 'manufacturer1')"
+                                />
                             </td>
                             <td colspan="2">
-                                <select-input :options="manufacturers" name="name"/>
+                                <select-add :options="manufacturers" name="manufacturer2" :header="manufacturer2"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Производитель', 'manufacturer', 'manufacturer2')"
+                                />
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -582,7 +608,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes1" :header="threadTypesJson[1].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes1')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -596,13 +625,23 @@
                                 {{trans('digital_drilling.daily_raport.diameter')}}
                             </td>
                             <td colspan="2">
-                               <select-input :options="bitDiameters" name="diameter"/>
+                                <select name="" id="">
+                                    <option value="" v-for="diameter in bitDiameters">
+                                        {{diameter.diameter}}
+                                    </option>
+                                </select>
                             </td>
                             <td colspan="2">
-                                <select-input :options="bitDiameters" name="diameter"/>
+                                <select name="" id="">
+                                    <option value="" v-for="diameter in bitDiameters">
+                                        {{diameter.diameter}}
+                                    </option>
+                                </select>
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -611,7 +650,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes2" :header="threadTypesJson[2].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes2')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -632,7 +674,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -641,7 +685,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes3" :header="threadTypesJson[3].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes3')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -751,7 +798,9 @@
                                 </div>
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -760,7 +809,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes4" :header="threadTypesJson[4].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes4')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -780,7 +832,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -789,7 +843,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes5" :header="threadTypesJson[5].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes5')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -809,7 +866,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -818,7 +877,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes6" :header="threadTypesJson[6].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes6')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -838,7 +900,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -847,7 +911,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes7" :header="threadTypesJson[7].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes7')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -867,7 +934,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -876,7 +945,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes8" :header="threadTypesJson[8].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes8')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -896,7 +968,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -905,7 +979,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes9" :header="threadTypesJson[9].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes9')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -925,7 +1002,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -934,7 +1013,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes10" :header="threadTypesJson[10].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes10')"
+                                />
                             </td>
 
                             <td >
@@ -955,7 +1037,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -964,7 +1048,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes11" :header="threadTypesJson[11].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes11')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -998,7 +1085,9 @@
                                 </div>
                             </td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td>
                                 <input type="text">
@@ -1007,7 +1096,10 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes12" :header="threadTypesJson[12].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes12')"
+                                />
                             </td>
                             <td >
                                 <input type="text">
@@ -1018,12 +1110,17 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes13" :header="threadTypesJson[13].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes13')"
+                                />
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1033,12 +1130,17 @@
                             <td colspan="2"><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td colspan="2">
-                                <select-input :options="BHAelements" name="name" />
+                                <select name="" id="">
+                                    <option value="" v-for="element in BHAelements">{{element.name_ru}}</option>
+                                </select>
                             </td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <select-input :options="threadTypes" name="name"/>
+                                <select-add :options="threadTypes" name="threadTypes14" :header="threadTypesJson[14].type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип резьбы', 'screw_size', 'threadTypes14')"
+                                />
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1229,7 +1331,11 @@
                     <tr>
                         <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
                         <td class="w-7">
-                            <select-input :options="diameters" name="diameter"/>
+                            <select name="" id="">
+                                <option value="" v-for="diameter in diameters">
+                                    {{diameter.diameter}}
+                                </option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -1245,7 +1351,11 @@
                             {{trans('digital_drilling.daily_raport.diameter_next_column')}}
                         </td>
                         <td>
-                            <select-input :options="diameters" name="diameter"/>
+                            <select name="" id="">
+                                <option value="" v-for="diameter in diameters">
+                                    {{diameter.diameter}}
+                                </option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -1307,7 +1417,10 @@
                     <tr>
                         <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
                         <td colspan="2">
-                            <select-input :options="pumps" name="name"/>
+                            <select-add :options="pumps" name="pump1" :header="pump1"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Насос №1', 'pump_type', 'pump1')"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -1315,7 +1428,10 @@
                             {{trans('digital_drilling.daily_raport.bushings_mm')}}
                         </td>
                         <td>
-                            <select-input :options="bushings" name="name"/>
+                            <select-add :options="bushings" name="bushings1" :header="bushings1"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings1')"
+                            />
                         </td>
                         <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                         <td>
@@ -1348,7 +1464,10 @@
                     <tr>
                         <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
                         <td colspan="2">
-                            <select-input :options="pumps" name="name"/>
+                            <select-add :options="pumps" name="pump2" :header="pump2"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Насос №2', 'pump_type', 'pump2')"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -1356,7 +1475,10 @@
                             {{trans('digital_drilling.daily_raport.bushings_mm')}}
                         </td>
                         <td>
-                            <select-input :options="bushings" name="name"/>
+                            <select-add :options="bushings" name="bushings2" :header="bushings2"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings2')"
+                            />
                         </td>
                         <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                         <td>
@@ -1396,13 +1518,19 @@
                     <tr>
                         <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
                         <td colspan="2">
-                            <select-input :options="pumps" name="name"/>
+                            <select-add :options="pumps" name="pump3" :header="pump3"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Насос №3', 'pump_type', 'pump3')"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                         <td>
-                            <select-input :options="bushings" name="name"/>
+                            <select-add :options="bushings" name="bushings3" :header="bushings3"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings3')"
+                            />
                         </td>
                         <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                         <td><input type="text"></td>
@@ -1436,13 +1564,19 @@
                     <tr>
                         <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
                         <td colspan="2">
-                            <select-input :options="pumps" name="name"/>
+                            <select-add :options="pumps" name="pump4" :header="pump4"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Насос №4', 'pump_type', 'pump4')"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                         <td>
-                            <select-input :options="bushings" name="name"/>
+                            <select-add :options="bushings" name="bushings4" :header="bushings4"
+                                        @selectOption="selectOption"
+                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings4')"
+                            />
                         </td>
                         <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                         <td><input type="text"></td>
@@ -1596,7 +1730,9 @@
                         </tr>
                         <tr v-for="i in 6">
                             <td colspan="3" class="w-10">
-                                <select-input :options="drillingMudTypes" name="name"/>
+                                <select name="" id="">
+                                    <option value="" v-for="type in drillingMudTypes">{{type.name_ru}}</option>
+                                </select>
                             </td>
                             <td v-for="i in 19">
                                 <input type="text">
@@ -1669,33 +1805,17 @@
                             <td>{{trans('digital_drilling.daily_raport.density_material')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.mass_consumption')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.availability_rig')}}</td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.receiving_per_day')}}</td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.consumption_per_day')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.receiving_per_day')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.consumption_per_day')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.remaining_rig')}}</td>
                         </tr>
-                        <tr v-for="i in 8">
+                        <tr v-for="(composition, i) in componentComposition">
                             <td>
-                                <select-input :options="nameChemicals" name="name" />
+                                <select-add :options="nameChemicals" :name="'chemical_name'+i" :header="composition.chemical_name"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Наименование химреагентов', 'mud_composition', 'chemical_name'+i)"/>
                             </td>
-                            <td v-for="i in 5"><input type="text"></td>
-                            <td v-for="j in 2" colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select-input :options="nameChemicals" name="name" />
-                            </td>
-                            <td v-for="i in 5"><input type="text"></td>
-                            <td v-for="j in 2" colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
-                        </tr>
-                        <tr v-for="i in 6">
-                            <td>
-                                <select-input :options="nameChemicals" name="name" />
-                            </td>
-                            <td v-for="i in 5"><input type="text"></td>
-                            <td v-for="j in 2" colspan="2"><input type="text"></td>
-                            <td><input type="text"></td>
+                            <td v-for="i in 8"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1743,29 +1863,28 @@
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.lithology')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_plas')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_GRP')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.old')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.sampling_interval')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.plan')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.fact_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.takeaway')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.old')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.sampling_interval')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.plan')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.fact_m')}}</td>
+                            <td rowspan="2">{{trans('digital_drilling.daily_raport.takeaway')}}</td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.plan')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.fact_m')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.powerful')}}</td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
                         </tr>
-                        <tr v-for="i in 10">
+                        <tr v-for="(geological, i) in geologicalInformation">
                             <td>
-                                <select-input :options="stratigraphy" name="name" />
+                                <select-add :options="stratigraphy" :name="'stratigraphy'+i" :header="geological.stratigraphy"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Стратиграфия', 'stratigraphy', 'stratigraphy'+i)"/>
                             </td>
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="lithology" name="name" />
+                                <select-add :options="lithology" :name="'lithology'+i" :header="geological.lithology"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Литология', 'lithology', 'lithology'+i)"/>
                             </td>
                             <td v-for="i in 7"><input type="text"></td>
                         </tr>
@@ -1788,14 +1907,18 @@
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
-                        <tr v-for="i in 20">
+                        <tr v-for="(incl, i) in inclino">
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="deviceType" name="name" />
+                                <select-add :options="deviceType" :name="'inclino1'+i" :header="incl.instrument1"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип прибора', 'device_type', 'inclino1'+i)"/>
                             </td>
                             <td v-for="i in 3"><input type="text"></td>
                             <td>
-                                <select-input :options="deviceType" name="name" />
+                                <select-add :options="deviceType" :name="'inclino2'+i" :header="incl.instrument2"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Тип прибора', 'device_type', 'inclino2'+i)"/>
                             </td>
                         </tr>
                     </tbody>
@@ -1882,23 +2005,83 @@
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
-                    <table class="table defaultTable modalTable">
+                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
+                        <tbody>
+                            <tr>
+                                <th>Название</th>
+                                <th>Значение</th>
+                            </tr>
+                            <tr>
+                                <td>{{rigCharacteristic[0][0].parameter}}</td>
+                                <td>
+                                    <select-add :options="drillingContractors" name="drillingContractors" :header="companyName"
+                                                @selectOption="selectOption"
+                                                @addItem="openCatalog('Буровой подрядчик', 'company', 'companyName')"
+                                                :class="{error: companyName=='' && addRigModalError}"
+                                    /></td>
+                            </tr>
+                            <tr>
+                                <td>{{rigCharacteristic[0][1].parameter}}</td>
+                                <td><input type="text" v-model="headDrilling" :class="{error: headDrilling=='' && addRigModalError}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
                         <tbody>
                             <tr>
                                 <th>Параметры</th>
                                 <th>Ед.измерения</th>
                                 <th>Значение</th>
                             </tr>
-                            <tr v-for="i in 30">
-                                <td></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
+                            <tr v-for="(rig, i) in rigCharacteristic[1]">
+                                <td>{{rig.parameter}}</td>
+                                <td>{{rig.unit}}</td>
+                                <td>
+                                    <input type="text" v-model="rig.value" :class="{error: addRigModalError && rig.value=='' && i==0}">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="characteristic_body-save">
-                    <button>{{trans('app.save')}}</button>
+                    <button @click="uploadRig">{{trans('app.save')}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="catalog-add" v-if="catalogModal">
+            <div class="catalog-add-inner">
+                <div class="catalog-add-form">
+                    <div class="catalog-add-header">
+                        <div class="catalog-add-title">
+                            {{currentCatalogAdd.name}}
+                        </div>
+                        <div class="catalog-add-close" @click="catalogModal=false">
+                            Закрыть
+                        </div>
+                    </div>
+                    <div class="catalog-add-content">
+                        <input type="text" :class="{error: catalogError && catalog==''}"  v-model="catalog">
+                        <button @click="saveCatalog">{{trans('app.save')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="catalog-add" v-if="catalogModalCompany">
+            <div class="catalog-add-inner">
+                <div class="catalog-add-form">
+                    <div class="catalog-add-header">
+                        <div class="catalog-add-title">
+                            {{currentCatalogAdd.name}}
+                        </div>
+                        <div class="catalog-add-close" @click="catalogModalCompany=false">
+                            Закрыть
+                        </div>
+                    </div>
+                    <div class="catalog-add-content">
+                        <input type="text" :class="{error: catalogError && catalogCompany.name_ru==''}"  v-model="catalogCompany.name_ru" placeholder="Напишите назание">
+                        <input type="number" :class="{error: (catalogError && catalogCompany.bin=='') || (catalogError && catalogCompany.bin.toString().length !=12)}"  v-model="catalogCompany.bin" placeholder="Напишите БИН, число, 12 цифр">
+                        <button @click="saveCatalogCompany">{{trans('app.save')}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1909,7 +2092,10 @@
     import SelectInput from  './components/SelectInput'
     import SelectAdd from  './components/SelectAdd'
     import NozzlesTable from  './components/NozzlesTable'
-
+    import componentComposition from './core/componentComposition'
+    import geologicalInformation from './core/geologicalInformation'
+    import threadTypesJson from './core/threadType'
+    import inclino from './core/inclino'
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd},
@@ -1925,8 +2111,76 @@
                         active: false
                     },
                 ],
+                componentComposition: componentComposition,
+                geologicalInformation: geologicalInformation,
+                inclino: inclino,
+                threadTypesJson: threadTypesJson,
+                catalog: '',
+                catalogCompany: {
+                    name_ru: '',
+                    bin: ''
+                },
+                currentCatalogAdd: {
+                    name: '',
+                    url: '',
+                    type: '',
+                },
+                headDrilling: '',
+                companyName: {
+                    id: '',
+                    name_ru: '',
+                },
+                Unit_Name: {
+                    id: '',
+                    name_ru: ''
+                },
+                manufacturer1: {
+                    id: '',
+                    name_ru: ''
+                },
+                manufacturer2: {
+                    id: '',
+                    name_ru: ''
+                },
+                bushings1: {
+                    id: '',
+                    name_ru: ''
+                },
+                bushings2: {
+                    id: '',
+                    name_ru: ''
+                },
+                bushings3: {
+                    id: '',
+                    name_ru: ''
+                },
+                bushings4: {
+                    id: '',
+                    name_ru: ''
+                },
+                pump1: {
+                    id: '',
+                    name_ru: ''
+                },
+                pump2: {
+                    id: '',
+                    name_ru: ''
+                },
+                pump3: {
+                    id: '',
+                    name_ru: ''
+                },
+                pump4: {
+                    id: '',
+                    name_ru: ''
+                },
+                catalogError: false,
+                catalogModal: false,
+                catalogModalCompany: false,
                 well:[],
+                rigCharacteristic: [],
                 addRigModal: false,
+                addRigModalError: false,
                 currentOrgId: null,
                 currentGeoId: null,
                 fields: [],
@@ -2030,13 +2284,260 @@
             this.getBHAelements()
         },
         methods: {
+            saveCatalog(){
+                if (this.catalog != '') {
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/'+this.currentCatalogAdd.url+'/',
+                        {name_ru: this.catalog}).then((response) => {
+                        if (response.data) {
+                            this.catalogModal = false
+                            switch (this.currentCatalogAdd.url) {
+                                case "manufacturer":
+                                    switch (this.currentCatalogAdd.type){
+                                        case "manufacturer1":
+                                            this.manufacturer1 = response.data
+                                            break
+                                        case "manufacturer2":
+                                            this.manufacturer2 = response.data
+                                            break
+                                    }
+                                    this.getManufacturers()
+                                    break
+                                case "pump_barrel":
+                                    switch (this.currentCatalogAdd.type) {
+                                        case "bushings1":
+                                            this.bushings1 = response.data
+                                            break
+                                        case "bushings2":
+                                            this.bushings2 = response.data
+                                            break
+                                        case "bushings3":
+                                            this.bushings3 = response.data
+                                            break
+                                        case "bushings4":
+                                            this.bushings4 = response.data
+                                            break
+                                    }
+                                    this.getBushings()
+                                    break
+                                case "pump_type":
+                                    switch (this.currentCatalogAdd.type) {
+                                        case "pump1":
+                                            this.pump1 = response.data
+                                            break
+                                        case "pump2":
+                                            this.pump2 = response.data
+                                            break
+                                        case "pump3":
+                                            this.pump3 = response.data
+                                            break
+                                        case "pump4":
+                                            this.pump4 = response.data
+                                            break
+                                    }
+                                    this.getPumps()
+                                    break
+                                case "mud_composition":
+                                    for (let i=0; i<this.componentComposition.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'chemical_name'+i){
+                                            this.componentComposition[i].chemical_name = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getNameChemicals()
+                                    break
+                                case "stratigraphy":
+                                    for (let i=0; i<this.geologicalInformation.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'stratigraphy'+i){
+                                            this.geologicalInformation[i].stratigraphy = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getStratigraphy()
+                                    break
+                                case "lithology":
+                                    for (let i=0; i<this.geologicalInformation.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'lithology'+i){
+                                            this.geologicalInformation[i].lithology = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getLithology()
+                                    break
+                                case "device_type":
+                                    for (let i=0; i<this.inclino.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'inclino1'+i){
+                                            this.inclino[i].instrument1 = response.data
+                                            break
+                                        }else if(this.currentCatalogAdd.type == 'inclino2'+i){
+                                            this.inclino[i].instrument2 = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getDeviceType()
+                                    break
+                                case "screw_size":
+                                    for (let i=0; i<this.threadTypesJson.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'threadTypes'+i){
+                                            this.threadTypesJson[i].type = response.data
+                                            break
+                                        }
+                                    }
+                                    this.getThreadTypes()
+                                    break
+                            }
+                            this.catalogError = false
+                            this.catalog = ""
+                        } else {
+                            console.log("No data");
+                        }
+                    })
+                        .catch((error) => console.log(error))
+                }else{
+                    this.catalogError = true
+                }
+            },
+            saveCatalogCompany(){
+                if (this.catalogCompany.name_ru == '' || this.catalogCompany.bin == '' || this.catalogCompany.bin.toString().length !=12) {
+                    this.catalogError = true
+                }else{
+                    this.catalogError = false
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/'+this.currentCatalogAdd.url+'/',
+                        this.catalogCompany).then((response) => {
+                        if (response.data) {
+                            this.companyName = response.data
+                            this.catalogModalCompany = false
+                            this.getDrillingContractors()
+                        } else {
+                            console.log("No data");
+                        }
+                    })
+                        .catch((error) => console.log(error))
+                }
+            },
+            openCatalog(name, url, catalog){
+                if (name == "Буровой подрядчик") {
+                    this.catalogModalCompany = true
+                }else{
+                    this.catalogModal = true
+                }
+                this.currentCatalogAdd.name = name
+                this.currentCatalogAdd.url = url
+                this.currentCatalogAdd.type = catalog
+            },
+            selectOption(item, name){
+                switch (name) {
+                    case "drillingContractors":
+                        this.companyName = item
+                        break
+                    case "Unit_Name":
+                        this.Unit_Name = item
+                        break
+                    case "manufacturer1":
+                        this.manufacturer1 = item
+                        break
+                    case "manufacturer2":
+                        this.manufacturer2 = item
+                        break
+                    case "bushings1":
+                        this.bushings1 = item
+                        break
+                    case "bushings2":
+                        this.bushings2 = item
+                        break
+                    case "bushings3":
+                        this.bushings3 = item
+                        break
+                    case "bushings4":
+                        this.bushings4 = item
+                        break
+                    case "pump1":
+                        this.pump1 = item
+                        break
+                    case "pump2":
+                        this.pump2 = item
+                        break
+                    case "pump3":
+                        this.pump3 = item
+                        break
+                    case "pump4":
+                        this.pump4 = item
+                        break
+                }
+                for (let i=0; i<this.componentComposition.length; i++) {
+                    if (name == 'chemical_name'+i){
+                        this.componentComposition[i].chemical_name = item
+                        break
+                    }
+                }
+                for (let i=0; i<this.threadTypesJson.length; i++) {
+                    if (name == 'threadTypes'+i){
+                        this.threadTypesJson[i].type = item
+                        break
+                    }
+                }
+                for (let i=0; i<this.geologicalInformation.length; i++) {
+                    if (name == 'stratigraphy'+i){
+                        this.geologicalInformation[i].stratigraphy = item
+                        break
+                    }else if(name =="lithology"+i){
+                        this.geologicalInformation[i].lithology = item
+                        break
+                    }
+                }
+                for (let i=0; i<this.inclino.length; i++) {
+                    if (name == 'inclino1'+i){
+                        this.inclino[i].instrument1 = item
+                        break
+                    }else if(name =="inclino2"+i){
+                        this.inclino[i].instrument2 = item
+                        break
+                    }
+                }
+            },
+            uploadRig(){
+                this.rigCharacteristic[0][0].value = this.companyName.id
+                this.rigCharacteristic[0][1].value = this.headDrilling
+                if (this.rigCharacteristic[0][0].value == "" || this.rigCharacteristic[0][1].value == ""){
+                    this.addRigModalError = true
+                }else{
+                    this.addRigModalError = false
+                }
+                if(this.rigCharacteristic[1][0].value==''){
+                    this.addRigModalError = true
+                }else{
+                    this.addRigModalError = false
+                }
+                if (!this.addRigModalError) {
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/rig',{array: this.rigCharacteristic}).then((response) => {
+                        if (response.data) {
+                            this.Unit_Name = response.data[0]
+                            this.addRigModal = false
+                            this.getRig()
+                        } else {
+                            console.log("No data");
+                        }
+                    })
+                        .catch((error) => console.log(error))
+
+                }
+
+            },
             addItemRig(){
                 if (this.addRigModal){
                     this.addRigModal = false
+                    document.body.overflow = 'auto'
                 } else{
                     document.body.overflow = 'hidden'
                     this.addRigModal = true
+                    this.getRigCharacteristic()
                 }
+            },
+            getRigCharacteristic(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/rig').then((response) => {
+                    let data = response.data;
+                    this.rigCharacteristic = data
+                });
+
             },
             getDeviceType(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/device_type/').then((response) => {
@@ -2151,7 +2652,7 @@
 
             },
             getThreadTypes(){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_type/').then((response) => {
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_size/').then((response) => {
                     let data = response.data;
                     this.threadTypes = data
                 });
@@ -2228,6 +2729,9 @@
 </script>
 
 <style scoped>
+    .tables{
+        overflow: unset!important;
+    }
     .nozzles-td-row{
         display: flex;
         align-items: center;
@@ -2309,7 +2813,7 @@
         padding: 8px;
 
     }
-    .characteristic__modal{
+    .characteristic__modal, .catalog-add{
         position: fixed;
         top: 0;
         left: 0;
@@ -2317,6 +2821,70 @@
         height: 100vh;
         z-index: 20000;
         background: rgba(0, 0, 0, 0.5);
+    }
+    .catalog-add-inner{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .catalog-add-form{
+        min-width: 300px;
+        width: max-content;
+        min-height: 200px;
+        height: auto;
+        background: #272953;
+        border: 2px solid #656A8A;
+        border-radius: 8px;
+        padding: 20px 14px;
+    }
+    .catalog-add-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        color: #FFFFFF;
+    }
+    .catalog-add-title{
+    }
+    .catalog-add-close{
+        flex: 0 0 90px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #656A8A;
+        border-radius: 6px;
+        font-size: 16px;
+        line-height: 19px;
+        cursor: pointer;
+    }
+    .catalog-add-content input{
+        display: block;
+        width: 100%;
+        margin-bottom: 30px;
+        background: #1F2142;
+        border: 1px solid #454FA1;
+        border-radius: 4px;
+        padding: 7px;
+    }
+    .catalog-add-content input.error{
+        border-color: red;
+    }
+    .catalog-add-content input:focus{
+        outline: none;
+    }
+    .catalog-add-content button{
+        background: rgba(46, 80, 233, 0.5);
+        border: 0;
+        margin: 0 auto;
+        display: block;
+        padding: 8px 40px;
+        border-radius: 6px;
     }
     .characteristic_content{
         max-width: 600px;
@@ -2426,5 +2994,13 @@
 
     .characteristic img{
         margin-left: 5px;
+    }
+    .error{
+        border: 1px solid red!important;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 </style>

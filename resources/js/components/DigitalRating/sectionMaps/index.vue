@@ -176,4 +176,8 @@
     }
   }
 }
+
+.leaflet-pane {
+  z-index: 90;
+}
 </style>

@@ -78,6 +78,18 @@ export default {
                 _.forEach(inputData, function(item) {
                     item.fact = tableData[0][item.code];
                     item.isVisible = typeof item.fact !== 'undefined';
+                    if (!item.fact) {
+                        item.fact = 0;
+                    }
+                });
+            } else {
+                let fondType = this.productionFondWorkFields;
+                if (this.fondsFilter.isProductionIdleActive) {
+                    fondType = this.productionFondIdleFields;
+                }
+                _.forEach(inputData, (item) => {
+                    item.fact = 0;
+                    item.isVisible = fondType.includes(item.code);
                 });
             }
         },

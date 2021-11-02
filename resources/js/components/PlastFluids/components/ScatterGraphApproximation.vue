@@ -1,9 +1,10 @@
 <template>
-  <div class="scatter-graph-approximation">
-    <div
-      class="approximation-content-holder"
-      v-click-outside="closeApproximation"
-    >
+  <div
+    ref="approximation"
+    class="scatter-graph-approximation"
+    @click="closeApproximation"
+  >
+    <div class="approximation-content-holder">
       <div class="approximation-header">
         <p>{{ trans("plast_fluids.trendline_format") }}</p>
         <button @click="$emit('close-approximation')">
@@ -91,7 +92,13 @@
                 trans("plast_fluids.auto")
               }}</label>
             </div>
-            <p>
+            <p
+              :style="
+                alreadyExists && approximationSelected
+                  ? 'border-bottom: 3px solid red'
+                  : ''
+              "
+            >
               {{
                 approximationSelected
                   ? trans(`plast_fluids.${approximationSelected}`)
@@ -111,6 +118,9 @@
               }}</label>
             </div>
             <input
+              :class="{
+                error: alreadyExists && approximationNameType === 'custom',
+              }"
               v-model="approximationCustomName"
               :disabled="approximationNameType !== 'custom'"
               type="text"
@@ -127,17 +137,34 @@
           <ScatterGraphApproximationLabelInput
             :inputText.sync="aheadPredict"
             labelTransKey="approximation_ahead_predict"
+            :graphType="graphType"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="backwardPredict"
             labelTransKey="approximation_backward_predict"
-          />
-          <ScatterGraphApproximationLabelCheckbox
             :graphType="graphType"
-            :checkboxInput.sync="isConfigureIntersection"
-            labelTransKey="configure_intersection"
           />
+          <div class="configure-intersection-holder">
+            <ScatterGraphApproximationLabelCheckbox
+              style="margin-bottom: 0;"
+              :graphType="graphType"
+              :checkboxInput.sync="isConfigureIntersection"
+              labelTransKey="configure_intersection"
+              :disableCheckbox="
+                approximationSelected !== 'linear' &&
+                  approximationSelected !== 'polynomial'
+              "
+            />
+            <input
+              v-show="isConfigureIntersection"
+              type="number"
+              step="0.1"
+              placeholder="0.0"
+              @blur="updateIntersection"
+              v-model="intersection"
+            />
+          </div>
           <ScatterGraphApproximationLabelCheckbox
             :graphType="graphType"
             :checkboxInput.sync="isShowEquationOnChart"
@@ -195,18 +222,27 @@
           'submit-button',
           approximationSelected.length > 0 || isAxisTyped ? 'rest' : 'disabled',
         ]"
-        :disabled="approximationSelected.length === 0 && !isAxisTyped"
+        :disabled="!approximationSelected && !isAxisTyped"
         @click="drawApproximation"
       >
         {{ trans("plast_fluids.done") }}
       </button>
     </div>
+    <BaseModal
+      v-if="alreadyExists"
+      v-show="baseModalOpen"
+      @close-modal="baseModalOpen = false"
+      @modal-response="baseModalOpen = false"
+      :heading="trans('plast_fluids.approximation_name_cannot_be_repeated')"
+      type="notify"
+    />
   </div>
 </template>
 
 <script>
 import ScatterGraphApproximationLabelCheckbox from "./ScatterGraphApproximationLabelCheckbox.vue";
 import ScatterGraphApproximationLabelInput from "./ScatterGraphApproximationLabelInput.vue";
+import BaseModal from "./BaseModal.vue";
 import { getGraphApproximation } from "../services/graphService";
 
 export default {
@@ -214,6 +250,7 @@ export default {
   props: {
     series: Array,
     graphType: String,
+    seriesNames: Array,
     minX: [String, Number],
     maxX: [String, Number],
     minY: [String, Number],
@@ -222,10 +259,12 @@ export default {
   components: {
     ScatterGraphApproximationLabelCheckbox,
     ScatterGraphApproximationLabelInput,
+    BaseModal,
   },
   data() {
     return {
       isOpen: true,
+      baseModalOpen: false,
       aheadPredict: "",
       backwardPredict: "",
       isConfigureIntersection: false,
@@ -233,6 +272,7 @@ export default {
       isPlaceValueOfR2: false,
       abscissaFrom: "",
       abscissaTo: "",
+      intersection: "",
       ordinateFrom: "",
       ordinateTo: "",
       polynomialDegree: 2,
@@ -248,6 +288,7 @@ export default {
       y: [],
       approximationNameType: "auto",
       approximationCustomName: "",
+      alreadyExists: false,
     };
   },
   computed: {
@@ -270,10 +311,26 @@ export default {
     isPolynomialSelected() {
       return this.approximationSelected === "polynomial";
     },
+    isNameRepeated() {
+      if (
+        this.approximationNameType === "custom" &&
+        !Boolean(this.approximationCustomName)
+      ) {
+        return true;
+      } else {
+        return this.seriesNames.includes(
+          this.approximationNameType === "custom"
+            ? this.approximationCustomName
+            : this.trans("plast_fluids." + this.approximationSelected)
+        );
+      }
+    },
   },
   watch: {
     series: {
       handler(data) {
+        this.x = [];
+        this.y = [];
         data.forEach((item) => {
           this.x.push(item.x);
           this.y.push(item.y);
@@ -281,8 +338,23 @@ export default {
       },
       immediate: true,
     },
+    isConfigureIntersection() {
+      this.intersection = "";
+    },
+    approximationSelected(value) {
+      if (value === "linear" || value === "polynomial") return;
+      this.isConfigureIntersection = false;
+      this.intersection = "";
+    },
   },
   methods: {
+    resetState() {
+      this.approximationSelected = "";
+      this.isPlaceValueOfR2 = false;
+      this.isShowEquationOnChart = false;
+      this.approximationNameType = "auto";
+      this.approximationCustomName = "";
+    },
     updatePolynomialDegreeValue(e) {
       if (e.target.value >= 3) {
         this.polynomialDegree = 3;
@@ -291,12 +363,18 @@ export default {
         this.polynomialDegree = 2;
       }
     },
-    closeApproximation() {
-      this.$emit("close-approximation");
+    updateIntersection(e) {
+      if (Number(e.target.value) < this.minY) this.intersection = this.minY;
+      if (Number(e.target.value) > this.maxY) this.intersection = this.maxY;
+    },
+    closeApproximation(e) {
+      e.stopPropagation();
+      if (e.target.innerHTML === this.$refs.approximation.innerHTML)
+        this.$emit("close-approximation");
     },
     async drawApproximation() {
       const emitData = {};
-      if (this.approximationSelected) {
+      if (this.approximationSelected && !this.isNameRepeated) {
         if (this.backwardPredict) {
           const min = Math.min(...this.x);
           this.x.push(Number(min - this.backwardPredict));
@@ -315,6 +393,10 @@ export default {
             this.approximationSelected === "polynomial"
               ? "polynomial_" + this.computedPolynomialDegree
               : this.approximationSelected,
+          y0:
+            this.isConfigureIntersection && this.intersection
+              ? Number(this.intersection)
+              : "",
         };
         const {
           approximation_data,
@@ -353,9 +435,17 @@ export default {
           ordinateTo: this.ordinateTo,
         };
       }
-      this.$emit("get-approximation", emitData);
-      this.approximationSelected = "";
-      this.closeApproximation();
+      if (
+        this.approximationSelected ? !this.isNameRepeated : this.isAxisTyped
+      ) {
+        this.$emit("get-approximation", emitData);
+        this.resetState();
+        this.alreadyExists = false;
+        this.$emit("close-approximation");
+      } else {
+        this.alreadyExists = true;
+        this.baseModalOpen = true;
+      }
     },
   },
 };

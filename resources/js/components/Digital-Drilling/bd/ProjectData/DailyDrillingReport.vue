@@ -3,17 +3,30 @@
         <table class="table defaultTable">
             <tbody>
                 <tr>
-                    <th>№ суточного рапорта</th>
-                    <th>Дата</th>
-                    <th class="raport">Суточный рапорт</th>
+                    <th>{{ trans('digital_drilling.default.daily_report_number') }}</th>
+                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
+                    <th class="raport">{{ trans('digital_drilling.default.daily_report') }}</th>
                     <th></th>
                 </tr>
-                <tr v-for="i in 10">
-                    <td v-for="i in 3"></td>
+                <tr v-for="report in reports" v-if="reports.length>0">
                     <td>
-                        <button class="download">
+                        №{{ report.document_num }}
+                    </td>
+                    <td>
+                        {{ report.document_date }}
+                    </td>
+                    <td>
+                        {{ report.document_name}}
+                    </td>
+                    <td>
+                        <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.id +'/?file_id='+ report.file_id)">
                             Скачать
                         </button>
+                    </td>
+                </tr>
+                <tr v-if="reports.length==0">
+                    <td colspan="3">
+                        no result
                     </td>
                 </tr>
             </tbody>
@@ -22,8 +35,55 @@
 </template>
 
 <script>
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
+
     export default {
-        name: "DailyDrillingReport"
+        name: "DailyDrillingReport",
+        data(){
+            return{
+                reports: [],
+                DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/',
+            }
+        },
+        computed: {
+            ...digitalDrillingState([
+                'currentWell'
+            ]),
+        },
+        mounted() {
+            this.getReportsByWell()
+        },
+        watch: {
+            currentWell: function (val) {
+                this.getReportsByWell()
+            }
+        },
+        methods:{
+            downloadFile(link){
+                window.location.href = link;
+            },
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
+            async getReportsByWell(){
+                this.SET_LOADING(true);
+                try{
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/' +
+                        this.currentWell.id).then((response) => {
+                        let data = response.data;
+                        if (data) {
+                            this.reports = data;
+                        } else {
+                            console.log('No data');
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log(e)
+                }
+                this.SET_LOADING(false);
+            }
+        }
     }
 </script>
 

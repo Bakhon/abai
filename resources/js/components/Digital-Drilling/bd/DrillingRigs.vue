@@ -54,7 +54,7 @@
                         <div class="contentBlock__map-search">
                             <div class="contentBlock__map-search-title">
                                 <img src="/img/digital-drilling/icon-map.png" alt="">
-                                <div class="title">Буровые установки</div>
+                                <div class="title">{{trans("digital_drilling.default.drilling_rigs")}}</div>
                             </div>
                             <div class="contentBlock__map-search-block">
                                 <div class="contentBlock__map-search-input">
@@ -70,21 +70,23 @@
                         <table class="table defaultTable">
                             <tbody>
                                 <tr>
-                                    <th>Наименование компании</th>
-                                    <th>Наименование БУ</th>
-                                    <th>Начальник буровой</th>
-                                    <th>Грузо-подъёмность кН</th>
-                                    <th>Номинальная глубина бурения</th>
-                                    <th>Продолжительность монтажа, сут</th>
-                                    <th>Продолжительность демонтажа, сут</th>
-                                    <th>График планирования</th>
-                                    <th>Схема перемещения</th>
+                                    <th>{{trans("digital_drilling.default.company_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.companyman")}}</th>
+                                    <th>{{trans("digital_drilling.default.load_capacity_kN")}}</th>
+                                    <th>{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_up_duration")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_duration")}}</th>
+                                    <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
                                 </tr>
                                 <tr v-for="i in 12">
                                     <td></td>
                                     <td>
                                         <div class="text-center mb-2">ZJ-40</div>
-                                        <button class="characteristic" @click="openCharacteristicModal">Тех. характеристики</button>
+                                        <button class="characteristic" @click="openCharacteristicModal">
+                                            {{trans("digital_drilling.default.technical_description")}}
+                                        </button>
                                     </td>
 
                                     <td v-for="i in 4"></td>
@@ -95,7 +97,7 @@
                                             с 01.01.2021
                                         </div>
                                         <button class="characteristic" @click="openCharacteristicGraphModal">
-                                            График
+                                            {{trans("digital_drilling.default.schedule")}}
                                             <img src="/img/digital-drilling/install-graph.svg" alt="">
                                         </button>
                                     </td>
@@ -105,7 +107,7 @@
                                             М/е: Актобе
                                             Скв.№112</div>
                                         <button class="characteristic" @click="openCharacteristicSchemeModal">
-                                            Схема
+                                            {{trans("digital_drilling.default.scheme")}}
                                             <img src="/img/digital-drilling/install-cheme.svg" alt="">
                                         </button>
                                     </td>
@@ -159,9 +161,9 @@
         <div class="characteristic__modal" v-if="characteristicModal">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>Технические характеристики ZJ-40</span>
+                    <span>{{trans("digital_drilling.default.technical_description")}} ZJ-40</span>
                     <div class="characteristic_header-close" @click="openCharacteristicModal">
-                        Закрыть
+                        {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
@@ -187,11 +189,15 @@
                 <div class="characteristic_header">
                     <span>График бурения буровой установки ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
                     <div class="characteristic_header-close" @click="openCharacteristicGraphModal">
-                        Закрыть
+                        {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
+                    <img src="/img/digital-drilling/scheme.png" alt="">
                 </div>
+                <button class="btn__ok" @click="openCharacteristicGraphModal">
+                    Ok
+                </button>
             </div>
         </div>
         <div class="characteristic__modal scheme" v-if="characteristicScheme">

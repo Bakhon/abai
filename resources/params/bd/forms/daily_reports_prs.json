@@ -48,7 +48,7 @@
       "title": "repair_work_type",
       "code": "repair_work_type",
       "type": "dict",
-      "dict":"repair_work_types",
+      "dict": "repair_work_types",
       "is_editable": false
     },
     {
@@ -56,7 +56,13 @@
       "code": "work_done",
       "type": "text",
       "is_editable": true,
-      "validation":"required"
+      "validation": "required"
+    },
+    {
+      "title": "note",
+      "code": "comment",
+      "type": "text",
+      "is_editable": true
     }
   ]
 }

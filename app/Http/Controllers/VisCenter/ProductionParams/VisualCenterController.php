@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
 use App\Http\Resources\VisualCenter\Dzo\Factory;
+use App\Models\VisCenter\ImportForms\DZOyear;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -39,6 +40,12 @@ class VisualCenterController extends Controller
         )
     );
     private $isOpek = false;
+    private $categoriesWithYearlyPlan = array (
+       'oilCondensateProduction',
+       'oilCondensateProductionWithoutKMG',
+       'oilCondensateDelivery',
+       'oilCondensateDeliveryWithoutKMG'
+    );
 
     public function getProductionParamsByCategory(Request $request)
     {
@@ -143,6 +150,12 @@ class VisualCenterController extends Controller
 
     private function getYearlyPlan()
     {
+        if (in_array($this->category,$this->categoriesWithYearlyPlan)) {
+            return DZOyear::query()
+             ->where('date',Carbon::now()->year)
+             ->get();
+        }
+
         $daysCountFromYearStart = $this->periodStart->diffInDays($this->periodEnd) + 1;
         $query = DzoPlan::query()
             ->whereYear('date', $this->periodStart->year);

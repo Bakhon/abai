@@ -6,6 +6,7 @@ export default {
         "settings",
         "selected",
         "clickItem",
+        "clickItemFn",
     ],
     props: {
         item: Object,

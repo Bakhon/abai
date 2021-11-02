@@ -29,11 +29,12 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
 Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').default);
+Vue.component('chart-modal', require('./widgets/chartModal.vue').default);
 
 
 
 export default {
-    props: ['userId'],
+    props: ['userId','oilDynamicRoute'],
     components: {
         "date-picker": DatePicker
     },
@@ -114,7 +115,9 @@ export default {
             reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
-            additionalCompanies: ['ОМГК','АГ']
+            additionalCompanies: ['ОМГК','АГ'],
+            missedCompanies: [],
+            chartReasons: []
         };
     },
     methods: {
@@ -170,6 +173,8 @@ export default {
             }
             this.selectedDzoCompanies = _.cloneDeep(this.dzoCompanies).filter(company => types.includes(company[type])).map(company => company.ticker);
             this.productionData = this.getFilteredTableData();
+            this.productionChartData = this.getSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.productionChartData);
         },
 
 
@@ -250,6 +255,18 @@ export default {
                 this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
                 this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
             }
+        },
+        async getMissedCompanies() {
+            let uri = this.localeUrl("/get-missed-companies");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
+        getChartReasons(reasons) {
+            this.chartReasons = reasons;
+            this.$modal.show('chartModal');
         }
     },
     mixins: [
@@ -274,6 +291,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.oneDzoSelected = this.getDzoTicker();
+        this.missedCompanies = await this.getMissedCompanies();
         if (this.oneDzoSelected !== null) {
             this.isOneDzoSelected = true;
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
