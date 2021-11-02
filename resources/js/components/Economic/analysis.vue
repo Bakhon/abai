@@ -31,10 +31,11 @@
 
     <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="!loading"
+          v-if="!loading && wellsByStatuses"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
-          :res="res"
+          :wells-by-statuses="wellsByStatuses"
+          :wells-by-loss-statuses="wellsByLossStatuses"
           class="h-100"/>
     </div>
 
@@ -85,9 +86,15 @@ export default {
       org_id: null,
       scenario_id: null
     },
+    wellsByStatuses: null,
+    wellsByLossStatuses: null,
   }),
   computed: {
     ...globalloadingState(['loading']),
+
+    url() {
+      return this.localeUrl('/economic/analysis/get-data')
+    },
 
     calculatedHeaders() {
       let blocks = [
@@ -234,62 +241,26 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
-      return
-
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/analysis/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.url, {params: this.form})
 
-        this.res = data
+        this.wellsByStatuses = data.wellsByStatuses
+
+        this.wellsByLossStatuses = data.wellsByLossStatuses
       } catch (e) {
-        this.res = economicRes
+        this.wellsByStatuses = null
 
-        console.log(e)
+        this.wellsByLossStatuses = null
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
   }
 };
 </script>
 <style scoped>
-.font-size-12px {
-  font-size: 12px;
-}
-
-.font-size-16px {
-  font-size: 16px;
-}
-
-.font-size-32px {
-  font-size: 32px;
-}
-
-.line-height-14px {
-  line-height: 14px;
-}
-
-.line-height-16px {
-  line-height: 16px;
-}
-
-.line-height-20px {
-  line-height: 20px;
-}
-
-.line-height-22px {
-  line-height: 22px;
-}
-
-.bg-export {
-  background: #213181;
-}
-
-.text-blue {
-  color: #82BAFF;
-}
-
 .mb-10px {
   margin-bottom: 10px;
 }

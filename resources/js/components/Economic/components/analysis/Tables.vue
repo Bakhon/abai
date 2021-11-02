@@ -14,10 +14,12 @@
     <div class="mt-2 w-100 h-100">
       <table-production-loss
           v-if="activeTab === 'production_loss'"
+          :wells="wellsByLossStatuses"
           class="text-white"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
+          :wells="wellsByLossStatuses"
           class="text-white"/>
 
       <table-financial-loss
@@ -80,10 +82,14 @@ export default {
       required: true,
       type: Object
     },
-    res: {
+    wellsByStatuses: {
       required: true,
-      type: Object
-    }
+      type: Array
+    },
+    wellsByLossStatuses: {
+      required: true,
+      type: Array
+    },
   },
   data: () => ({
     activeTab: 'production_loss',
