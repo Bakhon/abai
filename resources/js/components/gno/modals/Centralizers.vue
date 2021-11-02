@@ -29,7 +29,7 @@
             <option v-for="value in this.nkt_choose" :value="value">{{value}}</option>
           </select>
           {{ trans('measurements.mm') }}
-            <label class="pl-60">
+            <label class="pl-63">
               <input class="checkbox3" v-model="centralizers.hasCentralizer" @change="calculateRods" :disabled="!centralizers.hasLowerRod" value="false" type="radio"/>
               {{ trans('pgno.without_centralizer') }}
             </label>
@@ -39,7 +39,7 @@
           <div class="pt-1 pl-2">
             <label>
               <input class="checkbox3" v-model="centralizers.hasRequiredIntervals" @change="calculateRods" :disabled="requiredRanges.length===0" type="checkbox"/>
-              {{ trans('pgno.installation_intervals') }}
+              {{ trans('pgno.installation_intervals') }}, {{ trans('measurements.m') }}
             </label>
           </div>
           <div class="pl-1">
@@ -52,7 +52,7 @@
           <div class="pt-1 pl-2">
             <label>
               <input class="checkbox3" v-model="centralizers.hasRecommendedIntervals" @change="calculateRods" :disabled="recommendedRanges.length===0" type="checkbox"/>
-              {{ trans('pgno.recomended_intervals') }}
+              {{ trans('pgno.recomended_intervals') }}, {{ trans('measurements.m') }}
             </label>
           </div>
           <div class="title-multi-select pl-12">
@@ -63,7 +63,7 @@
           <div class="pt-1 pl-2 pb-3">
           <label>
             <input class="checkbox3" v-model="centralizers.hasAbrasionIntervals" @change="calculateRods" checked="true" type="checkbox"/>
-            {{ trans('pgno.intervals_lifting_GNO') }}
+            {{ trans('pgno.intervals_lifting_GNO') }}, {{ trans('measurements.m') }}
           </label>
           </div>
           <div class="flex-group-input justify-content-center">
@@ -116,7 +116,7 @@
     <div>
       <div class="block-4">
         <div class="title-block-centrators pl-1 pt-1">
-          <b class="title-centrator">{{ trans('pgno.calc_rods') }}</b>
+          <b class="title-centrator">{{ trans('pgno.calc_rods') }}, {{ trans('measurements.unit') }}</b>
         </div>
         <table class="table-small">
           <tr v-for="row in centralizersResult">
@@ -183,6 +183,7 @@
   flex-wrap: wrap;
   align-content: center;
   width: 920px;
+  font-size: 13px;
 }
 
 .small-input {
@@ -356,8 +357,8 @@ th {
   height: 210px;
 }
 
-.pl-60 {
-  padding-left: 60px;
+.pl-63 {
+  padding-left: 63px;
 }
 
 .block-4 {
