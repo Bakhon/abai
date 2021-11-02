@@ -137,6 +137,9 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div class="table-arrow">
+                                        <svg data-v-b1a5f7e2="" width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path data-v-b1a5f7e2="" d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"></path></svg>
+                                    </div>
                                 </div>
                                 <div class="bd-table-second">
                                     <table class="table text-center text-white text-nowrap historical-table">
@@ -689,7 +692,7 @@ export default {
         font-size: 11px;
         font-weight: 700;
         padding: 0.3rem !important;
-        height: 37px;
+        height: 43px;
         vertical-align: middle;
     }
     th:nth-child(6) {
@@ -827,26 +830,17 @@ export default {
 }
 .historical-info {
     position: relative;
-    padding-left: 450px;
+    width: 100%;
 }
 .historical-info-parent {
-    width: 810px;
-    overflow-y: auto;
     margin: 0 15px;
     padding: 0 15px 0px 15px;
     background: #656A8A;
+    width: 100%;
     table {
         margin-bottom: 0!important;
     }
-    &::-webkit-scrollbar-track {
-        background: #272953;
-        height: 6px;
-        width: 6px;
-    }
-    &::-webkit-scrollbar-thumb {
-       background: #2E50E9;
-       border-radius: 10px;
-    }
+    
 }
 .historical-container .center_block {
     background: #656A8A;
@@ -854,12 +848,7 @@ export default {
 .historical-container > div {
     margin-bottom: 5px;
 }
-.min_history_table .historical-info-parent {
-    width: 1030px;
-}
-.small_history_table .historical-info-parent {
-    width:  1284px;
-}
+
 .historical-container {
     overflow: hidden;
 }
@@ -884,7 +873,40 @@ export default {
 }
 .daily-table.bd-table-first {
     width: 450px;
+    position: relative;
+}
+.table-arrow {
+    background: #8F95BA;
+    border-radius: 5px 0px 0px 5px;
+    width: 13px;
+    height: 50px;
     position: absolute;
-    left: 0;
+    left: -13px;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    &.hide {
+            transform: translateY(-50%) rotate(180deg);
+    }
+}
+.bd-table-second {
+    overflow-y: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 450px;
+    bottom: 0;
+    overflow-x: auto;
+    &::-webkit-scrollbar-track {
+        background: #272953;
+        height: 6px;
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+       background: #2E50E9;
+       border-radius: 10px;
+    }
 }
 </style>

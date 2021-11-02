@@ -213,7 +213,6 @@ export default {
     max-width: 610px;
     color: white;
     font-size: 14px;
-    overflow: auto;
 }
 .header {
     background: #293688;
