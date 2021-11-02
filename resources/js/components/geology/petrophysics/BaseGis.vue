@@ -6,7 +6,7 @@
                 align="center">
           Список скважин
         </Button>
-        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
+        <Button :disabled="!this.$store.state.geologyGis.awGisElementsCount" @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
                 align="center">
           Настройка планшета
         </Button>
@@ -254,6 +254,7 @@ export default {
       }, []);
       await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
       this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+      this.$refs.tableSettings.updateOptions()
       this.SET_LOADING(false);
     },
 
@@ -261,6 +262,7 @@ export default {
       this.$store.state.geologyGis.awGis.reset();
       this.$store.commit(SET_SELECTED_WELL_CURVES_FORCE, [...this.selectedGisCurvesOld]);
       this.$store.commit(SET_GIS_DATA);
+      this.$refs.tableSettings.updateOptions()
     },
     ...globalloadingMutations(["SET_LOADING"]),
   },

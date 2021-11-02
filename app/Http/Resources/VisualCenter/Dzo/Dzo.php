@@ -204,7 +204,7 @@ class Dzo {
         return $summaryPlan;
     }
 
-    public function getChartDataByOilCondensate($formattedPlan,$fact,$type,$periodRange,$periodType)
+    public function getChartDataByOilCondensate($formattedPlan,$fact,$type,$periodRange,$periodType,$isSummary)
     {
         $chartData = array();
 
@@ -243,14 +243,14 @@ class Dzo {
             $daySummary['name'] = $dzoName;
             $factory = new Factory();
             $dzo = $factory->make($dzoName);
-            $summary = $dzo->getChartData($daySummary,$planRecord,$date,$item,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->consolidatedFieldsMapping[$type]['condensatePlan'],$this->consolidatedFieldsMapping[$type]['condensateOpek']);
+            $summary = $dzo->getChartData($daySummary,$planRecord,$date,$item,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->consolidatedFieldsMapping[$type]['condensatePlan'],$this->consolidatedFieldsMapping[$type]['condensateOpek'],$isSummary);
             $chartData = array_merge($chartData,$summary);
         }
 
         return $chartData;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
 
     }

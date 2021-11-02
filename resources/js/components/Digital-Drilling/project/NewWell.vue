@@ -32,7 +32,7 @@
                             </div>
                             <div class="well_body-form-input">
                                 <label for="well">{{ trans('digital_drilling.passport.well') }}:</label>
-                                <input type="text" placeholder="| Введите скважину" id="well">
+                                <input type="text" :placeholder="trans('digital_drilling.default.enter_the_well')" id="well">
                             </div>
                             <div class="well_body-form-checkbox">
                                 <div class="Ground">
@@ -46,12 +46,12 @@
                             </div>
                             <div class="well_body-form-input">
                                 <label for="height">{{ trans('digital_drilling.default.elevation_sea_level') }}</label>
-                                <input type="text" placeholder="| Высота" id="height">
+                                <input type="text" :placeholder="trans('digital_drilling.default.height')" id="height">
                                 <span class="input-size">м.</span>
                             </div>
                             <div class="well_body-form-input">
                                 <label for="sheight">{{ trans('digital_drilling.default.height_rotary_table') }}</label>
-                                <input type="text" placeholder="| Высота" id="sheight">
+                                <input type="text" :placeholder="trans('digital_drilling.default.height')" id="sheight">
                                 <span class="input-size">м.</span>
                             </div>
                             <div class="well_body-form-coordinates">

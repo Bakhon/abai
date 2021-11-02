@@ -48,6 +48,14 @@ return array (
     ],
 
     'default' => [
+        'r_name' => 'Name',
+        'r_value' => 'Value',
+        'parameters' => 'Parameters',
+        'measurement_unit' => 'Measurement Unit',
+        'drilling_rig_moving_schedule' => 'Drilling rig moving schedule',
+        'drilling_rig_moving_scheme' => 'Drilling rig moving scheme',
+        'height' => '| Height',
+        'enter_the_well' => '| Enter the well',
         'well' => 'Wells',
         'in_drilling' => 'While drilling',
         'drilled' => 'Drilling completed',
@@ -198,6 +206,9 @@ return array (
         'packer_to' => 'Packer to',
         'column_running_depth' => 'Casing running depth',
         'packer' => 'Packer',
+        'pipe_inner_diameter' => 'Pipe inner diameter',
+        'steel_grade' => 'Steel grade',
+        'weight_per_unit_length' => 'Weight per unit length',
     ],
     'gis' => [
         'open_hole_logging' => 'Open hole logging',

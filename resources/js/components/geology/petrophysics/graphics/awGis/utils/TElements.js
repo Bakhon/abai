@@ -8,8 +8,8 @@ export default class TElements {
     save(){
         this.#__old = {
             elements: new Set(this.#__elements),
-            elementsData: new Map(this.#__elementsData),
-            elementsOptions: new Map(this.#__elementsOptions)
+            elementsData: new Map(this.#__elementsData.entries()),
+            elementsOptions: new Map(this.#__elementsOptions.entries())
         }
     }
 
@@ -22,7 +22,9 @@ export default class TElements {
     get getElements() {
         return [...this.#__elements.keys()]
     }
-
+    get getElementsCount(){
+        return this.#__elements.size
+    }
     getElement(elementName) {
         if(this.#__elements.has(elementName)){
             return {

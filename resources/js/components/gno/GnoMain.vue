@@ -41,7 +41,8 @@
               <div class="choosing-well-data top-border-line  col-7">
                 {{ trans('pgno.well') }} №
               </div>
-              <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5 pl-1 pr-1 pt-0 pb-1">
+              <div
+                  class="choosing-well-data left-border-line top-border-line right-block-data  col-5 pl-1 pr-1 pt-0 pb-1">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text" @change="getWellData(wellNumber)"
                        class="well-number-input pl-1"/>
               </div>
@@ -85,7 +86,8 @@
             <div class="construction-block">
               <div class="construction no-gutter col-12"><b>{{ trans('pgno.construction') }}</b></div>
               <div class="construction-data no-gutter col-7">{{ trans('pgno.naruznii_diametr_ex_col') }}</div>
-              <div v-if="!mainSettings.isEditing" class="construction-data left-border-line right-block-data no-gutter col-5">
+              <div v-if="!mainSettings.isEditing"
+                   class="construction-data left-border-line right-block-data no-gutter col-5">
                 {{ well.casOd }} {{ trans('measurements.mm') }}
               </div>
               <input v-if="mainSettings.isEditing" v-model="well.casOd"
@@ -167,7 +169,8 @@
                   <div class="devices-data no-gutter col-7">
                     {{ trans('pgno.stanok_kachalka') }}
                   </div>
-                  <div v-if="!mainSettings.isEditing" class="devices-data left-border-line right-block-data no-gutter col-5">
+                  <div v-if="!mainSettings.isEditing"
+                       class="devices-data left-border-line right-block-data no-gutter col-5">
                     {{ skType }}
                   </div>
                   <select v-if="mainSettings.isEditing"
@@ -304,7 +307,8 @@
 
                 <div class="right-block-details" v-show="mainSettings.activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">{{ trans('pgno.p_nas') }}</div>
-                  <div v-if="!mainSettings.isEditing" class="pvt-data left-border-line right-block-data no-gutter col-5">
+                  <div v-if="!mainSettings.isEditing"
+                       class="pvt-data left-border-line right-block-data no-gutter col-5">
                     {{ well.PBubblePoint }} {{ trans('measurements.atm') }}
                   </div>
                   <input v-if="mainSettings.isEditing" v-model="well.PBubblePoint"
@@ -456,7 +460,7 @@
                      style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
-                    <div class="modal-bign-title">{{ trans('pgno.inclinometriaWell', {wellNumber : wellNumber}) }}</div>
+                    <div class="modal-bign-title">{{ trans('pgno.inclinometriaWell', {wellNumber: wellNumber}) }}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
                       {{ trans('pgno.zakrit') }}
@@ -470,7 +474,8 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalTabs" draggable=".modal-bign-header" :width="1000" :height="800"
+              <modal class="modal-bign-wrapper" name="modalTabs" draggable=".modal-bign-header" :width="1060"
+                     :height="800"
                      style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -487,7 +492,8 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modal-prs" draggable=".modal-bign-header" :width="1263" :height="612"
+              <modal class="modal-bign-wrapper" name="modal-prs" draggable=".modal-bign-header" :width="1263"
+                     :height="612"
                      style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -534,7 +540,8 @@
                 </div>
               </modal>
 
-              <modal class="" name="modalNearWells" draggable=".modal-bign-header" :width="1150" :height="450" :adaptive="true">
+              <modal class="" name="modalNearWells" draggable=".modal-bign-header" :width="1150" :height="450"
+                     :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -549,7 +556,8 @@
               </modal>
 
 
-              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" draggable=".modal-bign-header" :width="1300"
+              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" draggable=".modal-bign-header"
+                     :width="1300"
                      :height="550" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -574,7 +582,8 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper chart" draggable=".modal-bign-header" name="tablePGNO" :width="500" :height="550"
+              <modal class="modal-bign-wrapper chart" draggable=".modal-bign-header" name="tablePGNO" :width="500"
+                     :height="550"
                      :adaptive="true">
                 <div class="modal-bign modal-bign-container no-padding">
                   <div class="modal-bign-header with-padding">
@@ -608,7 +617,22 @@
                 </div>
               </modal>
 
-              <modal name="sensitiveSettings" draggable=".modal-bign-header" :width="800" :height="266" :adaptive="true">
+              <modal name="modalCentralizers" draggable=".modal-bign-header" :width="945" :height="440" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      {{ trans('pgno.rod_centralizers') }}
+                    </div>
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalCentralizers')">
+                      {{ trans('pgno.zakrit') }}
+                    </button>
+                  </div>
+                  <centralizers :shgnResult="shgnResult" @click="closeModal('modalCentralizers')"></centralizers>
+                </div>
+              </modal>
+
+              <modal name="sensitiveSettings" draggable=".modal-bign-header" :width="800" :height="266"
+                     :adaptive="true">
                 <div class="modal-bign modal-bign-container no-overflow">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -628,7 +652,7 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{ trans('pgno.sensitivity_analysis_result')}} {{wellNumber}}
+                      {{ trans('pgno.sensitivity_analysis_result') }} {{ wellNumber }}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('sensitiveResult')">
@@ -637,18 +661,19 @@
                   </div>
                   <pgno-sensitive-result></pgno-sensitive-result>
                 </div>
-            </modal>
+              </modal>
 
 
               <div class="gno-line-chart" v-if="mainSettings.isVisibleChart">
                 <div class="flex pt-2">
 
                   <div class="gno-curve-table-title pl-4 pr-4 fg-0">
-                    {{trans('pgno.krivaya_pritoka')}}
+                    {{ trans('pgno.krivaya_pritoka') }}
                   </div>
 
                   <div class="download-button-excel-1 fg-4 pl-0 pt-1 pr-4">
-                    <button class="download-curve-button-plot" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    <button class="download-curve-button-plot" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                       <img src="/img/gno/download.svg" alt="">
                       {{ trans('pgno.download') }}
@@ -660,9 +685,9 @@
                     </div>
                   </div>
                 </div>
-                  <div class="w-100">
-                    <inflow-curve :updateCurveTrigger="updateCurveTrigger"></inflow-curve>
-                  </div>
+                <div class="w-100">
+                  <inflow-curve :updateCurveTrigger="updateCurveTrigger"></inflow-curve>
+                </div>
               </div>
 
 
@@ -687,28 +712,31 @@
                   <div class="image-rods-data col-3 pl-0 pr-0">
                     <div class="d-flex block-shgn mr-3 w-170">
                       <div class="flex-grow-1">
-                        {{ trans('pgno.eks_kolonna') }} {{well.casOd}} {{ trans('measurements.mm') }}
+                        {{ trans('pgno.eks_kolonna') }} {{ well.casOd }} {{ trans('measurements.mm') }}
                       </div>
                       <div class="flex-grow-1">
-                        {{ trans('pgno.nkt') }} {{shgnTubOD}} {{ trans('measurements.mm') }}
+                        {{ trans('pgno.nkt') }} {{ shgnTubOD }} {{ trans('measurements.mm') }}
                       </div>
                       <div class="flex-grow-1">
-                        {{ trans('pgno.shtangi') }} {{construction['Секция 1'][0]}}{{ trans('measurements.mm') }} 0-{{construction['Секция 1'][1]}} {{ trans('measurements.m') }}
+                        {{ trans('pgno.shtangi') }} {{ construction['Секция 1'][0] }}{{ trans('measurements.mm') }}
+                        0-{{ construction['Секция 1'][1] }} {{ trans('measurements.m') }}
                       </div>
                       <div class="flex-grow-1" v-if="shgnSettings.stupColumns === '2'">
-                        {{ trans('pgno.shtangi') }} 
-                        {{construction['Секция 2'][0]}} {{ trans('measurements.mm') }} 
-                        {{construction['Секция 1'][1]}}-{{Number(construction['Секция 1'][1]) + Number(construction['Секция 2'][1])}} {{ trans('measurements.m') }}
+                        {{ trans('pgno.shtangi') }}
+                        {{ construction['Секция 2'][0] }} {{ trans('measurements.mm') }}
+                        {{ construction['Секция 1'][1] }}-{{ Number(construction['Секция 1'][1]) + Number(construction['Секция 2'][1]) }}
+                        {{ trans('measurements.m') }}
                       </div>
                       <div class="flex-grow-1" v-if="shgnSettings.heavyDown === true">
-                        {{ trans('pgno.tn') }} {{construction['ТН'][0]}} {{ trans('measurements.mm') }}
-                        {{Number(construction['Секция 1'][1]) + Number(construction['Секция 2'][1])}}-{{curveSettings.hPumpValue}} {{ trans('measurements.m') }}
+                        {{ trans('pgno.tn') }} {{ construction['ТН'][0] }} {{ trans('measurements.mm') }}
+                        {{ Number(construction['Секция 1'][1]) + Number(construction['Секция 2'][1]) }}-{{ curveSettings.hPumpValue }}
+                        {{ trans('measurements.m') }}
                       </div>
                       <div class="flex-grow-1">
-                        {{ trans('pgno.nasos') }} {{shgnPumpType}} {{ trans('measurements.mm') }}
+                        {{ trans('pgno.nasos') }} {{ shgnPumpType }} {{ trans('measurements.mm') }}
                       </div>
                       <div class="flex-grow-1">
-                        {{ trans('pgno.h_spuska') }} {{curveSettings.hPumpValue}} {{ trans('measurements.m') }}
+                        {{ trans('pgno.h_spuska') }} {{ curveSettings.hPumpValue }} {{ trans('measurements.m') }}
                       </div>
                       <div class="flex-grow-1" v-if="curveSettings.mechanicalSeparation">
                         {{ trans('pgno.yagp') }}
@@ -716,7 +744,8 @@
                       <div class="flex-grow-1" v-if="shgnSettings.komponovka.includes('yakor')">
                         {{ trans('pgno.yakor_truboderzhatel') }}
                       </div>
-                      <template v-if="shgnSettings.komponovka.includes('hvostovik') || shgnSettings.komponovka.includes('paker')">
+                      <template
+                          v-if="shgnSettings.komponovka.includes('hvostovik') || shgnSettings.komponovka.includes('paker')">
                         <div class="flex-grow-1">
                           {{ trans('pgno.hvostovik') }}
                         </div>
@@ -727,10 +756,11 @@
 
 
                       <div class="flex-grow-1">
-                        {{ trans('pgno.interval_perf') }} <br> {{well.hUpPerfVd}} - {{Number(well.hUpPerfVd) + Number(well.hPerf)}} {{ trans('measurements.mm') }}
+                        {{ trans('pgno.interval_perf') }} <br> {{ well.hUpPerfVd }} -
+                        {{ Number(well.hUpPerfVd) + Number(well.hPerf) }} {{ trans('measurements.mm') }}
                       </div>
                       <div class="flex-grow-1">
-                        {{ trans('pgno.tekushii_zaboi') }} {{well.currBh}} {{ trans('measurements.m') }}
+                        {{ trans('pgno.tekushii_zaboi') }} {{ well.currBh }} {{ trans('measurements.m') }}
                       </div>
                     </div>
 
@@ -749,7 +779,9 @@
                           </tr>
                           <tr>
                             <td class="shgn-table-td">{{ trans('pgno.q_liq') }}</td>
-                            <td class="shgn-table-td">{{ curveSettings.qlTargetValue }} {{trans('measurements.m3/day')}}</td>
+                            <td class="shgn-table-td">{{ curveSettings.qlTargetValue }}
+                              {{ trans('measurements.m3/day') }}
+                            </td>
                           </tr>
                           <tr class="highlight-tr">
                             <td class="shgn-table-td">{{ trans('pgno.q_nefti') }}</td>
@@ -761,11 +793,15 @@
                           </tr>
                           <tr class="highlight-tr">
                             <td class="shgn-table-td">{{ trans('pgno.p_zab') }}</td>
-                            <td class="shgn-table-td">{{ curveSettings.bhpTargetValue }} {{trans('measurements.atm')}}</td>
+                            <td class="shgn-table-td">{{ curveSettings.bhpTargetValue }}
+                              {{ trans('measurements.atm') }}
+                            </td>
                           </tr>
                           <tr>
                             <td class="shgn-table-td">{{ trans('pgno.p_pr') }}</td>
-                            <td class="shgn-table-td">{{ curveSettings.pintakeTargetValue }} {{trans('measurements.atm')}}</td>
+                            <td class="shgn-table-td">{{ curveSettings.pintakeTargetValue }}
+                              {{ trans('measurements.atm') }}
+                            </td>
                           </tr>
                           <tr class="highlight-tr">
                             <td class="shgn-table-td">{{ trans('measurements.percent') }}
@@ -878,8 +914,11 @@
                       <h6 class="centralizers-title">{{ centratorsType }}:
                         <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
                     </div>
-                    <button class="button-pdf col-12" @click="downloadExcel('report')">
+                    <button class="button-pdf col-5" @click="downloadExcel('report')">
                       {{ trans('pgno.sozdanie_otcheta') }}
+                    </button>
+                    <button class="button-pdf col-5" @click="openCentralizersModal">
+                      {{ trans('pgno.rod_centralizers') }}
                     </button>
                   </div>
                 </div>
@@ -911,7 +950,7 @@
                                      type="text" class="curve-settings-input"/>
                             </div>
                           </div>
-                          <div class="label-measurements-1">{{trans('measurements.atm')}}</div>
+                          <div class="label-measurements-1">{{ trans('measurements.atm') }}</div>
 
                         </div>
                       </div>
@@ -948,7 +987,7 @@
                                      :disabled="curveSelect != 'pi'" @change="postCurveData()"
                                      onfocus="this.value=''" type="text" class="curve-settings-input"/>
                             </div>
-                            <div class="label-measurements">{{trans('measurements.m3/d/atm')}}</div>
+                            <div class="label-measurements">{{ trans('measurements.m3/d/atm') }}</div>
                           </div>
                         </div>
                         <div class="col-2 px-0">
@@ -960,7 +999,7 @@
                           <input v-model="curveSettings.gorInput" @change="postCurveData()" type="text"
                                  onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.m3/t')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.m3/t') }}</div>
                       </div>
 
                     </div>
@@ -984,7 +1023,7 @@
                                      v-model="curveSettings.qLInput" @change="postCurveData()"
                                      onfocus="this.value=''" type="text" class="curve-settings-input"/>
                             </div>
-                            <div class="label-measurements">{{trans('measurements.m3/day')}}</div>
+                            <div class="label-measurements">{{ trans('measurements.m3/day') }}</div>
                           </div>
                         </div>
                       </div>
@@ -1004,7 +1043,7 @@
                                  @change="postCurveData()"
                                  onfocus="this.value=''" type="text" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.atm')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.atm') }}</div>
                       </div>
                     </div>
 
@@ -1025,7 +1064,7 @@
                                  v-model="curveSettings.hDynInput" @change="postCurveData()"
                                  type="text" onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.m')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.m') }}</div>
                       </div>
 
                       <div class="col-sm-6 col-xs-12 no-margin no-padding row">
@@ -1040,7 +1079,7 @@
                                  @change="postCurveData()" type="text"
                                  onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.atm')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.atm') }}</div>
                       </div>
                     </div>
 
@@ -1060,7 +1099,7 @@
                                  @change="postCurveData()" type="text"
                                  onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.atm')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.atm') }}</div>
                       </div>
 
                       <div class="col-sm-6 col-xs-12 no-margin no-padding row">
@@ -1075,7 +1114,7 @@
                                  @change="postCurveData()" type="text"
                                  onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.m')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.m') }}</div>
                       </div>
                     </div>
 
@@ -1094,7 +1133,7 @@
                                  @change="postCurveData()"
                                  type="text" onfocus="this.value=''" class="curve-settings-input"/>
                         </div>
-                        <div class="label-measurements">{{trans('measurements.atm')}}</div>
+                        <div class="label-measurements">{{ trans('measurements.atm') }}</div>
 
                       </div>
                     </div>
@@ -1159,8 +1198,9 @@
                         </div>
                       </div>
                       <div class="col-2 pl-0 pr-0">
-                        <input type="text" v-model="curveSettings.pBuff" onfocus="this.value=''" @change="postCurveData()"
-                               class="input-selection-options pl-1"/> {{trans('measurements.atm')}}
+                        <input type="text" v-model="curveSettings.pBuff" onfocus="this.value=''"
+                               @change="postCurveData()"
+                               class="input-selection-options pl-1"/> {{ trans('measurements.atm') }}
                       </div>
                       <div class="col-2 pl-0 pr-0">
                         <select class="input-selection-options w-62" v-model="curveSettings.nkt"
@@ -1168,12 +1208,12 @@
                           <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index">
                             {{ nkts.show_value }}
                           </option>
-                        </select> {{trans('measurements.mm')}}
+                        </select> {{ trans('measurements.mm') }}
                       </div>
                       <div class="col-2 pl-0 pr-0">
                         <input v-model="curveSettings.hPumpValue" @change="postCurveData()" type="text"
                                onfocus="this.value=''"
-                               class="input-selection-options pl-1"/> {{trans('measurements.m')}}
+                               class="input-selection-options pl-1"/> {{ trans('measurements.m') }}
                       </div>
                     </div>
                     <!--selection params end-->
@@ -1209,7 +1249,7 @@
                                  :disabled="curveSettings.expChoosen === 'ФОН' ||
                                  curveSettings.separationMethod !='input_value'"/>
                         </label>
-                        {{trans('measurements.percent')}}
+                        {{ trans('measurements.percent') }}
                       </div>
 
                       <div class="col-8 left-border-line pl-5px">
@@ -1221,12 +1261,12 @@
                                type="text" style="margin-left: 3px; margin-bottom: 0px;"
                                :disabled="curveSettings.separationMethod ==='input_value' || curveSettings.expChoosen === 'ФОН' ||  curveSettings.mechanicalSeparation === false"
                                onfocus="this.value=''" class="sep-input"/>
-                        {{trans('measurements.percent')}}
+                        {{ trans('measurements.percent') }}
                       </div>
                     </div>
 
 
-                    <div class="top-border-line pb-0" >
+                    <div class="top-border-line pb-0">
                       <div class="row">
                         <div class="col-4 pr-0">
                           <div class="podbor-bottom-title-line ">
@@ -1255,7 +1295,7 @@
                           <input v-model="curveSettings.qlTargetValue" @change="postCurveData()"
                                  :disabled="curveSettings.targetButton != 'ql'"
                                  onfocus="this.value=''" type="text" class="curve-settings-input"/>
-                          {{trans('measurements.m3/day')}}
+                          {{ trans('measurements.m3/day') }}
                         </div>
                       </div>
                       <div class="left-border-line col-4 pr-0 pt-3">
@@ -1268,19 +1308,20 @@
                           <input v-model="curveSettings.bhpTargetValue" @change="postCurveData()"
                                  :disabled="curveSettings.targetButton != 'bhp'"
                                  type="text" onfocus="this.value=''" class="curve-settings-input"/>
-                          {{trans('measurements.atm')}}
+                          {{ trans('measurements.atm') }}
                         </div>
                       </div>
                       <div class="left-border-line col-4 pdo-bottom-cell pt-3">
                         <label class="curve-selection-label">
-                          <input v-model="curveSettings.targetButton" class="curve-select-option" value="pin" type="radio"
+                          <input v-model="curveSettings.targetButton" class="curve-select-option" value="pin"
+                                 type="radio"
                                  :disabled="curveSettings.expChoosen === 'ФОН'"
                                  name="gno11"/>{{ trans('pgno.p_pr') }}
                         </label>
                         <input v-model="curveSettings.pintakeTargetValue" @change="postCurveData()"
                                :disabled="curveSettings.targetButton != 'pin' || curveSettings.expChoosen === 'ФОН'"
                                type="text" onfocus="this.value=''" class="curve-settings-input"/>
-                        {{trans('measurements.atm')}}
+                        {{ trans('measurements.atm') }}
                       </div>
                     </div>
                   </div>
@@ -1292,10 +1333,15 @@
                 <!--Конец параметров подбора-->
                 <div class="col-12 px-2 gno-main-green-button">
                   <div v-if="curveSettings.expChoosen!=='ФОН'" class="podbor-gno-button col-12" @click="onPgnoClick()">
-                    {{ mainSettings.isVisibleChart ? this.trans("pgno.podbor_gno") : this.trans("pgno.krivaya_pritoka") }}
+                    {{
+                      mainSettings.isVisibleChart ? this.trans("pgno.podbor_gno") : this.trans("pgno.krivaya_pritoka")
+                    }}
                   </div>
-                  <div v-if="curveSettings.expChoosen==='ФОН'" class="podbor-gno-button col-12" @click="openSensAnalysisModal()">
-                    {{ curveSettings.expChoosen==='ФОН' ? "Анализ чувствительности" : this.trans("pgno.krivaya_pritoka") }}
+                  <div v-if="curveSettings.expChoosen==='ФОН'" class="podbor-gno-button col-12"
+                       @click="openSensAnalysisModal()">
+                    {{
+                      curveSettings.expChoosen === 'ФОН' ? "Анализ чувствительности" : this.trans("pgno.krivaya_pritoka")
+                    }}
                   </div>
                 </div>
               </div>
@@ -1308,3 +1354,8 @@
   </div>
 </template>
 <script src="./GnoMain.js"></script>
+<style scoped>
+.modal-bign-container {
+  border-radius: 0;
+}
+</style>

@@ -66,12 +66,12 @@ export default class TCoords {
         return this.scaleY(+y) + +this.#__settings.centerY - this.#__settings.offsetY;
     }
 
-    percentPositionX(X, maxValue) {
-        return ((this.#__settings.width / maxValue * 100) * X) / 100 - this.#__settings.offsetX;
+    percentPositionX(X, maxValue, minValue) {
+        return this.#__settings.width * (X - minValue) / (maxValue - minValue) - this.#__settings.offsetX;
     }
 
     percentPositionY(Y, maxValue) {
-        return ((this.#__settings.width / maxValue * 100) * Y) / 100 - this.#__settings.offsetY;
+        return ((this.#__settings.height / maxValue * 100) * Y) / 100 - this.#__settings.offsetY;
     }
 
     scaleX(s) {
