@@ -91,18 +91,8 @@ export default {
 }
 </script>
 <style lang="scss">
-.active {
-  color: red;
-  font-weight: bold;
-}
-
 $border: #ddd;
-$border-hover: #aaa;
-$bg-hover: #eee;
-$text: #888;
-$text-hover: #000;
 $ident: 10px;
-$left: -($ident);
 
 ul {
   margin-left: $ident;
@@ -139,35 +129,4 @@ ul {
     }
   }
 }
-
-.active {
-  color: red;
-  border-color: red;
-}
-
-/*ul, li { list-style: none; margin: 0; padding: 0; }*/
-/*ul { padding-left: 1em; }*/
-/*li { padding-left: 1em;*/
-/*  border: 1px dotted black;*/
-/*  border-width: 0 0 1px 1px;*/
-/*}*/
-/*li.container { border-bottom: 0px; }*/
-/*li.empty { font-style: italic;*/
-/*  color: silver;*/
-/*  border-color: silver;*/
-/*}*/
-/*li p { margin: 0;*/
-/*  background: white;*/
-/*  position: relative;*/
-/*  top: 0.5em;*/
-/*}*/
-/*li ul {*/
-/*  border-top: 1px dotted black;*/
-/*  margin-left: -1em;*/
-/*  padding-left: 2em;*/
-/*}*/
-/*ul li:last-child ul {*/
-/*  border-left: 1px solid white;*/
-/*  margin-left: -17px;*/
-/*}*/
 </style>
