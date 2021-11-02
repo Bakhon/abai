@@ -730,6 +730,39 @@
                     Добыча жидкости
                     <span class="content-db__tab_head__item__close"></span>
                 </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+                <div class="tab-head-title">
+                    ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
+                </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+                <div class="tab-head-title">
+                    ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
+                </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+                <div class="content-db__tab_head__item">
+                    Добыча жидкости
+                    <span class="content-db__tab_head__item__close"></span>
+                </div>
+            </div>
+            <div class="content-db-container">
+                
+            </div>
+            <div class="content-db-bottom">
+                <span class="db_button">Сохранить</span>
+                <span class="db_button gray">Отмена</span>
             </div>
             <!-- <div class="org-select-info">
                 <div class="org-select-info__icon">
@@ -812,17 +845,41 @@
         width: calc(100% - 305px);
         background: #181837;
     }
+    .content-db-container {
+        height: calc(100vh - 177px);
+        background: #000;
+        overflow-y: auto;
+    }
+    .content-db-bottom {
+    margin-top: 10px;
+    text-align: center;
+    }
     .content-db__tab_head {
         width: 100%;
         background: #272953;
         display: flex;
         font-size: 12px;
+        overflow-y: auto;
+        white-space: nowrap;
+        width: 1150px;
+    }
+   
+    .content-db__tab_head::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .content-db__tab_head::-webkit-scrollbar-thumb {
+      background: #656A8A;
+      border-radius: 10px;
+       height: 2px!important;
+      width: 2px!important;
     }
     .tab-head-title {
         padding: 6px;
         border: 1px solid #6D76AB;
         font-size: 12px;
         color: #A0A5CC;
+        margin-right: 3px;
     }
     .content-db__tab_head__item {
         padding: 6px 20px 6px 13px;
@@ -830,6 +887,10 @@
         color: #fff;
         position: relative;
         margin-right:5px;
+    }
+    .content-db__tab_head__item.active,.content-db__tab_head__item:hover {
+      background:#2E50E9;
+      cursor: pointer;
     }
     .content-db__tab_head__item:after {
         content:'';

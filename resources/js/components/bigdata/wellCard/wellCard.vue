@@ -1899,14 +1899,6 @@ h4 {
 }
 
 .heading {
-  // margin-left: 11.19px;
-  // font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-  // color: white;
-  // font-size: 16px;
-  // line-height: 18px;
-  // font-weight: 700;
-  // display: flex;
-  // height: 48px;
 
   p {
     margin: 0;
@@ -2146,9 +2138,7 @@ h4 {
     font-size: 13px;
   }
 
-  // tr:nth-child(2n) {
-  //   background-color: #2B2E5E;
-  // }
+
 
   .heading {
     padding: 11px 0 15px 13px;
@@ -2383,8 +2373,7 @@ h4 {
 
 .bg-dark {
   padding-bottom: 20px;
-  // margin-bottom: 20px;
-  // height: 100%;
+
 }
 
 .center {
