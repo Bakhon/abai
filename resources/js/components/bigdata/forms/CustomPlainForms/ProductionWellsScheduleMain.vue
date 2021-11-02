@@ -825,8 +825,8 @@ export default {
         }
     }
 }
-.historical-info[data-v-8e41ed1a] {
-position: relative;
+.historical-info {
+    position: relative;
     padding-left: 450px;
 }
 .historical-info-parent {
