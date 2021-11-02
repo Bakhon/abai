@@ -63,8 +63,8 @@
                             <div class="contentBlock__map-search-block">
                                 <div class="contentBlock__map-search-input">
                                     <img src="/img/digital-drilling/search.png" alt="">
-                                    <input type="text" placeholder="Поиск">
-                                    <button>Поиск</button>
+                                    <input type="text" :placeholder="trans('digital_drilling.window_head.search')">
+                                    <button>{{trans('digital_drilling.window_head.search')}}</button>
                                 </div>
                                 <button class="full"><img src="/img/digital-drilling/button2.svg" alt=""></button>
                             </div>

@@ -48,6 +48,8 @@ return array (
   ],
 
   'default' => [
+      'height' => '| Высота',
+      'enter_the_well' => '| Введите скважину',
       'well' => 'скважин',
       'in_drilling' => 'В бурении',
       'drilled' => 'Пробурено',

@@ -6,7 +6,7 @@ return array (
     'general_information' => 'жалпы ақпарат',
     'well_data_sheet' => 'ұңғыманың паспорты',
     'drilling_rigs' => 'Буровые установки',
-    'capital_investments' => 'Капитальные вложения',
+    'capital_investments' => 'Күрделі салымдар',
     'open_hole_logging' => 'ұңғымасының ашық шұңқырындағы геофизикалық зерттеу жұмыстары',
     'survey' => 'Инклинометрия',
     'well_design_menu' => 'Ұңғыманың Құрылымдығы',
@@ -48,6 +48,8 @@ return array (
     ],
 
     'default' => [
+        'height' => '| Биіктігі',
+        'enter_the_well' => '| Ұңғымасыны енгізіңіз',
         'well' => 'ұңғымалар',
         'in_drilling' => 'Бұрғылау кезінде',
         'drilled' => 'Бұрғыланған',
@@ -237,6 +239,7 @@ return array (
         'casing' => 'Қаптау құбыры',
         'data_input' => 'Деректерді енгізу',
         'visualization' => 'Көрнекілік',
+        'tabular_data' => 'Кестелік деректер',
         'selection_OK' => 'қаптама тандау (каталог)',
         'pressure_graph' => 'Аралас қысымның графигі',
         'geological_data' => 'Геологиялық мәліметтер',
