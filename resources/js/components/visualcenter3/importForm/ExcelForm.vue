@@ -24,6 +24,13 @@
                     <div class="insert-data-icon col-1"></div>
                     <div class="col-8">{{trans('visualcenter.importForm.planParams')}}</div>
                 </div>
+                <div
+                        :class="[category.isCloseMonthActive ? 'category-button_border' : '',' col-3 category-button d-flex justify-content-center']"
+                        @click="changeCategory('isCloseMonthActive')"
+                >
+                    <div class="insert-data-icon col-1"></div>
+                    <div class="col-7">{{trans('visualcenter.closeMonth')}}</div>
+                </div>
             </div>
         </div>
         <div class="row main-layout mt-2">
@@ -52,6 +59,26 @@
                 <div
                         :class="[!isPlanFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
                         @click="savePlan()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled opacity-0"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        class="col-12 status-block status-block_little menu__button mt-3"
+                        @click="validateMonthlyFact()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isMonthFactFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
+                        @click="saveMonthlyFact()"
                 >
                     {{trans('visualcenter.saveButton')}}
                 </div>
@@ -138,7 +165,7 @@
                 </select>
                 <select
                         class="form-select col-12 mt-3 status-block status-block_little text-left"
-                        v-else-if="!dzoUsers.includes(parseInt(userId)) && category.isPlanActive"
+                        v-else-if="!dzoUsers.includes(parseInt(userId)) && (category.isPlanActive || category.isCloseMonthActive)"
                         @change="switchDzo($event)"
                 >
                     <option v-for="company in planCompanies" :value="company.ticker">{{company.name}}</option>
@@ -242,9 +269,28 @@
                     </el-date-picker>
                 </div>
             </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.selectMonth')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="monthDate"
+                            type="month"
+                            format="MMMM"
+                            popper-class="custom-date-picker"
+                            @change="handleMonthChange"
+                            :picker-options="datePickerOptions"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="table-form col-12 mt-3 ml-1">
                 <v-grid
-                        v-if="!category.isPlanActive"
+                        v-if="category.isArchieveActive || category.isFactActive"
                         id="factGrid"
                         theme="material"
                         :source="rows"
@@ -255,7 +301,7 @@
                         :frameSize="72"
                 ></v-grid>
                 <v-grid
-                        v-else
+                        v-else-if="category.isPlanActive"
                         id="planGrid"
                         theme="material"
                         :source="currentPlan.rows"
@@ -263,7 +309,15 @@
                         @beforeEdit="beforePlanEdit"
                         @beforeRangeEdit="beforePlanRangeEdit"
                 ></v-grid>
-
+                <v-grid
+                        v-else
+                        id="monthGrid"
+                        theme="material"
+                        :source="monthRows"
+                        :columns="monthColumns"
+                        @beforeEdit="beforeMonthEdit"
+                        @beforeRangeEdit="beforeMonthRangeEdit"
+                ></v-grid>
             </div>
         </div>
         <modal
@@ -337,6 +391,11 @@
     }
     #planGrid {
         height: 582px;
+        font-size: 12px;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+    }
+    #monthGrid {
+        height: 622px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }

@@ -1,6 +1,6 @@
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsHorizon,horizons,actualIndicators} from '../json/data';
+import {rowsHorizon,horizons,actualIndicators,objectList} from '../json/data';
 import apexchart from 'vue-apexcharts';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
@@ -21,7 +21,7 @@ export default {
     return {
       menu: mainMenu,
       parentType: '',
-      horizonList: horizons,
+      horizonList: objectList,
       actualIndicators: actualIndicators,
       coincidences: [
         {
@@ -256,5 +256,9 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
+
+    getChildren(item) {
+      return item?.children?.length;
+    }
   }
 }

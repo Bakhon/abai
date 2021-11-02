@@ -80,7 +80,7 @@
         transform: rotate(-180deg);
     }
     .dropdown.active .dropdown__body{
-        height: 150px;
+        height: auto;
     }
     .dropdown__body{
         position: absolute;

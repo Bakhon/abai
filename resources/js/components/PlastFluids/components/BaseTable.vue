@@ -53,7 +53,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="tableBody">
             <template v-if="isObjectArray">
               <tr v-for="item in items" :key="item.id">
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
@@ -61,14 +61,29 @@
                 </td>
                 <td v-if="tableType === 'upload'">
                   <button @click="handleReportDownload(item)">
-                    <img src="/img/PlastFluids/downloadTableIcon.svg" alt="download">
+                    <img
+                      src="/img/PlastFluids/downloadTableIcon.svg"
+                      alt="download"
+                    />
                     <p>{{ trans("plast_fluids.download") }}</p>
                   </button>
                 </td>
               </tr>
             </template>
             <template v-else-if="tableType === 'analysis'">
-              <tr v-for="(item, index) in items" :key="index">
+              <tr
+                tabindex="0"
+                v-for="(item, index) in items"
+                :key="index"
+                :style="
+                  currentSelectedSamples &&
+                  currentSelectedSamples.includes(index)
+                    ? 'background-color: #009000;'
+                    : ''
+                "
+                style="cursor: pointer"
+                @click="$emit('select-row', item)"
+              >
                 <td v-for="(itemTD, ind) in item.table_data" :key="ind">
                   {{ itemTD }}
                 </td>
@@ -77,7 +92,7 @@
             <template v-else>
               <tr v-for="(item, index) in items" :key="index">
                 <template v-if="typeof item === 'string'">
-                  <td style="background-color: #272953;">
+                  <td style="background-color: #272953">
                     {{ item }}
                   </td>
                 </template>
@@ -138,6 +153,7 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
+    currentSelectedSamples: Array,
   },
   data() {
     return {
@@ -149,6 +165,11 @@ export default {
       handler(val) {
         this.$emit("show-items-per-page", Number(val));
       },
+    },
+    currentSelectedSamples(value) {
+      if (value.length) {
+        this.$refs.tableBody.children[value[value.length - 1]].focus();
+      }
     },
   },
   methods: {

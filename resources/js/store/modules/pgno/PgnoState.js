@@ -88,11 +88,13 @@ export const pgnoState = {
 
         inclinometry: {},
         centralizer: {},
-        centralizer_range: {},
+        centralizerRange: {},
 
         isEditing: false,
         isIntervals: false,
         kPodSettings: {},
         settingsMode: null,
+        centralizerSettings: {},
+        centralizerResult: {},
     }
 }

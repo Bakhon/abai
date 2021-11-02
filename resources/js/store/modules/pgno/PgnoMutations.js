@@ -68,9 +68,14 @@ export const pgnoMutations = {
         state.centralizer = val
     },
     SET_CENTRALIZER_RANGE(state, val) {
-        state.centralizer_range = val
+        state.centralizerRange = val
     },
-
+    SET_CENTRALIZER_SETTINGS(state, val) {
+        state.centralizerSettings = val
+    },
+    SET_CENTRALIZER_RESULT(state, val) {
+        state.centralizerResult = val
+    },
     SET_EDITING(state, val) {
         state.isEditing = val
     },

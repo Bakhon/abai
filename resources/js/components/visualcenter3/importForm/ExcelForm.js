@@ -30,6 +30,7 @@ import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
 import {globalloadingMutations} from '@store/helpers';
 import Plans from "./dataManagers/plans";
+import CloseMonth from "./dataManagers/closeMonth";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -242,6 +243,13 @@ export default {
         this.fillPlanRows();
         this.plans = await this.getDzoPlans();
         this.handlePlans();
+        if (this.monthDate.date() <= 10) {
+            this.monthDate = this.monthDate.subtract(1,'month').endOf('month');
+        }
+        this.fillMonthColumns();
+        this.fillMonthRows();
+        this.monthlyFact = await this.getDzoFactByPeriod();
+        this.handleMonthFact();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
@@ -513,5 +521,5 @@ export default {
     components: {
         VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans,CloseMonth],
 };

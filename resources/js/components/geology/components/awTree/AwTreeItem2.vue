@@ -2,7 +2,7 @@
   <li
       :draggable="!isFolder"
       :id="item.id"
-      :class="{...itemClasses, 'selected': ($store.state.geologyGis.wellName === item.name)}"
+      :class="{...itemClasses, 'selected': (!isFolder&&$store.state.geologyGis.curveName === item.name)}"
       @dragstart.self="!isFolder&&dragStart($event, item)"
       @dragover="(e)=>e.preventDefault()"
       @drop.self="isFolder&&drop($event, item.id)"
@@ -29,7 +29,7 @@
         <span
             class="aw-tree__list-item__label"
             @dblclick="ontoggle"
-            @click="selectCurve(item.name)">
+            @click="!isFolder&&selectCurve($event, item.name)">
           {{ item.name }}
         </span>
       </div>
@@ -74,7 +74,8 @@ export default {
     }
   },
   methods: {
-    selectCurve(curveName){
+    selectCurve(e, curveName){
+      e.stopPropagation()
       this.$store.commit(SET_CURVE_NAME, curveName);
     },
     dragStart(e, a) {
@@ -148,6 +149,10 @@ export default {
       }
 
       &-item {
+        cursor: pointer;
+        &.selected{
+          background: var(--a-accent-400);
+        }
         .enter {
           background: #000;
         }

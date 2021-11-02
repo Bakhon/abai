@@ -798,6 +798,7 @@ a.dropdown-item:hover {
 .select-well {
     outline: none;
     width: 100%;
+    height: 23.63px;
     color: white;
     box-sizing: border-box;
     -webkit-appearance: none;
@@ -2012,7 +2013,6 @@ input.radio-q-liq {
     padding-top: 5px;
     border-inline: 0.5px solid #545580;
     border-top: 0.5px solid #545580
-
 }
 
 .title__block__koroz {
@@ -2064,7 +2064,6 @@ input.radio-q-liq {
     padding-left: 5px;
     border-inline: 0.5px solid #545580;
     border-top: 0.5px solid #545580;
-
 }
 
 .kpod-input-text {
@@ -2139,7 +2138,6 @@ input.radio-q-liq {
     padding-left: 5px;
     border-inline: 0.5px solid #545580;
     border-bottom: 0.5px solid #545580;
-
 }
 
 .title__block__pump_list {
@@ -2185,7 +2183,6 @@ input.radio-q-liq {
     left: 0;
     border-inline: 0.5px solid #545580;
     border-bottom: 0.5px solid #545580;
-
 }
 
 .block__1__input {
@@ -2944,7 +2941,7 @@ input.radio-q-liq {
 
 .li-multiselect {
     background: #333975;
-    width: auto;
+    /* width: auto; */
     height: auto;
     margin: 0;
 }
