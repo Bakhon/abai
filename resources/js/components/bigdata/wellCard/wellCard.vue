@@ -1,79 +1,226 @@
 <template>
   <div class="all-contents">
-    <div class="row well-card__wrapper">
+    <div class="well-card_tab-head">
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+
+      <div class="well-card_tab-head__item">
+        Скважина 1
+        <span class="well-card_tab-head__item--close"></span>
+      </div>
+    </div>
+    <div class="well-card__wrapper">
       <div
-          :class="{'left-column_folded': isLeftColumnFolded}"
-          class="left-column"
+        :class="{ 'left-column_folded': isLeftColumnFolded }"
+        class="left-column"
       >
-        <div class="bg-dark scrollable">
-          <div class="row">
-            <div class="col">
-              <div class="well-deal">
-                <div class="well-deal__header">
-                  <div class="title">
-                    <div class="icon-ierarchy"></div>
-                    <h2>{{this.trans('well.well_passport')}}</h2>
-                  </div>
-                  <div class="icon-all" style="margin-left: auto;"
-                       @click="onColumnFoldingEvent('left')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="directory text-white pt-0 mt-0">
-              <ul id="myUL">
-                <well-card-tree
-                    v-for="(item, index) in formsStructure"
-                    :key="index"
-                    :active-form-code="activeForm ? activeForm.code : null"
-                    :data="item"
-                    :switch-form-by-code="switchFormByCode">
-                </well-card-tree>
-              </ul>
-            </div>
-          </div>
-          <div v-if="isLeftColumnFolded" class="row">
-            <div class="rotate" style="color: white">{{this.trans('well.download_excel')}}</div>
+        <div class="well-deal__header">
+          {{ this.trans("well.well_passport") }}
+        </div>
+        <form action="" class="search-bd">
+          <button class="search-btn-bd">
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z"
+                fill="#9EA4C9"
+              />
+            </svg>
+          </button>
+          <input type="text" class="search-input-bd" placeholder="Поиск" />
+        </form>
+        <div class="directory text-white bg-dark">
+          <ul id="myUL">
+            <well-card-tree
+              v-for="(item, index) in formsStructure"
+              :key="index"
+              :active-form-code="activeForm ? activeForm.code : null"
+              :data="item"
+              :switch-form-by-code="switchFormByCode"
+            >
+            </well-card-tree>
+          </ul>
+        </div>
+        <div v-if="isLeftColumnFolded" class="left-text">
+          <div class="rotate" style="color: white">
+            {{ this.trans("well.well_passport") }}
           </div>
         </div>
+        <div class="icon-all" @click="onColumnFoldingEvent('left')">
+          <svg
+            width="7"
+            height="13"
+            viewBox="0 0 7 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1"
+              stroke="white"
+              stroke-width="2"
+              stroke-miterlimit="22.9256"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded && !isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible}"
-           class="right-column__inner bg-dark" style="display:none"></div>
-      <div :class="[isInjectionWellsHistoricalVisible || isProductionWellsHistoricalVisible ? 'fixed-mid-col' : 'mid-col','col-md-6']">
-        <div class="row mid-col__main">
+      <div
+        :class="{
+          'right-column_folded': isRightColumnFolded,
+          'both-pressed_folded':
+            isBothColumnFolded &&
+            !isInjectionWellsHistoricalVisible &&
+            !isProductionWellsHistoricalVisible,
+        }"
+        class="right-column__inner bg-dark"
+        style="display: none"
+      ></div>
+      <div
+        :class="[
+          isInjectionWellsHistoricalVisible ||
+          isProductionWellsHistoricalVisible
+            ? 'fixed-mid-col'
+            : 'mid-col',
+          'col-md-6',
+        ]"
+      >
+        <div
+          class="row mid-col__main"
+          :class="{
+            min_history_table: isLeftColumnFolded || isRightColumnFolded,
+            small_history_table: isBothColumnFolded,
+          }"
+        >
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  {{this.trans('well.well')}}: <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                          stroke-width="1.6"/>
+                  {{ this.trans("well.well") }}:
+                  <span v-if="wellUwi">{{ wellUwi }}</span>
+                  <svg
+                    fill="none"
+                    height="8"
+                    viewBox="0 0 14 8"
+                    width="14"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 1L7 7L13 1"
+                      stroke="white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                    />
                   </svg>
                 </button>
               </div>
               <div class="col-8">
                 <form class="search-form d-flex align-items-center">
-                  <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
-                          @change="dzoSelectChange($event)">
-                    <option value="0" selected>{{this.trans('well.all_dzo')}}</option>
-                    <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
-                        {{ dzoSelectOption['name'] }}
+                  <select
+                    class="select-dzo mr-2"
+                    v-if="dzoSelectOptions.length > 0"
+                    @change="dzoSelectChange($event)"
+                  >
+                    <option value="0" selected>
+                      {{ this.trans("well.all_dzo") }}
+                    </option>
+                    <option
+                      v-for="(dzoSelectOption, index) in dzoSelectOptions"
+                      :value="dzoSelectOption['id']"
+                    >
+                      {{ dzoSelectOption["name"] }}
                     </option>
                   </select>
                   <v-select
-                      class="flex-fill"
-                      :filterable="false"
-                      :options="options"
-                      :placeholder="this.trans('well.number_well')"
-                      @input="selectWell"
-                      @search="onSearch"
+                    class="flex-fill"
+                    :filterable="false"
+                    :options="options"
+                    :placeholder="this.trans('well.number_well')"
+                    @input="selectWell"
+                    @search="onSearch"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -85,65 +232,102 @@
             <div v-if="wellUwi" class="mid-col__main_row">
               <div v-if="activeFormComponentName">
                 <div
-                    :is="activeFormComponentName"
-                    :well="well"
-                    :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  :is="activeFormComponentName"
+                  :well="well"
+                  :changeColumnsVisible="(value) => changeColumnsVisible(value)"
                 ></div>
               </div>
-              <div v-else-if="activeForm && activeForm.code" class="col table-wrapper">
-                <BigDataPlainFormResult v-if="activeForm.type === 'plain'" :code="activeForm.code"
-                                        :well-id="this.well.id"></BigDataPlainFormResult>
-                <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
-                                         :id="this.well.id" :params="activeForm" type="well"></BigDataTableFormWrapper>
+              <div
+                v-else-if="activeForm && activeForm.code"
+                class="col table-wrapper"
+              >
+                <BigDataPlainFormResult
+                  v-if="activeForm.type === 'plain'"
+                  :code="activeForm.code"
+                  :well-id="this.well.id"
+                ></BigDataPlainFormResult>
+                <BigDataTableFormWrapper
+                  v-else-if="activeForm.type === 'table'"
+                  :id="this.well.id"
+                  :params="activeForm"
+                  type="well"
+                ></BigDataTableFormWrapper>
               </div>
               <div v-else class="col graphics">
                 <div class="row">
-                  <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
-                    <svg fill="none" height="42" style="margin: 12px 0px 0px 24px;" viewBox="0 0 42 42" width="42"
-                         xmlns="http://www.w3.org/2000/svg">
+                  <div
+                    class="col"
+                    style="max-width: 64px; display: grid; padding: 0px"
+                  >
+                    <svg
+                      fill="none"
+                      height="42"
+                      style="margin: 12px 0px 0px 24px"
+                      viewBox="0 0 42 42"
+                      width="42"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
-                          d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
-                          stroke="#2E50E9" stroke-miterlimit="22.9256"/>
+                        d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
+                        stroke="#2E50E9"
+                        stroke-miterlimit="22.9256"
+                      />
                       <path
-                          d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
-                          fill="#323370"/>
+                        d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
+                        fill="#323370"
+                      />
                       <path
-                          d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
-                          fill="white"/>
+                        d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
+                        fill="white"
+                      />
                     </svg>
                   </div>
                   <div class="col">
                     <div class="well-info">
-                      <div class="title">{{this.trans('well.general')}}</div>
-                      <p>{{this.trans('well.number_well')}}:
+                      <div class="title">{{ this.trans("well.general") }}</div>
+                      <p>
+                        {{ this.trans("well.number_well") }}:
                         <span v-if="wellUwi">
                           {{ wellUwi }}
                         </span>
                       </p>
-                      <p>{{this.trans('well.category_well')}}:
+                      <p>
+                        {{ this.trans("well.category_well") }}:
                         <span v-if="well.category">
                           {{ well.category.name_ru }}
                         </span>
                       </p>
-                      <div class="title">{{this.trans('well.binding')}}</div>
-                      <p>{{this.trans('well.org_struct')}}: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
-                      <div class="title">{{this.trans('well.coord')}}</div>
-                      <p>{{this.trans('well.coord_x')}}:
-                        <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
+                      <div class="title">{{ this.trans("well.binding") }}</div>
+                      <p>
+                        {{ this.trans("well.org_struct") }}:
+                        <span v-if="wellOrgName">{{ wellOrgName }}</span>
                       </p>
-                      <p>{{this.trans('well.coord_y')}}:
+                      <div class="title">{{ this.trans("well.coord") }}</div>
+                      <p>
+                        {{ this.trans("well.coord_x") }}:
+                        <span v-if="wellSaptialObjectX">{{
+                          wellSaptialObjectX
+                        }}</span>
+                      </p>
+                      <p>
+                        {{ this.trans("well.coord_y") }}:
                         <span v-if="wellSaptialObjectY">
                           {{ wellSaptialObjectY }}
-                        </span></p>
-                      <div class="title">{{this.trans('well.zaboi')}}</div>
-                      <p>{{this.trans('well.zaboi_x')}}:
+                        </span>
+                      </p>
+                      <div class="title">{{ this.trans("well.zaboi") }}</div>
+                      <p>
+                        {{ this.trans("well.zaboi_x") }}:
                         <span v-if="wellSaptialObjectBottomX">
-                            {{ wellSaptialObjectBottomX }}
-                        </span></p>
-                      <p>{{this.trans('well.zaboi_y')}}:
+                          {{ wellSaptialObjectBottomX }}
+                        </span>
+                      </p>
+                      <p>
+                        {{ this.trans("well.zaboi_y") }}:
                         <span v-if="wellSaptialObjectBottomY">
-                            {{ wellSaptialObjectBottomY }}
-                          </span></p>
+                          {{ wellSaptialObjectBottomY }}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -152,74 +336,95 @@
           </div>
         </div>
       </div>
-      <div v-if="!isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible" :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
-        <div class="bg-dark-transparent">
+      <div
+        v-if="
+          !isInjectionWellsHistoricalVisible &&
+          !isProductionWellsHistoricalVisible
+        "
+        :class="{ 'right-column_folded': isRightColumnFolded }"
+        class="right-column__inner"
+      >
+        <div class="bg-dark-transparent doc-pasport">
           <template>
-            <div>
-              <div class="col">
-                <div class="heading">
-                  <div class="icon-all"
-                       @click="onColumnFoldingEvent('right')">
-                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.2"/>
-                    </svg>
-                  </div>
-                  <p v-if="wellUwi">{{this.trans('well.well_passport')}}</p>
-                </div>
-                <div class="title-container">
-                  <div v-if="wellUwi" class="sheare-icon">
-                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                          d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
-                          stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
-                      <path d="M12.9067 4.5V8.51961C12.9067 9.07189 13.3545 9.51961 13.9067 9.51961H17.8391"
-                            stroke="white" stroke-linejoin="round" stroke-width="1.4"/>
-                      <path
-                          d="M8.23505 15.02C8.52838 15.02 8.76705 15.1147 8.95105 15.304C9.13505 15.4907 9.22705 15.7347 9.22705 16.036C9.22705 16.0947 9.22438 16.148 9.21905 16.196H7.87505C7.87505 16.3053 7.91238 16.3987 7.98705 16.476C8.06171 16.5507 8.15371 16.588 8.26305 16.588C8.41238 16.588 8.51771 16.528 8.57905 16.408H9.20305C9.13638 16.608 9.02438 16.768 8.86705 16.888C8.70971 17.008 8.50438 17.068 8.25105 17.068C7.96571 17.068 7.72305 16.9733 7.52305 16.784C7.32571 16.5947 7.22705 16.3453 7.22705 16.036C7.22705 15.7427 7.31505 15.5 7.49105 15.308C7.66971 15.116 7.91771 15.02 8.23505 15.02ZM8.22705 15.456C8.12838 15.456 8.04838 15.4867 7.98705 15.548C7.92571 15.6067 7.88971 15.68 7.87905 15.768H8.57505C8.56438 15.6773 8.52705 15.6027 8.46305 15.544C8.40171 15.4853 8.32305 15.456 8.22705 15.456ZM9.29055 17L9.97855 16.044L9.32655 15.084H10.0705L10.2585 15.424C10.2905 15.4827 10.3199 15.552 10.3465 15.632H10.3625C10.3999 15.52 10.4239 15.4533 10.4345 15.432L10.6065 15.084H11.3465L10.6985 16.032L11.3665 17H10.5945L10.4105 16.66C10.3652 16.572 10.3399 16.5 10.3345 16.444H10.3185C10.3025 16.5027 10.2732 16.576 10.2305 16.664L10.0465 17H9.29055ZM12.4348 15.02C12.6908 15.02 12.9015 15.0987 13.0668 15.256C13.2322 15.4107 13.3308 15.5933 13.3628 15.804H12.7108C12.6975 15.7373 12.6642 15.684 12.6108 15.644C12.5602 15.604 12.4988 15.584 12.4268 15.584C12.3095 15.584 12.2228 15.6267 12.1668 15.712C12.1135 15.7973 12.0868 15.9067 12.0868 16.04C12.0868 16.1733 12.1162 16.284 12.1748 16.372C12.2335 16.4573 12.3215 16.5 12.4388 16.5C12.5135 16.5 12.5762 16.4787 12.6268 16.436C12.6802 16.3907 12.7162 16.3333 12.7348 16.264H13.3988C13.3402 16.5067 13.2282 16.7013 13.0628 16.848C12.9002 16.9947 12.6882 17.068 12.4268 17.068C12.1415 17.068 11.8988 16.9733 11.6988 16.784C11.5015 16.5947 11.4028 16.3453 11.4028 16.036C11.4028 15.748 11.4962 15.5067 11.6828 15.312C11.8695 15.1173 12.1202 15.02 12.4348 15.02ZM14.6218 15.02C14.9151 15.02 15.1538 15.1147 15.3378 15.304C15.5218 15.4907 15.6138 15.7347 15.6138 16.036C15.6138 16.0947 15.6111 16.148 15.6058 16.196H14.2618C14.2618 16.3053 14.2991 16.3987 14.3738 16.476C14.4484 16.5507 14.5404 16.588 14.6498 16.588C14.7991 16.588 14.9044 16.528 14.9658 16.408H15.5898C15.5231 16.608 15.4111 16.768 15.2538 16.888C15.0964 17.008 14.8911 17.068 14.6378 17.068C14.3524 17.068 14.1098 16.9733 13.9098 16.784C13.7124 16.5947 13.6138 16.3453 13.6138 16.036C13.6138 15.7427 13.7018 15.5 13.8778 15.308C14.0564 15.116 14.3044 15.02 14.6218 15.02ZM14.6138 15.456C14.5151 15.456 14.4351 15.4867 14.3738 15.548C14.3124 15.6067 14.2764 15.68 14.2658 15.768H14.9618C14.9511 15.6773 14.9138 15.6027 14.8498 15.544C14.7884 15.4853 14.7098 15.456 14.6138 15.456ZM15.9683 17V14.12H16.6443V17H15.9683Z"
-                          fill="white"/>
-                    </svg>
-                  </div>
-                  <div v-if="wellUwi" class="sheare-text">
-                    {{this.trans('well.download_excel')}}
-                  </div>
-                </div>
+            <div v-if="wellUwi" class="doc-pasport-head">
+              <div class="heading">
+                <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
+              </div>
+              <div v-if="wellUwi" class="sheare-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 11.3848V15.5C3 15.7762 3.22386 16 3.5 16H16.5C16.7761 16 17 15.7762 17 15.5V11.3848"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M10 4V11.3844"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M7 9.53906L10 12.3082L13 9.53906"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                  />
+                </svg>
               </div>
             </div>
           </template>
           <div class="info">
-            <div v-if="isRightColumnFolded" class="rotate">{{this.trans('well.well_passport')}}</div>
-            <div class="info-element">
-              <div class="row">
-                <div class="col">
-                  <table v-if="wellUwi">
-                    <tr>
-                      <th colspan="3">{{this.trans('well.general_info')}}</th>
-                    </tr>
-                    <tr v-for="(item, index) in this.tableData">
-                      <td>{{ index + 1 }}</td>
-                      <td>{{ item.name }}</td>
-                      <td>
-                        <span>{{ item.data }}</span>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
+            <div v-if="isRightColumnFolded" class="rotate">
+              {{ this.trans("well.well_passport") }}
             </div>
+            <div class="info-element">
+              <div v-if="wellUwi" class="info-element-head">
+                {{ this.trans("well.general_info") }}
+              </div>
+              <table v-if="wellUwi">
+                <tr v-for="(item, index) in this.tableData">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>
+                    <span>{{ item.data }}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="icon-all" @click="onColumnFoldingEvent('right')">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 1L5.96851 6.41919C6.0105 6.46494 6.0105 6.53512 5.96851 6.58119L1 12"
+                stroke="white"
+                stroke-width="2"
+                stroke-miterlimit="22.9256"
+                stroke-linecap="round"
+              />
+            </svg>
           </div>
         </div>
       </div>
       <InjectionHistoricalData
-              v-if="isInjectionWellsHistoricalVisible"
-              :changeColumnsVisible="changeColumnsVisible()"
+        v-if="isInjectionWellsHistoricalVisible"
+        :changeColumnsVisible="changeColumnsVisible()"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
-              v-if="isProductionWellsHistoricalVisible"
-              :changeColumnsVisible="changeColumnsVisible()"
+        v-if="isProductionWellsHistoricalVisible"
+        :changeColumnsVisible="changeColumnsVisible()"
       ></ProductionHistoricalData>
     </div>
   </div>
@@ -227,32 +432,37 @@
 
 <script>
 import Vue from "vue";
-import BigDataPlainFormResult from '../forms/PlainFormResults'
-import BigDataTableFormWrapper from '../forms/TableFormWrapper'
-import vSelect from 'vue-select'
-import axios from 'axios'
-import moment from 'moment'
-import WellCardTree from './WellCardTree'
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
-import {bigdatahistoricalVisibleState, globalloadingMutations} from '@store/helpers';
+import BigDataPlainFormResult from "../forms/PlainFormResults";
+import BigDataTableFormWrapper from "../forms/TableFormWrapper";
+import vSelect from "vue-select";
+import axios from "axios";
+import moment from "moment";
+import WellCardTree from "./WellCardTree";
+import upperFirst from "lodash/upperFirst";
+import camelCase from "lodash/camelCase";
+import {
+  bigdatahistoricalVisibleState,
+  globalloadingMutations,
+} from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
-
-
-const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName)
+const requireComponent = require.context(
+  "../forms/CustomPlainForms",
+  true,
+  /\.vue$/i
+);
+requireComponent.keys().forEach((fileName) => {
+  const componentConfig = requireComponent(fileName);
   const componentName = upperFirst(
-      camelCase(
-          fileName
-              .split('/')
-              .pop()
-              .replace(/\.\w+$/, '')
-        )
-    );
-    Vue.component(componentName, componentConfig.default || componentConfig);
+    camelCase(
+      fileName
+        .split("/")
+        .pop()
+        .replace(/\.\w+$/, "")
+    )
+  );
+  Vue.component(componentName, componentConfig.default || componentConfig);
 });
 
 export default {
@@ -262,13 +472,13 @@ export default {
     vSelect,
     WellCardTree,
     InjectionHistoricalData,
-    ProductionHistoricalData
+    ProductionHistoricalData,
   },
   data() {
     return {
       well_all_data: null,
       well_type_category: null,
-      well_passport : [],
+      well_passport: [],
       options: [],
       graph: null,
       activeForm: null,
@@ -278,64 +488,80 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       popup: false,
-      wellGeo: {name_ru: null},
-      wellGeoFields: {name_ru: null},
+      wellGeo: { name_ru: null },
+      wellGeoFields: { name_ru: null },
       wellUwi: null,
       well: {
         id: null,
-        'measWaterCut': {'water_cut': null},
-        'status': {'name_ru': null},
-        'category': {'name_ru': null},
-        'categoryLast': {'name_ru': null},
-        'expl': {'dbeg': null, 'name_ru': null},
-        'techs': null,
-        'tap': {'tap': null},
-        'techsName': null,
-        'labResearchValue': {'value_double': null},
-        'wellType': {'name_ru': null},
-        'whc_alt': null,
-        'org': null,
-        'geo': {'name_ru': null},
-        'tubeNom': null,
-        'measLiq': null,
-        'meas_water_inj': null,
-        'tech_mode_inj': null,
-        'techModeProdOil': null,
-        'techModeProdLiquid': null,
-        'injPressure': null,
-        'agentVol': null,
-        'krsWorkover': {'dbeg': null, 'dend': null},
-        'prsWellWorkover': {'dbeg': null, 'dend': null},
-        'treatmentDate': {'treat_date': null},
-        'actualBottomHole': null,
-        'artificialBottomHole': null,
-        'perfActual': {'top': null, 'base': null, 'dbeg': null},
-        'wellInfo': {'rte': null},
-        'treatmentSko': {'treat_date': null,},
-        'dmart_daily_prod_oil': { 'oil': null},
-        'dinzamer': {'value_double': null},
-        'gdisCurrent': {'meas_date': null, 'note': null,},
-        'gdisConclusion': {'name_ru': null,},
-        'gdisCurrentValue': {'value_double': null},
-        'gdisCurrentValuePmpr': {'value_double': null},
-        'gdisCurrentValueFlvl': {'value_double': null},
-        'gdisCurrentValueStatic': {'value_double': null},
-        'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
-        'gdisComplex': {'value_double': null, 'dbeg': null, 'value_string': null},
-        'gis': {'gis_date': null},
-        'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
-        'zone': {'name_ru': null},
-        'wellReactInfl': {'well_reacting': null, 'well_influencing': null},
-        'gtm': {'dbeg': null},
-        'rzatrStat': {'value_double': null},
-        'rzatrAtm': {'value_double': null},
-        'gu': {'name_ru': null},
-        'agms': {'name_ru': null},
-        'well_equip_param': {'value_double': null, 'value_string': null, 'equip_param': null},
-        'pump_code': {'value_double': null, 'value_string': null, 'equip_param': null},
-        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null},
-        'depth_nkt': {'value_double': null, 'value_string': null, 'equip_param': null},  
-        'type_sk': {'value_double': null, 'value_string': null, 'equip_param': null}         
+        measWaterCut: { water_cut: null },
+        status: { name_ru: null },
+        category: { name_ru: null },
+        categoryLast: { name_ru: null },
+        expl: { dbeg: null, name_ru: null },
+        techs: null,
+        tap: { tap: null },
+        techsName: null,
+        labResearchValue: { value_double: null },
+        wellType: { name_ru: null },
+        whc_alt: null,
+        org: null,
+        geo: { name_ru: null },
+        tubeNom: null,
+        measLiq: null,
+        meas_water_inj: null,
+        tech_mode_inj: null,
+        techModeProdOil: null,
+        techModeProdLiquid: null,
+        injPressure: null,
+        agentVol: null,
+        krsWorkover: { dbeg: null, dend: null },
+        prsWellWorkover: { dbeg: null, dend: null },
+        treatmentDate: { treat_date: null },
+        actualBottomHole: null,
+        artificialBottomHole: null,
+        perfActual: { top: null, base: null, dbeg: null },
+        wellInfo: { rte: null },
+        treatmentSko: { treat_date: null },
+        dmart_daily_prod_oil: { oil: null },
+        dinzamer: { value_double: null },
+        gdisCurrent: { meas_date: null, note: null },
+        gdisConclusion: { name_ru: null },
+        gdisCurrentValue: { value_double: null },
+        gdisCurrentValuePmpr: { value_double: null },
+        gdisCurrentValueFlvl: { value_double: null },
+        gdisCurrentValueStatic: { value_double: null },
+        gdisCurrentValueRp: { value_double: null, meas_date: null },
+        gdisComplex: { value_double: null, dbeg: null, value_string: null },
+        gis: { gis_date: null },
+        gdisCurrentValueBhp: { value_double: null, meas_date: null },
+        zone: { name_ru: null },
+        wellReactInfl: { well_reacting: null, well_influencing: null },
+        gtm: { dbeg: null },
+        rzatrStat: { value_double: null },
+        rzatrAtm: { value_double: null },
+        gu: { name_ru: null },
+        agms: { name_ru: null },
+        well_equip_param: {
+          value_double: null,
+          value_string: null,
+          equip_param: null,
+        },
+        pump_code: {
+          value_double: null,
+          value_string: null,
+          equip_param: null,
+        },
+        diametr_pump: {
+          value_double: null,
+          value_string: null,
+          equip_param: null,
+        },
+        depth_nkt: {
+          value_double: null,
+          value_string: null,
+          equip_param: null,
+        },
+        type_sk: { value_double: null, value_string: null, equip_param: null },
       },
       wellParent: null,
       tubeNomOd: null,
@@ -348,89 +574,97 @@ export default {
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
       wellTransform: {
-        'name': 'wellInfo.uwi',
-        'wellInfo': 'wellInfo',
-        'whc_alt': 'whc_alt',
-        'measWaterCut': 'meas_water_cut',
-        'status': 'status',
-        'category': 'category',
-        'categoryLast': 'category_last',
-        'expl': 'well_expl',
-        'techs': 'techs',
-        'tap': 'tap',
-        'labResearchValue': 'lab_research_value',
-        'wellType': 'well_type',
-        'dmart_daily_prod_oil': 'dmart_daily_prod_oil',
-        'org': 'org',
-        'geo': 'geo',
-        'tubeNom': 'tube_nom',
-        'dinzamer': 'dinzamer',
-        'measLiq': 'measLiq',
-        'meas_water_inj': 'meas_water_inj',
-        'tech_mode_inj': 'tech_mode_inj',
-        'techModeProdOil': 'techModeProdOil',
-        'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
-        'injPressure': 'tech_mode_inj.inj_pressure',
-        'agentVol': 'tech_mode_inj.agent_vol',
-        'krsWorkover': 'krs_well_workover',
-        'prsWellWorkover': 'prs_well_workover',
-        'treatmentDate': 'well_treatment',
-        'actualBottomHole': 'actual_bottom_hole',
-        'artificialBottomHole': 'artificial_bottom_hole',
-        'perfActual': 'well_perf_actual',
-        'treatmentSko': 'well_treatment_sko',
-        'gdisCurrent': 'gdisCurrent',
-        'gdisConclusion': 'gdis_conclusion',
-        'gdisCurrentValue': 'gdis_current_value',
-        'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
-        'gdisCurrentValueFlvl': 'gdis_current_value_flvl',
-        'gdisCurrentValueStatic': 'gdis_current_value_static',
-        'gdisCurrentValueRp': 'gdis_current_value_rp',
-        'gdisComplex': 'gdis_complex',
-        'gis': 'gis',
-        'gdisCurrentValueBhp': 'gdis_current_value_bhp',
-        'zone': 'zone',
-        'wellReactInfl': 'well_react_infl',
-        'gtm': 'gtm',
-        'rzatrAtm': 'rzatr_atm',
-        'rzatrStat': 'rzatr_stat',
-        'gu': 'gu',
-        'agms': 'agms', 
-        'well_equip_param': 'well_equip_param',
-        'pump_code': 'pump_code',
-        'diametr_pump': 'diametr_pump',
-        'depth_nkt': 'depth_nkt',
-        'type_sk': 'type_sk'     
+        name: "wellInfo.uwi",
+        wellInfo: "wellInfo",
+        whc_alt: "whc_alt",
+        measWaterCut: "meas_water_cut",
+        status: "status",
+        category: "category",
+        categoryLast: "category_last",
+        expl: "well_expl",
+        techs: "techs",
+        tap: "tap",
+        labResearchValue: "lab_research_value",
+        wellType: "well_type",
+        dmart_daily_prod_oil: "dmart_daily_prod_oil",
+        org: "org",
+        geo: "geo",
+        tubeNom: "tube_nom",
+        dinzamer: "dinzamer",
+        measLiq: "measLiq",
+        meas_water_inj: "meas_water_inj",
+        tech_mode_inj: "tech_mode_inj",
+        techModeProdOil: "techModeProdOil",
+        techModeProdLiquid: "tech_mode_prod_oil.liquid",
+        injPressure: "tech_mode_inj.inj_pressure",
+        agentVol: "tech_mode_inj.agent_vol",
+        krsWorkover: "krs_well_workover",
+        prsWellWorkover: "prs_well_workover",
+        treatmentDate: "well_treatment",
+        actualBottomHole: "actual_bottom_hole",
+        artificialBottomHole: "artificial_bottom_hole",
+        perfActual: "well_perf_actual",
+        treatmentSko: "well_treatment_sko",
+        gdisCurrent: "gdisCurrent",
+        gdisConclusion: "gdis_conclusion",
+        gdisCurrentValue: "gdis_current_value",
+        gdisCurrentValuePmpr: "gdis_current_value_pmpr",
+        gdisCurrentValueFlvl: "gdis_current_value_flvl",
+        gdisCurrentValueStatic: "gdis_current_value_static",
+        gdisCurrentValueRp: "gdis_current_value_rp",
+        gdisComplex: "gdis_complex",
+        gis: "gis",
+        gdisCurrentValueBhp: "gdis_current_value_bhp",
+        zone: "zone",
+        wellReactInfl: "well_react_infl",
+        gtm: "gtm",
+        rzatrAtm: "rzatr_atm",
+        rzatrStat: "rzatr_stat",
+        gu: "gu",
+        agms: "agms",
+        well_equip_param: "well_equip_param",
+        pump_code: "pump_code",
+        diametr_pump: "diametr_pump",
+        depth_nkt: "depth_nkt",
+        type_sk: "type_sk",
       },
       formsStructure: {},
       dzoSelectOptions: [],
-      selectedUserDzo: null
-    }
+      selectedUserDzo: null,
+    };
   },
   mounted() {
-    this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
-      this.formsStructure = data.tree
-    })
-    this.axios.get(this.localeUrl('/user_organizations'), {params: {'only_main': true}})
-        .then(({data}) => {
-        if (typeof data !== 'undefined' &&
-            typeof data.organizations !== 'undefined' &&
-            data.organizations.length > 0) {
-            this.dzoSelectOptions = data.organizations;
+    this.axios
+      .get(this.localeUrl("api/bigdata/forms/tree"))
+      .then(({ data }) => {
+        this.formsStructure = data.tree;
+      });
+    this.axios
+      .get(this.localeUrl("/user_organizations"), {
+        params: { only_main: true },
+      })
+      .then(({ data }) => {
+        if (
+          typeof data !== "undefined" &&
+          typeof data.organizations !== "undefined" &&
+          data.organizations.length > 0
+        ) {
+          this.dzoSelectOptions = data.organizations;
         }
-    })
+      });
   },
   methods: {
-    ...globalloadingMutations([
-      'SET_LOADING'
-    ]),
+    ...globalloadingMutations(["SET_LOADING"]),
     onColumnFoldingEvent(method) {
-      if (method === 'left') {
+      if (method === "left") {
         this.isLeftColumnFolded = !this.isLeftColumnFolded;
       } else {
         this.isRightColumnFolded = !this.isRightColumnFolded;
       }
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+      if (
+        this.isLeftColumnFolded === true &&
+        this.isRightColumnFolded === true
+      ) {
         this.isBothColumnFolded = true;
       } else {
         this.isBothColumnFolded = false;
@@ -443,607 +677,869 @@ export default {
       }
     },
     search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'),
-              {
-                  params: {
-                      query: escape(search),
-                      selectedUserDzo: vm.selectedUserDzo,
-                  }
-              })
-              .then(({data}) => {
-            vm.options = data.items;
-            loading(false);
-          })
-        },
-        350
-    ),
-    setWellPassport()
-    {                
-      let well = this.wellUwi
-      let wellType= this.well.wellType ? this.well.wellType.name_ru : ''
-      let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
-      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru + ' / ' + '-' : (this.well.labResearchValue ? this.well.labResearchValue : ''))
-      let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : ''
-      let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +' / '+ this.well.wellInfo.whc_h.toFixed(1) : ''
-      let wellTechsName = this.wellTechsName ? this.wellTechsName : ''
-      let tap = this.well.tap ? this.well.tap.tap : ''
-      let gu_agsu = this.well.gu.name_ru && this.well.agms.name_ru ? this.well.gu.name_ru+'/'+this.well.agms.name_ru
-          :
-          (this.well.gu.name_ru ? this.well.gu.name_ru : (this.well.agms.name_ru ? this.well.agms.name_ru : ''))
-      let wellOrgName = this.wellOrgName ? this.wellOrgName : ''
-      let well_zone = this.well.zone ? this.well.zone.name_ru : ''
-      let wellReactReacting = this.well.wellReactInfl.well_reacting ? this.well.wellReactInfl.well_reacting : ''
-      let wellReactInfl = this.well.wellReactInfl.well_influencing ? this.well.wellReactInfl.well_influencing : ''
-      let wellSaptialObjectX = this.wellSaptialObjectX ?  this.wellSaptialObjectX : ''
-      let wellSaptialObjectY = this.wellSaptialObjectY ? this.wellSaptialObjectY : ''
-      let wellSaptialObjectBottomX = this.wellSaptialObjectBottomX ? this.wellSaptialObjectBottomX : ''
-      let wellSaptialObjectBottomY = this.wellSaptialObjectBottomY ? this.wellSaptialObjectBottomY : ''
-      let well_category = this.well.category ? this.well.category.name_ru : ''
-      let categoryLast = this.well.categoryLast  ? this.well.categoryLast.name_ru : ''
-      let period_bur = this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
-                       ? this.getFormatedDate(this.well.wellInfo.drill_start_date)+' - '+this.getFormatedDate(this.well.wellInfo.drill_end_date)
-                       : (this.well.wellInfo.drill_start_date
-                            ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
-                            : (this.well.wellInfo.drill_end_date ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : ''))
-      let wellExpl = this.well.expl ? this.getFormatedDate(this.well.expl.dbeg) : ''
-      let well_status = this.well.status ? this.well.status.name_ru : ''
-      let well_expl_name = this.well.expl ? this.well.expl.name_ru : ''
-      let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : ''
-      let actualBottomHole = this.well.actualBottomHole ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : ''
-      let artificialBottomHole = this.well.artificialBottomHole ? this.well.artificialBottomHole.depth : ''
-      let perfActual =   this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+' - '+this.well.perfActual.base : ''
-      let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+' / '+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
-      let techModeProdOil_measWaterCut = this.well?.techModeProdOil?.wcut  && this.well?.measWaterCut?.water_cut
-                                         ? this.well.techModeProdOil.wcut+' / '+this.well.measWaterCut.water_cut
-                                         : (this.well?.techModeProdOil?.wcut ? this.well.techModeProdOil.wcut : (this.well?.measWaterCut?.water_cut ? this.well.measWaterCut.water_cut : ''))     
-      let krsWorkover = this.well.krsWorkover.dbeg ? this.getFormatedDate(this.well.krsWorkover.dbeg) : ''
-      let treatmentDate = this.well.treatmentDate.treat_date ? this.getFormatedDate(this.well.treatmentDate.treat_date) : ''
-      let well_gtm = this.well.gtm.dbeg ? this.getFormatedDate(this.well.gtm.dbeg) : ''
-      let treatmentSko = this.well.treatmentSko.treat_date ? this.getFormatedDate(this.well.treatmentSko.treat_date) : ''
-      let well_gdisCurrent =  this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
-      let prsWellWorkover = this.well.prsWellWorkover.dbeg ? this.getFormatedDate(this.well.prsWellWorkover.dbeg) : ''
-      let well_gis = this.well.gis.gis_date ? this.getFormatedDate(this.well.gis.gis_date) : ''
-      let well_gdisCurrent2 =this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
-      let gdisConclusion = this.well.gdisConclusion.name_ru ? this.well.gdisConclusion.name_ru : ''
-      let gdisCurrentValue = this.well.gdisCurrentValue.value_double ? this.well.gdisCurrentValue.value_double : ''
-      let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double ? this.well.gdisCurrentValuePmpr.value_double : ''
-      let gdisCurrentValueFlvl = this.well.dinzamer.value_double ? this.well.dinzamer.value_double : ''
-      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double ? this.well.gdisCurrentValueStatic.value_double : ''
-      let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date) : ''
-      let gdisComplex = this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg ?
-             this.well.gdisComplex.value_string.toFixed(1)+' / '+this.getFormatedDate(this.well.gdisComplex.dbeg)
-           : (this.well.gdisComplex.value_string ? this.well.gdisComplex.value_string.toFixed(1) : (this.well.gdisComplex.dbeg ? this.getFormatedDate(this.well.gdisComplex.dbeg) : '') )
-      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : ''
-      let gdisCurrent_note = this.well.gdisCurrent.note ? this.well.gdisCurrent.note : ''
-      let gdisCurrentValueBhp = this.well.gdisCurrentValueBhp.value_double && this.well.gdisCurrentValueBhp.meas_date ? this.well.gdisCurrentValueBhp.value_double+'/'+"(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")"
-          :
-          (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
+      axios
+        .get(vm.localeUrl("/api/bigdata/wells/search"), {
+          params: {
+            query: escape(search),
+            selectedUserDzo: vm.selectedUserDzo,
+          },
+        })
+        .then(({ data }) => {
+          vm.options = data.items;
+          loading(false);
+        });
+    }, 350),
+    setWellPassport() {
+      let well = this.wellUwi;
+      let wellType = this.well.wellType ? this.well.wellType.name_ru : "";
+      let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : "";
+      let neighbors =
+        this.wellGeo.name_ru && this.well.labResearchValue.value_double
+          ? this.wellGeo.name_ru + "/" + this.well.labResearchValue.value_double
+          : this.wellGeo
+          ? this.wellGeo.name_ru + " / " + "-"
+          : this.well.labResearchValue
+          ? this.well.labResearchValue
+          : "";
+      let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
+      let wellrot = this.well.wellInfo
+        ? this.well.wellInfo.whc_alt.toFixed(1) +
+          " / " +
+          this.well.wellInfo.whc_h.toFixed(1)
+        : "";
+      let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
+      let tap = this.well.tap ? this.well.tap.tap : "";
+      let gu_agsu =
+        this.well.gu.name_ru && this.well.agms.name_ru
+          ? this.well.gu.name_ru + "/" + this.well.agms.name_ru
+          : this.well.gu.name_ru
+          ? this.well.gu.name_ru
+          : this.well.agms.name_ru
+          ? this.well.agms.name_ru
+          : "";
+      let wellOrgName = this.wellOrgName ? this.wellOrgName : "";
+      let well_zone = this.well.zone ? this.well.zone.name_ru : "";
+      let wellReactReacting = this.well.wellReactInfl.well_reacting
+        ? this.well.wellReactInfl.well_reacting
+        : "";
+      let wellReactInfl = this.well.wellReactInfl.well_influencing
+        ? this.well.wellReactInfl.well_influencing
+        : "";
+      let wellSaptialObjectX = this.wellSaptialObjectX
+        ? this.wellSaptialObjectX
+        : "";
+      let wellSaptialObjectY = this.wellSaptialObjectY
+        ? this.wellSaptialObjectY
+        : "";
+      let wellSaptialObjectBottomX = this.wellSaptialObjectBottomX
+        ? this.wellSaptialObjectBottomX
+        : "";
+      let wellSaptialObjectBottomY = this.wellSaptialObjectBottomY
+        ? this.wellSaptialObjectBottomY
+        : "";
+      let well_category = this.well.category ? this.well.category.name_ru : "";
+      let categoryLast = this.well.categoryLast
+        ? this.well.categoryLast.name_ru
+        : "";
+      let period_bur =
+        this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
+            " - " +
+            this.getFormatedDate(this.well.wellInfo.drill_end_date)
+          : this.well.wellInfo.drill_start_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
+          : this.well.wellInfo.drill_end_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
+          : "";
+      let wellExpl = this.well.expl
+        ? this.getFormatedDate(this.well.expl.dbeg)
+        : "";
+      let well_status = this.well.status ? this.well.status.name_ru : "";
+      let well_expl_name = this.well.expl ? this.well.expl.name_ru : "";
+      let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
+      let actualBottomHole = this.well.actualBottomHole
+        ? this.well.actualBottomHole.depth +
+          " / (" +
+          this.getFormatedDate(this.well.actualBottomHole.data) +
+          ")"
+        : "";
+      let artificialBottomHole = this.well.artificialBottomHole
+        ? this.well.artificialBottomHole.depth
+        : "";
+      let perfActual =
+        this.well.perfActual.top && this.well.perfActual.base
+          ? this.well.perfActual.top + " - " + this.well.perfActual.base
+          : "";
+      let techModeProdOil =
+        this.well.techModeProdOil && this.well.measLiq
+          ? this.well.techModeProdOil.liquid +
+            " / " +
+            this.well.measLiq.liquid.toFixed(1)
+          : this.well.techModeProdOil
+          ? this.well.techModeProdOil.liquid
+          : this.well.measLiq
+          ? this.well.measLiq
+          : "";
+      let techModeProdOil_measWaterCut =
+        this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
+          ? this.well.techModeProdOil.wcut +
+            " / " +
+            this.well.measWaterCut.water_cut
+          : this.well?.techModeProdOil?.wcut
+          ? this.well.techModeProdOil.wcut
+          : this.well?.measWaterCut?.water_cut
+          ? this.well.measWaterCut.water_cut
+          : "";
+      let krsWorkover = this.well.krsWorkover.dbeg
+        ? this.getFormatedDate(this.well.krsWorkover.dbeg)
+        : "";
+      let treatmentDate = this.well.treatmentDate.treat_date
+        ? this.getFormatedDate(this.well.treatmentDate.treat_date)
+        : "";
+      let well_gtm = this.well.gtm.dbeg
+        ? this.getFormatedDate(this.well.gtm.dbeg)
+        : "";
+      let treatmentSko = this.well.treatmentSko.treat_date
+        ? this.getFormatedDate(this.well.treatmentSko.treat_date)
+        : "";
+      let well_gdisCurrent = this.well.gdisCurrent.meas_date
+        ? this.getFormatedDate(this.well.gdisCurrent.meas_date)
+        : "";
+      let prsWellWorkover = this.well.prsWellWorkover.dbeg
+        ? this.getFormatedDate(this.well.prsWellWorkover.dbeg)
+        : "";
+      let well_gis = this.well.gis.gis_date
+        ? this.getFormatedDate(this.well.gis.gis_date)
+        : "";
+      let well_gdisCurrent2 = this.well.gdisCurrent.meas_date
+        ? this.getFormatedDate(this.well.gdisCurrent.meas_date)
+        : "";
+      let gdisConclusion = this.well.gdisConclusion.name_ru
+        ? this.well.gdisConclusion.name_ru
+        : "";
+      let gdisCurrentValue = this.well.gdisCurrentValue.value_double
+        ? this.well.gdisCurrentValue.value_double
+        : "";
+      let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
+        ? this.well.gdisCurrentValuePmpr.value_double
+        : "";
+      let gdisCurrentValueFlvl = this.well.dinzamer.value_double
+        ? this.well.dinzamer.value_double
+        : "";
+      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
+        ? this.well.gdisCurrentValueStatic.value_double
+        : "";
+      let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double
+        ? this.well.gdisCurrentValueRp.value_double +
+          "/" +
+          this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date)
+        : "";
+      let gdisComplex =
+        this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg
+          ? this.well.gdisComplex.value_string.toFixed(1) +
+            " / " +
+            this.getFormatedDate(this.well.gdisComplex.dbeg)
+          : this.well.gdisComplex.value_string
+          ? this.well.gdisComplex.value_string.toFixed(1)
+          : this.well.gdisComplex.dbeg
+          ? this.getFormatedDate(this.well.gdisComplex.dbeg)
+          : "";
+      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : "";
+      let gdisCurrent_note = this.well.gdisCurrent.note
+        ? this.well.gdisCurrent.note
+        : "";
+      let gdisCurrentValueBhp =
+        this.well.gdisCurrentValueBhp.value_double &&
+        this.well.gdisCurrentValueBhp.meas_date
+          ? this.well.gdisCurrentValueBhp.value_double +
+            "/" +
+            "(" +
+            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
+            ")"
+          : this.well.gdisCurrentValueBhp.value_double
+          ? this.well.gdisCurrentValueBhp.value_double
+          : this.well.gdisCurrentValueBhp.meas_date
+          ? "(" +
+            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
+            ")"
+          : "";
 
-      let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
-      let injPressure = this.getInjPressure(well)
-      let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +' / '+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
-      let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
-      let category_id = this.well.categoryLast.pivot.category
-      let main_org_code = this.well_all_data.main_org_code        
-      let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well) 
-      let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
-      let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
-      let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
-      let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''
-      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : ''    
+      let rzatrStat = this.well.rzatrStat.value_double
+        ? this.well.rzatrStat.value_double
+        : "";
+      let injPressure = this.getInjPressure(well);
+      let agentVol =
+        this.well.tech_mode_inj || this.well.meas_water_inj
+          ? this.well.tech_mode_inj.agent_vol +
+            " / " +
+            this.well.meas_water_inj.water_inj_val.toFixed(1)
+          : "";
+      let perfActualDate = this.well.perfActual
+        ? this.getFormatedDate(this.well.perfActual.dbeg)
+        : "";
+      let category_id = this.well.categoryLast.pivot.category;
+      let main_org_code = this.well_all_data.main_org_code;
+      let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
+      let well_equip_param = this.well.well_equip_param
+        ? this.well.well_equip_param.value_string
+        : "";
+      let pump_code = this.well.pump_code
+        ? this.well.pump_code.value_string
+        : "";
+      let diameter_pump = this.well.diametr_pump
+        ? this.well.diametr_pump.value_string
+        : "";
+      let depth_nkt = this.well.depth_nkt
+        ? this.well.depth_nkt.value_string
+        : "";
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       this.well_passport = [
         {
-          'name': this.trans('well.well'),
-          'data': well,
-          'type': ['all'],
+          name: this.trans("well.well"),
+          data: well,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.view_well'),
-          'data': wellType,
-          'type': ['all']
+          name: this.trans("well.view_well"),
+          data: wellType,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.well_field'),
-          'data': wellGeoFields,
-          'type': ['all']
+          name: this.trans("well.well_field"),
+          data: wellGeoFields,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.horizont_rnas'),
-          'data': neighbors,
-          'type': ['all']
+          name: this.trans("well.horizont_rnas"),
+          data: neighbors,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.h_rotor'),
-          'data': wellrot,
-          'type': ['all']
+          name: this.trans("well.h_rotor"),
+          data: wellrot,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.tech_struct'),
-          'data': wellTechsName,
-          'type': ['all']
+          name: this.trans("well.tech_struct"),
+          data: wellTechsName,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.otvod'),
-          'data': tap,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.otvod"),
+          data: tap,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.gu_zu'),
-          'data': gu_agsu,
-          'type': ['all']
+          name: this.trans("well.gu_zu"),
+          data: gu_agsu,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.org_struct'),
-          'data': wellOrgName,
-          'type': ['all']
+          name: this.trans("well.org_struct"),
+          data: wellOrgName,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.zone_well'),
-          'data': well_zone,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.zone_well"),
+          data: well_zone,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.reactive_wells'),
-          'data': wellReactReacting,
-          'type': ['nag'],
-          'codes': ['KGM']
+          name: this.trans("well.reactive_wells"),
+          data: wellReactReacting,
+          type: ["nag"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.influence_well'),
-          'data': wellReactInfl,
-          'type': ['dob_oil'],
-          'codes': ['KGM']
+          name: this.trans("well.influence_well"),
+          data: wellReactInfl,
+          type: ["dob_oil"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.coord_x_outfall'),
-          'data': wellSaptialObjectX,
-          'type': ['all']
+          name: this.trans("well.coord_x_outfall"),
+          data: wellSaptialObjectX,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.coord_y_outfall'),
-          'data': wellSaptialObjectY,
-          'type': ['all']
+          name: this.trans("well.coord_y_outfall"),
+          data: wellSaptialObjectY,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.zaboi_x'),
-          'data': wellSaptialObjectBottomX,
-          'type': ['all']
+          name: this.trans("well.zaboi_x"),
+          data: wellSaptialObjectBottomX,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.zaboi_y'),
-          'data': wellSaptialObjectBottomY,
-          'type': ['all']
+          name: this.trans("well.zaboi_y"),
+          data: wellSaptialObjectBottomY,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.assign_well_project'),
-          'data': well_category,
-          'type': ['all']
+          name: this.trans("well.assign_well_project"),
+          data: well_category,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.category'),
-          'data': categoryLast,
-          'type': ['all']
+          name: this.trans("well.category"),
+          data: categoryLast,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.period_bur'),
-          'data': period_bur,
-          'type': ['all']
+          name: this.trans("well.period_bur"),
+          data: period_bur,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.date_expluatation'),
-          'data': wellExpl,
-          'type': ['all']
+          name: this.trans("well.date_expluatation"),
+          data: wellExpl,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.status'),
-          'data': well_status,
-          'type': ['all']
+          name: this.trans("well.status"),
+          data: well_status,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.way_expluatation'),
-          'data': well_expl_name,
-          'type': ['dob_oil']
+          name: this.trans("well.way_expluatation"),
+          data: well_expl_name,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.uo_bolt'),
-          'data': '',
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.uo_bolt"),
+          data: "",
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.diametr'),
-          'data': tubeNomOd,
-          'type': ['all']
+          name: this.trans("well.diametr"),
+          data: tubeNomOd,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.type_gol'),
-          'data': '',
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.type_gol"),
+          data: "",
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.type_pump'),
-          'data': pump_code,
-          'type': ['dob_oil']
+          name: this.trans("well.type_pump"),
+          data: pump_code,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.diameter_pump'),
-          'data': diameter_pump,
-          'type': ['dob_oil']
+          name: this.trans("well.diameter_pump"),
+          data: diameter_pump,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.pump_depth'),
-          'data': well_equip_param,
-          'type': ['dob_oil']
+          name: this.trans("well.pump_depth"),
+          data: well_equip_param,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.packer_running_depth'),
-          'data': '',
-          'type': ['nag']
+          name: this.trans("well.packer_running_depth"),
+          data: "",
+          type: ["nag"],
         },
         {
-          'name': this.trans('well.sk'),
-          'data': type_sk,
-          'type': ['dob_oil'],
-          'exp': 1 // шгн
+          name: this.trans("well.sk"),
+          data: type_sk,
+          type: ["dob_oil"],
+          exp: 1, // шгн
         },
         {
-          'name': this.trans('well.length_hod'),
-          'data': '',
-          'type': ['dob_oil'],
-          'exp': 1
+          name: this.trans("well.length_hod"),
+          data: "",
+          type: ["dob_oil"],
+          exp: 1,
         },
         {
-          'name': this.trans('well.count_swaing'),
-          'data': '',
-          'type': ['dob_oil'],
-          'exp': 1
+          name: this.trans("well.count_swaing"),
+          data: "",
+          type: ["dob_oil"],
+          exp: 1,
         },
         {
-          'name': this.trans('well.fact_zaboi'),
-          'data': actualBottomHole,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.fact_zaboi"),
+          data: actualBottomHole,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.synthetic_zaboi'),
-          'data': artificialBottomHole,
-          'type': ['all']
+          name: this.trans("well.synthetic_zaboi"),
+          data: artificialBottomHole,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.broken_zaboi'),
-          'data': '',
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.broken_zaboi"),
+          data: "",
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.depth_down'),
-          'data': depth_nkt,
-          'type': ['dob_oil']          
+          name: this.trans("well.depth_down"),
+          data: depth_nkt,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.kshd'),
-          'data': '',
-          'type': ['nag'],
-          'codes': ['KGM']
+          name: this.trans("well.kshd"),
+          data: "",
+          type: ["nag"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.progress_interval_perforation'),
-          'data': perfActual,
-          'type': ['all']
+          name: this.trans("well.progress_interval_perforation"),
+          data: perfActual,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.date_perforation'),
-          'data': perfActualDate,
-          'type': ['all']
+          name: this.trans("well.date_perforation"),
+          data: perfActualDate,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.pickup'),
-          'data': agentVol,
-          'type': ['nag']
+          name: this.trans("well.pickup"),
+          data: agentVol,
+          type: ["nag"],
         },
         {
-          'name': this.trans('well.injection_pressure'),
-          'data': injPressure,
-          'type': ['nag']
+          name: this.trans("well.injection_pressure"),
+          data: injPressure,
+          type: ["nag"],
         },
         {
-          'name': this.trans('well.debit_water'),
-          'data': techModeProdOil,
-          'type': ['dob_oil']
+          name: this.trans("well.debit_water"),
+          data: techModeProdOil,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.water_cut'),
-          'data': techModeProdOil_measWaterCut,
-          'type': ['dob_oil']
+          name: this.trans("well.water_cut"),
+          data: techModeProdOil_measWaterCut,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.debit_oil'),
-          'data': techModeProdOil_measWaterCut2,
-          'type': ['dob_oil']
+          name: this.trans("well.debit_oil"),
+          data: techModeProdOil_measWaterCut2,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.date_krs'),
-          'data': krsWorkover,
-          'type': ['all']
+          name: this.trans("well.date_krs"),
+          data: krsWorkover,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.date_pfp'),
-          'data': treatmentDate,
-          'type': ['nag'],
-          'codes': ['KGM']
+          name: this.trans("well.date_pfp"),
+          data: treatmentDate,
+          type: ["nag"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.date_krp'),
-          'data': well_gtm,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.date_krp"),
+          data: well_gtm,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.date_sko'),
-          'data': treatmentSko,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.date_sko"),
+          data: treatmentSko,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.date_kpd'),
-          'data': well_gdisCurrent,
-          'type': ['nag']
+          name: this.trans("well.date_kpd"),
+          data: well_gdisCurrent,
+          type: ["nag"],
         },
         {
-          'name': this.trans('well.date_prc'),
-          'data': prsWellWorkover,
-          'type': ['all']
-        },   
-        {
-          'name': this.trans('well.date_last_gis'),
-          'data': well_gdisCurrent2,
-          'type': ['all']
+          name: this.trans("well.date_prc"),
+          data: prsWellWorkover,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.result_gdm'),
-          'data': gdisConclusion,
-          'type': ['dob_oil'],
-          'codes': ['KGM']
+          name: this.trans("well.date_last_gis"),
+          data: well_gdisCurrent2,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.length_hod_gdm'),
-          'data': gdisCurrentValue,
-          'type': ['dob_oil'],
-          'codes': ['KGM']
+          name: this.trans("well.result_gdm"),
+          data: gdisConclusion,
+          type: ["dob_oil"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.count_swing'),
-          'data': gdisCurrentValuePmpr,
-          'type': ['dob_oil'],
-          'codes': ['KGM']
+          name: this.trans("well.length_hod_gdm"),
+          data: gdisCurrentValue,
+          type: ["dob_oil"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.dynamic_level'),
-          'data': gdisCurrentValueFlvl,
-          'type': ['dob_oil']
+          name: this.trans("well.count_swing"),
+          data: gdisCurrentValuePmpr,
+          type: ["dob_oil"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.static_level'),
-          'data': gdisCurrentValueStatic,
-          'type': ['dob_oil','nabl'],
-          'codes': ['KGM']
+          name: this.trans("well.dynamic_level"),
+          data: gdisCurrentValueFlvl,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.rpl_date'),
-          'data': gdisCurrentValueRp,
-          'type': ['all'],
-          'codes': ['KGM']
+          name: this.trans("well.static_level"),
+          data: gdisCurrentValueStatic,
+          type: ["dob_oil", "nabl"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.rpl_sl_gdis'),
-          'data': gdisComplex,
-          'type': ['all']
+          name: this.trans("well.rpl_date"),
+          data: gdisCurrentValueRp,
+          type: ["all"],
+          codes: ["KGM"],
         },
         {
-          'name': this.trans('well.rzab'),
-          'data': gdisCurrentValueBhp,
-          'type': ['dob_oil']
+          name: this.trans("well.rpl_sl_gdis"),
+          data: gdisComplex,
+          type: ["all"],
         },
         {
-          'name': this.trans('well.rzatr'),
-          'data': rzatrAtm,
-          'type': ['dob_oil']
+          name: this.trans("well.rzab"),
+          data: gdisCurrentValueBhp,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.rzatr_stat'),
-          'data': rzatrStat,
-          'type': ['dob_oil'],
-          'codes': ['KGM']
+          name: this.trans("well.rzatr"),
+          data: rzatrAtm,
+          type: ["dob_oil"],
         },
         {
-          'name': this.trans('well.note'),
-          'data': gdisCurrent_note,
-          'type': ['all']
+          name: this.trans("well.rzatr_stat"),
+          data: rzatrStat,
+          type: ["dob_oil"],
+          codes: ["KGM"],
         },
-      ]
-      this.well_passport = this.rebuildRightSidebar(this.well_passport,category_id,well_expl_name,main_org_code)
+        {
+          name: this.trans("well.note"),
+          data: gdisCurrent_note,
+          type: ["all"],
+        },
+      ];
+      this.well_passport = this.rebuildRightSidebar(
+        this.well_passport,
+        category_id,
+        well_expl_name,
+        main_org_code
+      );
     },
-    rebuildRightSidebar(data,category_id,well_expl_name,main_org_code)
-    {
-        let well_passport_data=[]
+    rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
+      let well_passport_data = [];
 
-        data.forEach(function(item)
-        {
-          let type = item.type
-          let exp = item.exp
-          let codes = item.codes
-          let types = {13:'dob_oil',9:'nabl',5:'nag'}
-          if(type.indexOf(types[category_id])!= -1 || type.indexOf('all')!= -1 )
-          {
-             if(exp==1 && well_expl_name!='УШГН')
-             {
-               return
-             }
-
-             if(codes && codes.indexOf(main_org_code)!= -1)
-             {
-               return
-             }
-            well_passport_data.push(item)
+      data.forEach(function (item) {
+        let type = item.type;
+        let exp = item.exp;
+        let codes = item.codes;
+        let types = { 13: "dob_oil", 9: "nabl", 5: "nag" };
+        if (
+          type.indexOf(types[category_id]) != -1 ||
+          type.indexOf("all") != -1
+        ) {
+          if (exp == 1 && well_expl_name != "УШГН") {
+            return;
           }
-        })      
-      return well_passport_data
+
+          if (codes && codes.indexOf(main_org_code) != -1) {
+            return;
+          }
+          well_passport_data.push(item);
+        }
+      });
+      return well_passport_data;
     },
     selectWell(well) {
-      if(well)
-      {
+      if (well) {
         this.SET_LOADING(true);
-        this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-          try {
-            this.well_all_data = data
-            this.well.id = data.wellInfo.id
-            this.wellUwi = data.wellInfo.uwi
-            if (data.geo[Object.keys(data.geo).length - 1] != null) {
-              this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
-            }
-            if (data.geo[0] != null) {
-              this.wellGeo = data.geo[0]
-            }
-            if (data.spatial_object.coord_point != null) {
-              let spatialObject
-              spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-              spatialObject = spatialObject.split(',')
-              this.wellSaptialObjectX = spatialObject[0]
-              this.wellSaptialObjectY = spatialObject[1]
-            }
-            if (data.spatial_object_bottom.coord_point != null) {
-              let spatialObjectBottom
-              spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-              spatialObjectBottom = spatialObjectBottom.split(',')
-              this.wellSaptialObjectBottomX = spatialObjectBottom[0]
-              this.wellSaptialObjectBottomY = spatialObjectBottom[1]
-            }
-            for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-              this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-            }
+        this.axios
+          .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
+          .then(({ data }) => {
+            try {
+              this.well_all_data = data;
+              this.well.id = data.wellInfo.id;
+              this.wellUwi = data.wellInfo.uwi;
+              if (data.geo[Object.keys(data.geo).length - 1] != null) {
+                this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
+              }
+              if (data.geo[0] != null) {
+                this.wellGeo = data.geo[0];
+              }
+              if (data.spatial_object.coord_point != null) {
+                let spatialObject;
+                spatialObject = data.spatial_object.coord_point
+                  .replace("(", "")
+                  .replace(")", "");
+                spatialObject = spatialObject.split(",");
+                this.wellSaptialObjectX = spatialObject[0];
+                this.wellSaptialObjectY = spatialObject[1];
+              }
+              if (data.spatial_object_bottom.coord_point != null) {
+                let spatialObjectBottom;
+                spatialObjectBottom = data.spatial_object_bottom.coord_point
+                  .replace("(", "")
+                  .replace(")", "");
+                spatialObjectBottom = spatialObjectBottom.split(",");
+                this.wellSaptialObjectBottomX = spatialObjectBottom[0];
+                this.wellSaptialObjectBottomY = spatialObjectBottom[1];
+              }
+              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+                this.setWellObjectData(
+                  Object.keys(this.wellTransform)[i],
+                  Object.values(this.wellTransform)[i],
+                  data
+                );
+              }
 
-            this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-            this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-            this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-            this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
-
-          } catch (e) {
+              this.wellTechsName = this.getMultipleValues(
+                data.techs,
+                "name_ru"
+              );
+              this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
+              this.wellOrgName = this.getMultipleValues(
+                data.org.reverse(),
+                "name_ru"
+              );
+              this.tubeNomOd = this.getMultipleValues(data.tube_nom, "od");
+            } catch (e) {
+              this.SET_LOADING(false);
+            }
+            this.setWellPassport();
             this.SET_LOADING(false);
-          }
-          this.setWellPassport()
-          this.SET_LOADING(false);
-        })
+          });
       }
-    }, 
+    },
     getMultipleValues(objectName, objectKey) {
-      let value = ''
+      let value = "";
       for (let i = 0; i < Object.keys(objectName).length; i++) {
         if (i + 1 < Object.keys(objectName).length) {
-          value += objectName[i][objectKey] + ' / '
+          value += objectName[i][objectKey] + " / ";
         } else {
-          value += objectName[i][objectKey]
+          value += objectName[i][objectKey];
         }
       }
-      return (value)
+      return value;
     },
-    getTechmodeOil(well){   
-      if(this.well.techModeProdOil && this.well.dmart_daily_prod_oil){
-        if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
-          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+    getTechmodeOil(well) {
+      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
+        if (
+          this.well.techModeProdOil.oil &&
+          this.well.dmart_daily_prod_oil.oil
+        ) {
+          return (
+            this.well.techModeProdOil.oil.toFixed(1) +
+            " / " +
+            this.well.dmart_daily_prod_oil.oil.toFixed(1)
+          );
         }
-        if(this.well.techModeProdOil.oil){
-          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+        if (this.well.techModeProdOil.oil) {
+          return this.well.techModeProdOil.oil.toFixed(1) + " / " + "-";
         }
-        if(this.well.dmart_daily_prod_oil.oil){
-          return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+        if (this.well.dmart_daily_prod_oil.oil) {
+          return "-" + " / " + this.well.dmart_daily_prod_oil.oil.toFixed(1);
         }
-      } 
-      return ''
+      }
+      return "";
     },
-    getInjPressure(well){               
-      if(this.well.tech_mode_inj && this.well.meas_water_inj){
-          if(this.well.tech_mode_inj.inj_pressure != null && this.well.meas_water_inj.pressure_inj != null){
-             return this.well.tech_mode_inj.inj_pressure +' / '+ this.well.meas_water_inj.pressure_inj
-          }
-          if(this.well.tech_mode_inj.inj_pressure === null){
-            return '-' + ' / ' + this.well.meas_water_inj.pressure_inj
-          }
-          if(this.well.meas_water_inj.pressure_inj === null){
-            return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
-          }
-          return ''
+    getInjPressure(well) {
+      if (this.well.tech_mode_inj && this.well.meas_water_inj) {
+        if (
+          this.well.tech_mode_inj.inj_pressure != null &&
+          this.well.meas_water_inj.pressure_inj != null
+        ) {
+          return (
+            this.well.tech_mode_inj.inj_pressure +
+            " / " +
+            this.well.meas_water_inj.pressure_inj
+          );
+        }
+        if (this.well.tech_mode_inj.inj_pressure === null) {
+          return "-" + " / " + this.well.meas_water_inj.pressure_inj;
+        }
+        if (this.well.meas_water_inj.pressure_inj === null) {
+          return this.well.tech_mode_inj.inj_pressure + " / " + "-";
+        }
+        return "";
       }
-      if(this.well.tech_mode_inj === null){
-        return ''
+      if (this.well.tech_mode_inj === null) {
+        return "";
       }
-      if(this.well.meas_water_inj === null){
-        return ''
+      if (this.well.meas_water_inj === null) {
+        return "";
       }
-      if(this.well.tech_mode_inj.inj_pressure){        
-        return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
+      if (this.well.tech_mode_inj.inj_pressure) {
+        return this.well.tech_mode_inj.inj_pressure + " / " + "-";
       }
-      if(this.well.meas_water_inj.pressure_inj){
-        return '-' + ' / ' + this.well.meas_water_inj.pressure_inj        
-      }      
-      return ''
+      if (this.well.meas_water_inj.pressure_inj) {
+        return "-" + " / " + this.well.meas_water_inj.pressure_inj;
+      }
+      return "";
     },
     setWellObjectData(key, path, source) {
       try {
         if (source[path] != null) {
-          this.well[key] = source[path]
+          this.well[key] = source[path];
         } else {
-          variable = null
+          variable = null;
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     },
     switchFormByCode(data) {
       this.activeForm = data;
       this.activeFormComponentName = data.component_name;
-      this.activeFormComponentName ? this.activeFormComponentName : 'ProductionWellsScheduleMain'
-
-
+      this.activeFormComponentName
+        ? this.activeFormComponentName
+        : "ProductionWellsScheduleMain";
     },
     getFormatedDate(data) {
-      if (data != null && data != '') {
-        return moment(data).format('DD.MM.YYYY')
+      if (data != null && data != "") {
+        return moment(data).format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {
-        this.isLeftColumnFolded = !value;
-        this.isRightColumnFolded = !value;
-        this.isBothColumnFolded = !value;
+      this.isLeftColumnFolded = !value;
+      this.isRightColumnFolded = !value;
+      this.isBothColumnFolded = !value;
     },
     dzoSelectChange(event) {
       this.selectedUserDzo = event.target.value;
       this.options = [];
       this.wellUwi = null;
-    }
+    },
   },
   computed: {
-    ...bigdatahistoricalVisibleState(['isInjectionWellsHistoricalVisible','isProductionWellsHistoricalVisible']),
-    tableData: function ()
-    {
-        return this.well_passport
-    }
-  }
-}
+    ...bigdatahistoricalVisibleState([
+      "isInjectionWellsHistoricalVisible",
+      "isProductionWellsHistoricalVisible",
+    ]),
+    tableData: function () {
+      return this.well_passport;
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
-$leftColumnWidth: 385px;
-$leftColumnFoldedWidth: 84px;
-$rightColumnWidth: 348px;
-$rightColumnFoldedWidth: 84px;
+$leftColumnWidth: 300px;
+$leftColumnFoldedWidth: 50px;
+$rightColumnWidth: 300px;
+$rightColumnFoldedWidth: 50px;
+.well-card_tab-head {
+  display: flex;
+  background: #272953;
+  margin-bottom: 5px;
+  overflow-y: auto;
+  width: 1465px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #181837;
+    height: 4px !important;
+    width: 4px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #656a8a;
+    border-radius: 10px;
+    height: 2px !important;
+    width: 2px !important;
+    border: 3px solid #181837;
+  }
+}
+.well-card_tab-head__item {
+  color: #fff;
+  padding: 6px 25px 6px 7px;
+  position: relative;
+  margin-right: 2px;
+  position: relative;
+  background: #363b68;
+  font-weight: bold;
+  font-size: 11px;
+  white-space: nowrap;
+  & span {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-image: url(/img/bd/close_tab.svg);
+    width: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  &.active,
+  &:hover {
+    background: #2e50e9;
+    cursor: pointer;
+  }
+}
+.info-element-head {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 15px;
+  text-align: center;
+}
+.doc-pasport-head {
+  display: flex;
+  padding: 6px 8px;
+  align-items: center;
+  border-bottom: 2px solid #363b68;
+  display: flex;
+  font-size: 14px;
+  color: #fff;
+}
+.doc-pasport .bg-dark-transparent {
+  padding-bottom: 0;
+}
+.doc-pasport {
+  position: relative;
+  .icon-all {
+    left: 0;
+    border-radius: 0px 5px 5px 0px;
+  }
+}
+.search-bd {
+  display: flex;
+  background: #121227;
+  border: 1px solid #363b68;
+  margin-bottom: 2px;
+}
+.search-btn-bd {
+  border: none;
+  background: none;
+  width: 27px;
+  height: 27px;
+}
+.search-input-bd {
+  width: 100%;
+  width: calc(100% - 30px);
+  border: none;
+  background: #0000;
+  border-left: 0.6px solid #363b68;
+  padding: 0 6px;
+  outline: none;
+  color: #fff;
+}
+.search-input-bd::placeholder {
+  color: #fff;
+}
 .well-card {
   &__wrapper {
-    height: calc(100vh - 90px);
+    height: calc(100vh - 135px);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
   }
 }
 .fixed-mid-col {
-  min-width: calc(100% - 385px - 348px - 24px);
+  min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
   height: calc(100vh - 90px);
 }
@@ -1054,19 +1550,19 @@ $rightColumnFoldedWidth: 84px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #40467E;
+  background: #40467e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #656A8A;
+  background: #656a8a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #656A8A;
+  background: #656a8a;
 }
 
 ::-webkit-scrollbar-corner {
-  background: #20274F;
+  background: #20274f;
 }
 
 .flex {
@@ -1088,19 +1584,18 @@ $rightColumnFoldedWidth: 84px;
   padding: 10px;
 
   h6 {
-    color: #FEFEFE;
+    color: #fefefe;
     font-weight: 400;
     font-size: 24px;
     padding-left: 20px;
     margin-bottom: auto;
     margin-top: auto;
-
   }
 
   p {
     text-align: center;
     width: 100%;
-    color: #FEFEFE;
+    color: #fefefe;
     font-weight: 400;
     font-size: 24px;
     padding-left: 20px;
@@ -1112,14 +1607,13 @@ $rightColumnFoldedWidth: 84px;
     padding-top: 10px;
     padding-left: 40px;
     display: flex;
-
   }
 
   .search-form {
     .search-input {
       width: 100%;
       margin-bottom: 20px;
-      background: url(/img/bd/search.svg) 1% no-repeat #4F5979;
+      background: url(/img/bd/search.svg) 1% no-repeat #4f5979;
       font-size: 16px;
       padding: 10px 0px 10px 30px;
       border-radius: 10px;
@@ -1129,9 +1623,9 @@ $rightColumnFoldedWidth: 84px;
       height: 40px;
       font-size: 14px;
       flex-direction: row-reverse;
-      background: #4F5979;
+      background: #4f5979;
       width: 65%;
-      border-radius: 10PX;
+      border-radius: 10px;
       color: white;
       margin-right: 7px;
     }
@@ -1140,12 +1634,11 @@ $rightColumnFoldedWidth: 84px;
       height: 40px;
       font-size: 14px;
       flex-direction: row-reverse;
-      background: #4F5979;
-      border-radius: 10PX;
+      background: #4f5979;
+      border-radius: 10px;
       color: white;
       margin-left: auto;
     }
-
   }
 
   .b-button-container {
@@ -1158,15 +1651,15 @@ $rightColumnFoldedWidth: 84px;
       height: 40px;
       font-size: 14px;
       flex-direction: row-reverse;
-      background: #4F5979;
+      background: #4f5979;
       width: 130px;
-      border-radius: 10PX;
+      border-radius: 10px;
       color: white;
       margin-right: 7px;
     }
 
     .accept {
-      background: #2E50E9;
+      background: #2e50e9;
       margin-left: auto;
       margin-right: auto;
     }
@@ -1175,7 +1668,7 @@ $rightColumnFoldedWidth: 84px;
       margin-left: auto;
       margin-right: auto;
       background: #132152;
-      color: #ABADB8;
+      color: #abadb8;
     }
   }
 }
@@ -1195,13 +1688,12 @@ $rightColumnFoldedWidth: 84px;
     height: 40px;
     font-size: 14px;
     flex-direction: row-reverse;
-    background: #4F5979;
+    background: #4f5979;
     width: 130px;
-    border-radius: 10PX;
+    border-radius: 10px;
     color: white;
     margin-right: 7px;
   }
-
 }
 
 .b-popup .b-popup-content {
@@ -1229,14 +1721,13 @@ h4 {
   padding: 15px 19px;
 
   &__header {
-    border-bottom: 1px solid #555BA6;
-    display: flex;
-    height: 45px;
-    width: 100%;
-
-    .title {
-      display: flex;
-    }
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ffffff;
+    background: #272953;
+    border: 1px solid #2e325c;
+    padding: 6px 8px;
+    margin-bottom: 2px;
   }
 
   h2 {
@@ -1257,7 +1748,8 @@ h4 {
 .new-directory {
   color: whitesmoke;
 
-  ul, li {
+  ul,
+  li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1287,7 +1779,7 @@ h4 {
     margin: 0;
     position: relative;
     bottom: 1em;
-    background: #20274F;
+    background: #20274f;
   }
 
   li ul {
@@ -1314,16 +1806,16 @@ h4 {
   }
 
   .title {
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 700;
     font-size: 14px;
     line-height: 17px;
-    border-bottom: 1px solid #2D43B4;
+    border-bottom: 1px solid #2d43b4;
     padding-top: 8px;
   }
 
   p {
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
@@ -1332,7 +1824,7 @@ h4 {
 
   span {
     font-weight: 600;
-    color: #82BAFF;
+    color: #82baff;
   }
 
   .well-info {
@@ -1347,9 +1839,9 @@ h4 {
 .directory {
   display: block;
   width: 100%;
-  padding: 10px;
-  margin: 10px 40px 10px 25px;
-
+  padding: 10px 17px 10px 7px;
+  height: calc(100% - 67px);
+  overflow-y: auto;
   ul {
     list-style: none;
   }
@@ -1365,7 +1857,7 @@ h4 {
   }
 
   .names {
-    color: #999DC0;
+    color: #999dc0;
   }
 
   .icon-directory {
@@ -1380,9 +1872,9 @@ h4 {
     height: 100%;
     padding: 0 15px 0 10px;
     margin-top: 2px;
-    border-top: 1px dashed #555BA6;
-    border-left: 1px dashed #555BA6;
-    border-bottom: 1px dashed #555BA6;
+    border-top: 1px dashed #555ba6;
+    border-left: 1px dashed #555ba6;
+    border-bottom: 1px dashed #555ba6;
   }
 
   .pointer {
@@ -1392,7 +1884,7 @@ h4 {
   }
 
   &:first-child {
-    border-top: 1px solid #555BA6;
+    border-top: 1px solid #555ba6;
   }
 }
 
@@ -1407,20 +1899,9 @@ h4 {
 }
 
 .heading {
-  margin-left: 11.19px;
-  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-  color: white;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 700;
-  display: flex;
-  height: 48px;
 
   p {
-    margin: auto;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19px;
+    margin: 0;
   }
 }
 
@@ -1447,14 +1928,14 @@ h4 {
       margin-top: 114.67px;
       margin-left: 11.6px;
       background: none;
-      font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+      font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
       font-weight: 400;
       font-size: 10px;
       line-height: 12px;
 
       p {
         background: none;
-        font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+        font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
         font-weight: 400;
         font-size: 10px;
         line-height: 12px;
@@ -1464,8 +1945,7 @@ h4 {
         font-weight: 700;
         font-size: 14px;
         line-height: 16.8px;
-        color: #82BAFF;
-
+        color: #82baff;
       }
     }
   }
@@ -1473,7 +1953,7 @@ h4 {
   p {
     margin-left: auto;
     color: white;
-    background-color: #A18F47;
+    background-color: #a18f47;
   }
 
   .icon-container {
@@ -1497,9 +1977,8 @@ h4 {
   position: relative;
 
   :focus {
-    background: #2E50E9;
+    background: #2e50e9;
   }
-
 }
 
 .small-select {
@@ -1522,12 +2001,12 @@ h4 {
   }
 
   :focus {
-    background: #2E50E9;
+    background: #2e50e9;
     border: 0;
   }
 
   :visited {
-    background: #2E50E9;
+    background: #2e50e9;
     border: 0;
   }
 }
@@ -1540,7 +2019,7 @@ h4 {
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
-  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+  font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
 
   &:focus {
     color: white;
@@ -1558,7 +2037,7 @@ h4 {
   .table-container-header {
     text-align: center;
     padding: 14px 20px 0 20px;
-    background-color: #32346C;
+    background-color: #32346c;
   }
 
   .table-container-column-header {
@@ -1617,7 +2096,7 @@ h4 {
       min-height: 40px;
 
       &:nth-child(2n) {
-        background-color: #31355E;
+        background-color: #31355e;
       }
     }
   }
@@ -1628,7 +2107,7 @@ h4 {
 
   .table-border {
     border-top: hidden;
-    border-left: 1px solid #464D7A;
+    border-left: 1px solid #464d7a;
     border-bottom: hidden;
     border-right: hidden;
 
@@ -1640,35 +2119,30 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 169px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
 
   table {
-    margin: 0px 10px;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-    border-collapse: collapse;
-    width: 100%;
-
-    th {
-      background: #333975;
-    }
+    background: #ffff99;
+    color: #000;
+    font-size: 14px;
   }
 
-  td, th {
-    border: 1px solid #454D7D;
+  td,
+  th {
+    border: 1px solid #454d7d;
     text-align: left;
-    padding: 8px;
+    padding: 2px;
+    font-size: 13px;
   }
 
-  tr:nth-child(2n) {
-    background-color: #2B2E5E;
-  }
+
 
   .heading {
     padding: 11px 0 15px 13px;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 700;
   }
 
@@ -1676,21 +2150,19 @@ h4 {
     p {
       padding: 10px 10px 12px 14px;
       margin: 0;
-      font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+      font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
       font-weight: 400;
       font-size: 16px;
     }
   }
 
   .rotate {
-    transform: rotate(-90deg);
-    margin-top: 100px;
-    margin-bottom: 10px;
+    transform: rotate(-90deg) translateY(-35px);
     display: flex;
     white-space: nowrap;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -1701,13 +2173,18 @@ h4 {
 }
 
 .icon-all {
-  float: left;
-  height: 20px;
-  width: 20px;
-  border-radius: 15px;
-  margin-top: auto;
-  margin-bottom: auto;
-
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2b3384;
+  border-radius: 5px 0px 0px 5px;
+  top: 50%;
+  transform: translateY(-50%);
   :hover {
     cursor: pointer;
   }
@@ -1744,11 +2221,11 @@ h4 {
 }
 
 .dropdown-menu.show {
-  background: #40467E;
+  background: #40467e;
   color: white;
   width: 100%;
   padding: 0 7px 0 16px;
-  border: 1px solid #2E50E9;
+  border: 1px solid #2e50e9;
   border-radius: 8px;
   margin-top: 7px;
 
@@ -1764,11 +2241,10 @@ h4 {
     display: flex;
     width: 100%;
 
-    input[type=checkbox] {
+    input[type="checkbox"] {
       width: 5%;
       margin-left: auto;
     }
-
   }
 
   .flag {
@@ -1803,18 +2279,17 @@ h4 {
     height: 20px;
     width: 20px;
     border-radius: 6px;
-    border: 2px solid #237DEB;
+    border: 2px solid #237deb;
     margin-bottom: auto;
     margin-top: auto;
   }
 
   .container:hover input ~ .checkmark {
-    background-color: #6A6D9C;
+    background-color: #6a6d9c;
   }
 
   .container input:checked ~ .checkmark {
-    background: #2196F3;
-
+    background: #2196f3;
   }
 
   .checkmark:after {
@@ -1839,7 +2314,6 @@ h4 {
     position: inherit;
     margin: auto;
   }
-
 }
 
 .dropdown-menu :last-child {
@@ -1847,7 +2321,7 @@ h4 {
 }
 
 .select-button {
-  background: #656A8A;
+  background: #656a8a;
   width: 100%;
   overflow: hidden;
   border-radius: 10px;
@@ -1889,7 +2363,7 @@ h4 {
 }
 
 .sheare-text {
-  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+  font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
   color: white;
   margin: auto 11.19px auto 0px;
   font-weight: 700;
@@ -1899,7 +2373,7 @@ h4 {
 
 .bg-dark {
   padding-bottom: 20px;
-  margin-bottom: 20px;
+
 }
 
 .center {
@@ -1912,7 +2386,7 @@ h4 {
     font-size: 20px;
     font-weight: 400;
     line-height: 24px;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
   }
 }
 
@@ -1922,7 +2396,6 @@ h4 {
 
 .bg-dark-transparent {
   background-color: rgba(39, 41, 83, 0.85);
-  padding-bottom: 20px;
 
   .graphics {
     height: 333px;
@@ -1931,29 +2404,29 @@ h4 {
 }
 
 .blue-section {
-  color: #82BAFF;
+  color: #82baff;
 }
 
 .scrollable {
   &::-webkit-scrollbar {
-    height: 10px;
+    height: 4px;
     width: 4px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #40467E;
+    background: #40467e;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #656A8A;
+    background: #656a8a;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #656A8A;
+    background: #656a8a;
   }
 
   &::-webkit-scrollbar-corner {
-    background: #20274F;
+    background: #20274f;
   }
 }
 
@@ -2003,14 +2476,18 @@ h4 {
       border: none;
     }
 
-    .title, .directory {
+    .title,
+    .directory {
       display: none;
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 24px) !important;
+      min-width: calc(
+        100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 24px
+      ) !important;
+      max-width: none !important;
+      min-width: none !important;
     }
-
   }
 
   &__inner {
@@ -2021,29 +2498,25 @@ h4 {
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
-  padding: 0 0 0 15px;
-  margin-right: 15px;
+  position: relative;
   margin-bottom: 0;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-
   .rotate {
     color: white;
     white-space: nowrap;
-    transform: rotate(-90deg);
+    transform: rotate(-90deg) translateY(-30px);
     display: flex;
-    padding-bottom: 50px;
-    padding-right: 20px;
     font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 500;
   }
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
-
+    background: #272953;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     .icon-all {
       transform: rotate(180deg);
     }
@@ -2052,18 +2525,22 @@ h4 {
       border: none;
     }
 
-    .title, .directory {
+    .title,
+    .directory,
+    .well-deal__header,
+    .search-bd {
       display: none;
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 24px);
+      min-width: calc(
+        100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 24px
+      );
     }
 
     .scrollable {
       height: 100%;
     }
-
   }
 
   &__inner {
@@ -2087,12 +2564,10 @@ h4 {
   padding-left: 15px;
   flex: 0 0 5%;
 
-
   &__inner {
     height: 100%;
-    margin-left: 15px;
-    min-width: 340px;
-    max-width: 340px;
+    background: rgba(39, 41, 83, 0.85);
+    width: 300px;
   }
 
   &_folded {
@@ -2100,18 +2575,28 @@ h4 {
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
     margin: 0px;
-    padding: 0px 15px;
-
+    background: #272953;
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px);
+      min-width: calc(
+        100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px
+      );
     }
 
+    & .info[data-v-b1a5f7e2] {
+      align-items: center;
+      display: flex;
+    }
     .icon-all {
       transform: rotate(180deg);
-      padding-bottom: 25px;
     }
 
-    p {
+    .small_history_table .historical-info-parent {
+      width: 810px;
+      /* overflow: hidden; */
+    }
+    p,
+    .heading,
+    .doc-pasport-head {
       display: none;
     }
 
@@ -2132,18 +2617,14 @@ h4 {
 .calc-width {
   flex: calc(100% - 250px);
   max-width: calc(100% - 250px);
-
 }
 
 .mid-col {
   min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 24px);
   padding: 0 15px;
-  height: calc(100vh - 90px);
-
+  height: calc(100vh - 135px);
+  overflow-y: auto;
   &__main {
-    height: 100%;
-    overflow: hidden;
-
     &-inner {
       margin-bottom: 0;
     }
@@ -2162,7 +2643,7 @@ h4 {
     padding: 2.59px 5px 5px 5.55px;
     font-size: 14px;
     font-weight: 700;
-    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
     line-height: 16px;
   }
 }
@@ -2191,11 +2672,13 @@ h4 {
     .vs__actions {
       padding: 0 5px;
 
-      .vs__clear, .vs__open-indicator {
+      .vs__clear,
+      .vs__open-indicator {
         display: none;
       }
 
-      .vs__spinner, .vs__spinner:after {
+      .vs__spinner,
+      .vs__spinner:after {
         border-color: rgba(238, 238, 238, 0.7);
         border-left-color: rgba(170, 170, 170, 0.7);
       }
@@ -2216,17 +2699,17 @@ h4 {
 }
 
 .select-dzo {
-    height: 2.2rem;
-    background-color: #494aa5;
-    color: white;
-    outline: none;
-    border: 1px #494aa5 solid;
-    border-radius: 5px;
-    margin-top: -1px;
+  height: 2.2rem;
+  background-color: #494aa5;
+  color: white;
+  outline: none;
+  border: 1px #494aa5 solid;
+  border-radius: 5px;
+  margin-top: -1px;
 }
 
-.select-dzo:hover{
-    border: 1px solid transparent;
-    box-shadow: inset 0 0px 0px 1px #ccc;
+.select-dzo:hover {
+  border: 1px solid transparent;
+  box-shadow: inset 0 0px 0px 1px #ccc;
 }
 </style>
