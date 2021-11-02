@@ -1,7 +1,9 @@
 <template>
   <div class="column" ref="column" :style="{height: `${heightContainer - columnTopPadding}px`}">
     <div class="column__header d-flex flex-column" :style="{height: `${headerHeight}px`}">
-      <div v-for="(el, i) in elements" :key="i" v-show="getElements.includes(el.data.name)||el.data.name === 'SSTVD'">
+      <div
+          v-for="(el, i) in elements.filter((element)=>getElements.includes(element.data.name)||element.data.name === 'SSTVD')"
+          :key="i">
         <div class="column__header_info">
           {{ el.data.name }}
         </div>
@@ -15,11 +17,14 @@
 </template>
 
 <script>
+import TCanvas from "./utils/TCanvas";
+
 export default {
   name: "AwGisColumn",
   props: {
     depthColumnWidth: Number,
     headerHeight: Number,
+    wellName: String,
     columnName: String,
     heightContainer: Number,
     columnTopPadding: Number,
@@ -28,39 +33,53 @@ export default {
   },
   data() {
     return {
-      ctx: null,
-      offsetDepth: this.offsetY,
+      canvas: null,
+      columnElements: this.elements,
+      selectedGisCurves: [],
+      tCanvas: new TCanvas()
     }
   },
   watch: {
     headerHeight() {
       this.setCanvasSize()
-    }
-  },
-  computed:{
-    getElements() {
-      return this.$store.state.geologyGis.selectedGisCurves;
     },
-    getOffsetDepth: {
-      get() {
-        return this.offsetDepth;
-      },
-      set(val) {
-        this.offsetDepth = val;
+    offsetY(val){
+      if(this.elements[0].data.name !== 'SSTVD'){
+        this.tCanvas.setOffsetY = val*10;
+        this.draw();
+      }
+    },
+    "$store.state.geologyGis.changeGisData"() {
+      if(this.elements[0].data.name !== 'SSTVD'){
+        this.draw();
       }
     }
   },
+  computed: {
+    getElements() {
+      return this.$store.state.geologyGis.selectedGisCurves;
+    },
+  },
   mounted() {
     let {depthCanvas} = this.$refs;
-    this.ctx = depthCanvas.getContext('2d');
-    this.$emit('update:context', this.ctx)
+    this.tCanvas.setCanvas = this.canvas = depthCanvas;
     this.setCanvasSize();
   },
   methods: {
+    draw() {
+      this.tCanvas.clearCanvas();
+      for (const {data:{name}} of this.elements) {
+        let {data: {curves}, options} = this.$store.state.geologyGis.awGis.getElement(name)
+        for (const [wellID, curve] of Object.entries(curves)) {
+          if(wellID !== this.wellName) continue;
+          this.tCanvas.drawCurve(curve, {options, wellID})
+        }
+      }
+    },
     setCanvasSize() {
       let {depthCanvas} = this.$refs;
       depthCanvas.height = this.heightContainer - this.headerHeight - this.columnTopPadding;
-      this.$emit('resized', {context: this.ctx});
+      this.$emit('resized', [depthCanvas, this.columnElements]);
     },
   }
 }

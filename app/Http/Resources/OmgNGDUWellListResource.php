@@ -28,7 +28,7 @@ class OmgNGDUWellListResource extends CrudListResource
                 'daily_fluid_production' => $this->daily_fluid_production,
                 'daily_water_production' => $this->daily_water_production,
                 'daily_oil_production' => $this->daily_oil_production,
-                'gas_factor' => $daily_gas_production ? $daily_gas_production : '',
+                'daily_gas_production' => $daily_gas_production ? $daily_gas_production : '',
                 'pressure' => $this->pressure,
                 'temperature' => $this->temperature_zu,
                 'sg_oil' => $this->sg_oil,

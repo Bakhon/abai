@@ -137,6 +137,6 @@ class OilCondensateConsolidatedWithoutKmg {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType,false);
     }
 }

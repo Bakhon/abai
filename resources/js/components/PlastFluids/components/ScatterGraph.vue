@@ -63,7 +63,7 @@ import BaseModal from "./BaseModal.vue";
 import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
 import _ from "lodash";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { convertToFormData, between } from "../helpers";
 import { getCorrelationData } from "../services/graphService";
 
@@ -86,6 +86,7 @@ export default {
       isApproximationOpen: false,
       isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
+      prevPoint: null,
       currentSeries: null,
       graphSeries: [],
       approximation: [],
@@ -118,6 +119,7 @@ export default {
         },
         markers: {
           size: [4, 0],
+          discrete: [],
         },
         tooltip: {
           shared: false,
@@ -255,6 +257,7 @@ export default {
             tickAmount: 4,
           },
         };
+        this.SET_CURRENT_SELECTED_SAMPLES("clear");
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,
@@ -272,6 +275,28 @@ export default {
       },
       immediate: true,
     },
+    currentSelectedSamples: {
+      handler(value) {
+        const temp = _.cloneDeep(this.graphSeries);
+        const selectedSamples = [];
+        const unselectedSamples = temp[0].data.reduce((initial, item) => {
+          if (value.includes(item.key)) {
+            selectedSamples.push({
+              ...item,
+              fillColor: "#009000",
+            });
+            return initial;
+          }
+          const obj = { x: item.x, y: item.y, key: item.key };
+          initial.push(obj);
+          return initial;
+        }, []);
+        const samples = unselectedSamples.concat(selectedSamples);
+        temp[0].data = samples;
+        this.graphSeries = temp;
+      },
+      deep: true,
+    },
   },
   computed: {
     ...mapState("plastFluids", [
@@ -283,6 +308,7 @@ export default {
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",
       "currentBlocks",
+      "currentSelectedSamples",
     ]),
     heading() {
       return this.currentSeries
@@ -298,6 +324,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_SELECTED_SAMPLES"]),
     exitFullScreen() {
       this.isFullScreen = false;
     },
@@ -447,12 +474,14 @@ export default {
         };
       }
     },
-    handleMarkerClick(
+    handleDataPointSelection(
       event,
       chartContext,
-      { seriesIndex, dataPointIndex, config }
+      { dataPointIndex, seriesIndex }
     ) {
-      console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
+      this.SET_CURRENT_SELECTED_SAMPLES(
+        this.graphSeries[seriesIndex].data[dataPointIndex].key
+      );
     },
     handleModalResponse() {
       this.removeSeries(this.currentSeries);
@@ -467,12 +496,10 @@ export default {
             larger = true;
           }
           if (larger) {
-            point.label.borderColor = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
-            point.label.style.background = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
+            point.label.borderColor =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
+            point.label.style.background =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
             point.x = this.r2AndEquationHelper(
               this.currentAnnotationColorIndex - 1,
               1
@@ -534,7 +561,8 @@ export default {
       exprt.exportToPng();
     },
     setEvents() {
-      this.chartOptions.chart.events.markerClick = this.handleMarkerClick;
+      this.chartOptions.chart.events.dataPointSelection =
+        this.handleDataPointSelection;
       this.chartOptions.chart.events.legendClick = this.openRemoveModal;
     },
 
@@ -549,9 +577,9 @@ export default {
       const postTemp = {
         field_id: this.currentSubsoilField[0].field_id,
         correlations_type: this.graphType.toLowerCase(),
-        func_id: this[
-          "currentSelectedCorrelation_" + this.graphType.toLowerCase()
-        ].func_id,
+        func_id:
+          this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
+            .func_id,
         horizons: horizonIDs,
         blocks: blockIDs,
       };

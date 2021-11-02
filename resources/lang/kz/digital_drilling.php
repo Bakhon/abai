@@ -4,10 +4,10 @@ return array (
     'module_title'=> 'Сандық бұрғылау',
     'database' => 'Мәліметтер базасы',
     'general_information' => 'жалпы ақпарат',
-    'well_data_sheet' => 'ұңғыманың паспорты',
-    'drilling_rigs' => 'Буровые установки',
+    'well_data_sheet' => 'Ұңғыманың паспорты',
+    'drilling_rigs' => 'Бұрғылау қондырғылары',
     'capital_investments' => 'Күрделі салымдар',
-    'open_hole_logging' => 'ұңғымасының ашық шұңқырындағы геофизикалық зерттеу жұмыстары',
+    'open_hole_logging' => 'Ұңғымасының ашық шұңқырындағы геофизикалық зерттеу жұмыстары',
     'survey' => 'Инклинометрия',
     'well_design_menu' => 'Ұңғыманың Құрылымдығы',
     'project_fact_data' => 'Жобалар / нақты',
@@ -163,6 +163,8 @@ return array (
         'date_last_workover' => 'ұңғыманың күрделі жөндеу соңғы жұмыс күні',
         'date_last_ORS' => 'ұңғыманың күрделі жөндеу соңғы жұмыс күні',
         'date_last_GIS' => 'геофизикалық зерттеулердің соңғы күні',
+        'contract_date' => 'Келісімшарт  күні',
+        'contract_amount' => 'Келісімшарт сомасы',
     ],
 
     'inclino' => [
@@ -218,13 +220,13 @@ return array (
     ],
     'complications' => [
         'complications_project_fact' => 'Осложнения (проект/факт)',
-        'drilling_interval' => 'Интервал бурения',
-        'stratigraphic_subdivision_index' => 'Индекс стратиграфического подразделения',
-        'driving_distance_m' => 'Проходка, м',
-        'dolt_size_m' => 'Размер долта, м',
-        'specific_gravity' => 'Удельный вес, г/см3 Вязкость по СПВ-5 в сек, Фильтрация см3/30 мин',
-        'complication_type' => 'Вид осложнения',
-        'characteristics_actual_complication' => 'Характеристика фактического осложнения',
+        'drilling_interval' => 'Бұрғылау аралығы',
+        'stratigraphic_subdivision_index' => 'Стратиграфиялық бөлімшенің индексі',
+        'driving_distance_m' => 'Барысы, м',
+        'dolt_size_m' => 'Долотоның өлшемі, мм',
+        'specific_gravity' => 'Меншікті ауырлық, г/см3 СПВ-5 сәйкес тұтқырлық сек, Сүзу см3/30 мин',
+        'complication_type' => 'Асқыну түрі',
+        'characteristics_actual_complication' => 'Нақты асқынудың сипаттамасы',
     ],
 
     'project_data' => [
@@ -239,7 +241,6 @@ return array (
         'casing' => 'Қаптау құбыры',
         'data_input' => 'Деректерді енгізу',
         'visualization' => 'Көрнекілік',
-        'tabular_data' => 'Кестелік деректер',
         'selection_OK' => 'қаптама тандау (каталог)',
         'pressure_graph' => 'Аралас қысымның графигі',
         'geological_data' => 'Геологиялық мәліметтер',
@@ -247,7 +248,7 @@ return array (
         'BR_component' => 'Бұрғылау ерітіндісінің компоненттер құрамы',
         'BHA_selection' => 'бұрғылау құралдарын тандау',
         'drilling_parameters_modes' => 'Бұрғылау параметрлері мен режимдері',
-        'daily_drilling_report' => 'Суточные рапорты по бурению',
+        'daily_drilling_report' => 'Күнделікті бұрғылау есептері',
         'casing_strings_OK' => 'Қаптау жолдары: Деректер',
         'casing_running_mode' => 'Қаптама: жұмыс режимі',
         'casing_pressure_testing' => 'Қаптама: қысымды тексеру және кернеу жақсы',
@@ -255,6 +256,7 @@ return array (
         'cementing_fluid_characteristics' => 'Цементтеу: сұйықтықтың сипаттамасы',
         'cementing_component_composition' => 'Цементтеу: Компоненттер құрамы',
         'cementing_technological_operations' => 'Цементтеу: технологиялық операциялар',
+        'tabular_data' => 'Кестелік деректер'
     ],
     'calculation' => [
         'outside_diameter_casing' => 'Қаптаманың сыртқы диаметрі',

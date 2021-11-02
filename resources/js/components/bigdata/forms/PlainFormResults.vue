@@ -387,8 +387,6 @@ export default {
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -431,7 +429,9 @@ export default {
   &-column-header {
     background-color: #505684;
     min-height: 50px;
+    position: sticky;
     text-align: center;
+    top: 0;
 
     .row {
       flex-wrap: nowrap;

@@ -163,6 +163,8 @@ return array (
         'date_last_workover' => 'Last workover date',
         'date_last_ORS' => 'Last workover date',
         'date_last_GIS' => 'casing calculation',
+        'contract_date' => 'Contract date',
+        'contract_amount' => 'Contract amount',
     ],
 
     'inclino' => [
@@ -218,13 +220,13 @@ return array (
     ],
     'complications' => [
         'complications_project_fact' => 'Осложнения (проект/факт)',
-        'drilling_interval' => 'Интервал бурения',
-        'stratigraphic_subdivision_index' => 'Индекс стратиграфического подразделения',
-        'driving_distance_m' => 'Проходка, м',
-        'dolt_size_m' => 'Размер долота, м',
-        'specific_gravity' => 'Удельный вес, г/см3 Вязкость по СПВ-5 в сек, Фильтрация см3/30 мин',
-        'complication_type' => 'Вид осложнения',
-        'characteristics_actual_complication' => 'Характеристика фактического осложнения',
+        'drilling_interval' => 'Drilling interval',
+        'stratigraphic_subdivision_index' => 'Stratigraphic subdivision index',
+        'driving_distance_m' => 'Penetration, m',
+        'dolt_size_m' => 'Bit size, mm',
+        'specific_gravity' => 'Specific gravity, g / cm3 Viscosity according to SPV-5 in sec, Filtration cm3 / 30 min',
+        'complication_type' => 'Complication type',
+        'characteristics_actual_complication' => 'Characteristic of actual complications',
     ],
 
     'project_data' => [
@@ -239,7 +241,6 @@ return array (
         'casing' => 'Casing',
         'data_input' => 'Data input',
         'visualization' => 'Visualization',
-        'tabular_data' => 'Tabular data',
         'selection_OK' => 'Casing selection (catalog)',
         'pressure_graph' => 'Combined pressure graph',
         'geological_data' => 'Geological data',
@@ -247,7 +248,7 @@ return array (
         'BR_component' => 'Component composition of drilling mud',
         'BHA_selection' => 'BHA selection',
         'drilling_parameters_modes' => 'Drilling mode and parameters',
-        'daily_drilling_report' => 'Суточные рапорты по бурению',
+        'daily_drilling_report' => 'Daily drilling reports',
         'casing_strings_OK' => 'Casing: Casing data',
         'casing_running_mode' => 'Casing: running mode',
         'casing_pressure_testing' => 'Casing: Casing pressure and stretching test ',
@@ -255,6 +256,7 @@ return array (
         'cementing_fluid_characteristics' => 'Cementing: liquid characteristics',
         'cementing_component_composition' => 'Casing: Component composition',
         'cementing_technological_operations' => 'Casing: Technological operations',
+        'tabular_data' => 'Tabular data',
     ],
 
     'calculation' => [
