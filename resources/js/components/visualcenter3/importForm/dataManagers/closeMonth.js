@@ -85,6 +85,8 @@ export default {
             let daysCount = this.monthDate.daysInMonth();
             if (this.monthDate.date() > 10 && this.monthDate.month() === moment().month()) {
                 daysCount = this.monthDate.clone().subtract(1,'days').date();
+            } else if (this.monthDate.month() === moment().month()) {
+                daysCount = moment().subtract(1,'days').date();
             }
 
             for (let i=1;i<=daysCount;i++) {
@@ -103,7 +105,9 @@ export default {
                 let cellDate = moment(row['column1'],'DD.MM.YYYY');
                 for (let y=2;y<=Object.keys(row).length;y++) {
                      let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
-                     row['column'+y] = fact[this.factFieldsMapping[y]];
+                     if (fact) {
+                         row['column'+y] = fact[this.factFieldsMapping[y]];
+                     }
                 }
             }
         },
@@ -182,6 +186,17 @@ export default {
             for (let i=1; i <=this.monthColumnsCount; i++) {
                 this.removeClassFromElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
             }
-        }
+        },
+        async handleMonthChange() {
+            this.monthDate = moment(this.monthDate);
+            this.SET_LOADING(true);
+            this.monthlyFact = await this.getDzoFactByPeriod();
+            this.fillMonthRows();
+            if (this.monthlyFact.length > 0) {
+                this.handleMonthFact();
+            }
+            document.querySelector('#monthGrid').refresh('all');
+            this.SET_LOADING(false);
+        },
     }
 }
