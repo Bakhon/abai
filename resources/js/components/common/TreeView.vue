@@ -110,6 +110,7 @@ export default {
         await this.getWells(this);
       }
 
+      this.assignParentToChilds(this.node);
       this.$forceUpdate()
     },
     onCheckboxClick: async function () {
@@ -121,6 +122,19 @@ export default {
         child.isChecked = val;
         child.level = level+1;
         this.updateChildren(child, level+1, val);
+      }
+    },
+    assignParentToChilds: async function(node) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        child.parent = node;
+        this.assignParentToChilds(child);
+      }
+    },
+    updateParent: async function(node, val) {
+      while(node) {
+        node.isChecked = val;
+        node = node?.parent;
       }
     },
     isHaveChildren(node) {
