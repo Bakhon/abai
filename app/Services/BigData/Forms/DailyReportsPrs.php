@@ -69,6 +69,7 @@ class DailyReportsPrs extends TableForm
                 'ww.repair_work_type',
                 'rodr.machine_type',
                 'rodr.work_done',
+                'rodr.comment',
                 't.name_ru as tech',
             )
             ->leftJoin('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
@@ -77,8 +78,8 @@ class DailyReportsPrs extends TableForm
             ->leftJoin('prod.well_tech as wt', 'w.id', 'wt.well')
             ->leftJoin('dict.tech as t', 'wt.tech', 't.id')
             ->whereIn('w.id', $wellIds)
-            ->where('ww.request_date', '<=', $filter->date)
-            ->where('ww.expected_date', '>', $filter->date)
+            ->where('ww.dbeg', '<=', $filter->date)
+            ->where('ww.dend', '>=', $filter->date)
             ->where('wrt.code', $this->repairType)
             ->where('wt.dbeg', '<=', $filter->date)
             ->where('wt.dend', '>', $filter->date)

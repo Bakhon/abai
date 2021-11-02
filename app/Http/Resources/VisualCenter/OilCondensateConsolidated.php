@@ -151,7 +151,7 @@ class OilCondensateConsolidated {
     public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
     {
         $dataType = 'production';
-        if (str_contains($type, 'delivery')) {
+        if (str_contains(strtolower($type), 'delivery')) {
             $dataType = 'delivery';
         }
         if (!is_null($dzoName)) {
@@ -166,6 +166,6 @@ class OilCondensateConsolidated {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType,true);
     }
 }

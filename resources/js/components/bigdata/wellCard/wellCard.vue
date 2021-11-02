@@ -91,7 +91,7 @@
           class="left-column "
       >
           <div class="well-deal__header">
-            Дело скважины
+            {{this.trans('well.well_passport')}}
           </div>
           <form  action="" class="search-bd">
               <button class="search-btn-bd">
@@ -114,7 +114,7 @@
           </div>
           <div v-if="isLeftColumnFolded" class="left-text">
             <div class="rotate" style="color: white">
-              Дело скважины
+              {{this.trans('well.well_passport')}}
             </div>
           </div>
         <div class="icon-all"
@@ -132,7 +132,7 @@
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
+                  {{this.trans('well.well')}}: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
@@ -143,7 +143,7 @@
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
                           @change="dzoSelectChange($event)">
-                    <option value="0" selected>Все ДЗО</option>
+                    <option value="0" selected>{{this.trans('well.all_dzo')}}</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
                     </option>
@@ -152,7 +152,7 @@
                       class="flex-fill"
                       :filterable="false"
                       :options="options"
-                      placeholder="Номер скважины"
+                      :placeholder="this.trans('well.number_well')"
                       @input="selectWell"
                       @search="onSearch"
                   >
@@ -195,33 +195,33 @@
                   </div>
                   <div class="col">
                     <div class="well-info">
-                      <div class="title">Основное</div>
-                      <p>Номер скважины:
+                      <div class="title">{{this.trans('well.general')}}</div>
+                      <p>{{this.trans('well.number_well')}}:
                         <span v-if="wellUwi">
                           {{ wellUwi }}
                         </span>
                       </p>
-                      <p>Категория скважины:
+                      <p>{{this.trans('well.category_well')}}:
                         <span v-if="well.category">
                           {{ well.category.name_ru }}
                         </span>
                       </p>
-                      <div class="title">Привязка</div>
-                      <p>Оргструктура: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
-                      <div class="title">Координаты устья</div>
-                      <p>Координаты устья X:
+                      <div class="title">{{this.trans('well.binding')}}</div>
+                      <p>{{this.trans('well.org_struct')}}: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
+                      <div class="title">{{this.trans('well.coord')}}</div>
+                      <p>{{this.trans('well.coord_x')}}:
                         <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
                       </p>
-                      <p>Координаты устья Y:
+                      <p>{{this.trans('well.coord_y')}}:
                         <span v-if="wellSaptialObjectY">
                           {{ wellSaptialObjectY }}
                         </span></p>
-                      <div class="title">Координаты забоя</div>
-                      <p>Координаты забоя X:
+                      <div class="title">{{this.trans('well.zaboi')}}</div>
+                      <p>{{this.trans('well.zaboi_x')}}:
                         <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                      <p>Координаты забоя Y:
+                      <p>{{this.trans('well.zaboi_y')}}:
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
@@ -238,7 +238,7 @@
           <template>
             <div v-if="wellUwi" class="doc-pasport-head">
                 <div class="heading">
-                  <p v-if="wellUwi">Паспорт скважины</p>
+                  <p v-if="wellUwi">{{this.trans('well.well_passport')}}</p>
                 </div>
                 <div v-if="wellUwi" class="sheare-icon">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,13 +250,12 @@
             </div>
           </template>
           <div class="info">
-            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
+            <div v-if="isRightColumnFolded" class="rotate">{{this.trans('well.well_passport')}}</div>
             <div class="info-element">
                 <div v-if="wellUwi" class="info-element-head">
-                      Общая информация
+                      {{this.trans('well.general_info')}}
                 </div>
                   <table v-if="wellUwi">
-                   
                     <tr v-for="(item, index) in this.tableData">
                       <td>{{ index + 1 }}</td>
                       <td>{{ item.name }}</td>
@@ -303,6 +302,7 @@ import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
 
+
 const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
@@ -328,6 +328,9 @@ export default {
   },
   data() {
     return {
+      well_all_data: null,
+      well_type_category: null,
+      well_passport : [],
       options: [],
       graph: null,
       activeForm: null,
@@ -352,10 +355,13 @@ export default {
         'techsName': null,
         'labResearchValue': {'value_double': null},
         'wellType': {'name_ru': null},
+        'whc_alt': null,
         'org': null,
         'geo': {'name_ru': null},
         'tubeNom': null,
         'measLiq': null,
+        'meas_water_inj': null,
+        'tech_mode_inj': null,
         'techModeProdOil': null,
         'techModeProdLiquid': null,
         'injPressure': null,
@@ -365,9 +371,11 @@ export default {
         'treatmentDate': {'treat_date': null},
         'actualBottomHole': null,
         'artificialBottomHole': null,
-        'perfActual': {'top': null, 'base': null},
+        'perfActual': {'top': null, 'base': null, 'dbeg': null},
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
+        'dmart_daily_prod_oil': { 'oil': null},
+        'dinzamer': {'value_double': null},
         'gdisCurrent': {'meas_date': null, 'note': null,},
         'gdisConclusion': {'name_ru': null,},
         'gdisCurrentValue': {'value_double': null},
@@ -375,7 +383,7 @@ export default {
         'gdisCurrentValueFlvl': {'value_double': null},
         'gdisCurrentValueStatic': {'value_double': null},
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
-        'gdisComplex': {'value_double': null, 'research_date': null},
+        'gdisComplex': {'value_double': null, 'dbeg': null, 'value_string': null},
         'gis': {'gis_date': null},
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
@@ -385,6 +393,11 @@ export default {
         'rzatrAtm': {'value_double': null},
         'gu': {'name_ru': null},
         'agms': {'name_ru': null},
+        'well_equip_param': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'pump_code': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'diametr_pump': {'value_double': null, 'value_string': null, 'equip_param': null},
+        'depth_nkt': {'value_double': null, 'value_string': null, 'equip_param': null},  
+        'type_sk': {'value_double': null, 'value_string': null, 'equip_param': null}         
       },
       wellParent: null,
       tubeNomOd: null,
@@ -399,6 +412,7 @@ export default {
       wellTransform: {
         'name': 'wellInfo.uwi',
         'wellInfo': 'wellInfo',
+        'whc_alt': 'whc_alt',
         'measWaterCut': 'meas_water_cut',
         'status': 'status',
         'category': 'category',
@@ -408,10 +422,14 @@ export default {
         'tap': 'tap',
         'labResearchValue': 'lab_research_value',
         'wellType': 'well_type',
+        'dmart_daily_prod_oil': 'dmart_daily_prod_oil',
         'org': 'org',
         'geo': 'geo',
         'tubeNom': 'tube_nom',
-        'measLiq': 'meas_liq',
+        'dinzamer': 'dinzamer',
+        'measLiq': 'measLiq',
+        'meas_water_inj': 'meas_water_inj',
+        'tech_mode_inj': 'tech_mode_inj',
         'techModeProdOil': 'techModeProdOil',
         'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
         'injPressure': 'tech_mode_inj.inj_pressure',
@@ -423,7 +441,7 @@ export default {
         'artificialBottomHole': 'artificial_bottom_hole',
         'perfActual': 'well_perf_actual',
         'treatmentSko': 'well_treatment_sko',
-        'gdisCurrent': 'gdis_current',
+        'gdisCurrent': 'gdisCurrent',
         'gdisConclusion': 'gdis_conclusion',
         'gdisCurrentValue': 'gdis_current_value',
         'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
@@ -439,11 +457,16 @@ export default {
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
         'gu': 'gu',
-        'agms': 'agms',
+        'agms': 'agms', 
+        'well_equip_param': 'well_equip_param',
+        'pump_code': 'pump_code',
+        'diametr_pump': 'diametr_pump',
+        'depth_nkt': 'depth_nkt',
+        'type_sk': 'type_sk'     
       },
       formsStructure: {},
       dzoSelectOptions: [],
-      selectedUserDzo: null,
+      selectedUserDzo: null
     }
   },
   mounted() {
@@ -496,74 +519,487 @@ export default {
         },
         350
     ),
+    setWellPassport()
+    {                
+      let well = this.wellUwi
+      let wellType= this.well.wellType ? this.well.wellType.name_ru : ''
+      let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : ''
+      let neighbors = this.wellGeo.name_ru && this.well.labResearchValue.value_double ? this.wellGeo.name_ru+'/'+this.well.labResearchValue.value_double : (this.wellGeo ? this.wellGeo.name_ru + ' / ' + '-' : (this.well.labResearchValue ? this.well.labResearchValue : ''))
+      let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : ''
+      let wellrot = this.well.wellInfo ? this.well.wellInfo.whc_alt.toFixed(1) +' / '+ this.well.wellInfo.whc_h.toFixed(1) : ''
+      let wellTechsName = this.wellTechsName ? this.wellTechsName : ''
+      let tap = this.well.tap ? this.well.tap.tap : ''
+      let gu_agsu = this.well.gu.name_ru && this.well.agms.name_ru ? this.well.gu.name_ru+'/'+this.well.agms.name_ru
+          :
+          (this.well.gu.name_ru ? this.well.gu.name_ru : (this.well.agms.name_ru ? this.well.agms.name_ru : ''))
+      let wellOrgName = this.wellOrgName ? this.wellOrgName : ''
+      let well_zone = this.well.zone ? this.well.zone.name_ru : ''
+      let wellReactReacting = this.well.wellReactInfl.well_reacting ? this.well.wellReactInfl.well_reacting : ''
+      let wellReactInfl = this.well.wellReactInfl.well_influencing ? this.well.wellReactInfl.well_influencing : ''
+      let wellSaptialObjectX = this.wellSaptialObjectX ?  this.wellSaptialObjectX : ''
+      let wellSaptialObjectY = this.wellSaptialObjectY ? this.wellSaptialObjectY : ''
+      let wellSaptialObjectBottomX = this.wellSaptialObjectBottomX ? this.wellSaptialObjectBottomX : ''
+      let wellSaptialObjectBottomY = this.wellSaptialObjectBottomY ? this.wellSaptialObjectBottomY : ''
+      let well_category = this.well.category ? this.well.category.name_ru : ''
+      let categoryLast = this.well.categoryLast  ? this.well.categoryLast.name_ru : ''
+      let period_bur = this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
+                       ? this.getFormatedDate(this.well.wellInfo.drill_start_date)+' - '+this.getFormatedDate(this.well.wellInfo.drill_end_date)
+                       : (this.well.wellInfo.drill_start_date
+                            ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
+                            : (this.well.wellInfo.drill_end_date ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : ''))
+      let wellExpl = this.well.expl ? this.getFormatedDate(this.well.expl.dbeg) : ''
+      let well_status = this.well.status ? this.well.status.name_ru : ''
+      let well_expl_name = this.well.expl ? this.well.expl.name_ru : ''
+      let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : ''
+      let actualBottomHole = this.well.actualBottomHole ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : ''
+      let artificialBottomHole = this.well.artificialBottomHole ? this.well.artificialBottomHole.depth : ''
+      let perfActual =   this.well.perfActual.top && this.well.perfActual.base ? this.well.perfActual.top+' - '+this.well.perfActual.base : ''
+      let techModeProdOil = this.well.techModeProdOil && this.well.measLiq ? this.well.techModeProdOil.liquid+' / '+this.well.measLiq.liquid.toFixed(1) : (this.well.techModeProdOil ? this.well.techModeProdOil.liquid : (this.well.measLiq ? this.well.measLiq : ''))
+      let techModeProdOil_measWaterCut = this.well?.techModeProdOil?.wcut  && this.well?.measWaterCut?.water_cut
+                                         ? this.well.techModeProdOil.wcut+' / '+this.well.measWaterCut.water_cut
+                                         : (this.well?.techModeProdOil?.wcut ? this.well.techModeProdOil.wcut : (this.well?.measWaterCut?.water_cut ? this.well.measWaterCut.water_cut : ''))     
+      let krsWorkover = this.well.krsWorkover.dbeg ? this.getFormatedDate(this.well.krsWorkover.dbeg) : ''
+      let treatmentDate = this.well.treatmentDate.treat_date ? this.getFormatedDate(this.well.treatmentDate.treat_date) : ''
+      let well_gtm = this.well.gtm.dbeg ? this.getFormatedDate(this.well.gtm.dbeg) : ''
+      let treatmentSko = this.well.treatmentSko.treat_date ? this.getFormatedDate(this.well.treatmentSko.treat_date) : ''
+      let well_gdisCurrent =  this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
+      let prsWellWorkover = this.well.prsWellWorkover.dbeg ? this.getFormatedDate(this.well.prsWellWorkover.dbeg) : ''
+      let well_gis = this.well.gis.gis_date ? this.getFormatedDate(this.well.gis.gis_date) : ''
+      let well_gdisCurrent2 =this.well.gdisCurrent.meas_date ? this.getFormatedDate(this.well.gdisCurrent.meas_date) : ''
+      let gdisConclusion = this.well.gdisConclusion.name_ru ? this.well.gdisConclusion.name_ru : ''
+      let gdisCurrentValue = this.well.gdisCurrentValue.value_double ? this.well.gdisCurrentValue.value_double : ''
+      let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double ? this.well.gdisCurrentValuePmpr.value_double : ''
+      let gdisCurrentValueFlvl = this.well.dinzamer.value_double ? this.well.dinzamer.value_double : ''
+      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double ? this.well.gdisCurrentValueStatic.value_double : ''
+      let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double ? this.well.gdisCurrentValueRp.value_double +'/'+ this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date) : ''
+      let gdisComplex = this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg ?
+             this.well.gdisComplex.value_string.toFixed(1)+' / '+this.getFormatedDate(this.well.gdisComplex.dbeg)
+           : (this.well.gdisComplex.value_string ? this.well.gdisComplex.value_string.toFixed(1) : (this.well.gdisComplex.dbeg ? this.getFormatedDate(this.well.gdisComplex.dbeg) : '') )
+      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : ''
+      let gdisCurrent_note = this.well.gdisCurrent.note ? this.well.gdisCurrent.note : ''
+      let gdisCurrentValueBhp = this.well.gdisCurrentValueBhp.value_double && this.well.gdisCurrentValueBhp.meas_date ? this.well.gdisCurrentValueBhp.value_double+'/'+"(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")"
+          :
+          (this.well.gdisCurrentValueBhp.value_double ? this.well.gdisCurrentValueBhp.value_double : (this.well.gdisCurrentValueBhp.meas_date ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : ''))
+
+      let rzatrStat = this.well.rzatrStat.value_double  ? this.well.rzatrStat.value_double : ''
+      let injPressure = this.getInjPressure(well)
+      let agentVol = this.well.tech_mode_inj || this.well.meas_water_inj ? this.well.tech_mode_inj.agent_vol +' / '+ this.well.meas_water_inj.water_inj_val.toFixed(1) : ''      
+      let perfActualDate = this.well.perfActual ? this.getFormatedDate(this.well.perfActual.dbeg) : ''
+      let category_id = this.well.categoryLast.pivot.category
+      let main_org_code = this.well_all_data.main_org_code        
+      let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well) 
+      let well_equip_param = this.well.well_equip_param ? this.well.well_equip_param.value_string : ''
+      let pump_code = this.well.pump_code ? this.well.pump_code.value_string : '' 
+      let diameter_pump = this.well.diametr_pump ? this.well.diametr_pump.value_string : '' 
+      let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_string : ''
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : ''    
+      this.well_passport = [
+        {
+          'name': this.trans('well.well'),
+          'data': well,
+          'type': ['all'],
+        },
+        {
+          'name': this.trans('well.view_well'),
+          'data': wellType,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.well_field'),
+          'data': wellGeoFields,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.horizont_rnas'),
+          'data': neighbors,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.h_rotor'),
+          'data': wellrot,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.tech_struct'),
+          'data': wellTechsName,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.otvod'),
+          'data': tap,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.gu_zu'),
+          'data': gu_agsu,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.org_struct'),
+          'data': wellOrgName,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.zone_well'),
+          'data': well_zone,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.reactive_wells'),
+          'data': wellReactReacting,
+          'type': ['nag'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.influence_well'),
+          'data': wellReactInfl,
+          'type': ['dob_oil'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.coord_x_outfall'),
+          'data': wellSaptialObjectX,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.coord_y_outfall'),
+          'data': wellSaptialObjectY,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.zaboi_x'),
+          'data': wellSaptialObjectBottomX,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.zaboi_y'),
+          'data': wellSaptialObjectBottomY,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.assign_well_project'),
+          'data': well_category,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.category'),
+          'data': categoryLast,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.period_bur'),
+          'data': period_bur,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.date_expluatation'),
+          'data': wellExpl,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.status'),
+          'data': well_status,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.way_expluatation'),
+          'data': well_expl_name,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.uo_bolt'),
+          'data': '',
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.diametr'),
+          'data': tubeNomOd,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.type_gol'),
+          'data': '',
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.type_pump'),
+          'data': pump_code,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.diameter_pump'),
+          'data': diameter_pump,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.pump_depth'),
+          'data': well_equip_param,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.packer_running_depth'),
+          'data': '',
+          'type': ['nag']
+        },
+        {
+          'name': this.trans('well.sk'),
+          'data': type_sk,
+          'type': ['dob_oil'],
+          'exp': 1 // шгн
+        },
+        {
+          'name': this.trans('well.length_hod'),
+          'data': '',
+          'type': ['dob_oil'],
+          'exp': 1
+        },
+        {
+          'name': this.trans('well.count_swaing'),
+          'data': '',
+          'type': ['dob_oil'],
+          'exp': 1
+        },
+        {
+          'name': this.trans('well.fact_zaboi'),
+          'data': actualBottomHole,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.synthetic_zaboi'),
+          'data': artificialBottomHole,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.broken_zaboi'),
+          'data': '',
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.depth_down'),
+          'data': depth_nkt,
+          'type': ['dob_oil']          
+        },
+        {
+          'name': this.trans('well.kshd'),
+          'data': '',
+          'type': ['nag'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.progress_interval_perforation'),
+          'data': perfActual,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.date_perforation'),
+          'data': perfActualDate,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.pickup'),
+          'data': agentVol,
+          'type': ['nag']
+        },
+        {
+          'name': this.trans('well.injection_pressure'),
+          'data': injPressure,
+          'type': ['nag']
+        },
+        {
+          'name': this.trans('well.debit_water'),
+          'data': techModeProdOil,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.water_cut'),
+          'data': techModeProdOil_measWaterCut,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.debit_oil'),
+          'data': techModeProdOil_measWaterCut2,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.date_krs'),
+          'data': krsWorkover,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.date_pfp'),
+          'data': treatmentDate,
+          'type': ['nag'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.date_krp'),
+          'data': well_gtm,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.date_sko'),
+          'data': treatmentSko,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.date_kpd'),
+          'data': well_gdisCurrent,
+          'type': ['nag']
+        },
+        {
+          'name': this.trans('well.date_prc'),
+          'data': prsWellWorkover,
+          'type': ['all']
+        },   
+        {
+          'name': this.trans('well.date_last_gis'),
+          'data': well_gdisCurrent2,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.result_gdm'),
+          'data': gdisConclusion,
+          'type': ['dob_oil'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.length_hod_gdm'),
+          'data': gdisCurrentValue,
+          'type': ['dob_oil'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.count_swing'),
+          'data': gdisCurrentValuePmpr,
+          'type': ['dob_oil'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.dynamic_level'),
+          'data': gdisCurrentValueFlvl,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.static_level'),
+          'data': gdisCurrentValueStatic,
+          'type': ['dob_oil','nabl'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.rpl_date'),
+          'data': gdisCurrentValueRp,
+          'type': ['all'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.rpl_sl_gdis'),
+          'data': gdisComplex,
+          'type': ['all']
+        },
+        {
+          'name': this.trans('well.rzab'),
+          'data': gdisCurrentValueBhp,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.rzatr'),
+          'data': rzatrAtm,
+          'type': ['dob_oil']
+        },
+        {
+          'name': this.trans('well.rzatr_stat'),
+          'data': rzatrStat,
+          'type': ['dob_oil'],
+          'codes': ['KGM']
+        },
+        {
+          'name': this.trans('well.note'),
+          'data': gdisCurrent_note,
+          'type': ['all']
+        },
+      ]
+      this.well_passport = this.rebuildRightSidebar(this.well_passport,category_id,well_expl_name,main_org_code)
+    },
+    rebuildRightSidebar(data,category_id,well_expl_name,main_org_code)
+    {
+        let well_passport_data=[]
+
+        data.forEach(function(item)
+        {
+          let type = item.type
+          let exp = item.exp
+          let codes = item.codes
+          let types = {13:'dob_oil',9:'nabl',5:'nag'}
+          if(type.indexOf(types[category_id])!= -1 || type.indexOf('all')!= -1 )
+          {
+             if(exp==1 && well_expl_name!='УШГН')
+             {
+               return
+             }
+
+             if(codes && codes.indexOf(main_org_code)!= -1)
+             {
+               return
+             }
+            well_passport_data.push(item)
+          }
+        })      
+      return well_passport_data
+    },
     selectWell(well) {
-      this.SET_LOADING(true);
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        try {
-          this.well.id = data.wellInfo.id
-          this.wellUwi = data.wellInfo.uwi
-          if (data.geo[Object.keys(data.geo).length - 1] != null) {
-            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
-          }
-          if (data.geo[0] != null) {
-            this.wellGeo = data.geo[0]
-          }
-          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
-          }
-          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
-          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
-          if (data.spatial_object.coord_point != null) {
-            let spatialObject
-            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            spatialObject = spatialObject.split(',')
-            this.wellSaptialObjectX = spatialObject[0]
-            this.wellSaptialObjectY = spatialObject[1]
-          }
-          if (data.spatial_object_bottom.coord_point != null) {
-            let spatialObjectBottom
-            spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-            spatialObjectBottom = spatialObjectBottom.split(',')
-            this.wellSaptialObjectBottomX = spatialObjectBottom[0]
-            this.wellSaptialObjectBottomY = spatialObjectBottom[1]
-          }
-        } catch (e) {
+      if(well)
+      {
+        this.SET_LOADING(true);
+        this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+          try {
+            this.well_all_data = data
+            this.well.id = data.wellInfo.id
+            this.wellUwi = data.wellInfo.uwi
+            if (data.geo[Object.keys(data.geo).length - 1] != null) {
+              this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
+            }
+            if (data.geo[0] != null) {
+              this.wellGeo = data.geo[0]
+            }
+            if (data.spatial_object.coord_point != null) {
+              let spatialObject
+              spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+              spatialObject = spatialObject.split(',')
+              this.wellSaptialObjectX = spatialObject[0]
+              this.wellSaptialObjectY = spatialObject[1]
+            }
+            if (data.spatial_object_bottom.coord_point != null) {
+              let spatialObjectBottom
+              spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+              spatialObjectBottom = spatialObjectBottom.split(',')
+              this.wellSaptialObjectBottomX = spatialObjectBottom[0]
+              this.wellSaptialObjectBottomY = spatialObjectBottom[1]
+            }
+            for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+              this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+            }
+
+            this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+            this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+            this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
+            this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+
+          } catch (e) {
             this.SET_LOADING(false);
-        }
-        this.setTableData()
+          }
+          this.setWellPassport()
           this.SET_LOADING(false);
-      })
-    },
-    setTableData() {
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].method === 'neighbors') {
-          try {
-            if (this.tableData[i].neigbor_1 != null) {
-              this.tableData[i].data += this.tableData[i].neigbor_1
-            }
-            if (this.tableData[i].neigbor_2 != null) {
-              if(this.tableData[i].neigbor_1 != null) {
-                this.tableData[i].data += ' / '
-              }
-              this.tableData[i].data += this.tableData[i].neigbor_2
-            }
-          } catch (e) {
-          }
-        } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
-          try {
-            this.tableData[i].data = this.getFormatedDate(this.tableData[i].description)
-          } catch (e) {
-          }
-        } else {
-          try {
-            this.tableData[i].data = this.tableData[i].description
-          } catch (e) {
-          }
-        }
+        })
       }
-    },
+    }, 
     getMultipleValues(objectName, objectKey) {
       let value = ''
       for (let i = 0; i < Object.keys(objectName).length; i++) {
@@ -574,6 +1010,47 @@ export default {
         }
       }
       return (value)
+    },
+    getTechmodeOil(well){   
+      if(this.well.techModeProdOil && this.well.dmart_daily_prod_oil){
+        if(this.well.techModeProdOil.oil && this.well.dmart_daily_prod_oil.oil){
+          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+        }
+        if(this.well.techModeProdOil.oil){
+          return this.well.techModeProdOil.oil.toFixed(1) + ' / ' + '-'
+        }
+        if(this.well.dmart_daily_prod_oil.oil){
+          return '-' + ' / ' + this.well.dmart_daily_prod_oil.oil.toFixed(1)
+        }
+      } 
+      return ''
+    },
+    getInjPressure(well){               
+      if(this.well.tech_mode_inj && this.well.meas_water_inj){
+          if(this.well.tech_mode_inj.inj_pressure != null && this.well.meas_water_inj.pressure_inj != null){
+             return this.well.tech_mode_inj.inj_pressure +' / '+ this.well.meas_water_inj.pressure_inj
+          }
+          if(this.well.tech_mode_inj.inj_pressure === null){
+            return '-' + ' / ' + this.well.meas_water_inj.pressure_inj
+          }
+          if(this.well.meas_water_inj.pressure_inj === null){
+            return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
+          }
+          return ''
+      }
+      if(this.well.tech_mode_inj === null){
+        return ''
+      }
+      if(this.well.meas_water_inj === null){
+        return ''
+      }
+      if(this.well.tech_mode_inj.inj_pressure){        
+        return this.well.tech_mode_inj.inj_pressure + ' / ' + '-'
+      }
+      if(this.well.meas_water_inj.pressure_inj){
+        return '-' + ' / ' + this.well.meas_water_inj.pressure_inj        
+      }      
+      return ''
     },
     setWellObjectData(key, path, source) {
       try {
@@ -588,6 +1065,9 @@ export default {
     switchFormByCode(data) {
       this.activeForm = data;
       this.activeFormComponentName = data.component_name;
+      this.activeFormComponentName ? this.activeFormComponentName : 'ProductionWellsScheduleMain'
+
+
     },
     getFormatedDate(data) {
       if (data != null && data != '') {
@@ -603,419 +1083,13 @@ export default {
       this.selectedUserDzo = event.target.value;
       this.options = [];
       this.wellUwi = null;
-    },
+    }
   },
   computed: {
     ...bigdatahistoricalVisibleState(['isInjectionWellsHistoricalVisible','isProductionWellsHistoricalVisible']),
-    tableData() {
-      return [
-        {
-          'description': this.wellUwi,
-          'method': null,
-          'name': 'Скважина',
-          'data': ''
-        },
-        {
-          'description': this.well.wellType != null ? this.well.wellType.name_ru : null,
-          'method': null,
-          'name': 'Вид скважины',
-          'data': ''
-        },
-        {
-          'description': this.wellGeoFields != null ? this.wellGeoFields.name_ru : null,
-          'method': null,
-          'name': 'Месторождение',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': 'neighbors',
-          'neigbor_1': this.wellGeo != null ? this.wellGeo.name_ru : null,
-          'neigbor_2': this.well.labResearchValue != null ? this.well.labResearchValue.value_double : null,
-          'name': 'Горизонт / Pнас, атм',
-          'data': ''
-        },
-        {
-          'description': this.well.wellInfo != null ? this.well.wellInfo.rte : null,
-          'method': null,
-          'name': 'H ротора',
-          'data': ''
-        },
-        {
-          'description': this.wellTechsName != null ? this.wellTechsName : null,
-          'method': null,
-          'name': 'Тех. структура',
-          'data': ''
-        },
-        {
-          'description': this.well.tap != null ? this.well.tap.tap : null,
-          'method': null,
-          'name': 'Отвод',
-          'data': ''
-        },
-        {
-          'description': this.wellTechsName!= null ? this.wellTechsName : null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.gu != null ? this.well.gu.name_ru : null,
-          'neigbor_2': this.well.agms != null ? this.well.agms.name_ru : null,
-          'name': 'ГУ/АГЗУ',
-          'data': ''
-        },
-        {
-          'description': this.wellOrgName != null ? this.wellOrgName : null,
-          'method': null,
-          'name': 'Орг. структура',
-          'data': ''
-        },
-        {
-          'description': this.well.zone != null ? this.well.zone.name_ru : null,
-          'method': null,
-          'name': 'Зона скважины',
-          'data': ''
-        },
-        {
-          'description': this.well.wellReactInfl != null ? this.well.wellReactInfl.well_reacting : null,
-          'method': null,
-          'name': 'Реагирующие скважины',
-          'data': ''
-        },
-        {
-          'description': this.well.wellReactInfl != null ? this.well.wellReactInfl.well_influencing : null,
-          'method': null,
-          'name': 'Влияющие скважины',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectX != null ?  this.wellSaptialObjectX : null,
-          'method': null,
-          'name': 'Координаты X (устья)',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectY != null ? this.wellSaptialObjectY : null,
-          'method': null,
-          'name': 'Координаты Y (устья)',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectBottomX != null ? this.wellSaptialObjectBottomX : null,
-          'method': null,
-          'name': 'Координаты забоя X',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectBottomY != null ? this.wellSaptialObjectBottomY : null,
-          'method': null,
-          'name': 'Координаты забоя Y',
-          'data': ''
-        },
-        {
-          'description': this.well.category != null ? this.well.category.name_ru : null,
-          'method': null,
-          'name': 'Назначение скважин по проекту',
-          'data': ''
-        },
-        {
-          'description': this.well.categoryLast != null ? this.well.categoryLast.name_ru : null,
-          'method': null,
-          'name': 'Категория',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': 'neighbors',
-          'neigbor_1': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_start_date) : null,
-          'neigbor_2': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : null,
-          'name': 'Период бурения',
-          'data': ''
-        },
-        {
-          'description': this.well.expl != null  ? this.well.expl.dbeg : null,
-          'method': 'trimToDate',
-          'name': 'Дата ввода в эксплуатацию',
-          'data': ''
-        },
-        {
-          'description': this.well.status != null ? this.well.status.name_ru : null,
-          'method': null,
-          'name': 'Состояние',
-          'data': ''
-        },
-        {
-          'description': this.well.expl != null  ? this.well.expl.name_ru : null,
-          'method': null,
-          'name': 'Способ эксплуатации',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип УО / наличие эксц. болта',
-          'data': ''
-        },
-        {
-          'description': this.tubeNomOd != null ? this.tubeNomOd : null,
-          'method': null,
-          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип колонной головки / размеры',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Глубина спуска насоса (м)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Код насоса',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Диаметр насоса (мм)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Глубина спуска пакера',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип СК',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'длина хода (м)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'число качаний (об/мин)',
-          'data': ''
-        },
-        {
-          'description': this.well.actualBottomHole != null ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : null,
-          'method': null,
-          'name': 'Фактический забой/(дата отбивки)',
-          'data': ''
-        },
-        {
-          'description': this.well.artificialBottomHole != null ? this.well.artificialBottomHole.depth : null,
-          'method': null,
-          'name': 'Искусственный забой',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Отбитый забой',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Глубина спуска НКТ, м',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'КШД (тип/диаметр)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Дата перфорации',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.perfActual != null ? this.well.perfActual.top : null,
-          'neigbor_2': this.well.perfActual != null ? this.well.perfActual.base : null,
-          'name': 'Действующие интервалы перфорации',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.injPressure != null ? this.well.injPressure : null,
-          'neigbor_2': null,
-          'name': 'Приемистость, м3/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.agentVol != null ? this.well.agentVol : null,
-          'neigbor_2': null,
-          'name': 'Давление закачки, атм (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.liquid : null,
-          'neigbor_2': this.well.measLiq != null ? this.well.measLiq.liquid.toFixed(1) : null,
-          'name': 'Дебит жидкости, м3/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.wcut : null,
-          'neigbor_2': this.well.measWaterCut != null ? this.well.measWaterCut.water_cut : null,
-          'name': 'Обводненность, % (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
-          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null && this.well.measLiq != null ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : null,
-          'name': 'Дебит нефти, т/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.krsWorkover != null ? this.getFormatedDate(this.well.krsWorkover.dbeg) : null,
-          'neigbor_2': this.well.krsWorkover != null ? this.getFormatedDate(this.well.krsWorkover.dend) : null,
-          'name': 'Дата последнего КРС',
-          'data': ''
-        },
-        {
-          'description': this.well.treatmentDate != null ? this.well.treatmentDate.treat_date : null,
-          'method': null,
-          'name': 'Дата проведения ПФП нагн. скважины',
-          'data': ''
-        },
-        {
-          'description': this.well.gtm != null ? this.getFormatedDate(this.well.gtm.dbeg) : null,
-          'method': null,
-          'name': 'Дата проведения ГРП',
-          'data': ''
-        },
-        {
-          'description': this.well.treatmentSko != null ? this.well.treatmentSko.treat_date : null,
-          'method': 'trimToDate',
-          'name': 'Дата проведения СКО',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrent != null ? this.well.gdisCurrent.meas_date : this.well.gdisCurrent,
-          'method': 'trimToDate',
-          'name': 'Дата проведения КПД',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.prsWellWorkover != null ? this.getFormatedDate(this.well.prsWellWorkover.dbeg) : null,
-          'neigbor_2': this.well.prsWellWorkover != null ? this.getFormatedDate(this.well.prsWellWorkover.dend) : null,
-          'name': 'Дата последнего ПРС',
-          'data': ''
-        },
-        {
-          'description': this.well.gis != null ? this.well.gis.gis_date : null,
-          'method': 'trimToDate',
-          'name': 'Дата последнего ГИС',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrent != null ? this.well.gdisCurrent.meas_date : null,
-          'method': 'trimToDate',
-          'name': 'Дата последнего ГДИС',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisConclusion != null ? this.well.gdisConclusion.name_ru : null,
-          'method': null,
-          'name': 'Результат ГДМ',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrentValue != null ? this.well.gdisCurrentValue.value_double : null,
-          'method': null,
-          'name': 'Длина хода при проведении ГДМ',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrentValuePmpr != null ? this.well.gdisCurrentValuePmpr.value_double : null,
-          'method': null,
-          'name': 'число качаний при проведении ГДМ',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrentValueFlvl != null ? this.well.gdisCurrentValueFlvl.value_double : null,
-          'method': null,
-          'name': 'Динамический уровень',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrentValueStatic != null ? this.well.gdisCurrentValueStatic.value_double : null,
-          'method': null,
-          'name': 'Статический уровень',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.gdisCurrentValueRp != null ? this.well.gdisCurrentValueRp.value_double : null,
-          'neigbor_2': this.well.gdisCurrentValueRp != null ? this.well.gdisCurrentValueRp.meas_date : null,
-          'name': 'Рпл/(дата замера)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.gdisComplex != null ? this.well.gdisComplex.value_double : null,
-          'neigbor_2': this.well.gdisComplex != null ? this.well.gdisComplex.research_date : null,
-          'name': 'Рпл (Сл. ГДИС)/(дата замера)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.well.gdisCurrentValueBhp.value_double != null ? this.well.gdisCurrentValueBhp.value_double : null,
-          'neigbor_2': this.well.gdisCurrentValueBhp.meas_date != null ? "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")" : null,
-          'name': 'Рзаб/(дата замера)',
-          'data': ''
-        },
-        {
-          'description': this.well.rzatrAtm != null ? this.well.rzatrAtm.value_double : null,
-          'method': null,
-          'name': 'Рзатр(дин), атм',
-          'data': ''
-        },
-        {
-          'description': this.well.rzatrStat.value_double != null ? this.well.rzatrStat.value_double : null,
-          'method': null,
-          'name': 'Рзатр(стат)',
-          'data': ''
-        },
-        {
-          'description': this.well.gdisCurrent.note != null ? this.well.gdisCurrent.note : null,
-          'method': null,
-          'name': 'Примечание',
-          'data': ''
-        },
-      ]
+    tableData: function ()
+    {
+        return this.well_passport
     }
   }
 }

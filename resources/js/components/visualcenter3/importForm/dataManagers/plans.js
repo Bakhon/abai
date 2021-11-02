@@ -57,7 +57,7 @@ export default {
                 },
                 {
                     ticker: 'КБМ',
-                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
+                    name: 'АО "Каражанбасмунай"'
                 },
                 {
                     ticker: 'ММГ',
@@ -242,7 +242,7 @@ export default {
                 this.isPlanValidateError = true;
             }
         },
-        beforeRangeEdit(e) {
+        beforePlanRangeEdit(e) {
             let cellOptions = e.detail.data;
             if (!cellOptions) {
                 return;
@@ -281,11 +281,24 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getCompanyName();
-            this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
-            this.fillPlanRows();
-            this.plans = await this.getDzoPlans();
-            this.handlePlans();
-            document.querySelector('#planGrid').refresh('all');
+            if (this.category.isPlanActive) {
+                this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
+                this.fillPlanRows();
+                this.plans = await this.getDzoPlans();
+                this.handlePlans();
+                document.querySelector('#planGrid').refresh('all');
+            } else if (this.category.isCloseMonthActive) {
+                this.disableColumnHighlightByMonth();
+                this.monthColumnsCount = (Object.keys(this.monthRows[0]).length + 1);
+                this.fillMonthRows();
+                for (let i=0; i < (this.monthColumnsCount-1); i++) {
+                    this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+                }
+                this.monthlyFact = await this.getDzoFactByPeriod();
+                this.handleMonthFact();
+                document.querySelector('#monthGrid').refresh('all');
+            }
+
             this.SET_LOADING(false);
         },
         getCompanyName() {

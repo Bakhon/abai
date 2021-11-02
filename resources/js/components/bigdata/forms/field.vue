@@ -14,6 +14,18 @@
           placeholder=""
       >
     </template>
+    <template v-if="item.type === 'textarea'">
+      <textarea
+          :class="{'error': error}"
+          :name="item.code"
+          class="form-control"
+          placeholder=""
+          v-bind:value="formatValue(value)"
+          v-on:change="updateValue($event.target.value)"
+          v-on:input="updateValue($event.target.value)"
+      >
+      </textarea>
+    </template>
     <template v-else-if="item.type === 'list'">
       <v-select
           :value="value"
@@ -77,7 +89,7 @@
         <template v-else>
           <v-select
               :name="item.code"
-              :options="dict"
+              :options="formatedDict"
               :value="formatedValue"
               label="name"
               @input="updateValue($event.id)"
@@ -201,7 +213,8 @@ export default {
         'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
       },
       dict: null,
-      dictValue: null
+      dictValue: null,
+      orgsToFilterBy: null
     }
   },
   watch: {
@@ -215,7 +228,22 @@ export default {
       this.updateValue(newValue)
     }
   },
+  computed: {
+    formatedDict() {
+      if (!this.orgsToFilterBy) {
+        return this.dict
+      }
+
+      return this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+    }
+  },
   mounted() {
+
+    if (this.item.filter_by_well_orgs) {
+      axios.get(this.localeUrl(`/api/bigdata/orgs-by-well/${this.id}`)).then(({data}) => {
+        this.orgsToFilterBy = data.orgs
+      })
+    }
 
     if (this.item.type === 'dict' && this.item.multiple) {
       this.dictValue = this.value
@@ -336,6 +364,14 @@ export default {
     &.date {
       width: 156px;
     }
+  }
+
+  textarea.form-control {
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #fff;
   }
 
   .vdatetime {

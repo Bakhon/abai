@@ -139,7 +139,8 @@ export default {
                 'head': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'name': this.trans('visualcenter.oilCondensateProduction'),
                 'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
-            }
+            },
+            isDecreaseReasonActive: false
         };
     },
     methods: {
@@ -265,5 +266,9 @@ export default {
         setTotalFact(monthlyFact) {
             this.dzoYearlyData.totallyFact += monthlyFact;
         },
+
+        switchDecreaseReasonExplanations() {
+            this.isDecreaseReasonActive = !this.isDecreaseReasonActive;
+        }
     }
 }
