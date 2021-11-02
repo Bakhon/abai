@@ -6,10 +6,10 @@
           <p>{{ trans('waterflooding_management.total_selection') }}</p>
           <div class="total-selection d-flex ">
             <div class="total-selection-blue d-flex align-items-center">
-              <span v-for="n in 5">299,</span>
+              <span v-for="item in getInjWellNames">{{item}},</span>
             </div>
             <div class="total-selection-red">
-              <span v-for="n in 5">299,</span>
+              <span v-for="item in getProdWellNames">{{item}} <span>,</span></span>
             </div>
           </div>
         </div>
@@ -154,19 +154,15 @@ import WFM_modal from './modal'
 import waringModal from './warningModal'
 import VueApexCharts from 'vue-apexcharts'
 import {waterfloodingManagementMapActions, waterfloodingManagementMapGetters} from '@store/helpers';
+import listTable from './list-table'
 
 export default {
   name: "forecastingOptimization",
   components: {
     "apexchart": VueApexCharts,
     WFM_modal,
-    waringModal
-  },
-  computed:{
-    ...waterfloodingManagementMapGetters([
-      'totalSelection',
-      'reverse_gr_table',
-    ]),
+    waringModal,
+    listTable
   },
   data: function () {
     return {
@@ -309,71 +305,203 @@ export default {
       modal_show: false,
       modal_name: '',
       total_selection_card: [
-        {title: this.trans('waterflooding_management.fluid_change'), count: 10000, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'м<sup>3</sup>'},
-        {title: this.trans('waterflooding_management.oil_change'), count: 10000, img: '/img/waterfloodingManagement/triangle-green.svg', measurement: 'т.'},
-        {title: this.trans('waterflooding_management.change_water_cut'), count: '100', img: '/img/waterfloodingManagement/triangle-red.svg', measurement: '%'},
-        {title: this.trans('waterflooding_management.change_upload'), count: 1000, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'м<sup>3</sup>'},
-        {title: this.trans('waterflooding_management.reservoir_pressure'), count: 140, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'атм.'},
+        {title: this.trans('waterflooding_management.fluid_change'), count: 185, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'м<sup>3</sup>'},
+        {title: this.trans('waterflooding_management.oil_change'), count: 12, img: '/img/waterfloodingManagement/triangle-green.svg', measurement: 'т.'},
+        {title: this.trans('waterflooding_management.change_water_cut'), count: '2', img: '/img/waterfloodingManagement/triangle-red.svg', measurement: '%'},
+        {title: this.trans('waterflooding_management.change_upload'), count: 887, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'м<sup>3</sup>'},
+        {title: this.trans('waterflooding_management.reservoir_pressure'), count: 121, img: '/img/waterfloodingManagement/triangle.svg', measurement: 'атм.'},
       ],
+
     };
   },
+  computed:{
+    ...waterfloodingManagementMapGetters([
+      'totalSelection',
+      'reverse_gr_table',
+      'polygonWells',
+      'clustersList'
+    ]),
+    getInjWellNames(){
+      let injWells = new Set();
+      let cluster = this.clustersList
+      this.polygonWells.forEach(function(el) {
+        for(let i=0;i<cluster.length;i++){
+          if (el.well == cluster[i].inj_well || cluster[i].names_wells.includes(el.well)){
+            injWells.add(cluster[i].inj_well.split('_')[1])
+          }
+        }
+      })
+      return injWells
+    },
+    getProdWellNames(){
+      let prodWells = new Set();
+      let cluster = this.clustersList
+      this.polygonWells.forEach(function(el) {
+        for(let i=0;i<cluster.length;i++){
+          if (el.well == cluster[i].inj_well || cluster[i].names_wells.includes(el.well)){
+            cluster[i].names_wells.forEach(function(e){
+              prodWells.add(e.split('_')[1])
+            })
+          }
+        }
+      })
+      return prodWells
+    }
+  },
   methods:{
+    ...waterfloodingManagementMapActions([
+      'getTotalSelection',
+    ]),
+    showBtnToggle(f){
+      if (this.show__btn == f)
+        this.show__btn = '';
+      else
+        this.show__btn = f;
+    },
     modalClose() {
       this.modal_show = false;
     },
     openModal(modal_name){
       this.modal_show = true;
       this.modal_name = modal_name;
-    }
+    },
+    getRealDateList(){
+      let real_date = []
+      let predict_date = []
+      real_date = this.totalSelection.real_date
+      predict_date = this.totalSelection.predict_date
+
+      let all_date = real_date.concat(predict_date)
+      this.chartOptions.xaxis.categories = all_date
+      all_date.forEach((element, i) => {
+        this.series[0].data.push({
+          x: element,
+          y: this.totalSelection.data_real[i]
+        })
+        this.series[1].data.push({
+          x: element,
+          y: this.totalSelection.pred_data_basic[i]
+        })
+        this.series[2].data.push({
+          x: element,
+          y: this.totalSelection.pred_data_optim[i]
+        })
+
+        this.series[3].data.push({
+          x: element,
+          y: this.totalSelection.e_data_real[i]
+        })
+        this.series[4].data.push({
+          x: element,
+          y: this.totalSelection.e_data_prediction_crmp_real[i]
+        })
+        this.series[5].data.push({
+          x: element,
+          y: this.totalSelection.e_data_prediction_crmp_prediction[i]
+        })
+
+        this.series[6].data.push({
+          x: element,
+          y: this.totalSelection.u_data_real[i]
+        })
+        this.series[7].data.push({
+          x: element,
+          y: this.totalSelection.u_data_pred_basic[i]
+        })
+        this.series[8].data.push({
+          x: element,
+          y: this.totalSelection.u_data_pred_optim[i]
+        })
+      })
+    },
   }
 }
 </script>
 <style scoped>
-  .total-selection{
-    background: #454D7D;
-    border: 1px solid #454D7D;
-    box-sizing: border-box;
-    width: calc( 100% - 280px);
-    padding: 5px 10px 0 10px;
-  }
-  .total-selection .total-selection-blue{
-    color:#82BAFF;
-  }
-  .total-selection .total-selection-red{
-    color: #EF5350;
-    margin-left: 20px;
-  }
-
-  .percent-card{
-    height: 253px;
-  }
-  .percent-block p{
-    font-weight: bold;
-    font-size: 80px;
-    line-height: 96px;
-    letter-spacing: -0.28px;
-    margin-right: 14px;
-  }
-  .card-block .block .task-btn{
-    width: 100%;
-    height: 46px;
-    background: #333975;
-    border-radius: 4px;
-    border: none;
-    margin: 4px 0;
-    padding: 0 16px;
-    vertical-align: middle;
-    text-align: left;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 22px;
-    color: #FFFFFF;
-  }
-  .card-block .block .task-btn img{
-    margin-right: 10px;
-  }
-  .action-btn{
-    width: calc(50% - 10px);
-    margin: 4px;
-  }
+.total-selection{
+  background: #454D7D;
+  border: 1px solid #454D7D;
+  box-sizing: border-box;
+  width: calc( 100% - 280px);
+  padding: 5px 10px 0 10px;
+}
+.total-selection .total-selection-blue{
+  color:#82BAFF;
+}
+.total-selection .total-selection-red{
+  color: #EF5350;
+  margin-left: 20px;
+}
+.percent-card{
+  height: 253px;
+}
+.percent-block p{
+  font-weight: bold;
+  font-size: 80px;
+  line-height: 96px;
+  letter-spacing: -0.28px;
+  margin-right: 14px;
+}
+.card-block .block .task-btn{
+  width: 100%;
+  height: 46px;
+  background: #333975;
+  border-radius: 4px;
+  border: none;
+  margin: 4px 0;
+  padding: 0 16px;
+  vertical-align: middle;
+  text-align: left;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+}
+.card-block .block .task-btn img{
+  margin-right: 10px;
+}
+.action-btn{
+  width: calc(50% - 10px);
+  margin: 4px;
+}
+.wtf__left__forecasting{
+  padding: 10px;
+  background-color: #272953;
+}
+.bg__card__block{
+  background-color: #2B2E5E;
+}
+.variant__btn{
+  height: 48px!important;
+  padding: 0 12px;
+  background-color: #334296!important;
+  border: 1px solid #454FA1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.show__btn__active{
+  max-height: 200px!important;
+  transition: max-height 1500ms;
+}
+.show__btn__over {
+  transform: rotate( 180deg )!important;
+  transition: transform 1500ms ease;
+}
+.show__down__btn__over{
+  transform: rotate( 0deg );
+  transition: transform 1500ms ease;
+}
+.show__over{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1500ms;
+}
+.forecasting__btn__group{
+  margin-top: 15px;
+}
+.measurement{
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 18px;
+}
 </style>
