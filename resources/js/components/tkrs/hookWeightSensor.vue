@@ -2,7 +2,27 @@
   <div class="tkrs-main">
     <mainHeader />
     <div class="sidebar_graph" style="display:flex">
-        <baseBlock />
+        <div class="data-analysis-left-block">
+          <div class="left-block-collapse-holder">
+            <div>
+              <img
+                src="/img/PlastFluids/chooseParameters.svg"
+                alt="choose parameters icon"
+              />
+              <span>Параметры</span>
+            </div>
+          </div>
+          <div class="dropdown-holder">
+      
+            <b-form-select  @change="onChangeWell" :options="wellList.data" ></b-form-select>
+            
+
+            <b-form-select   :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
+            
+            
+          </div>
+          
+        </div>
         
         <div class="tkrs-content">
             <div>
@@ -36,7 +56,7 @@
                   
                 </div>
                 <Plotly :data="areaChartData" :displaylogo="false" 
-                :layout="layout" :display-mode-bar="true" 
+                :layout="layoutData" :display-mode-bar="true" 
                 :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
                 <div>
                     <div class="nav nav-tabs all-tabs">
@@ -112,6 +132,53 @@ export default {
     excess,
     Plotly,
   },
+  computed: {
+    layoutData() {
+      return {
+      //   shapes: [{
+      //     type: 'line',
+      // x0: '2020-06-18 00:00:00',
+      // y0: 14,
+      // x1: '2020-06-18 23:59:00',
+      // y1: 14,
+      // line: {
+      //   color: '#EF5350',
+      //   width: 2,
+      //   dash: 'dashdot'
+      //     }
+      //   },
+      //   {
+      //     type: 'line',
+      // x0: '2020-06-18 00:00:00',
+      // y0: 12,
+      // x1: '2020-06-18 23:59:00',
+      // y1: 12,
+      // line: {
+      //   color: '#D77D2A',
+      //   width: 2,
+      //   dash: 'dashdot'
+      //     }
+      //   }],
+        width: 1550,
+        height: 600,
+        paper_bgcolor: "#272953",
+        plot_bgcolor: "#272953",
+        xaxis: {
+          color: "#FFFFFF",
+          title: 'Время',
+          range: [this.minimum, this.maximum],
+          type: 'date',
+          rangeslider: true,
+        
+        },
+        yaxis: {
+          title: 'W (TC)',
+          color: "#FFFFFF",
+          linecolor: "#EF5350",
+        },    
+      };
+    },
+  },
   data(){
     return {
       currentTab: 1,
@@ -125,52 +192,14 @@ export default {
         'resetScale2d',
         'autoScale2d',
       ],
-      layout: {
-        shapes: [{
-          type: 'line',
-      x0: '2020-06-18 00:00:00',
-      y0: 14,
-      x1: '2020-06-18 23:59:00',
-      y1: 14,
-      line: {
-        color: '#EF5350',
-        width: 2,
-        dash: 'dashdot'
-          }
-        },
-        {
-          type: 'line',
-      x0: '2020-06-18 00:00:00',
-      y0: 12,
-      x1: '2020-06-18 23:59:00',
-      y1: 12,
-      line: {
-        color: '#D77D2A',
-        width: 2,
-        dash: 'dashdot'
-          }
-        }],
-        width: 1550,
-        height: 600,
-        paper_bgcolor: "#272953",
-        plot_bgcolor: "#272953",
-        xaxis: {
-          color: "#FFFFFF",
-          title: 'Время',
-          range: ['2020-06-18 00:00:00', '2020-06-18 23:59:00'],
-          type: 'date',
-          rangeslider: true,
-        
-        },
-        yaxis: {
-          title: 'W (TC)',
-          color: "#FFFFFF",
-          linecolor: "#EF5350",
-        },
-   
-    
-      },
+
       isChart: true,
+      wellList: [],
+      wellDate: [],
+      wellNumber: null,
+      wellFile: null,
+      maximum: null,
+      minimum: null,
     }
   },
   created: async function () {
@@ -186,7 +215,11 @@ export default {
         let data = response.data;
         if (data) {
           this.areaChartData = data.data;
+          this.maximum = data.data[0].rangeSlider.max;
+          this.minimum = data.data[0].rangeSlider.min;
           console.log(data.data);
+          
+          
         } else {
           console.log("No data");
         }
@@ -196,9 +229,73 @@ export default {
         console.log(error.data);
         this.$store.commit("globalloading/SET_LOADING", false);
       });
+      this.getListWell();
     },
   
   methods: {
+    onChangeWell(number) {
+      this.wellNumber = number;
+      this.postSelectedtWell();        
+        
+    },
+    onChangeWellDate(number) {
+      this.wellFile = number;
+      this.postSelectedtWellFile();
+    },
+    getListWell() {
+      
+        this.axios
+            .get(
+                'http://172.20.103.203:8090/wellName/',
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellList = data;
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWell() {
+        this.axios
+            .get(
+                `http://172.20.103.203:8090/wellDates/${this.wellNumber}`,
+            )
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.wellDate = data;
+                    console.log(this.wellDate)
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWellFile() {
+      this.$store.commit("globalloading/SET_LOADING", false);
+        this.axios
+            .get(
+                `http://172.20.103.203:8090/chooseDate/${this.wellNumber}/${this.wellFile}/`,
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellDate = data;
+                    console.log(this.wellDate)
+                    this.areaChartData = data.data;
+                    this.maximum = data.data[0].rangeSlider.max;
+                    this.minimum = data.data[0].rangeSlider.min;
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
     cancelChat() {
         this.isChart = false;
     },
@@ -238,6 +335,53 @@ export default {
 </script>
 
 <style scoped>
+.data-analysis-left-block {
+  width: 249px;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: column;
+  height: 865px;
+  background: #272953;
+  color: #fff;
+}
+
+.left-block-collapse-holder {
+  display: flex;
+  width: 100%;
+  height: 42px;
+  background-color: #323370;
+}
+
+.left-block-collapse-holder > div {
+  display: flex;
+  height: 100%;
+  width: calc(100% - 29px);
+  align-items: center;
+  background-color: #323370;
+}
+
+.left-block-collapse-holder > div > img {
+  margin: 0 8px 0 10px;
+}
+
+.collapse-left__sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  background: var(--a-accent);
+  padding: 14px 6px;
+  border-radius: 10px 0 0 10px;
+  border: none;
+  border-left: 5px solid #272953;
+}
+
+.dropdown-holder {
+  background-color: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  padding: 6px 6px 1px 6px;
+  margin-bottom: 10px;
+}
 .tkrs-main {
   width: 100%;
   height: 100%;
