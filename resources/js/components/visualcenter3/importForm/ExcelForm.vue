@@ -269,6 +269,25 @@
                     </el-date-picker>
                 </div>
             </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.selectMonth')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="monthDate"
+                            type="month"
+                            format="MMMM"
+                            popper-class="custom-date-picker"
+                            @change="handleMonthChange"
+                            :picker-options="datePickerOptions"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="table-form col-12 mt-3 ml-1">
                 <v-grid
                         v-if="category.isArchieveActive || category.isFactActive"
@@ -376,7 +395,7 @@
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     #monthGrid {
-        height: 582px;
+        height: 622px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
