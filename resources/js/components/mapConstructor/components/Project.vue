@@ -76,10 +76,10 @@ export default {
                         });
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
-                        this.x1 = this.x1 < mapExtent[0] ? this.x1 : mapExtent[0];
-                        this.x2 = this.x2 > mapExtent[2] ? this.x2 : mapExtent[2];
-                        this.y1 = this.y1 < mapExtent[1] ? this.y1 : mapExtent[1];
-                        this.y2 = this.y2 > mapExtent[3] ? this.y2 : mapExtent[3];
+                        this.x1 = Math.min(this.x1, mapExtent[0]);
+                        this.x2 = Math.max(this.x2, mapExtent[2]);
+                        this.y1 = Math.min(this.y1, mapExtent[1]);
+                        this.y2 = Math.max(this.y2, mapExtent[3]);
                         this.map.getView().getProjection().setExtent([this.x1, this.y1, this.x2, this.y2]);
                         this.map.getView().setMinZoom(0.5);
                     }
@@ -90,7 +90,7 @@ export default {
             })
         },
         isGridMap(type) {
-            return !(type === 'shp' || type === 'txt');
+            return !['shp', 'txt'].includes(type);
         },
         addPolygons(data) {
             const internalStyle = new Style({
