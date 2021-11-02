@@ -119,6 +119,14 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category,$this->periodRange + 1,$this->periodType);
         }
+        if ($this->periodType === 'month' && Carbon::now()->day < 3) {
+            $this->periodRange = 0;
+            $plan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
+            $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
+            $monthStart = Carbon::now()->startOf('month')->startOf('day');
+            $fact = $fact->where('date', '>=', $monthStart);
+            $plan = $plan->where('date', '>=', $monthStart);
+        }
 
         return array (
             'table' => $this->getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan),

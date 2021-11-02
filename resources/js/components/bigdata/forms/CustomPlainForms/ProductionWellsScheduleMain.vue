@@ -655,7 +655,7 @@ export default {
 .main-block {
     background-color: rgba(54, 59, 104, 1);
     color: #fff;
-    // height: 780px;
+    
 }
 .content-block {
     background-color: rgba(39, 41, 83, 1);
@@ -825,8 +825,8 @@ export default {
         }
     }
 }
-.historical-info[data-v-8e41ed1a] {
-position: relative;
+.historical-info {
+    position: relative;
     padding-left: 450px;
 }
 .historical-info-parent {
@@ -859,10 +859,8 @@ position: relative;
 }
 .small_history_table .historical-info-parent {
     width:  1284px;
-    /* overflow: hidden; */
 }
 .historical-container {
-    // height: 610px;
     overflow: hidden;
 }
 .bottom-buttons div {
