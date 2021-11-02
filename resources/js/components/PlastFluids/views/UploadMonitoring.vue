@@ -42,6 +42,7 @@ export default {
   provide() {
     return {
       name: this.user.name,
+      id: this.user.id,
       type: 'download',
     };
   },

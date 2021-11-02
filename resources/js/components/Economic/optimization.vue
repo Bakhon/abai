@@ -32,7 +32,7 @@
 
     <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="!loading"
+          v-if="res.scenarios.length > 1"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :res="res"

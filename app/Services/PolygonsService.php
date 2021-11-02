@@ -26,8 +26,15 @@ class PolygonsService
     public function getPolygons(UploadedFile $file, int $numberOfLevels, string $type)
     {
         $uri = self::GRID_MAP_URI;
-        if ($type === 'shp') {
+        $params = [
+            'type' => $type
+        ];
+        if ($type === 'shp' || $type === 'txt') {
             $uri = self::CONTOUR_MAP_URI;
+        } else {
+            $params += [
+                'number_of_levels' => $numberOfLevels
+            ];
         }
         return $this->client->request('POST', $uri, [
             'multipart' => [[
@@ -35,7 +42,7 @@ class PolygonsService
                 'contents' => Utils::tryFopen($file->path(), 'r'),
                 'filename' => $file->getClientOriginalName()
             ]],
-            'query' => 'number_of_levels=' . $numberOfLevels . '&type=' . $type,
+            'query' => http_build_query($params),
         ])->getBody()->getContents();
     }
 

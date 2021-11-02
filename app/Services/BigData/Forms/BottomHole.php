@@ -18,8 +18,8 @@ class BottomHole extends PlainForm
         'error_key' => 'bd.validation.bottom_hole_date'
     ];
 
-    use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+    use DepthValidationTrait;
 
     protected function getRows(): Collection
     {
@@ -57,8 +57,8 @@ class BottomHole extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
-            $errors['depth'][] = trans('bd.validation.depth');
+        if (!$this->isValidDepthofBottomHole($this->request->get('well'), $this->request->get('depth'))) {
+            $errors['depth'][] = trans('bd.validation.depthBt');
         }
 
         if (!$this->isValidDate(

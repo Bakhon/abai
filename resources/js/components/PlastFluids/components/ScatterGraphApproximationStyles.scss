@@ -155,18 +155,33 @@ label {
   padding: 10px 12px;
 }
 
-.approximation-forecast-checkbox-holder {
+.configure-intersection-holder {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: space-between;
   margin-bottom: 10px;
+  height: 29px;
 }
 
-.approximation-forecast-checkbox-holder:last-child {
-  margin-bottom: 0;
+.configure-intersection-holder > input {
+  width: 70px;
+  font-size: 14px;
+  background-color: #1f2142;
+  color: #a5a6b3;
+  padding: 3px 10px;
+  border: 0.5px solid #454fa1;
+  border-radius: 4px;
 }
 
-.approximation-forecast-checkbox-holder > input {
-  margin-right: 10px;
+.configure-intersection-holder > input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.configure-intersection-holder > input::-webkit-outer-spin-button,
+.configure-intersection-holder > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .subtitle {

@@ -51,19 +51,21 @@ class Org extends TBDModel
     public function parentTree(int $id)
     {
         return DB::connection('tbd')->select("
-                WITH RECURSIVE dict_orgs(id,name,parent) AS (
+                WITH RECURSIVE dict_orgs(id,name,parent,code) AS (
                      SELECT s1.id, 
                             (CASE WHEN s1.name_short_ru!='' THEN s1.name_short_ru ELSE s1.name_ru END) as name_ru, 
-                            s1.parent
+                            s1.parent,
+                            s1.code
                        FROM dict.org s1 
                       WHERE id = :id AND s1.dend>now() 
                     UNION
                       SELECT s2.id, 
                             (CASE WHEN s2.name_short_ru!='' THEN s2.name_short_ru ELSE s2.name_ru END) as name_ru, 
-                            s2.parent
+                            s2.parent,
+                            s2.code
                        FROM dict.org s2, dict_orgs s1 
                       WHERE s2.id = s1.parent AND s2.dend>now()
                  )
-                 SELECT name FROM dict_orgs",['id'=>$id]);
+                 SELECT id,name,parent,code FROM dict_orgs",['id'=>$id]);
     }
 }

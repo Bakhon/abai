@@ -28,8 +28,8 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
-;
 import {globalloadingMutations} from '@store/helpers';
+import Plans from "./dataManagers/plans";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -54,12 +54,6 @@ export default {
                     format: formatMappingKBM,
                     cells: cellsMappingKBM,
                     id: 106
-                },
-                "КГМ" : {
-                    rows: initialRowsKGM,
-                    format: formatMappingKGM,
-                    cells: cellsMappingKGM,
-                    id: 108
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
@@ -104,10 +98,6 @@ export default {
                     name: 'АО "КАРАЖАНБАСМУНАЙ"'
                 },
                 {
-                    ticker: 'КГМ',
-                    name: 'ТОО СП "КАЗГЕРМУНАЙ"'
-                },
-                {
                     ticker: 'ММГ',
                     name: 'АО "Мангистаумунайгаз"'
                 },
@@ -122,7 +112,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
-                name: 'ТОО "Казахтуркмунай"',
+                name: 'АО "Эмбамунайгаз"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -195,7 +185,11 @@ export default {
         if ( this.selectedDzo.ticker === 'КОА') {
             this.addColumnsToGrid();
         }
-
+        this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
+        this.fillPlanColumns();
+        this.fillPlanRows();
+        this.plans = await this.getDzoPlans();
+        this.handlePlans();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
@@ -477,5 +471,5 @@ export default {
     components: {
         VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans],
 };

@@ -119,6 +119,11 @@ class Well extends TBDModel
         return $this->hasMany(MeasWaterCut::class, 'well', 'id');
     }
 
+    public function measLiqInjection()
+    {
+        return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
+    }
+
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -208,5 +213,68 @@ class Well extends TBDModel
             ->wherePivot('dbeg', '<=', $date)
             ->withPivot('dend', 'dbeg')
             ->first();
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return array|null
+     */
+    public function wellData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'liquid',
+            'wcut',
+            'oil',
+            'hdin',
+            'activity',
+            'liquid_telemetry',
+            'pbuf',
+            'pzat',
+            'pbuf_before',
+            'pbuf_after',
+            'hdin',
+            'pzab',
+            'hstat',
+            'ppl',
+            'work_hours',
+            'well_status',
+            'well_expl',
+            'well_category',
+            'gdis_conclusion',
+            'reason_downtime',
+            'wcut_telemetry',
+            'oil_telemetry',
+            'gas_telemetry',
+            'gas_factor_telemetry',
+            'liquid_temp',
+            'park_indicator'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return object|null
+     */
+    public function eventsOfWell(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
+        return $query;
     }
 }

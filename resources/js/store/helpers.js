@@ -154,6 +154,12 @@ export const globalloadingMutations = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const globalloadingActions = arrNames => ({
+    ...mapActions('globalloading', [
+        ...arrNames,
+    ]),
+});
 // End global loading //
 
 // geology //

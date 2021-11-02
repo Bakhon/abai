@@ -4,7 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;
-use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\DB;
 
 class AttachmentService
 {
@@ -29,27 +29,46 @@ class AttachmentService
 
     public function getInfo(array $fileIds)
     {
-        $files = $this->request('get-files-info', [], 'POST', [], [
-            RequestOptions::JSON => $fileIds
-        ])->getBody()->getContents();
-
-        return collect(json_decode($files))->map(function ($file) {
-            $file->size = $this->formatFilesize($file->size);
-            return $file;
-        });
+        return DB::connection('tbd')
+            ->table('prod.file_storage')
+            ->whereIn('id', $fileIds)
+            ->get()
+            ->map(function ($file) {
+                $file->file_size = $this->formatFilesize($file->file_size);
+                return $file;
+            });
     }
 
-    public function upload(array $files, array $query)
+    public function upload(array $files, array $query): array
     {
+        $requstFiles = [];
+
         /** @var \Illuminate\Http\UploadedFile[] $files */
         foreach ($files as $file) {
-            $result[] = [
+            $requstFiles[] = [
                 'name' => 'files',
                 'contents' => Utils::tryFopen($file->path(), 'r'),
                 'filename' => $file->getClientOriginalName()
             ];
         }
-        return $this->request('upload/', $result, 'POST', $query)->getBody()->getContents();
+
+        $result = $this->request('upload/', $requstFiles, 'POST', $query)->getBody()->getContents();
+        $uploadedFileIds = json_decode($result);
+
+        $result = [];
+        foreach ($files as $index => $file) {
+            $result[] = DB::connection('tbd')
+                ->table('prod.file_storage')
+                ->insertGetId(
+                    [
+                        'file_path' => $uploadedFileIds[$index],
+                        'file_name' => $file->getClientOriginalName(),
+                        'file_size' => $file->getSize()
+                    ]
+                );
+        }
+
+        return $result;
     }
 
     private function request(

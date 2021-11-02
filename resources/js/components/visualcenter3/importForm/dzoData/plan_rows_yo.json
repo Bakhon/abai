@@ -1,0 +1,10 @@
+{
+  "Добыча нефти":  "plan_oil",
+  "Добыча нефти ОПЕК+":  "plan_oil_opek",
+  "Сдача нефти":  "plan_oil_dlv",
+  "Сдача нефти ОПЕК+":  "plan_oil_dlv_opek",
+  "Добыча газа":  "plan_gas",
+  "Добыча попутного газа":  "plan_poput_gas",
+  "Сжигание попутного газа":  "plan_poput_gas_burn",
+  "Ингибитор коррозии":  "plan_chem_prod_zakacka_ingibator_korrozin"
+}
