@@ -30,7 +30,9 @@ export const paegtmMutations = {
         state.dzoName = value;
     },
     CHANGE_CLICKABLE (state, value) {
-        console.log('in state')
         state.clickable = value
+    },
+    CHANGE_CLICKABLE_TABLE (state, value) {
+        state.clickableTable = value
     }
 }

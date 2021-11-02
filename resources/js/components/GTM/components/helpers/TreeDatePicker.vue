@@ -60,6 +60,7 @@
 <script>
 
 import {paegtmMapGetters, paegtmMapActions, paegtmMapState} from '@store/helpers';
+import moment from "moment"
 
 export default {
   props: {
@@ -87,7 +88,6 @@ export default {
     onDateRangeChange() {
       this.isDatePickerShow = false;
       this.changeTreeDate(this.treeDate);
-      this.$emit('dateChanged')
     },
   },
 }

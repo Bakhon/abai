@@ -14,5 +14,9 @@ export const paegtmState = {
         dzoId: 112,
         dzoName: '',
         clickable: null,
+        clickableTable: {
+            header: null,
+            data: null
+        }
     }
 }

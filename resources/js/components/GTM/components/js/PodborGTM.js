@@ -1,15 +1,12 @@
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations, paegtmMapActions} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
-import {toNumber} from "lodash/lang";
 import moment from "moment"
+import {createTreeBody, getTableWell, getTreeData, postTreeData} from "../api/podborGTM";
 
 export default {
     components: {
-        vSelect,
-        apexchart: VueApexCharts
+        apexchart: VueApexCharts,
     },
 
     data: function () {
@@ -24,10 +21,8 @@ export default {
             oilRate: [],
             wellNumber: null,
             table: {
-                main_data: {
-                    header: null,
-                    data: null,
-                },
+                header: null,
+                data: null,
             },
             dataRangeInfo: {
                 days: Number,
@@ -168,7 +163,8 @@ export default {
     computed: {
         ...paegtmMapState([
             'clickable',
-            'treeDate'
+            'treeDate',
+            'clickableTable'
         ]),
     },
     watch: {},
@@ -178,6 +174,8 @@ export default {
         ]),
         ...paegtmMapActions([
             'changeTreeDate',
+            'getTreeDataStore',
+            'onGetTableByClickableValue'
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -191,166 +189,103 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onClickableValue() {
-            const body = {
-                action_type: 'finder_item_clicked',
-                main_data: this.clickable,
-            }
-            console.log('asd in gtm')
-            console.log(body.main_data)
-            this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
-                .then((res) => {
-                    this.table.main_data.header = res.data.main_data.header
-                    this.table.main_data.data = res.data.main_data.data
-                    if (res.status === 200) {
-                        this.setNotify("Данные получены", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
-        },
-        onClick1(row){
-            console.log(row.target)
-        },
-        onClickWell(e) {
+        onClickWell(v) {
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
-
+            let params = {action_type: 'well_name_clicked', main_data: v, distance: 500}
+            let body = {url: this.url, body: params}
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'well_name_clicked', main_data: v, distance: 500})
-                .then((res) => {
-                    this.lineChartOptions.xaxis.categories = Object.values(res.data.main_data.dt)
-                    this.lineChartSeries = [
-                        {
-                            name: res.data.main_data.labels.liquid_rate,
-                            data: Object.values(res.data.main_data.liquid_rate),
-                            showLine: false,
-                            stroke: {
-                                dashArray: 2
+            getTableWell(body).then((res) => {
+                this.lineChartOptions.xaxis.categories = Object.values(res.main_data.dt)
+                this.lineChartSeries = [
+                    {
+                        name: res.main_data.labels.liquid_rate,
+                        data: Object.values(res.main_data.liquid_rate),
+                        showLine: false,
+                        stroke: {
+                            dashArray: 2
+                        }
+                    },
+                    {
+                        name: res.main_data.labels.oil_rate,
+                        data: Object.values(res.main_data.oil_rate),
+                        pointBorderColor: "#FFFFFF",
+                    },
+                    {
+                        name: res.main_data.labels.bsw_val,
+                        data: Object.values(res.main_data.bsw_val),
+                        pointBorderColor: "#FFFFFF",
+                    },
+                ],
+                    this.waterFallChartSeries = [{
+                        data: [
+                            {
+                                x: res.fa_plot.labels.pbeg_oil_prod,
+                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.pbeg_oil_prod.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceWC,
+                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.influenceWC.color,
+                            }, {
+                                x: res.fa_plot.labels.influencePres,
+                                y: res.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.influencePres.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceLiquidPI,
+                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.influenceLiquidPI.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceBHP,
+                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.influenceBHP.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceWorkDay,
+                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.influenceWorkDay.color,
+                            }, {
+                                x: res.fa_plot.labels.pend_oil_prod,
+                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                fillColor: res.fa_plot.pend_oil_prod.color,
                             }
-                        },
-                        {
-                            name: res.data.main_data.labels.oil_rate,
-                            data: Object.values(res.data.main_data.oil_rate),
-                            pointBorderColor: "#FFFFFF",
-                        },
-                        {
-                            name: res.data.main_data.labels.bsw_val,
-                            data: Object.values(res.data.main_data.bsw_val),
-                            pointBorderColor: "#FFFFFF",
-                        },
-                    ],
-                        this.waterFallChartSeries = [{
-                            data: [
-                                {
-                                    x: res.data.fa_plot.labels.pbeg_oil_prod,
-                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.pbeg_oil_prod.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceWC,
-                                    y: res.data.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.influenceWC.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influencePres,
-                                    y: res.data.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.influencePres.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceLiquidPI,
-                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.influenceLiquidPI.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceBHP,
-                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.influenceBHP.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceWorkDay,
-                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.influenceWorkDay.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.pend_oil_prod,
-                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
-                                    fillColor: res.data.fa_plot.pend_oil_prod.color,
-                                }
-                            ]
-                        }]
-
-                    if (res.status === 200) {
-                        this.setNotify("Данные получены", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+                        ]
+                    }]
+            }).finally(() => {this.SET_LOADING(false);})
         },
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
         },
-        showModal(modalName) {
-            this.$modal.show(modalName);
-        },
-        closeModal(modalName) {
-            this.$modal.hide(modalName)
-        },
-        async getTreeData() {
-            console.log('before request', this.dataRangeInfo);
+        async onGetTreeData() {
+            let body = { url: this.url, body: this.body }
             this.SET_LOADING(true);
-            await axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
-                .then((res) => {
-                    console.log(res.data)
-                    this.dataRangeInfo = res.data.date_range_model;
-                    this.treeData = res.data.finder_model.children;
-                    this.fieldName = res.data.field_name;
-                }).finally(() => {
-                    this.SET_LOADING(false);
-                })
+            await getTreeData(body).then((res) => {
+                this.dataRangeInfo = res.date_range_model;
+                this.treeData = res.finder_model.children;
+                this.fieldName = res.org_struct;
+            }).finally(() => {
+                this.SET_LOADING(false);
+            })
             this.changeTreeDate(this.dataRangeInfo);
         },
-        onChangeDays1(e) {
-            this.dataRangeInfo.days = toNumber(e.target.value)
+        onChangeDays(e) {
+            this.dataRangeInfo.days = e.target.value
         },
-        myEvent() {
+        onHideDays() {
             this.isHidden = !this.isHidden
-            console.log(this.isHidden)
         },
-        postTreeData(v) {
+        async onPostTreeData(v) {
             this.dataRangeInfo = _.clone(this.treeDate)
             this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
             this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
             this.changeTreeDate(this.dataRangeInfo);
-            const body = {
-                action_type: 'calc_button_pressed',
-                date_range_model: this.dataRangeInfo,
-                fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            }
+            const c = createTreeBody('calc_button_pressed',this.dataRangeInfo, this.fieldName, {name: 'root', children: v})
+            let body = {url: this.url, body: c}
             this.SET_LOADING(true);
-            axios.post(this.url, {
-                action_type: 'calc_button_pressed', date_range_model: this.dataRangeInfo, fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
+            await postTreeData(body).then((res) => {
+            }).finally(() => {
+                this.SET_LOADING(false);
             })
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.setNotify("Информация о скважинах получена", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
@@ -387,21 +322,17 @@ export default {
                 },
                 template: '<div>' +
                     '       <div class="block-header text-center">' + data.node.name +
-                    '</div><gtm-tree :treeData="treeData" @node-click="handleClick" @event-emit="onMyEvent()">' +
+                    '</div><gtm-tree :treeData="treeData" @node-click="handleClick">' +
                     '</gtm-tree></div>',
                 methods: {
                     handleClick(data) {
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
                     },
-                    onMyEvent() {
-                        console.log('ioi')
-                        this.onClickableValue()
-                    }
                 }
             };
         },
     },
     mounted() {
-        this.getTreeData();
+        this.onGetTreeData();
     },
 }

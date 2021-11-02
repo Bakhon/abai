@@ -19,7 +19,7 @@
                 </div>
               </div>
               <div class="p-0 pl-0 table-pgtm">
-                <div v-if="!table.main_data.data">
+                <div v-if="!clickableTable.data">
                   <div class="border-block-out">
                     <div class="border-block-in">
                       <div class="p-3 empty-data-title">
@@ -34,7 +34,7 @@
                       <table class="table text-center text-white podbor-middle-table">
                         <thead class="thead" :class="isMinimize">
                         <tr>
-                          <th class="th" v-for="(row, idx) in table.main_data.header" :key="idx"
+                          <th class="th" v-for="(row, idx) in clickableTable.header" :key="idx"
                               :colspan="Array.isArray(row) ? row.length : ''"
                               :rowspan="Array.isArray(row) ? '' : 2"
                           >
@@ -42,7 +42,7 @@
                           </th>
                         </tr>
                         <tr>
-                          <template v-for="(row) in table.main_data.header">
+                          <template v-for="(row) in clickableTable.header">
                             <template v-if="Array.isArray(row)">
                               <th class="th" v-for="r in row">
                                 {{ r }}
@@ -52,7 +52,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  v-for="c in table.main_data.data" @click="onClickWell(c[0])" >
+                        <tr  v-for="c in clickableTable.data" @click="onClickWell(c[0])" >
                           <th class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
@@ -209,7 +209,7 @@
 
         </div>
       </div>
-      <div class="col-lg-3 p-0 pl-2 pr-1">
+      <div class="col-lg-3 p-0 pl-2 pr-1 right-block">
         <div class="gtm-dark p-2">
           <div class="block-header pb-2 pt-1 d-flex">
             <div>
@@ -219,14 +219,14 @@
               <div class="pl-1" style="font-weight: normal">
                 <input class="mt-7px pl-1" type="checkbox" value="" v-model="dataRangeInfo.is_days_group">
                 <label class="pl-1">Шаг</label>
-                <input class="period-settings-input" type="number" v-model="dataRangeInfo.days" @input="onChangeDays1($event)"/>
+                <input class="period-settings-input" type="number" v-model="dataRangeInfo.days" @input="onChangeDays($event)"/>
               </div>
             </div>
 
           </div>
           <div class="d-flex gap-10">
             <gtm-tree-date-picker class="flex-1"></gtm-tree-date-picker>
-            <div class="d-flex calendar-filter-block show-block"  @click="myEvent">
+            <div class="d-flex calendar-filter-block show-block"  @click="onHideDays">
               <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
             </div>
           </div>
@@ -263,49 +263,14 @@
                 <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_gu') }}</option>
               </select>
             </div>
-
-<!--            <v-select-->
-<!--                :options="dzosForFilter"-->
-<!--                label="name"-->
-<!--                :placeholder="this.trans('paegtm.select_dzo')"-->
-<!--            >-->
-<!--            </v-select>-->
-<!--            <v-select-->
-<!--                :options="oilFieldsForFilter"-->
-<!--                label="name"-->
-<!--                :placeholder="this.trans('paegtm.select_oil_field')"-->
-<!--            >-->
-<!--            </v-select>-->
-
-<!--            <v-select-->
-<!--                :options="objectsForFilter"-->
-<!--                label="name"-->
-<!--                :placeholder="this.trans('paegtm.select_object')"-->
-<!--            >-->
-<!--            </v-select>-->
-
-<!--            <v-select-->
-<!--                :options="structuresForFilter"-->
-<!--                label="name"-->
-<!--                :placeholder="this.trans('paegtm.select_structure')"-->
-<!--            >-->
-<!--            </v-select>-->
-
-<!--            <v-select-->
-<!--                :options="gusForFilter"-->
-<!--                label="name"-->
-<!--                :placeholder="this.trans('paegtm.select_gu')"-->
-<!--            >-->
-<!--            </v-select>-->
-
           </div>
         </div>
 
-        <div class="gtm-dark mt-2 p-2 calc-button text-center" @click="postTreeData(treeData)">
+        <div class="gtm-dark p-2 calc-button text-center" @click="onPostTreeData(treeData)">
           {{ trans("paegtm.calc") }}
         </div>
 
-        <div class="gtm-dark mt-2 p-2">
+        <div class="gtm-dark p-2">
           <div class="block-header p-2 d-flex">
 
             <div class="title-block-tree" @click="showBlock = 1">
@@ -333,13 +298,12 @@
                   :treeData="treeDataChild"
                   :key="treeDataChild.name"
                   @node-click="nodeClick"
-                  @event-emit="onClickableValue()"
               ></gtm-tree>
             </div>
           </div>
 
         </div>
-        <div class="gtm-dark mt-2 p-2">
+        <div class="gtm-dark p-2">
           <div class="block-header p-2 d-flex">
             <div @click="showBlock = 2">
               {{ trans("paegtm.nearWells") }}
@@ -349,15 +313,15 @@
           </div>
 
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
-            <div class="gtm-dark mt-2 row m-0 p-2">
+            <div class="gtm-dark row m-0 p-2">
               <div class="col-1 text-right mt-1 mb-1 p-0">
                 <img src="../img/lens.svg">
               </div>
-              <div class="col-11 m-0 mt-1 mb-1 row p-0">
+              <div class="col-11 row p-0">
                 <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                 <button class="search-button pl-2 pr-2">{{ trans("paegtm.search") }}</button>
               </div>
-              <div class="gtm-dark text-white h-233 pl-2">
+              <div class="gtm-dark text-white h-221 pl-2">
                 {{ trans("paegtm.all_wells") }}
               </div>
             </div>
@@ -369,13 +333,20 @@
 </template>
 <script src="./js/PodborGTM.js"></script>
 <style scoped>
-.h-233 {
-  min-height: 233px;
+.h-221 {
+  min-height: 221px;
 }
 
 .main-block-gtm {
   height: 100%;
   align-items: stretch;
+}
+
+.right-block {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .period-settings-input {
@@ -439,7 +410,7 @@
 }
 
 .p-3 {
-  height: 368px;
+  height: 384px !important;
 }
 
 .bg-body {
@@ -625,5 +596,9 @@ tr:nth-child(even) td {
 
 .gtm-select-block select {
   outline: none;
+}
+
+.gtm-dark {
+  display: block;
 }
 </style>

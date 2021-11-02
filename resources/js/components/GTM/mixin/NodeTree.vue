@@ -1,32 +1,33 @@
 <template>
   <li class="text-white list-style-none mt-2 pl-4 pb-1 ">
     <div class="span">
-    <div
-        v-if="node.name"
-        v-bind:class="{ 'cursor-pointer': pointerClass }"
-        @click.stop="handleClick(node)">
+      <div
+          v-if="node.name"
+          v-bind:class="{ 'cursor-pointer': pointerClass }"
+          @click.stop="handleClick(node)">
             <span v-if="nodeHasChildren" @click="toggleUl(1)">
-              <span class="asd"><img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'"></span>
-              <img width="20" height="20" src='../img/folder.svg'>
+              <span class="asd">
+                <img width="20" height="20"
+                     :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'"></span>
             </span>
-      <span v-if="!nodeHasChildren && !node.value">
+        <span v-if="!nodeHasChildren && !node.value">
         <template>
           <input v-if="checkable" type="checkbox">
           <img v-else width="20" height="20" src='../img/file.svg'>
         </template>
       </span>
-      <span v-if="checkable !== undefined"></span>
-      <span class="margin-input" @click="toggleCheckState(node)">{{ node.name }} </span>
-      <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
-    </div>
-    <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
-      <node
-          v-for="child in node.children"
-          :node="child"
-          :key="child.name"
-          :handle-click="handleClick"
-      ></node>
-    </ul>
+        <span v-if="checkable !== undefined"></span>
+        <span class="margin-input" @click="toggleCheckState(node)">{{ node.name }} </span>
+        <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
+      </div>
+      <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
+        <node
+            v-for="child in node.children"
+            :node="child"
+            :key="child.name"
+            :handle-click="handleClick"
+        ></node>
+      </ul>
     </div>
   </li>
 </template>
@@ -34,61 +35,139 @@
 import {paegtmMapActions} from "../../../store/helpers";
 
 export default {
-    name: "node",
-    props: {
-        node: Object,
-        handleClick: Function,
+  name: "node",
+  props: {
+    node: Object,
+    handleClick: Function,
+  },
+  methods: {
+    ...paegtmMapActions([
+      'changeClickable',
+    ]),
+    toggleUl: function (el) {
+      this.showChildren = !this.showChildren;
     },
-    methods: {
-      ...paegtmMapActions([
-        'changeClickable',
-      ]),
-        toggleUl: function (el) {
-          this.showChildren = !this.showChildren;
-          this.active_el = el;
-        },
-        toggleCheckState: function () {
-          let clickable = this.node.clickable
-            if (this.node.clickable) {
-              this.changeClickable(clickable)
-              this.$emit('emitValue', clickable)
-            }
-            if (this.checkable) {
-              this.checkState = !this.checkState;
-            }
-        },
+    toggleCheckState: function () {
+      let clickable = this.node.clickable
+      if (this.node.clickable) {
+        this.changeClickable(clickable)
+        this.$emit('emitValue', clickable)
+      }
+      if (this.checkable) {
+        this.checkState = !this.checkState;
+      }
     },
-    data: function () {
-        let showChildren = true;
-        return {
-            showChildren: showChildren,
-            checkState: this.node.check_state,
-            checkable: this.node.checkable,
-        };
+  },
+  data: function () {
+    let showChildren = true;
+    return {
+      showChildren: showChildren,
+      checkState: this.node.check_state,
+      checkable: this.node.checkable,
+      active: '',
+    };
+  },
+  computed: {
+    pointerClass: function () {
+      return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
     },
-    computed: {
-        pointerClass: function () {
-            return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
-        },
-        nodeHasChildren: function () {
-            return this.node.children && this.node.children.length;
-        },
-        selected() {
-          if (!this.active.length) return undefined;
-          const id = this.active[0];
-          return this.users.find(user => user.id === id);
-        },
-      isLeaf: function(node) {
-        if (node.hasOwnProperty('value')) {
-          return true
-        }
-      },
-    }
+    activeClass: function () {
+      return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
+    },
+    nodeHasChildren: function () {
+      return this.node.children && this.node.children.length;
+    },
+    selected() {
+      if (!this.active.length) return undefined;
+      const id = this.active[0];
+      return this.users.find(user => user.id === id);
+    },
+    isLeaf: function (node) {
+      if (node.hasOwnProperty('value')) {
+        return true
+      }
+    },
+  }
 }
 </script>
-<style>
+<style lang="scss">
 .active {
-  color:red;
-  font-weight:bold;
+  color: red;
+  font-weight: bold;
 }
+
+$border: #ddd;
+$border-hover: #aaa;
+$bg-hover: #eee;
+$text: #888;
+$text-hover: #000;
+$ident: 10px;
+$left: -($ident);
+
+ul {
+  margin-left: $ident;
+}
+
+.treeUl {
+  li {
+    list-style-type: none;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -25px;
+      border-left: 1px dotted $border;
+      border-bottom: 1px dotted $border;
+      width: 45px;
+      height: 15px;
+    }
+
+    &:after {
+      position: absolute;
+      content: "";
+      top: 12px;
+      left: -25px;
+      border-left: 1px dotted $border;
+      width: $ident;
+      height: 100%;
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+  }
+}
+
+.active {
+  color: red;
+  border-color: red;
+}
+
+/*ul, li { list-style: none; margin: 0; padding: 0; }*/
+/*ul { padding-left: 1em; }*/
+/*li { padding-left: 1em;*/
+/*  border: 1px dotted black;*/
+/*  border-width: 0 0 1px 1px;*/
+/*}*/
+/*li.container { border-bottom: 0px; }*/
+/*li.empty { font-style: italic;*/
+/*  color: silver;*/
+/*  border-color: silver;*/
+/*}*/
+/*li p { margin: 0;*/
+/*  background: white;*/
+/*  position: relative;*/
+/*  top: 0.5em;*/
+/*}*/
+/*li ul {*/
+/*  border-top: 1px dotted black;*/
+/*  margin-left: -1em;*/
+/*  padding-left: 2em;*/
+/*}*/
+/*ul li:last-child ul {*/
+/*  border-left: 1px solid white;*/
+/*  margin-left: -17px;*/
+/*}*/
 </style>

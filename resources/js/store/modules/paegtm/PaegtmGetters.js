@@ -6,4 +6,5 @@ export const paegtmGetters = {
     getTreeDate: (state) => state.treeDate,
     dzoId: (state) => state.dzoId,
     dzoName: (state) => state.dzoName,
+    clickableTable: (state) => state.clickableTable
 }
