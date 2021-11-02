@@ -22,6 +22,7 @@ const plastFluidsLocal = {
     currentSelectedCorrelation_ps: "",
     currentSelectedCorrelation_bs: "",
     currentSelectedCorrelation_ms: "",
+    currentSelectedSamples: [],
   },
 
   mutations: {
@@ -64,11 +65,25 @@ const plastFluidsLocal = {
     SET_CURRENT_CORRELATION_PS(state, payload) {
       state.currentSelectedCorrelation_ps = payload;
     },
-    SET_CURRENT_CORRELATION_BS() {
+    SET_CURRENT_CORRELATION_BS(state, payload) {
       state.currentSelectedCorrelation_bs = payload;
     },
-    SET_CURRENT_CORRELATION_MS() {
+    SET_CURRENT_CORRELATION_MS(state, payload) {
       state.currentSelectedCorrelation_ms = payload;
+    },
+    SET_CURRENT_SELECTED_SAMPLES(state, payload) {
+      if (payload === "clear") {
+        state.currentSelectedSamples = [];
+        return;
+      }
+      if (state.currentSelectedSamples.includes(payload)) {
+        const index = state.currentSelectedSamples.findIndex(
+          (element) => element === payload
+        );
+        state.currentSelectedSamples.splice(index, 1);
+        return;
+      }
+      state.currentSelectedSamples.push(payload);
     },
   },
 
@@ -143,7 +158,7 @@ const plastFluidsLocal = {
         commit("SET_LOCAL_HORIZONS", data[1].filter_data);
         commit("SET_TABLE_ROWS", data.slice(2));
       } catch (error) {
-        alert(error);
+        console.log(error);
       } finally {
         commit("SET_LOADING", false);
       }
