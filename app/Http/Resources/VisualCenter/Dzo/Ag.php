@@ -27,7 +27,7 @@ class Ag extends Dzo {
         return $summary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
         $chartSummary = $daySummary;
         $chartSummary['fact'] = $fact[$factField];
