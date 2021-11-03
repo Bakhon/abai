@@ -35,15 +35,6 @@ class FormService
 
     public function fillFormsStructure(array &$formsStructure, Collection $activeForms)
     {
-        if (!empty($formsStructure['children'])) {
-            foreach ($formsStructure['children'] as &$child) {
-                $this->fillFormsStructure($child, $activeForms);
-            }
-        }
-        if (empty($formsStructure['forms'])) {
-            return;
-        }
-
         $forms = [];
 
         foreach ($formsStructure['forms'] as $formCode) {

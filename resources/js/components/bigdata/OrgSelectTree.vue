@@ -1,31 +1,29 @@
 <template>
-  <div class="bd-forms col-12 p-0 pl-2 h-100">
-    <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3 scrollable blueblock">
-        <tree-view
-            v-for="(treeData, index) in filterTree"
-            :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
-            :node="treeData"
-            :key="`${index}-${treeData.id}`"
-            :handle-click="nodeClick"
-            :get-wells="getWells"
-            :isShowCheckboxes="false"
-            :isWell="isWell"
-            :currentWellId="currentWellId"
-        ></tree-view>
-      </div>
-    </div>
-  </div>
+  <ul class="asside-db-list">
+    <org-select-tree-item
+        v-for="(treeData, index) in filterTree"
+        :key="`${index}-${treeData.id}`"
+        :currentWellId="currentWellId"
+        :get-wells="getWells"
+        :handle-click="nodeClick"
+        :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
+        :isShowCheckboxes="false"
+        :isWell="isWell"
+        :node="treeData"
+    ></org-select-tree-item>
+  </ul>
 </template>
 
 <script>
 import forms from '../../json/bd/forms.json'
-import moment from "moment";
-import BigDataTableForm from "./forms/TableForm";
+import moment from 'moment'
+import BigDataTableForm from './forms/TableForm'
+import OrgSelectTreeItem from './OrgSelectTreeItem'
 
 export default {
   components: {
-    BigDataTableForm
+    BigDataTableForm,
+    OrgSelectTreeItem
   },
   props: {
     currentWellId: {
