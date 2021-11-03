@@ -34,10 +34,12 @@
           v-else-if="activeTab === 'additional_stops'"
           class="text-white"/>
 
-      <table-oil-production-tech-loss
+
+      <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
           :wells="wellsByStatuses"
-          class="text-white"/>
+          class="text-white"
+          is-tech-loss/>
 
       <table-economic-tech-loss
           v-else-if="activeTab === 'economic_tech_loss'"
