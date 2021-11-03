@@ -140,12 +140,12 @@ export default {
         width: 1550,
         height: 600,
         margin: {
-    l: 50,
-    r: 10,
-    b: 30,
-    t: 30,
-    pad: 4
-  },
+          l: 50,
+          r: 10,
+          b: 30,
+          t: 30,
+          pad: 4
+        },
         paper_bgcolor: "rgba(0,0,0,0)",
         plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
