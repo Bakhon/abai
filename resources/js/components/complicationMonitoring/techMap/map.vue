@@ -55,6 +55,7 @@
     <map-context-menu
         v-model="clickedObject"
         @option-clicked="optionClicked"
+        @click-outside="clearSelected"
         ref="contextMenu"
     ></map-context-menu>
 
@@ -744,31 +745,36 @@ export default {
       this.confirmDelete(title);
     },
     onShowDetailInfo(option) {
+      this.clearSelected();
       this.selectedPipe = option.mapObject.object;
       this.$bvModal.show('pipe-calc-modal');
     },
     onShowOmgNgduWellForm(option) {
-      this.selectedGu = null;
-      this.selectedZu = null;
+      this.clearSelected();
       this.selectedWell = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
     onShowOmgNgduGuForm(option) {
-      this.selectedZu = null;
-      this.selectedWell = null;
+      this.clearSelected();
       this.selectedGu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
     onShowCalcForm(option) {
+      this.clearSelected();
       this.calcAlerts = [];
       this.selectedGu = option.mapObject.object;
       this.$bvModal.show('calc-form');
     },
     onShowOmgNgduZuForm(option) {
-      this.selectedGu = null;
-      this.selectedWell = null;
+      this.clearSelected();
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
+    },
+    clearSelected(){
+      this.selectedGu = null;
+      this.selectedWell = null;
+      this.selectedZu = null;
+      this.selectedPipe = null;
     },
     optionClicked(option) {
       this.editMode = option.editMode;
