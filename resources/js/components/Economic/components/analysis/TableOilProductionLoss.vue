@@ -18,7 +18,8 @@
           }}
         </div>
 
-        <div class="customScroll" style="overflow-y: hidden">
+        <div class="customScroll sync-scroll"
+             style="overflow-y: hidden">
           <div class="font-weight-600 pr-10px d-flex">
             <div class="bg-blue py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-grow-1"
                  style="min-width: 100px">
@@ -63,16 +64,19 @@
           {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
         </div>
 
-        <div :style="`min-width: ${100 + statuses.length * 270}px; overflow-x: auto !important`"
-             class="d-flex flex-column customScroll table-oil-production">
-          <table-oil-production-loss-row
-              v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
-              :key="rowIndex"
-              :row="row"
-              :statuses="statuses"
-              :columns="columns"
-              :style="row.style"
-              class="flex-grow-1"/>
+        <div class="customScroll customScrollThin sync-scroll table-oil-production"
+             style="overflow-x: auto !important">
+          <div :style="`min-width: ${100 + statuses.length * 270}px;`"
+               class="h-100 d-flex flex-column">
+            <table-oil-production-loss-row
+                v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
+                :key="rowIndex"
+                :row="row"
+                :statuses="statuses"
+                :columns="columns"
+                :style="row.style"
+                class="flex-grow-1"/>
+          </div>
         </div>
       </div>
     </div>
@@ -108,6 +112,20 @@ export default {
       type: Boolean
     }
   },
+  mounted() {
+    this.addSyncScrollToTables()
+  },
+  methods: {
+    addSyncScrollToTables() {
+      let tables = document.getElementsByClassName("sync-scroll");
+
+      tables.forEach(table => {
+        table.addEventListener("scroll", function () {
+          tables.forEach(table => table.scrollLeft = this.scrollLeft)
+        })
+      })
+    }
+  }
 }
 </script>
 
@@ -156,5 +174,9 @@ export default {
 
 .customScroll::-webkit-scrollbar {
   width: 10px;
+}
+
+.customScrollThin::-webkit-scrollbar {
+  height: 0;
 }
 </style>

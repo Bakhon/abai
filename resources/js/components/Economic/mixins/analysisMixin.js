@@ -86,7 +86,7 @@ export const tableDataMixin = {
         statuses() {
             return Object.values(this.wellsByStatuses.statuses).map(status => {
                 return {name: status[0].status_name}
-            }).slice(0, 1)
+            })
         },
 
         columns() {
