@@ -697,19 +697,7 @@ export default {
           ? this.getFormatedDate(this.well.wellDailyDrill.dbeg)
           : this.well.wellDailyDrill.dend
           ? this.getFormatedDate(this.well.wellDailyDrill.dend)
-          : "";
-      
-      /*
-        this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
-            " - " +
-            this.getFormatedDate(this.well.wellInfo.drill_end_date)
-          : this.well.wellInfo.drill_start_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
-          : this.well.wellInfo.drill_end_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
-          : "";
-          */
+          : "";         
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
