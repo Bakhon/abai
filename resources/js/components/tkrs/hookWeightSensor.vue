@@ -55,9 +55,11 @@
                   <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
                   
                 </div>
+                <div class="plotly-graph-custom">
                 <Plotly :data="areaChartData" :displaylogo="false" 
                 :layout="layoutData" :display-mode-bar="true" 
                 :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
+                </div>
                 <div>
                     <div class="nav nav-tabs all-tabs">
                       <div style="display:flex">
@@ -137,20 +139,29 @@ export default {
       return {
         width: 1550,
         height: 600,
-        paper_bgcolor: "#272953",
-        plot_bgcolor: "#272953",
+        margin: {
+    l: 50,
+    r: 10,
+    b: 30,
+    t: 30,
+    pad: 4
+  },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
           color: "#FFFFFF",
           title: 'Время',
           range: [this.minimum, this.maximum],
           type: 'date',
           rangeslider: true,
+          showgrid: false
         
         },
         yaxis: {
           title: 'W (TC)',
           color: "#FFFFFF",
           linecolor: "#EF5350",
+          showgrid: false
         },    
       };
     },
@@ -176,11 +187,11 @@ export default {
       wellFile: null,
       maximum: null,
       minimum: null,
+      
     }
   },
   created: async function () {
     this.$store.commit("globalloading/SET_LOADING", true);
-    console.log("TEST")  
     await this.axios
       .get(
           'http://172.20.103.203:8090/db1/'
@@ -296,13 +307,10 @@ export default {
         })
     },
   },
-  
-  
-  
 };
 </script>
 
-<style scoped>
+<style  scoped lang='scss'>
 .data-analysis-left-block {
   width: 249px;
   flex-shrink: 0;
@@ -447,5 +455,17 @@ table, th, td {
 }
 .comp-charts-icon {
   padding-left: 22px;
+}
+svg .main-svg {
+  background-color: #2B2E5E !important;
+    background-image: linear-gradient(#545580 1px, transparent 1px), 
+    linear-gradient(90deg, #545580 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px;
+}
+.plotly-graph-custom {
+    background-color: #2B2E5E !important;
+    background-image: linear-gradient(#545580 1px, transparent 1px), 
+    linear-gradient(90deg, #545580 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px;
 }
 </style>
