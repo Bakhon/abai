@@ -65,7 +65,6 @@ export default {
             let header = {
                 "column1": "Дата"
             };
-            // this.factFieldsMapping['1'] = 'date';
             if (this.companiesWithOil.includes(this.selectedDzo.ticker)) {
                 header['column2'] = 'Добыча нефти';
                 header['column3'] = 'Сдача нефти';
