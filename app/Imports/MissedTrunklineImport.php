@@ -101,35 +101,7 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
             }
 
             if (!empty($row[self::COLUMNS['pipe_name']]) && !$pipe) {
-                $this->command->line('----------------------------');
-                $this->command->info('Processing ' . $row[self::COLUMNS['pipe_name']] . ' pipe');
-
-                $this->deleteOldPipe($row);
-
-                $pipe_type = $this->createPipeType($row);
-                $roughness = floatval($row[self::COLUMNS['roughness']]);
-                $material = Material::where('roughness', $roughness)->first();
-
-                $ngdu = Ngdu::where('name', $row[self::COLUMNS['ngdu']])->first();
-                $gu = Gu::where('name', $row[self::COLUMNS['gu']])->first();
-
-                $pipe = OilPipe::firstOrNew(
-                    [
-                        'name' => $row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']],
-                        'ngdu_id' => $ngdu->id
-                    ]
-                );
-
-                $pipe->type_id = $pipe_type->id;
-                $pipe->material_id = $material->id;
-                $pipe->between_points = $this->getPipeType($row);
-                $pipe->start_point = $row[self::COLUMNS['start_point']];
-                $pipe->end_point = $row[self::COLUMNS['end_point']];
-                $pipe->gu_id = $gu ? $gu->id : null;
-
-                $pipe->save();
-                $this->command->info('Pipe created '.$row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']]);
-                PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
+                $pipe = $this->createNewPipe($row);
             }
 
             $this->command->info('Create Pipe '.$pipe->name.' Coords');
@@ -143,6 +115,40 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         $this->command->info($row[self::COLUMNS['pipe_name']] . ' Finished');
         $this->command->line('----------------------------');
         $this->command->line(' ');
+    }
+
+    public function createNewPipe ($row) {
+        $this->command->line('----------------------------');
+        $this->command->info('Processing ' . $row[self::COLUMNS['pipe_name']] . ' pipe');
+
+        $this->deleteOldPipe($row);
+
+        $pipe_type = $this->createPipeType($row);
+        $roughness = floatval($row[self::COLUMNS['roughness']]);
+        $material = Material::where('roughness', $roughness)->first();
+
+        $ngdu = Ngdu::where('name', $row[self::COLUMNS['ngdu']])->first();
+        $gu = Gu::where('name', $row[self::COLUMNS['gu']])->first();
+
+        $pipe = OilPipe::firstOrNew(
+            [
+                'name' => $row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']],
+                'ngdu_id' => $ngdu->id
+            ]
+        );
+
+        $pipe->type_id = $pipe_type->id;
+        $pipe->material_id = $material->id;
+        $pipe->between_points = $this->getPipeType($row);
+        $pipe->start_point = $row[self::COLUMNS['start_point']];
+        $pipe->end_point = $row[self::COLUMNS['end_point']];
+        $pipe->gu_id = $gu ? $gu->id : null;
+
+        $pipe->save();
+        $this->command->info('Pipe created '.$row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']]);
+        PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
+
+        return $pipe;
     }
 
     public function startRow(): int
