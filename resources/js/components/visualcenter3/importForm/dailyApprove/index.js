@@ -181,6 +181,7 @@ export default {
                     return;
                 }
                 let currentDetail = current[currentKey];
+
                 let actualDetail = actual[currentKey];
                 if (currentDetail !== actualDetail) {
                     difference[currentKey] = {
@@ -193,6 +194,9 @@ export default {
         },
         getChildFields(currentFields, actualFields) {
             let difference = {};
+            if (currentFields.length !== actualFields.length) {
+                return difference;
+            }
             _.forEach(currentFields, (field, index) => {
                 difference[field['field_name']] = this.getChildDifference(field,actualFields[index]);
             });

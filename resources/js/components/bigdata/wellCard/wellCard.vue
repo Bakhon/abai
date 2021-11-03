@@ -1,88 +1,13 @@
 <template>
   <div class="all-contents">
     <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
+      <div
+              v-for="(well,index) in wellsHistory"
+              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well' : 'well-card_tab-head__item'"
+              @click="handleSelectHistoryWell(well)"
+      >
+          {{well.wellUwi}}
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -211,14 +136,24 @@
                     </template>
                   </v-select>
                 </form>
-                <div class="button-block">
+                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
                   <div class="button-block__item">
                     Легенда
                   </div>
                   <div class="button-block__item">
                     График
                   </div>
-                  <div class="button-block__item">
+                  <div
+                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
+                          class="button-block__item"
+                  >
+                          Сформировать
+                  </div>
+                  <div
+                          v-else
+                          class="button-block__item"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
                     Исторические сведения
                   </div>
                 </div>
@@ -436,6 +371,7 @@ import camelCase from "lodash/camelCase";
 import {
   bigdatahistoricalVisibleState,
   globalloadingMutations,
+  bigdatahistoricalVisibleMutations
 } from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
@@ -555,6 +491,7 @@ export default {
           equip_param: null,
         },
         type_sk: { value_double: null, value_string: null, equip_param: null },
+        wellDailyDrill: {dbeg: null, dend: null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -620,11 +557,28 @@ export default {
         diametr_pump: "diametr_pump",
         depth_nkt: "depth_nkt",
         type_sk: "type_sk",
+        wellDailyDrill: "wellDailyDrill",
       },
       formsStructure: {},
       dzoSelectOptions: [],
       selectedUserDzo: null,
+      historyWellTemplate: {
+        summary: {
+          'wellUwi': null,
+          'well_passport': []
+        },
+        params: {
+          'category': null,
+          'wellOrgName': null,
+          'wellSaptialObjectX': null,
+          'wellSaptialObjectY': null,
+          'wellSaptialObjectBottomX': null,
+          'wellSaptialObjectBottomY': null
+        }
+      },
+      wellsHistory: [],
       tabWidth:0,
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
     };
   },
   mounted() {
@@ -696,7 +650,7 @@ export default {
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.well.wellInfo
+      let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
         ? this.well.wellInfo.whc_alt.toFixed(1) +
           " / " +
           this.well.wellInfo.whc_h.toFixed(1)
@@ -735,16 +689,15 @@ export default {
       let categoryLast = this.well.categoryLast
         ? this.well.categoryLast.name_ru
         : "";
-      let period_bur =
-        this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
+      let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
+          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
             " - " +
-            this.getFormatedDate(this.well.wellInfo.drill_end_date)
-          : this.well.wellInfo.drill_start_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
-          : this.well.wellInfo.drill_end_date
-          ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
-          : "";
+            this.getFormatedDate(this.well.wellDailyDrill.dend)
+          : this.well.wellDailyDrill.dbeg
+          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg)
+          : this.well.wellDailyDrill.dend
+          ? this.getFormatedDate(this.well.wellDailyDrill.dend)
+          : "";         
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
@@ -763,7 +716,7 @@ export default {
       let perfActual =
         this.well.perfActual.top && this.well.perfActual.base
           ? this.well.perfActual.top + " - " + this.well.perfActual.base
-          : "";
+          : ""; 
       let techModeProdOil =
         this.well.techModeProdOil && this.well.measLiq
           ? this.well.techModeProdOil.liquid +
@@ -871,7 +824,7 @@ export default {
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
-      let category_id = this.well.categoryLast.pivot.category;
+      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
@@ -1307,6 +1260,7 @@ export default {
               this.SET_LOADING(false);
             }
             this.setWellPassport();
+            this.storeWellToHistory();
             this.SET_LOADING(false);
           });
       }
@@ -1408,11 +1362,44 @@ export default {
       this.options = [];
       this.wellUwi = null;
     },
+    storeWellToHistory() {
+      let summaryWellInfo = {
+         'wellUwi': this.wellUwi,
+         'well_passport': this.tableData
+      };
+      _.forEach(Object.keys(this.historyWellTemplate.params), (key) => {
+          if (key === 'category') {
+             summaryWellInfo[key] = this.well.category;
+          } else if (this[key]) {
+              summaryWellInfo[key] = this[key];
+          } else {
+            summaryWellInfo[key] = null;
+          }
+      });
+      this.wellsHistory.push(summaryWellInfo);
+    },
+    handleDeleteWell(index) {
+      this.wellsHistory.splice(index, 1);
+    },
+    handleSelectHistoryWell(well) {
+      this.activeForm = null;
+      this.activeFormComponentName = null;
+      _.forEach(Object.keys(well), (key) => {
+          this[key] = well[key];
+      });
+      this.SET_VISIBLE_PRODUCTION(false);
+      this.SET_VISIBLE_INJECTION(false);
+      this.isBothColumnFolded = false;
+      this.isLeftColumnFolded = false;
+      this.isRightColumnFolded = false;
+    },
     updateWidth() {
       this.tabWidth = window.innerWidth -77;
-      
-  
     },
+    ...bigdatahistoricalVisibleMutations([
+      'SET_VISIBLE_INJECTION',
+      'SET_VISIBLE_PRODUCTION'
+    ]),
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -1432,9 +1419,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 $leftColumnWidth: 300px;
-$leftColumnFoldedWidth: 30px;
+$leftColumnFoldedWidth: 50px;
 $rightColumnWidth: 300px;
-$rightColumnFoldedWidth: 30px;
+$rightColumnFoldedWidth: 50px;
 .well-card_tab-head {
   display: flex;
   background: #272953;
@@ -1545,7 +1532,7 @@ $rightColumnFoldedWidth: 30px;
 .fixed-mid-col {
   min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 135px);
 }
 
 ::-webkit-scrollbar {
@@ -2685,6 +2672,13 @@ h4 {
     display: flex;
     margin-left: auto;
 }
+@media (max-width: 1640px) {
+.button-block__item[data-v-b1a5f7e2] {
+    font-size: 10px;
+    padding: 4px 10px;
+    margin-left: 5px;
+}
+}
 </style>
 <style lang="scss">
 .search-form {
@@ -2748,5 +2742,8 @@ h4 {
 .select-dzo:hover {
   border: 1px solid transparent;
   box-shadow: inset 0 0px 0px 1px #ccc;
+}
+.selected-well {
+  background: #2e50e9 !important;
 }
 </style>
