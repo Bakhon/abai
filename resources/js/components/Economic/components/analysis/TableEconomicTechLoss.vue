@@ -39,8 +39,8 @@
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :statuses="titles"
+            :columns="subTitles"
             :style="row.style"
             class="line-height-14px"/>
       </div>

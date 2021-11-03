@@ -31,18 +31,18 @@
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
-        {{ row.dates[dateIndex][profitability].liquid_loss }}
+        {{ localeValue(row.dates[dateIndex][profitability].liquid_loss, 1000) }}
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
-        {{ row.dates[dateIndex][profitability].oil_loss }}
+        {{ localeValue(row.dates[dateIndex][profitability].oil_loss, 1000) }}
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
         {{
           calcWaterCut(
-              row.dates[dateIndex][profitability].liquid,
-              row.dates[dateIndex][profitability].oil
+              Math.abs(row.dates[dateIndex][profitability].liquid),
+              Math.abs(row.dates[dateIndex][profitability].oil)
           )
         }}
       </div>
@@ -54,11 +54,11 @@
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
-        {{ calcSum(row, 'liquid_loss') }}
+        {{ localeValue(calcSum(row, 'liquid_loss'), 1000) }}
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
-        {{ calcSum(row, 'oil_loss') }}
+        {{ localeValue(calcSum(row, 'oil_loss'), 1000) }}
       </div>
 
       <div class="border-grey flex-20 px-2 py-1">
@@ -70,11 +70,13 @@
 
 <script>
 import {waterCutMixin} from "../../mixins/wellMixin";
+import {formatValueMixin} from "../../mixins/formatMixin";
 
 export default {
   name: "TableProductionLossRow",
   mixins: [
-    waterCutMixin
+    waterCutMixin,
+    formatValueMixin
   ],
   props: {
     row: {
@@ -102,7 +104,7 @@ export default {
     calcSum(status, statusKey) {
       let sum = 0
 
-      this.wellsByStatuses.dates.forEach((date, dateIndex) => {
+      this.dates.forEach((date, dateIndex) => {
         if (this.isProfitable) {
           sum += status.dates[dateIndex].profitable[statusKey]
         }
@@ -113,7 +115,7 @@ export default {
       })
 
       return sum
-    }
+    },
   },
   computed: {
     profitability() {

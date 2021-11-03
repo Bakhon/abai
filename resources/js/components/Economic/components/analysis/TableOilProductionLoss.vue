@@ -8,9 +8,9 @@
       }}
     </subtitle>
 
-    <div class="mt-2 text-white font-size-12px line-height-14px">
-      <div class="bg-blue font-weight-600 pr-10px">
-        <div class="pr-1 py-2 text-center border-grey pl-10">
+    <div>
+      <div class="mt-2 text-white font-size-12px line-height-14px">
+        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
           {{
             isTechLoss
                 ? 'Количество скважин в простое по технологическим причинам'
@@ -18,57 +18,62 @@
           }}
         </div>
 
-        <div class="d-flex">
-          <div class="py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-10">
-            Месяцы
-          </div>
-
-          <div v-for="(status, statusIndex) in statuses"
-               :key="statusIndex"
-               :style="`flex: 0 0 ${90 / statuses.length}%`"
-               class="text-center">
-            <div class="p-1 border-grey text-nowrap">
-              {{ status.name }}
+        <div class="customScroll" style="overflow-y: hidden">
+          <div class="font-weight-600 pr-10px d-flex">
+            <div class="bg-blue py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-grow-1"
+                 style="min-width: 100px">
+              Месяцы
             </div>
 
-            <div class="d-flex">
-              <div v-for="(column, columnIndex) in columns"
-                   :key="columnIndex"
-                   :style="`flex: 0 0 ${100 / columns.length}%`"
-                   class="py-2 px-1 border-grey">
-                {{ column.name }}
+            <div v-for="(status, statusIndex) in statuses"
+                 :key="statusIndex"
+                 :style="`flex: 0 0 ${90 / statuses.length}%`"
+                 class="bg-blue text-center">
+              <div class="p-1 border-grey text-nowrap">
+                {{ status.name }}
+              </div>
+
+              <div class="d-flex">
+                <div v-for="(column, columnIndex) in columns"
+                     :key="columnIndex"
+                     :style="`flex: 0 0 ${100 / columns.length}%; min-width: 90px`"
+                     class="py-2 px-1 border-grey">
+                  {{ column.name }}
+                </div>
               </div>
             </div>
+          </div>
+
+          <div :style="`min-width: ${100 + statuses.length * 270}px`"
+               class="d-flex flex-column customScroll table-oil-production">
+            <table-oil-production-loss-row
+                v-for="(row, rowIndex) in tableUwiCount"
+                :key="rowIndex"
+                :row="row"
+                :statuses="statuses"
+                :columns="columns"
+                :style="row.style"
+                class="flex-grow-1"/>
           </div>
         </div>
       </div>
 
-      <div class="d-flex flex-column customScroll">
-        <table-oil-production-loss-row
-            v-for="(row, rowIndex) in tableUwiCount"
-            :key="rowIndex"
-            :row="row"
-            :statuses="statuses"
-            :columns="columns"
-            :style="row.style"
-            class="flex-grow-1"/>
-      </div>
-    </div>
+      <div class="text-white font-size-12px line-height-14px mt-3">
+        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
+          {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
+        </div>
 
-    <div class="text-white font-size-12px line-height-14px mt-3">
-      <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
-        {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
-      </div>
-
-      <div class="d-flex flex-column customScroll">
-        <table-oil-production-loss-row
-            v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
-            :key="rowIndex"
-            :row="row"
-            :statuses="statuses"
-            :columns="columns"
-            :style="row.style"
-            class="flex-grow-1"/>
+        <div :style="`min-width: ${100 + statuses.length * 270}px; overflow-x: auto !important`"
+             class="d-flex flex-column customScroll table-oil-production">
+          <table-oil-production-loss-row
+              v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
+              :key="rowIndex"
+              :row="row"
+              :statuses="statuses"
+              :columns="columns"
+              :style="row.style"
+              class="flex-grow-1"/>
+        </div>
       </div>
     </div>
   </div>
@@ -143,8 +148,9 @@ export default {
   line-height: 18px;
 }
 
-.customScroll {
+.table-oil-production {
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 210px
 }
 

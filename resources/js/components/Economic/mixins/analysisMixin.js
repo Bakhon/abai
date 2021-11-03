@@ -40,7 +40,7 @@ export const tableDataMixin = {
 
         tableData() {
             return Object.keys(this.wellsByStatuses.statuses).map(status => {
-                let wells = this.wellsByStatuses[status]
+                let wells = this.wellsByStatuses.statuses[status]
 
                 return {
                     name: wells[0].status_name,
@@ -84,7 +84,9 @@ export const tableDataMixin = {
         },
 
         statuses() {
-            return this.wellsByStatuses.statuses.map(status => ({name: status.name}))
+            return Object.values(this.wellsByStatuses.statuses).map(status => {
+                return {name: status[0].status_name}
+            }).slice(0, 1)
         },
 
         columns() {
@@ -124,7 +126,7 @@ export const tableDataMixin = {
                     return this.columns.map(column => {
                         let sum = 0
 
-                        status.dates.forEach(date => sum += status[column.key][wellKey])
+                        status.dates.forEach(date => sum += date[column.key][wellKey])
 
                         return sum
                     })
