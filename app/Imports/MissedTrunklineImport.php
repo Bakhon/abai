@@ -96,8 +96,8 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         $pipe = null;
 
         foreach ($collection as $row) {
-            foreach (self::COLUMNS as $key => $COLUMN) {
-                $row[self::COLUMNS[$key]] = str_replace(',', '.', $row[self::COLUMNS[$key]]);
+            foreach (self::COLUMNS as $COLUMN) {
+                $row[$COLUMN] = str_replace(',', '.', $row[$COLUMN]);
             }
 
             if (!empty($row[self::COLUMNS['pipe_name']]) && !$pipe) {
