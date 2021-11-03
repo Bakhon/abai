@@ -48,8 +48,8 @@
             v-for="(row, rowIndex) in tableUwiCount"
             :key="rowIndex"
             :row="row"
-            :titles="statuses"
-            :sub-titles="columns"
+            :statuses="statuses"
+            :columns="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>
@@ -62,11 +62,11 @@
 
       <div class="d-flex flex-column customScroll">
         <table-oil-production-loss-row
-            v-for="(row, rowIndex) in isPrs ? tablePrs : tableOil"
+            v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
             :key="rowIndex"
             :row="row"
-            :titles="statuses"
-            :sub-titles="columns"
+            :statuses="statuses"
+            :columns="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>

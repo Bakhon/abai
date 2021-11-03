@@ -4,15 +4,15 @@
       {{ row.date }}
     </div>
 
-    <div v-for="(title, titleIndex) in titles"
-         :key="titleIndex"
-         :style="`flex: 0 0 ${90 / titles.length}%`"
+    <div v-for="(status, statusIndex) in statuses"
+         :key="statusIndex"
+         :style="`flex: 0 0 ${90 / statuses.length}%`"
          class="text-center d-flex">
-      <div v-for="(subTitle, subTitleIndex) in subTitles"
-           :key="subTitleIndex"
-           :style="`flex: 0 0 ${100 / subTitles.length}%`"
+      <div v-for="(column, columnIndex) in columns"
+           :key="columnIndex"
+           :style="`flex: 0 0 ${100 / columns.length}%`"
            class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
-        {{ row.values[titleIndex][subTitleIndex] }}
+        {{ row.values[statusIndex][columnIndex] }}
       </div>
     </div>
   </div>
@@ -26,11 +26,11 @@ export default {
       required: true,
       type: Object
     },
-    titles: {
+    statuses: {
       required: true,
       type: Array
     },
-    subTitles: {
+    columns: {
       required: true,
       type: Array
     }

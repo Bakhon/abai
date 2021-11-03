@@ -15,34 +15,45 @@ export const tableDataMixin = {
         }
     },
     computed: {
-        tableData() {
-            let wellsByStatuses = {}
+        wellsByStatuses() {
+            let statuses = {}
 
             let dates = {}
 
             this.wells.forEach(well => {
                 dates[well.date] = 1
 
-                if (!wellsByStatuses.hasOwnProperty(well.status_id)) {
-                    wellsByStatuses[well.status_id] = []
+                if (!statuses.hasOwnProperty(well.status_id)) {
+                    statuses[well.status_id] = []
                 }
 
-                wellsByStatuses[well.status_id].push(well)
+                statuses[well.status_id].push(well)
             })
 
             dates = Object.keys(dates)
 
-            let statuses = Object.keys(wellsByStatuses).map(status => {
-                let wells = wellsByStatuses[status]
+            return {
+                statuses: statuses,
+                dates: dates
+            }
+        },
+
+        tableData() {
+            return Object.keys(this.wellsByStatuses.statuses).map(status => {
+                let wells = this.wellsByStatuses[status]
 
                 return {
                     name: wells[0].status_name,
-                    dates: dates.map(date => {
+                    dates: this.wellsByStatuses.dates.map(date => {
                         let wellsByDate = wells.filter(well => well.date === date)
 
-                        let profitable = wellsByDate.find(well => well.profitability = 'profitable') || DEFAULT_WELL
+                        let profitable = wellsByDate.find(
+                            well => well.profitability = 'profitable'
+                        ) || DEFAULT_WELL
 
-                        let profitless = wellsByDate.find(well => well.profitability = 'profitless') || DEFAULT_WELL
+                        let profitless = wellsByDate.find(
+                            well => well.profitability = 'profitless'
+                        ) || DEFAULT_WELL
 
                         let total = {}
 
@@ -58,111 +69,22 @@ export const tableDataMixin = {
                     })
                 }
             })
-
-            return {
-                dates: dates,
-                statuses: statuses
-            }
         },
 
         tableUwiCount() {
-            let rows = this.tableData.dates.map((date, dateIndex) => {
-                return {
-                    date: date,
-                    values: this.statuses.map((status, statusIndex) => {
-                        return this.columns.map(column => {
-                            return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].uwi_count
-                        })
-                    }),
-                    style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
-                }
-            })
-
-            rows.push({
-                date: 'Итого скважин',
-                values: this.statuses.map((status, statusIndex) => {
-                    return this.columns.map((column, columnIndex) => {
-                        let sum = 0
-
-                        rows.forEach(row => {
-                            sum += row.values[statusIndex][columnIndex]
-                        })
-
-                        return sum
-                    })
-                }),
-                style: 'background: #293688; font-weight: 600'
-            })
-
-            return rows
+            return this.generateTable('uwi_count', 'Итого скважин')
         },
 
-        tableOil() {
-            let rows = this.tableData.dates.map((date, dateIndex) => {
-                return {
-                    date: date,
-                    values: this.statuses.map((status, statusIndex) => {
-                        return this.columns.map(column => {
-                            return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].oil_loss
-                        })
-                    }),
-                    style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
-                }
-            })
-
-            rows.push({
-                date: 'Итог потерь нефти',
-                values: this.statuses.map((status, statusIndex) => {
-                    return this.columns.map((column, columnIndex) => {
-                        let sum = 0
-
-                        rows.forEach(row => {
-                            sum += row.values[statusIndex][columnIndex]
-                        })
-
-                        return sum
-                    })
-                }),
-                style: 'background: #293688; font-weight: 600'
-            })
-
-            return rows
+        tableOilLoss() {
+            return this.generateTable('oil_loss', 'Итог потерь нефти')
         },
 
         tablePrs() {
-            let rows = this.tableData.dates.map((date, dateIndex) => {
-                return {
-                    date: date,
-                    values: this.statuses.map((status, statusIndex) => {
-                        return this.columns.map(column => {
-                            return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].prs_portion
-                        })
-                    }),
-                    style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
-                }
-            })
-
-            rows.push({
-                date: 'Общий итог',
-                values: this.statuses.map((status, statusIndex) => {
-                    return this.columns.map((column, columnIndex) => {
-                        let sum = 0
-
-                        rows.forEach(row => {
-                            sum += row.values[statusIndex][columnIndex]
-                        })
-
-                        return sum
-                    })
-                }),
-                style: 'background: #293688; font-weight: 600'
-            })
-
-            return rows
+            return this.generateTable('prs_portion', 'Общий итог')
         },
 
         statuses() {
-            return this.tableData.statuses.map(status => ({name: status.name}))
+            return this.wellsByStatuses.statuses.map(status => ({name: status.name}))
         },
 
         columns() {
@@ -181,5 +103,36 @@ export const tableDataMixin = {
                 },
             ]
         },
+    },
+    methods: {
+        generateTable(wellKey, sumTitle) {
+            let rows = this.wellsByStatuses.dates.map((date, dateIndex) => ({
+                date: date,
+                values: this.statuses.map((status, statusIndex) => {
+                    status = this.tableData[statusIndex].dates[dateIndex]
+
+                    return this.columns.map(column => status[column.key][wellKey])
+                }),
+                style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
+            }))
+
+            rows.push({
+                date: sumTitle,
+                values: this.statuses.map((status, statusIndex) => {
+                    status = this.tableData[statusIndex]
+
+                    return this.columns.map(column => {
+                        let sum = 0
+
+                        status.dates.forEach(date => sum += status[column.key][wellKey])
+
+                        return sum
+                    })
+                }),
+                style: 'background: #293688; font-weight: 600'
+            })
+
+            return rows
+        }
     }
 }
