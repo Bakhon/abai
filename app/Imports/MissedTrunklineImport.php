@@ -128,6 +128,7 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         $material = Material::where('roughness', $roughness)->first();
 
         $ngdu = Ngdu::where('name', $row[self::COLUMNS['ngdu']])->first();
+
         $gu = Gu::where('name', $row[self::COLUMNS['gu']])->first();
 
         $pipe = OilPipe::firstOrNew(
@@ -192,8 +193,10 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
     private function deleteOldPipe($row)
     {
         $old_pipe = OilPipe::where('name', $row[self::COLUMNS['pipe_name']])->first();
-        PipeCoord::where('oil_pipe_id', $old_pipe->id)->forceDelete();
-        $old_pipe->forceDelete();
+        if ($old_pipe) {
+            PipeCoord::where('oil_pipe_id', $old_pipe->id)->forceDelete();
+            $old_pipe->forceDelete();
+        }
     }
 
 
