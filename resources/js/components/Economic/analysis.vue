@@ -1,5 +1,6 @@
 <template>
-  <div class="position-relative row">
+  <div :style="isWide ? 'padding-right: 75px !important' : 'padding-right: 0'"
+       class="position-relative row">
     <div class="col-12 px-3 mb-10px">
       <div class="row text-white text-wrap flex-nowrap">
         <calculated-header
@@ -36,7 +37,8 @@
           :scenario-variations="scenarioVariations"
           :wells-by-statuses="wellsByStatuses"
           :wells-by-loss-statuses="wellsByLossStatuses"
-          class="h-100"/>
+          class="h-100"
+          @updateWide="val => isWide = val"/>
     </div>
 
     <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
@@ -88,6 +90,7 @@ export default {
     },
     wellsByStatuses: null,
     wellsByLossStatuses: null,
+    isWide: false
   }),
   computed: {
     ...globalloadingState(['loading']),

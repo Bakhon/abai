@@ -4,7 +4,9 @@ const DEFAULT_WELL = {
     oil_loss: 0,
     liquid: 0,
     liquid_loss: 0,
-    prs_portion: 0
+    prs_portion: 0,
+    active_hours: 0,
+    paused_hours: 0,
 }
 
 export const tableDataMixin = {
@@ -58,6 +60,10 @@ export const tableDataMixin = {
                         let total = {}
 
                         Object.keys(DEFAULT_WELL).forEach(wellKey => {
+                            profitable[wellKey] = +profitable[wellKey]
+
+                            profitless[wellKey] = +profitless[wellKey]
+
                             total[wellKey] = profitable[wellKey] + profitless[wellKey]
                         })
 

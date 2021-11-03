@@ -8,18 +8,20 @@
       }}
     </subtitle>
 
-    <div>
-      <div class="mt-2 text-white font-size-12px line-height-14px">
-        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
-          {{
-            isTechLoss
-                ? 'Количество скважин в простое по технологическим причинам'
-                : 'Количество скважин, остановленных НРС, ЧРФ, Опек+'
-          }}
+    <div class="customScroll overflow-auto">
+      <div :style="`min-width: ${100 + statuses.length * 270}px`"
+           class="mt-2 text-white font-size-12px line-height-14px">
+        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 position-relative height-30px">
+          <div class="fixed-header">
+            {{
+              isTechLoss
+                  ? 'Количество скважин в простое по технологическим причинам'
+                  : 'Количество скважин, остановленных НРС, ЧРФ, Опек+'
+            }}
+          </div>
         </div>
 
-        <div class="customScroll sync-scroll"
-             style="overflow-y: hidden">
+        <div class="sync-scroll">
           <div class="font-weight-600 pr-10px d-flex">
             <div class="bg-blue py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-grow-1"
                  style="min-width: 100px">
@@ -45,8 +47,7 @@
             </div>
           </div>
 
-          <div :style="`min-width: ${100 + statuses.length * 270}px`"
-               class="d-flex flex-column customScroll table-oil-production">
+          <div class="d-flex flex-column customScroll table-oil-production">
             <table-oil-production-loss-row
                 v-for="(row, rowIndex) in tableUwiCount"
                 :key="rowIndex"
@@ -59,15 +60,16 @@
         </div>
       </div>
 
-      <div class="text-white font-size-12px line-height-14px mt-3">
-        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
-          {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
+      <div :style="`min-width: ${100 + statuses.length * 270}px`"
+           class="text-white font-size-12px line-height-14px mt-3">
+        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 position-relative height-30px">
+          <div class="fixed-header">
+            {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
+          </div>
         </div>
 
-        <div class="customScroll customScrollThin sync-scroll table-oil-production"
-             style="overflow-x: auto !important">
-          <div :style="`min-width: ${100 + statuses.length * 270}px;`"
-               class="h-100 d-flex flex-column">
+        <div class="customScroll sync-scroll table-oil-production">
+          <div class="h-100 d-flex flex-column">
             <table-oil-production-loss-row
                 v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
                 :key="rowIndex"
@@ -112,19 +114,8 @@ export default {
       type: Boolean
     }
   },
-  mounted() {
-    this.addSyncScrollToTables()
-  },
-  methods: {
-    addSyncScrollToTables() {
-      let tables = document.getElementsByClassName("sync-scroll");
-
-      tables.forEach(table => {
-        table.addEventListener("scroll", function () {
-          tables.forEach(table => table.scrollLeft = this.scrollLeft)
-        })
-      })
-    }
+  created() {
+    this.$emit('updateWide', this.statuses.length > 6)
   }
 }
 </script>
@@ -136,10 +127,6 @@ export default {
 
 .border-grey {
   border: 1px solid #454D7D
-}
-
-.flex-10 {
-  flex: 0 0 10%;
 }
 
 .pl-10 {
@@ -176,7 +163,13 @@ export default {
   width: 10px;
 }
 
-.customScrollThin::-webkit-scrollbar {
-  height: 0;
+.height-30px {
+  height: 30px;
+}
+
+.fixed-header {
+  position: fixed;
+  left: 40%;
+  transform: translateX(-50%);
 }
 </style>

@@ -15,40 +15,48 @@
       <table-production-loss
           v-if="activeTab === 'production_loss'"
           :wells="wellsByLossStatuses"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
           :wells="wellsByLossStatuses"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-financial-loss
           v-else-if="activeTab === 'financial_loss'"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-well-distribution
           v-else-if="activeTab === 'well_distribution'"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-additional-stops
           v-else-if="activeTab === 'additional_stops'"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
           :wells="wellsByStatuses"
           class="text-white"
-          is-tech-loss/>
+          is-tech-loss
+          @updateWide="updateWide"/>
 
       <table-economic-tech-loss
           v-else-if="activeTab === 'economic_tech_loss'"
-          class="text-white"/>
+          class="text-white"
+          @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
           :wells="wellsByLossStatuses"
           class="text-white"
-          is-prs/>
+          is-prs
+          @updateWide="updateWide"/>
     </div>
   </div>
 </template>
@@ -114,6 +122,10 @@ export default {
 
       this.$emit('updateTab', tab)
     },
+
+    updateWide(val){
+      this.$emit('updateWide', val)
+    }
   }
 }
 </script>

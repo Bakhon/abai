@@ -11,7 +11,8 @@
         </div>
 
         <div class="d-flex">
-          <div class="py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-10">
+          <div class="py-1 px-2 border-grey d-flex align-items-center justify-content-center"
+               style="min-width: 100px">
             Месяцы
           </div>
 
@@ -51,13 +52,13 @@
         Расходы на ПРС, млн. тенге
       </div>
 
-      <div class="d-flex flex-column customScroll" style="height: 310px">
+      <div class="d-flex flex-column customScroll" style="height: 300px">
         <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :statuses="titles"
+            :columns="subTitles"
             :style="row.style"
             class="flex-grow-1 line-height-14px"/>
       </div>
@@ -204,6 +205,9 @@ export default {
         },
       ]
     },
+  },
+  created() {
+    this.$emit('updateWide', false)
   }
 }
 </script>

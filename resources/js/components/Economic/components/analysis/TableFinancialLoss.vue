@@ -257,6 +257,9 @@ export default {
         },
       ]
     }
+  },
+  created() {
+    this.$emit('updateWide', false)
   }
 }
 </script>
