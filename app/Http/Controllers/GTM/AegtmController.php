@@ -53,8 +53,6 @@ class AegtmController extends Controller
 
         $techEfficiencyResult = $techEfficiencyResult->groupBy('gtm')->map->count();
 
-
-
         //TODO: вынести в отдельный метод
         $dzoAegtmQuery = DzoAegtm::query();
 
@@ -71,18 +69,32 @@ class AegtmController extends Controller
 
         $dzoAegtmResult = $dzoAegtmQuery->orderBy('date')->get();
 
-        $pvrPlan = $grpPlan = $vpsPlan = $pvlgPlan = 0;
-        $pvrProdPlan = $grpProdPlan = $vpsProdPlan = $pvlgProdPlan = 0;
+        $pvrPlan = $grpPlan = $vpsPlan = $pvlgPlan = $vnsPlan = $vnsGrpPlan = $vbdPlan = $zbgsPlan = $zbsPlan = $gsPlan = $gsGrpPlan = 0;
+        $pvrProdPlan = $grpProdPlan = $vpsProdPlan = $pvlgProdPlan = $vnsProdPlan = $vnsGrpProdPlan = $vbdProdPlan = $zbgsProdPlan = $zbsProdPlan = $gsProdPlan = $gsGrpProdPlan = 0;
 
         foreach ($dzoAegtmResult as $item) {
             $pvrPlan+= $item->pvr_plan;
             $grpPlan+= $item->grp_plan;
             $vpsPlan+= $item->vps_plan;
             $pvlgPlan+= $item->pvlg_plan;
+            $vnsPlan+= $item->vns_plan;
+            $vnsGrpPlan+= $item->vns_grp_plan;
+            $vbdPlan+= $item->vbd_plan;
+            $zbgsPlan+= $item->zbgs_plan;
+            $zbsPlan+= $item->zbs_plan;
+            $gsPlan+= $item->gs_plan;
+            $gsGrpPlan+= $item->gs_grp_plan;
 
             $pvrProdPlan+= $item->pvr_prod_plan;
             $grpProdPlan+= $item->grp_prod_plan;
             $pvlgProdPlan+= $item->pvlg_prod_plan;
+            $vnsProdPlan+= $item->vns_prod_plan;
+            $vnsGrpProdPlan+= $item->vns_grp_prod_plan;
+            $vbdProdPlan+= $item->vbd_prod_plan;
+            $zbgsProdPlan+= $item->zbgs_prod_plan;
+            $zbsProdPlan+= $item->zbs_prod_plan;
+            $gsProdPlan+= $item->gs_prod_plan;
+            $gsGrpProdPlan+= $item->gs_grp_prod_plan;
         }
 
         if ($techEfficiencyResult) {
@@ -119,6 +131,34 @@ class AegtmController extends Controller
                     case 'ПВЛГ':
                         $result[$key]['count_plan'] = $pvlgPlan;
                         $result[$key]['add_prod_plan'] = round($pvlgProdPlan, 1);
+                        break;
+                    case 'ВНС':
+                        $result[$key]['count_plan'] = $vnsPlan;
+                        $result[$key]['add_prod_plan'] = round($vnsProdPlan, 1);
+                        break;
+                    case 'ВНС_ГРП':
+                        $result[$key]['count_plan'] = $vnsGrpPlan;
+                        $result[$key]['add_prod_plan'] = round($vnsGrpProdPlan, 1);
+                        break;
+                    case 'ВБД':
+                        $result[$key]['count_plan'] = $vbdPlan;
+                        $result[$key]['add_prod_plan'] = round($vbdProdPlan, 1);
+                        break;
+                    case 'ЗБГС':
+                        $result[$key]['count_plan'] = $zbgsPlan;
+                        $result[$key]['add_prod_plan'] = round($zbgsProdPlan, 1);
+                        break;
+                    case 'ЗБС,ЗБГС':
+                        $result[$key]['count_plan'] = $zbsPlan;
+                        $result[$key]['add_prod_plan'] = round($zbsProdPlan, 1);
+                        break;
+                    case 'ГС':
+                        $result[$key]['count_plan'] = $gsPlan;
+                        $result[$key]['add_prod_plan'] = round($gsProdPlan, 1);
+                        break;
+                    case 'ГС_ГРП':
+                        $result[$key]['count_plan'] = $gsGrpPlan;
+                        $result[$key]['add_prod_plan'] = round($gsGrpProdPlan, 1);
                         break;
                 }
             }
