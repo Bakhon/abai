@@ -456,16 +456,11 @@ table, th, td {
 .comp-charts-icon {
   padding-left: 22px;
 }
-svg .main-svg {
-  background-color: #2B2E5E !important;
-    background-image: linear-gradient(#545580 1px, transparent 1px), 
-    linear-gradient(90deg, #545580 1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px;
-}
+
 .plotly-graph-custom {
-    background-color: #2B2E5E !important;
-    background-image: linear-gradient(#545580 1px, transparent 1px), 
-    linear-gradient(90deg, #545580 1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px;
+  background-color: #2B2E5E !important;
+  background-image: linear-gradient(#545580 1px, transparent 1px), 
+  linear-gradient(90deg, #545580 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px;
 }
 </style>
