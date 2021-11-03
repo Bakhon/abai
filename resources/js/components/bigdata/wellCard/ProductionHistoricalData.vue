@@ -227,10 +227,11 @@ export default {
     text-align: center;
     border: 1px solid #293688;
 
-    tbody {
-        // height: 680px;
-        // display: block;
-        // overflow-y:scroll;
+    
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 444;
     }
     thead, tbody tr {
         display: table;
@@ -268,5 +269,12 @@ export default {
 .left-block {
     height: calc(100% - 36px);
     overflow-y: auto;
+     &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #656a8a;
+        border-radius: 10px;
+    }
 }
 </style>

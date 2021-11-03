@@ -1533,6 +1533,7 @@ $rightColumnFoldedWidth: 50px;
   min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
   height: calc(100vh - 135px);
+  overflow-y:auto;
 }
 
 ::-webkit-scrollbar {
@@ -2667,6 +2668,9 @@ h4 {
     white-space: nowrap;
     padding: 4px 20px;
     margin-left: 10px;
+    &:hover {
+      background-color: #121227;
+    }
 }
 .button-block {
     display: flex;
