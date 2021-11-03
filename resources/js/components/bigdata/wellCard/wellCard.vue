@@ -1432,9 +1432,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 $leftColumnWidth: 300px;
-$leftColumnFoldedWidth: 30px;
+$leftColumnFoldedWidth: 50px;
 $rightColumnWidth: 300px;
-$rightColumnFoldedWidth: 30px;
+$rightColumnFoldedWidth: 50px;
 .well-card_tab-head {
   display: flex;
   background: #272953;
@@ -1545,7 +1545,7 @@ $rightColumnFoldedWidth: 30px;
 .fixed-mid-col {
   min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 135px);
 }
 
 ::-webkit-scrollbar {
@@ -2684,6 +2684,13 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
+}
+@media (max-width: 1640px) {
+.button-block__item[data-v-b1a5f7e2] {
+    font-size: 10px;
+    padding: 4px 10px;
+    margin-left: 5px;
+}
 }
 </style>
 <style lang="scss">
