@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Import;
 
 use App\Imports\MissedTrunklineImport;
+use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use Illuminate\Console\Command;
@@ -47,6 +48,8 @@ class ImportMissedTrunkline extends Command
         $this->importExcel(new MissedTrunklineImport($this), public_path('imports/missed_trunkline.xlsx'));
 
         $pipes_ids = OilPipe::get()->pluck('id');
+        $manual_pipes_ids = ManualOilPipe::get()->pluck('id');
+        $pipes_ids = array_merge($pipes_ids, $manual_pipes_ids);
         PipeCoord::whereNotIn('oil_pipe_id', $pipes_ids)->forceDelete();
     }
 }
