@@ -8,11 +8,9 @@
                     <th>{{ trans('digital_drilling.default.nominal_diameter') }}</th>
                     <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
                     <th>{{ trans('digital_drilling.structure.number_pipes') }}</th>
-                    <th>{{ trans('digital_drilling.structure.column_running_interval_from') }}</th>
-                    <th>{{ trans('digital_drilling.structure.column_running_interval_up') }}</th>
-                    <th>{{ trans('digital_drilling.structure.poured_cement_volume') }}</th>
-                    <th>{{ trans('digital_drilling.structure.packer_from') }}</th>
-                    <th>{{ trans('digital_drilling.structure.packer_to') }}</th>
+                    <th>{{ trans('digital_drilling.structure.pipe_inner_diameter') }}</th>
+                    <th>{{ trans('digital_drilling.structure.steel_grade') }}</th>
+                    <th>{{ trans('digital_drilling.structure.weight_per_unit_length') }}</th>
                     <th>{{ trans('digital_drilling.structure.cement_lifting_height') }}</th>
                     <th>{{ trans('digital_drilling.structure.side_barrel') }}</th>
                 </tr>
@@ -21,11 +19,9 @@
                     <td>{{structure.Номинальный_диаметр}}</td>
                     <td>{{structure.Глубина_спуска}}</td>
                     <td>{{structure.Количество_труб}}</td>
-                    <td>{{structure.Интервал_от}}</td>
-                    <td>{{structure.Интервал_до}}</td>
-                    <td>{{structure.Объем_цемента}}</td>
-                    <td>{{structure.Пакер_от}}</td>
-                    <td>{{structure.Пакер_до}}</td>
+                    <td>{{structure.Внутренний_диаметр}}</td>
+                    <td>{{structure.Марка_стали}}</td>
+                    <td>{{structure.Погонный_вес}}</td>
                     <td>{{structure.Высота_цемента}}</td>
                     <td>{{structure.Боковой_ствол}}</td>
                 </tr>

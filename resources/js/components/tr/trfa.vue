@@ -818,74 +818,48 @@ export default {
     this.$store.commit("globalloading/SET_LOADING", true);
     if (this.$store.state.fa.chart)
       this.chartShow = this.chartArr[this.$store.state.fa.chart];
-    var today = new Date();
-    if (
-      this.$store.state.fa.month == 1 &&
-      this.$store.state.fa.year
-    ) {
-      var mm = this.$store.state.fa.month;
-      var prMm = 12;
-      var yyyy = this.$store.state.fa.year;
-      var pryyyy = this.$store.state.fa.year - 1;
+    var currentDate = new Date();
+    var previousDate = new Date();
+    var day = currentDate.getDate();
+    console.log(day);
+    if (day > 25) {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      previousDate.setMonth(previousDate.getMonth());
     }
-    else if (
-      this.$store.state.fa.month &&
-      this.$store.state.fa.year 
-    ) {
-      var mm = this.$store.state.fa.month;
-      var prMm = this.$store.state.fa.month - 1;
-      var yyyy = this.$store.state.fa.year;
-      var pryyyy = this.$store.state.fa.year;
-    } else {
-      var mm = today.getMonth() + 1;
-      var yyyy = today.getFullYear();
-      if (mm == 1) {
-        var prMm = 12;
-        var pryyyy = yyyy - 1;
-      } else {
-        var prMm = mm - 1;
-        var pryyyy = yyyy;
-      }
-      this.$store.commit("fa/SET_MONTH", mm);
-      this.$store.commit("fa/SET_YEAR", yyyy);
-      this.$store.commit("fa/SET_PR_MONTH", prMm);
-      this.$store.commit("fa/SET_PR_YEAR", pryyyy);
+    else {
+      currentDate.setMonth(currentDate.getMonth());
+      previousDate.setMonth(previousDate.getMonth() - 1);
     }
+    currentDate.setDate(1);
+    previousDate.setDate(1);
+    console.log(currentDate.toLocaleDateString(), previousDate.toLocaleDateString());
+    this.$store.commit("fa/SET_MONTH", currentDate.getMonth() + 1);
+    this.$store.commit("fa/SET_YEAR", currentDate.getFullYear());
+    this.$store.commit("fa/SET_PR_MONTH", previousDate.getMonth() + 1);
+    this.$store.commit("fa/SET_PR_YEAR", previousDate.getFullYear()); 
     this.axios
       .get(
         this.postApiUrl + "techregime/factor/graph1/" +
-          yyyy +
+          currentDate.getFullYear() +
           "/" +
-          mm +
+          (currentDate.getMonth() + 1) +
           "/" +
-          pryyyy +
+          previousDate.getFullYear() +
           "/" +
-          prMm +
+          (previousDate.getMonth() + 1) +
           "/"
       )
       .then((response) => {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
-        this.editdtm = mm;
-        this.editdty = yyyy;
-        this.editdtprevm = prMm;
-        this.editdtprevy = yyyy;
         if (data) {
           this.wells = data.data;
           this.chartWells = data.data;
         } else {
           console.log("No data");
         }
-        if (String(this.editdtm).length < 2) {
-          this.firstHeaderDate = "01" + ".0" + this.editdtm + "." + this.editdty;
-        } else {
-          this.firstHeaderDate = "01" + "." + this.editdtm + "." + this.editdty;
-        }
-        if (String(this.editdtprevm).length < 2) {
-          this.secondHeaderDate = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        } else {
-          this.secondHeaderDate = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        }
+        this.firstHeaderDate = currentDate.toLocaleDateString();
+        this.secondHeaderDate = previousDate.toLocaleDateString();
       });
   },
   mounted: function () {
