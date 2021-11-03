@@ -7,6 +7,7 @@ const DEFAULT_WELL = {
     prs_portion: 0,
     active_hours: 0,
     paused_hours: 0,
+    total_hours: 0,
 }
 
 export const tableDataMixin = {

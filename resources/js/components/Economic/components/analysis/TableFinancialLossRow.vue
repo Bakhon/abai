@@ -15,15 +15,19 @@
          :class="title.styleClass"
          :style="`${row.style || ''}; ${row.values[titleIndex].style || ''}`"
          class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-      {{ row.values[titleIndex].value }}
+      {{ localeValue(row.values[titleIndex].value, title.dimension) }}
     </div>
   </div>
 </template>
 
 <script>
+import {formatValueMixin} from "../../mixins/formatMixin";
 
 export default {
   name: "TableFinancialLossRow",
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     row: {
       required: true,

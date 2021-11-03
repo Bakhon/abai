@@ -214,7 +214,7 @@ export default {
 
 .customScroll {
   overflow: hidden;
-  height: 225px;
+  height: 230px;
 }
 
 .customScroll::-webkit-scrollbar {

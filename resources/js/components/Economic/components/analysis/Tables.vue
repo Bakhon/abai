@@ -26,6 +26,7 @@
 
       <table-financial-loss
           v-else-if="activeTab === 'financial_loss'"
+          :wells="wellsByStatuses"
           class="text-white"
           @updateWide="updateWide"/>
 

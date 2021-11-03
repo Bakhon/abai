@@ -22,7 +22,7 @@
           </div>
 
           <div class="p-1 border-grey">
-            {{ title.dimension }}
+            {{ title.dimensionTitle }}
           </div>
         </div>
       </div>
@@ -81,35 +81,65 @@ export default {
     Subtitle,
     TableFinancialLossRow
   },
+  props: {
+    wells: {
+      required: true,
+      type: Array
+    }
+  },
   computed: {
+    sumData() {
+      let sum = {}
+
+      this.titles.forEach(title => {
+        sum[title.key] = {
+          profitable: 0,
+          profitless: 0,
+          total: 0,
+        }
+      })
+
+      this.wells.forEach(well => {
+        this.titles.forEach(title => {
+          if (!title.key) return
+
+          sum[title.key][well.profitability] += +well[title.key]
+
+          sum[title.key].total += +well[title.key]
+        })
+      })
+
+      return sum
+    },
+
     tableRows() {
       return [
         {
           title: 'Фактические показатели',
           subTitle: '1.',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+          values: this.titles.map(title => ({
+            value: this.sumData[title.key].total
           })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+          values: this.titles.map(title => ({
+            value: this.sumData[title.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+          values: this.titles.map(title => ({
+            value: this.sumData[title.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+          values: this.titles.map(title => ({
+            value: 0
           })),
           style: 'background: #2B2E5E'
         }
@@ -199,44 +229,62 @@ export default {
       return [
         {
           name: 'Кол-во скважин',
-          dimension: 'ед.'
+          dimensionTitle: 'ед.',
+          key: 'uwi_count'
         },
         {
           name: 'В т.ч. остановка скв. в месяц',
-          dimension: 'ед.'
+          dimensionTitle: 'ед.',
+          key: ''
         },
         {
           name: 'Добыча жидкости',
-          dimension: 'тн.'
+          dimension: 1000,
+          dimensionTitle: 'тыс. тон',
+          key: 'liquid'
         },
         {
           name: 'Добыча нефти',
-          dimension: 'тн.'
+          dimension: 1000,
+          dimensionTitle: 'тыс. тон',
+          key: 'oil'
         },
         {
           name: 'Время всего',
-          dimension: 'дни'
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'total_hours',
         },
         {
           name: 'Отр время',
-          dimension: 'дни'
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'active_hours'
         },
         {
           name: 'Дни простоя',
-          dimension: 'дни'
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'paused_hours'
         },
         {
           name: 'Доходы',
-          dimension: 'млн. тенге',
-          styleClass: 'ml-2'
+          dimension: 1000000,
+          dimensionTitle: 'млн. тенге',
+          key: 'netback',
+          styleClass: 'ml-2',
         },
         {
           name: 'Расходы',
-          dimension: 'млн. тенге'
+          dimension: 1000000,
+          dimensionTitle: 'млн. тенге',
+          key: 'overall_expenditures',
         },
         {
           name: 'Прибыль / убыток',
-          dimension: 'млн. тенге'
+          dimension: 1000000,
+          dimensionTitle: 'млн. тенге',
+          key: 'operating_profit',
         },
       ]
     },

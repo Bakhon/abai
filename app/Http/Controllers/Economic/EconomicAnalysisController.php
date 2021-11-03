@@ -59,7 +59,7 @@ class EconomicAnalysisController extends Controller
 
         $tableAnalysisParam = (new EcoRefsAnalysisParam())->getTable();
 
-        return DB::table("$tableWellForecast AS well_forecast")
+        $wells = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
                 well_status.id as status_id,    
                 well_status.name as status_name,    
@@ -77,20 +77,6 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.paused_hours) as paused_hours,
                 SUM(well_forecast.prs_portion) as prs_portion,
                 COUNT(distinct well_forecast.uwi) as uwi_count,
-                SUM(
-                    CASE WHEN well_forecast.oil > 0 
-                    THEN well_forecast.oil * analysis_param.netback_fact
-                    ELSE 0
-                    END
-                ) as netback,
-                SUM(
-                    CASE WHEN well_forecast.liquid > 0 and well_forecast.prs_portion > 0
-                    THEN analysis_param.permanent_cost + 
-                         well_forecast.liquid * analysis_param.variable_cost / analysis_param.oil_density +
-                         analysis_param.avg_prs_cost * well_forecast.prs_portion 
-                    ELSE analysis_param.permanent_cost
-                    END
-                ) as overall_expenditures,                
                 CASE WHEN 
                      well_forecast.oil * analysis_param.netback_fact -
                      analysis_param.permanent_cost -
@@ -131,5 +117,21 @@ class EconomicAnalysisController extends Controller
             ])
             ->get()
             ->toArray();
+
+        foreach ($wells as &$well) {
+            $well = (array)$well;
+
+            $well['netback'] = $well['oil'] * $well['netback_fact'];
+
+            $well['overall_expenditures'] = $well['permanent_cost'] +
+                $well['liquid'] * $well['variable_cost'] / $well['oil_density'] +
+                $well['avg_prs_cost'] * $well['prs_portion'];
+
+            $well['operating_profit'] = $well['netback'] - $well['overall_expenditures'];
+
+            $well['total_hours'] = $well['active_hours'] + $well['paused_hours'];
+        }
+
+        return $wells;
     }
 }
