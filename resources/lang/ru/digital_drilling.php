@@ -10,7 +10,7 @@ return array (
   'open_hole_logging' => 'ГИС в открытом стволе',
   'survey' => 'Инклинометрия',
   'well_design_menu' => 'Конструкция скважины',
-  'project_fact_data' => 'Проекты/фактические данные',
+  'project_fact_data' => 'Проектные/фактические данные',
   'designing' => 'Проектирование',
   'hole_profile' => 'Профиль скважины',
   'design_calculation' => 'Расчет конструкции',
@@ -48,6 +48,14 @@ return array (
   ],
 
   'default' => [
+      'r_name' => 'Название',
+      'r_value' => 'Значение',
+      'parameters' => 'Параметры',
+      'measurement_unit' => 'Ед.измерения',
+      'drilling_rig_moving_schedule' => 'График бурения буровой установки',
+      'drilling_rig_moving_scheme' => 'Схема передвижения буровой установки',
+      'height' => '| Высота',
+      'enter_the_well' => '| Введите скважину',
       'well' => 'скважин',
       'in_drilling' => 'В бурении',
       'drilled' => 'Пробурено',
@@ -204,6 +212,10 @@ return array (
       'packer_to' => 'Пакер до',
       'column_running_depth' => 'Глубина спуска колонны',
       'packer' => 'Пакер',
+      'pipe_inner_diameter' => 'Внутренний диаметр трубы',
+      'steel_grade' => 'Марка стали',
+      'weight_per_unit_length' => 'Погонный вес',
+
   ],
   'gis' => [
       'open_hole_logging' => 'ГИС в открытом стволе',

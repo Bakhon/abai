@@ -30,9 +30,15 @@
               {
                 "code": "method",
                 "type": "dict",
-                "dict":"res_method_dict",
+                "dict": "res_method_dict",
                 "title": "research_type",
                 "validation": "required|exists:tbd.dict.research_method,id"
+              },
+              {
+                "code": "research_results",
+                "type": "label",
+                "title": "research_results",
+                "validation": ""
               },
               {
                 "code": "depth",

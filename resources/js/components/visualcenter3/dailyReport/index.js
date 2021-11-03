@@ -758,6 +758,9 @@ export default {
     },
     async mounted() {
         this.SET_LOADING(true);
+        if (moment().date() === 1) {
+            this.period.monthStart = this.period.monthStart.subtract(1,'month').startOf('month');
+        }
         this.productionSummary = await this.getProduction();
         this.planSummary = await this.getPlans();
         this.updatePlanByPeriod();

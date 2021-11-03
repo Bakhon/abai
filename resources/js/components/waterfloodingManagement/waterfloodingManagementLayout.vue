@@ -1,23 +1,47 @@
 <template>
   <div class="main-wrappers">
-    <water-flooding-management-main-menu @menuClick="menuClick" />
-    <div v-bind:is="mainContent" ></div>
+    <water-flooding-management-main-menu :menuType="menuType" @menuClick="menuClick" />
+    <div v-bind:is="mainContent" @prediction="prediction"></div>
   </div>
 </template>
 <script>
+import mainMenu from './main_menu.json'
+
 export default {
   data: function () {
     return {
-      mainContent: {
+      menu: mainMenu,
+      menuType: 'choose_object_area',
+      mapObject: {
         name: "main-component",
-        "template": "<div><water-flooding-management-map></water-flooding-management-map></div>",
+        "template": `<water-flooding-management-map v-on:menuClicks="menuClicks"></water-flooding-management-map>`,
+        methods:{
+          menuClicks(data){
+            this.$emit("prediction", data);
+          }
+        }
       },
+      mainContent: null,
     };
   },
+  mounted() {
+    this.mainContent = this.mapObject
+  },
   methods: {
-    menuClick (data) {
-      this.mainContent = data;
+    menuClick(data) {
+      if (data.type == "choose_object_area"){
+        this.mainContent = this.mapObject
+        this.menuType = "choose_object_area";
+      }else{
+        this.mainContent = data;
+        this.menuType = data.type;
+      }
     },
+    prediction(){
+      let component = this.menu[1].component
+      this.mainContent = component;
+      this.menuType = component.type;
+    }
   },
 }
 </script>
@@ -87,6 +111,19 @@ export default {
 }
 .graphic-text{
   margin: 5px 0;
+}
+.wft__modal__close{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 100px;
+  background: #656A8A;
+  border-radius: 4px;
+  color: #fff;
+  outline: none;
+  border: none;
+  margin-left: 10px;
 }
 .graphic-text img{
   width: 60px;

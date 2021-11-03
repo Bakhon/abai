@@ -109,7 +109,9 @@
     },
 
     async mounted() {
-      await this.fetchIndicators({});
+      if (!this.indicators) {
+        await this.fetchIndicators({});
+      }
     },
 
     methods: {

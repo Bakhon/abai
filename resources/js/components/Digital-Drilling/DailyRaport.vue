@@ -1,37 +1,38 @@
 <template>
-    <div class="container-main">
-        <div class="col-sm-12">
-            <div class="daily_raport_block-header">
-                <div class="daily_raport_block-header-first">
-                    <div class="daily_raport_block-header-input">
-                        <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
-                        <input type="text">
+    <div>
+        <div class="container-main">
+            <div class="col-sm-12">
+                <div class="daily_raport_block-header">
+                    <div class="daily_raport_block-header-first">
+                        <div class="daily_raport_block-header-input">
+                            <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
+                            <input type="text" disabled v-model="report.report_daily.date" />
+                        </div>
+                        <div class="daily_raport_block-header-input">
+                            <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
+                            <input type="text" disabled v-model="report.report_daily.report_num" />
+                        </div>
                     </div>
-                    <div class="daily_raport_block-header-input">
-                        <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
-                        <input type="text">
+                    <div class="daily_raport_block-header-center">
+                        {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
                     </div>
-                </div>
-                <div class="daily_raport_block-header-center">
-                    {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
-                </div>
-                <div class="daily_raport_block-header-save">
-                    <button class="save">
-                        {{trans('app.save')}}
-                    </button>
+                    <div class="daily_raport_block-header-save">
+                        <button class="save">
+                            {{trans('app.save')}}
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="daily_raport_block">
-                <table class="tables table defaultTable">
-                    <tbody>
+            <div class="col-sm-12">
+                <div class="daily_raport_block">
+                    <table class="tables table defaultTable">
+                        <tbody>
                         <tr>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.unit_name')}}
                             </td>
                             <td colspan="2">
-                                <select-add :options="drillingRig" name="Unit_Name"  :header="Unit_Name"
+                                <select-add :options="drillingRig" name="Unit_Name"  :header="report.general_data_daily.rig"
                                             @addItem="addItemRig"
                                             @selectOption="selectOption"
                                 />
@@ -46,7 +47,7 @@
                                 {{trans('digital_drilling.daily_raport.operator_company')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="" @change="onChangeOrg($event)">
+                                <select name="" id="" @change="onChangeOrg($event)" v-model="report.contractor_daily.operator">
                                     <option :value="operator.id" v-for="operator in operators">{{operator.name_ru}}</option>
                                 </select>
                             </td>
@@ -56,21 +57,21 @@
                                 {{trans('digital_drilling.daily_raport.drilling_rig_type')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="" v-for="rig in drillingRigTypes">{{rig.name_ru}}</option>
+                                <select name="" id="" v-model="report.general_data_daily.rig_type">
+                                    <option :value="rig" v-for="rig in drillingRigTypes">{{rig.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.bit_load')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.wob">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <select-add :options="drillingContractors" name="drillingContractors" :header="companyName"
+                                <select-add :options="drillingContractors" name="drillingContractors" :header="report.contractor_daily.contractor"
                                             @selectOption="selectOption"
                                             @addItem="openCatalog('Буровой подрядчик', 'company', 'companyName')"/>
                             </td>
@@ -80,21 +81,21 @@
                                 {{trans('digital_drilling.daily_raport.well')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="" v-for="well_number in well">{{well_number.name_ru}}</option>
+                                <select name="" id=""  v-model="report.general_data_daily.well">
+                                    <option :value="well_number" v-for="well_number in well">{{well_number.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.rotation_speed')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.rotation_speed">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_start_date')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.dbeg">
                             </td>
                         </tr>
                         <tr>
@@ -102,7 +103,7 @@
                                 {{trans('digital_drilling.daily_raport.field')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="" @change="onChangeField($event)">
+                                <select name="" id="" @change="onChangeField($event)" v-model="report.general_data_daily.geo">
                                     <option :value="field.id" v-for="field in fields">{{field.name_ru}}</option>
                                 </select>
                             </td>
@@ -110,13 +111,13 @@
                                 {{trans('digital_drilling.daily_raport.rotation_torque')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.torque">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.total_drilling_days')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.total_drilling_days">
                             </td>
                         </tr>
                         <tr>
@@ -124,19 +125,19 @@
                                 {{trans('digital_drilling.daily_raport.project_depth')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.general_data_daily.project_md_tvd">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.pump_capacity')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.pump_eff">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.air_temperature')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.air_temp">
                             </td>
                         </tr>
                         <tr>
@@ -144,13 +145,13 @@
                                 {{trans('digital_drilling.daily_raport.previous_face')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.general_data_daily.previous_bhd">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.riser_pressure')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.p_standpipe">
                             </td>
                             <td colspan="2">
 
@@ -164,19 +165,19 @@
                                 {{trans('digital_drilling.daily_raport.slaughter_at')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.general_data_daily.bhd_24">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_supervisor')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.supervisor">
                             </td>
                         </tr>
                         <tr>
@@ -184,19 +185,19 @@
                                 {{trans('digital_drilling.daily_raport.daily_meterage')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.general_data_daily.drilling_progress">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_lifting')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh_pooh">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_foreman')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.drilling_engineer">
                             </td>
                         </tr>
                         <tr>
@@ -204,27 +205,27 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.general_data_daily.drilling_progress">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh_rih">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <input type="text" v-model="report.contractor_daily.drilling_mud_engineer">
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-                <div class="row tables">
-                    <div class="col-sm-5 pr-0 pl-0">
-                        <table class="table defaultTable border-top-0" >
-                            <thead>
+                        </tbody>
+                    </table>
+                    <div class="row tables">
+                        <div class="col-sm-5 pr-0 pl-0">
+                            <table class="table defaultTable border-top-0" >
+                                <thead>
                                 <tr>
                                     <th rowspan="2" colspan="2" class="align-middle">
                                         {{trans('digital_drilling.daily_raport.well_design')}}
@@ -243,8 +244,8 @@
                                     <th>{{trans('digital_drilling.daily_raport.vertically')}}</th>
                                     <th>{{trans('digital_drilling.daily_raport.trunk')}}</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
@@ -300,10 +301,10 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                        <table class="table defaultTable  border-top-0">
-                            <thead>
+                                </tbody>
+                            </table>
+                            <table class="table defaultTable  border-top-0">
+                                <thead>
                                 <tr class="h-31">
                                     <th rowspan="2" colspan="2" class="w-50">
                                         {{trans('digital_drilling.daily_raport.rig_personnel')}}
@@ -312,8 +313,8 @@
                                         {{trans('digital_drilling.daily_raport.shift_of_watches')}}
                                     </th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td class="w-40"><input type="text"></td>
                                     <td class="w-10"><input type="text"></td>
@@ -344,12 +345,12 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-sm-7 pl-0 pr-0">
-                        <table class="table defaultTable ">
-                            <thead>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-7 pl-0 pr-0">
+                            <table class="table defaultTable ">
+                                <thead>
                                 <tr>
                                     <th colspan="4">
                                         {{trans('digital_drilling.daily_raport.production_time')}}
@@ -369,8 +370,8 @@
                                     <th>{{trans('digital_drilling.daily_raport.per_day')}}</th>
                                     <th>{{trans('digital_drilling.daily_raport.total')}}</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr v-for="i in 19">
                                     <td class="w-15">
                                         <select name="" id="">
@@ -403,19 +404,19 @@
                                         0,00
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <table class="tables table defaultTable">
-                    <thead>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="11" class="align-middle title">
                                 {{trans('digital_drilling.daily_raport.DESCRIPTION_OF_WORKS_PER_DAY')}}
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td colspan="3">
                                 {{trans('digital_drilling.daily_raport.time')}}
@@ -484,10 +485,10 @@
                             <td class="w-5"></td>
                             <td class="w-5"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="19" class="title">
                                 {{trans('digital_drilling.daily_raport.TECHNOLOGICAL_INFORMATION')}}
@@ -501,8 +502,8 @@
                                 {{trans('digital_drilling.daily_raport.BHA_well')}}
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.chisel')}}</td>
                             <td  colspan="2">1</td>
@@ -1181,19 +1182,19 @@
                             <td colspan="3">{{trans('digital_drilling.daily_raport.dispenser_hour')}}</td>
                             <td colspan="2"><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                <table class="tables table defaultTable">
-                    <thead>
-                    <tr>
-                        <th colspan="19">
-                            {{trans('digital_drilling.daily_raport.removal_solid_liquid_phase')}}
-                        </th>
+                    <table class="tables table defaultTable">
+                        <thead>
+                        <tr>
+                            <th colspan="19">
+                                {{trans('digital_drilling.daily_raport.removal_solid_liquid_phase')}}
+                            </th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.name')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.ED')}}</td>
@@ -1243,298 +1244,298 @@
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
-                    <tr>
-                        <th colspan="5">
-                            {{trans('digital_drilling.daily_raport.well_control')}}
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
-                        <td class="w-7">
-                            <select name="" id="">
-                                <option value="" v-for="diameter in diameters">
-                                    {{diameter.diameter}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.depth_descent_last')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.diameter_next_column')}}
-                        </td>
-                        <td>
-                            <select name="" id="">
-                                <option value="" v-for="diameter in diameters">
-                                    {{diameter.diameter}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.depth_descent_next_column')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.reservoir_integrity_test')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.equivalent_drill_density')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.drilling_fluid_density')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.drill_volume_solution')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.drill_volume_solution_in_reception')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            {{trans('digital_drilling.daily_raport.drill_volume_solution_in_stock')}}
-                        </td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
-                        <td colspan="2">
-                            <select-add :options="pumps" name="pump1" :header="pump1"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Насос №1', 'pump_type', 'pump1')"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{trans('digital_drilling.daily_raport.bushings_mm')}}
-                        </td>
-                        <td>
-                            <select-add :options="bushings" name="bushings1" :header="bushings1"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings1')"
-                            />
-                        </td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{trans('digital_drilling.daily_raport.coef_floor')}}
-                        </td>
-                        <td><input type="text"></td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-for="i in 5">
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
-                        <td colspan="2">
-                            <select-add :options="pumps" name="pump2" :header="pump2"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Насос №2', 'pump_type', 'pump2')"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{trans('digital_drilling.daily_raport.bushings_mm')}}
-                        </td>
-                        <td>
-                            <select-add :options="bushings" name="bushings2" :header="bushings2"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings2')"
-                            />
-                        </td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{trans('digital_drilling.daily_raport.coef_floor')}}
-                        </td>
-                        <td><input type="text"></td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                        <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-for="i in 5">
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-if="!pump[0].active">
-                        <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="pump" v-if="pump[0].active">
-                    <tbody>
-                    <tr>
-                        <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
-                        <td colspan="2">
-                            <select-add :options="pumps" name="pump3" :header="pump3"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Насос №3', 'pump_type', 'pump3')"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
-                        <td>
-                            <select-add :options="bushings" name="bushings3" :header="bushings3"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings3')"
-                            />
-                        </td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
-                        <td><input type="text"></td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-for="i in 5">
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-if="!pump[1].active">
-                        <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="pump" v-if="pump[1].active">
-                    <tbody>
-                    <tr>
-                        <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
-                        <td colspan="2">
-                            <select-add :options="pumps" name="pump4" :header="pump4"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Насос №4', 'pump_type', 'pump4')"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
-                        <td>
-                            <select-add :options="bushings" name="bushings4" :header="bushings4"
-                                        @selectOption="selectOption"
-                                        @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings4')"
-                            />
-                        </td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
-                        <td><input type="text"></td>
-                        <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                        <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr v-for="i in 5">
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
+                        <tr>
+                            <th colspan="5">
+                                {{trans('digital_drilling.daily_raport.well_control')}}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
+                            <td class="w-7">
+                                <select name="" id="">
+                                    <option value="" v-for="diameter in diameters">
+                                        {{diameter.diameter}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.depth_descent_last')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.diameter_next_column')}}
+                            </td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="" v-for="diameter in diameters">
+                                        {{diameter.diameter}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.depth_descent_next_column')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.reservoir_integrity_test')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.equivalent_drill_density')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.drilling_fluid_density')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_reception')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_stock')}}
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
+                            <td colspan="2">
+                                <select-add :options="pumps" name="pump1" :header="pump1"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Насос №1', 'pump_type', 'pump1')"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.bushings_mm')}}
+                            </td>
+                            <td>
+                                <select-add :options="bushings" name="bushings1" :header="bushings1"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings1')"
+                                />
+                            </td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.coef_floor')}}
+                            </td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-for="i in 5">
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
+                            <td colspan="2">
+                                <select-add :options="pumps" name="pump2" :header="pump2"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Насос №2', 'pump_type', 'pump2')"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.bushings_mm')}}
+                            </td>
+                            <td>
+                                <select-add :options="bushings" name="bushings2" :header="bushings2"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings2')"
+                                />
+                            </td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.coef_floor')}}
+                            </td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-for="i in 5">
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-if="!pump[0].active">
+                            <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="pump" v-if="pump[0].active">
+                        <tbody>
+                        <tr>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
+                            <td colspan="2">
+                                <select-add :options="pumps" name="pump3" :header="pump3"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Насос №3', 'pump_type', 'pump3')"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
+                            <td>
+                                <select-add :options="bushings" name="bushings3" :header="bushings3"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings3')"
+                                />
+                            </td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-for="i in 5">
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-if="!pump[1].active">
+                            <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="pump" v-if="pump[1].active">
+                        <tbody>
+                        <tr>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
+                            <td colspan="2">
+                                <select-add :options="pumps" name="pump4" :header="pump4"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Насос №4', 'pump_type', 'pump4')"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
+                            <td>
+                                <select-add :options="bushings" name="bushings4" :header="bushings4"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings4')"
+                                />
+                            </td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr v-for="i in 5">
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="7" lass="title">{{trans('digital_drilling.daily_raport.INFORMATION_AT_06')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.time')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.bid')}}</td>
@@ -1571,11 +1572,11 @@
                             </td>
                             <td><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <br>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <br>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th rowspan="2" colspan="18" class="align-middle">
                                 {{trans('digital_drilling.daily_raport.TECHNICAL_PARAMETERS')}}
@@ -1595,8 +1596,8 @@
                                 <input type="text">
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td colspan="22">
                                 {{trans('digital_drilling.daily_raport.drilling_mud_parameters')}}
@@ -1715,15 +1716,15 @@
                         <tr>
                             <td v-for="i in 22"><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="11" class="title">{{trans('digital_drilling.daily_raport.component_composition_drilling_mud')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.name_chemicals')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.assigning_material')}}</td>
@@ -1743,15 +1744,15 @@
                             </td>
                             <td v-for="i in 8"><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="16" class="title">{{trans('digital_drilling.daily_raport.consumption_tooling_materials')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td class="w-20">{{trans('digital_drilling.daily_raport.name_materials')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.before')}}</td>
@@ -1773,16 +1774,16 @@
                             <td colspan="2"><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="7" class="title">{{trans('digital_drilling.daily_raport.GEOLOGICAL_INFORMATION')}}</th>
                             <th colspan="5" class="title">{{trans('digital_drilling.daily_raport.CORE_COLLECTION')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.stratigraphy')}}</td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.roof')}}</td>
@@ -1814,15 +1815,15 @@
                             </td>
                             <td v-for="i in 7"><input type="text"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="10" class="title">{{trans('digital_drilling.daily_raport.INCLINOMETRY')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
@@ -1847,15 +1848,15 @@
                                             @addItem="openCatalog('Тип прибора', 'device_type', 'inclino2'+i)"/>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="tables table defaultTable">
-                    <thead>
+                        </tbody>
+                    </table>
+                    <table class="tables table defaultTable">
+                        <thead>
                         <tr>
                             <th colspan="22" class="title">{{trans('digital_drilling.daily_raport.SAFETY')}}</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.fire_alarm')}}</td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.Uch_H2S_alarm')}}</td>
@@ -1885,54 +1886,54 @@
                         <tr>
                             <td v-for="i in 22"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <div class="decryption-block">
-                    <div class="decryption-title">
-                        *** {{trans('digital_drilling.daily_raport.explanation_abbreviation')}} :
-                    </div>
-                    <div class="decryption-content">
-                        <div class="decryption-content-left">
-                            <p>{{trans('digital_drilling.daily_raport.ea_bo')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_pvo')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_ou')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_umk')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_akb')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bus')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bn')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_ubt')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_cbt')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_tbt')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_gbya')}}</p>
+                        </tbody>
+                    </table>
+                    <div class="decryption-block">
+                        <div class="decryption-title">
+                            *** {{trans('digital_drilling.daily_raport.explanation_abbreviation')}} :
                         </div>
-                        <div class="decryption-content-right">
-                            <p>{{trans('digital_drilling.daily_raport.ea_kubt')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_ksh')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bd')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bcp')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bd_bg')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_pug')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_ppg')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_bpr')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_obr')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_vpub')}}</p>
-                            <p>{{trans('digital_drilling.daily_raport.ea_sn')}}</p>
+                        <div class="decryption-content">
+                            <div class="decryption-content-left">
+                                <p>{{trans('digital_drilling.daily_raport.ea_bo')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_pvo')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_ou')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_umk')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_akb')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bus')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bn')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_ubt')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_cbt')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_tbt')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_gbya')}}</p>
+                            </div>
+                            <div class="decryption-content-right">
+                                <p>{{trans('digital_drilling.daily_raport.ea_kubt')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_ksh')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bd')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bcp')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bd_bg')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_pug')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_ppg')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_bpr')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_obr')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_vpub')}}</p>
+                                <p>{{trans('digital_drilling.daily_raport.ea_sn')}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="characteristic__modal" v-if="addRigModal">
-            <div class="characteristic_content">
-                <div class="characteristic_header">
-                    <span>Технические характеристики ZJ-40</span>
-                    <div class="characteristic_header-close" @click="addItemRig">
-                        Закрыть
+            <div class="characteristic__modal" v-if="addRigModal">
+                <div class="characteristic_content">
+                    <div class="characteristic_header">
+                        <span>Технические характеристики ZJ-40</span>
+                        <div class="characteristic_header-close" @click="addItemRig">
+                            Закрыть
+                        </div>
                     </div>
-                </div>
-                <div class="characteristic_body defaultScroll">
-                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
-                        <tbody>
+                    <div class="characteristic_body defaultScroll">
+                        <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
+                            <tbody>
                             <tr>
                                 <th>Название</th>
                                 <th>Значение</th>
@@ -1950,10 +1951,10 @@
                                 <td>{{rigCharacteristic[0][1].parameter}}</td>
                                 <td><input type="text" v-model="headDrilling" :class="{error: headDrilling=='' && addRigModalError}"></td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
-                        <tbody>
+                            </tbody>
+                        </table>
+                        <table class="table defaultTable modalTable" v-if="rigCharacteristic.length>0">
+                            <tbody>
                             <tr>
                                 <th>Параметры</th>
                                 <th>Ед.измерения</th>
@@ -1966,47 +1967,48 @@
                                     <input type="text" v-model="rig.value" :class="{error: addRigModalError && rig.value=='' && i==0}">
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="characteristic_body-save">
-                    <button @click="uploadRig">{{trans('app.save')}}</button>
-                </div>
-            </div>
-        </div>
-        <div class="catalog-add" v-if="catalogModal">
-            <div class="catalog-add-inner">
-                <div class="catalog-add-form">
-                    <div class="catalog-add-header">
-                        <div class="catalog-add-title">
-                            {{currentCatalogAdd.name}}
-                        </div>
-                        <div class="catalog-add-close" @click="catalogModal=false">
-                            Закрыть
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="catalog-add-content">
-                        <input type="text" :class="{error: catalogError && catalog==''}"  v-model="catalog">
-                        <button @click="saveCatalog">{{trans('app.save')}}</button>
+                    <div class="characteristic_body-save">
+                        <button @click="uploadRig">{{trans('app.save')}}</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="catalog-add" v-if="catalogModalCompany">
-            <div class="catalog-add-inner">
-                <div class="catalog-add-form">
-                    <div class="catalog-add-header">
-                        <div class="catalog-add-title">
-                            {{currentCatalogAdd.name}}
+            <div class="catalog-add" v-if="catalogModal">
+                <div class="catalog-add-inner">
+                    <div class="catalog-add-form">
+                        <div class="catalog-add-header">
+                            <div class="catalog-add-title">
+                                {{currentCatalogAdd.name}}
+                            </div>
+                            <div class="catalog-add-close" @click="catalogModal=false">
+                                Закрыть
+                            </div>
                         </div>
-                        <div class="catalog-add-close" @click="catalogModalCompany=false">
-                            Закрыть
+                        <div class="catalog-add-content">
+                            <input type="text" :class="{error: catalogError && catalog==''}"  v-model="catalog">
+                            <button @click="saveCatalog">{{trans('app.save')}}</button>
                         </div>
                     </div>
-                    <div class="catalog-add-content">
-                        <input type="text" :class="{error: catalogError && catalogCompany.name_ru==''}"  v-model="catalogCompany.name_ru" placeholder="Напишите назание">
-                        <input type="number" :class="{error: (catalogError && catalogCompany.bin=='') || (catalogError && catalogCompany.bin.toString().length !=12)}"  v-model="catalogCompany.bin" placeholder="Напишите БИН, число, 12 цифр">
-                        <button @click="saveCatalogCompany">{{trans('app.save')}}</button>
+                </div>
+            </div>
+            <div class="catalog-add" v-if="catalogModalCompany">
+                <div class="catalog-add-inner">
+                    <div class="catalog-add-form">
+                        <div class="catalog-add-header">
+                            <div class="catalog-add-title">
+                                {{currentCatalogAdd.name}}
+                            </div>
+                            <div class="catalog-add-close" @click="catalogModalCompany=false">
+                                Закрыть
+                            </div>
+                        </div>
+                        <div class="catalog-add-content">
+                            <input type="text" :class="{error: catalogError && catalogCompany.name_ru==''}"  v-model="catalogCompany.name_ru" placeholder="Напишите назание">
+                            <input type="number" :class="{error: (catalogError && catalogCompany.bin=='') || (catalogError && catalogCompany.bin.toString().length !=12)}"  v-model="catalogCompany.bin" placeholder="Напишите БИН, число, 12 цифр">
+                            <button @click="saveCatalogCompany">{{trans('app.save')}}</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2025,6 +2027,7 @@
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd},
+        props: ['report'],
         data(){
             return{
                 pump:[
@@ -2331,6 +2334,7 @@
                         this.catalogCompany).then((response) => {
                         if (response.data) {
                             this.companyName = response.data
+                            this.report.contractor_daily.contractor = response.data
                             this.catalogModalCompany = false
                             this.getDrillingContractors()
                         } else {
@@ -2354,9 +2358,10 @@
                 switch (name) {
                     case "drillingContractors":
                         this.companyName = item
+                        this.report.contractor_daily.contractor = item
                         break
                     case "Unit_Name":
-                        this.Unit_Name = item
+                        this.report.general_data_daily.rig = item
                         break
                     case "manufacturer1":
                         this.manufacturer1 = item
@@ -2633,11 +2638,23 @@
             onChangeOrg(event){
                 let org_id = event.target.value
                 this.currentOrgId = org_id
+                this.report.general_data_daily.geo = {
+                    id: '',
+                    name_ru: ''
+                }
+                this.report.general_data_daily.well = {
+                    id: '',
+                    name_ru: ''
+                }
                 this.getFields()
             },
             onChangeField(event){
                 let fieldId = event.target.value
                 this.currentGeoId = fieldId
+                this.report.general_data_daily.well = {
+                    id: '',
+                    name_ru: ''
+                }
                 this.getWellNumber()
             },
             addPump(){

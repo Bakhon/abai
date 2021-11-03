@@ -29,7 +29,7 @@ class Omg extends Dzo {
         return $condensateSummary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
         $condensateSummary = array();
         $condensateSummary['fact'] = $fact[$factField];

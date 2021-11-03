@@ -1,11 +1,10 @@
 <template>
     <div class="main-block">
-        <div class="row">
             <div class="col-12 d-flex header justify-content-between">
                 <div class="col-11 p-2">Исторические сведения по добыче нефти</div>
                 <div class="col-1 cancel-icon" @click="SET_VISIBLE_PRODUCTION(false)"></div>
             </div>
-            <div class="col-12 p-0 left-block">
+            <div class="col-12 p-0 left-block bg-dark">
                 <table class="historical-table">
                     <thead>
                         <tr>
@@ -41,7 +40,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
     </div>
 </template>
 
@@ -210,7 +208,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .main-block {
-    margin-left: 30px;
     height: 100%;
     min-width: 610px;
     max-width: 610px;
@@ -223,18 +220,17 @@ export default {
 }
 .cancel-icon {
     background: url(/img/bd/cancel-icon.svg) no-repeat;
-    margin-left: 20px;
-    margin-top: 15px;
+    background-position: center;
+    cursor: pointer;
 }
 .historical-table {
     text-align: center;
-    border: 2px solid #293688;
-    width: 630px;
+    border: 1px solid #293688;
 
     tbody {
-        height: 680px;
-        display: block;
-        overflow-y:scroll;
+        // height: 680px;
+        // display: block;
+        // overflow-y:scroll;
     }
     thead, tbody tr {
         display: table;
@@ -242,27 +238,35 @@ export default {
         width: 100%;
     }
     th {
-        background: #37408B;
-        border: 1px solid rgba(161, 164, 222, 0.3);
+        background: #a5abde;
+        border: 1px solid #030647;
         border-top: none;
-        padding: 5px;
+        padding: 2px;
+        font-size: 12px;
+        color: #030647;
     }
     td {
-        padding: 5px;
-        background: #4D5092;
-        border: 1px solid #A1A4DE;
-        height: 49px;
+         padding: 2px;
+        background: #bbbfe2;
+        border: 1px solid #030647;
+        border-top: none;
+        color: #030647;
+        overflow: hidden;
         span {
-            border-left: 1px solid #A1A4DE;
+            border-left: 1px solid #030647;
             padding-top: 17px;
             padding-bottom: 17px
         }
         label {
             min-width: 40px;
+            min-width: 40px;
+            color: #030647;
         }
     }
+     
 }
 .left-block {
-    height: 810px;
+    height: calc(100% - 36px);
+    overflow-y: auto;
 }
 </style>

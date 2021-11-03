@@ -4,7 +4,7 @@
             <tbody>
                 <tr>
                     <th>{{ trans('digital_drilling.default.daily_report_number') }}</th>
-                    <th>Дата</th>
+                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
                     <th class="raport">{{ trans('digital_drilling.default.daily_report') }}</th>
                     <th></th>
                 </tr>

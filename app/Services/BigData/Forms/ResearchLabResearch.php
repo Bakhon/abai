@@ -33,6 +33,7 @@ class ResearchLabResearch extends PlainForm
         $rows->map(function ($row) use ($researchValues) {
             $rowResearchValues = $researchValues->get($row->id);
             if (empty($rowResearchValues)) {
+                $row->research_results = null;
                 return $row;
             }
 
@@ -48,7 +49,38 @@ class ResearchLabResearch extends PlainForm
             return $row;
         });
 
+        $prevResearch = null;
+        $rows = $this->filterRows($rows);
+
         return $this->formatRows($rows);
+    }
+
+    protected function filterRows(Collection $rows): Collection
+    {
+        $rows = $rows->reverse();
+        $rows = $rows->filter(function ($research) use ($rows, &$prevResearch) {
+            if ($research->id === $rows->last()->id) {
+                return true;
+            }
+
+            if (!$prevResearch) {
+                $prevResearch = $research;
+                return false;
+            }
+
+            $active = true;
+            if (
+                $prevResearch->research_type === $research->research_type
+                && $prevResearch->research_results === $research->research_results
+            ) {
+                $active = false;
+            }
+
+            $prevResearch = $research;
+
+            return $active;
+        });
+        return $rows->reverse();
     }
 
     protected function getCustomValidationErrors(string $field = null): array

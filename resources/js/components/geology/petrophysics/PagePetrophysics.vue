@@ -4,13 +4,13 @@
       <topSide />
     </template>
     <template #leftSide>
-      <leftSide />
+      <leftSide :saveTableSettings="saveTableSetting"/>
     </template>
     <template #rightSide>
       <rightSide />
     </template>
     <template #baseSlot>
-      <BaseGis/>
+      <BaseGis ref="baseGis"/>
     </template>
   </PageLayoutGrid>
 </template>
@@ -30,6 +30,11 @@ export default {
     LeftSide,
     RightSide,
     TopSide
+  },
+  methods:{
+    saveTableSetting() {
+      this.$refs.baseGis.saveTableSettings();
+    }
   }
 }
 </script>
