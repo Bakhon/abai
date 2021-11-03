@@ -112,7 +112,7 @@
                                                 {{techModeItem.label}}
                                             </td>
                                             <td>
-                                                {{techModeItem.value.toFixed(0)}}
+                                                -
                                             </td>
                                         </tr>
                                         <tr class="header-background_dark">
@@ -150,6 +150,8 @@
                                             >
                                                 {{dayNumber}}
                                             </th>
+                                            <th>Средние <br>(по методике)</th>
+                                            <th>Суммарные <br>(по методике)</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -163,7 +165,8 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td>-</td>
+                                                <td>{{periodItem.params.techMode[0].value.toFixed(1)}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -173,7 +176,8 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].liqCut.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td>{{periodItem.params.techMode[1].value.toFixed(1)}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr>
                                             <tr>
@@ -184,7 +188,8 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td>-</td>
+                                                <td>{{periodItem.params.techMode[2].value.toFixed(1)}}</td>
                                             </tr>
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
@@ -193,17 +198,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td
-                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                                >
-                                                    &nbsp;
-                                                </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -213,7 +209,19 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td
+                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                >
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -223,7 +231,8 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -233,7 +242,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -243,7 +253,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -252,7 +263,8 @@
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >{{periodItem.params.monthlyData[dayNumber-1].workHours}} 
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -262,7 +274,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -272,7 +285,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -282,10 +296,13 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td v-for="dayNumber in getDaysCountInMonth(periodItem.id)"> &nbsp; </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -295,7 +312,8 @@
                                                 >
                                                 &nbsp;   
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -305,7 +323,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -315,7 +334,8 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -325,7 +345,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -335,7 +356,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -345,7 +367,8 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
