@@ -377,6 +377,7 @@ export default {
     preparePost() {
       var payload = {};
       payload.url = this.apiUrl + "calculate";
+      this.checkMechSep()
       if (this.curveSettings.expChoosen ==="ФОН") {
         payload.data = {
           shgn_settings: this.shgnSettings,
@@ -457,6 +458,11 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
+    checkMechSep() {
+      if ((this.curveSettings.mechanicalSeparation && this.curveSettings.separationMethod!=="input_value") && this.shgnSettings.komponovka.includes("hvostovik")) {
+        this.shgnSettings.komponovka = this.shgnSettings.komponovka.filter(e => e!=="hvostovik")
+      }
+    },
     onPgnoClick() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
@@ -472,6 +478,7 @@ export default {
         if (this.curveSettings.expChoosen == "ШГН") {
           if (this.mainSettings.isVisibleChart) {
             this.SET_LOADING(true);
+            this.checkMechSep()
             var payload = {
               shgn_settings: this.shgnSettings,
               well: this.well,
