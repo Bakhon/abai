@@ -34,7 +34,6 @@
           v-else-if="activeTab === 'additional_stops'"
           class="text-white"/>
 
-
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
           :wells="wellsByStatuses"
@@ -45,10 +44,11 @@
           v-else-if="activeTab === 'economic_tech_loss'"
           class="text-white"/>
 
-      <table-prs-cost
+      <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
           :wells="wellsByLossStatuses"
-          class="text-white"/>
+          class="text-white"
+          is-prs/>
     </div>
   </div>
 </template>
@@ -60,9 +60,7 @@ import TableOilProductionLoss from "./TableOilProductionLoss";
 import TableFinancialLoss from "./TableFinancialLoss";
 import TableWellDistribution from "./TableWellDistribution";
 import TableAdditionalStops from "./TableAdditionalStops";
-import TableOilProductionTechLoss from "./TableOilProductionTechLoss";
 import TableEconomicTechLoss from "./TableEconomicTechLoss";
-import TablePrsCost from "./TablePrsCost";
 
 export default {
   name: "Tables",
@@ -73,9 +71,7 @@ export default {
     TableFinancialLoss,
     TableWellDistribution,
     TableAdditionalStops,
-    TableOilProductionTechLoss,
     TableEconomicTechLoss,
-    TablePrsCost,
   },
   props: {
     scenario: {

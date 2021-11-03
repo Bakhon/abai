@@ -35,7 +35,7 @@
       </div>
 
       <div class="customScroll">
-        <table-oil-production-tech-loss-row
+        <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
             :row="row"
@@ -52,7 +52,7 @@
       </div>
 
       <div class="d-flex flex-column customScroll" style="height: 310px">
-        <table-oil-production-tech-loss-row
+        <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
             :row="row"
@@ -67,13 +67,13 @@
 
 <script>
 import Subtitle from "../Subtitle";
-import TableOilProductionTechLossRow from "./TableOilProductionTechLossRow";
+import TableOilProductionLossRow from "./TableOilProductionLossRow";
 
 export default {
   name: "TableEconomicTechLoss",
   components: {
     Subtitle,
-    TableOilProductionTechLossRow
+    TableOilProductionLossRow
   },
   computed: {
     tableRows() {

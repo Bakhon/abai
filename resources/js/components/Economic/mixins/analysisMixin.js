@@ -129,6 +129,38 @@ export const tableDataMixin = {
             return rows
         },
 
+        tablePrs() {
+            let rows = this.tableData.dates.map((date, dateIndex) => {
+                return {
+                    date: date,
+                    values: this.statuses.map((status, statusIndex) => {
+                        return this.columns.map(column => {
+                            return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].prs_portion
+                        })
+                    }),
+                    style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
+                }
+            })
+
+            rows.push({
+                date: 'Общий итог',
+                values: this.statuses.map((status, statusIndex) => {
+                    return this.columns.map((column, columnIndex) => {
+                        let sum = 0
+
+                        rows.forEach(row => {
+                            sum += row.values[statusIndex][columnIndex]
+                        })
+
+                        return sum
+                    })
+                }),
+                style: 'background: #293688; font-weight: 600'
+            })
+
+            return rows
+        },
+
         statuses() {
             return this.tableData.statuses.map(status => ({name: status.name}))
         },

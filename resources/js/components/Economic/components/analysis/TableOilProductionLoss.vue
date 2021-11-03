@@ -6,7 +6,6 @@
             ? 'Технологические потери: добыча рентабельных и нерентабельных скважин'
             : 'Потери от остановок: добыча рентабельных и нерентабельных скважин'
       }}
-
     </subtitle>
 
     <div class="mt-2 text-white font-size-12px line-height-14px">
@@ -26,7 +25,8 @@
 
           <div v-for="(status, statusIndex) in statuses"
                :key="statusIndex"
-               class="text-center flex-18">
+               :style="`flex: 0 0 ${90 / statuses.length}%`"
+               class="text-center">
             <div class="p-1 border-grey text-nowrap">
               {{ status.name }}
             </div>
@@ -44,7 +44,7 @@
       </div>
 
       <div class="d-flex flex-column customScroll">
-        <table-oil-production-tech-loss-row
+        <table-oil-production-loss-row
             v-for="(row, rowIndex) in tableUwiCount"
             :key="rowIndex"
             :row="row"
@@ -57,12 +57,12 @@
 
     <div class="text-white font-size-12px line-height-14px mt-3">
       <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10">
-        Потери нефти, тонн
+        {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
       </div>
 
       <div class="d-flex flex-column customScroll">
-        <table-oil-production-tech-loss-row
-            v-for="(row, rowIndex) in tableOil"
+        <table-oil-production-loss-row
+            v-for="(row, rowIndex) in isPrs ? tablePrs : tableOil"
             :key="rowIndex"
             :row="row"
             :titles="statuses"
@@ -76,7 +76,7 @@
 
 <script>
 import Subtitle from "../Subtitle";
-import TableOilProductionTechLossRow from "./TableOilProductionTechLossRow";
+import TableOilProductionLossRow from "./TableOilProductionLossRow";
 
 import {tableDataMixin} from "../../mixins/analysisMixin";
 
@@ -84,7 +84,7 @@ export default {
   name: "TableOilProductionLoss",
   components: {
     Subtitle,
-    TableOilProductionTechLossRow
+    TableOilProductionLossRow
   },
   mixins: [
     tableDataMixin
@@ -95,6 +95,10 @@ export default {
       type: Array
     },
     isTechLoss: {
+      required: false,
+      type: Boolean
+    },
+    isPrs: {
       required: false,
       type: Boolean
     }
@@ -113,10 +117,6 @@ export default {
 
 .flex-10 {
   flex: 0 0 10%;
-}
-
-.flex-18 {
-  flex: 0 0 18%;
 }
 
 .pl-10 {

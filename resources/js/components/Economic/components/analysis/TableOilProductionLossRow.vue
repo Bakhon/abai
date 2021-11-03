@@ -1,16 +1,17 @@
 <template>
   <div class="d-flex">
-    <div class="py-1 pl-3 pr-2 border-grey d-flex align-items-center justify-content-start flex-20">
+    <div class="py-1 pl-3 pr-2 border-grey d-flex align-items-center justify-content-start flex-10">
       {{ row.date }}
     </div>
 
     <div v-for="(title, titleIndex) in titles"
          :key="titleIndex"
-         class="text-center d-flex flex-20">
+         :style="`flex: 0 0 ${90 / titles.length}%`"
+         class="text-center d-flex">
       <div v-for="(subTitle, subTitleIndex) in subTitles"
            :key="subTitleIndex"
            :style="`flex: 0 0 ${100 / subTitles.length}%`"
-           class="py-2 px-2 border-grey d-flex align-items-center justify-content-center">
+           class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
         {{ row.values[titleIndex][subTitleIndex] }}
       </div>
     </div>
@@ -42,7 +43,7 @@ export default {
   border: 1px solid #454D7D
 }
 
-.flex-20 {
-  flex: 0 0 20%;
+.flex-10 {
+  flex: 0 0 10%;
 }
 </style>
