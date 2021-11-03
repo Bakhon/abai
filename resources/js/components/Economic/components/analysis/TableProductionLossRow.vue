@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="flex-grow-1 d-flex flex-column">
+    <div class="flex-grow-1 d-flex flex-column customScroll">
       <div v-for="(date, dateIndex) in dates"
            :key="dateIndex"
            class="flex-grow-1 d-flex font-size-12px line-height-14px">
@@ -210,5 +210,18 @@ export default {
 
 .line-height-16px {
   line-height: 16px;
+}
+
+.customScroll {
+  overflow: hidden;
+  height: 225px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.pr-10px {
+  padding-right: 10px;
 }
 </style>

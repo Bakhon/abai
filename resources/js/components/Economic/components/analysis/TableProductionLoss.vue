@@ -77,8 +77,4 @@ export default {
 .customScroll::-webkit-scrollbar {
   width: 10px;
 }
-
-.table-oil-production {
-  height: 250px
-}
 </style>
