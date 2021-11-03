@@ -133,8 +133,9 @@ export default {
             _.forEach(this.dates, (yearItem) => {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.injectionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                let sorted = _.sortBy(filtered, 'date');
                 calculated.push(summary);
-                calculated = calculated.concat(filtered);
+                calculated = calculated.concat(sorted);
             });
             return calculated;
         },
