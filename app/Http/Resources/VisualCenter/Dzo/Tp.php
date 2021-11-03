@@ -41,11 +41,13 @@ class Tp extends Dzo {
         return $summary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
-       $daySummary['fact'] *= $this->oilCondensateMultiplier;
-       $daySummary['plan'] *= $this->oilCondensateMultiplier;
-       $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       if ($isSummary) {
+           $daySummary['fact'] *= $this->oilCondensateMultiplier;
+           $daySummary['plan'] *= $this->oilCondensateMultiplier;
+           $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       }
        $summary = array();
        array_push($summary,$daySummary);
        return $summary;
