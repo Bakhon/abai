@@ -36,6 +36,7 @@
 
       <table-oil-production-tech-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
+          :wells="wellsByStatuses"
           class="text-white"/>
 
       <table-economic-tech-loss

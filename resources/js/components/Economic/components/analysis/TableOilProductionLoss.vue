@@ -15,19 +15,19 @@
             Месяцы
           </div>
 
-          <div v-for="(title, titleIndex) in titles"
-               :key="titleIndex"
+          <div v-for="(status, statusIndex) in statuses"
+               :key="statusIndex"
                class="text-center flex-20">
             <div class="py-1 px-2 border-grey">
-              {{ title.name }}
+              {{ status.name }}
             </div>
 
             <div class="d-flex">
-              <div v-for="(subTitle, subTitleIndex) in subTitles"
-                   :key="subTitleIndex"
-                   :style="`flex: 0 0 ${100 / subTitles.length}%`"
+              <div v-for="(column, columnIndex) in columns"
+                   :key="columnIndex"
+                   :style="`flex: 0 0 ${100 / columns.length}%`"
                    class="py-2 px-2 border-grey">
-                {{ subTitle.name }}
+                {{ column.name }}
               </div>
             </div>
           </div>
@@ -39,8 +39,8 @@
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :titles="statuses"
+            :sub-titles="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>
@@ -56,8 +56,8 @@
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :titles="statuses"
+            :sub-titles="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>
@@ -144,9 +144,9 @@ export default {
       let rows = this.tableData.dates.map((date, dateIndex) => {
         return {
           date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return this.tableData.statuses[titleIndex].dates[dateIndex][subTitle.key].uwi_count
+          values: this.statuses.map((status, statusIndex) => {
+            return this.columns.map(column => {
+              return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].uwi_count
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
@@ -155,12 +155,12 @@ export default {
 
       rows.push({
         date: 'Итог скважин (без повторов)',
-        values: this.titles.map((title, titleIndex) => {
-          return this.subTitles.map((subTitle, subTitleIndex) => {
+        values: this.statuses.map((status, statusIndex) => {
+          return this.columns.map((column, columnIndex) => {
             let sum = 0
 
             rows.forEach(row => {
-              sum += row.values[titleIndex][subTitleIndex]
+              sum += row.values[statusIndex][columnIndex]
             })
 
             return sum
@@ -176,9 +176,9 @@ export default {
       let rows = this.tableData.dates.map((date, dateIndex) => {
         return {
           date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return this.tableData.statuses[titleIndex].dates[dateIndex][subTitle.key].oil_loss
+          values: this.statuses.map((status, statusIndex) => {
+            return this.columns.map(column => {
+              return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].oil_loss
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
@@ -187,12 +187,12 @@ export default {
 
       rows.push({
         date: 'Итог потерь нефти',
-        values: this.titles.map((title, titleIndex) => {
-          return this.subTitles.map((subTitle, subTitleIndex) => {
+        values: this.statuses.map((status, statusIndex) => {
+          return this.columns.map((column, columnIndex) => {
             let sum = 0
 
             rows.forEach(row => {
-              sum += row.values[titleIndex][subTitleIndex]
+              sum += row.values[statusIndex][columnIndex]
             })
 
             return sum
@@ -204,11 +204,11 @@ export default {
       return rows
     },
 
-    titles() {
+    statuses() {
       return this.tableData.statuses.map(status => ({name: status.name}))
     },
 
-    subTitles() {
+    columns() {
       return [
         {
           name: 'Всего',

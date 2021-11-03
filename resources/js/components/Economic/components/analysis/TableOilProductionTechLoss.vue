@@ -15,19 +15,19 @@
             Месяцы
           </div>
 
-          <div v-for="(title, titleIndex) in titles"
-               :key="titleIndex"
+          <div v-for="(status, statusIndex) in statuses"
+               :key="statusIndex"
                class="text-center flex-18">
             <div class="p-1 border-grey text-nowrap">
-              {{ title.name }}
+              {{ status.name }}
             </div>
 
             <div class="d-flex">
-              <div v-for="(subTitle, subTitleIndex) in subTitles"
-                   :key="subTitleIndex"
-                   :style="`flex: 0 0 ${100 / subTitles.length}%`"
+              <div v-for="(column, columnIndex) in columns"
+                   :key="columnIndex"
+                   :style="`flex: 0 0 ${100 / columns.length}%`"
                    class="py-2 px-1 border-grey">
-                {{ subTitle.name }}
+                {{ column.name }}
               </div>
             </div>
           </div>
@@ -39,8 +39,8 @@
             v-for="(row, rowIndex) in tableRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :titles="statuses"
+            :sub-titles="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>
@@ -56,8 +56,8 @@
             v-for="(row, rowIndex) in tableOilRows"
             :key="rowIndex"
             :row="row"
-            :titles="titles"
-            :sub-titles="subTitles"
+            :titles="statuses"
+            :sub-titles="columns"
             :style="row.style"
             class="flex-grow-1"/>
       </div>
@@ -75,128 +75,144 @@ export default {
     Subtitle,
     TableOilProductionTechLossRow
   },
+  props: {
+    wells: {
+      required: true,
+      type: Array
+    }
+  },
   computed: {
+    tableData() {
+      let wellsByStatuses = {}
+
+      let dates = {}
+
+      this.wells.forEach(well => {
+        dates[well.date] = 1
+
+        if (!wellsByStatuses.hasOwnProperty(well.status_id)) {
+          wellsByStatuses[well.status_id] = []
+        }
+
+        wellsByStatuses[well.status_id].push(well)
+      })
+
+      dates = Object.keys(dates)
+
+      let statuses = Object.keys(wellsByStatuses).map(status => {
+        let wells = wellsByStatuses[status]
+
+        return {
+          name: wells[0].status_name,
+          dates: dates.map(date => {
+            let wellsByDate = wells.filter(well => well.date === date)
+
+            let profitable = wellsByDate.find(well => well.profitability = 'profitable') || DEFAULT_WELL
+
+            let profitless = wellsByDate.find(well => well.profitability = 'profitless') || DEFAULT_WELL
+
+            let total = {}
+
+            Object.keys(DEFAULT_WELL).forEach(wellKey => {
+              total[wellKey] = profitable[wellKey] + profitless[wellKey]
+            })
+
+            return {
+              profitable: profitable,
+              profitless: profitless,
+              total: total
+            }
+          })
+        }
+      })
+
+      return {
+        dates: dates,
+        statuses: statuses
+      }
+    },
+
     tableRows() {
-      let rows = this.dates.map((date, dateIndex) => {
+      let rows = this.tableData.dates.map((date, dateIndex) => {
         return {
           date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
+          values: this.statuses.map((status, statusIndex) => {
+            return this.columns.map(column => {
+              return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].uwi_count
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
         }
       })
 
-      let sumValues = this.titles.map((title, titleIndex) => {
-        return this.subTitles.map((subTitle, subTitleIndex) => {
-          let sum = 0
+      rows.push({
+        date: 'Общий итог',
+        values: this.statuses.map((status, statusIndex) => {
+          return this.columns.map((column, columnIndex) => {
+            let sum = 0
 
-          rows.forEach(row => {
-            sum += row.values[titleIndex][subTitleIndex]
+            rows.forEach(row => {
+              sum += row.values[statusIndex][columnIndex]
+            })
+
+            return sum
           })
-
-          return sum
-        })
+        }),
+        style: 'background: #323D85; font-weight: 600'
       })
-
-      rows.push(
-          {
-            date: 'Общий итог',
-            values: sumValues,
-            style: 'background: #323D85; font-weight: 600'
-          },
-          {
-            date: 'Уд. вес, %',
-            values: sumValues,
-            style: 'background: #293688; font-weight: 600'
-          }
-      )
 
       return rows
     },
 
     tableOilRows() {
-      let rows = this.dates.map((date, dateIndex) => {
+      let rows = this.tableData.dates.map((date, dateIndex) => {
         return {
           date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
+          values: this.statuses.map((status, statusIndex) => {
+            return this.columns.map(column => {
+              return this.tableData.statuses[statusIndex].dates[dateIndex][column.key].oil_loss
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
         }
       })
 
-      let sumValues = this.titles.map((title, titleIndex) => {
-        return this.subTitles.map((subTitle, subTitleIndex) => {
-          let sum = 0
+      rows.push({
+        date: 'Общий итог',
+        values: this.statuses.map((status, statusIndex) => {
+          return this.columns.map((column, columnIndex) => {
+            let sum = 0
 
-          rows.forEach(row => {
-            sum += row.values[titleIndex][subTitleIndex]
+            rows.forEach(row => {
+              sum += row.values[statusIndex][columnIndex]
+            })
+
+            return sum
           })
-
-          return sum
-        })
+        }),
+        style: 'background: #323D85; font-weight: 600'
       })
-
-      rows.push(
-          {
-            date: 'Общий итог',
-            values: sumValues,
-            style: 'background: #323D85; font-weight: 600'
-          },
-          {
-            date: 'Уд. вес, %',
-            values: sumValues,
-            style: 'background: #293688; font-weight: 600'
-          }
-      )
 
       return rows
     },
 
-    dates() {
-      return [
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-      ]
+    statuses() {
+      return this.tableData.statuses.map(status => ({name: status.name}))
     },
 
-    titles() {
+    columns() {
       return [
         {
-          name: 'Гидродинамическое исследование'
+          name: 'Всего',
+          key: 'total'
         },
         {
-          name: 'КРС на восстановление добычи'
+          name: 'Рентаб.',
+          key: 'profitable'
         },
         {
-          name: 'КРС на повышение добычи'
-        },
-        {
-          name: 'ПРС'
-        },
-        {
-          name: 'Общий итог'
-        }
-      ]
-    },
-
-    subTitles() {
-      return [
-        {
-          name: 'Всего'
-        },
-        {
-          name: 'Рентаб.'
-        },
-        {
-          name: 'Нерент.'
+          name: 'Нерент.',
+          key: 'profitless'
         },
       ]
     },
