@@ -1,88 +1,13 @@
 <template>
   <div class="all-contents">
     <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
-      </div>
-
-      <div class="well-card_tab-head__item">
-        Скважина 1
-        <span class="well-card_tab-head__item--close"></span>
+      <div
+              v-for="(well,index) in wellsHistory"
+              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well' : 'well-card_tab-head__item'"
+              @click="handleSelectHistoryWell(well)"
+      >
+          {{well.wellUwi}}
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -211,14 +136,24 @@
                     </template>
                   </v-select>
                 </form>
-                <div class="button-block">
+                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
                   <div class="button-block__item">
                     Легенда
                   </div>
                   <div class="button-block__item">
                     График
                   </div>
-                  <div class="button-block__item">
+                  <div
+                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
+                          class="button-block__item"
+                  >
+                          Сформировать
+                  </div>
+                  <div
+                          v-else
+                          class="button-block__item"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
                     Исторические сведения
                   </div>
                 </div>
@@ -436,6 +371,7 @@ import camelCase from "lodash/camelCase";
 import {
   bigdatahistoricalVisibleState,
   globalloadingMutations,
+  bigdatahistoricalVisibleMutations
 } from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
@@ -624,7 +560,23 @@ export default {
       formsStructure: {},
       dzoSelectOptions: [],
       selectedUserDzo: null,
+      historyWellTemplate: {
+        summary: {
+          'wellUwi': null,
+          'well_passport': []
+        },
+        params: {
+          'category': null,
+          'wellOrgName': null,
+          'wellSaptialObjectX': null,
+          'wellSaptialObjectY': null,
+          'wellSaptialObjectBottomX': null,
+          'wellSaptialObjectBottomY': null
+        }
+      },
+      wellsHistory: [],
       tabWidth:0,
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
     };
   },
   mounted() {
@@ -696,7 +648,7 @@ export default {
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.well.wellInfo
+      let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
         ? this.well.wellInfo.whc_alt.toFixed(1) +
           " / " +
           this.well.wellInfo.whc_h.toFixed(1)
@@ -871,7 +823,7 @@ export default {
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
-      let category_id = this.well.categoryLast.pivot.category;
+      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
@@ -1307,6 +1259,7 @@ export default {
               this.SET_LOADING(false);
             }
             this.setWellPassport();
+            this.storeWellToHistory();
             this.SET_LOADING(false);
           });
       }
@@ -1408,11 +1361,44 @@ export default {
       this.options = [];
       this.wellUwi = null;
     },
+    storeWellToHistory() {
+      let summaryWellInfo = {
+         'wellUwi': this.wellUwi,
+         'well_passport': this.tableData
+      };
+      _.forEach(Object.keys(this.historyWellTemplate.params), (key) => {
+          if (key === 'category') {
+             summaryWellInfo[key] = this.well.category;
+          } else if (this[key]) {
+              summaryWellInfo[key] = this[key];
+          } else {
+            summaryWellInfo[key] = null;
+          }
+      });
+      this.wellsHistory.push(summaryWellInfo);
+    },
+    handleDeleteWell(index) {
+      this.wellsHistory.splice(index, 1);
+    },
+    handleSelectHistoryWell(well) {
+      this.activeForm = null;
+      this.activeFormComponentName = null;
+      _.forEach(Object.keys(well), (key) => {
+          this[key] = well[key];
+      });
+      this.SET_VISIBLE_PRODUCTION(false);
+      this.SET_VISIBLE_INJECTION(false);
+      this.isBothColumnFolded = false;
+      this.isLeftColumnFolded = false;
+      this.isRightColumnFolded = false;
+    },
     updateWidth() {
       this.tabWidth = window.innerWidth -77;
-      
-  
     },
+    ...bigdatahistoricalVisibleMutations([
+      'SET_VISIBLE_INJECTION',
+      'SET_VISIBLE_PRODUCTION'
+    ]),
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -2755,5 +2741,8 @@ h4 {
 .select-dzo:hover {
   border: 1px solid transparent;
   box-shadow: inset 0 0px 0px 1px #ccc;
+}
+.selected-well {
+  background: #2e50e9 !important;
 }
 </style>
