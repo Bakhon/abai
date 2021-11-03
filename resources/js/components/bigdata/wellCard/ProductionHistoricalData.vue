@@ -212,7 +212,6 @@ export default {
     },
     watch: {
         "productionHistoricalData": function() {
-            console.log(this.productionHistoricalData);
             if (!this.isDownloadCompleted) {
                 this.fillDates();
                 this.dates = this.getHistorical();
