@@ -651,8 +651,8 @@ export default {
     background: #2E50E9;
 }
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
+  height: 7px;
+  width: 7px;
 }
 
 .main-block {
@@ -901,8 +901,6 @@ export default {
     overflow-x: auto;
     &::-webkit-scrollbar-track {
         background: #272953;
-        height: 6px;
-        width: 6px;
     }
     &::-webkit-scrollbar-thumb {
        background: #2E50E9;
