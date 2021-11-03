@@ -14,6 +14,7 @@ use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\DmartDailyProd;
+use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
@@ -49,6 +50,7 @@ class WellsController extends Controller
         $orgs = $this->org($well);        
         $wellInfo = [
             'wellInfo' => $well,
+            'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
@@ -374,6 +376,12 @@ class WellsController extends Controller
         return $well->wellTreatment()
             ->where('treatment_type', '=', '21')
             ->first(['treat_date']);
+    }
+
+    private function wellDailyDrill(Well $well)
+    {
+        return $well->wellDailyDrill()
+              ->first(['dbeg', 'dend']);
     }
 
     private function gdisConclusion(Well $well)

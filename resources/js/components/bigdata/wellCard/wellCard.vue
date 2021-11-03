@@ -491,6 +491,7 @@ export default {
           equip_param: null,
         },
         type_sk: { value_double: null, value_string: null, equip_param: null },
+        wellDailyDrill: {dbeg: null, dend: null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -556,6 +557,7 @@ export default {
         diametr_pump: "diametr_pump",
         depth_nkt: "depth_nkt",
         type_sk: "type_sk",
+        wellDailyDrill: "wellDailyDrill",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -687,7 +689,17 @@ export default {
       let categoryLast = this.well.categoryLast
         ? this.well.categoryLast.name_ru
         : "";
-      let period_bur =
+      let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
+          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
+            " - " +
+            this.getFormatedDate(this.well.wellDailyDrill.dend)
+          : this.well.wellDailyDrill.dbeg
+          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg)
+          : this.well.wellDailyDrill.dend
+          ? this.getFormatedDate(this.well.wellDailyDrill.dend)
+          : "";
+      
+      /*
         this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
           ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
             " - " +
@@ -697,6 +709,7 @@ export default {
           : this.well.wellInfo.drill_end_date
           ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
           : "";
+          */
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
