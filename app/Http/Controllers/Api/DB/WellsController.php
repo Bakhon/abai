@@ -46,7 +46,7 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
         
-        $orgs = $this->org($well);
+        $orgs = $this->org($well);        
         $wellInfo = [
             'wellInfo' => $well,
             'status' => $this->status($well),
@@ -457,11 +457,10 @@ class WellsController extends Controller
     private function gdisCurrentValueRzatr(Well $well, $method)
     {
         return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
-            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')           
-            ->where('metric_otp.code', '=', $method)
-            ->first();
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')                      
+            ->where('dict.metric.code', '=', $method)
+            ->get()
+            ->last();
     }
   
     private function gdisComplex(Well $well)

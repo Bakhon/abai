@@ -769,7 +769,7 @@ export default {
       let perfActual =
         this.well.perfActual.top && this.well.perfActual.base
           ? this.well.perfActual.top + " - " + this.well.perfActual.base
-          : "";
+          : ""; 
       let techModeProdOil =
         this.well.techModeProdOil && this.well.measLiq
           ? this.well.techModeProdOil.liquid +
