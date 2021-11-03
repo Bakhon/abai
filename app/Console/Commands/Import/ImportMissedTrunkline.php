@@ -47,6 +47,6 @@ class ImportMissedTrunkline extends Command
         $this->importExcel(new MissedTrunklineImport($this), public_path('imports/missed_trunkline.xlsx'));
 
         $pipes_ids = OilPipe::get()->pluck('id');
-//        PipeCoord::whereNotIn('oil_pipe_id', $pipes_ids)->forceDelete();
+        PipeCoord::whereNotIn('oil_pipe_id', $pipes_ids)->forceDelete();
     }
 }
