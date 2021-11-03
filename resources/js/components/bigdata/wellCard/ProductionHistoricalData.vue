@@ -68,7 +68,8 @@ export default {
                 10: 'Октябрь',
                 11: 'Ноябрь',
                 12: 'Декабрь'
-            }
+            },
+            isDownloadCompleted: false
         };
     },
     methods: {
@@ -99,6 +100,7 @@ export default {
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
+            this.dates = [];
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
                     'id': i,
@@ -180,8 +182,9 @@ export default {
             _.forEach(this.dates, (yearItem) => {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                let sorted = _.sortBy(filtered, 'date');
                 calculated.push(summary);
-                calculated = calculated.concat(filtered);
+                calculated = calculated.concat(sorted);
             });
             return calculated;
         },
@@ -192,6 +195,9 @@ export default {
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
             summary['waterCut'] = _.meanBy(filtered, 'waterCut');
+            if (!summary['waterCut']) {
+                summary['waterCut'] = 0;
+            }
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
@@ -203,6 +209,15 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionHistoricalData']),
+    },
+    watch: {
+        "productionHistoricalData": function() {
+            if (!this.isDownloadCompleted) {
+                this.fillDates();
+                this.dates = this.getHistorical();
+                this.isDownloadCompleted = true;
+            }
+        }
     }
 }
 </script>

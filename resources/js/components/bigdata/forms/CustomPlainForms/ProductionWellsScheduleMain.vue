@@ -12,7 +12,6 @@
                         <div class="col-2 splitter"></div>
                         <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down']"></div>
                     </div>
-                    <span class="historical_button" @click="SET_VISIBLE_PRODUCTION(true),changeColumnsVisible(false),isMeasurementScheduleActive = false">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="d-flex mt-1">
@@ -142,14 +141,14 @@
                                     </div>
                                 </div>
                                 <div class="bd-table-second">
-                                    <table class="table text-center text-white text-nowrap historical-table">
+                                    <table class="table text-center text-white text-nowrap historical-table days-decomposition">
                                         <thead>
                                         <tr>
                                             <th
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                     :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                             >
-                                                &nbsp;<br>{{dayNumber}}
+                                                {{dayNumber}}
                                             </th>
                                         </tr>
                                         </thead>
@@ -905,6 +904,12 @@ export default {
     &::-webkit-scrollbar-thumb {
        background: #2E50E9;
        border-radius: 10px;
+    }
+}
+.days-decomposition {
+    th {
+        height: 43px;
+        vertical-align: middle;
     }
 }
 </style>
