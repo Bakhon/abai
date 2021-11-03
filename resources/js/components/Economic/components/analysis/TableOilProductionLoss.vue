@@ -11,7 +11,7 @@
     <div class="customScroll overflow-auto">
       <div :style="`min-width: ${100 + statuses.length * 270}px`"
            class="mt-2 text-white font-size-12px line-height-14px">
-        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 position-relative height-30px">
+        <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
             {{
               isTechLoss
@@ -21,54 +21,52 @@
           </div>
         </div>
 
-        <div class="sync-scroll">
-          <div class="font-weight-600 pr-10px d-flex">
-            <div class="bg-blue py-1 px-2 border-grey d-flex align-items-center justify-content-center flex-grow-1"
-                 style="min-width: 100px">
-              Месяцы
+        <div class="font-weight-600 pr-10px d-flex">
+          <div class="bg-blue p-1 border-grey d-flex align-items-center justify-content-center flex-grow-1"
+               style="min-width: 100px">
+            Месяцы
+          </div>
+
+          <div v-for="(status, statusIndex) in statuses"
+               :key="statusIndex"
+               :style="`flex: 0 0 ${90 / statuses.length}%`"
+               class="bg-blue text-center">
+            <div class="p-1 border-grey text-nowrap">
+              {{ status.name }}
             </div>
 
-            <div v-for="(status, statusIndex) in statuses"
-                 :key="statusIndex"
-                 :style="`flex: 0 0 ${90 / statuses.length}%`"
-                 class="bg-blue text-center">
-              <div class="p-1 border-grey text-nowrap">
-                {{ status.name }}
-              </div>
-
-              <div class="d-flex">
-                <div v-for="(column, columnIndex) in columns"
-                     :key="columnIndex"
-                     :style="`flex: 0 0 ${100 / columns.length}%; min-width: 90px`"
-                     class="py-2 px-1 border-grey">
-                  {{ column.name }}
-                </div>
+            <div class="d-flex">
+              <div v-for="(column, columnIndex) in columns"
+                   :key="columnIndex"
+                   :style="`flex: 0 0 ${100 / columns.length}%; min-width: 90px`"
+                   class="py-2 px-1 border-grey">
+                {{ column.name }}
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="d-flex flex-column customScroll table-oil-production">
-            <table-oil-production-loss-row
-                v-for="(row, rowIndex) in tableUwiCount"
-                :key="rowIndex"
-                :row="row"
-                :statuses="statuses"
-                :columns="columns"
-                :style="row.style"
-                class="flex-grow-1"/>
-          </div>
+        <div class="d-flex flex-column customScroll table-oil-production">
+          <table-oil-production-loss-row
+              v-for="(row, rowIndex) in tableUwiCount"
+              :key="rowIndex"
+              :row="row"
+              :statuses="statuses"
+              :columns="columns"
+              :style="row.style"
+              class="flex-grow-1"/>
         </div>
       </div>
 
       <div :style="`min-width: ${100 + statuses.length * 270}px`"
            class="text-white font-size-12px line-height-14px mt-3">
-        <div class="bg-blue font-weight-600 pr-1 py-2 text-center border-grey pl-10 position-relative height-30px">
+        <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
             {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
           </div>
         </div>
 
-        <div class="customScroll sync-scroll table-oil-production">
+        <div class="customScroll table-oil-production">
           <div class="h-100 d-flex flex-column">
             <table-oil-production-loss-row
                 v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
@@ -129,10 +127,6 @@ export default {
   border: 1px solid #454D7D
 }
 
-.pl-10 {
-  padding-left: 10%;
-}
-
 .pr-10px {
   padding-right: 10px;
 }
@@ -169,7 +163,7 @@ export default {
 
 .fixed-header {
   position: fixed;
-  left: 40%;
+  left: 45%;
   transform: translateX(-50%);
 }
 </style>

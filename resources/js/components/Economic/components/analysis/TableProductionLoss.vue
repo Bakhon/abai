@@ -5,7 +5,7 @@
     </subtitle>
 
     <div class="customScroll">
-      <div class="mt-3 d-flex">
+      <div class="mt-2 d-flex table-oil-production">
         <table-production-loss-row
             v-for="(row, rowIndex) in tableData"
             :key="rowIndex"
@@ -13,19 +13,20 @@
             :dates="wellsByStatuses.dates"
             :is-visible-months="rowIndex === 0"
             :class="rowIndex ? 'ml-3' : ''"
-            :style="`min-width: ${rowIndex ? 350 : 400}px`"
+            :style="`min-width: ${rowIndex ? 350 : 420}px`"
+            class="h-100"
             is-profitable
             is-profitless
             is-visible-header
         />
       </div>
 
-      <div class="mt-2">
+      <div class="mt-3">
         <subtitle font-size="16" class="mb-2 line-height-18px">
           В т.ч. нерентабельный фонд
         </subtitle>
 
-        <div class="d-flex">
+        <div class="d-flex table-oil-production">
           <table-production-loss-row
               v-for="(row, rowIndex) in tableData"
               :key="rowIndex"
@@ -33,7 +34,8 @@
               :dates="wellsByStatuses.dates"
               :is-visible-months="rowIndex === 0"
               :class="rowIndex > 0 ? 'ml-3' : ''"
-              :style="`min-width: ${rowIndex ? 350 : 400}px`"
+              :style="`min-width: ${rowIndex ? 350 : 420}px`"
+              class="h-100"
               is-profitless
           />
         </div>
@@ -74,5 +76,9 @@ export default {
 
 .customScroll::-webkit-scrollbar {
   width: 10px;
+}
+
+.table-oil-production {
+  height: 250px
 }
 </style>
