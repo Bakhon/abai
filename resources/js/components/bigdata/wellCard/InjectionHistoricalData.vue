@@ -19,7 +19,7 @@
                     <tbody>
                         <tr v-for="(date,index) in dates" v-if="date.isVisible">
                             <td>
-                                <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
+                                <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date)">{{date.year}}</label>
                                 <label v-else class="form-check-label">{{date.month}}</label>
                                 <span class="ml-1"></span>
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
@@ -62,6 +62,7 @@ export default {
                 11: 'Ноябрь',
                 12: 'Декабрь'
             },
+            isDownloadCompleted: false
         };
     },
     methods: {
@@ -69,7 +70,7 @@ export default {
             'SET_VISIBLE_INJECTION','SET_INJECTION_HISTORICAL_PERIOD'
         ]),
         handleYearSelect(date) {
-            _.forEach(this.dates, (item) => {
+            _.forEach(this.dates, (item,index) => {
                 if (item.month !== null && parseInt(item.year) === date.year) {
                     item.isVisible = !item.isVisible;
                 }
@@ -92,6 +93,7 @@ export default {
             this.SET_INJECTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
+            this.dates = [];
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
                     'id': i,
@@ -155,6 +157,15 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['injectionHistoricalData']),
+    },
+    watch: {
+        "injectionHistoricalData": function() {
+            if (!this.isDownloadCompleted) {
+                this.fillDates();
+                this.dates = this.getHistorical();
+                this.isDownloadCompleted = true;
+            }
+        }
     }
 }
 </script>
@@ -204,6 +215,6 @@ export default {
 }
 .left-block {
     overflow-y: scroll;
-    height: 810px;
+    height: 753px;
 }
 </style>

@@ -1345,6 +1345,13 @@ export default {
       this.activeFormComponentName
         ? this.activeFormComponentName
         : "ProductionWellsScheduleMain";
+      if (this.activeFormComponentName === 'ProductionWellsScheduleMain') {
+        this.SET_VISIBLE_PRODUCTION(true);
+        this.changeColumnsVisible(false);
+      } else if (this.activeFormComponentName === 'InjectionWellsScheduleMain') {
+        this.SET_VISIBLE_INJECTION(true);
+        this.changeColumnsVisible(false);
+      }
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
