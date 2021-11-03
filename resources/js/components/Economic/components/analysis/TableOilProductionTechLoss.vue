@@ -69,6 +69,14 @@
 import Subtitle from "../Subtitle";
 import TableOilProductionTechLossRow from "./TableOilProductionTechLossRow";
 
+const DEFAULT_WELL = {
+  uwi_count: 0,
+  oil: 0,
+  oil_loss: 0,
+  liquid: 0,
+  liquid_loss: 0,
+}
+
 export default {
   name: "TableOilProductionTechLoss",
   components: {

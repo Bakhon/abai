@@ -45,6 +45,7 @@
 
       <table-prs-cost
           v-else-if="activeTab === 'prs_cost'"
+          :wells="wellsByLossStatuses"
           class="text-white"/>
     </div>
   </div>
