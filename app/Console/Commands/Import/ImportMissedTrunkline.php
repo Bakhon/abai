@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Imports\PipesPointsImport;
-use App\Models\ComplicationMonitoring\HydroCalcResult;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
+use App\Imports\MissedTrunklineImport;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
-class ImportPipesPoints extends Command
+class ImportMissedTrunkline extends Command
 {
     use ExcelImport;
 
@@ -17,14 +16,14 @@ class ImportPipesPoints extends Command
      *
      * @var string
      */
-    protected $signature = 'import:pipe_points';
+    protected $signature = 'import:missed_trunkline';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import pipes start and end points';
+    protected $description = 'Import missed trunkline pipes';
 
     /**
      * Create a new command instance.
@@ -43,6 +42,11 @@ class ImportPipesPoints extends Command
      */
     public function handle(): void
     {
-        $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
+        activity()->disableLogging();
+
+        $this->importExcel(new MissedTrunklineImport($this), public_path('imports/missed_trunkline.xlsx'));
+
+        $pipes_ids = OilPipe::get()->pluck('id');
+//        PipeCoord::whereNotIn('oil_pipe_id', $pipes_ids)->forceDelete();
     }
 }
