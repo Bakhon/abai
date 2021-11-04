@@ -76,6 +76,9 @@ export default {
     Subtitle,
     TableOilProductionLossRow
   },
+  created() {
+    this.$emit('updateWide', false)
+  },
   computed: {
     tableRows() {
       let rows = this.columns.map((date, dateIndex) => {
@@ -206,9 +209,6 @@ export default {
       ]
     },
   },
-  created() {
-    this.$emit('updateWide', false)
-  }
 }
 </script>
 

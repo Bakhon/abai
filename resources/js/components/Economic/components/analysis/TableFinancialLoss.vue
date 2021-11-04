@@ -87,6 +87,9 @@ export default {
       type: Array
     }
   },
+  created() {
+    this.$emit('updateWide', false)
+  },
   computed: {
     sumData() {
       let sum = {}
@@ -301,9 +304,6 @@ export default {
       ]
     }
   },
-  created() {
-    this.$emit('updateWide', false)
-  }
 }
 </script>
 

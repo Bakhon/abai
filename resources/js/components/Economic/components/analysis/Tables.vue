@@ -21,6 +21,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
           :wells="wellsByLossStatus"
+          key="oil_production_loss"
           class="text-white"
           @updateWide="updateWide"/>
 
@@ -43,6 +44,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
           :wells="wellsByStatus"
+          key="oil_production_tech_loss"
           class="text-white"
           is-tech-loss
           @updateWide="updateWide"/>
@@ -55,6 +57,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
           :wells="wellsByLossStatus"
+          key="prs_cost"
           class="text-white"
           is-prs
           @updateWide="updateWide"/>
