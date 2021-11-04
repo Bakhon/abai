@@ -152,28 +152,28 @@ export default {
           title: 'Предлагаемый вариант',
           subTitle: '2.',
           values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+            value: 0
           })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
           values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+            value: 0
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
           values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+            value: 0
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
           values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex * 100,
+            value: 0
           })),
           style: 'background: #2B2E5E'
         }

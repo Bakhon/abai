@@ -68,6 +68,7 @@ class EconomicAnalysisController extends Controller
                 analysis_param.permanent_cost as permanent_cost,    
                 analysis_param.avg_prs_cost as avg_prs_cost,    
                 analysis_param.oil_density as oil_density,    
+                well_forecast.uwi as uwi,    
                 SUM(well_forecast.oil) as oil,
                 SUM(well_forecast.oil_loss) as oil_loss,
                 SUM(well_forecast.liquid) as liquid,
@@ -75,7 +76,6 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.active_hours) as active_hours,
                 SUM(well_forecast.paused_hours) as paused_hours,
                 SUM(well_forecast.prs_portion) as prs_portion,
-                COUNT(distinct well_forecast.uwi) as uwi_count,
                 SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,
                 SUM(well_forecast.oil * analysis_param.netback_fact) as netback,
                 SUM(analysis_param.permanent_cost + 
@@ -103,6 +103,7 @@ class EconomicAnalysisController extends Controller
             });
 
         $groupBy = [
+            "uwi",
             "date",
             "netback_fact",
             "variable_cost",
@@ -130,28 +131,45 @@ class EconomicAnalysisController extends Controller
 
         $query->groupBy($groupBy);
 
-        $profitableWells = (clone $query)
-            ->having("operating_profit", '>', 0)
-            ->get()
-            ->toArray();
+        $columns = [
+            "date",
+            "netback_fact",
+            "variable_cost",
+            "permanent_cost",
+            "avg_prs_cost",
+            "oil_density",
+        ];
 
-        foreach ($profitableWells as &$profitableWell) {
-            $profitableWell = (array)$profitableWell;
+        if ($tableWellStatus) {
+            $columns[] = 'status_id';
 
-            $profitableWell['profitability'] = 'profitable';
+            $columns[] = 'status_name';
         }
 
-        $profitlessWells = (clone $query)
-            ->having("operating_profit", '<=', 0)
+        $query = $query->toSql();
+
+        return DB::table(DB::raw("($query) as temp_query"))
+            ->addSelect($columns)
+            ->addSelect(DB::raw("
+                SUM(oil) as oil,
+                SUM(oil_loss) as oil_loss,
+                SUM(liquid) as liquid,
+                SUM(liquid_loss) as liquid_loss,
+                SUM(active_hours) as active_hours,
+                SUM(paused_hours) as paused_hours,
+                SUM(total_hours) as total_hours,
+                SUM(prs_portion) as prs_portion,
+                SUM(netback) as netback,
+                SUM(overall_expenditures) as overall_expenditures,
+                SUM(operating_profit) as operating_profit,
+                COUNT(uwi) as uwi_count,
+                CASE WHEN operating_profit > 0
+                     THEN 'profitable'
+                     ELSE 'profitless'
+                END as profitability     
+            "))
+            ->groupBy(array_merge($columns, ['profitability']))
             ->get()
             ->toArray();
-
-        foreach ($profitlessWells as &$profitlessWell) {
-            $profitlessWell = (array)$profitlessWell;
-
-            $profitlessWell['profitability'] = 'profitless';
-        }
-
-        return array_merge($profitableWells, $profitlessWells);
     }
 }
