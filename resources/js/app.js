@@ -140,9 +140,10 @@ Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
 
-Vue.component('prod-plan-main', require('./components/prod-planning/components/ProdPlanningMain.vue').default);
-Vue.component('bus-plan', require('./components/prod-planning/components/BusinessPlanning'))
-Vue.component('monitoring-plan-fact', require('./components/prod-planning/components/MonitoringPlanFact'))
+Vue.component('prod-plan-main', require('./components/prod-planning/ProdPlanningMain.vue').default);
+Vue.component('prod-plan-sidebar', require('./components/prod-planning/components/sidebar/Sidebar.vue').default);
+Vue.component('bus-plan', require('./components/prod-planning/components/BusinessPlanning').default)
+Vue.component('monitoring-plan-fact', require('./components/prod-planning/components/MonitoringPlanFact').default)
 
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);

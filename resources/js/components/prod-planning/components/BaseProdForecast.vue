@@ -1,13 +1,17 @@
 <template>
   <div class="forecast-container">
     <div class="forecast-nav">
-      <div>
-
+<!--      <div v-if="selected" class="forecast-nav-item" @click="onGoBack(selected)">-->
+<!--        назад-->
+<!--      </div>-->
+      <div class="forecast-nav-item" :class="{ active: i === activeItem}" v-for="(tab, i) in tabs" :key="i"
+           @click="selectedNav(i, tab)">
+        {{ tab.title }}
       </div>
     </div>
 
     <div class="main-border-block">
-      <div class="forecast-container-block">
+      <div class="forecast-container-block" v-if="isComponentActive">
         <div class="top-block">
           <div class="plan-block">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
@@ -104,14 +108,60 @@
           </div>
         </div>
       </div>
+      <keep-alive v-else>
+        <component :is="selected"></component>
+      </keep-alive>
     </div>
   </div>
 </template>
 <script>
+import fluidPredictionMethod from "./base-prod-forecast-components/FluidPredictionMethod";
+import lysenkoCalculations from "./base-prod-forecast-components/LysenkoCalculations";
+import machineLearningMethods from "./base-prod-forecast-components/MachineLearningMethods";
+import waterCutPredictionMethod from "./base-prod-forecast-components/WaterCutPredictionMethod";
+import baseProdForecast from "../components/BaseProdForecast";
+
+
 export default {
   name: 'monitoring-plan-fact',
   data: function () {
-    return {}
+    return {
+      main: {
+        component: baseProdForecast
+      },
+      tabs: [
+        {
+          title: "Выбор метода прогноза жидкости",
+          component: fluidPredictionMethod,
+        },
+        {
+          title: "Выбор метода прогноза обводненности",
+          component: waterCutPredictionMethod,
+        },
+        {
+          title: "Расчеты по Лысенко",
+          component: lysenkoCalculations,
+        },
+        {
+          title: "Методы машинного обучения",
+          component: machineLearningMethods,
+        }
+      ],
+      activeItem: null,
+      isComponentActive: true,
+      selected: null
+    }
+  },
+  methods: {
+    selectedNav(i, tab) {
+      this.activeItem = i;
+      this.selected = tab.component
+      this.isComponentActive = false
+    },
+    onGoBack(s) {
+      s = !s
+      this.isComponentActive = true
+    }
   }
 }
 </script>
@@ -130,6 +180,16 @@ export default {
   margin-bottom: 10px;
   gap: 6px;
   display: flex;
+  padding: 6px;
+}
+
+.forecast-nav-item {
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #333975;
+  padding-top: 5px;
+  text-align: center;
 }
 
 .forecast-container-block {
@@ -201,6 +261,10 @@ export default {
 
 .data-block {
   height: 100%;
+}
+
+.active {
+  background: #2C44BD;
 }
 
 /**/
