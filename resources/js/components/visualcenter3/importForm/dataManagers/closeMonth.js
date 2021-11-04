@@ -166,14 +166,12 @@ export default {
         },
         beforeMonthEdit(e) {
             let cell = e.detail;
-            console.log(cell)
             let rowIndex = cell.rowIndex;
             this.changedRows.push(rowIndex);
             let colIndex = cell.prop.replace(/\D/g, "") - 1;
             let value = cell.val.replace(',','.');
             value = parseFloat(value);
             this.disableErrorHighlightByMonth(rowIndex,colIndex);
-            console.log(value)
             if (isNaN(value) || value < 0) {
                 this.setClassToElement($('#monthGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
                 this.isMonthValidateError = true;

@@ -237,10 +237,6 @@ export default {
                 return this.selectedDzoCompanies.includes(item.name);
             });
         },
-
-        getFormattedNumberBy(num) {
-            return new Intl.NumberFormat("ru-RU").format(num);
-        }
     },
     computed: {
         periodSelectFunc() {
