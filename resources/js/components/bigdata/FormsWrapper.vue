@@ -101,14 +101,6 @@
         <span class="db_button">Сохранить</span>
         <span class="db_button gray">Отмена</span>
       </div>
-      <!-- <div class="org-select-info">
-          <div class="org-select-info__icon">
-              <img src="/img/bd/org_icon.svg" alt="">
-          </div>
-          <div class="org-select-info__text  ">
-              Выберите оргструктуру
-          </div>
-      </div> -->
     </div>
 
   </div>
