@@ -80,12 +80,12 @@
                 currentStatus: 'drilling',
                 wellStatus:[
                     {
-                        id: "drilling",
-                        name: 'В бурении'
-                    },
-                    {
                         id: "",
                         name: 'Все скважины'
+                    },
+                    {
+                        id: "drilling",
+                        name: 'В бурении'
                     },
                     {
                         id: "not_drilling",
@@ -105,7 +105,9 @@
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
+                                console.log(this.center)
                                 this.center = [this.coordinates[0].X, this.coordinates[0].Y]
+                                console.log(this.center)
                             } else {
                                 console.log('No data');
                             }
@@ -165,7 +167,7 @@
 
             },
             filterMap(item){
-                 this.query = '?status=drilling'
+                 this.query = ''
                  if (item != ''){
                      this.query = '?status=' + item.id
                  }
