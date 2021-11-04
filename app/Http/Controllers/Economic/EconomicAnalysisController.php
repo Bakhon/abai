@@ -42,27 +42,26 @@ class EconomicAnalysisController extends Controller
     public function getData(): array
     {
         return [
-            'wellsByStatuses' => $this->getWellsByStatus(
+            'wells' => $this->getWellsByStatus(),
+            'wellsByStatus' => $this->getWellsByStatus(
                 (new TechnicalWellStatus())->getTable(),
                 'status_id'
             ),
-            'wellsByLossStatuses' => $this->getWellsByStatus(
+            'wellsByLossStatus' => $this->getWellsByStatus(
                 (new TechnicalWellLossStatus())->getTable(),
                 'loss_status_id'
             ),
         ];
     }
 
-    private function getWellsByStatus(string $tableWellStatus, string $joinKey): array
+    private function getWellsByStatus(string $tableWellStatus = null, string $joinKey = null): array
     {
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
 
         $tableAnalysisParam = (new EcoRefsAnalysisParam())->getTable();
 
-        $wells = DB::table("$tableWellForecast AS well_forecast")
+        $query = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
-                well_status.id as status_id,    
-                well_status.name as status_name,    
                 analysis_param.date as date,    
                 analysis_param.netback_fact as netback_fact,    
                 analysis_param.variable_cost as variable_cost,    
@@ -77,14 +76,17 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.paused_hours) as paused_hours,
                 SUM(well_forecast.prs_portion) as prs_portion,
                 COUNT(distinct well_forecast.uwi) as uwi_count,
-                CASE WHEN 
-                     well_forecast.oil * analysis_param.netback_fact -
-                     analysis_param.permanent_cost -
-                     well_forecast.liquid * analysis_param.variable_cost / analysis_param.oil_density -
-                     analysis_param.avg_prs_cost * well_forecast.prs_portion > 0 
-                THEN 'profitable'
-                ELSE 'profitless'
-                END as profitability
+                SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,
+                SUM(well_forecast.oil * analysis_param.netback_fact) as netback,
+                SUM(analysis_param.permanent_cost + 
+                    well_forecast.liquid * analysis_param.variable_cost / analysis_param.oil_density +
+                    analysis_param.avg_prs_cost * well_forecast.prs_portion
+                ) as overall_expenditures,
+                SUM(well_forecast.oil * analysis_param.netback_fact -
+                    analysis_param.permanent_cost -
+                    well_forecast.liquid * analysis_param.variable_cost / analysis_param.oil_density -
+                    analysis_param.avg_prs_cost * well_forecast.prs_portion
+                ) as operating_profit
             "))
             ->leftjoin("$tableAnalysisParam AS analysis_param", function ($join) {
                 /** @var JoinClause $join */
@@ -98,40 +100,58 @@ class EconomicAnalysisController extends Controller
                         '=',
                         DB::raw('YEAR(analysis_param.date)')
                     );
-            })
-            ->leftjoin("$tableWellStatus AS well_status", function ($join) use ($joinKey) {
-                /** @var JoinClause $join */
-                $join->on("well_forecast.$joinKey", '=', 'well_status.id');
-            })
-            ->whereNotNull($joinKey)
-            ->groupBy([
-                "date",
-                $joinKey,
-                "status_name",
-                "netback_fact",
-                "variable_cost",
-                "permanent_cost",
-                "avg_prs_cost",
-                "oil_density",
-                "profitability",
-            ])
+            });
+
+        $groupBy = [
+            "date",
+            "netback_fact",
+            "variable_cost",
+            "permanent_cost",
+            "avg_prs_cost",
+            "oil_density",
+        ];
+
+        if ($tableWellStatus) {
+            $query
+                ->addSelect(DB::raw("
+                    well_status.id as status_id,    
+                    well_status.name as status_name
+                "))
+                ->leftjoin("$tableWellStatus AS well_status", function ($join) use ($joinKey) {
+                    /** @var JoinClause $join */
+                    $join->on("well_forecast.$joinKey", '=', 'well_status.id');
+                })
+                ->whereNotNull($joinKey);
+
+            $groupBy[] = $joinKey;
+
+            $groupBy[] = "status_name";
+        }
+
+        $query->groupBy($groupBy);
+
+        $profitableWells = (clone $query)
+            ->having("operating_profit", '>', 0)
             ->get()
             ->toArray();
 
-        foreach ($wells as &$well) {
-            $well = (array)$well;
+        foreach ($profitableWells as &$profitableWell) {
+            $profitableWell = (array)$profitableWell;
 
-            $well['netback'] = $well['oil'] * $well['netback_fact'];
-
-            $well['overall_expenditures'] = $well['permanent_cost'] +
-                $well['liquid'] * $well['variable_cost'] / $well['oil_density'] +
-                $well['avg_prs_cost'] * $well['prs_portion'];
-
-            $well['operating_profit'] = $well['netback'] - $well['overall_expenditures'];
-
-            $well['total_hours'] = $well['active_hours'] + $well['paused_hours'];
+            $profitableWell['profitability'] = 'profitable';
         }
 
-        return $wells;
+        $profitlessWells = (clone $query)
+            ->having("operating_profit", '<=', 0)
+            ->get()
+            ->toArray();
+
+        foreach ($profitlessWells as &$profitlessWell) {
+            $profitlessWell = (array)$profitlessWell;
+
+            $profitlessWell['profitability'] = 'profitless';
+        }
+
+        return array_merge($profitableWells, $profitlessWells);
     }
 }

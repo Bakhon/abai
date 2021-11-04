@@ -233,11 +233,6 @@ export default {
           key: 'uwi_count'
         },
         {
-          name: 'В т.ч. остановка скв. в месяц',
-          dimensionTitle: 'ед.',
-          key: ''
-        },
-        {
           name: 'Добыча жидкости',
           dimension: 1000,
           dimensionTitle: 'тыс. тон',

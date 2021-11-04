@@ -9,7 +9,7 @@
     </subtitle>
 
     <div class="customScroll overflow-auto">
-      <div :style="`min-width: ${100 + statuses.length * 270}px`"
+      <div :style="`min-width: ${100 + tableData.statuses.length * 270}px`"
            class="mt-2 text-white font-size-12px line-height-14px">
         <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
@@ -27,12 +27,12 @@
             Месяцы
           </div>
 
-          <div v-for="(status, statusIndex) in statuses"
+          <div v-for="(statusName, statusIndex) in tableData.statusNames"
                :key="statusIndex"
-               :style="`flex: 0 0 ${90 / statuses.length}%`"
+               :style="`flex: 0 0 ${90 / tableData.statuses.length}%`"
                class="bg-blue text-center">
             <div class="p-1 border-grey text-nowrap">
-              {{ status.name }}
+              {{ statusName }}
             </div>
 
             <div class="d-flex">
@@ -51,18 +51,18 @@
               v-for="(row, rowIndex) in tableUwiCount"
               :key="rowIndex"
               :row="row"
-              :statuses="statuses"
+              :statuses="tableData.statuses"
               :columns="columns"
               :style="row.style"
               class="flex-grow-1"/>
         </div>
       </div>
 
-      <div :style="`min-width: ${100 + statuses.length * 270}px`"
+      <div :style="`min-width: ${100 + tableData.statuses.length * 270}px`"
            class="text-white font-size-12px line-height-14px mt-3">
         <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
-            {{ isPrs ? 'Расходы на ПРС, млн тенге' : 'Потери нефти, тонн' }}
+            {{ isPrs ? 'Расходы на ПРС, млн. тенге' : 'Потери нефти, тыс. тонн' }}
           </div>
         </div>
 
@@ -72,9 +72,11 @@
                 v-for="(row, rowIndex) in isPrs ? tablePrs : tableOilLoss"
                 :key="rowIndex"
                 :row="row"
-                :statuses="statuses"
+                :statuses="tableData.statuses"
                 :columns="columns"
                 :style="row.style"
+                :dimension="isPrs ? null : 1000"
+                is-absolute
                 class="flex-grow-1"/>
           </div>
         </div>
@@ -113,7 +115,7 @@ export default {
     }
   },
   created() {
-    this.$emit('updateWide', this.statuses.length > 6)
+    this.$emit('updateWide', this.tableData.statuses.length > 6)
   }
 }
 </script>

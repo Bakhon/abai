@@ -8,7 +8,7 @@
 
       <div v-if="isVisibleHeader" class="flex-grow-1">
         <div class="bg-blue border-grey p-1 font-weight-600">
-          {{ row.name }}
+          {{ row.status_name }}
         </div>
 
         <div class="bg-blue d-flex font-weight-600">
@@ -46,29 +46,29 @@
 
         <div class="d-flex flex-grow-1">
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ row.dates[dateIndex][profitability].uwi_count }}
+            {{ row.wells[dateIndex][profitability].uwi_count }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(row.dates[dateIndex][profitability].liquid_loss, 1000) }}
+            {{ localeValue(row.wells[dateIndex][profitability].liquid_loss, 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(row.dates[dateIndex][profitability].oil_loss, 1000) }}
+            {{ localeValue(row.wells[dateIndex][profitability].oil_loss, 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
               calcWaterCut(
-                  Math.abs(row.dates[dateIndex][profitability].liquid),
-                  Math.abs(row.dates[dateIndex][profitability].oil)
+                  Math.abs(row.wells[dateIndex][profitability].liquid),
+                  Math.abs(row.wells[dateIndex][profitability].oil)
               )
             }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
-              localeValue(row.dates[dateIndex][profitability].paused_hours, 24)
+              localeValue(row.wells[dateIndex][profitability].paused_hours, 24)
             }}
           </div>
         </div>
@@ -86,11 +86,11 @@
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(calcSum(row, 'liquid_loss'), 1000) }}
+            {{ localeValue(calcSum(row, 'liquid_loss'), 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(calcSum(row, 'oil_loss'), 1000) }}
+            {{ localeValue(calcSum(row, 'oil_loss'), 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
@@ -148,11 +148,11 @@ export default {
 
       this.dates.forEach((date, dateIndex) => {
         if (this.isProfitable) {
-          sum += status.dates[dateIndex].profitable[statusKey]
+          sum += status.wells[dateIndex].profitable[statusKey]
         }
 
         if (this.isProfitless) {
-          sum += status.dates[dateIndex].profitless[statusKey]
+          sum += status.wells[dateIndex].profitless[statusKey]
         }
       })
 

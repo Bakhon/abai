@@ -7,10 +7,10 @@
     <div class="customScroll">
       <div class="mt-2 d-flex table-oil-production">
         <table-production-loss-row
-            v-for="(row, rowIndex) in tableData"
+            v-for="(row, rowIndex) in wellsByDates"
             :key="rowIndex"
             :row="row"
-            :dates="wellsByStatuses.dates"
+            :dates="tableData.dates"
             :is-visible-months="rowIndex === 0"
             :class="rowIndex ? 'ml-3' : ''"
             :style="`min-width: ${rowIndex ? 350 : 420}px`"
@@ -28,10 +28,10 @@
 
         <div class="d-flex table-oil-production">
           <table-production-loss-row
-              v-for="(row, rowIndex) in tableData"
+              v-for="(row, rowIndex) in wellsByDates"
               :key="rowIndex"
               :row="row"
-              :dates="wellsByStatuses.dates"
+              :dates="tableData.dates"
               :is-visible-months="rowIndex === 0"
               :class="rowIndex > 0 ? 'ml-3' : ''"
               :style="`min-width: ${rowIndex ? 350 : 420}px`"
@@ -60,7 +60,7 @@ export default {
     tableDataMixin,
   ],
   created() {
-    this.$emit('updateWide', this.statuses.length > 4)
+    this.$emit('updateWide', this.tableData.statuses.length > 4)
   }
 }
 </script>

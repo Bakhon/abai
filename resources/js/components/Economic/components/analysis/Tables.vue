@@ -14,19 +14,19 @@
     <div class="mt-2 w-100 h-100">
       <table-production-loss
           v-if="activeTab === 'production_loss'"
-          :wells="wellsByLossStatuses"
+          :wells="wellsByLossStatus"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
-          :wells="wellsByLossStatuses"
+          :wells="wellsByLossStatus"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-financial-loss
           v-else-if="activeTab === 'financial_loss'"
-          :wells="wellsByStatuses"
+          :wells="wells"
           class="text-white"
           @updateWide="updateWide"/>
 
@@ -42,7 +42,7 @@
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
-          :wells="wellsByStatuses"
+          :wells="wellsByStatus"
           class="text-white"
           is-tech-loss
           @updateWide="updateWide"/>
@@ -54,7 +54,7 @@
 
       <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
-          :wells="wellsByLossStatuses"
+          :wells="wellsByLossStatus"
           class="text-white"
           is-prs
           @updateWide="updateWide"/>
@@ -91,11 +91,15 @@ export default {
       required: true,
       type: Object
     },
-    wellsByStatuses: {
+    wells: {
       required: true,
       type: Array
     },
-    wellsByLossStatuses: {
+    wellsByStatus: {
+      required: true,
+      type: Array
+    },
+    wellsByLossStatus: {
       required: true,
       type: Array
     },
@@ -124,7 +128,7 @@ export default {
       this.$emit('updateTab', tab)
     },
 
-    updateWide(val){
+    updateWide(val) {
       this.$emit('updateWide', val)
     }
   }

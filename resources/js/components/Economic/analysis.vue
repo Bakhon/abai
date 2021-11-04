@@ -32,11 +32,12 @@
 
     <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="!loading && wellsByStatuses"
+          v-if="!loading && wells"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
-          :wells-by-statuses="wellsByStatuses"
-          :wells-by-loss-statuses="wellsByLossStatuses"
+          :wells="wells"
+          :wells-by-status="wellsByStatus"
+          :wells-by-loss-status="wellsByLossStatus"
           class="h-100"
           @updateWide="val => isWide = val"/>
     </div>
@@ -88,8 +89,9 @@ export default {
       org_id: null,
       scenario_id: null
     },
-    wellsByStatuses: null,
-    wellsByLossStatuses: null,
+    wells: null,
+    wellsByStatus: null,
+    wellsByLossStatus: null,
     isWide: false
   }),
   computed: {
@@ -249,13 +251,15 @@ export default {
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
-        this.wellsByStatuses = data.wellsByStatuses
+        this.wells = data.wells
 
-        this.wellsByLossStatuses = data.wellsByLossStatuses
+        this.wellsByStatus = data.wellsByStatus
+
+        this.wellsByLossStatus = data.wellsByLossStatus
       } catch (e) {
-        this.wellsByStatuses = null
+        this.wellsByStatus = null
 
-        this.wellsByLossStatuses = null
+        this.wellsByLossStatus = null
       }
 
       this.SET_LOADING(false)

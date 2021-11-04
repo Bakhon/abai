@@ -13,7 +13,7 @@
            :key="columnIndex"
            :style="`flex: 0 0 ${100 / columns.length}%; min-width: 90px`"
            class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
-        {{ localeValue(row.values[statusIndex][columnIndex], dimension) }}
+        {{ localeValue(row.values[statusIndex][columnIndex], dimension, isAbsolute) }}
       </div>
     </div>
   </div>
@@ -43,6 +43,10 @@ export default {
     dimension: {
       required: false,
       type: Number
+    },
+    isAbsolute: {
+      required: false,
+      type: Boolean
     }
   },
 }

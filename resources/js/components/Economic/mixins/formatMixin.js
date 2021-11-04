@@ -32,12 +32,16 @@ export const formatValueMixin = {
             }
         },
 
-        localeValue(value, dimension = null) {
+        localeValue(value, dimension = null, isAbsolute = false) {
             if (dimension) {
                 value /= dimension
             }
 
-            return (+(Math.abs(value).toFixed(2))).toLocaleString()
+            if (isAbsolute) {
+                value = Math.abs(value)
+            }
+
+            return (+value.toFixed(2)).toLocaleString()
         }
     }
 }
