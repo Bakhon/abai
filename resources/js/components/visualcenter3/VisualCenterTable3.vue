@@ -946,7 +946,7 @@
                               "
                       ></div>
                       <div class="font dynamic" >
-                        {{getFormattedNumber(item.plan,item.fact)}}
+                        {{getFormattedNumberToThousand(item.plan,item.fact)}}
                       </div>
                     </td>
                     <td
@@ -960,7 +960,7 @@
                               "
                       ></div>
                       <div class="font dynamic" >
-                        {{getFormattedNumber(item.plan,item.fact)}}
+                        {{getFormattedNumberToThousand(item.plan,item.fact)}}
                       </div>
                     </td>
                     <td
@@ -975,7 +975,7 @@
                               "
                       ></div>
                       <div class="font dynamic">
-                        {{ getFormattedNumber(item.opek,item.fact) }}
+                        {{ getFormattedNumberToThousand(item.opek,item.fact) }}
                       </div>
                     </td>
                     <td
