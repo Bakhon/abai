@@ -221,6 +221,12 @@ abstract class DailyReports extends TableForm
             case self::DAY:
                 $result['plan'] = ['value' => $dailyPlan];
                 $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
+
+                $comment = $reports->isNotEmpty() ? $reports->first()->comment : '';
+                $result['comment'] = [
+                    'value' => $comment
+                ];
+
                 break;
             case self::MONTH:
                 $result['month_plan'] = ['value' => $planFromStartOfMonth];

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use App\Traits\BigData\Forms\DepthValidationTrait;
 use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 class Gdis extends PlainForm
 {
     use DateMoreThanValidationTrait;
-    use DepthValidationTrait;
     use WithDocumentsUpload;
 
     protected $configurationFileName = 'gdis';
@@ -22,9 +20,7 @@ class Gdis extends PlainForm
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
-            $errors['depth'] = trans('bd.validation.depth');
-        }
+       
         if (!$this->isValidDate(
             $this->request->get('well'),
             $this->request->get('dbeg'),
@@ -141,6 +137,18 @@ class Gdis extends PlainForm
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        return array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents', 'research_results']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
     protected function insertComplexValue(int $id, int $metricId, $value)
     {
         DB::connection('tbd')
@@ -172,10 +180,15 @@ class Gdis extends PlainForm
                 }
             }
 
+            $researchResults = [];
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
+                $field = $this->getFields()->where('code', $value->code)->first();
+                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_string;
                 $row->{$value->code} = $value->value_string;
             }
+
+            $row->research_results = implode(', ', $researchResults);
 
             return $row;
         });

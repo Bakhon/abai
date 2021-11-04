@@ -14,6 +14,13 @@
     </div>
     <div class="dropdown-holder">
       <Dropdown
+        :items="subsoils"
+        :placeholder="trans('plast_fluids.subsurface_user')"
+        :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
+        dropKey="owner_name"
+        @dropdown-select="updateCurrentSubsoil"
+      />
+      <Dropdown
         :items="subsoilFields"
         :placeholder="trans('plast_fluids.field')"
         :selectedValue="
@@ -23,15 +30,22 @@
         :parentShortName="
           currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
         "
-        @dropdown-select="updateCurrentSubsoilField"
+        @dropdown-select="updateCurrentField"
       />
       <CheckboxDropdown
         :items="subsoilHorizons"
         :placeholder="trans('plast_fluids.horizon')"
         dropKey="horizon_name"
-        @dropdown-select="updateCurrentHorizon"
+        labelKeyName="horizon_name"
+        :selected.sync="selectedHorizons"
       />
-      <Dropdown :placeholder="trans('plast_fluids.block')" />
+      <CheckboxDropdown
+        :items="blocks"
+        dropKey="block_id"
+        labelKeyName="block_name"
+        :placeholder="trans('plast_fluids.block')"
+        :selected.sync="selectedBlocks"
+      />
     </div>
     <component :is="currentComponent[0]"></component>
   </div>
@@ -53,22 +67,55 @@ export default {
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
+      "subsoils",
       "subsoilFields",
       "currentSubsoilField",
       "subsoilHorizons",
       "currentSubsoilHorizon",
     ]),
+    ...mapState("plastFluidsLocal", ["blocks", "currentBlocks"]),
+    selectedHorizons: {
+      get() {
+        return this.currentSubsoilHorizon;
+      },
+      async set(value) {
+        this.SET_CURRENT_SUBSOIL_HORIZON(value);
+        await this.handleBlocksFilter(value);
+        this.handleTableGraphData({
+          field_id: this.currentSubsoilField[0].field_id,
+        });
+      },
+    },
+    selectedBlocks: {
+      get() {
+        return this.currentBlocks;
+      },
+      set(value) {
+        this.SET_CURRENT_BLOCKS(value);
+        this.handleTableGraphData({
+          field_id: this.currentSubsoilField[0].field_id,
+        });
+      },
+    },
   },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
-    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL",
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
+    ]),
+    ...mapActions("plastFluidsLocal", [
+      "handleTableGraphData",
+      "handleBlocksFilter",
+    ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
-    updateCurrentSubsoilField(value) {
-      this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
-      this.handleTableGraphData({ field_id: value.field_id });
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_BLOCKS"]),
+    async updateCurrentSubsoil(value) {
+      await this.UPDATE_CURRENT_SUBSOIL(value);
+      this.handleBlocksFilter([]);
     },
-    updateCurrentHorizon(value) {
-      this.SET_CURRENT_SUBSOIL_HORIZON(value);
+    async updateCurrentField(value) {
+      await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
+      this.handleBlocksFilter([]);
     },
   },
 };

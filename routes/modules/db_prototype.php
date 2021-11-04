@@ -54,13 +54,16 @@ Route::group(
                 Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
-
+               
                 Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
                     'reports.constructor.save.template'
                 );
                 Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
                     'reports.constructor.get.templates'
                 );
+                Route::get('/new-wells', function() {
+                    return view('bigdata.wells.new_index');
+                })->name('new-wells');
             }
         );
     }
@@ -129,8 +132,10 @@ Route::group(
                 Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
                 Route::get('wells/productionHistory/{well}', 'Api\DB\WellHistoryController@getProductionHistory');
                 Route::get('wells/get-activity/{activityInfo}', 'Api\DB\WellsController@getActivityByWell');
-                Route::get('well-events','Api\DB\WellCardChart@getWellEvents');
-                Route::get('well-history','Api\DB\WellHistoryController@getProductionHistory');
+                Route::get('well-events', 'Api\DB\WellCardChart@getWellEvents');
+                Route::get('well-history', 'Api\DB\WellHistoryController@getProductionHistory');
+
+                Route::get('orgs-by-well/{well}', 'Api\DB\StructureController@getOrgIdsByWellId');
             }
         );
     }

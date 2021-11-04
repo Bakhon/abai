@@ -3,14 +3,14 @@
         <table class="table defaultTable">
             <tbody>
                 <tr>
-                    <th>№ суточного рапорта</th>
-                    <th>Дата</th>
-                    <th class="raport">Суточный рапорт</th>
+                    <th>{{ trans('digital_drilling.default.daily_report_number') }}</th>
+                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
+                    <th class="raport">{{ trans('digital_drilling.default.daily_report') }}</th>
                     <th></th>
                 </tr>
                 <tr v-for="report in reports" v-if="reports.length>0">
                     <td>
-                        {{ report.file_id }}
+                        №{{ report.document_num }}
                     </td>
                     <td>
                         {{ report.document_date }}

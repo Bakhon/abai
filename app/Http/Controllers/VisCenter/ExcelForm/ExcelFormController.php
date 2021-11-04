@@ -33,19 +33,20 @@ class ExcelFormController extends Controller
     private $host = 'mail.kmg.kz';
     private $emailSubject = 'Заявка на изменение суточных данных в ИС ABAI';
     private $kmgEmails = array (
-        'firstMaster' => 'A.Sensizbay@kmg.kz',
-        'secondMaster' => 'N.Kenzhebayev@kmg.kz',
-        'mainMaster' => 'a.kutzhanov@kmg.kz',
+        'firstMaster' => 's.sugal@kmg.kz',
+        'secondMaster' => 's.sugal@kmg.kz',
+        'mainMaster' => 's.sugal@kmg.kz',
     );
     private $dzoEmails = array (
-        'ЭМГ' => 'cits@emg.kmgep.kz',
-        'УО' => 'nachsmeny@urikhtau.kz',
-        'КБМ' => 'F_Dispatcher@kbm.kz',
-        'КОА' => 'dispatchers22@koa.kz',
-        'ОМГ' => 'cits2@umg.kmgep.kz',
-        'КТМ' => 'Sairan.Nurmagambetov@aktm.kz',
-        'ММГ' => 'cits@mmg.kz',
+        'ЭМГ' => 's.sugal@kmg.kz',
+        'УО' => 's.sugal@kmg.kz',
+        'КБМ' => 's.sugal@kmg.kz',
+        'КОА' => 's.sugal@kmg.kz',
+        'ОМГ' => 's.sugal@kmg.kz',
+        'КТМ' => 's.sugal@kmg.kz',
+        'ММГ' => 's.sugal@kmg.kz',
     );
+    private $systemFields = ['id','dzo_import_data_id'];
 
     public function getDzoCurrentData(Request $request)
     {
@@ -127,7 +128,14 @@ class ExcelFormController extends Controller
 
     public function getDzoSummaryData($dzo_input_data)
     {
-        $children_keys = array('downtimeReason' => 1, 'decreaseReason' => 2, 'fields' => 3);
+        $children_keys = array(
+            'downtimeReason' => 1,
+            'decreaseReason' => 2,
+            'fields' => 3,
+            'import_field' => 4,
+            'import_downtime_reason' => 5,
+            'import_decrease_reason' => 6
+        );
         $dzo_summary_data = new DzoImportData;
         foreach ($dzo_input_data as $key => $item) {
             if (array_key_exists($key, $children_keys)) {
@@ -141,6 +149,9 @@ class ExcelFormController extends Controller
     public function saveDzoFieldsSummaryData($dzo_summary_last_record,$request)
     {
         $fields_data = $request->request->get('fields');
+        if (!$fields_data) {
+            $fields_data = $request->request->get('import_field');
+        }
         foreach ($fields_data as $field_name => $field) {
             $dzo_import_field_data = $this->getDzoFieldData($field_name,$dzo_summary_last_record,$field);
             $dzo_import_field_data->save();
@@ -152,7 +163,13 @@ class ExcelFormController extends Controller
         $dzo_import_field = new DzoImportField;
         $dzo_import_field->importData()->associate($dzo_summary_last_record);
         $dzo_import_field->field_name = $field_name;
+        foreach($this->systemFields as $fieldName) {
+            unset($field->$fieldName);
+        }
         foreach($field as $key => $item) {
+            if (in_array($key, $this->systemFields)) {
+                continue;
+            }
             $dzo_import_field->$key = $field[$key];
         }
         return $dzo_import_field;
@@ -160,6 +177,10 @@ class ExcelFormController extends Controller
     public function getDzoChildSummaryData($child_item,$dzo_input_data,$dzo_summary_last_record)
     {
         $child_item->importData()->associate($dzo_summary_last_record);
+        foreach($this->systemFields as $fieldName) {
+            unset($dzo_input_data[$fieldName]);
+        }
+
         foreach ($dzo_input_data as $key => $item) {
             $child_item->$key = $dzo_input_data[$key];
         }
@@ -182,11 +203,17 @@ class ExcelFormController extends Controller
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
+        if (!$downtime_data) {
+            $downtime_data = $request->request->get('import_downtime_reason');
+        }
         $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
         $dzo_downtime_reason->save();
 
         $dzo_decrease_reason = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
+        if (!$decrease_data) {
+            $decrease_data = $request->request->get('import_decrease_reason');
+        }
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
         if ($isApproveRequired) {
@@ -202,7 +229,7 @@ class ExcelFormController extends Controller
         $existRecord = DzoImportData::query()
             ->whereNull('is_corrected')
             ->where('dzo_name', $dzoName)
-            ->whereDate('date', $date)
+            ->whereDate('date', Carbon::parse($date))
             ->first();
         return !is_null($existRecord);
     }
@@ -381,5 +408,38 @@ class ExcelFormController extends Controller
             <b>Причина:</b> {$input->get('change_reason')}";
         $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$input->get('dzo_name')]);
         $this->sendEmail($messageOptions,$client);
+    }
+
+    public function getFactByMonth(Request $request)
+    {
+     return DzoImportData::query()
+         ->select()
+         ->whereNull('is_corrected')
+         ->whereYear('date',$request->year)
+         ->whereMonth('date',$request->month)
+         ->where('dzo_name',$request->dzo)
+         ->with('importField')
+         ->with('importDowntimeReason')
+         ->with('importDecreaseReason')
+         ->get();
+    }
+
+    public function storeFactByMonth(Request $request)
+    {
+        $systemFields = ['dzo_name','date'];
+        $forUpdate = array();
+        $params = $request->request->all();
+         foreach(reset($params) as $fact) {
+            foreach($fact as $field => $value) {
+                if (!in_array($field, $systemFields)) {
+                    $forUpdate[$field] = $value;
+                }
+            }
+            DzoImportData::query()
+                ->where('dzo_name',$fact['dzo_name'])
+                ->whereDate('date',Carbon::parse($fact['date']))
+                ->first()
+                ->update($forUpdate);
+         }
     }
 }

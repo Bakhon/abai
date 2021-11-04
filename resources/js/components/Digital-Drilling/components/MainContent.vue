@@ -7,7 +7,7 @@
         >
             <div class="content">
                 <div class="content-header">
-                    {{left_content}}
+                    {{trans(left_content)}}
                     <div class="left_functions">
                         <slot name="left_function">
                         </slot>
@@ -27,7 +27,7 @@
         >
             <div class="content">
                 <div class="content-header">
-                    {{right_content}}
+                    {{trans(right_content)}}
                     <div class="right_functions">
                         <slot name="right_function">
                         </slot>

@@ -24,7 +24,7 @@ class Yo extends Dzo {
         return $summary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
        $summary = array();
        array_push($summary,$daySummary);

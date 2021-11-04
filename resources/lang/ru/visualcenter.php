@@ -466,7 +466,7 @@ return array (
   'dynamicWasteInjection' => 'Динамика закачки сточной воды',
   'dynamicStreamInjection' => 'Динамика закачки пара',
   'excelFormPlans' => array (
-    'fillFieldsBody' => 'Пожалуйста, заполните все поля. Разрешено вводить только числовые значения, либо 0.',
+    'fillFieldsBody' => 'Пожалуйста, заполните все поля. Разрешено вводить только числовые значения, либо 0. Для обязательных параметров значение должно быть > 0',
     'saveBody' => 'Нажмите "Сохранить" для продолжения.',
     'successfullySavedBody' => 'Данные успешно сохранены.',
     'saveTitle' => 'Сохранено!',
@@ -479,4 +479,7 @@ return array (
   'volgaWaterInjection' => 'Закачка волжской воды',
   'dynamicVolgaWater' => 'Динамика закачки волжской воды',
   'trialOperating' => 'При пробной эксплуатации',
+  'closeMonth' => 'Закрытие месяца',
+  'selectMonth' => 'Выберите месяц',
+  'factLowerCase' => 'факт'
 );

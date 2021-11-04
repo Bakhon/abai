@@ -201,7 +201,8 @@
         </div>
 
         <div class="block__dm__pump__3">
-          <input type="checkbox" v-model="settings.komponovka" value="hvostovik"/>
+          <input type="checkbox" v-model="settings.komponovka" value="hvostovik"
+                 :checked="!isTailDisabled" :disabled="isTailDisabled"/>
           <label for="checkbox1">{{ trans('pgno.hvostovik') }}</label>
         </div>
 
@@ -361,7 +362,7 @@
 
 		<div class="flex__item__block__1_incl" >
 			<div class="title__block">{{trans('pgno.podbor_glubiny_spuska')}}</div>
-			<div class="title__block__min__1"><span>{{trans('pgno.dlina_polki')}}</span>
+			<div class="title__block__min__1 b-b"><span>{{trans('pgno.dlina_polki')}}</span>
 			<input v-model="settings.inclStep" class="shgn-input block__1__input" type="text"></div>
       <div class="measurements-shgn-3">{{ trans('measurements.m')}}</div>
     </div>

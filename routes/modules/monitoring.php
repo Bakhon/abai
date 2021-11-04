@@ -150,6 +150,8 @@ Route::group(
                 Route::get('/tech-map/pressure', 'ComplicationMonitoring\TechMapController@getPressure')->name('tech-map.pressure');
                 Route::get('/tech-map/temperature', 'ComplicationMonitoring\TechMapController@getTemperature')->name('tech-map.temperature');
 
+                Route::post('/tech-map/calculate', 'ComplicationMonitoring\TechMapController@calculate')->name('tech-map.calculate');
+
                 Route::post('/tech-map/gu', 'ComplicationMonitoring\TechMapController@storeGu')->name('tech-map.store_gu');
                 Route::post('/tech-map/zu', 'ComplicationMonitoring\TechMapController@storeZu')->name('tech-map.store_zu');
                 Route::post('/tech-map/well', 'ComplicationMonitoring\TechMapController@storeWell')->name('tech-map.store_well');

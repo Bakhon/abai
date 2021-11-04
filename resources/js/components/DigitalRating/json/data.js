@@ -49,21 +49,18 @@ const secondIndicators = [
         response: 100,
         pressure: 123,
         distance: 452,
-        diameter: 2
     },
     {
         number: 'UZN_0002',
         response: 200,
         pressure: 120,
         distance: 245,
-        diameter: 3
     },
     {
         number: 'UZN_0003',
         response: 500,
         pressure: 100,
         distance: 345,
-        diameter: 4
     }
 ]
 
@@ -172,6 +169,37 @@ const horizons = [
     }
 ]
 
+const objectList = [
+    {
+        id: 1,
+        title: 'УзенМунайГаз',
+        children: [
+            {
+                id: 13,
+                title: '13 горизонт',
+                children: [
+                    {
+                        id: 21,
+                        title: 'Хум'
+                    },
+                    {
+                        id: 22,
+                        title: 'Парс'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                title: '14 горизонт'
+            },
+        ]
+    },
+    {
+        id: 2,
+        title: 'КаражанбасМунай'
+    }
+]
+
 const properties = ['Значок', 'Шрифт', 'Палитра']
 
 const fileActions = [
@@ -274,57 +302,36 @@ const rowsOil = [
 
 const rowsHorizon = [
     {
-        key: 'Пробуренный фонд на 31.12.2012',
-        value: 1002
+        key: 'Пробуренный фонд на 2008г.',
+        value: 50
     },
     {
-        key: 'Действующий проектный документ',
-        value: 'Проект разработки 2007 г.'
+        key: 'Количество проектных скважин',
+        value: 80
     },
     {
-        key: 'ПТД',
-        value: 'Авторский надзор 2012 г.'
+        key: 'Количество пробуренных скважин 2007-2008гг.',
+        value: 34
     },
     {
-        key: 'Проектные скважины ПР-2007',
-        value: 731
+        key: 'Радиус',
+        value1: '50м',
+        value2: '100м',
+        value3: '200м'
     },
     {
-        key: 'Пробуренный фонд до 2007г',
-        value: 545
-    },
-    {
-        key: 'Пробуренный фонд после 2007г',
-        value: 324
-    },
-    {
-        key: 'Плотность сетки, га/скв',
-        value: '18,3'
-    },
-    {
-        key: 'Расстояние между скважинами, м',
-        value1: 50,
-        value2: 100,
-        value3: 200
-    },
-    {
-        key: 'Кол-во пробуренных точек после 2007, ед.',
-        value1: 57,
-        value2: 197,
-        value3: 239
-    },
-    {
-        key: 'Совпадение точек после 2007г, %',
-        value1: '74,3%',
-        value2: '62,2%',
-        value3: '49%'
+        key: 'Совпадение пробуренных скважин с проектными точками, скв.(%)',
+        value1: '5(10%)',
+        value2: '7(15%)',
+        value3: '8(17%)'
     }
 ];
 
 const actualIndicators = [
     {
         id: 1,
-        title: 'Добыча нефти, тыс.т'
+        title: 'Добыча нефти, тыс.т',
+        value: 'oil_production'
     },
     {
         id: 2,
@@ -332,15 +339,18 @@ const actualIndicators = [
     },
     {
         id: 3,
-        title: 'Добыча жидкости, тыс.т'
+        title: 'Добыча жидкости, тыс.т',
+        value: 'liquid_val'
     },
     {
         id: 4,
-        title: 'Обводненность, %'
+        title: 'Обводненность, %',
+        value: 'water_inj'
     },
     {
         id: 5,
-        title: 'Дебит нефти, т/сут'
+        title: 'Дебит нефти, т/сут',
+        value: 'avg_debit'
     },
     {
         id: 6,
@@ -348,11 +358,13 @@ const actualIndicators = [
     },
     {
         id: 7,
-        title: 'Ввод скважин, ед.'
+        title: 'Ввод скважин, ед.',
+        value: 'drilling_unit'
     },
     {
         id: 8,
-        title: 'Ввод добывающих скважин из бурения, ед.'
+        title: 'Ввод добывающих скважин из бурения, ед.',
+        value: 'fds_operational_unit'
     },
     {
         id: 9,
@@ -372,5 +384,6 @@ export {
     mapActions,
     rowsOil,
     rowsHorizon,
-    actualIndicators
+    actualIndicators,
+    objectList
 }

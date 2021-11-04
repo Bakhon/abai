@@ -101,7 +101,7 @@ export default {
           shared: true,
           intersect: false,
           y: {
-            formatter: (y) => y
+            formatter: (value) => (+value.toFixed(2)).toLocaleString()
           }
         },
       }
@@ -146,6 +146,10 @@ export default {
         return {
           seriesName: index < 3 ? this.chartSeries[0].name : this.chartSeries[index].name,
           show: index === 0,
+          showAlways: true,
+          labels: {
+            formatter: (value) => (+value.toFixed(2)).toLocaleString()
+          },
         }
       })
     }

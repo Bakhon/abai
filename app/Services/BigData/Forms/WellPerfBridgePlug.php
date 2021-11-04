@@ -6,24 +6,17 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use App\Traits\BigData\Forms\DepthValidationTrait;
 use Illuminate\Support\Facades\DB;
 
-class WellPerfBridgePlug extends PlainForm
+class WellPerfBridgePlug extends WellPerf
 {
     protected $configurationFileName = 'well_perf_bridge_plug';
-    use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
 
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-
-
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
-            $errors['depth'] = trans('bd.validation.depth');
-        }
 
         if (!$this->isValidDate(
             $this->request->get('well'),
