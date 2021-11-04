@@ -1,7 +1,7 @@
 <template>
   <ul class="asside-db-list">
     <org-select-tree-item
-        v-for="(treeData, index) in filterTree"
+        v-for="(treeData, index) in tree"
         :key="`${index}-${treeData.id}`"
         :currentWellId="currentWellId"
         :get-wells="getWells"
@@ -15,14 +15,10 @@
 </template>
 
 <script>
-import forms from '../../json/bd/forms.json'
-import moment from 'moment'
-import BigDataTableForm from './forms/TableForm'
 import OrgSelectTreeItem from './OrgSelectTreeItem'
 
 export default {
   components: {
-    BigDataTableForm,
     OrgSelectTreeItem
   },
   props: {
@@ -30,19 +26,24 @@ export default {
       type: Number,
       required: false
     },
+    searchQuery: {
+      type: String,
+      required: false
+    }
   },
   data() {
-    let activeForm = {};
-    forms.forEach((form) => {
-      if (form.code === 'fluid_production') {
-        activeForm = form;
-      }
-    });
     return {
-      forms: forms,
-      activeForm: activeForm,
-      date: moment().toISOString(),
-      filterTree: [],
+      tree: [],
+    }
+  },
+  computed: {
+    filteredTree() {
+      if (!this.searchQuery) return this.tree
+
+      return this.tree.filter(treeItem => {
+
+      })
+
     }
   },
   mounted() {
@@ -51,13 +52,15 @@ export default {
   methods: {
     init() {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
-        this.filterTree = data.data
+        this.tree = data.data
       })
     },
     nodeClick(node) {
       this.$emit('idChange', {
         id: node.id,
-        type: node.type
+        type: node.type,
+        name: node.name,
+        fullName: node.full_name
       })
     },
     isNodeOnBottomLevelOfHierarchy: function (node) {
@@ -82,7 +85,7 @@ export default {
             return child.type !== 'well';
           });
           data.data.forEach((well) => {
-            newChildren.push({id: well.id, name: well.uwi, type: 'well'});
+            newChildren.push({id: well.id, name: well.uwi, type: 'well', full_name: `${node.full_name} / ${well.uwi}`});
           });
           node.children = newChildren;
         }

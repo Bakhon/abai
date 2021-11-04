@@ -4,7 +4,7 @@
     "name": "Проект (план)",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": true,
+    "isVisible": false,
     "forms": [
       "well_design"
     ]

@@ -4,7 +4,15 @@
       class="asside-db-list__item asside-db-list__item-parent"
   >
     <span v-if="!isWell(node)" class="cursor-pointer" @click="showChildren()"></span>
-    <span :class="isWell(node) ? 'asside-db-link-file' : 'asside-db-link-parent'" v-html="node.name"></span>
+    <span
+        :class="[
+            isWell(node) ? 'asside-db-link-file' : 'asside-db-link-parent',
+            currentWellId === node.id ? 'selected' : ''
+         ]"
+        v-html="node.name"
+        @click.stop="handleClick(node)"
+    >
+    </span>
     <ul v-if="isShowChildren">
       <node
           v-for="(child, index) in node.children"

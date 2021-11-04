@@ -1,20 +1,23 @@
 <template>
   <div class="db-container">
-    <div class="asside-db">
+    <div
+        :class="{'hide': !isSidebarOpen}"
+        class="asside-db"
+    >
       <div class="asside-db-tab-top">
         <div
             :class="{'active': selector === 'org'}"
             class="asside-db-tab_item"
             @click="selector = 'org'"
         >
-          Оргструктура
+          {{ trans('bd.org_structure') }}
         </div>
         <div
             :class="{'active': selector === 'form'}"
             class="asside-db-tab_item"
             @click="selector = 'form'"
         >
-          Форма ввода
+          {{ trans('bd.input_form') }}
         </div>
       </div>
       <form action="" class="search-bd">
@@ -26,19 +29,26 @@
                   fill-rule="evenodd"/>
           </svg>
         </button>
-        <input class="search-input-bd" placeholder="Поиск" type="text">
+        <input v-show="selector === 'org'" v-model="searchOrgQuery" class="search-input-bd" placeholder="Поиск"
+               type="text">
+        <input v-show="selector === 'form'" v-model="searchFormQuery" class="search-input-bd" placeholder="Поиск"
+               type="text">
       </form>
       <div class="asside-db-tab-content">
         <div v-show="selector === 'org'" class="asside-db-tab-content__item asside-db-tab-content__item--org">
           <bigdata-org-select-tree
-              :currentWellId="id"
+              :currentWellId="orgTech.id"
+              :query="searchOrgQuery"
               @idChange="idChange">
           </bigdata-org-select-tree>
         </div>
 
         <div v-show="selector === 'form'" class="asside-db-tab-content__item asside-db-tab-content__item--form">
           <div class="asside-db-form">
-            <bigdata-form-selector>
+            <bigdata-form-selector
+                :query="searchFormQuery"
+                @selected="onFormSelected"
+            >
             </bigdata-form-selector>
           </div>
         </div>
@@ -51,44 +61,41 @@
       </div>
     </div>
     <div class="content-db ">
-      <bigdata-form :id="id" :type="type"></bigdata-form>
       <div class="content-db__tab_head">
-        <div class="tab-head-title">
-          ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
-        <div class="tab-head-title">
-          ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
-        <div class="tab-head-title">
-          ПУ "ЖЕТЫБАЙМУНАЙГАЗ" / ЦДНГ-01 / БКНС-1
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
-        <div class="content-db__tab_head__item">
-          Добыча жидкости
-          <span class="content-db__tab_head__item__close"></span>
-        </div>
+        <template
+            v-for="(group, id) in tabGroups"
+        >
+          <div
+              :title="group.fullName"
+              class="tab-head-title"
+          >
+            {{ group.name }}
+          </div>
+          <div
+              v-for="(tab, index)  in group.items"
+              :key="`tab_${id}_${index}`"
+              :class="{'active': selectedTab === tab}"
+              class="content-db__tab_head__item"
+              @click="selectedTab = tab"
+          >
+            {{ tab.form.name }}
+            <span
+                class="content-db__tab_head__item__close"
+                @click.stop="closeTab(tab)"
+            ></span>
+          </div>
+        </template>
       </div>
       <div class="content-db-container">
-
+        <bigdata-form
+            v-for="tab in tabs"
+            v-show="isTabSelected(tab)"
+            :id="tab.orgTech.id"
+            :key="`form_${tab.orgTech.id}_${tab.orgTech.type}_${tab.form.code}`"
+            :form="tab.form"
+            :type="tab.orgTech.type"
+        >
+        </bigdata-form>
       </div>
       <div class="content-db-bottom">
         <span class="db_button">Сохранить</span>
@@ -113,9 +120,32 @@ export default {
   data() {
     return {
       isSidebarOpen: true,
+      tabs: [],
       selector: 'org',
-      id: 0,
-      type: ''
+      orgTech: {
+        id: null,
+        name: null,
+        type: null
+      },
+      selectedTab: null,
+      searchOrgQuery: '',
+      searchFormQuery: '',
+    }
+  },
+  computed: {
+    tabGroups() {
+      let result = {}
+      this.tabs.forEach(tab => {
+        if (!result[tab.orgTech.id]) {
+          result[tab.orgTech.id] = {
+            name: tab.orgTech.name,
+            fullName: tab.orgTech.fullName,
+            items: []
+          }
+        }
+        result[tab.orgTech.id].items.push(tab)
+      })
+      return result
     }
   },
   mounted() {
@@ -123,11 +153,30 @@ export default {
   },
   methods: {
     idChange(node) {
-      this.id = node.id
-      this.type = node.type
+      this.orgTech = node
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen
+    },
+    onFormSelected(selectedForm) {
+      if (this.orgTech.id) {
+        let tab = {
+          orgTech: this.orgTech,
+          form: selectedForm
+        }
+        if (!this.tabs.find(tabItem => tabItem === tab)) {
+          this.tabs.push(tab)
+        }
+        this.selectedTab = Object.assign({}, tab)
+      } else {
+        this.$notifyWarning('Выберите элемент оргструктуры')
+      }
+    },
+    isTabSelected(tab) {
+      return tab.orgTech === this.selectedTab.orgTech && tab.form.code === this.selectedTab.form.code
+    },
+    closeTab(tab) {
+      this.tabs.splice(this.tabs.findIndex(tabItem => tabItem === tab), 1)
     }
   }
 }
@@ -210,6 +259,10 @@ export default {
   background: #181837;
 }
 
+.asside-db.hide + .content-db {
+  width: calc(100% - 55px);
+}
+
 .content-db-container {
   height: calc(100vh - 177px);
   background: #000;
@@ -222,13 +275,12 @@ export default {
 }
 
 .content-db__tab_head {
-  width: 100%;
   background: #272953;
   display: flex;
   font-size: 12px;
   overflow-y: auto;
   white-space: nowrap;
-  width: 1150px;
+  width: 100%;
 }
 
 .content-db__tab_head::-webkit-scrollbar {
@@ -254,13 +306,17 @@ export default {
   padding: 6px 20px 6px 13px;
   background: #363B68;
   color: #fff;
+  cursor: pointer;
   position: relative;
   margin-right: 5px;
-}
 
-.content-db__tab_head__item.active, .content-db__tab_head__item:hover {
-  background: #2E50E9;
-  cursor: pointer;
+  &:hover {
+    background: #2E50E9;
+  }
+
+  &.active {
+    background: #2846cc;
+  }
 }
 
 .content-db__tab_head__item:after {
@@ -366,6 +422,25 @@ export default {
   color: #fff;
 }
 
+.asside-db.hide {
+  background: #272953;
+  width: 50px;
+  overflow: hidden;
+}
+
+.asside-db.hide div, .asside-db.hide form {
+  display: none;
+}
+
+.asside-db.hide .arrow-hide {
+  display: flex;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.content-db.hide {
+  width: calc(100% - 60px);
+}
+
 .asside-db-tab-content {
   background: #272953;
   overflow-y: auto;
@@ -419,6 +494,11 @@ export default {
   min-height: 18px;
   display: flex;
   align-items: center;
+
+  &.selected {
+    font-weight: bold;
+    font-size: 13px;
+  }
 }
 
 .asside-db-link-file:before {
