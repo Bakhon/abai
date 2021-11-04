@@ -391,7 +391,7 @@ export default {
       }
 
       queryParams.model_name = this.params.model_name;
-      queryParams.checkbox_selected = this.checkboxSelected;
+      queryParams.gu_ids = this.checkboxSelected;
 
       return queryParams
     },

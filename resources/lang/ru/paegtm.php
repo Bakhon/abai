@@ -127,7 +127,7 @@ return array (
   'forecast_indicators' => 'Прогнозные показатели',
   'current_qualifiers_map' => 'Карта текущих отборов',
   'well' => 'Скважина',
-  'factor_analysis' => 'Факторный анализ по объекту разработки',
+  'factor_analysis' => 'Факторный анализ, тонн',
   'period' => 'Период',
   'calc' => 'Расчет',
   'q_liq' => 'Qж',
@@ -144,6 +144,7 @@ return array (
   'year' => 'Год',
   'calc-empty-well' => 'Сделайте расчет прежде чем получить скважины',
   'empty-well-chart' => 'Нажмите на скважину чтобы получить данные',
+  'factor_analyse' => 'Факторный анализ, тонн',
   'paegtm_refs_list' => 'Входные данные для модуля "ПиАЭГТМ"',
   'gtm_fact_costs' => 'Фактические стоимости ГТМ',
   'upload_excel' => 'Добавить данные в Excel',
@@ -151,4 +152,5 @@ return array (
   'download_example' => 'Скачать шаблон',
   'upload_validation_error' => 'Ошибка загрузки файла',
   'import_data_from_excel' => 'Импорт данных из Excel в базу данных MySQL',
+
 );

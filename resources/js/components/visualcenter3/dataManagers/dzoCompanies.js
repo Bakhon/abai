@@ -117,14 +117,7 @@ export default {
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
-           // this.productionData = _.cloneDeep(this.productionTableData);
-            if (this.mainMenu.oilCondensateProductionWithoutKMG) {
-                this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProductionWithoutKMG);
-            } else if (this.mainMenu.oilCondensateProduction) {
-                this.productionData = _.cloneDeep(this.yearlyData.oilCondensateProduction);
-            } else {
-                this.productionData = _.cloneDeep(this.productionTableData);
-            }
+            this.productionData = _.cloneDeep(this.productionTableData);
         },
 
         selectOneDzoCompany(companyTicker) {

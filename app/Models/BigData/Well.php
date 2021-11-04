@@ -135,6 +135,11 @@ class Well extends TBDModel
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
     }
 
+    public function wellDailyDrill()
+    {
+        return $this->hasMany(WellDailyDrill::class, 'well', 'id');
+    }
+    
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -169,6 +174,11 @@ class Well extends TBDModel
     {
         return $this->hasMany(Gis::class, 'well', 'id');
     }
+
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
 
     public function zone()
     {

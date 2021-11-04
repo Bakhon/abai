@@ -5,6 +5,10 @@
     {
       "field": "landing_date",
       "order": "desc"
+    },
+    {
+      "field": "depth",
+      "order": "asc"
     }
   ],
   "default_values": {

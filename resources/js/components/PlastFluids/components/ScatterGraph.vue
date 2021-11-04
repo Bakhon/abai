@@ -257,6 +257,7 @@ export default {
             tickAmount: 4,
           },
         };
+        this.SET_CURRENT_SELECTED_SAMPLES("clear");
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,

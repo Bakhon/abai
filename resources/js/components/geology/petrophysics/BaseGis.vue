@@ -6,7 +6,7 @@
                 align="center">
           Список скважин
         </Button>
-        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
+        <Button :disabled="!this.$store.state.geologyGis.awGisElementsCount" @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
                 align="center">
           Настройка планшета
         </Button>
@@ -118,7 +118,7 @@ import {globalloadingMutations} from "@store/helpers";
 import {geologyState} from "../../../store/helpers";
 import {
   FETCH_WELLS_CURVES,
-  SET_GIS_DATA,
+  SET_GIS_DATA, SET_GIS_DATA_FOR_GRAPH,
   SET_SELECTED_WELL_CURVES_FORCE
 } from "../../../store/modules/geologyGis.const";
 
@@ -243,15 +243,18 @@ export default {
         selectedGisCurves: awGisSelectedCurves,
         gisWells: awGisSelectedWells
       } = this.$store.state.geologyGis;
-
       let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
         let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
-        let curves = Object.values(findElement.data.curve_id);
-        let hasCurve = curves.find((item) => Object.keys(loadedCurves).includes(item.toString()));
-        if (!hasCurve) acc.push(...curves)
+        if(findElement&&findElement.data){
+          let curves = Object.values(findElement.data.curve_id);
+          let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));
+          if (!hasCurve) acc.push(...curves);
+        }
         return acc;
       }, []);
       await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
+      this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+      this.$refs.tableSettings.updateOptions()
       this.SET_LOADING(false);
     },
 
@@ -259,6 +262,7 @@ export default {
       this.$store.state.geologyGis.awGis.reset();
       this.$store.commit(SET_SELECTED_WELL_CURVES_FORCE, [...this.selectedGisCurvesOld]);
       this.$store.commit(SET_GIS_DATA);
+      this.$refs.tableSettings.updateOptions()
     },
     ...globalloadingMutations(["SET_LOADING"]),
   },

@@ -27,9 +27,6 @@ export default {
   },
   data() {
     return {
-      awGis: null,
-      gisData: null,
-      gisWells: [],
       groupSettingDefault: {},
       blocksScrollY: 0,
       settings: {
@@ -43,45 +40,14 @@ export default {
     }
   },
 
-  async mounted() {
-    setTimeout(() => {
-      this.setInfoCanvasSize();
-    }, 1)
-  },
-
   computed: {
-    getGroups(){
+    getGroups() {
       return this.$store.getters[GET_GIS_GROUPS];
     },
     getWellsBlock() {
       return this.$store.state.geologyGis.gisWells;
     }
   },
-  methods: {
-    update() {
-      this.gisGroups = this.awGis.getGroupsWithData;
-    },
-
-    setInfoCanvasSize() {
-      let blocksRef = this.$refs
-      let widthBlock = 0;
-      let filteredBlocks = Object.keys(blocksRef).filter((name) => name.match(/block_/));
-      if (filteredBlocks.length) {
-        for (const name of filteredBlocks) {
-          let block = blocksRef[name][0].$el;
-          widthBlock += block?.offsetWidth + this.settings.blocksMargin
-        }
-        this.$refs.infoCanvas.width = widthBlock - this.settings.blocksMargin;
-        this.$refs.infoCanvas.height = this.$refs.blockWrapper.offsetHeight;
-      }
-    },
-  },
-  provide() {
-    return {
-      awGis: this.awGis,
-      update: this.update,
-    }
-  }
 }
 </script>
 

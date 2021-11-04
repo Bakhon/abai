@@ -72,6 +72,10 @@ const plastFluidsLocal = {
       state.currentSelectedCorrelation_ms = payload;
     },
     SET_CURRENT_SELECTED_SAMPLES(state, payload) {
+      if (payload === "clear") {
+        state.currentSelectedSamples = [];
+        return;
+      }
       if (state.currentSelectedSamples.includes(payload)) {
         const index = state.currentSelectedSamples.findIndex(
           (element) => element === payload

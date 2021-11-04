@@ -759,8 +759,6 @@
                     </ul>
                   </div>
                 </div>
-
-
               </div>
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
@@ -795,12 +793,16 @@
                   </ul>
                 </div>
               </div>
+              <div
+                      v-if="mainMenu.oilCondensateProduction && periodRange > 0"
+                      :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
+                      @click="switchDecreaseReasonExplanations()"
+              ></div>
             </div>
-
             <div class="d-flex mh-60 mt-3">
               <div
-                      class="col-sm-7 vis-table"
-                      :class="periodRange === 0 ? 'main-table__scroll' : ''"
+                      class=""
+                      :class="[isDecreaseReasonActive ? 'd-none vis-table' : 'col-sm-7 vis-table',periodRange === 0 ? 'main-table__scroll' : '']"
               >
                 <table
                         v-if="productionTableData.length"
@@ -949,18 +951,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue && item.name === 'КПО'"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
-                    >
-                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
-                        8 660
-                      </div>
-                      <div v-else class="font">
-                        866
-                      </div>
-                    </td>
-                    <td
-                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
@@ -968,18 +959,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
-                    >
-                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
-                        8 660
-                      </div>
-                      <div v-else class="font">
-                        866
-                      </div>
-                    </td>
-                    <td
-                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
@@ -987,19 +967,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
-                    >
-                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
-                        8 290
-                      </div>
-                      <div v-else class="font">
-                        829
-                      </div>
-                    </td>
-                    <td
-                            v-else-if="isConsolidatedCategoryActive()"
+                            v-if="isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
@@ -1019,25 +987,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && buttonYearlyTab && item.name === 'КПО'"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
-                      <div
-                              v-if="item.plan - item.fact  !== 0"
-                              :class="item.plan > item.fact || item.fact === 0 ?
-                                'triangle fall-indicator-production-data' :
-                                'triangle growth-indicator-production-data'
-                              "
-                      ></div>
-                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
-                        369
-                      </div>
-                      <div v-else class="font">
-                        37
-                      </div>
-                    </td>
-                    <td
-                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
                       <div
@@ -1067,26 +1017,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive && buttonYearlyTab && item.name === 'КПО'"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
-                    >
-                      <div
-                              v-if="item.opek - item.fact  !== 0"
-                              :class="item.opek > item.fact || item.fact === 0 ?
-                                'triangle fall-indicator-production-data' :
-                                'triangle growth-indicator-production-data'
-                              "
-                      ></div>
-                      <div v-if="mainMenu.oilCondensateProductionWithoutKMG" class="font">
-                        369
-                      </div>
-                      <div v-else class="font">
-                        37
-                      </div>
-                    </td>
-                    <td
-                            v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
                     >
@@ -1281,18 +1212,24 @@
 
               </div>
               <div
-                      class="pl-3 col-sm-5"
+                      :class="isDecreaseReasonActive ? 'pl-3 col-sm-12' : 'pl-3 col-sm-5'"
                       v-if="periodRange > 0"
               >
                 <div
 
-                        class="oil-condensate-chart-secondary-name"
+                        :class="isDecreaseReasonActive ? 'mt_7 oil-condensate-chart-secondary-name' : 'mt_dynamic oil-condensate-chart-secondary-name'"
                 >
                   {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
-                <vc-chart :height="465"> </vc-chart>
+                <vc-chart
+                        :class="isDecreaseReasonActive ? 'ml-1' : ''"
+                        :height="465"
+                        :isDecreaseReasonActive="isDecreaseReasonActive"
+                        :selectedCompanies="selectedDzoCompanies"
+                        @chartReasons="getChartReasons"
+                ></vc-chart>
               </div>
             </div>
           </div>
@@ -2502,6 +2439,7 @@
       </div>
     </div>
     <modal-reasons :reasons="reasonExplanations"></modal-reasons>
+    <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
 
@@ -3021,11 +2959,16 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: calc(100% - 500px);
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .mt_dynamic {
+    margin-top: calc(100% - 500px);
+  }
+  .mt_7 {
+    margin-top: 7%;
   }
   .emergency-situations {
     background: #333975 60%;
@@ -3175,4 +3118,15 @@
   .color__yellow {
     color: #FFC607;
   }
+  .chart-reason-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason.svg) no-repeat;
+    background-color: #333975;
+  }
+  .chart-reason-active-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
+    background-color: #333975;
+  }
+
 </style>

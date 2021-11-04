@@ -58,13 +58,12 @@
                 <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
             </div>
             <div class="analyticsBlock">
-                <p class="num"><span>14251</span>метров</p>
+                <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
                 <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
             </div>
             <div class="operatingCosts">
                 <div class="operatingCosts-title">
-                    Затраты на эксплуатационное
-                    бурение по ЭМГ
+                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
                 </div>
                 <div class="operatingCosts-statistics">
                     <div class="operatingCosts-single" v-for="costs in operatingCosts">
@@ -80,7 +79,7 @@
                             </div>
                         </div>
                         <div class="operatingCosts-single-tg">
-                            тыс.тг.
+                            {{ trans('digital_drilling.default.thousands_tenge') }}
                         </div>
                     </div>
                 </div>
@@ -161,70 +160,5 @@
 .ml-10{
     padding: 0 10px 0 18px!important;
 }
-    .operatingCosts{
-        background: #272953;
-        margin-bottom: 10px;
-        padding: 10px;
-    }
-    .operatingCosts-title{
-        font-family: Harmonia Sans Pro Cyr;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 15px;
-        line-height: 18px;
-
-        color: #FFFFFF;
-        margin-bottom: 7px;
-    }
-    .operatingCosts-single{
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 22px;
-        /* or 157% */
-
-        display: flex;
-        align-items: center;
-
-        color: #FFFFFF;
-        margin-bottom: 8px;
-    }
-    .operatingCosts-single:last-child{
-        margin-bottom: 0;
-    }
-    .operatingCosts-single-content{
-        flex-grow: 1;
-        background: rgba(69, 77, 125, 0.7);
-        position: relative;
-        height: 22px;
-    }
-    .value{
-        position: absolute;
-        top: 0;
-        left: 20px;
-    }
-    progress{
-        width: 100%;
-        height: 22px;
-    }
-    progress:not([value]) {
-        background: #3D448F;
-    }
-    progress[value] {
-        -webkit-appearance: none;
-        appearance: none;
-    }
-    progress[value]::-webkit-progress-bar {
-        background: rgba(69, 77, 125, 0.7);
-    }
-    progress::-webkit-progress-value {
-        background: #3D448F;
-    }
-    .operatingCosts-single-title{
-        margin-right: 6px;
-    }
-    .operatingCosts-single-tg{
-        margin-left: 6px;
-    }
 
 </style>

@@ -718,6 +718,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_fluid_prod' => [
             'date' => 'Дата',
@@ -741,6 +742,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_gas_prod' => [
             'date' => 'Дата',
@@ -764,6 +766,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_oil_sale' => [
             'date' => 'Дата',
@@ -787,6 +790,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_prod' => [
             'date' => 'Дата',
@@ -810,6 +814,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_upload' => [
             'date' => 'Дата',
@@ -833,6 +838,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'well_tech' => [
             'title' => 'Технологическая структура',
@@ -1022,6 +1028,7 @@ return [
             'table' => 'Документы',
             'doc_date' => 'Дата документа',
             'files' => 'Загружаемые файлы',
+            'research_results' => 'Данные исследования'
         ],         
         'well_mark' => [
             'mark' => "Глубина отметки ВНК и ГНК",
@@ -1063,10 +1070,11 @@ return [
             'repair_work_type' => 'Вид ремонтных работ',
             'work_done' => 'Проделанные работы',
             'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
+            'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
+            'geo' => 'Горизонт',
+            'date' => 'Дата',
+            'note' => 'Примечание'
         ],
         'research_lab_research' => [
             'date' => 'Дата исследования',
@@ -1297,17 +1305,6 @@ return [
             'nak_ion' => 'Содержание ионов. Натрий+Калий (Na+K), мг/л',
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
         ],
-        'daily_drill_kpc' => [
-            'org' => 'Подразделение',
-            'company' => 'Подрядчик',
-            'repair_work_type' => 'Вид ремонтных работ',
-            'work_done' => 'Проделанные работы',
-            'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
-            'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
-        ],
         'plan_g_d_i_s' => [
             'date' => 'Дата с',
             'date_to' => 'Дата по',
@@ -1330,7 +1327,8 @@ return [
             'uwi' => 'Истинная глубина по вертикали',
             'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo' => 'Горизонт'
+            'geo' => 'Горизонт',
+            'note' => 'Примечание'
         ],
         'zu_gzu_production' => [
             'pf' => 'ПФ',
@@ -1549,6 +1547,20 @@ return [
             'ch_reagent_type' => 'Хим.реагент',
             'scraper_income' => 'Доход скребка, м',
             'date' => 'Дата',
+        ],
+        'production_plan' => [
+            'title' => 'План добычи/сдачи по месторождениям',
+            'oil_production' => 'Добыча нефти (т)',
+            'water_injection' => 'Закачка воды (м3)',
+            'water_production' => 'Добыча воды (м3)',
+            'liquid_production' => 'Добыча жидкости (м3)',
+            'oil_injection' => 'Сдача нефти (т)',
+            'gas_production' => 'Добыча газа (м3)',
+            'steam_injection' => 'Закачка пара (м3)',
+            'absorption' => 'Поглощение',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'select_ngdu' => 'Выберите НГДУ'
         ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
