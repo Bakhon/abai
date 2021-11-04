@@ -106,13 +106,37 @@ export default {
     return {
       subsoilUserSearch: "",
       subsoilChildrenSearch: "",
-      selectedField: null,
       checkedField: [],
     };
+  },
+  watch: {
+    currentSubsoil: {
+      handler(value) {
+        if (value[0]?.owner_id) {
+          this.subsoilUserSearch = value[0].owner_name;
+        } else {
+          this.subsoilUserSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+    currentSubsoilField: {
+      handler(value) {
+        if (value[0]?.field_id) {
+          this.subsoilChildrenSearch = value[0].field_name;
+        } else {
+          this.subsoilChildrenSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
+      "currentSubsoilField",
       "subsoils",
       "subsoilFields",
       "subsoilFieldCounters",
