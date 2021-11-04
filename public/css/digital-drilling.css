@@ -1,6 +1,10 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+sup{
+    color: #ffffff;
+    font-size: 12px;
+}
 .digital_drilling{
     width: 97vw;
 }

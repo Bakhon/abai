@@ -1219,7 +1219,7 @@
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.ZHF_OBR')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.m_3')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.m_3')}} <sup>3</sup></td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
@@ -1311,7 +1311,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                {{trans('digital_drilling.daily_raport.drilling_fluid_density')}}
+                                {{trans('digital_drilling.daily_raport.drilling_fluid_density')}} <sup>3</sup>
                             </td>
                             <td>
                                 <input type="text">
@@ -1319,7 +1319,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                {{trans('digital_drilling.daily_raport.drill_volume_solution')}}
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution')}} <sup>3</sup>
                             </td>
                             <td>
                                 <input type="text">
@@ -1327,7 +1327,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_reception')}}
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_reception')}} <sup>3</sup>
                             </td>
                             <td>
                                 <input type="text">
@@ -1335,7 +1335,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_stock')}}
+                                {{trans('digital_drilling.daily_raport.drill_volume_solution_in_stock')}} <sup>3</sup>
                             </td>
                             <td>
                                 <input type="text">
@@ -1370,7 +1370,7 @@
                                 {{trans('digital_drilling.daily_raport.coef_floor')}}
                             </td>
                             <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}} <sup>3</sup></td>
                             <td>
                                 <input type="text">
                             </td>
@@ -1417,7 +1417,7 @@
                                 {{trans('digital_drilling.daily_raport.coef_floor')}}
                             </td>
                             <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
                             <td>
                                 <input type="text">
                             </td>
@@ -1465,7 +1465,7 @@
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
                             <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
                             <td><input type="text"></td>
                         </tr>
                         <tr>
@@ -1511,7 +1511,7 @@
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
                             <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
                             <td><input type="text"></td>
                         </tr>
                         <tr>
@@ -1578,22 +1578,8 @@
                     <table class="tables table defaultTable">
                         <thead>
                         <tr>
-                            <th rowspan="2" colspan="18" class="align-middle">
+                            <th rowspan="2" colspan="22" class="align-middle">
                                 {{trans('digital_drilling.daily_raport.TECHNICAL_PARAMETERS')}}
-                            </th>
-                            <th colspan="2">
-                                {{trans('digital_drilling.daily_raport.date')}}:
-                            </th>
-                            <th colspan="2">
-                                <input type="text">
-                            </th>
-                        </tr>
-                        <tr>
-                            <th colspan="2">
-                                {{trans('digital_drilling.daily_raport.page')}}:
-                            </th>
-                            <th colspan="2">
-                                <input type="text">
                             </th>
                         </tr>
                         </thead>
@@ -1608,10 +1594,10 @@
                                 {{trans('digital_drilling.daily_raport.drilling_mud_type')}}
                             </td>
                             <td colspan="2">
-                                {{trans('digital_drilling.daily_raport.dense_inlet')}}
+                                {{trans('digital_drilling.daily_raport.dense_inlet')}} <sup>2</sup>
                             </td>
                             <td colspan="2">
-                                {{trans('digital_drilling.daily_raport.dense_outlet')}}
+                                {{trans('digital_drilling.daily_raport.dense_outlet')}} <sup>2</sup>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.viscosity_sec')}}
@@ -1678,7 +1664,7 @@
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.MVT')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.water_content')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.lubricant_content_solution')}}</td>
-                            <td colspan="4">CHC I,b/100ft2</td>
+                            <td colspan="4">CHC lb/100ft2</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.crust')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.total_hardness')}}</td>
                             <td colspan="4">{{trans('digital_drilling.daily_raport.concentration')}}</td>
@@ -1687,7 +1673,7 @@
                             <td colspan="2">10 {{trans('digital_drilling.daily_raport.sec')}}</td>
                             <td colspan="2">10 {{trans('digital_drilling.daily_raport.min')}}</td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.ci_mg')}}</td>
-                            <td colspan="2">KCI - %</td>
+                            <td colspan="2">Kcl - %</td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.project')}}</td>
@@ -1729,8 +1715,8 @@
                             <td>{{trans('digital_drilling.daily_raport.name_chemicals')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.assigning_material')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.unit_measurement')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.density_material')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.mass_consumption')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.density_material')}} <sup>3</sup></td>
+                            <td>{{trans('digital_drilling.daily_raport.mass_consumption')}} <sup>3</sup></td>
                             <td>{{trans('digital_drilling.daily_raport.availability_rig')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.receiving_per_day')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.consumption_per_day')}}</td>
@@ -1788,8 +1774,16 @@
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.stratigraphy')}}</td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.roof')}}</td>
                             <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.lithology')}}</td>
-                            <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_plas')}}</td>
-                            <td rowspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.gradient_GRP')}}</td>
+                            <td rowspan="2" class="align-middle">
+                                {{trans('digital_drilling.daily_raport.gradient_plas')}}
+                                <sup>2</sup>
+                                {{trans('digital_drilling.daily_raport.na_m')}}
+                            </td>
+                            <td rowspan="2" class="align-middle">
+                                {{trans('digital_drilling.daily_raport.gradient_GRP')}}
+                                <sup>2</sup>
+                                {{trans('digital_drilling.daily_raport.na_m')}}
+                            </td>
                             <td rowspan="2">{{trans('digital_drilling.daily_raport.old')}}</td>
                             <td rowspan="2">{{trans('digital_drilling.daily_raport.sampling_interval')}}</td>
                             <td rowspan="2">{{trans('digital_drilling.daily_raport.plan')}}</td>
