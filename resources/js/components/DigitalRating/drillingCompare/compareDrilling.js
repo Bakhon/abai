@@ -1,6 +1,6 @@
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsHorizon,horizons,actualIndicators,objectList} from '../json/data';
+import {rowsHorizon,actualIndicators,objectList} from '../json/data';
 import apexchart from 'vue-apexcharts';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
@@ -54,6 +54,7 @@ export default {
     await this.initMap('wellMap');
     await this.initWellOnMap();
     await this.initContourOnMap();
+    await this.initLegends();
   },
 
   watch: {
@@ -69,9 +70,6 @@ export default {
   },
 
   computed: {
-    getSelectedHorizon() {
-      return this.horizon;
-    },
     rowsHorizon() {
       return rowsHorizon;
     },
@@ -92,6 +90,7 @@ export default {
             style: {
               colors: this.getColors(6, '#fff')
             },
+            formatter: (val) => val.toFixed(0)
           }
         },
         grid: this.getGrid
@@ -112,7 +111,8 @@ export default {
           labels: {
             style: {
               colors: this.getColors(7, '#fff')
-            }
+            },
+            formatter: (val) => val.toFixed(0)
           }
         },
         grid: this.getGrid
@@ -228,6 +228,21 @@ export default {
         weight: 1,
         smoothFactor: 1
       }).addTo(this.map);
+    },
+
+    initLegends() {
+      const legend = L.control({ position: "bottomleft" });
+
+      legend.onAdd = function(map) {
+        let div = L.DomUtil.create("div", "legend");
+        div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
+          '<span> - добывающая проектная скважина</span><br>';
+        div.innerHTML += '<i class="fas fa-caret-up" style="color: #fcad00;font-size: 24px;"></i>' +
+          '<span> - нагнетательный скважин</span>';
+        return div;
+      };
+
+      legend.addTo(this.map);
     },
 
     getColors(count, color) {
