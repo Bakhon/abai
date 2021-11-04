@@ -193,29 +193,9 @@ class CalculateHydroDynamics implements ShouldQueue
         Excel::store(new PipeLineCalcExport($data), $filePath);
 
         if (!$isErrors and isset($this->input['date'])) {
+            $url = env('MANUAL_CALC_SERVICE_URL').'calculate?calculation_type=forward';
 
-            $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-            $url = env('HYDRO_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
-
-            $client = new \GuzzleHttp\Client();
-
-            try {
-                $request = $client->post(
-                    $url,
-                    [
-                        'content-type' => 'application/json'
-                    ]
-                );
-            } catch (GuzzleHttp\Exception\ClientException $e) {
-                $response = $e->getResponse();
-                $responseBodyAsString = $response->getBody()->getContents();
-
-                $this->setOutput(
-                    [
-                        'error' => $responseBodyAsString
-                    ]
-                );
-            }
+            $request = $this->calcRequest($url, $filePath, $fileName);
 
             $data = json_decode($request->getBody()->getContents());
             $short = $data->short->data;
@@ -241,6 +221,37 @@ class CalculateHydroDynamics implements ShouldQueue
                     'filename' => Storage::url($filePath)
                 ]
             );
+        }
+    }
+
+    public function calcRequest(string $url, string $filePath, string $fileName)
+    {
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            return $client->post(
+                $url,
+                [
+                    'content-type' => 'application/json',
+                    'multipart' => [
+                        [
+                            'name'     => 'file',
+                            'contents' => Storage::disk('local')->get($filePath),
+                            'filename' => $fileName
+                        ]
+                    ]
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+
+            $this->setOutput(
+                [
+                    'error' => $responseBodyAsString
+                ]
+            );
+            return;
         }
     }
 

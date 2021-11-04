@@ -1,9 +1,10 @@
 <template>
   <div class="all-contents">
-    <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
+    <div class="well-card_tab-head d-flex" :style="{ width: tabWidth + 'px' }" >
+      <div class="wells-history-title col-2">История скважин:</div>
       <div
               v-for="(well,index) in wellsHistory"
-              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well' : 'well-card_tab-head__item'"
+              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
               @click="handleSelectHistoryWell(well)"
       >
           {{well.wellUwi}}
@@ -1348,6 +1349,13 @@ export default {
       this.activeFormComponentName
         ? this.activeFormComponentName
         : "ProductionWellsScheduleMain";
+      if (this.activeFormComponentName === 'ProductionWellsScheduleMain') {
+        this.SET_VISIBLE_PRODUCTION(true);
+        this.changeColumnsVisible(false);
+      } else if (this.activeFormComponentName === 'InjectionWellsScheduleMain') {
+        this.SET_VISIBLE_INJECTION(true);
+        this.changeColumnsVisible(false);
+      }
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
@@ -1379,6 +1387,9 @@ export default {
           }
       });
       this.wellsHistory.push(summaryWellInfo);
+      if (this.wellsHistory.length > 5) {
+          this.wellsHistory.shift();
+      }
     },
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
@@ -1427,6 +1438,7 @@ $rightColumnFoldedWidth: 50px;
 .well-card_tab-head {
   display: flex;
   background: #272953;
+  min-height: 28px;
   margin-bottom: 5px;
   overflow-y: auto;
     width: calc(100% - 70px);
@@ -1444,6 +1456,9 @@ $rightColumnFoldedWidth: 50px;
     height: 2px !important;
     width: 2px !important;
     border: 3px solid #181837;
+  }
+  div:last-child {
+    max-width: 16.1%;
   }
 }
 .well-card_tab-head__item {
@@ -1535,6 +1550,7 @@ $rightColumnFoldedWidth: 50px;
   min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
   height: calc(100vh - 135px);
+  overflow-y:auto;
 }
 
 ::-webkit-scrollbar {
@@ -2669,6 +2685,9 @@ h4 {
     white-space: nowrap;
     padding: 4px 20px;
     margin-left: 10px;
+    &:hover {
+      background-color: #121227;
+    }
 }
 .button-block {
     display: flex;
@@ -2747,5 +2766,9 @@ h4 {
 }
 .selected-well {
   background: #2e50e9 !important;
+}
+.wells-history-title {
+  color: #fff;
+  padding-top: 5px;
 }
 </style>
