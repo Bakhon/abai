@@ -97,6 +97,7 @@ export default {
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
+            console.log(this.selectedDates);
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
@@ -216,6 +217,9 @@ export default {
                 this.fillDates();
                 this.dates = this.getHistorical();
                 this.isDownloadCompleted = true;
+                let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+                this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
+                this.SET_VISIBLE_PRODUCTION(false);
             }
         }
     }

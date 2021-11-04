@@ -665,6 +665,11 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),
+    },
+    watch: {
+        "productionMeasurementSchedule": function() {
+            this.nahdleMeasurementSchedule();
+        }
     }
 }
 </script>

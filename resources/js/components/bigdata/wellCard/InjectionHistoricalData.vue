@@ -164,6 +164,11 @@ export default {
                 this.fillDates();
                 this.dates = this.getHistorical();
                 this.isDownloadCompleted = true;
+                let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+                console.log('currentYearIndex')
+                console.log(currentYearIndex)
+                this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
+                this.SET_VISIBLE_INJECTION(false);
             }
         }
     }
