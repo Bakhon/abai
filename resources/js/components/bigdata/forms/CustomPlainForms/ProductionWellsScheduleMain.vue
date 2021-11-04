@@ -520,7 +520,7 @@ export default {
                             'techMode': [
                                 {
                                     'label': 'Жидкость',
-                                    'value': _.sumBy(month, item => Number(item.liq)) / month.length,
+                                    'value': _.sumBy(month, item => Number(item.liq)),
                                     'isHide': !this.isRowsHide
                                 },
                                 {
@@ -530,7 +530,7 @@ export default {
                                 },
                                 {
                                     'label': 'Нефть',
-                                    'value': _.sumBy(month, 'oil') / month.length,
+                                    'value': _.sumBy(month, 'oil'),
                                     'isHide': !this.isRowsHide
                                 },
                                 {
@@ -658,16 +658,18 @@ export default {
         }
     },
     async mounted() {
+        let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
         this.SET_LOADING(true);
-        const response = await axios.get(this.localeUrl(`/api/bigdata/wells/productionHistory/${this.well.id}`));
+        const response = await axios.get(this.localeUrl(uri));
         this.assignInfoByDates(response.data);
+        this.nahdleMeasurementSchedule();
         this.SET_LOADING(false);
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),
     },
     watch: {
-        "productionMeasurementSchedule": function() {
+        "productionMeasurementSchedule": function(data) {
             this.nahdleMeasurementSchedule();
         }
     }

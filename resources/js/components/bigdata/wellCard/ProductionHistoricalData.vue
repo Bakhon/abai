@@ -97,7 +97,6 @@ export default {
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
-            console.log(this.selectedDates);
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
