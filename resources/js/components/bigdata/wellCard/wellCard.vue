@@ -428,6 +428,7 @@ export default {
         category: { name_ru: null },
         categoryLast: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
+        expl_right: { dbeg: null, name_ru: null },
         techs: null,
         tap: { tap: null },
         techsName: null,
@@ -513,6 +514,7 @@ export default {
         category: "category",
         categoryLast: "category_last",
         expl: "well_expl",
+        expl_right: "well_expl_right",
         techs: "techs",
         tap: "tap",
         labResearchValue: "lab_research_value",
@@ -703,7 +705,7 @@ export default {
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
-      let well_expl_name = this.well.expl ? this.well.expl.name_ru : "";
+      let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
       let actualBottomHole = this.well.actualBottomHole
         ? this.well.actualBottomHole.depth +
