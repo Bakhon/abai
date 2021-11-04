@@ -15,20 +15,30 @@
           :categoryName="category.name"
           :valueKey="category.key"
           :children="category.children"
-          :currentGraphic.sync="currentGraphic"
+          :currentGraphicType.sync="currentGraphicType"
+          :currentGraphics.sync="computedCurrentGraphics"
         />
         <div class="customization-category">
           <LeftMenuGraphCustomization
             categoryName="temperature"
             valueKey="temperature"
-            :children="['μos', 'mod', 'Ds']"
-            :currentGraphic.sync="currentGraphic"
+            :children="[
+              { key: 'Ms', Label: 'μos' },
+              { key: 'Mod', Label: 'mod' },
+              { key: 'Ds', Label: 'Ds' },
+            ]"
+            :currentGraphicType.sync="currentGraphicType"
+            :currentGraphics.sync="computedCurrentGraphics"
           />
           <LeftMenuGraphCustomization
             categoryName="density_st"
-            valueKey="depth_pi_ps"
-            :children="['mod', 'Mo']"
-            :currentGraphic.sync="currentGraphic"
+            valueKey="density"
+            :children="[
+              { key: 'Mod', Label: 'mod' },
+              { key: 'Mo', Label: 'Mo' },
+            ]"
+            :currentGraphicType.sync="currentGraphicType"
+            :currentGraphics.sync="computedCurrentGraphics"
           />
         </div>
       </div>
@@ -77,11 +87,7 @@
 <script>
 import LeftMenuGraphCustomization from "./LeftMenuGraphCustomization.vue";
 import Dropdown from "../Dropdown.vue";
-import {
-  getCorrelations,
-  getCorrelationData,
-} from "../../services/graphService";
-import { convertToFormData } from "../../helpers";
+import { getCorrelations } from "../../services/graphService";
 import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -97,17 +103,35 @@ export default {
         {
           name: "connection_with_rs",
           key: "ps_bs_ds_ms",
-          children: ["Ps", "Bos", "Dos", "μ‎os"],
+          children: [
+            { key: "Ps", Label: "Ps" },
+            { key: "Bs", Label: "Bos" },
+            { key: "Ds", Label: "Dos" },
+            { key: "Ms", Label: "μ‎os" },
+          ],
         },
         {
           name: "sampling_time",
           key: "data_rs_ps_ds",
-          children: ["Rs", "Ps", "μ‎o", "po"],
+          children: [
+            { key: "Rs", Label: "Rs" },
+            { key: "Ps", Label: "Ps" },
+            { key: "Mo", Label: "μ‎o" },
+            { key: "Ds", Label: "po" },
+          ],
         },
         {
           name: "depth",
-          key: "depth_g_vol_rpl_visc_rpl_dso",
-          children: ["Ps", "Rs", "Bo", "Do", "mo", "po", "mod"],
+          key: "all_depth",
+          children: [
+            { key: "pi_ps", Label: "Ps" },
+            { key: "Rs", Label: "Rs" },
+            { key: "volume_coefficient", Label: "Bo" },
+            { key: "Do", Label: "Do" },
+            { key: "viscosity_reservoir_oil", Label: "mo" },
+            { key: "density_separated_oil", Label: "po" },
+            { key: "Mod", Label: "mod" },
+          ],
         },
       ],
       correlationList: {},
@@ -134,11 +158,12 @@ export default {
     ]),
     ...mapState("plastFluidsLocal", [
       "graphType",
+      "currentGraphics",
       "currentSelectedCorrelation_ps",
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",
     ]),
-    currentGraphic: {
+    currentGraphicType: {
       get() {
         return this.graphType;
       },
@@ -148,6 +173,15 @@ export default {
           this.handleTableGraphData({
             field_id: this.currentSubsoilField[0].field_id,
           });
+        this.SET_CURRENT_GRAPHICS(this.setInitialGraphics(value));
+      },
+    },
+    computedCurrentGraphics: {
+      get() {
+        return this.currentGraphics;
+      },
+      set(value) {
+        this.SET_CURRENT_GRAPHICS(value);
       },
     },
   },
@@ -155,10 +189,23 @@ export default {
     ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
     ...mapMutations("plastFluidsLocal", [
       "SET_GRAPH_TYPE",
+      "SET_CURRENT_GRAPHICS",
       "SET_CURRENT_CORRELATION_PS",
       "SET_CURRENT_CORRELATION_BS",
       "SET_CURRENT_CORRELATION_MS",
     ]),
+    setInitialGraphics(graphType) {
+      return graphType === "ps_bs_ds_ms"
+        ? ["Ps", "Bs", "Ds", "Ms"]
+        : graphType === "all_depth"
+        ? [
+            "pi_ps",
+            "volume_coefficient",
+            "viscosity_reservoir_oil",
+            "density_separated_oil",
+          ]
+        : ["Ds", "Ps", "Rs"];
+    },
     getCurrentSelectedCorrelation(key) {
       return this["currentSelectedCorrelation_" + key];
     },
