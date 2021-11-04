@@ -81,7 +81,7 @@ return array (
       'drag_here' => 'перетащите сюда файл',
       'selecting_submodule'=> 'Выбор подмодуля',
 
-      'nominal_diameter' => 'Номинальный диаметр',
+      'nominal_diameter' => 'Номинальный диаметр, мм.',
       'create_new_well' => 'Создать новую скважину',
       'open_new_well' => 'Открыть недавно созданную скважину',
       'EMG_development_drilling' => 'Затраты на эксплуатационное бурение по ЭМГ',
@@ -207,14 +207,15 @@ return array (
       'side_barrel' => 'Боковой ствол',
       'number_pipes' => 'Количество труб',
       'poured_cement_volume' => 'Объем залитого цемента',
-      'cement_lifting_height' => 'Высота подъема цемента',
+      'cement_lifting_height' => 'Высота подъема цемента, м.',
+      'wall_thickness' => 'Толщина стенки',
       'packer_from' => 'Пакер от',
       'packer_to' => 'Пакер до',
-      'column_running_depth' => 'Глубина спуска колонны',
+      'column_running_depth' => 'Глубина спуска, м.',
       'packer' => 'Пакер',
-      'pipe_inner_diameter' => 'Внутренний диаметр трубы',
+      'pipe_inner_diameter' => 'Внутренний диаметр, мм.',
       'steel_grade' => 'Марка стали',
-      'weight_per_unit_length' => 'Погонный вес',
+      'weight_per_unit_length' => 'Погонный вес, кг/м',
 
   ],
   'gis' => [
