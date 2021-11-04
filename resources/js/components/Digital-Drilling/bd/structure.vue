@@ -8,6 +8,7 @@
                     <th>{{ trans('digital_drilling.default.nominal_diameter') }}</th>
                     <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
                     <th>{{ trans('digital_drilling.structure.number_pipes') }}</th>
+                    <th>{{ trans('digital_drilling.structure.wall_thickness') }}</th>
                     <th>{{ trans('digital_drilling.structure.pipe_inner_diameter') }}</th>
                     <th>{{ trans('digital_drilling.structure.steel_grade') }}</th>
                     <th>{{ trans('digital_drilling.structure.weight_per_unit_length') }}</th>
@@ -19,6 +20,9 @@
                     <td>{{structure.Номинальный_диаметр}}</td>
                     <td>{{structure.Глубина_спуска}}</td>
                     <td>{{structure.Количество_труб}}</td>
+                    <td>
+                        {{roundToTwo((structure.Номинальный_диаметр - structure.Внутренний_диаметр)/2)}}
+                    </td>
                     <td>{{structure.Внутренний_диаметр}}</td>
                     <td>{{structure.Марка_стали}}</td>
                     <td>{{structure.Погонный_вес}}</td>
@@ -71,6 +75,9 @@
                 }
                 this.SET_LOADING(false);
             },
+            roundToTwo(num) {
+                    return +(Math.round(num + "e+2")  + "e-2");
+            }
         },
         watch: {
             currentWell: function (val) {

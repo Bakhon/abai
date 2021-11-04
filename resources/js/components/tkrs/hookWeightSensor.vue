@@ -25,7 +25,7 @@
         </div>
         
         <div class="tkrs-content">
-            <div>
+            <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
                     <img class="hws-tab-img"
@@ -137,12 +137,15 @@ export default {
   computed: {
     layoutData() {
       return {
-        width: 1550,
+        modebar: {
+          bgcolor: "rgba(0,0,0,0)"
+        },
+        width: 1580,
         height: 600,
         margin: {
           l: 50,
-          r: 10,
-          b: 30,
+          r: 5,
+          b: 70,
           t: 30,
           pad: 4
         },
@@ -316,7 +319,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   flex-flow: column;
-  height: 865px;
+  height: 100%;
   background: #272953;
   color: #fff;
 }
@@ -462,5 +465,12 @@ table, th, td {
   background-image: linear-gradient(#545580 1px, transparent 1px), 
   linear-gradient(90deg, #545580 1px, transparent 1px);
   background-size: 20px 20px, 20px 20px;
+  height: calc(100% - 287px);
+}
+.sidebar_graph {
+  height: calc(100% - 36px);
+}
+.tkrs-content-down {
+      height: 100%;
 }
 </style>

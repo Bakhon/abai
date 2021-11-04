@@ -176,6 +176,7 @@ export default {
                 this.setClassToElement($('#monthGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
                 this.isMonthValidateError = true;
             }
+            e.detail.val = value;
         },
         beforeMonthRangeEdit(e) {
             let cellOptions = e.detail.data;
