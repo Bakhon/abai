@@ -4,17 +4,13 @@
             <div class="contentBlock__map-search">
                 <div class="contentBlock__map-search-title">
                     <img src="/img/digital-drilling/icon-map.png" alt="">
-                    <div class="title">ДЗО, месторождение</div>
-                </div>
-                <div class="all-graph" @click="allGraphModal=true">
-                    <img src="/img/digital-drilling/all-graph.svg" alt="">
-                    <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
+                    <div class="title">{{trans('digital_drilling.window_head.DZO')}}, {{trans('digital_drilling.window_head.field')}}</div>
                 </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">
                         <img src="/img/digital-drilling/search.png" alt="">
-                        <input type="text" placeholder="Поиск">
-                        <button>Поиск</button>
+                        <input type="text" :placeholder="trans('digital_drilling.window_head.search')">
+                        <button>{{trans('digital_drilling.window_head.search')}}</button>
                     </div>
                     <button class="full"><img src="/img/digital-drilling/button2.svg" alt=""></button>
                 </div>
@@ -52,11 +48,8 @@
             <div class="contentBlock__map-bottom-content">
                 <img src="/img/digital-drilling/exploration.png" alt="">
                 <img src="/img/digital-drilling/production.png" alt="">
-                <div class="name">Разведка и Добыча</div>
+                <div class="name">{{trans('digital_drilling.home.exploration_production')}}</div>
             </div>
-        </div>
-        <div class="all-graph-modal" v-if="allGraphModal">
-            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
         </div>
     </div>
 </template>
@@ -74,7 +67,6 @@
         components:{ MglMap, MglMarker, Dropdown},
         data() {
             return {
-                allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
                 center: [46.5861065487464, 54.1278133495231],
@@ -88,12 +80,12 @@
                 currentStatus: 'drilling',
                 wellStatus:[
                     {
-                        id: "drilling",
-                        name: 'В бурении'
-                    },
-                    {
                         id: "",
                         name: 'Все скважины'
+                    },
+                    {
+                        id: "drilling",
+                        name: 'В бурении'
                     },
                     {
                         id: "not_drilling",
@@ -113,7 +105,9 @@
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
+                                console.log(this.center)
                                 this.center = [this.coordinates[0].X, this.coordinates[0].Y]
+                                console.log(this.center)
                             } else {
                                 console.log('No data');
                             }
@@ -173,7 +167,7 @@
 
             },
             filterMap(item){
-                 this.query = '?status=drilling'
+                 this.query = ''
                  if (item != ''){
                      this.query = '?status=' + item.id
                  }

@@ -479,5 +479,6 @@ return array (
   'volgaWaterInjection' => 'Закачка волжской воды',
   'dynamicVolgaWater' => 'Динамика закачки волжской воды',
   'trialOperating' => 'При пробной эксплуатации',
-  'closeMonth' => 'Закрытие месяца'
+  'closeMonth' => 'Закрытие месяца',
+  'selectMonth' => 'Выберите месяц'
 );

@@ -377,6 +377,7 @@ export default {
     preparePost() {
       var payload = {};
       payload.url = this.apiUrl + "calculate";
+      this.checkMechSep()
       if (this.curveSettings.expChoosen ==="ФОН") {
         payload.data = {
           shgn_settings: this.shgnSettings,
@@ -404,7 +405,8 @@ export default {
       }
       this.mainSettings.isVisibleChart = true;
       this.SET_LOADING(true);
-      if (this.well.casOd < 127) {
+      if (this.well.casOd < 127 &&
+        this.curveSettings.expChoosen == "ЭЦН") {
         this.setNotify(
           this.trans("pgno.notify_ek_127_down"),
           "Error",
@@ -456,6 +458,11 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
+    checkMechSep() {
+      if ((this.curveSettings.mechanicalSeparation && this.curveSettings.separationMethod!=="input_value") && this.shgnSettings.komponovka.includes("hvostovik")) {
+        this.shgnSettings.komponovka = this.shgnSettings.komponovka.filter(e => e!=="hvostovik")
+      }
+    },
     onPgnoClick() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
@@ -471,6 +478,7 @@ export default {
         if (this.curveSettings.expChoosen == "ШГН") {
           if (this.mainSettings.isVisibleChart) {
             this.SET_LOADING(true);
+            this.checkMechSep()
             var payload = {
               shgn_settings: this.shgnSettings,
               well: this.well,
@@ -504,12 +512,8 @@ export default {
                     "Warning",
                     "warning"
                   );
-                  this.setNotify(
-                    this.trans("pgno.notify_change_depth_descent"),
-                    "Warning",
-                    "warning"
-                  );
-                } else {
+                }
+              
                   this.shgnPumpType = data.kPodData["pump_type"]
                   this.freegasCel = this.points.freegasCelValue.toFixed(1),
                   this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
@@ -561,7 +565,6 @@ export default {
                     );
                   }
                   this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
-                }
               })
               .catch((error) => {
                 if (error.request) {
@@ -779,7 +782,7 @@ export default {
         var url = menu === "gno" ? this.apiUrl + "shgn/download": this.apiUrl + "report/download"
         var startline = menu === "gno" ? "ПГНО_РЕЗУЛЬТАТ_" : "ПГНО_ОТЧЁТ_"
         let todayDate = new Date().toLocaleDateString()
-        var filename = startline + this.field + "_" + this.wellNumber + "_" + todayDate + "_ШГН_" + todayDate + ".xlsx"
+        var filename = startline + this.field + "_" + this.wellNumber + "_" + todayDate + "_ШГН" + ".xlsx"
       }
       this.axios.post(url, payload, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, filename)
@@ -838,44 +841,6 @@ export default {
       }
 
       this.mainSettings.activeRightTabName = val;
-    },
-    takePhoto() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
-    },
-    takePhotoOldNewWell() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart-new-old-well"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
     },
   },
 

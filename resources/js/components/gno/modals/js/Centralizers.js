@@ -51,8 +51,8 @@ export default {
     this.centralizers.lowerRod = this.shgnResult.construction[Object.keys(this.shgnResult.construction)[Object.keys(this.shgnResult.construction).length - 1]][0]
     this.centralizers.hasRequiredIntervals = this.centralizerRange.red ? true : false
     this.centralizers.hasRecommendedIntervals = this.centralizerRange.yellow ? true : false
-    this.requiredRanges = this.centralizerRange.red.split(", ")
-    this.recommendedRanges = this.centralizerRange.yellow.split(", ")
+    this.centralizers.requiredRanges = this.requiredRanges = this.centralizerRange.red ? this.centralizerRange.red.split(", ") : []
+    this.centralizers.recommendedRanges = this.recommendedRanges = this.centralizerRange.yellow ? this.centralizerRange.yellow.split(", ") : []
     this.calculateRods()
   },
   methods: {
@@ -68,7 +68,6 @@ export default {
       this.calculateRods()
     },
     async calculateRods() {
-      console.log(this.centralizers)
       let payload = {}
       payload.url = this.apiUrl + "centralizers/" + this.well.fieldUwi + "/" + this.well.wellUwi;
       payload.data = this.centralizers
