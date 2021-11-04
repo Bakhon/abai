@@ -25,7 +25,7 @@
         </div>
         
         <div class="tkrs-content">
-            <div>
+            <div div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
                     <img class="hws-tab-img"
@@ -341,7 +341,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   flex-flow: column;
-  height: 865px;
+  height: 100%;
   background: #272953;
   color: #fff;
 }
@@ -481,11 +481,18 @@ table, th, td {
 .comp-charts-icon {
   padding-left: 22px;
 }
+
 .plotly-graph-custom {
   background-color: #2B2E5E !important;
   background-image: linear-gradient(#545580 1px, transparent 1px), 
   linear-gradient(90deg, #545580 1px, transparent 1px);
   background-size: 20px 20px, 20px 20px;
   height: calc(100% - 287px);
+}
+.sidebar_graph {
+  height: calc(100% - 36px);
+}
+.tkrs-content-down {
+      height: 100%;
 }
 </style>
