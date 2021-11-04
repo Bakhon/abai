@@ -59,47 +59,66 @@
                 :layout="layoutData" :display-mode-bar="true" 
                 :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
                 <div>
-                    <div class="nav nav-tabs all-tabs">
-                      <div style="display:flex">
-                        <li class="nav-item">
-                            <a class="nav-link active tab-header" 
-                            @click="selectTab(1)" href="#">
-                            <img class="hws-tab-img"
-                              src="/img/tkrs/event.svg"
-                              
-                            /><a>{{trans('tkrs.event')}}</a></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link tab-header " 
-                            @click="selectTab(2)" href="#">
-                            <img class="hws-tab-img"
-                              src="/img/tkrs/excess.svg"
-                              
-                            /><a>{{trans('tkrs.excess')}}</a></a>
-                        </li>
-                      </div>
-                        <div class="header-hide-expand-buttons">
-                          <button @click="cancelChat()">
-                            <img
-                              src="/img/PlastFluids/tableArrow.svg"
-                              
-                            /></button
-                          ><button @click="returnChat()">
-                            <img src="/img/PlastFluids/tableArrow.svg" />
-                          </button>
-                        </div>
-                       
-                    </div>
-
-                  <div v-if="currentTab == 1">
-                      <event></event>
-                  </div>
-
-                  <div v-if="currentTab == 2">
-                      <excess></excess>
-                  </div>
-
-
+                  <table>
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Начало</th>
+                    <th>Конец</th>
+                    <th>Продолжительность</th>
+                    <th>ПВ/НПВ</th>
+                    <th>Причина</th>
+                    <th>Ответственный</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    
+                    
+                </tbody>
+              </table>
                 </div>
 
             </div>
@@ -183,13 +202,12 @@ export default {
     }
   },
   created: async function () {
-    console.log("TEST")  
+    
     await this.axios
       .get(
           'http://172.20.103.203:8090/chooseDatePvNpv/'
         )
       .then((response) => {
-        console.log("TEST2")  
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
@@ -305,7 +323,7 @@ export default {
   
 };
 </script>
-
+<style lang="scss" scoped src="./BaseTableStyles.scss"></style>
 <style scoped>
 .data-analysis-left-block {
   width: 249px;
