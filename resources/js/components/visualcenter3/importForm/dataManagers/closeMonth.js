@@ -13,7 +13,8 @@ export default {
             monthlyFact: [],
             factFieldsMapping: {},
             isMonthValidateError: false,
-            isMonthFactFilled: false
+            isMonthFactFilled: false,
+            changedRows: []
         };
     },
     methods: {
@@ -64,7 +65,6 @@ export default {
             let header = {
                 "column1": "Дата"
             };
-            this.factFieldsMapping['1'] = 'date';
             if (this.companiesWithOil.includes(this.selectedDzo.ticker)) {
                 header['column2'] = 'Добыча нефти';
                 header['column3'] = 'Сдача нефти';
@@ -85,6 +85,8 @@ export default {
             let daysCount = this.monthDate.daysInMonth();
             if (this.monthDate.date() > 10 && this.monthDate.month() === moment().month()) {
                 daysCount = this.monthDate.clone().subtract(1,'days').date();
+            } else if (this.monthDate.month() === moment().month()) {
+                daysCount = moment().subtract(1,'days').date();
             }
 
             for (let i=1;i<=daysCount;i++) {
@@ -103,7 +105,9 @@ export default {
                 let cellDate = moment(row['column1'],'DD.MM.YYYY');
                 for (let y=2;y<=Object.keys(row).length;y++) {
                      let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
-                     row['column'+y] = fact[this.factFieldsMapping[y]];
+                     if (fact) {
+                         row['column'+y] = fact[this.factFieldsMapping[y]];
+                     }
                 }
             }
         },
@@ -123,29 +127,47 @@ export default {
         getValidatedMonthlyFact() {
             let output = [];
             for (let row in this.monthRows) {
-                if (row == 0) {
+                if (row == 0 || !this.changedRows.includes(parseInt(row))) {
                     continue;
                 }
-                let fields = {
-                    dzo_name: this.selectedDzo.ticker,
-                };
+                let correctedDate = this.monthRows[row].column1;
+                let original = this.monthlyFact.find(obj => {
+                    return moment(obj.date).format('DD.MM.YYYY') === correctedDate;
+                });
+                let fields = original;
+                fields['user_name'] = this.userName;
+                fields['user_position'] = this.userPosition;
+                fields['change_reason'] = this.changeReason;
+                fields['is_corrected'] = true;
+                fields['is_approved'] = false;
+                fields['toList'] = ['firstMaster','secondMaster','mainMaster'];
+                delete fields.id;
+                delete fields.created_at;
+                delete fields.updated_at;
                 for (let field in this.monthRows[row]) {
                     let columnIndex = field.replace(/\D/g, "");
-                    fields[this.factFieldsMapping[columnIndex]] = this.monthRows[row][field];
+                    if (this.factFieldsMapping[columnIndex]) {
+                        fields[this.factFieldsMapping[columnIndex]] = this.monthRows[row][field];
+                    }
                 }
                 output.push(fields);
             }
             return output;
         },
         async saveMonthlyFact() {
-            let uri = this.localeUrl("/store-fact-by-month");
-            await axios.post(uri, {params:this.monthFact});
-            this.isPlanFilled = false;
+            let uri = this.localeUrl("/store-corrected-production");
+            this.SET_LOADING(true);
+            for (let i in this.monthFact) {
+                await axios.post(uri, this.monthFact[i]);
+            }
+            this.SET_LOADING(false);
+            this.isMonthFactFilled = false;
             this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
         },
         beforeMonthEdit(e) {
             let cell = e.detail;
             let rowIndex = cell.rowIndex;
+            this.changedRows.push(rowIndex);
             let colIndex = cell.prop.replace(/\D/g, "") - 1;
             let value = cell.val.replace(',','.');
             value = parseFloat(value);
@@ -161,6 +183,7 @@ export default {
                 return;
             }
             let row = parseInt(Object.keys(cellOptions)[0]);
+            this.changedRows.push(row);
             let column = Object.keys(cellOptions[row]);
             let columnName = Object.keys(cellOptions[row]).toString();
             column = column.toString().replace(/\D/g, "") - 1;
@@ -182,6 +205,17 @@ export default {
             for (let i=1; i <=this.monthColumnsCount; i++) {
                 this.removeClassFromElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
             }
-        }
+        },
+        async handleMonthChange() {
+            this.monthDate = moment(this.monthDate);
+            this.SET_LOADING(true);
+            this.monthlyFact = await this.getDzoFactByPeriod();
+            this.fillMonthRows();
+            if (this.monthlyFact.length > 0) {
+                this.handleMonthFact();
+            }
+            document.querySelector('#monthGrid').refresh('all');
+            this.SET_LOADING(false);
+        },
     }
 }

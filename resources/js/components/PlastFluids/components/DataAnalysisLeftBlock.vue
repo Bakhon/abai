@@ -14,6 +14,13 @@
     </div>
     <div class="dropdown-holder">
       <Dropdown
+        :items="subsoils"
+        :placeholder="trans('plast_fluids.subsurface_user')"
+        :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
+        dropKey="owner_name"
+        @dropdown-select="updateCurrentSubsoil"
+      />
+      <Dropdown
         :items="subsoilFields"
         :placeholder="trans('plast_fluids.field')"
         :selectedValue="
@@ -60,6 +67,7 @@ export default {
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
+      "subsoils",
       "subsoilFields",
       "currentSubsoilField",
       "subsoilHorizons",
@@ -91,13 +99,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL",
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
+    ]),
     ...mapActions("plastFluidsLocal", [
       "handleTableGraphData",
       "handleBlocksFilter",
     ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
     ...mapMutations("plastFluidsLocal", ["SET_CURRENT_BLOCKS"]),
+    async updateCurrentSubsoil(value) {
+      await this.UPDATE_CURRENT_SUBSOIL(value);
+      this.handleBlocksFilter([]);
+    },
     async updateCurrentField(value) {
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
       this.handleBlocksFilter([]);

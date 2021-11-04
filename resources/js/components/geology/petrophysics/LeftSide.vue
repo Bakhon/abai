@@ -169,7 +169,9 @@ export default {
   },
 
   async mounted() {
+    this.loadingStates.dzos = true;
     await this.$store.dispatch(FETCH_DZOS);
+    this.loadingStates.dzos = false;
   },
 
   methods: {

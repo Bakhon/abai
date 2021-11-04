@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Console\Commands\Import\ImportPipesPoints;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use Illuminate\Support\Collection;
@@ -74,7 +75,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             $end_coords = end($coords);
 
 
-            $oil_pipe_id = DB::select(
+            $oil_pipe = DB::select(
                 DB::raw(
                     "SELECT pipe_coords.oil_pipe_id FROM `pipe_coords`
                 LEFT JOIN (SELECT * FROM `pipe_coords` 
@@ -91,7 +92,14 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                     'start_coords_lat' => $start_coords[self::LAT],
                     'start_coords_lon' => $start_coords[self::LON]
                 )
-            )[0]->oil_pipe_id;
+            );
+
+            if (!$oil_pipe) {
+                $this->command->line('Not found pipe for '.$row[self::START_POINT].' - '.$row[self::END_POINT]);
+                continue;
+            }
+
+            $oil_pipe_id =  $oil_pipe[0]->oil_pipe_id;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
@@ -128,6 +136,11 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             );
 
             $trunkline_start_point->oil_pipe_id = $oil_pipe_id;
+
+            $oil_pipe = OilPipe::find($oil_pipe_id);
+            $oil_pipe->start_point = $row[self::START_POINT];
+            $oil_pipe->end_point = $row[self::END_POINT];
+            $oil_pipe->save();
 
             if (strpos($trunkline_start_point->name, 'ГУ') !== false) {
                 $gu = Gu::where('name', $trunkline_start_point->name)->first();

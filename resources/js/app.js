@@ -105,6 +105,7 @@ Vue.component('economic-nrs-well', require('./components/Economic/well.vue').def
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
+Vue.component('centralizers', require('./components/gno/modals/Centralizers.vue').default);
 Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
@@ -140,6 +141,8 @@ Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default)
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
+Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
+
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
@@ -179,6 +182,14 @@ Vue.component('report-export', require('./components/reports/export.vue').defaul
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
+
+Vue.component('tkrs-main', require('./components/tkrs/tkrsMain.vue').default);
+Vue.component('hook-weight-sensor', require('./components/tkrs/hookWeightSensor.vue').default);
+Vue.component('hook-weight-sensor-analyse', require('./components/tkrs/hookWeightSensorAnalyse.vue').default);
+Vue.component('gps', require('./components/tkrs/gps.vue').default);
+Vue.component('video-surveillance', require('./components/tkrs/videoSurveillance.vue').default);
+Vue.component('gps-positioning', require('./components/tkrs/gpsPositioning.vue').default);
+
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
