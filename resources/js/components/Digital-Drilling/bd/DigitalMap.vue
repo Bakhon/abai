@@ -4,17 +4,13 @@
             <div class="contentBlock__map-search">
                 <div class="contentBlock__map-search-title">
                     <img src="/img/digital-drilling/icon-map.png" alt="">
-                    <div class="title">ДЗО, месторождение</div>
-                </div>
-                <div class="all-graph" @click="allGraphModal=true">
-                    <img src="/img/digital-drilling/all-graph.svg" alt="">
-                    <span>ОБЩИЙ ГРАФИК БУРЕНИЯ</span>
+                    <div class="title">{{trans('digital_drilling.window_head.DZO')}}, {{trans('digital_drilling.window_head.field')}}</div>
                 </div>
                 <div class="contentBlock__map-search-block">
                     <div class="contentBlock__map-search-input">
                         <img src="/img/digital-drilling/search.png" alt="">
-                        <input type="text" placeholder="Поиск">
-                        <button>Поиск</button>
+                        <input type="text" :placeholder="trans('digital_drilling.window_head.search')">
+                        <button>{{trans('digital_drilling.window_head.search')}}</button>
                     </div>
                     <button class="full"><img src="/img/digital-drilling/button2.svg" alt=""></button>
                 </div>
@@ -24,10 +20,11 @@
             <div class="map-filter">
                 <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
                 <dropdown title="Месторождение" :options="fields" class="dropdown__area"
-                          :search="true"
+                          :search="false"
                           @search="filterField"
                           @updateList="updateField"
                 />
+                <dropdown title="Статус" :options="wellStatus" class="dropdown__area" @updateList="filterMap"/>
             </div>
             <MglMap
                     :accessToken="accessToken"
@@ -37,11 +34,12 @@
             >
                 <MglMarker
                         v-for="(coordinate, i)  in coordinates"
-                        :coordinates="[coordinate.Y, coordinate.X]"
+                        :coordinates="[coordinate.X, coordinate.Y]"
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="">
+                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В бурении'">
+                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
                     </div>
                 </MglMarker>
             </MglMap>
@@ -50,18 +48,15 @@
             <div class="contentBlock__map-bottom-content">
                 <img src="/img/digital-drilling/exploration.png" alt="">
                 <img src="/img/digital-drilling/production.png" alt="">
-                <div class="name">Разведка и Добыча</div>
+                <div class="name">{{trans('digital_drilling.home.exploration_production')}}</div>
             </div>
-        </div>
-        <div class="all-graph-modal" v-if="allGraphModal">
-            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
         </div>
     </div>
 </template>
 
 <script>
     import {globalloadingMutations} from '@store/helpers';
-    import Dropdown from '../components/dropdown'
+    import Dropdown from '../components/dropdownMapFilter'
 
     import {
         MglMap,
@@ -72,16 +67,31 @@
         components:{ MglMap, MglMarker, Dropdown},
         data() {
             return {
-                allGraphModal: false,
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
                 mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-                center: [54.1278133495231, 46.5861065487464],
+                center: [46.5861065487464, 54.1278133495231],
                 zoom: 11,
                 coordinates: [],
                 dzo: [],
                 fields: [],
+                query: '',
                 currentDZO: null,
                 currentField: null,
+                currentStatus: 'drilling',
+                wellStatus:[
+                    {
+                        id: "",
+                        name: 'Все скважины'
+                    },
+                    {
+                        id: "drilling",
+                        name: 'В бурении'
+                    },
+                    {
+                        id: "not_drilling",
+                        name: 'Пробуренные'
+                    }
+                ]
             }
         },
         mounted(){
@@ -91,11 +101,13 @@
              async getCoordinates(){
                     this.SET_LOADING(true);
                     try{
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/").then((response) => {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/" + this.query).then((response) => {
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
-                                this.center = [this.coordinates[0].Y, this.coordinates[0].X]
+                                console.log(this.center)
+                                this.center = [this.coordinates[0].X, this.coordinates[0].Y]
+                                console.log(this.center)
                             } else {
                                 console.log('No data');
                             }
@@ -147,12 +159,19 @@
                     if (data) {
                         this.fields = data;
                         this.currentField = data[0];
-                        this.getCoordinates()
+                        this.filterMap('')
                     } else {
                         console.log('No data');
                     }
                 });
 
+            },
+            filterMap(item){
+                 this.query = ''
+                 if (item != ''){
+                     this.query = '?status=' + item.id
+                 }
+                this.getCoordinates()
             },
             ...globalloadingMutations([
                 'SET_LOADING'

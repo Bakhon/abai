@@ -15,6 +15,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
+
 class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
@@ -96,7 +97,12 @@ class Well extends TBDModel
 
     public function wellPerfActual()
     {
-        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+        return $this->hasMany(WellPerfActual::class, 'well', 'id');
+    }
+
+    public function wellPerf()
+    {
+        return $this->hasMany(WellPerf::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -124,6 +130,16 @@ class Well extends TBDModel
         return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
     }
 
+    public function dmartDailyProd()
+    {
+        return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+    public function wellDailyDrill()
+    {
+        return $this->hasMany(WellDailyDrill::class, 'well', 'id');
+    }
+    
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -159,6 +175,11 @@ class Well extends TBDModel
         return $this->hasMany(Gis::class, 'well', 'id');
     }
 
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
@@ -173,7 +194,6 @@ class Well extends TBDModel
     {
         return $this->hasMany(Gtm::class, 'well', 'id');
     }
-
 
     public function scopeActive($query, $date)
     {

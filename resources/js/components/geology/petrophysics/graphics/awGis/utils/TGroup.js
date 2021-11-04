@@ -7,15 +7,15 @@ export default class TGroup {
     save(){
         this.#__old = {
             group: new Set(this.#__groups),
-            groupElements: new Map(this.#__groupsElements),
-            groupOption: new Map(this.#__groupsOptions)
+            groupElements: new Map(this.#__groupsElements.entries()),
+            groupOption: new Map(this.#__groupsOptions.entries())
         }
     }
 
     reset(){
         this.#__groups = new Set(this.#__old.group);
-        this.#__groupsElements = new Map(this.#__old.groupElements);
-        this.#__groupsOptions = new Map(this.#__old.groupOption);
+        this.#__groupsElements = new Map(this.#__old.groupElements.entries());
+        this.#__groupsOptions = new Map(this.#__old.groupOption.entries());
     }
 
     get getGroupsList() {

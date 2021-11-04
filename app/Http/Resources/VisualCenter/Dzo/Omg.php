@@ -22,14 +22,14 @@ class Omg extends Dzo {
             $condensateSummary['monthlyPlan'] = $companySummary['condensatePlan'] * $daysInMonth;
         }
         if ($periodType === 'year') {
-            $condensateSummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$fieldName);
+            $condensateSummary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
             $condensateSummary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
             $condensateSummary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         }
         return $condensateSummary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
         $condensateSummary = array();
         $condensateSummary['fact'] = $fact[$factField];

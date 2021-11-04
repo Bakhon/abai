@@ -229,6 +229,9 @@ export default {
         };
     },
     async mounted() {
+        if (moment().date() === 1) {
+            this.selectedMonth = this.selectedMonth - 1;
+        }
         this.fillMonthes();
         this.updateDailyView();
     },

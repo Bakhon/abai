@@ -20,14 +20,14 @@ class Ag extends Dzo {
             $summary['monthlyPlan'] = $summary['condensatePlan'] * $daysInMonth;
         }
         if ($periodType === 'year') {
-            $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$fieldName);
+            $summary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
             $summary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
             $summary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         }
         return $summary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
         $chartSummary = $daySummary;
         $chartSummary['fact'] = $fact[$factField];

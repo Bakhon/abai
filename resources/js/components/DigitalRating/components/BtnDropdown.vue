@@ -7,9 +7,10 @@
       </div>
       <div class="btn-dropdown__icon"/>
     </div>
-    <div class="dropdown-menu btn-dropdown__area">
-      <ul class="btn-dropdown__area-list">
-        <li v-for="(item, index) in list" :key="index">
+    <div class="dropdown-menu btn-dropdown__area" role="menu" aria-labelledby="dLabel">
+      <slot v-if="$slots.default"></slot>
+      <ul v-else class="btn-dropdown__area-list">
+        <li v-for="(item, index) in list" :key="index" @click="$emit('select', item)">
           <i :class="`fas fa-${item.icon}`"/>
           <span>{{ item.title ? trans(item.title) : trans(item) }}</span>
         </li>

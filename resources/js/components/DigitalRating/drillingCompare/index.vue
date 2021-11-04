@@ -9,12 +9,37 @@
       <div class="rating-compare__title">
         <span>{{ trans('digital_rating.comparisonActualDrillingPoints') }}</span>
         <div class="d-flex align-items-center">
-          <btn-dropdown :list="horizonList" class="mr-10px">
+          <btn-dropdown :list="horizonList" @select="handleSelectHorizon" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.horizon') }}
             </template>
+            <template v-for="(object, objectIdx) in horizonList">
+              <span class="dropdown-item" :key="objectIdx" :class="{'submenu': getChildren(object)}">
+                {{ object.title }}
+              </span>
+              <div v-if="getChildren(object)" class="dropdown-menu">
+                <template v-for="(horizon, horizonIdx) in object.children">
+                  <span
+                    class="dropdown-item"
+                    :key="horizonIdx"
+                    :class="{'submenu': getChildren(horizon)}"
+                  >
+                    {{ horizon.title }}
+                  </span>
+                  <div v-if="getChildren(horizon)" class="dropdown-menu">
+                    <span
+                      class="dropdown-item"
+                      v-for="(item, itemIdx) in horizon.children"
+                      :key="itemIdx"
+                    >
+                      {{ item.title }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </template>
           </btn-dropdown>
-          <btn-dropdown :list="getYearList" class="mr-10px">
+          <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.year') }}
             </template>
@@ -24,7 +49,7 @@
               {{ trans('digital_rating.coincidencePlannedWellsWithin') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="actualIndicators">
+          <btn-dropdown :list="actualIndicators" @select="handleSelectIndicator">
             <template #title>
               {{ trans('digital_rating.comparisonDesignActualIndicators') }}
             </template>
@@ -38,21 +63,27 @@
             <div id="wellMap"></div>
           </div>
           <div class="d-flex">
-            <div class="rating-compare__chart mr-10px" style="width: 100%; ">
-              <p>{{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}</p>
+            <div
+              v-if="['oil_production', 'liquid_val', 'avg_debit'].includes(type)"
+              class="rating-compare__chart" style="width: 100%;"
+            >
+              <p>{{ indicatorTitle }}</p>
               <apexchart
                 :height="300"
                 type="area"
-                :series="seriesArea"
+                :series="diagramData"
                 :options="chartOptionsArea"
               />
             </div>
-            <div class="rating-compare__chart" style="width: 100%;">
-              <p>{{ trans('digital_rating.wellsCommissioningDrilling') }}</p>
+            <div
+              v-if="['water_inj', 'drilling_unit', 'fds_operational_unit'].includes(type)"
+              class="rating-compare__chart" style="width: 100%;"
+            >
+              <p>{{ indicatorTitle }}</p>
               <apexchart
                 :height="300"
                 type="bar"
-                :series="series"
+                :series="diagramData"
                 :options="chartOptions"
               />
             </div>
@@ -83,7 +114,7 @@
               <tr>
                 <th class="align-middle" rowspan="2">{{ trans('digital_rating.year') }}</th>
                 <th class="align-middle" colspan="3">
-                  {{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}
+                  {{ indicatorTitle }}, {{ trans('digital_rating.thousandTons') }}
                 </th>
               </tr>
               <tr>
@@ -96,8 +127,8 @@
               <tr v-for="(item, itemIdx) in rowsOil" :key="itemIdx">
                 <td>{{ item.year }}</td>
                 <td>{{ item.project }}</td>
-                <td>{{ item.fact }}</td>
-                <td :class="Number(item.rejection) ? '' : 'alert'">{{ item.rejection }}</td>
+                <td>{{ item.actual }}</td>
+                <td :class="Number(item.total) ? '' : 'alert'">{{ item.total }}</td>
               </tr>
             </tbody>
           </table>
@@ -127,7 +158,7 @@
 
     &-maps {
       display: flex;
-      width: 53%;
+      width: 50%;
       flex-direction: column;
 
       h5 {
@@ -192,5 +223,44 @@
 
 .leaflet-container {
   background: transparent;
+}
+
+.rating-content__wrapper {
+  height: calc(100% - 500px);
+}
+
+.leaflet-pane {
+  z-index: 90;
+}
+
+.dropdown-menu .dropdown-menu {
+  top: auto;
+  left: 100%;
+  transform: translateY(-2rem);
+}
+.dropdown-item + .dropdown-menu {
+  display: none;
+}
+.dropdown-item.submenu::after {
+  content: '▸';
+  margin-left: 6rem;
+}
+.dropdown-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #fff;
+  background: #4b4c66;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.dropdown-item {
+  padding: 8px;
+  color: #fff;
+}
+.dropdown-menu {
+  background-color: #5D5F7F;
+  padding: 0;
 }
 </style>

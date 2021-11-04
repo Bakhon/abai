@@ -1,6 +1,7 @@
 import translation from "../../VueTranslation/Translation";
 import { getTemplateData } from "../../components/PlastFluids/services/templateService";
 import { getTableGraphData } from "../../components/PlastFluids/services/graphService";
+import { convertToFormData } from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -18,6 +19,10 @@ const plastFluidsLocal = {
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
+    currentSelectedCorrelation_ps: "",
+    currentSelectedCorrelation_bs: "",
+    currentSelectedCorrelation_ms: "",
+    currentSelectedSamples: [],
   },
 
   mutations: {
@@ -56,6 +61,29 @@ const plastFluidsLocal = {
     },
     SET_CURRENT_BLOCKS(state, payload) {
       state.currentBlocks = payload;
+    },
+    SET_CURRENT_CORRELATION_PS(state, payload) {
+      state.currentSelectedCorrelation_ps = payload;
+    },
+    SET_CURRENT_CORRELATION_BS(state, payload) {
+      state.currentSelectedCorrelation_bs = payload;
+    },
+    SET_CURRENT_CORRELATION_MS(state, payload) {
+      state.currentSelectedCorrelation_ms = payload;
+    },
+    SET_CURRENT_SELECTED_SAMPLES(state, payload) {
+      if (payload === "clear") {
+        state.currentSelectedSamples = [];
+        return;
+      }
+      if (state.currentSelectedSamples.includes(payload)) {
+        const index = state.currentSelectedSamples.findIndex(
+          (element) => element === payload
+        );
+        state.currentSelectedSamples.splice(index, 1);
+        return;
+      }
+      state.currentSelectedSamples.push(payload);
     },
   },
 
@@ -124,20 +152,13 @@ const plastFluidsLocal = {
           graph_type: state.graphType,
         };
         let merged = { ...postDataMock, ...dataToPost };
-        const postData = new FormData();
-        for (let key in merged) {
-          if (!Array.isArray(merged[key])) {
-            postData.append(key, merged[key]);
-          } else {
-            merged[key].forEach((item) => postData.append(key, item));
-          }
-        }
+        const postData = convertToFormData(merged);
         const data = await getTableGraphData(postData);
         commit("SET_TABLE_FIELDS", data[0].table_header);
         commit("SET_LOCAL_HORIZONS", data[1].filter_data);
         commit("SET_TABLE_ROWS", data.slice(2));
       } catch (error) {
-        alert(error);
+        console.log(error);
       } finally {
         commit("SET_LOADING", false);
       }

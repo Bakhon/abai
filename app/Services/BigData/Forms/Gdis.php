@@ -137,6 +137,18 @@ class Gdis extends PlainForm
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        return array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents', 'research_results']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
     protected function insertComplexValue(int $id, int $metricId, $value)
     {
         DB::connection('tbd')
@@ -168,10 +180,15 @@ class Gdis extends PlainForm
                 }
             }
 
+            $researchResults = [];
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
+                $field = $this->getFields()->where('code', $value->code)->first();
+                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_string;
                 $row->{$value->code} = $value->value_string;
             }
+
+            $row->research_results = implode(', ', $researchResults);
 
             return $row;
         });

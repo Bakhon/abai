@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
 use App\Http\Resources\VisualCenter\Dzo\Factory;
+use App\Models\VisCenter\ImportForms\DZOyear;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -39,6 +40,12 @@ class VisualCenterController extends Controller
         )
     );
     private $isOpek = false;
+    private $categoriesWithYearlyPlan = array (
+       'oilCondensateProduction',
+       'oilCondensateProductionWithoutKMG',
+       'oilCondensateDelivery',
+       'oilCondensateDeliveryWithoutKMG'
+    );
 
     public function getProductionParamsByCategory(Request $request)
     {
@@ -112,6 +119,14 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category,$this->periodRange + 1,$this->periodType);
         }
+        if ($this->periodType === 'month' && Carbon::now()->day < 3) {
+            $this->periodRange = 0;
+            $plan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
+            $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
+            $monthStart = Carbon::now()->startOf('month')->startOf('day');
+            $fact = $fact->where('date', '>=', $monthStart);
+            $plan = $plan->where('date', '>=', $monthStart);
+        }
 
         return array (
             'table' => $this->getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan),
@@ -143,6 +158,12 @@ class VisualCenterController extends Controller
 
     private function getYearlyPlan()
     {
+        if (in_array($this->category,$this->categoriesWithYearlyPlan)) {
+            return DZOyear::query()
+             ->where('date',Carbon::now()->year)
+             ->get();
+        }
+
         $daysCountFromYearStart = $this->periodStart->diffInDays($this->periodEnd) + 1;
         $query = DzoPlan::query()
             ->whereYear('date', $this->periodStart->year);

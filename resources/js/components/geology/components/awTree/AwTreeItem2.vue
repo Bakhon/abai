@@ -2,7 +2,7 @@
   <li
       :draggable="!isFolder"
       :id="item.id"
-      :class="{...itemClasses, 'selected': ($store.state.geologyGis.wellName === item.name)}"
+      :class="{...itemClasses, 'selected': (!isFolder&&$store.state.geologyGis.curveName === item.name)}"
       @dragstart.self="!isFolder&&dragStart($event, item)"
       @dragover="(e)=>e.preventDefault()"
       @drop.self="isFolder&&drop($event, item.id)"
@@ -29,7 +29,7 @@
         <span
             class="aw-tree__list-item__label"
             @dblclick="ontoggle"
-            @click="select(item)">
+            @click="!isFolder&&selectCurve($event, item.name)">
           {{ item.name }}
         </span>
       </div>
@@ -50,7 +50,7 @@
 
 <script>
 import AwTreeItemsMixins from "./AwTreeItemsMixins";
-import {SET_DRAG_PARAMS, SET_SELECTED_WELL_CURVES} from "../../../../store/modules/geologyGis.const";
+import {SET_DRAG_PARAMS, SET_SELECTED_WELL_CURVES, SET_CURVE_NAME} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "AwTreeItem2",
@@ -74,6 +74,10 @@ export default {
     }
   },
   methods: {
+    selectCurve(e, curveName){
+      e.stopPropagation()
+      this.$store.commit(SET_CURVE_NAME, curveName);
+    },
     dragStart(e, a) {
       this.$store.commit(SET_DRAG_PARAMS, ['dragElement', a.name]);
       if (e.target === this.$el) this.$store.commit(SET_DRAG_PARAMS, ['fromGroup', a.groupID]);
@@ -145,6 +149,10 @@ export default {
       }
 
       &-item {
+        cursor: pointer;
+        &.selected{
+          background: var(--a-accent-400);
+        }
         .enter {
           background: #000;
         }
