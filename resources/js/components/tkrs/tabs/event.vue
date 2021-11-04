@@ -80,13 +80,6 @@
                 <tbody>
                   
                     <tr>
-                      <td style="background: #009847;"></td>
-                      <td style="background: #009847;"></td>
-                      <td style="background: #009847;"></td>
-                      <td style="background: #009847;"> Дневное время</td>
-                      
-                    </tr>
-                    <tr>
                       <td>6:00</td>
                       <td>8:00</td>
                       <td>2:00</td>
