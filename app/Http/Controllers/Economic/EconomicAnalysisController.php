@@ -78,7 +78,7 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.prs_portion) as prs_portion,
                 SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,
                 SUM(well_forecast.oil * analysis_param.netback_fact / 1000) as netback,
-                SUM(CASE WHEN well_forecast.loss_status_id IN (2, 4, 5)
+                SUM(CASE WHEN well_forecast.liquid > 0
                          THEN analysis_param.permanent_cost
                          ELSE variable_stop_cost_fact	
                     END + 
@@ -86,7 +86,7 @@ class EconomicAnalysisController extends Controller
                     analysis_param.avg_prs_cost * well_forecast.prs_portion
                 ) as overall_expenditures,
                 SUM(well_forecast.oil * analysis_param.netback_fact / 1000 -
-                    CASE WHEN well_forecast.loss_status_id IN (2, 4, 5)
+                    CASE WHEN well_forecast.liquid > 0
                          THEN analysis_param.permanent_cost
                          ELSE variable_stop_cost_fact	
                     END -
