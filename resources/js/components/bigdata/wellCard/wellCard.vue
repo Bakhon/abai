@@ -452,6 +452,7 @@ export default {
         artificialBottomHole: null,
         perfActual: { top: null, base: null, dbeg: null },
         wellInfo: { rte: null },
+        date_expl: { dbeg: null, name_ru: null },
         treatmentSko: { treat_date: null },
         dmart_daily_prod_oil: { oil: null },
         dinzamer: { value_double: null },
@@ -524,6 +525,7 @@ export default {
         geo: "geo",
         tubeNom: "tube_nom",
         dinzamer: "dinzamer",
+        date_expl: "date_expl",
         measLiq: "measLiq",
         meas_water_inj: "meas_water_inj",
         tech_mode_inj: "tech_mode_inj",
@@ -707,6 +709,9 @@ export default {
           : "";         
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
+        : "";
+      let wellDateExpl = this.well.date_expl
+        ? this.getFormatedDate(this.well.date_expl.dbeg)
         : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
       let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
@@ -948,7 +953,7 @@ export default {
         },
         {
           name: this.trans("well.date_expluatation"),
-          data: wellExpl,
+          data: wellDateExpl,
           type: ["all"],
         },
         {
