@@ -93,7 +93,6 @@ export default {
                 });
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             } else {
-                //this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
