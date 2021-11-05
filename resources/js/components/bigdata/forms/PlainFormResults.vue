@@ -359,6 +359,10 @@ export default {
         }).join('<br>')
       }
 
+      if (row[column.code] && typeof row[column.code] === 'object') {
+        return row[column.code].formated_value
+      }
+
       return row[column.code]
     },
     showHistory(row) {
@@ -376,7 +380,7 @@ export default {
 </script>
 <style lang="scss">
 .bd-main-block {
-  .table-container {
+  .table-container-body {
     a {
       color: #fff;
       text-decoration: underline;
