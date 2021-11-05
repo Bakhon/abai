@@ -202,7 +202,7 @@ return array (
         'number_pipes' => 'Number of pipes',
         'poured_cement_volume' => 'Poured cement volume',
         'cement_lifting_height' => 'Cement lifting height, m.',
-        'wall_thickness' => 'Wall thickness, mm..',
+        'wall_thickness' => 'Wall thickness, mm.',
         'packer_from' => 'Packer from',
         'packer_to' => 'Packer to',
         'column_running_depth' => 'Casing running depth, m.',
