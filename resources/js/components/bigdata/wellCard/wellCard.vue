@@ -428,6 +428,7 @@ export default {
         category: { name_ru: null },
         categoryLast: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
+        expl_right: { dbeg: null, name_ru: null },
         techs: null,
         tap: { tap: null },
         techsName: null,
@@ -513,6 +514,7 @@ export default {
         category: "category",
         categoryLast: "category_last",
         expl: "well_expl",
+        expl_right: "well_expl_right",
         techs: "techs",
         tap: "tap",
         labResearchValue: "lab_research_value",
@@ -575,6 +577,10 @@ export default {
           'wellSaptialObjectY': null,
           'wellSaptialObjectBottomX': null,
           'wellSaptialObjectBottomY': null
+        },
+        lastForm: {
+          'code': null,
+          'componentName': null
         }
       },
       wellsHistory: [],
@@ -703,7 +709,7 @@ export default {
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
-      let well_expl_name = this.well.expl ? this.well.expl.name_ru : "";
+      let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
       let actualBottomHole = this.well.actualBottomHole
         ? this.well.actualBottomHole.depth +
@@ -816,12 +822,11 @@ export default {
         ? this.well.rzatrStat.value_double
         : "";
       let injPressure = this.getInjPressure(well);
-      let agentVol =
-        this.well.tech_mode_inj || this.well.meas_water_inj
-          ? this.well.tech_mode_inj.agent_vol +
-            " / " +
-            this.well.meas_water_inj.water_inj_val.toFixed(1)
-          : "";
+      let agentVol = (this.well.tech_mode_inj || this.well.meas_water_inj) && this.well.meas_water_inj.water_inj_val
+        ? this.well.tech_mode_inj.agent_vol +
+        " / " +
+        this.well.meas_water_inj.water_inj_val.toFixed(1)
+        : "";
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
@@ -1206,6 +1211,8 @@ export default {
       return well_passport_data;
     },
     selectWell(well) {
+      this.activeFormComponentName = null;
+      this.activeForm = null;
       if (well) {
         this.SET_LOADING(true);
         this.axios
@@ -1261,7 +1268,12 @@ export default {
               this.SET_LOADING(false);
             }
             this.setWellPassport();
-            this.storeWellToHistory();
+            let historyRecord = _.find(this.wellsHistory, {wellUwi:this.wellUwi});
+            if (!historyRecord) {
+              this.storeWellToHistory();
+            } else {
+              this.switchFormByCode(historyRecord.lastFormInfo);
+            }
             this.SET_LOADING(false);
           });
       }
@@ -1342,7 +1354,13 @@ export default {
       } catch (e) {}
     },
     switchFormByCode(data) {
+      this.SET_VISIBLE_PRODUCTION(false);
+      this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;
+      let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
+        return e.wellUwi == this.wellUwi;
+      }, 0);
+      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName
         ? this.activeFormComponentName
@@ -1373,7 +1391,8 @@ export default {
     storeWellToHistory() {
       let summaryWellInfo = {
          'wellUwi': this.wellUwi,
-         'well_passport': this.tableData
+         'well_passport': this.tableData,
+         'id': this.well.id,
       };
       _.forEach(Object.keys(this.historyWellTemplate.params), (key) => {
           if (key === 'category') {
@@ -1384,6 +1403,7 @@ export default {
             summaryWellInfo[key] = null;
           }
       });
+      summaryWellInfo['lastFormInfo'] = this.activeForm;
       this.wellsHistory.push(summaryWellInfo);
       if (this.wellsHistory.length > 5) {
           this.wellsHistory.shift();
@@ -1398,6 +1418,7 @@ export default {
       _.forEach(Object.keys(well), (key) => {
           this[key] = well[key];
       });
+      this.selectWell({'id':well.id,'name':well.wellUwi})
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.isBothColumnFolded = false;

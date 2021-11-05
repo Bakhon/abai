@@ -56,6 +56,7 @@ class WellsController extends Controller
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
             'well_expl' => $this->wellExpl($well),
+            'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'tubeNom' => $this->tubeNom($well),
@@ -200,6 +201,14 @@ class WellsController extends Controller
                ->orderBy('pivot_dbeg', 'desc')          
                ->first(['value_double', 'value_string', 'equip_param']);                          
     } 
+
+    private function wellExplOnRight(Well $well)
+    {
+        return $well->wellExpl()
+                ->withPivot('dend as dend', 'dbeg as dbeg')
+                ->orderBy('dbeg', 'desc')
+                ->first(['name_ru', 'dend', 'dbeg']);
+    }
 
     private function techs(Well $well)
     {

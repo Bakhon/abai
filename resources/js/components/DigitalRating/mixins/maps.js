@@ -110,7 +110,7 @@ export default {
 
     setTriangleMarker(coordinate, title, color = '#000') {
       const triangleMarker = L.triangleMarker(coordinate, {
-        renderer:   this.renderer,
+        renderer: this.renderer,
         color: color,
         fillColor: color,
         fillOpacity: 0,
