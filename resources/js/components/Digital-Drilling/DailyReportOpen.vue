@@ -171,9 +171,9 @@
     }
     .well_content{
         min-height: 300px;
-        width: 450px;
     }
     .Marine{
         width: 160px;
     }
+
 </style>

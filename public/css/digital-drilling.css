@@ -1221,10 +1221,16 @@ input.rangeInput {
 .w-25{
     width: 25% !important;
 }
-.h-31{
+.h-31, .h-31 td{
     height: 31px!important;
 }
-
+.pushElement{
+    cursor: pointer;
+}
+.pushElement:hover{
+    background-color: #1b67ca;
+    padding: 7px;
+}
 .w-5{
     width: 5%!important;
 }
@@ -1318,6 +1324,13 @@ progress::-webkit-progress-value {
 }
 .operatingCosts-single-tg{
     margin-left: 6px;
+}
+.tech-info-header{
+    background-color: #323370;
+    border: 1px solid #454D7D;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
 }
 
 @media (max-width: 1625px) {
