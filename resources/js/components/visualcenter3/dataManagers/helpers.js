@@ -139,15 +139,7 @@ export default {
         },
 
         getFormattedNumberToThousand(plan,fact) {
-            let formattedPlan = this.formatDigitToThousand(plan);
-            let formattedFact = this.formatDigitToThousand(fact);
-            if (formattedPlan) {
-                formattedPlan = this.getNumberFromString(formattedPlan);
-            }
-            if (formattedFact) {
-                formattedFact = this.getNumberFromString(formattedFact);
-            }
-            let diff = formattedPlan - formattedFact;
+            let diff = plan - fact;
             let formattedNumber = Math.abs(Math.round(diff));
             return new Intl.NumberFormat("ru-RU").format(formattedNumber);
         },
