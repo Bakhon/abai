@@ -146,7 +146,11 @@ export default {
 
       content.isLoading = true;
       content.updateChildren(node, content.level, node.isChecked)
-      .then(() => {
+      .then(
+        content.assignParentToChilds(node)
+      ).then(
+        content.updateParent(node, node.isChecked)
+      ).then(() => {
         content.updateThisComponent();
         content.isLoading = false;
       });
