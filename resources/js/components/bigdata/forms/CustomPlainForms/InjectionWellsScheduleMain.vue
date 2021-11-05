@@ -402,6 +402,11 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['injectionMeasurementSchedule']),
+    },
+    watch: {
+        "injectionMeasurementSchedule": function() {
+            this.nahdleMeasurementSchedule();
+        }
     }
 }
 </script>
