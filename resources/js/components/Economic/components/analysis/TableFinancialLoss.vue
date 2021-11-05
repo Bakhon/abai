@@ -238,7 +238,7 @@ export default {
         {
           name: 'Добыча жидкости',
           dimension: 1000,
-          dimensionTitle: 'тыс. тон',
+          dimensionTitle: 'тыс. м3',
           key: 'liquid'
         },
         {

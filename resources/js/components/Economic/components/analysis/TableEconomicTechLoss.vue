@@ -86,7 +86,7 @@ export default {
           date: date,
           values: this.titles.map((title, titleIndex) => {
             return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
+              return 0
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
@@ -122,7 +122,7 @@ export default {
           date: date,
           values: this.titles.map((title, titleIndex) => {
             return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
+              return 0
             })
           }),
           style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`

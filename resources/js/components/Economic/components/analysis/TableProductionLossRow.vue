@@ -1,7 +1,7 @@
 <template>
   <div class=" d-flex flex-column bg-light-blue text-center text-nowrap flex-grow-1 font-size-14px line-height-16px">
     <div class="d-flex">
-      <div v-if="isVisibleHeader && isVisibleMonths"
+      <div v-if="isVisibleHeader && isVisibleDates"
            class="bg-blue border-grey p-1 font-weight-600 d-flex align-items-center justify-content-center width-100px">
         Месяцы
       </div>
@@ -17,11 +17,11 @@
           </div>
 
           <div class="border-grey flex-20 p-1">
-            Q ж, м3
+            Q ж, тыс. м3
           </div>
 
           <div class="border-grey flex-20 p-1">
-            Q н, т
+            Q н, тыс. т
           </div>
 
           <div class="border-grey flex-20 p-1">
@@ -39,8 +39,8 @@
       <div v-for="(date, dateIndex) in dates"
            :key="dateIndex"
            class="flex-grow-1 d-flex font-size-12px line-height-14px">
-        <div v-if="isVisibleMonths"
-             class="border-grey p-1 width-100px d-flex align-items-center justify-content-center">
+        <div v-if="isVisibleDates"
+             class="border-grey px-3 py-1 width-100px d-flex align-items-center">
           {{ date }}
         </div>
 
@@ -75,9 +75,9 @@
       </div>
 
       <div class="flex-grow-1 d-flex bg-blue font-weight-600">
-        <div v-if="isVisibleMonths"
-             class="border-grey p-1 width-100px d-flex align-items-center justify-content-center">
-          Всего
+        <div v-if="isVisibleDates"
+             class="border-grey px-3 py-1 width-100px d-flex align-items-center">
+        Всего
         </div>
 
         <div class="d-flex flex-grow-1">
@@ -137,7 +137,7 @@ export default {
       required: false,
       type: Boolean
     },
-    isVisibleMonths: {
+    isVisibleDates: {
       required: false,
       type: Boolean
     }

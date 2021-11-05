@@ -11,9 +11,9 @@
             :key="rowIndex"
             :row="row"
             :dates="tableData.dates"
-            :is-visible-months="rowIndex === 0"
+            :is-visible-dates="rowIndex === 0"
             :class="rowIndex ? 'ml-3' : ''"
-            :style="`min-width: ${rowIndex ? 350 : 420}px`"
+            :style="`min-width: ${rowIndex ? 430 : 530}px`"
             class="h-100"
             is-profitable
             is-profitless
@@ -32,9 +32,9 @@
               :key="rowIndex"
               :row="row"
               :dates="tableData.dates"
-              :is-visible-months="rowIndex === 0"
+              :is-visible-dates="rowIndex === 0"
               :class="rowIndex > 0 ? 'ml-3' : ''"
-              :style="`min-width: ${rowIndex ? 350 : 420}px`"
+              :style="`min-width: ${rowIndex ? 430 : 530}px`"
               class="h-100"
               is-profitless
           />
