@@ -51,17 +51,17 @@ class EconomicAnalysisParamImport implements ToModel, WithBatchInserts, WithChun
 
         return new EcoRefsAnalysisParam([
             'date' => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
-            'netback_plan' => round($row[self::COLUMNS['netback_plan']], 2),
-            'netback_fact' => round($row[self::COLUMNS['netback_fact']], 2),
-            'netback_forecast' => round($row[self::COLUMNS['netback_forecast']], 2),
-            'variable_cost' => round($row[self::COLUMNS['variable_cost']], 2),
-            'permanent_cost' => round($row[self::COLUMNS['permanent_cost']], 2),
-            'permanent_year_cost' => round($row[self::COLUMNS['permanent_year_cost']], 2),
-            'avg_prs_cost' => round($row[self::COLUMNS['avg_prs_cost']], 2),
-            'oil_density' => round($row[self::COLUMNS['oil_density']], 2),
+            'netback_plan' => round($row[self::COLUMNS['netback_plan']], 12),
+            'netback_fact' => round($row[self::COLUMNS['netback_fact']], 12),
+            'netback_forecast' => round($row[self::COLUMNS['netback_forecast']], 12),
+            'variable_cost' => round($row[self::COLUMNS['variable_cost']], 12),
+            'permanent_cost' => round($row[self::COLUMNS['permanent_cost']], 12),
+            'permanent_year_cost' => round($row[self::COLUMNS['permanent_year_cost']], 12),
+            'avg_prs_cost' => round($row[self::COLUMNS['avg_prs_cost']], 12),
+            'oil_density' => round($row[self::COLUMNS['oil_density']], 12),
             'days' => (int)$row[self::COLUMNS['days']],
-            'variable_stop_cost_fact' => round($row[self::COLUMNS['variable_stop_cost_fact']], 2),
-            'variable_stop_cost_forecast' => round($row[self::COLUMNS['variable_stop_cost_forecast']], 2),
+            'variable_stop_cost_fact' => round($row[self::COLUMNS['variable_stop_cost_fact']], 12),
+            'variable_stop_cost_forecast' => round($row[self::COLUMNS['variable_stop_cost_forecast']], 12),
             'user_id' => $this->userId,
             'log_id' => $this->logId
         ]);
