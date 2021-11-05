@@ -91,7 +91,7 @@ export default {
             _.forEach(block.fields, function(fieldName, index) {
                 if (!categoryName && !formattedTodayData) {
                     self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 2));
-                } else {
+                } else if (formattedTodayData !== null) {
                     self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 2));
                 }
             });

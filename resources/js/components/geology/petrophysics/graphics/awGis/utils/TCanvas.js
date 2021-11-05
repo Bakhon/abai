@@ -20,28 +20,45 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    drawCurve(curve, {options, options:{customParams}, wellID}) {
+    drawCurve(curve, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
-        let coord = this.#tCoords;
-        let min = customParams?.min?.use?+customParams.min?.value??0:0;
-        let max = customParams?.max?.use?+customParams.max?.value??options.max[wellID]:options.max[wellID];
+        let coord = this.#tCoords, max, min;
 
-        ctx.save()
+        let minValue = min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
+        let maxValue = max = customParams?.max?.use ? +customParams.max?.value ?? options.max[wellID] : options.max[wellID];
+        let curveColor = customParams?.curveColor?.use ? customParams.curveColor?.value : "#000000";
+        let dashLine = customParams?.dash&&Array.isArray(customParams?.dash.value)?customParams?.dash.value:customParams?.dash.value.split(',');
+
+        ctx.save();
         ctx.beginPath();
-        ctx.translate(-(min*2), 0)
+        ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
+
+        if (customParams?.dash && dashLine) {
+            ctx.setLineDash(dashLine);
+        }
+
+        if (customParams?.curveColor && curveColor) {
+            ctx.strokeStyle = curveColor
+        }
+
+        if (customParams?.direction && customParams.direction.value === "reverse") {
+            max = minValue;
+            min = maxValue;
+        }
+
         for (const c of curve) {
             if (c !== null) {
-                ctx.moveTo(coord.percentPositionX(lastX, max), coord.positionY(lastY));
-                ctx.lineTo(coord.percentPositionX(c, max), coord.positionY(y));
+                ctx.lineTo(coord.percentPositionX(c, max, min), coord.positionY(y));
                 lastX = c
             } else {
-                ctx.moveTo(coord.percentPositionX(0, max), coord.positionY(y));
+                ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(y));
             }
             lastY = y
             y++
         }
+
         ctx.stroke();
-        ctx.restore()
+        ctx.restore();
     }
 
     clearCanvas() {

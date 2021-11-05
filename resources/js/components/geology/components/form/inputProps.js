@@ -3,5 +3,6 @@ export default {
         label: String,
         readonly: Boolean,
         plaintext: Boolean,
+        value: String|Number
     }
 }

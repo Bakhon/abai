@@ -14,6 +14,7 @@ use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\DmartDailyProd;
+use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
@@ -46,14 +47,16 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
         
-        $orgs = $this->org($well);
+        $orgs = $this->org($well);        
         $wellInfo = [
             'wellInfo' => $well,
+            'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
             'well_expl' => $this->wellExpl($well),
+            'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'tubeNom' => $this->tubeNom($well),
@@ -198,6 +201,14 @@ class WellsController extends Controller
                ->orderBy('pivot_dbeg', 'desc')          
                ->first(['value_double', 'value_string', 'equip_param']);                          
     } 
+
+    private function wellExplOnRight(Well $well)
+    {
+        return $well->wellExpl()
+                ->withPivot('dend as dend', 'dbeg as dbeg')
+                ->orderBy('dbeg', 'desc')
+                ->first(['name_ru', 'dend', 'dbeg']);
+    }
 
     private function techs(Well $well)
     {
@@ -376,6 +387,12 @@ class WellsController extends Controller
             ->first(['treat_date']);
     }
 
+    private function wellDailyDrill(Well $well)
+    {
+        return $well->wellDailyDrill()
+              ->first(['dbeg', 'dend']);
+    }
+
     private function gdisConclusion(Well $well)
     {
         return $well->gdisConclusion()
@@ -457,11 +474,10 @@ class WellsController extends Controller
     private function gdisCurrentValueRzatr(Well $well, $method)
     {
         return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
-            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')           
-            ->where('metric_otp.code', '=', $method)
-            ->first();
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')                      
+            ->where('dict.metric.code', '=', $method)
+            ->get()
+            ->last();
     }
   
     private function gdisComplex(Well $well)

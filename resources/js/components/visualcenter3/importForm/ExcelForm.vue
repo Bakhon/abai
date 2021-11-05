@@ -29,7 +29,7 @@
                         @click="changeCategory('isCloseMonthActive')"
                 >
                     <div class="insert-data-icon col-1"></div>
-                    <div class="col-7">{{trans('visualcenter.closeMonth')}}</div>
+                    <div class="col-9">{{trans('visualcenter.closeMonth')}} ({{trans('visualcenter.factLowerCase')}})</div>
                 </div>
             </div>
         </div>
@@ -71,16 +71,16 @@
                     {{trans('visualcenter.importForm.pasteData')}}
                 </div>
                 <div
-                        class="col-12 status-block status-block_little menu__button mt-3"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && isUserPositionCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="validateMonthlyFact()"
                 >
                     {{trans('visualcenter.validateButton')}}
                 </div>
                 <div
-                        :class="[!isMonthFactFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
+                        :class="[isMonthFactFilled ? '' : 'menu__button_disabled', 'status-block status-block_little menu__button col-12 mt-3']"
                         @click="saveMonthlyFact()"
                 >
-                    {{trans('visualcenter.saveButton')}}
+                    {{trans('visualcenter.importForm.approve')}}
                 </div>
             </div>
             <div v-else-if="category.isFactActive" class="col-2 row mt-3 ml-1">
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div v-else class="col-2 row mt-3 ml-1"></div>
-            <div v-if="category.isArchieveActive" class="col-4 mt-3 row ml-1">
+            <div v-if="category.isArchieveActive || category.isCloseMonthActive" class="col-4 mt-3 row ml-1">
                 <b-form-input
                         size="sm"
                         v-model="userName"
@@ -269,6 +269,25 @@
                     </el-date-picker>
                 </div>
             </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.selectMonth')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="monthDate"
+                            type="month"
+                            format="MMMM"
+                            popper-class="custom-date-picker"
+                            @change="handleMonthChange"
+                            :picker-options="datePickerOptions"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="table-form col-12 mt-3 ml-1">
                 <v-grid
                         v-if="category.isArchieveActive || category.isFactActive"
@@ -376,7 +395,7 @@
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     #monthGrid {
-        height: 782px;
+        height: 622px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }

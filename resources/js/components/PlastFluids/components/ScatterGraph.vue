@@ -37,7 +37,11 @@
     </div>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
-      :series="graphSeries[0].data"
+      :series="
+        doubled
+          ? graphSeries[0].data.concat(graphSeries[1].data)
+          : graphSeries[0].data
+      "
       :seriesNames="seriesNames"
       :graphType="graphType"
       :minX="minXAxisBorder"
@@ -63,7 +67,7 @@ import BaseModal from "./BaseModal.vue";
 import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
 import _ from "lodash";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { convertToFormData, between } from "../helpers";
 import { getCorrelationData } from "../services/graphService";
 
@@ -82,10 +86,12 @@ export default {
   data() {
     return {
       type: "scatter",
+      doubled: false,
       isFullScreen: false,
       isApproximationOpen: false,
       isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
+      prevPoint: null,
       currentSeries: null,
       graphSeries: [],
       approximation: [],
@@ -117,7 +123,8 @@ export default {
           events: {},
         },
         markers: {
-          size: [4, 0],
+          size: [4],
+          discrete: [],
         },
         tooltip: {
           shared: false,
@@ -184,12 +191,23 @@ export default {
   watch: {
     series: {
       handler(obj) {
+        let filtered2;
         const filtered = obj.data.filter((item) => item.x && item.y);
         let axis = {};
         axis.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
         axis.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
         axis.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
         axis.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+
+        if (obj.data2.length) {
+          filtered2 = obj.data2.filter((item) => item.x && item.y);
+          let xValues = this.getMaxMinInObjectArray(filtered2, "x");
+          let yValues = this.getMaxMinInObjectArray(filtered2, "y");
+          axis.minX = xValues[0] < axis.minX ? xValues[0] : axis.minX;
+          axis.maxX = xValues[1] > axis.maxX ? xValues[1] : axis.maxX;
+          axis.minY = yValues[0] < axis.minY ? yValues[0] : axis.minY;
+          axis.maxY = yValues[1] > axis.maxY ? yValues[1] : axis.maxY;
+        }
 
         const calculate = (num, axisLine, type) => {
           let largeDiff, sum, max, min;
@@ -255,12 +273,23 @@ export default {
             tickAmount: 4,
           },
         };
+        this.SET_CURRENT_SELECTED_SAMPLES("clear");
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,
           type: obj.type,
           data: filtered,
         });
+        this.chartOptions.markers.size.push(0);
+        if (obj.data2.length) {
+          this.graphSeries.push({
+            name: this.trans("plast_fluids.data") + 2,
+            type: obj.type,
+            data: filtered2,
+          });
+          this.doubled = true;
+          this.chartOptions.markers.size.unshift(4);
+        }
         this.chartOptions = {
           ...this.chartOptions,
           chart: {
@@ -271,6 +300,35 @@ export default {
         this.type = "scatter";
       },
       immediate: true,
+    },
+    currentSelectedSamples: {
+      handler(value) {
+        const temp = _.cloneDeep(this.graphSeries);
+        const selectedSamples = [];
+        const unselectedSamples = temp[0].data.reduce((initial, item) => {
+          if (value.includes(item.key)) {
+            selectedSamples.push({
+              ...item,
+              fillColor: "#009000",
+            });
+            return initial;
+          }
+          delete item.fillColor;
+          initial.push(item);
+          return initial;
+        }, []);
+        const samples = unselectedSamples.concat(selectedSamples);
+        temp[0].data = samples;
+        if (this.doubled) {
+          temp[1].data = samples.map((sample) => {
+            const returnObject = { x: sample.x2, y: sample.y, key: sample.key };
+            sample.fillColor ? (returnObject.fillColor = sample.fillColor) : "";
+            return returnObject;
+          });
+        }
+        this.graphSeries = temp;
+      },
+      deep: true,
     },
   },
   computed: {
@@ -283,6 +341,7 @@ export default {
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",
       "currentBlocks",
+      "currentSelectedSamples",
     ]),
     heading() {
       return this.currentSeries
@@ -298,6 +357,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_SELECTED_SAMPLES"]),
     exitFullScreen() {
       this.isFullScreen = false;
     },
@@ -447,12 +507,14 @@ export default {
         };
       }
     },
-    handleMarkerClick(
+    handleDataPointSelection(
       event,
       chartContext,
-      { seriesIndex, dataPointIndex, config }
+      { dataPointIndex, seriesIndex }
     ) {
-      console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
+      this.SET_CURRENT_SELECTED_SAMPLES(
+        this.graphSeries[seriesIndex].data[dataPointIndex].key
+      );
     },
     handleModalResponse() {
       this.removeSeries(this.currentSeries);
@@ -467,12 +529,10 @@ export default {
             larger = true;
           }
           if (larger) {
-            point.label.borderColor = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
-            point.label.style.background = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
+            point.label.borderColor =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
+            point.label.style.background =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
             point.x = this.r2AndEquationHelper(
               this.currentAnnotationColorIndex - 1,
               1
@@ -524,7 +584,10 @@ export default {
       this.chartOptions = temp;
     },
     openRemoveModal(chartContext, seriesIndex, config, a) {
-      if (seriesIndex !== 0) {
+      const condition = this.doubled
+        ? seriesIndex !== 0 && seriesIndex !== 1
+        : seriesIndex !== 0;
+      if (condition) {
         this.currentSeries = seriesIndex;
         this.isRemoveModalOpen = true;
       }
@@ -534,7 +597,8 @@ export default {
       exprt.exportToPng();
     },
     setEvents() {
-      this.chartOptions.chart.events.markerClick = this.handleMarkerClick;
+      this.chartOptions.chart.events.dataPointSelection =
+        this.handleDataPointSelection;
       this.chartOptions.chart.events.legendClick = this.openRemoveModal;
     },
 
@@ -549,9 +613,9 @@ export default {
       const postTemp = {
         field_id: this.currentSubsoilField[0].field_id,
         correlations_type: this.graphType.toLowerCase(),
-        func_id: this[
-          "currentSelectedCorrelation_" + this.graphType.toLowerCase()
-        ].func_id,
+        func_id:
+          this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
+            .func_id,
         horizons: horizonIDs,
         blocks: blockIDs,
       };

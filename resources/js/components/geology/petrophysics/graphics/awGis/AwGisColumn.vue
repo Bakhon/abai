@@ -69,7 +69,7 @@ export default {
     draw() {
       this.tCanvas.clearCanvas();
       for (const {data:{name}} of this.elements) {
-        let {data: {curves}, data, options} = this.$store.state.geologyGis.awGis.getElement(name)
+        let {data: {curves}, options} = this.$store.state.geologyGis.awGis.getElement(name)
         for (const [wellID, curve] of Object.entries(curves)) {
           if(wellID !== this.wellName) continue;
           this.tCanvas.drawCurve(curve, {options, wellID})
