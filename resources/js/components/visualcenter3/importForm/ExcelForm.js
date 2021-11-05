@@ -32,7 +32,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Plans from "./dataManagers/plans";
 import CloseMonth from "./dataManagers/closeMonth";
 
-const defaultDzoTicker = "КБМ";
+const defaultDzoTicker = "ЭМГ";
 
 export default {
     data: function () {
@@ -485,16 +485,18 @@ export default {
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
+            this.SET_LOADING(true);
             this.axios.post(uri, this.excelData)
                 .then((response) => {
                     if (response.status === 200) {
                         this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
                         this.status = this.trans("visualcenter.importForm.status.dataSaved");
                     }
+                    this.SET_LOADING(false);
                 })
                 .catch((error) => {
                     this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+                    this.SET_LOADING(false);
                 });
         },
 

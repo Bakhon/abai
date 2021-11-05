@@ -42,10 +42,8 @@ export default {
                 this.excelData['user_position'] = this.userPosition;
                 this.excelData['change_reason'] = this.changeReason;
                 this.excelData['toList'] = ['firstMaster','secondMaster','mainMaster'];
-                this.SET_LOADING(true);
                 await this.storeData(uri);
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
-                this.SET_LOADING(false);
             }
         },
        async changeCategory(name) {
