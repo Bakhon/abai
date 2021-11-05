@@ -32,7 +32,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Plans from "./dataManagers/plans";
 import CloseMonth from "./dataManagers/closeMonth";
 
-const defaultDzoTicker = "ЭМГ";
+const defaultDzoTicker = "КБМ";
 
 export default {
     data: function () {
@@ -369,7 +369,6 @@ export default {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
-                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
             } else {
                 this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
