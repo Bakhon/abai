@@ -1,10 +1,10 @@
 <template>
   <div class="forecast-container">
     <div class="forecast-nav">
-<!--      <div v-if="selected" class="forecast-nav-item" @click="onGoBack(selected)">-->
-<!--        назад-->
-<!--      </div>-->
-      <div class="forecast-nav-item" :class="{ active: i === activeItem}" v-for="(tab, i) in tabs" :key="i"
+      <div v-if="selected" class="forecast-nav-back" @click="onGoBack(selected)">
+        <img src="../../../../../public/img/prod-planning/icons/maximize.svg" alt="">
+      </div>
+      <div class="forecast-nav-item" :class="{ active: i === activeItem, 'not-active':  isComponentActive }" v-for="(tab, i) in tabs" :key="i"
            @click="selectedNav(i, tab)">
         {{ tab.title }}
       </div>
@@ -16,7 +16,7 @@
           <div class="plan-block">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("prod-plan.plan-block-title") }}
+                {{ this.trans("prod-plan.days-base-mining") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -39,7 +39,7 @@
           <div class="factor-plan-block">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("prod-plan.factor-plan-title") }}
+                {{ this.trans("prod-plan.plan-fact-base-production") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -64,7 +64,7 @@
           <div class="debit-plan-block">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("prod-plan.debit-plan-title") }}
+                {{ this.trans("prod-plan.reasons-for-deviation") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -87,7 +87,7 @@
           <div class="gtm-vns-block">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("prod-plan.gtm-vns-title") }}
+                {{ this.trans("prod-plan.reasons-for-drop") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -109,7 +109,7 @@
         </div>
       </div>
       <keep-alive v-else>
-        <component :is="selected"></component>
+        <component :is="selected" @backToProdForecast="onChangePage()"></component>
       </keep-alive>
     </div>
   </div>
@@ -119,31 +119,27 @@ import fluidPredictionMethod from "./base-prod-forecast-components/FluidPredicti
 import lysenkoCalculations from "./base-prod-forecast-components/LysenkoCalculations";
 import machineLearningMethods from "./base-prod-forecast-components/MachineLearningMethods";
 import waterCutPredictionMethod from "./base-prod-forecast-components/WaterCutPredictionMethod";
-import baseProdForecast from "../components/BaseProdForecast";
 
 
 export default {
   name: 'monitoring-plan-fact',
   data: function () {
     return {
-      main: {
-        component: baseProdForecast
-      },
       tabs: [
         {
-          title: "Выбор метода прогноза жидкости",
+          title: this.trans("prod-plan.fluid-prediction-method"),
           component: fluidPredictionMethod,
         },
         {
-          title: "Выбор метода прогноза обводненности",
+          title: this.trans("prod-plan.water-cut-prediction-method"),
           component: waterCutPredictionMethod,
         },
         {
-          title: "Расчеты по Лысенко",
+          title: this.trans("prod-plan.lysenko-calculations"),
           component: lysenkoCalculations,
         },
         {
-          title: "Методы машинного обучения",
+          title: this.trans("prod-plan.machine-learning-methods"),
           component: machineLearningMethods,
         }
       ],
@@ -157,11 +153,17 @@ export default {
       this.activeItem = i;
       this.selected = tab.component
       this.isComponentActive = false
+      this.$emit(tab.title)
+      console.log(i)
+    },
+    onChangePage(e) {
+      console.log(e)
     },
     onGoBack(s) {
       s = !s
+      console.log(s)
       this.isComponentActive = true
-    }
+    },
   }
 }
 </script>
@@ -265,6 +267,11 @@ export default {
 
 .active {
   background: #2C44BD;
+}
+
+
+.not-active {
+  background: #333975;
 }
 
 /**/

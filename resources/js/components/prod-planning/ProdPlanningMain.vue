@@ -20,6 +20,7 @@
         <prod-plan-sidebar :activatedBlocks="activatedBlocks"/>
       </div>
       <div class="right-block">
+        <monitoring-plan-fact v-if="!selected"></monitoring-plan-fact>
         <keep-alive>
           <component :is="selected"/>
         </keep-alive>
@@ -31,37 +32,38 @@
 import businessPlan from "./components/BusinessPlanning";
 import monitorPlanFact from "./components/MonitoringPlanFact";
 import baseProdForecast from "./components/BaseProdForecast";
+import {baseProdForecastSidebar, monitoringPlanFactSidebar} from "./components/helpers/sideBarObjects";
 
 export default {
   name: 'prod-plan',
   data: function () {
     return {
-      activatedBlocks: {
+      activatedBlocks1: {
         isIndexActive: true,
         isSearchWell: true,
         isIndicatorActive: true,
         isSearchWellButton: false
       },
-      activeItem: null,
-      selected: monitorPlanFact,
+      activeItem: '0',
+      selected: null,
       tabs: [
         {
-          title: "Мониторинг план-факт",
+          title: this.trans("prod-plan.plan-fact-monitoring"),
           component: monitorPlanFact,
           icon: require('../../../../public/img/prod-planning/icons/mon-plan-fact.svg'),
         },
         {
-          title: "Прогноз базовой добычи",
+          title: this.trans("prod-plan.base-production-forecast"),
           component: baseProdForecast,
           icon: require('../../../../public/img/prod-planning/icons/forecast.svg'),
         },
         {
-          title: "Бизнес-планирование",
+          title: this.trans("prod-plan.business-planning"),
           component: businessPlan,
           icon: require('../../../../public/img/prod-planning/icons/bus-plan.svg'),
         },
         {
-          title: "Долгосрочная программа",
+          title: this.trans("prod-plan.long-term-program"),
           component: 'BusPlan',
           icon: require('../../../../public/img/prod-planning/icons/program.svg'),
         }
@@ -74,17 +76,24 @@ export default {
       console.log(i)
       this.selected = tab.component
     },
-    changedBlocks(e) {
+    onChangePage(e) {
       console.log(e)
     }
   },
+  computed: {
+    activatedBlocks() {
+      if (this.activeItem == 0) {
+        return monitoringPlanFactSidebar
+      } else if (this.activeItem == 1) {
+        return baseProdForecastSidebar
+      }
+    },
+  },
   components: {
-    businessPlan,
-    monitorPlanFact,
-    baseProdForecast
+    navbarComponents: () => this.busPlan && this.monPlanFact && this.baseProd
   },
   created() {
-    console.log(this.$options.name)
+    console.log(this.$options.name, 'component name')
   }
 }
 </script>

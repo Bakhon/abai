@@ -106,6 +106,9 @@ export default {
     return{
 
     }
+  },
+  onChangePage(e) {
+    console.log(e)
   }
 }
 </script>
