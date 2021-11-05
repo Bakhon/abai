@@ -1393,7 +1393,7 @@ return [
             'meas_count' => 'Кол-во замеров',
         ],
         'current_g_d_i_s' => [
-            'conclusion' => 'Заключение',
+            'conclusion' => 'Справочник заключений ГДИС',
             'target' => 'Цель',
             'device' => 'Прибор',
             'transcript_dynamogram' => 'Расшифровка динамограммы',
