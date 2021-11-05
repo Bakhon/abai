@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD'
+            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD','SET_PRODUCTION_HISTORICAL'
         ]),
         handleYearSelect(date) {
             _.forEach(this.dates, (item) => {
@@ -93,11 +93,12 @@ export default {
                 });
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             } else {
-                this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
+                //this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
+            this.SET_PRODUCTION_HISTORICAL(this.productionHistoricalData);
         },
         fillDates() {
             this.dates = [];
@@ -183,6 +184,11 @@ export default {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
                 let sorted = _.sortBy(filtered, 'date');
+                let isChecked = true;
+                _.forEach(sorted, (item) => {
+                    isChecked = item.isChecked;
+                });
+                summary.isChecked = isChecked;
                 calculated.push(summary);
                 calculated = calculated.concat(sorted);
             });
@@ -206,8 +212,6 @@ export default {
     mounted() {
         this.fillDates();
         this.dates = this.getHistorical();
-        let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
-        this.dates[currentYearIndex].isChecked = true;
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionHistoricalData']),
@@ -220,7 +224,6 @@ export default {
                 this.isDownloadCompleted = true;
                 let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
                 this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
-                this.dates[currentYearIndex].isChecked = true;
                 this.SET_VISIBLE_PRODUCTION(false);
             }
         }
