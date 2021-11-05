@@ -133,9 +133,17 @@ export default {
     },
     updateParent: async function(node, val) {
       while(node) {
-        node.isChecked = val;
+        if(!val && !this.hasCheckedChildren(node)) node.isChecked = val;
+        else node.isChecked = true;
         node = node?.parent;
       }
+    },
+    hasCheckedChildren: function(node) {
+      if(!this.isHaveChildren(node)) return false;
+      for(let child of node.children) {
+        if(child.isChecked) return true;
+      }
+      return false;
     },
     isHaveChildren(node) {
       return typeof node !== 'undefined' && 
