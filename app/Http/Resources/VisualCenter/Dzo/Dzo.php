@@ -115,11 +115,11 @@ class Dzo {
         }
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
-        $companySummary = $dzo->getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
+        $companySummary = $dzo->getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd);
         return $companySummary;
     }
 
-    private function getPlanByYear($plans,$fieldName,$periodEnd)
+    protected function getPlanByYear($plans,$fieldName,$periodEnd)
     {
         $summary = 0;
         foreach($plans as $plan) {
@@ -133,7 +133,7 @@ class Dzo {
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd)
     {
 
     }
@@ -177,11 +177,14 @@ class Dzo {
 
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
-        $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
+        $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
+        if ($dzoName === 'ОМГ') {
+          // dd($summary);
+        }
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd)
     {
 
     }
