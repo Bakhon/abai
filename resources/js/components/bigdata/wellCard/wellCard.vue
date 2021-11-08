@@ -101,66 +101,66 @@
           }"
         >
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
-            <div class="row">
-              <div class="middle-block-head">
-                <div class="transparent-select">
-                  {{ this.trans("well.well") }}:
-                  <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+            <div
+                    :class="[measurementScheduleForms.includes(activeFormComponentName) ? 'width__1700' : 'width__1219','middle-block-head d-flex well-info_header bg-dark-transparent']"
+            >
+              <div class="transparent-select">
+                {{ this.trans("well.well") }}:
+                <span v-if="wellUwi">{{ wellUwi }}</span>
+                <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+              </div>
+              <form class="search-form d-flex align-items-center">
+                <select
+                  class="select-dzo mr-2"
+                  v-if="dzoSelectOptions.length > 0"
+                  @change="dzoSelectChange($event)"
+                >
+                  <option value="0" selected>
+                    {{ this.trans("well.all_dzo") }}
+                  </option>
+                  <option
+                    v-for="(dzoSelectOption, index) in dzoSelectOptions"
+                    :value="dzoSelectOption['id']"
+                  >
+                    {{ dzoSelectOption["name"] }}
+                  </option>
+                </select>
+                <v-select
+                  class="flex-fill"
+                  :filterable="false"
+                  :options="options"
+                  :placeholder="this.trans('well.number_well')"
+                  @input="selectWell"
+                  @search="onSearch"
+                >
+                  <template slot="option" slot-scope="option">
+                    <span>{{ option.name }}</span>
+                  </template>
+                </v-select>
+              </form>
+              <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
+                <div class="button-block__item">
+                  Легенда
                 </div>
-                <form class="search-form d-flex align-items-center">
-                  <select
-                    class="select-dzo mr-2"
-                    v-if="dzoSelectOptions.length > 0"
-                    @change="dzoSelectChange($event)"
-                  >
-                    <option value="0" selected>
-                      {{ this.trans("well.all_dzo") }}
-                    </option>
-                    <option
-                      v-for="(dzoSelectOption, index) in dzoSelectOptions"
-                      :value="dzoSelectOption['id']"
-                    >
-                      {{ dzoSelectOption["name"] }}
-                    </option>
-                  </select>
-                  <v-select
-                    class="flex-fill"
-                    :filterable="false"
-                    :options="options"
-                    :placeholder="this.trans('well.number_well')"
-                    @input="selectWell"
-                    @search="onSearch"
-                  >
-                    <template slot="option" slot-scope="option">
-                      <span>{{ option.name }}</span>
-                    </template>
-                  </v-select>
-                </form>
-                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
-                  <div class="button-block__item">
-                    Легенда
-                  </div>
-                  <div class="button-block__item">
-                    График
-                  </div>
-                  <div
-                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                          class="button-block__item"
-                  >
-                          Сформировать
-                  </div>
-                  <div
-                          v-else
-                          class="button-block__item"
-                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
-                  >
-                    Исторические сведения
-                  </div>
+                <div class="button-block__item">
+                  График
+                </div>
+                <div
+                        v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
+                        class="button-block__item"
+                >
+                        Сформировать
+                </div>
+                <div
+                        v-else
+                        class="button-block__item"
+                        @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                >
+                  Исторические сведения
                 </div>
               </div>
             </div>
-            <div v-if="wellUwi" class="mid-col__main_row">
+            <div v-if="wellUwi" class="mid-col__main_row pt__40">
               <div v-if="activeFormComponentName">
                 <div
                   :is="activeFormComponentName"
@@ -2052,7 +2052,6 @@ h4 {
 .middle-block-head {
     display: flex;
     padding: 0 10px;
-    width: 100%;
     align-items: center;
 }
 .transparent-select{
@@ -2794,5 +2793,19 @@ h4 {
 .wells-history-title {
   color: #fff;
   padding-top: 5px;
+}
+.well-info_header {
+  position: fixed;
+  z-index: 999;
+  margin-left: -15px;
+}
+.pt__40 {
+  padding-top: 40px;
+}
+.width__1219 {
+  width: 1219px;
+}
+.width__1700 {
+  width: 1700px;
 }
 </style>
