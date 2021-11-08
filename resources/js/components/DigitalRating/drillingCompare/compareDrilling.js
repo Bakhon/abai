@@ -46,11 +46,8 @@ export default {
     }
   },
 
-  async created() {
-    await this.fetchData();
-  },
-
   async mounted() {
+    await this.fetchData();
     await this.initMap('wellMap');
     await this.initWellOnMap();
     await this.initContourOnMap();
