@@ -550,46 +550,39 @@
                                     <td colspan="2" class="nozzles-td">
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_1">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_1" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_2">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_2" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_3">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_3" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_4">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_4" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_5">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_5" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_6">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_6" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_7">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_7" @change="nozzleSelect(1)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -598,46 +591,39 @@
                                     <td colspan="2" class="nozzles-td">
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_1">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_1" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_2">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_2" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_3">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_3" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_4">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_4" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_5">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_5" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_6">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_6" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
-                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_7">
-                                                    <option value="">1/32 Дюйма</option>
+                                                <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_7" @change="nozzleSelect(2)">
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -650,10 +636,10 @@
                                         {{trans('digital_drilling.daily_raport.TFA_area')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text">
+                                        <input type="text" v-model="report.bit_info_daily[0].tfa">
                                     </td>
                                     <td colspan="2">
-                                        <input type="text">
+                                        <input type="text" v-model="report.bit_info_daily[1].tfa">
                                     </td>
                                 </tr>
                                 <tr>
@@ -1001,9 +987,9 @@
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
                             <td colspan="2">
-                                <select-add :options="pumps" name="pump1" :header="pump1"
+                                <select-add :options="pumps" name="pump0" :header="report.pump_daily[0].pump_type"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Насос №1', 'pump_type', 'pump1')"
+                                            @addItem="openCatalog('Насос №1', 'pump_type', 'pump0')"
                                 />
                             </td>
                         </tr>
@@ -1012,85 +998,85 @@
                                 {{trans('digital_drilling.daily_raport.bushings_mm')}}
                             </td>
                             <td>
-                                <select-add :options="bushings" name="bushings1" :header="bushings1"
+                                <select-add :options="bushings" name="bushings0" :header="report.pump_daily[0].pump_barrel_type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings0')"
+                                />
+                            </td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td>
+                                <input type="text" v-model="report.pump_daily[0].liters_type">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.coef_floor')}}
+                            </td>
+                            <td><input type="text"  v-model="report.pump_daily[0].coeff_type"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}} <sup>3</sup></td>
+                            <td>
+                                <input type="text" v-model="report.pump_daily[0].liquid_dens">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="pressure in report.pump_daily[0].pumping_pressure">
+                            <td><input type="text" v-model="pressure.progress"></td>
+                            <td><input type="text"  v-model="pressure.depth"></td>
+                            <td><input type="text"  v-model="pressure.pressure"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
+                            <td colspan="2">
+                                <select-add :options="pumps" name="pump1" :header="report.pump_daily[1].pump_type"
+                                            @selectOption="selectOption"
+                                            @addItem="openCatalog('Насос №2', 'pump_type', 'pump1')"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.bushings_mm')}}
+                            </td>
+                            <td>
+                                <select-add :options="bushings" name="bushings1" :header="report.pump_daily[1].pump_barrel_type"
                                             @selectOption="selectOption"
                                             @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings1')"
                                 />
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td>
-                                <input type="text">
+                                <input type="text" v-model="report.pump_daily[1].liters_type">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 {{trans('digital_drilling.daily_raport.coef_floor')}}
                             </td>
-                            <td><input type="text"></td>
+                            <td><input type="text"  v-model="report.pump_daily[1].coeff_type"></td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}} <sup>3</sup></td>
                             <td>
-                                <input type="text">
+                                <input type="text" v-model="report.pump_daily[1].liquid_dens">
                             </td>
                         </tr>
                         <tr>
-                            <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td rowspan="5"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
                             <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
                             <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
                             <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                            <td><input type="text"></td>
+                            <td></td>
                         </tr>
-                        <tr v-for="i in 5">
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
-                            <td colspan="2">
-                                <select-add :options="pumps" name="pump2" :header="pump2"
-                                            @selectOption="selectOption"
-                                            @addItem="openCatalog('Насос №2', 'pump_type', 'pump2')"
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {{trans('digital_drilling.daily_raport.bushings_mm')}}
-                            </td>
-                            <td>
-                                <select-add :options="bushings" name="bushings2" :header="bushings2"
-                                            @selectOption="selectOption"
-                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings2')"
-                                />
-                            </td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                            <td>
-                                <input type="text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {{trans('digital_drilling.daily_raport.coef_floor')}}
-                            </td>
-                            <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
-                            <td>
-                                <input type="text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                            <td><input type="text"></td>
-                        </tr>
-                        <tr v-for="i in 5">
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
+                        <tr v-for="pressure in report.pump_daily[1].pumping_pressure">
+                            <td><input type="text" v-model="pressure.progress"></td>
+                            <td><input type="text"  v-model="pressure.depth"></td>
+                            <td><input type="text"  v-model="pressure.pressure"></td>
+                            <td></td>
                         </tr>
                         <tr v-if="!pump[0].active">
                             <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
@@ -1100,43 +1086,47 @@
                     <table class="pump" v-if="pump[0].active">
                         <tbody>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(2)">-</span></td>
                             <td colspan="2">
-                                <select-add :options="pumps" name="pump3" :header="pump3"
+                                <select-add :options="pumps" name="pump2" :header="report.pump_daily[2].pump_type"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Насос №3', 'pump_type', 'pump3')"
+                                            @addItem="openCatalog('Насос №3', 'pump_type', 'pump2')"
                                 />
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                             <td>
-                                <select-add :options="bushings" name="bushings3" :header="bushings3"
+                                <select-add :options="bushings" name="bushings2" :header="report.pump_daily[2].pump_barrel_type"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings3')"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings2')"
                                 />
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" v-model="report.pump_daily[2].liters_type"></td>
                         </tr>
                         <tr>
-                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
-                            <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
-                            <td><input type="text"></td>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.coef_floor')}}
+                            </td>
+                            <td><input type="text"  v-model="report.pump_daily[2].coeff_type"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}} <sup>3</sup></td>
+                            <td>
+                                <input type="text" v-model="report.pump_daily[2].liquid_dens">
+                            </td>
                         </tr>
                         <tr>
-                            <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                            <td><input type="text"></td>
+                            <td rowspan="5"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td></td>
                         </tr>
-                        <tr v-for="i in 5">
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
+                        <tr v-for="pressure in report.pump_daily[2].pumping_pressure">
+                            <td><input type="text" v-model="pressure.progress"></td>
+                            <td><input type="text"  v-model="pressure.depth"></td>
+                            <td><input type="text"  v-model="pressure.pressure"></td>
+                            <td></td>
                         </tr>
                         <tr v-if="!pump[1].active">
                             <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
@@ -1146,43 +1136,47 @@
                     <table class="pump" v-if="pump[1].active">
                         <tbody>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(3)">-</span></td>
                             <td colspan="2">
-                                <select-add :options="pumps" name="pump4" :header="pump4"
+                                <select-add :options="pumps" name="pump3" :header="report.pump_daily[3].pump_type"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Насос №4', 'pump_type', 'pump4')"
+                                            @addItem="openCatalog('Насос №4', 'pump_type', 'pump3')"
                                 />
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                             <td>
-                                <select-add :options="bushings" name="bushings4" :header="bushings4"
+                                <select-add :options="bushings" name="bushings3" :header="report.pump_daily[3].pump_barrel_type"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings4')"
+                                            @addItem="openCatalog('Втулки, мм', 'pump_barrel', 'bushings3')"
                                 />
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" v-model="report.pump_daily[3].liters_type"></td>
                         </tr>
                         <tr>
-                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
-                            <td><input type="text"></td>
-                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}<sup>3</sup></td>
-                            <td><input type="text"></td>
+                            <td>
+                                {{trans('digital_drilling.daily_raport.coef_floor')}}
+                            </td>
+                            <td><input type="text"  v-model="report.pump_daily[3].coeff_type"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}} <sup>3</sup></td>
+                            <td>
+                                <input type="text" v-model="report.pump_daily[3].liquid_dens">
+                            </td>
                         </tr>
                         <tr>
-                            <td rowspan="6" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
-                            <td><input type="text"></td>
+                            <td rowspan="5"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td><input type="text">{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td></td>
                         </tr>
-                        <tr v-for="i in 5">
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
+                        <tr v-for="pressure in report.pump_daily[3].pumping_pressure">
+                            <td><input type="text" v-model="pressure.progress"></td>
+                            <td><input type="text"  v-model="pressure.depth"></td>
+                            <td><input type="text"  v-model="pressure.pressure"></td>
+                            <td></td>
                         </tr>
                         </tbody>
                     </table>
@@ -1668,7 +1662,7 @@
                             <tbody>
                             <tr>
                                 <th>Параметры</th>
-                                <th>Ед.измерения</th>
+                                <th>Ед. изм.</th>
                                 <th>Значение</th>
                             </tr>
                             <tr v-for="(rig, i) in rigCharacteristic[1]">
@@ -1784,38 +1778,6 @@
                     id: '',
                     name_ru: ''
                 },
-                bushings1: {
-                    id: '',
-                    name_ru: ''
-                },
-                bushings2: {
-                    id: '',
-                    name_ru: ''
-                },
-                bushings3: {
-                    id: '',
-                    name_ru: ''
-                },
-                bushings4: {
-                    id: '',
-                    name_ru: ''
-                },
-                pump1: {
-                    id: '',
-                    name_ru: ''
-                },
-                pump2: {
-                    id: '',
-                    name_ru: ''
-                },
-                pump3: {
-                    id: '',
-                    name_ru: ''
-                },
-                pump4: {
-                    id: '',
-                    name_ru: ''
-                },
                 catalogError: false,
                 catalogModal: false,
                 catalogModalCompany: false,
@@ -1883,27 +1845,27 @@
                 drillingRigTypes:[],
                 drillingRig:[],
                 nameChemicals: [],
-                NozzlesTable: [
-                    [7, 0.038, 0.075,  0.113,  0.150,  0.188,  0.225,  0.263,  0.301,  0.338,  0.376],
-                    [8, 0.049, 0.098,  0.147,  0.196,  0.245,  0.295,  0.344,  0.393,  0.442,  0.491],
-                    [9, 0.062,	0.124,	0.186,	0.249,	0.311,	0.373,	0.435,	0.497,	0.559,	0.621],
-                    [10, 0.077,	0.153,	0.230,	0.307,	0.383,	0.460,	0.537,	0.614,	0.690,	0.767],
-                    [11, 0.093,	0.186,	0.278,	0.371,	0.464,	0.557,	0.650,	0.742,	0.835,	0.928],
-                    [12, 0.110,	0.221,	0.331,	0.442,	0.552,	0.663,	0.773,	0.884,	0.994,	1.104],
-                    [13, 0.130,	0.259,	0.389,	0.518,	0.648,	0.778,	0.907,	1.037,	1.167,	1.296],
-                    [14, 0.150,	0.301,	0.451,	0.601,	0.752,	0.902,	1.052,	1.203,	1.353,	1.503],
-                    [15, 0.173,	0.345,	0.518,	0.690,	0.863,	1.035,	1.208,	1.381,	1.553,	1.726],
-                    [16, 0.196,	0.393,	0.589,	0.785,	0.982,	1.178,	1.374,	1.571,	1.767,	1.963],
-                    [18, 0.249,	0.497,	0.746,	0.994,	1.243,	1.491,	1.740,	1.988,	2.237,	2.485],
-                    [20, 0.307,	0.614,	0.920,	1.227,	1.534,	1.841,	2.148,	2.454,	2.761,	3.068],
-                    [22, 0.371,	0.742,	1.114,	1.485,	1.856,	2.227,	2.599,	2.970,	3.341,	3.712],
-                    [24, 0.442,	0.884,	1.325,	1.767,	2.209,	2.651,	3.093,	3.534,	3.976,	4.418],
-                    [26, 0.518,	1.037,	1.555,	2.074,	2.592,	3.111,	3.629,	4.148,	4.666,	5.185],
-                    [28, 0.601,	1.203,	1.804,	2.405,	3.007,	3.608,	4.209,	4.811,	5.412,	6.013],
-                    [30, 0.690,	1.381,	2.071,	2.761,	3.451,	4.142,	4.832,	5.522,	6.213,	6.903],
-                    [32, 0.785,	1.571,	2.356,	3.142,	3.927,	4.712,	5.498,	6.283,	7.069,	7.854],
+                NozzlesTable: {
+                    7: [ 0.038, 0.075,  0.113,  0.150,  0.188,  0.225,  0.263,  0.301,  0.338,  0.376],
+                    8: [ 0.049, 0.098,  0.147,  0.196,  0.245,  0.295,  0.344,  0.393,  0.442,  0.491],
+                    9: [0.062,	0.124,	0.186,	0.249,	0.311,	0.373,	0.435,	0.497,	0.559,	0.621],
+                    10:[ 0.077,	0.153,	0.230,	0.307,	0.383,	0.460,	0.537,	0.614,	0.690,	0.767],
+                    11:[ 0.093,	0.186,	0.278,	0.371,	0.464,	0.557,	0.650,	0.742,	0.835,	0.928],
+                    12:[ 0.110,	0.221,	0.331,	0.442,	0.552,	0.663,	0.773,	0.884,	0.994,	1.104],
+                    13:[ 0.130,	0.259,	0.389,	0.518,	0.648,	0.778,	0.907,	1.037,	1.167,	1.296],
+                    14:[ 0.150,	0.301,	0.451,	0.601,	0.752,	0.902,	1.052,	1.203,	1.353,	1.503],
+                    15:[ 0.173,	0.345,	0.518,	0.690,	0.863,	1.035,	1.208,	1.381,	1.553,	1.726],
+                    16:[ 0.196,	0.393,	0.589,	0.785,	0.982,	1.178,	1.374,	1.571,	1.767,	1.963],
+                    18:[ 0.249,	0.497,	0.746,	0.994,	1.243,	1.491,	1.740,	1.988,	2.237,	2.485],
+                    20:[ 0.307,	0.614,	0.920,	1.227,	1.534,	1.841,	2.148,	2.454,	2.761,	3.068],
+                    22:[ 0.371,	0.742,	1.114,	1.485,	1.856,	2.227,	2.599,	2.970,	3.341,	3.712],
+                    24:[ 0.442,	0.884,	1.325,	1.767,	2.209,	2.651,	3.093,	3.534,	3.976,	4.418],
+                    26:[ 0.518,	1.037,	1.555,	2.074,	2.592,	3.111,	3.629,	4.148,	4.666,	5.185],
+                    28:[ 0.601,	1.203,	1.804,	2.405,	3.007,	3.608,	4.209,	4.811,	5.412,	6.013],
+                    30:[ 0.690,	1.381,	2.071,	2.761,	3.451,	4.142,	4.832,	5.522,	6.213,	6.903],
+                    32:[ 0.785,	1.571,	2.356,	3.142,	3.927,	4.712,	5.498,	6.283,	7.069,	7.854],
 
-                ],
+                },
                 Nozzles: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 30, 32],
                 bitTypes:[],
                 manufacturers: [],
@@ -1937,6 +1899,36 @@
             this.getBHAelements()
         },
         methods: {
+            nozzleSelect(index){
+                let nozzles = ['nozzle_1', 'nozzle_2', 'nozzle_3', 'nozzle_4', 'nozzle_5', 'nozzle_6', 'nozzle_7']
+                let nozzleValues = []
+                let sum = 0
+                if (index == 1){
+                    for (let i=0; i<nozzles.length; i++) {
+                        nozzleValues.push(this.report.bit_info_daily[0].nozzle[nozzles[i]])
+                    }
+                    let counts = {};
+                    nozzleValues.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+                    for (const [key, value] of Object.entries(counts)) {
+                        if (key){
+                            sum += this.NozzlesTable[key][value-1]
+                        }
+                    }
+                    this.report.bit_info_daily[0].tfa = sum
+                }else  if (index == 2){
+                    for (let i=0; i<nozzles.length; i++) {
+                        nozzleValues.push(this.report.bit_info_daily[1].nozzle[nozzles[i]])
+                    }
+                    let counts = {};
+                    nozzleValues.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+                    for (const [key, value] of Object.entries(counts)) {
+                        if (key){
+                            sum += this.NozzlesTable[key][value-1]
+                        }
+                    }
+                    this.report.bit_info_daily[1].tfa = sum
+                }
+            },
             addMudDaily(){
                 this.report.drilling_mud_daily.push(this.newMudDaily)
             },
@@ -2025,36 +2017,20 @@
                                     this.getManufacturers()
                                     break
                                 case "pump_barrel":
-                                    switch (this.currentCatalogAdd.type) {
-                                        case "bushings1":
-                                            this.bushings1 = response.data
+                                    for (let i=0; i<this.report.pump_daily.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'bushings'+i){
+                                            this.report.pump_daily[i].pump_barrel_type = response.data
                                             break
-                                        case "bushings2":
-                                            this.bushings2 = response.data
-                                            break
-                                        case "bushings3":
-                                            this.bushings3 = response.data
-                                            break
-                                        case "bushings4":
-                                            this.bushings4 = response.data
-                                            break
+                                        }
                                     }
                                     this.getBushings()
                                     break
                                 case "pump_type":
-                                    switch (this.currentCatalogAdd.type) {
-                                        case "pump1":
-                                            this.pump1 = response.data
+                                    for (let i=0; i<this.report.pump_daily.length; i++) {
+                                        if (this.currentCatalogAdd.type == 'pump'+i){
+                                            this.report.pump_daily[i].pump_type = response.data
                                             break
-                                        case "pump2":
-                                            this.pump2 = response.data
-                                            break
-                                        case "pump3":
-                                            this.pump3 = response.data
-                                            break
-                                        case "pump4":
-                                            this.pump4 = response.data
-                                            break
+                                        }
                                     }
                                     this.getPumps()
                                     break
@@ -2161,34 +2137,19 @@
                         this.manufacturer2 = item
                         this.report.bit_info_daily[1].manufacturer = item
                         break
-                    case "bushings1":
-                        this.bushings1 = item
-                        break
-                    case "bushings2":
-                        this.bushings2 = item
-                        break
-                    case "bushings3":
-                        this.bushings3 = item
-                        break
-                    case "bushings4":
-                        this.bushings4 = item
-                        break
-                    case "pump1":
-                        this.pump1 = item
-                        break
-                    case "pump2":
-                        this.pump2 = item
-                        break
-                    case "pump3":
-                        this.pump3 = item
-                        break
-                    case "pump4":
-                        this.pump4 = item
-                        break
                 }
                 for (let i=0; i<this.report.drilling_mud_composition_daily.length; i++) {
                     if (name == 'chemical_name'+i){
                         this.report.drilling_mud_composition_daily[i].mud_composition = item
+                        break
+                    }
+                }
+                for (let i=0; i<this.report.pump_daily.length; i++) {
+                    if (name == 'pump'+i){
+                        this.report.pump_daily[i].pump_type = item
+                        break
+                    }else if (name == 'bushings'+i){
+                        this.report.pump_daily[i].pump_barrel_type = item
                         break
                     }
                 }
@@ -2454,7 +2415,44 @@
                 }
             },
             deletePump(index){
-                this.pump[index].active = false
+                this.pump[index-2].active = false
+                this.report.pump_daily[index] = {
+                    "id": "",
+                    "pump_type": {
+                        "id": "",
+                        "name_ru": ""
+                    },
+                    "pump_barrel_type": {
+                        "id": "",
+                        "name_ru": ""
+                    },
+                    "coeff_type": "",
+                    "liters_type": "",
+                    "liquid_dens": "",
+                    "pressure": "",
+                    "pumping_pressure": [
+                        {
+                            "progress": "",
+                            "depth": "",
+                            "pressure": ""
+                        },
+                        {
+                            "progress": "",
+                            "depth": "",
+                            "pressure": ""
+                        },
+                        {
+                            "progress": "",
+                            "depth": "",
+                            "pressure": ""
+                        },
+                        {
+                            "progress": "",
+                            "depth": "",
+                            "pressure": ""
+                        }
+                    ]
+                }
             }
         }
     }
