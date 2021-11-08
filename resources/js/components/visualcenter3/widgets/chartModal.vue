@@ -26,8 +26,18 @@
                         >
                             <div class="col-12 p-2 reason-description text-center reason-header">{{getDzoName(index)}}</div>
                             <hr>
-                            <div class="col-12 p-2 reason-description" v-for="(reason,reasonIndex) in item">
-                                <span class="">{{reasonIndex+1}}. {{reason}}</span>
+                            <div class="col-12 reason-description row m-0 p-0" v-for="(reason,reasonIndex) in item">
+                                <div class="col-12 d-flex reason-description_item p-0">
+                                    <div class="col-1">#</div>
+                                    <div class="col-9">{{trans('visualcenter.importForm.reason')}}</div>
+
+                                    <div class="col-3">{{trans('visualcenter.losses')}} (т)</div>
+                                </div>
+                                <div class="col-12 d-flex reason-description_item p-0">
+                                    <div class="col-1">{{reasonIndex+1}}</div>
+                                    <div class="col-9">{{reason[0]}}</div>
+                                    <div class="col-3">{{reason[1]}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -108,5 +118,8 @@ export default {
 }
 .reason-description {
     border-bottom: 1px solid #4C537E;
+}
+.reason-description_item {
+    border-bottom: 1px solid #4C537E
 }
 </style>

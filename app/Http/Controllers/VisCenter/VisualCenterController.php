@@ -34,13 +34,13 @@ class VisualCenterController extends Controller
 {
     private $allCompanies = array('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','ПКИ','КПО','ПКК','ТП','АГ');
     private $reasonFields = array(
-        'opec_explanation_reasons',
-        'impulse_explanation_reasons',
-        'shutdown_explanation_reasons',
-        'accident_explanation_reasons',
-        'restriction_kto_explanation_reasons',
-        'gas_restriction_explanation_reasons',
-        'other_explanation_reasons'
+        'opec_explanation_reasons' => 'opec_oil_losses',
+        'impulse_explanation_reasons' => 'impulse_oil_losses',
+        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
+        'accident_explanation_reasons' => 'accident_oil_losses',
+        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
+        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
+        'other_explanation_reasons' => 'other_oil_losses'
     );
 
     public function __construct()
@@ -687,9 +687,10 @@ class VisualCenterController extends Controller
     private function getFilteredReasons($reasons)
     {
         $filtered = array();
-        foreach($reasons->getAttributes() as $key => $reason) {
-            if (in_array($key, $this->reasonFields) && !is_null($reason)) {
-                array_push($filtered,$reason);
+        $attributes = $reasons->getAttributes();
+        foreach($attributes as $key => $reason) {
+            if (in_array($key, array_keys($this->reasonFields)) && !is_null($reason)) {
+                array_push($filtered,array($reason,$attributes[$this->reasonFields[$key]]));
             }
         }
         return $filtered;
