@@ -2,7 +2,27 @@
   <div class="tkrs-main">
     <mainHeader />
     <div class="sidebar_graph" style="display:flex">
-        
+        <div class="data-analysis-left-block">
+          <div class="left-block-collapse-holder">
+            <div>
+              <img
+                src="/img/PlastFluids/chooseParameters.svg"
+                alt="choose parameters icon"
+              />
+              <span>Параметры</span>
+            </div>
+          </div>
+          <div class="dropdown-holder">
+      
+            <b-form-select class="custom-dropdown-block"></b-form-select>
+            <div class="line-block"></div>
+
+            <b-form-select  class="custom-dropdown-block"></b-form-select>
+            <b-button class="online-block" variant="success">Онлайн</b-button>
+            
+          </div>
+          
+        </div>
 
         <div class="tkrs-content">
             <div>
@@ -276,8 +296,15 @@
                 </tbody>
               </table>
             </div>
+            
       </div>
-              
+      <div class="daily-report">
+        <div class="daily-report-buttons">
+          <button class="daily-report-button">Сформировать</button>
+          <button class="daily-report-button">Сохранить</button>
+          <button class="daily-report-button">Отмена</button> 
+        </div>
+      </div>      
               
 
             </div>
@@ -323,6 +350,7 @@ export default {
   display: flex;
   width: 100%;
   height: calc(100vh - 143px);
+  padding-left: 6px;
 }
 table {
   color: white;
@@ -349,5 +377,80 @@ border: none !important;
 }
 .manual-input:hover {
   border: none;
+}
+.daily-report-buttons {
+  background: #323370;
+  height: 4%;
+  float: right;
+}
+.daily-report {
+  background: #323370;
+  height: 4%;
+}
+.sidebar_graph {
+  height: calc(100% - 36px);
+}
+.tkrs-content-down {
+      height: 100%;
+}
+.custom-dropdown-block {
+  background: #1F2142;
+  border: none;
+  color: #fff;
+}
+.line-block {
+  height: 4px;
+}
+.online-block {
+  width: 100%;
+}
+.comparison-graphs {
+  color: #fff;
+  font-size: 16px;
+}
+.data-analysis-left-block {
+  width: 249px;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  background: #272953;
+  color: #fff;
+}
+
+.left-block-collapse-holder {
+  display: flex;
+  width: 100%;
+  height: 42px;
+  background-color: #323370;
+}
+
+.left-block-collapse-holder > div {
+  display: flex;
+  height: 100%;
+  width: calc(100% - 29px);
+  align-items: center;
+  background-color: #323370;
+}
+
+.left-block-collapse-holder > div > img {
+  margin: 0 8px 0 10px;
+}
+
+.collapse-left__sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  background: var(--a-accent);
+  padding: 14px 6px;
+  border-radius: 10px 0 0 10px;
+  border: none;
+  border-left: 5px solid #272953;
+}
+.daily-report-button {
+  background: #3C4280;
+    color: white;
+    border: none;
 }
 </style>
