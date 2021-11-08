@@ -80,7 +80,7 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.oil * analysis_param.netback_fact / 1000) as netback,
                 SUM(CASE WHEN well_forecast.liquid > 0
                          THEN analysis_param.permanent_cost
-                         ELSE variable_stop_cost_fact	
+                         ELSE analysis_param.variable_stop_cost_fact	
                     END + 
                     well_forecast.liquid * analysis_param.variable_cost * analysis_param.oil_density / 1000 +
                     analysis_param.avg_prs_cost * well_forecast.prs_portion
@@ -88,7 +88,7 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.oil * analysis_param.netback_fact / 1000 -
                     CASE WHEN well_forecast.liquid > 0
                          THEN analysis_param.permanent_cost
-                         ELSE variable_stop_cost_fact	
+                         ELSE analysis_param.variable_stop_cost_fact	
                     END -
                     well_forecast.liquid * analysis_param.variable_cost * analysis_param.oil_density / 1000 -
                     analysis_param.avg_prs_cost * well_forecast.prs_portion
