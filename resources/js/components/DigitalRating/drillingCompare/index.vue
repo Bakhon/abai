@@ -276,11 +276,4 @@
   margin: 0 8px 0 0;
   opacity: 0.7;
 }
-
-.triangle {
-  width: 300px;
-  height: 300px;
-  background: red linear-gradient(red, blue);
-  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
-}
 </style>
