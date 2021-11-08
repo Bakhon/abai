@@ -9,7 +9,7 @@
                 src="/img/PlastFluids/chooseParameters.svg"
                 alt="choose parameters icon"
               />
-              <span>Параметры</span>
+              <span>{{trans('tr.parametrs')}}</span>
             </div>
           </div>
           <div class="dropdown-holder">
@@ -18,7 +18,7 @@
             <div class="line-block"></div>
 
             <b-form-select  class="custom-dropdown-block"></b-form-select>
-            <b-button class="online-block" variant="success">Онлайн</b-button>
+            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
           </div>
           
@@ -300,9 +300,9 @@
       </div>
       <div class="daily-report">
         <div class="daily-report-buttons">
-          <button class="daily-report-button">Сформировать</button>
-          <button class="daily-report-button">Сохранить</button>
-          <button class="daily-report-button">Отмена</button> 
+          <button class="daily-report-button">{{trans('tr.form')}}</button>
+          <button class="daily-report-button">{{trans('tr.save')}}</button>
+          <button class="daily-report-button">{{trans('tr.cancel')}}</button> 
         </div>
       </div>      
               
