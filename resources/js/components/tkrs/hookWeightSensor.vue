@@ -18,7 +18,7 @@
             <div class="line-block"></div>
 
             <b-form-select  class="custom-dropdown-block" :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
-            <b-button class="online-block" variant="success">Онлайн</b-button>
+            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
           </div>
           
@@ -265,7 +265,6 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wellDate = data;
-                    // this.chartData = data
                     
                     
                 } else {
