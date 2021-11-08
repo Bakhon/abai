@@ -44,7 +44,6 @@ class Ag extends Dzo {
     {
         $summary = array();
         $summaryByCondensate = $this->getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
-        //var_dump($periodEnd);
         array_push($summary,$summaryByCondensate);
         return $summary;
     }
@@ -53,8 +52,6 @@ class Ag extends Dzo {
     {
         $summary = array();
         $summaryByCondensate = $this->getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
-        //var_dump($companySummary);
-        //dd($periodEnd);
         array_push($summary,$summaryByCondensate);
         return $summary;
     }

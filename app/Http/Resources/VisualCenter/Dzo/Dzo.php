@@ -178,9 +178,6 @@ class Dzo {
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
         $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
-        if ($dzoName === 'ОМГ') {
-          // dd($summary);
-        }
         return $summary;
     }
 
