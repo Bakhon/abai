@@ -121,7 +121,36 @@ export default {
       } else {
         this.headerNode.isChecked = !this.headerNode.isChecked
       }
+
+      this.updateChildren(this.headerNode);
+      this.updateParent(this.headerNode);
+      this.$forceUpdate();
     },
+    updateChildren(headerNode) {
+      if(!headerNode?.children) return;
+      for(let child of headerNode.children) {
+        child.parent = headerNode;
+        child.isChecked = headerNode.isChecked;
+        this.updateChildren(child);
+      }
+    },
+    updateParent(headerNode) {
+      let val = headerNode.isChecked;
+      while(headerNode) {
+        if(!val && this.hasSelectedChildren(headerNode)) {
+          break;
+        }
+        headerNode.isChecked = val;
+        headerNode = headerNode.parent; 
+      }
+    },
+    hasSelectedChildren(headerNode) {
+      if(!headerNode?.children) return false;
+      for(let child of headerNode.children) {
+        if(child.isChecked || this.hasSelectedChildren(child)) return true;
+      }
+      return false;
+    }
   },
 };
 </script>
