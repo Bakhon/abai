@@ -138,7 +138,7 @@ export default {
         wells: false,
         mnemonics: false
       },
-      selectedWells: [{"sort":0,"value":"UZN_0144"}]
+      selectedWells: []
     }
   },
   components: {
