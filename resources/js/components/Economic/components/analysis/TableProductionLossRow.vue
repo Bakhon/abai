@@ -60,8 +60,8 @@
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
               calcWaterCut(
-                  Math.abs(row.wells[dateIndex][profitability].liquid),
-                  Math.abs(row.wells[dateIndex][profitability].oil)
+                  Math.abs(row.wells[dateIndex][profitability].liquid_loss),
+                  Math.abs(row.wells[dateIndex][profitability].oil_loss)
               )
             }}
           </div>
@@ -94,7 +94,7 @@
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ calcWaterCut(calcSum(row, 'liquid'), calcSum(row, 'oil')) }}
+            {{ calcWaterCut(calcSum(row, 'liquid_loss'), calcSum(row, 'oil_loss')) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
