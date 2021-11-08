@@ -13,6 +13,6 @@ class PaegtmDzoAegtmSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new PaegtmDzoAegtmImport(), public_path('imports/paegtm_dzo_aegtm.xlsx'));
+        Excel::import(new PaegtmDzoAegtmImport(), public_path('imports/paegtm_dzo_aegtm_new.xlsx'));
     }
 }
