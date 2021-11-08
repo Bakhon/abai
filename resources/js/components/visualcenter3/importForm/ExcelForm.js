@@ -369,7 +369,6 @@ export default {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
-                this.showToast(this.trans("visualcenter.excelFormPlans.saveBody"), this.trans("visualcenter.excelFormPlans.validateTitle"), 'Success');
             } else {
                 this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
@@ -486,16 +485,18 @@ export default {
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
+            this.SET_LOADING(true);
             this.axios.post(uri, this.excelData)
                 .then((response) => {
                     if (response.status === 200) {
                         this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
                         this.status = this.trans("visualcenter.importForm.status.dataSaved");
                     }
+                    this.SET_LOADING(false);
                 })
                 .catch((error) => {
                     this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+                    this.SET_LOADING(false);
                 });
         },
 

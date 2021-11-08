@@ -43,6 +43,7 @@
                 pointHitRadius: 15,
                 reasons: {},
                 dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
+                opecEndDate: moment('01.09.2021', 'DD.MM.YYYY')
             }
         },
         methods: {
@@ -61,6 +62,9 @@
                 };
                 let self = this;
                 let summaryOpek = 0;
+                if (moment() >= this.opecEndDate) {
+                    this.initialChartLabels.plan = this.trans("visualcenter.correctedOpec");
+                }
                 _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
                     formattedChartSummary.labels.push(self.getFormattedDate(item.time));
                     formattedChartSummary.plan.push(item.productionPlanForChart2);
@@ -110,7 +114,6 @@
                     label: chartLabels.plan,
                     borderColor: chartColors.plan,
                     fill: false,
-                    backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.plan,
                     pointHitRadius: this.pointHitRadius,
@@ -119,8 +122,9 @@
                 let factChartOptions = {
                     label: chartLabels.fact,
                     borderColor: chartColors.fact,
-                    fill: false,
+                    fill: 1,
                     showLine: true,
+                    backgroundColor: fillPattern,
                     data: formattedChartSummary.fact,
                     pointHitRadius: this.pointHitRadius,
                     pointRadius: 0
@@ -140,18 +144,17 @@
                     label: chartLabels.monthlyPlan,
                     borderColor: chartColors.monthlyPlan,
                     fill: false,
-                    backgroundColor: fillPattern,
                     showLine: true,
                     pointRadius: 0,
                     data: formattedChartSummary.monthlyPlan,
                     pointHitRadius: this.pointHitRadius
                 };
-                let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
+                let datasets = [planOpecChartOptions,planChartOptions,factChartOptions];
                 if (isNaN(summaryOpek)) {
-                    datasets = [factChartOptions,planOpecChartOptions];
+                    datasets = [planOpecChartOptions,factChartOptions];
                 }
                 if (chartSummary.isFilterTargetPlanActive) {
-                    datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
+                    datasets = [planOpecChartOptions,planChartOptions,factChartOptions,monthlyPlan];
                 }
                 this.datasets = datasets;
                 this.labels = formattedChartSummary.labels;
@@ -217,8 +220,11 @@
             async handleClick(point, event) {
                 let item = event[0];
                 if (item && this.isDecreaseReasonActive) {
-                    this.reasons = await this.getDecreaseReasons(moment(this.labels[item._index],'DD / MMM / YYYY').format('DD.MM.YYYY'),this.selectedCompanies);
-                    this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
+                    let tickDate = moment(this.labels[item._index],'DD / MMM / YYYY');
+                    this.reasons = await this.getDecreaseReasons(tickDate.format('DD.MM.YYYY'),this.selectedCompanies);
+                    if (tickDate < this.opecEndDate) {
+                        this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
+                    }
                     this.$emit('chartReasons', this.reasons);
                 }
 

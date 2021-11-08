@@ -28,6 +28,15 @@ class FormsController extends Controller
     }
 
 
+    public function getWellFormsStructure(FormService $formService): JsonResponse
+    {
+        return response()->json(
+            [
+                'tree' => $formService->getWellFormsStructure()
+            ]
+        );
+    }
+
     public function getFormsStructure(FormService $formService): JsonResponse
     {
         return response()->json(

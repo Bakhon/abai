@@ -176,13 +176,19 @@ export default {
         },
         getChildDifference(current, actual) {
             let difference = {};
+            if (current === null) {
+                return {};
+            }
             _.forEach(Object.keys(current), (currentKey) => {
                 if (this.systemFields.includes(currentKey)) {
                     return;
                 }
                 let currentDetail = current[currentKey];
+                let actualDetail = null;
+                if (actual) {
+                    actualDetail = actual[currentKey];
+                }
 
-                let actualDetail = actual[currentKey];
                 if (currentDetail !== actualDetail) {
                     difference[currentKey] = {
                         'currentDetail':  currentDetail,

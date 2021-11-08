@@ -52,6 +52,7 @@ class WellsController extends Controller
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
+            'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
@@ -131,7 +132,7 @@ class WellsController extends Controller
                 foreach ($items as $item) {
                     $key = array_search($item->id, $parents_id);
                     $allParents[$key] = $item;
-                }
+                } 
             }
         }
         return $allParents;
@@ -161,6 +162,13 @@ class WellsController extends Controller
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
             ->get(['prod.well_constr.od']);
+    }
+
+    private function date_expl(Well $well)
+    {
+        $date_expl = $well->status()                        
+            ->first(['name_ru', 'dbeg']);
+        return $date_expl;
     }
 
 

@@ -34,20 +34,9 @@ class GasWell extends PlainForm
         return $errors;
     }
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentId)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $this->request->get('well');
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
-                }
-            }
-        }
+        $this->innerTableService->submitTables($this->request->get('well'), $this->tableFields);
     }
 
 }
