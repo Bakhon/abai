@@ -16,6 +16,7 @@ const plastFluidsLocal = {
     tableState: "default",
     loading: false,
     graphType: "ps_bs_ds_ms",
+    currentGraphics: ["Ps", "Bs", "Ds", "Ms"],
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
@@ -52,6 +53,9 @@ const plastFluidsLocal = {
     },
     SET_GRAPH_TYPE(state, payload) {
       state.graphType = payload;
+    },
+    SET_CURRENT_GRAPHICS(state, payload) {
+      state.currentGraphics = payload;
     },
     SET_LOCAL_HORIZONS(state, payload) {
       state.localHorizons = payload;

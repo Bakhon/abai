@@ -44,7 +44,7 @@ class GtmRegister extends PlainForm
             $id = $dbQuery->insertGetId($formFields);
         }
 
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
         $this->updateWellStatus();
 
         DB::commit();

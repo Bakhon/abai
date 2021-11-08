@@ -29,7 +29,7 @@
                         @click="changeCategory('isCloseMonthActive')"
                 >
                     <div class="insert-data-icon col-1"></div>
-                    <div class="col-7">{{trans('visualcenter.closeMonth')}}</div>
+                    <div class="col-9">{{trans('visualcenter.closeMonth')}} ({{trans('visualcenter.factLowerCase')}})</div>
                 </div>
             </div>
         </div>
@@ -71,16 +71,16 @@
                     {{trans('visualcenter.importForm.pasteData')}}
                 </div>
                 <div
-                        class="col-12 status-block status-block_little menu__button mt-3"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && isUserPositionCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="validateMonthlyFact()"
                 >
                     {{trans('visualcenter.validateButton')}}
                 </div>
                 <div
-                        :class="[!isMonthFactFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
+                        :class="[isMonthFactFilled ? '' : 'menu__button_disabled', 'status-block status-block_little menu__button col-12 mt-3']"
                         @click="saveMonthlyFact()"
                 >
-                    {{trans('visualcenter.saveButton')}}
+                    {{trans('visualcenter.importForm.approve')}}
                 </div>
             </div>
             <div v-else-if="category.isFactActive" class="col-2 row mt-3 ml-1">
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div v-else class="col-2 row mt-3 ml-1"></div>
-            <div v-if="category.isArchieveActive" class="col-4 mt-3 row ml-1">
+            <div v-if="category.isArchieveActive || category.isCloseMonthActive" class="col-4 mt-3 row ml-1">
                 <b-form-input
                         size="sm"
                         v-model="userName"
@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <div v-if="category.isFactActive || category.isArchieveActive" class="col-2 row mt-3 ml-1">
+            <div v-if="(category.isFactActive || category.isArchieveActive) && !bigDzo.includes(selectedDzo.ticker)" class="col-2 row mt-3 ml-1">
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"

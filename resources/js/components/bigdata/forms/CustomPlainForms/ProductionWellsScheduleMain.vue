@@ -12,7 +12,6 @@
                         <div class="col-2 splitter"></div>
                         <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down']"></div>
                     </div>
-                    <span class="historical_button" @click="SET_VISIBLE_PRODUCTION(true),changeColumnsVisible(false),isMeasurementScheduleActive = false">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="d-flex mt-1">
@@ -79,79 +78,90 @@
             <div class="historical-container">
                 <div v-if="isMeasurementScheduleActive" v-for="periodItem in historicalData">
                     <div class="row ">
-                        <div class="col-12 center_block d-flex">
+                        <div class="col-12 center_block d-flex justify-content-between">
                             <div class="col-12">{{periodItem.id}}</div>
+                            <div class="head_icon" @click="periodItem.isExpanded = !periodItem.isExpanded">
+                                <div
+                                        :class="[periodItem.isExpanded ? 'arrow-cut-down' : 'arrow-expand']"
+                                ></div>
+                            </div>
                         </div>
                         <div class="historical-info-parent">
-                            <div class="historical-info">
-                                <div class="daily-table bd-table-first">
+                            <div v-show="periodItem.isExpanded" class="historical-info">
+                                <div :class="[periodItem.isHorizontalExpanded ? 'daily-table_width__450': 'daily-table_width__250','bd-table-first']">
                                     <table class="table text-center text-white  historical-table">
                                         <thead>
                                         <tr>
-                                            <th>СЭ</th>
-                                            <th>ø нас.</th>
-                                            <th>L НКТ</th>
-                                            <th>L</th>
-                                            <th>N</th>
+                                            <th v-if="periodItem.isHorizontalExpanded">СЭ</th>
+                                            <th v-if="periodItem.isHorizontalExpanded">ø нас.</th>
+                                            <th v-if="periodItem.isHorizontalExpanded">L НКТ</th>
+                                            <th v-if="periodItem.isHorizontalExpanded">L</th>
+                                            <th v-if="periodItem.isHorizontalExpanded">N</th>
                                             <th>Показатель</th>
                                             <th>Тех. <br>Режим</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr
-                                                v-if="periodItem.params.techMode"
-                                                v-for="(techModeItem,index) in periodItem.params.techMode"
-                                                :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
-                                                v-show="!techModeItem.isHide"
-                                        >
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>
-                                                {{techModeItem.label}}
-                                            </td>
-                                            <td>
-                                                {{techModeItem.value.toFixed(0)}}
-                                            </td>
-                                        </tr>
-                                        <tr class="header-background_dark">
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td colspan="2"  class="drop_down_link">
-                                                <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.id)">Показать поля</a>
-                                                <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.id)">Скрыть поля</a>
-                                            </td>
-                                        </tr>
+                                            <tr
+                                                    v-if="periodItem.params.techMode"
+                                                    v-for="(techModeItem,index) in periodItem.params.techMode"
+                                                    :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
+                                                    v-show="!techModeItem.isHide"
+                                            >
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td class="background__light">
+                                                    {{techModeItem.label}}
+                                                </td>
+                                                <td>
+                                                    -
+                                                </td>
+                                            </tr>
+                                            <tr class="header-background_dark">
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td colspan="2"  class="drop_down_link">
+                                                    <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Показать поля</a>
+                                                    <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Скрыть поля</a>
+                                                </td>
+                                            </tr>
                                         <tr class="header-background_light">
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td colspan="2">Мероприятия</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td class="background__light" colspan="2">Мероприятия</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                     <div class="table-arrow">
-                                        <svg data-v-b1a5f7e2="" width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path data-v-b1a5f7e2="" d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"></path></svg>
+                                        <div
+                                                :class="[periodItem.isHorizontalExpanded ? 'arrow-right' : 'arrow-left','cursor-pointer']"
+                                                @click="periodItem.isHorizontalExpanded = !periodItem.isHorizontalExpanded"
+                                        >
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="bd-table-second">
-                                    <table class="table text-center text-white text-nowrap historical-table">
+                                <div :class="[periodItem.isHorizontalExpanded ? 'days-table_left__450' : 'days-table_left__250','bd-table-second']">
+                                    <table class="table text-center text-white text-nowrap historical-table days-decomposition">
                                         <thead>
-                                        <tr>
-                                            <th
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                    :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                            >
-                                                &nbsp;<br>{{dayNumber}}
-                                            </th>
-                                        </tr>
+                                            <tr>
+                                                <th
+                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                >
+                                                    {{dayNumber}}
+                                                </th>
+                                                <th>Средние <br>(по методике)</th>
+                                                <th>Суммарные <br>(по методике)</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
@@ -164,7 +174,11 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td>-</td>
+                                                <td>{{periodItem.params.techMode[0].value.toFixed(1)}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -174,9 +188,12 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].liqCut.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td>{{periodItem.params.techMode[1].value.toFixed(1)}}</td>
+                                                <td>-</td>
                                             </tr>
-                                            <tr>
                                             <tr>
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
@@ -185,16 +202,11 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
-                                            </tr>
-                                                <td
-                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                                >
+                                                <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td>-</td>
+                                                <td>{{periodItem.params.techMode[2].value.toFixed(1)}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -204,7 +216,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -214,7 +230,25 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td
+                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                >
+                                                    &nbsp;
+                                                </td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -224,7 +258,11 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -234,7 +272,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -244,16 +286,25 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                                >{{periodItem.params.monthlyData[dayNumber-1].workHours}} 
+                                                >
+                                                    {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -263,7 +314,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -273,7 +328,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -283,10 +342,16 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td v-for="dayNumber in getDaysCountInMonth(periodItem.id)"> &nbsp; </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -294,9 +359,13 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                &nbsp;   
+                                                    &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -306,7 +375,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -316,7 +389,11 @@
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1)}}
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -326,7 +403,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -336,7 +417,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -346,7 +431,11 @@
                                                 >
                                                     &nbsp;
                                                 </td>
-                                                <td v-else>&nbsp;</td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -482,6 +571,8 @@ export default {
                     }
                     let monthSummary = {
                         'id': date.format('YYYY/MMM'),
+                        'isExpanded': true,
+                        'isHorizontalExpanded': true,
                         'month': date.format('MMM'),
                         'year': date.format('YYYY'),
                         'date': date,
@@ -498,7 +589,7 @@ export default {
                             'techMode': [
                                 {
                                     'label': 'Жидкость',
-                                    'value': _.sumBy(month, item => Number(item.liq)) / month.length,
+                                    'value': _.sumBy(month, item => Number(item.liq)),
                                     'isHide': !this.isRowsHide
                                 },
                                 {
@@ -508,7 +599,7 @@ export default {
                                 },
                                 {
                                     'label': 'Нефть',
-                                    'value': _.sumBy(month, 'oil') / month.length,
+                                    'value': _.sumBy(month, 'oil'),
                                     'isHide': !this.isRowsHide
                                 },
                                 {
@@ -625,34 +716,41 @@ export default {
         isTechModeBigger(currentValue, techMode) {
             return currentValue < Math.round(techMode.value);
         },
-        toggleRowVisibility(id){
-            this.isRowsHide = !this.isRowsHide
-            var key = _.findKey(this.historicalInfo, function(o) { return o.id == id; });
-
-            for (let i = 5; i < this.historicalInfo[key].params.techMode.length; i++) {
-                this.historicalInfo[key].params.techMode[i].isHide = this.isRowsHide
+        toggleRowVisibility(items){
+            for (let i = 5; i < items.length; i++) {
+                items[i].isHide = !items[i].isHide;
             }
 
-        }
+        },
     },
     async mounted() {
+        let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
         this.SET_LOADING(true);
-        const response = await axios.get(this.localeUrl(`/api/bigdata/wells/productionHistory/${this.well.id}`));
+        const response = await axios.get(this.localeUrl(uri));
         this.assignInfoByDates(response.data);
+        this.nahdleMeasurementSchedule();
         this.SET_LOADING(false);
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),
+    },
+    watch: {
+        "productionMeasurementSchedule": function(data) {
+            this.nahdleMeasurementSchedule();
+        }
     }
 }
 </script>
 <style scoped lang="scss">
 .drop_down_link{
     background: #2E50E9;
+    a {
+        color: #fff;
+    }
 }
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
+  height: 7px;
+  width: 7px;
 }
 
 .main-block {
@@ -820,13 +918,7 @@ export default {
     background: #656A8A;
 }
 .header-background_dark td:nth-child(6), .header-background_light td:nth-child(6) {
-    background: #636CC3;
-    &.drop_down_link {
-        background: #2E50E9;
-        a {
-            color:#fff
-        }
-    }
+
 }
 .historical-info {
     position: relative;
@@ -871,9 +963,14 @@ export default {
 .background__red {
     background-color: #E94580 !important;
 }
-.daily-table.bd-table-first {
-    width: 450px;
+.bd-table-first {
     position: relative;
+}
+.daily-table_width__450 {
+    width: 450px;
+}
+.daily-table_width__250 {
+    width: 276px;
 }
 .table-arrow {
     background: #8F95BA;
@@ -896,17 +993,52 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    left: 450px;
     bottom: 0;
     overflow-x: auto;
     &::-webkit-scrollbar-track {
         background: #272953;
-        height: 6px;
-        width: 6px;
     }
     &::-webkit-scrollbar-thumb {
        background: #2E50E9;
        border-radius: 10px;
     }
+}
+.days-table_left__450 {
+    left: 450px;
+}
+.days-table_left__250 {
+    left: 276px;
+}
+.days-decomposition {
+    th {
+        height: 43px;
+        vertical-align: middle;
+    }
+    tr {
+        td:last-child, td:nth-last-child(2) {
+            background: #636CC3;
+        }
+    }
+}
+.background__light {
+    background: #636CC3;
+}
+.arrow-left {
+    background: url(/img/bd/arrow-well-left.svg) no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-position: center;
+}
+.arrow-right {
+    background: url(/img/bd/arrow-well-right.svg) no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-position: center;
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div class="all-contents">
-    <div class="well-card_tab-head" :style="{ width: tabWidth + 'px' }" >
+    <div class="well-card_tab-head d-flex" :style="{ width: tabWidth + 'px' }" >
+      <div class="wells-history-title col-2">История скважин:</div>
       <div
               v-for="(well,index) in wellsHistory"
-              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well' : 'well-card_tab-head__item'"
+              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
               @click="handleSelectHistoryWell(well)"
       >
           {{well.wellUwi}}
@@ -427,6 +428,7 @@ export default {
         category: { name_ru: null },
         categoryLast: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
+        expl_right: { dbeg: null, name_ru: null },
         techs: null,
         tap: { tap: null },
         techsName: null,
@@ -450,6 +452,7 @@ export default {
         artificialBottomHole: null,
         perfActual: { top: null, base: null, dbeg: null },
         wellInfo: { rte: null },
+        date_expl: { dbeg: null, name_ru: null },
         treatmentSko: { treat_date: null },
         dmart_daily_prod_oil: { oil: null },
         dinzamer: { value_double: null },
@@ -512,6 +515,7 @@ export default {
         category: "category",
         categoryLast: "category_last",
         expl: "well_expl",
+        expl_right: "well_expl_right",
         techs: "techs",
         tap: "tap",
         labResearchValue: "lab_research_value",
@@ -521,6 +525,7 @@ export default {
         geo: "geo",
         tubeNom: "tube_nom",
         dinzamer: "dinzamer",
+        date_expl: "date_expl",
         measLiq: "measLiq",
         meas_water_inj: "meas_water_inj",
         tech_mode_inj: "tech_mode_inj",
@@ -574,6 +579,10 @@ export default {
           'wellSaptialObjectY': null,
           'wellSaptialObjectBottomX': null,
           'wellSaptialObjectBottomY': null
+        },
+        lastForm: {
+          'code': null,
+          'componentName': null
         }
       },
       wellsHistory: [],
@@ -701,8 +710,11 @@ export default {
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
         : "";
+      let wellDateExpl = this.well.date_expl
+        ? this.getFormatedDate(this.well.date_expl.dbeg)
+        : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
-      let well_expl_name = this.well.expl ? this.well.expl.name_ru : "";
+      let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
       let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
       let actualBottomHole = this.well.actualBottomHole
         ? this.well.actualBottomHole.depth +
@@ -815,12 +827,11 @@ export default {
         ? this.well.rzatrStat.value_double
         : "";
       let injPressure = this.getInjPressure(well);
-      let agentVol =
-        this.well.tech_mode_inj || this.well.meas_water_inj
-          ? this.well.tech_mode_inj.agent_vol +
-            " / " +
-            this.well.meas_water_inj.water_inj_val.toFixed(1)
-          : "";
+      let agentVol = (this.well.tech_mode_inj || this.well.meas_water_inj) && this.well.meas_water_inj.water_inj_val
+        ? this.well.tech_mode_inj.agent_vol +
+        " / " +
+        this.well.meas_water_inj.water_inj_val.toFixed(1)
+        : "";
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
@@ -942,7 +953,7 @@ export default {
         },
         {
           name: this.trans("well.date_expluatation"),
-          data: wellExpl,
+          data: wellDateExpl,
           type: ["all"],
         },
         {
@@ -1205,6 +1216,8 @@ export default {
       return well_passport_data;
     },
     selectWell(well) {
+      this.activeFormComponentName = null;
+      this.activeForm = null;
       if (well) {
         this.SET_LOADING(true);
         this.axios
@@ -1260,7 +1273,12 @@ export default {
               this.SET_LOADING(false);
             }
             this.setWellPassport();
-            this.storeWellToHistory();
+            let historyRecord = _.find(this.wellsHistory, {wellUwi:this.wellUwi});
+            if (!historyRecord) {
+              this.storeWellToHistory();
+            } else {
+              this.switchFormByCode(historyRecord.lastFormInfo);
+            }
             this.SET_LOADING(false);
           });
       }
@@ -1341,11 +1359,24 @@ export default {
       } catch (e) {}
     },
     switchFormByCode(data) {
+      this.SET_VISIBLE_PRODUCTION(false);
+      this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;
+      let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
+        return e.wellUwi == this.wellUwi;
+      }, 0);
+      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName
         ? this.activeFormComponentName
         : "ProductionWellsScheduleMain";
+      if (this.activeFormComponentName === 'ProductionWellsScheduleMain') {
+        this.SET_VISIBLE_PRODUCTION(true);
+        this.changeColumnsVisible(false);
+      } else if (this.activeFormComponentName === 'InjectionWellsScheduleMain') {
+        this.SET_VISIBLE_INJECTION(true);
+        this.changeColumnsVisible(false);
+      }
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
@@ -1365,7 +1396,8 @@ export default {
     storeWellToHistory() {
       let summaryWellInfo = {
          'wellUwi': this.wellUwi,
-         'well_passport': this.tableData
+         'well_passport': this.tableData,
+         'id': this.well.id,
       };
       _.forEach(Object.keys(this.historyWellTemplate.params), (key) => {
           if (key === 'category') {
@@ -1376,7 +1408,11 @@ export default {
             summaryWellInfo[key] = null;
           }
       });
+      summaryWellInfo['lastFormInfo'] = this.activeForm;
       this.wellsHistory.push(summaryWellInfo);
+      if (this.wellsHistory.length > 5) {
+          this.wellsHistory.shift();
+      }
     },
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
@@ -1387,6 +1423,7 @@ export default {
       _.forEach(Object.keys(well), (key) => {
           this[key] = well[key];
       });
+      this.selectWell({'id':well.id,'name':well.wellUwi})
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.isBothColumnFolded = false;
@@ -1425,6 +1462,7 @@ $rightColumnFoldedWidth: 50px;
 .well-card_tab-head {
   display: flex;
   background: #272953;
+  min-height: 28px;
   margin-bottom: 5px;
   overflow-y: auto;
     width: calc(100% - 70px);
@@ -1442,6 +1480,9 @@ $rightColumnFoldedWidth: 50px;
     height: 2px !important;
     width: 2px !important;
     border: 3px solid #181837;
+  }
+  div:last-child {
+    max-width: 16.1%;
   }
 }
 .well-card_tab-head__item {
@@ -1533,6 +1574,7 @@ $rightColumnFoldedWidth: 50px;
   min-width: calc(100% - 350px - 300px - 24px);
   padding: 0 15px;
   height: calc(100vh - 135px);
+  overflow-y:auto;
 }
 
 ::-webkit-scrollbar {
@@ -2667,6 +2709,9 @@ h4 {
     white-space: nowrap;
     padding: 4px 20px;
     margin-left: 10px;
+    &:hover {
+      background-color: #121227;
+    }
 }
 .button-block {
     display: flex;
@@ -2745,5 +2790,9 @@ h4 {
 }
 .selected-well {
   background: #2e50e9 !important;
+}
+.wells-history-title {
+  color: #fff;
+  padding-top: 5px;
 }
 </style>

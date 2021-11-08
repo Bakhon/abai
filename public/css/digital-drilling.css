@@ -1,6 +1,12 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+.main__title-drilling{
+    color: #ffffff;
+}
+.main__title-drilling:hover{
+    color: #ffffff;
+}
 .digital_drilling{
     width: 97vw;
 }

@@ -25,7 +25,7 @@
         </div>
         
         <div class="tkrs-content">
-            <div>
+            <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
                     <img class="hws-tab-img"
@@ -55,9 +55,11 @@
                   <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
                   
                 </div>
+                <div class="plotly-graph-custom">
                 <Plotly :data="areaChartData" :displaylogo="false" 
                 :layout="layoutData" :display-mode-bar="true" 
                 :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
+                </div>
                 <div>
                     <div class="nav nav-tabs all-tabs">
                       <div style="display:flex">
@@ -135,22 +137,34 @@ export default {
   computed: {
     layoutData() {
       return {
-        width: 1550,
+        modebar: {
+          bgcolor: "rgba(0,0,0,0)"
+        },
+        width: 1580,
         height: 600,
-        paper_bgcolor: "#272953",
-        plot_bgcolor: "#272953",
+        margin: {
+          l: 50,
+          r: 5,
+          b: 70,
+          t: 30,
+          pad: 4
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
           color: "#FFFFFF",
           title: 'Время',
           range: [this.minimum, this.maximum],
           type: 'date',
           rangeslider: true,
+          showgrid: false
         
         },
         yaxis: {
           title: 'W (TC)',
           color: "#FFFFFF",
           linecolor: "#EF5350",
+          showgrid: false
         },    
       };
     },
@@ -176,11 +190,11 @@ export default {
       wellFile: null,
       maximum: null,
       minimum: null,
+      
     }
   },
   created: async function () {
     this.$store.commit("globalloading/SET_LOADING", true);
-    console.log("TEST")  
     await this.axios
       .get(
           'http://172.20.103.203:8090/db1/'
@@ -296,19 +310,16 @@ export default {
         })
     },
   },
-  
-  
-  
 };
 </script>
 
-<style scoped>
+<style  scoped lang='scss'>
 .data-analysis-left-block {
   width: 249px;
   flex-shrink: 0;
   display: flex;
   flex-flow: column;
-  height: 865px;
+  height: 100%;
   background: #272953;
   color: #fff;
 }
@@ -447,5 +458,19 @@ table, th, td {
 }
 .comp-charts-icon {
   padding-left: 22px;
+}
+
+.plotly-graph-custom {
+  background-color: #2B2E5E !important;
+  background-image: linear-gradient(#545580 1px, transparent 1px), 
+  linear-gradient(90deg, #545580 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px;
+  height: calc(100% - 287px);
+}
+.sidebar_graph {
+  height: calc(100% - 36px);
+}
+.tkrs-content-down {
+      height: 100%;
 }
 </style>

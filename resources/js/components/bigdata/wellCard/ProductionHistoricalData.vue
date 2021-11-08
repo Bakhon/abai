@@ -68,12 +68,13 @@ export default {
                 10: 'Октябрь',
                 11: 'Ноябрь',
                 12: 'Декабрь'
-            }
+            },
+            isDownloadCompleted: false
         };
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD'
+            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD','SET_PRODUCTION_HISTORICAL'
         ]),
         handleYearSelect(date) {
             _.forEach(this.dates, (item) => {
@@ -92,13 +93,14 @@ export default {
                 });
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             } else {
-                this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
+            this.SET_PRODUCTION_HISTORICAL(this.productionHistoricalData);
         },
         fillDates() {
+            this.dates = [];
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
                     'id': i,
@@ -180,8 +182,14 @@ export default {
             _.forEach(this.dates, (yearItem) => {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                let sorted = _.sortBy(filtered, 'date');
+                let isChecked = true;
+                _.forEach(sorted, (item) => {
+                    isChecked = item.isChecked;
+                });
+                summary.isChecked = isChecked;
                 calculated.push(summary);
-                calculated = calculated.concat(filtered);
+                calculated = calculated.concat(sorted);
             });
             return calculated;
         },
@@ -192,6 +200,9 @@ export default {
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
             summary['waterCut'] = _.meanBy(filtered, 'waterCut');
+            if (!summary['waterCut']) {
+                summary['waterCut'] = 0;
+            }
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
@@ -203,6 +214,18 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionHistoricalData']),
+    },
+    watch: {
+        "productionHistoricalData": function() {
+            if (!this.isDownloadCompleted) {
+                this.fillDates();
+                this.dates = this.getHistorical();
+                this.isDownloadCompleted = true;
+                let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+                this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
+                this.SET_VISIBLE_PRODUCTION(false);
+            }
+        }
     }
 }
 </script>
@@ -227,10 +250,11 @@ export default {
     text-align: center;
     border: 1px solid #293688;
 
-    tbody {
-        // height: 680px;
-        // display: block;
-        // overflow-y:scroll;
+    
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 444;
     }
     thead, tbody tr {
         display: table;
@@ -268,5 +292,12 @@ export default {
 .left-block {
     height: calc(100% - 36px);
     overflow-y: auto;
+     &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #656a8a;
+        border-radius: 10px;
+    }
 }
 </style>

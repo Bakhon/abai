@@ -43,13 +43,6 @@ class ImportPipesPoints extends Command
      */
     public function handle(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
-        HydroCalcResult::truncate();
-        TrunklinePoint::truncate();
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
         $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
     }
 }
