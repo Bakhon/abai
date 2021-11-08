@@ -152,7 +152,7 @@
           :id="id"
           :form="form"
           :params="item"
-          :values="value || null"
+          :values="value.value || value || null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>
