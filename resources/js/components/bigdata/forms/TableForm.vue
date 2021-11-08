@@ -930,7 +930,7 @@ body.fixed {
     }
 
     td {
-      height: 40px;
+      height: 10px;
       position: relative;
 
       .icon-history {

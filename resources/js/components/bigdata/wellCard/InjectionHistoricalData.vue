@@ -154,6 +154,8 @@ export default {
     mounted() {
         this.fillDates();
         this.dates = this.getHistorical();
+        let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+        this.dates[currentYearIndex].isChecked = true;
     },
     computed: {
         ...bigdatahistoricalVisibleState(['injectionHistoricalData']),
@@ -164,6 +166,10 @@ export default {
                 this.fillDates();
                 this.dates = this.getHistorical();
                 this.isDownloadCompleted = true;
+                let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+                this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
+                this.dates[currentYearIndex].isChecked = true;
+                this.SET_VISIBLE_INJECTION(false);
             }
         }
     }
