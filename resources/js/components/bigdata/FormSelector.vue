@@ -62,7 +62,7 @@ export default {
   mounted() {
 
     this.axios
-        .get(this.localeUrl("api/bigdata/forms/tree"))
+        .get(this.localeUrl("api/bigdata/forms/well/tree"))
         .then(({data}) => {
           this.formsStructure = data.tree;
         })
