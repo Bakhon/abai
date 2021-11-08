@@ -4,7 +4,7 @@
     "name": "Суточные сводки",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": false,
+    "isVisible": true,
     "forms": [
       "daily_reports_oil_prod",
       "daily_reports_fluid_prod",
@@ -22,7 +22,7 @@
     "name": "Журнал замеров",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": false,
+    "isVisible": true,
     "forms": [
       "meas_lab_research",
       "zu_gzu_production",
@@ -41,7 +41,7 @@
     "name": "Тех.режим (цех)",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": false,
+    "isVisible": true,
     "forms": [
       "tech_mode_prod",
       "tech_water_well",
@@ -96,7 +96,7 @@
     "name": "График замеров",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": true,
+    "isVisible": false,
     "forms": [
       "production_wells_schedule",
       "injection_wells_schedule"
