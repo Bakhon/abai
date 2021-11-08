@@ -2506,7 +2506,7 @@ h4 {
     }
 
     .title,
-    .directory {
+    .directory, {
       display: none;
     }
 
@@ -2556,7 +2556,9 @@ h4 {
 
     .title,
     .directory,
-    .well-deal__header,
+    .well-deal__header {
+      display: none;
+    }
 
     & ~ .mid-col {
       min-width: calc(
@@ -2785,4 +2787,5 @@ h4 {
 .width__1469 {
   width: 1469px;
 }
+
 </style>
