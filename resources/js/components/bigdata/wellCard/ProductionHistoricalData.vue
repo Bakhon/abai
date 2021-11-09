@@ -29,12 +29,12 @@
                                 <span class="ml-1"></span>
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
-                            <td>{{date.water.toFixed(2)}}</td>
-                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(1)}}</td>
-                            <td v-else>{{date.oil}}</td>
-                            <td>{{date.waterDebit.toFixed(1)}}</td>
-                            <td>{{date.waterCut.toFixed(0)}}</td>
-                            <td>{{date.oilDebit.toFixed(1)}}</td>
+                            <td>{{formatNumber(date.water.toFixed(2))}}</td>
+                            <td v-if="date.oil !== null && date.oil > 0">{{formatNumber(date.oil.toFixed(1))}}</td>
+                            <td v-else>{{formatNumber(date.oil)}}</td>
+                            <td>{{formatNumber(date.waterDebit.toFixed(1))}}</td>
+                            <td>{{formatNumber(date.waterCut.toFixed(0))}}</td>
+                            <td>{{formatNumber(date.oilDebit.toFixed(1))}}</td>
                             <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
                     </tbody>
@@ -207,6 +207,9 @@ export default {
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
+        formatNumber(num) {
+            return new Intl.NumberFormat("ru-RU").format(num);
+        }
     },
     mounted() {
         this.fillDates();
