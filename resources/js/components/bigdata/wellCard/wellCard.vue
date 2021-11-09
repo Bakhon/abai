@@ -1228,7 +1228,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                                                             
+            try {                       
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -1263,8 +1263,8 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }              
-
+              }  
+            
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
