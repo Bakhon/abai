@@ -567,7 +567,8 @@ export default {
       },
       wellsHistory: [],
       tabWidth:0,
-      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
+      maximumWellsCount: 10
     };
   },
   mounted() {
@@ -1390,7 +1391,7 @@ export default {
       });
       summaryWellInfo['lastFormInfo'] = this.activeForm;
       this.wellsHistory.push(summaryWellInfo);
-      if (this.wellsHistory.length > 10) {
+      if (this.wellsHistory.length > this.maximumWellsCount) {
           this.wellsHistory.shift();
       }
     },
@@ -2506,7 +2507,7 @@ h4 {
     }
 
     .title,
-    .directory, {
+    .directory {
       display: none;
     }
 
