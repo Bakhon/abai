@@ -172,13 +172,13 @@
                                                             periodItem.params.techMode[0],
                                                             dayNumber,periodItem.params.activity)"
                                                 >
-                                                    {{periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1)}}
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
                                                 <td>-</td>
-                                                <td>{{periodItem.params.techMode[0].value.toFixed(1)}}</td>
+                                                <td>{{formatNumber(periodItem.params.techMode[0].value.toFixed(1))}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -200,13 +200,13 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    {{periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1)}}
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].oil.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
                                                 <td>-</td>
-                                                <td>{{periodItem.params.techMode[2].value.toFixed(1)}}</td>
+                                                <td>{{formatNumber(periodItem.params.techMode[2].value.toFixed(1))}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -256,7 +256,7 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    {{periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1)}}
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
@@ -387,7 +387,7 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    {{periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1)}}
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
@@ -720,8 +720,10 @@ export default {
             for (let i = 5; i < items.length; i++) {
                 items[i].isHide = !items[i].isHide;
             }
-
         },
+        formatNumber(num) {
+            return new Intl.NumberFormat("ru-RU").format(num);
+        }
     },
     async mounted() {
         let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;

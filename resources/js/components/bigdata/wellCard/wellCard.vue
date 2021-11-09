@@ -1425,11 +1425,14 @@ export default {
       'SET_VISIBLE_PRODUCTION'
     ]),
     getWidthByColumns() {
+      if ((this.isRightColumnFolded || this.isLeftColumnFolded) && !this.isBothColumnFolded) {
+        return 'width__1469';
+      }
+      if (this.isProductionWellsHistoricalVisible || this.isInjectionWellsHistoricalVisible) {
+        return 'width__1159';
+      }
       if (this.isBothColumnFolded) {
         return 'width__1700';
-      }
-      if (this.isRightColumnFolded || this.isLeftColumnFolded) {
-        return 'width__1469';
       }
       return 'width__1219';
     }
@@ -2793,6 +2796,9 @@ h4 {
 }
 .width__1469 {
   width: 1469px;
+}
+.width__1159 {
+  width: 1159px;
 }
 
 </style>
