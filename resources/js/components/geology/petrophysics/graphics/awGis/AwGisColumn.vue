@@ -72,7 +72,8 @@ export default {
         let {data: {curves}, options} = this.$store.state.geologyGis.awGis.getElement(name)
         for (const [wellID, curve] of Object.entries(curves)) {
           if(wellID !== this.wellName) continue;
-          this.tCanvas.drawCurve(curve, {options, wellID})
+          if(options.isLithology[wellID]) return this.tCanvas.draw('lithology', curve, {options, wellID})
+          if(!options.isLithology[wellID]) return this.tCanvas.draw('curve', curve, {options, wellID})
         }
       }
     },

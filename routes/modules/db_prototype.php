@@ -48,7 +48,6 @@ Route::group(
                     'bigdata.reports.favorite.remove'
                 );
 
-                Route::get('/protoform', 'bd\DBController@form')->name('bigdata.protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
                 Route::post('/mobileform', 'Api\DB\MobileFormsController@saveMobileForm');
                 Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
@@ -82,6 +81,9 @@ Route::group(
 
                 Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
                 Route::get('forms/tree', 'Api\DB\FormsController@getFormsStructure')->name('bigdata.form.list');
+                Route::get('forms/well/tree', 'Api\DB\FormsController@getWellFormsStructure')->name(
+                    'bigdata.well_form.list'
+                );
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');

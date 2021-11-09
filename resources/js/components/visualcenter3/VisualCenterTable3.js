@@ -28,7 +28,6 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
-Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').default);
 Vue.component('chart-modal', require('./widgets/chartModal.vue').default);
 
 
@@ -112,12 +111,12 @@ export default {
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
             productionData: [],
-            reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
-            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
+            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ','ТШО','НКО'],
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
-            chartReasons: []
+            chartReasons: [],
+            opecEndDate: moment('01.09.2021', 'DD.MM.YYYY')
         };
     },
     methods: {
@@ -180,7 +179,9 @@ export default {
 
         getReasonExplanations() {
             let reasons = {};
-            this.productionTableData = this.getProductionDataByOpekRestriction();
+            if (this.periodEnd < this.opecEndDate) {
+                this.productionTableData = this.getProductionDataByOpekRestriction();
+            }
             _.forEach(this.productionTableData, (item) => {
                 if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
                     reasons[item.name] = item.decreaseReasonExplanations;
@@ -223,7 +224,7 @@ export default {
             let updatedByOpek = _.cloneDeep(this.productionTableData);
             _.forEach(updatedByOpek, (item) => {
                 if (item.decreaseReasonExplanations && this.dzoWithOpekRestriction.includes(item.name)) {
-                    item.decreaseReasonExplanations.push(this.trans('visualcenter.opekExplanationReason'));
+                    item.decreaseReasonExplanations.push([this.trans('visualcenter.opekExplanationReason'),null]);
                 }
             });
             return updatedByOpek;
@@ -267,7 +268,7 @@ export default {
         getChartReasons(reasons) {
             this.chartReasons = reasons;
             this.$modal.show('chartModal');
-        }
+        },
     },
     mixins: [
         сompaniesDzo,
@@ -299,7 +300,7 @@ export default {
         this.productionParams = await this.getProductionParamsByCategory();
         this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
-        this.reasonExplanations = this.getReasonExplanations();
+        this.chartReasons = this.getReasonExplanations();
         this.productionData = _.cloneDeep(this.productionTableData);
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();

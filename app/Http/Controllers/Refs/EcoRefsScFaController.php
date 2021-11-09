@@ -451,7 +451,7 @@ class EcoRefsScFaController extends Controller
 
             # TO DO
             foreach ($compRas as $item) {
-                $operPrib[$item->company_id] = ($exportsDiscontResultsTotal + $insideDiscontResultsTotal) - ($exportsNdpiResultsTotal + $insideNdpiResultsTotal) - $exportsRentTaxResultsTotal - $exportsEtpResultsTotal - ($exportsTarTnResultsTotal + $insideTarTnResultsTotal) - ($zatrElectResults[$equipIdRequest] + $zatrPrepResults[$item->company_id] + $prsCostResults[$item->company_id] + $expDayResults[$equipIdRequest] + $rentCostResult + $amortizaciyaResult);
+                $operPrib[$item->company_id] = ($exportsDiscontResultsTotal + $insideDiscontResultsTotal) - ($exportsNdpiResultsTotal + $insideNdpiResultsTotal) - $exportsRentTaxResultsTotal - $exportsEtpResultsTotal - ($exportsTarTnResultsTotal + $insideTarTnResultsTotal) - ($zatrElectResults[$equipIdRequest] + $zatrPrepResults[$item->company_id] + $prsCostResults[$item->company_id] + $rentCostResult + $amortizaciyaResult);
             }
 
 
