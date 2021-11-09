@@ -146,6 +146,7 @@
                   :is="activeFormComponentName"
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  :selectedDzo="selectedDzo"
                 ></div>
               </div>
               <div
@@ -568,7 +569,8 @@ export default {
       wellsHistory: [],
       tabWidth:0,
       measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
-      maximumWellsCount: 10
+      maximumWellsCount: 10,
+      selectedDzo: null
     };
   },
   mounted() {
@@ -818,6 +820,7 @@ export default {
         : "";
       let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
+      this.selectedDzo = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
@@ -1179,7 +1182,6 @@ export default {
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-
       data.forEach(function (item) {
         let type = item.type;
         let exp = item.exp;

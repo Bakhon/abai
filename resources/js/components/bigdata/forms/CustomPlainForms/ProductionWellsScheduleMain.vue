@@ -92,11 +92,11 @@
                                     <table class="table text-center text-white  historical-table">
                                         <thead>
                                         <tr>
-                                            <th v-if="periodItem.isHorizontalExpanded">СЭ</th>
-                                            <th v-if="periodItem.isHorizontalExpanded">ø нас.</th>
-                                            <th v-if="periodItem.isHorizontalExpanded">L НКТ</th>
-                                            <th v-if="periodItem.isHorizontalExpanded">L</th>
-                                            <th v-if="periodItem.isHorizontalExpanded">N</th>
+                                            <th v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">СЭ</th>
+                                            <th v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">ø нас.</th>
+                                            <th v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">L НКТ</th>
+                                            <th v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">L</th>
+                                            <th v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">N</th>
                                             <th>Показатель</th>
                                             <th>Тех. <br>Режим</th>
                                         </tr>
@@ -108,35 +108,38 @@
                                                     :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                                     v-show="!techModeItem.isHide"
                                             >
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td class="background__light">
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td
+                                                        v-if="!techModeItem.disabledForDzo.includes(selectedDzo)"
+                                                        class="background__light"
+                                                >
                                                     {{techModeItem.label}}
                                                 </td>
-                                                <td>
+                                                <td v-if="!techModeItem.disabledForDzo.includes(selectedDzo)">
                                                     -
                                                 </td>
                                             </tr>
                                             <tr class="header-background_dark">
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                                <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                                <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td colspan="2"  class="drop_down_link">
                                                     <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Показать поля</a>
                                                     <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Скрыть поля</a>
                                                 </td>
                                             </tr>
                                         <tr class="header-background_light">
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                             <td class="background__light" colspan="2">Мероприятия</td>
                                         </tr>
                                         </tbody>
@@ -149,7 +152,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div :class="[periodItem.isHorizontalExpanded ? 'days-table_left__450' : 'days-table_left__250','bd-table-second']">
+                                <div :class="[periodItem.isHorizontalExpanded || !summaryDisabledByDzo.includes(selectedDzo) ? 'days-table_left__450' : 'days-table_left__250','bd-table-second']">
                                     <table class="table text-center text-white text-nowrap historical-table days-decomposition">
                                         <thead>
                                             <tr>
@@ -512,7 +515,8 @@ export default {
     components: {ProductionWellsSchedule},
     props: {
         well: {},
-        changeColumnsVisible: Function
+        changeColumnsVisible: Function,
+        selectedDzo: null
     },
     data() {
         return {
@@ -526,7 +530,8 @@ export default {
                 1: 'КРС',
                 3: 'ПРС',
             },
-            isRowsHide: true
+            isRowsHide: true,
+            summaryDisabledByDzo: ["KGM"]
         };
     },
     methods: {
@@ -590,92 +595,110 @@ export default {
                                 {
                                     'label': 'Жидкость',
                                     'value': _.sumBy(month, item => Number(item.liq)),
-                                    'isHide': !this.isRowsHide
+                                    'isHide': !this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Обводненность',
                                     'value': _.sumBy(month, 'liqCut') / month.length,
-                                    'isHide': !this.isRowsHide
+                                    'isHide': !this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Нефть',
                                     'value': _.sumBy(month, 'oil'),
-                                    'isHide': !this.isRowsHide
+                                    'isHide': !this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Обв. с учетом доли ост. св. воды, %',
                                     'value': 0,
-                                    'isHide': !this.isRowsHide
+                                    'isHide': !this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Нефть. с учетом доли ост. св. воды, %',
                                     'value': 0,
-                                    'isHide': !this.isRowsHide
+                                    'isHide': !this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Обв. не конд.пробы, %',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Н дин.',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Закючение ГДИС.',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Причина простоя',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Отработанное время',
                                     'value': 24,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Жидкость м3/сут(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Обводненность, %(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Нефть, т/сут(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Газ.м3/сут(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Газовый фактор, м3/т(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Температура жидкости,%(телеметрия)',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Добыча газа',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Газовый фактор',
                                     'value': 0,
-                                    'isHide': this.isRowsHide
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
                                 }
                             ],
                             'monthlyData': month
