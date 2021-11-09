@@ -37,20 +37,17 @@ export default class TCanvas {
         let color = ['gray', 'yellow', '#986321'];
         ctx.save();
         for (const lithology of lithologyData) {
-            if (lithology !== null && !isFloat(lithology)) {
-                if(lithology !== lastLithology){
-                    ctx.fillStyle = color[lithology];
-                    ctx.beginPath();
-                    ctx.moveTo(0, coord.positionY(lastY));
-                    ctx.lineTo(ctx.canvas.width, coord.positionY(lastY));
-                    ctx.lineTo(ctx.canvas.width, coord.positionY(y));
-                    ctx.lineTo(0, coord.positionY(y));
-                    ctx.closePath();
-                    ctx.fill();
-
-                    lastLithology = lithology;
-                    lastY = y;
-                }
+            if (lithology !== null && !isFloat(lithology) && lithology !== lastLithology) {
+                ctx.fillStyle = color[lithology];
+                ctx.beginPath();
+                ctx.moveTo(0, coord.positionY(lastY));
+                ctx.lineTo(ctx.canvas.width, coord.positionY(lastY));
+                ctx.lineTo(ctx.canvas.width, coord.positionY(y));
+                ctx.lineTo(0, coord.positionY(y));
+                ctx.closePath();
+                ctx.fill();
+                lastLithology = lithology;
+                lastY = y;
             }
             y++
         }

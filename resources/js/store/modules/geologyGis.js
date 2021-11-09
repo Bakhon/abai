@@ -135,7 +135,7 @@ const geologyGis = {
         },
 
         [SET_WELLS](state, data) {
-            state.WELLS = data.filter((item) => ['UZN_1428', 'UZN_0144', 'UZN_1027', 'UZN_9093'].includes(item.name)); //TODO удалить после дебагинга
+            state.WELLS = data
         },
 
         [SET_SCROLL_BLOCK_Y](state, y) {
@@ -216,7 +216,6 @@ const geologyGis = {
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
                             curveOptions.isLithology[key] = !curveWithoutNull.some((n)=>isFloat(n))
-
                             if (curve) acc[key] = curve;
                             return acc
                         }, {})
