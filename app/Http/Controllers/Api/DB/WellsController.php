@@ -19,6 +19,7 @@ use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
+use App\Models\BigData\TechModeOil;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -670,5 +671,15 @@ class WellsController extends Controller
             );
         }
         return $wellWorkover;
+    }
+
+    public function getProductionTechModeOil(Request $request, $wellId)
+    {
+        $techMode = TechModeOil::query()
+            ->select('dbeg')
+            ->whereYear('dbeg', 'IN', $request->year)
+            ->where('well', $wellId)
+            ->get();
+        dd($techMode);
     }
 }

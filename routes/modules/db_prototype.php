@@ -138,6 +138,8 @@ Route::group(
                 Route::get('well-history', 'Api\DB\WellHistoryController@getProductionHistory');
 
                 Route::get('orgs-by-well/{well}', 'Api\DB\StructureController@getOrgIdsByWellId');
+                Route::get('wells/test/{well}', 'Api\DB\WellsController@getInjectionHistory');
+                Route::get('wells/production/techmode/{well}', 'Api\DB\WellsController@getProductionTechModeOil');
             }
         );
     }

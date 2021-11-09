@@ -144,7 +144,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="table-arrow">
+                                    <div v-if="!summaryDisabledByDzo.includes(selectedDzo)" class="table-arrow">
                                         <div
                                                 :class="[periodItem.isHorizontalExpanded ? 'arrow-right' : 'arrow-left','cursor-pointer']"
                                                 @click="periodItem.isHorizontalExpanded = !periodItem.isHorizontalExpanded"
@@ -531,7 +531,8 @@ export default {
                 3: 'ПРС',
             },
             isRowsHide: true,
-            summaryDisabledByDzo: ["KGM"]
+            summaryDisabledByDzo: ["KGM"],
+            techMode: []
         };
     },
     methods: {
@@ -746,14 +747,27 @@ export default {
         },
         formatNumber(num) {
             return new Intl.NumberFormat("ru-RU").format(num);
+        },
+        async getProductionTechMode() {
+            let selectedYears = _.map(this.historicalData, 'year');
+            let queryOptions = {
+                'year': selectedYears
+            };
+            console.log(this.historicalData)
+            console.log(selectedYears)
+            const response = await axios.get(this.localeUrl(`/api/bigdata/wells/production/techmode/${this.well.id}`),{params:queryOptions});
+            return response.data;
         }
     },
     async mounted() {
         let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
         this.SET_LOADING(true);
         const response = await axios.get(this.localeUrl(uri));
+        this.techMode = await this.getProductionTechMode();
         this.assignInfoByDates(response.data);
         this.nahdleMeasurementSchedule();
+        console.log('end')
+        console.log(this.historicalData)
         this.SET_LOADING(false);
     },
     computed: {
@@ -762,6 +776,7 @@ export default {
     watch: {
         "productionMeasurementSchedule": function(data) {
             this.nahdleMeasurementSchedule();
+            console.log(this.historicalData)
         }
     }
 }

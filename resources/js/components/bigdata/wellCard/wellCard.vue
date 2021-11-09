@@ -2784,7 +2784,7 @@ h4 {
 }
 .well-info_header {
   position: fixed;
-  z-index: 999;
+  z-index: 5;
   margin-left: -15px;
 }
 .pt__40 {
