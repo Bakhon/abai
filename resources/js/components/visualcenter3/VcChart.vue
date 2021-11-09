@@ -227,7 +227,6 @@
                     }
                     this.$emit('chartReasons', this.reasons);
                 }
-
             },
 
             async getDecreaseReasons(date,dzo) {

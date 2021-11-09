@@ -80,7 +80,7 @@
 
 .content-db-container {
   height: calc(100vh - 177px);
-  background: #000;
+  background: #181837;
   overflow-y: auto;
 }
 
@@ -286,6 +286,11 @@
   position: relative;
   display: block;
   z-index: 1;
+
+  &.selected {
+    font-weight: bold;
+    font-size: 13px;
+  }
 }
 
 .asside-db-link-parent:before {
