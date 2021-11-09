@@ -26,12 +26,12 @@
                         >
                             <div class="col-12 p-2 text-center reason-header">{{getDzoName(index)}}</div>
                             <hr>
+                            <div class="col-12 d-flex reason-description_item p-0">
+                                <div class="col-1">№</div>
+                                <div class="col-9">{{trans('visualcenter.importForm.reason')}}</div>
+                                <div class="col-2 pr-0">{{trans('visualcenter.losses')}} (т)</div>
+                            </div>
                             <div class="col-12 row m-0 p-0" v-for="(reason,reasonIndex) in item">
-                                <div class="col-12 d-flex reason-description_item p-0">
-                                    <div class="col-1">#</div>
-                                    <div class="col-9">{{trans('visualcenter.importForm.reason')}}</div>
-                                    <div class="col-2 pr-0">{{trans('visualcenter.losses')}} (т)</div>
-                                </div>
                                 <div class="col-12 d-flex reason-description_item p-0">
                                     <div class="col-1">{{reasonIndex+1}}</div>
                                     <div class="col-9">{{reason[0]}}</div>

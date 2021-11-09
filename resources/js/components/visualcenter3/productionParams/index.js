@@ -166,8 +166,10 @@ export default {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
+            } else if (view === 'period') {
+                this.isDecreaseReasonActive = false;
             }
-            this.reasonExplanations = this.getReasonExplanations();
+            this.chartReasons = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
@@ -234,7 +236,7 @@ export default {
                 this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
                 this.selectedCategory = parent;
             }
-            this.reasonExplanations = this.getReasonExplanations();
+            this.chartReasons = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
 
             if (this.periodRange !== 0) {

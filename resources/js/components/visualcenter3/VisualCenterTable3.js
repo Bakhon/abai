@@ -111,7 +111,6 @@ export default {
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
             productionData: [],
-            reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ','ТШО','НКО'],
             additionalCompanies: ['ОМГК','АГ'],
@@ -225,7 +224,7 @@ export default {
             let updatedByOpek = _.cloneDeep(this.productionTableData);
             _.forEach(updatedByOpek, (item) => {
                 if (item.decreaseReasonExplanations && this.dzoWithOpekRestriction.includes(item.name)) {
-                    item.decreaseReasonExplanations.push(this.trans('visualcenter.opekExplanationReason'));
+                    item.decreaseReasonExplanations.push([this.trans('visualcenter.opekExplanationReason'),null]);
                 }
             });
             return updatedByOpek;

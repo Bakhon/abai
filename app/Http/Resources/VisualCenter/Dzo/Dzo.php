@@ -102,7 +102,7 @@ class Dzo {
         $companySummary['opek'] = $this->getOpekUpdatedByPlan($companySummary['plan'],$companySummary['opek']);
         $companySummary['condensateOpek'] = $this->getOpekUpdatedByPlan($companySummary['condensatePlan'],$companySummary['condensateOpek']);
 
-        if ($periodType === 'day') {
+        if ($periodType === 'day' || $periodType === 'period') {
             $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact);
         }
         if ($periodType === 'month') {
