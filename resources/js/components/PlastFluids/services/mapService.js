@@ -57,3 +57,39 @@ export const getMapGeoJSONCoords = async (payload) => {
     console.log(error);
   }
 };
+
+export const createIsohypsumModel = async (payload) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps`,
+      payload
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getIsohypsumModel = async (payload) => {
+  try {
+    const response = await axios.get(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps`,
+      { params: { horizon_id: payload } }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getIsohypsumModelCoords = async (payload) => {
+  try {
+    const response = await axios.get(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps-json`,
+      { params: payload }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

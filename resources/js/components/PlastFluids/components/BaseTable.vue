@@ -84,7 +84,12 @@
                 style="cursor: pointer"
                 @click="$emit('select-row', item)"
               >
-                <td v-for="(itemTD, ind) in item.table_data" :key="ind">
+                <td
+                  v-for="(itemTD, ind) in item.table_data
+                    ? item.table_data
+                    : item"
+                  :key="ind"
+                >
                   {{ itemTD }}
                 </td>
               </tr>

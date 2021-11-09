@@ -1,42 +1,45 @@
 <template>
   <div class="data-analysis-maps-and-tables">
-    <div class="data-analysis__wrapper">
-      <div class="data-analysis__wrapper-title">
-        <div class="icon-title">
-          <i><img src="/img/PlastFluids/tableIcon.png" alt=""/></i>
+    <div
+      class="structure-map-holder"
+      :style="
+        tableState === 'hidden'
+          ? 'height: calc(100% - 38px);'
+          : 'height: calc(100% - 360px);'
+      "
+    >
+      <div class="heading-title">
+        <div>
+          <img src="/img/PlastFluids/mapsAndTablesHeadingIcon.svg" />
+          <p>{{ trans("plast_fluids.detailed_statistics_by_research") }}</p>
         </div>
-        <span>Детальная статистика изученности по видам исследований</span>
       </div>
-      <div class="data-analysis__wrapper-img" v-bind:class="{ full: cartFull }">
-        <img src="/img/PlastFluids/mapsAndTables.jpg" alt="" />
+      <div class="content">
+        <StructuralMap />
       </div>
     </div>
-    <div class="table-holder">
-      <div class="data-analysis__wrapper next">
-        <div class="data-analysis__wrapper-title">
-          <img src="/img/PlastFluids/sampleDataIcon.png" alt="" />
-          <span>Данные по пробам</span>
-        </div>
-        <div
-          class="data-analysis__row_bottom"
-          v-bind:class="{ active: cartFull }"
-          @click="cartFull = !cartFull"
-        >
-          <img src="/img/PlastFluids/row_bottom.svg" alt="" />
-        </div>
-      </div>
-      <BaseTable :fields="fields" :items="items" />
-    </div>
+    <DataAnalysisDataTable
+      imagePath="/img/PlastFluids/sampleDataIcon.png"
+      tableTitle="sample_data"
+      :fields="fields"
+      :items="items"
+    />
   </div>
 </template>
 
 <script>
-import BaseTable from "../BaseTable.vue";
+import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
+import StructuralMap from "./StructuralMap.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "DataAnalysisMapsAndTables",
   components: {
-    BaseTable,
+    DataAnalysisDataTable,
+    StructuralMap,
+  },
+  computed: {
+    ...mapState("plastFluidsLocal", ["tableState"]),
   },
   data() {
     return {
@@ -96,4 +99,54 @@ export default {
 };
 </script>
 
-<style scoped lang="scss" src="./DataAnalysisMapsAndTablesStyles.scss"></style>
+<style scoped>
+.data-analysis-maps-and-tables {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+
+.structure-map-holder {
+  display: flex;
+  flex-flow: column;
+  flex: 2 1 auto;
+}
+
+.heading-title {
+  height: 38px;
+  padding: 6px 6px 0 6px;
+  background: #272953;
+}
+
+.heading-title > div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  border: 1px solid #545580;
+  background: #323370;
+}
+
+.heading-title > div > img {
+  width: 18px;
+  height: 18px;
+  margin-left: 11px;
+}
+
+.heading-title > div > p {
+  margin: 0 0 0 9px;
+  font-size: 16px;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: calc(100% - 38px);
+  border: 6px solid #272953;
+  padding: 4px;
+  overflow: hidden;
+}
+</style>

@@ -36,6 +36,7 @@
         <SmallCatLoader :loading="loading" v-else />
       </div>
       <DataAnalysisDataTable
+        imagePath="/img/PlastFluids/tableIcon.svg"
         tableTitle="sampling_quality_table"
         :items="tableRows"
         :fields="tableFields"

@@ -135,4 +135,5 @@ return array (
   'all_depth_graph_viscosity_reservoir_oil' => 'Вязкость пластовой нефти от глубины притока',
   'all_depth_graph_density_separated_oil' => 'Плотность дегазированной нефти от глубины притока',
   'all_depth_graph_pi_ps' => 'Давление насыщения от глубины притока',
+  'settings' => 'Настройки',
 );

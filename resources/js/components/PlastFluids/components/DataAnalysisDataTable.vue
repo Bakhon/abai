@@ -6,7 +6,7 @@
     <div class="data-analysis-table-header">
       <div>
         <div class="title-holder">
-          <img src="/img/PlastFluids/tableIcon.svg" />
+          <img :src="imagePath" />
           <p>{{ trans("plast_fluids." + tableTitle) }}</p>
         </div>
         <img src="/img/PlastFluids/settings.svg" alt="customize table" />
@@ -45,6 +45,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "DataAnalysisDataTable",
   props: {
+    imagePath: String,
     tableTitle: String,
     items: [Array, Object],
     fields: [Array, Object],

@@ -24,6 +24,8 @@ const plastFluidsLocal = {
     currentSelectedCorrelation_bs: "",
     currentSelectedCorrelation_ms: "",
     currentSelectedSamples: [],
+    models: [],
+    currentModel: {},
   },
 
   mutations: {
@@ -88,6 +90,12 @@ const plastFluidsLocal = {
         return;
       }
       state.currentSelectedSamples.push(payload);
+    },
+    SET_MODELS(state, payload) {
+      state.models = payload;
+    },
+    SET_CURRENT_MODEL(state, payload) {
+      state.currentModel = payload;
     },
   },
 
