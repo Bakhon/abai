@@ -29,8 +29,8 @@ class EconomicAnalysisParamImport implements ToModel, WithBatchInserts, WithChun
         'oil_density' => 7,
         'days' => 8,
         'permanent_year_cost' => 9,
-        'variable_stop_cost_fact' => 10,
-        'variable_stop_cost_forecast' => 11,
+        'permanent_stop_cost' => 10,
+        'permanent_stop_cost_propose' => 11,
     ];
 
     function __construct(int $userId, string $fileName)
@@ -60,8 +60,8 @@ class EconomicAnalysisParamImport implements ToModel, WithBatchInserts, WithChun
             'avg_prs_cost' => round($row[self::COLUMNS['avg_prs_cost']], 12),
             'oil_density' => round($row[self::COLUMNS['oil_density']], 12),
             'days' => (int)$row[self::COLUMNS['days']],
-            'variable_stop_cost_fact' => round($row[self::COLUMNS['variable_stop_cost_fact']], 12),
-            'variable_stop_cost_forecast' => round($row[self::COLUMNS['variable_stop_cost_forecast']], 12),
+            'permanent_stop_cost' => round($row[self::COLUMNS['permanent_stop_cost']], 12),
+            'permanent_stop_cost_propose' => round($row[self::COLUMNS['permanent_stop_cost_propose']], 12),
             'user_id' => $this->userId,
             'log_id' => $this->logId
         ]);

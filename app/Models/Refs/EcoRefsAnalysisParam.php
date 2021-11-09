@@ -11,7 +11,7 @@ class EcoRefsAnalysisParam extends Model
         'date', 'netback_plan', 'netback_fact', 'netback_forecast',
         'variable_cost', 'permanent_cost', 'permanent_year_cost',
         'avg_prs_cost', 'oil_density', 'days',
-        'variable_stop_cost_fact', 'variable_stop_cost_forecast',
+        'permanent_stop_cost', 'permanent_stop_cost_propose',
         'user_id', 'log_id'
     ];
 

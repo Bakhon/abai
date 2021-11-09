@@ -175,14 +175,14 @@ export default {
             ${this.trans('economic_reference.conditional_fixed_costs')}
             (${this.trans('economic_reference.fact').toLocaleLowerCase()})
           `,
-          key: 'variable_stop_cost_fact'
+          key: 'permanent_stop_cost'
         },
         {
           label: `
             ${this.trans('economic_reference.conditional_fixed_costs')}
             (${this.trans('economic_reference.proposed').toLocaleLowerCase()})
           `,
-          key: 'variable_stop_cost_forecast',
+          key: 'permanent_stop_cost_propose',
           width: 130
         },
         {
