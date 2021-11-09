@@ -15,11 +15,17 @@ export const tableDataMixin = {
         wells: {
             required: true,
             type: Array
+        },
+        proposedWells: {
+            required: true,
+            type: Array
         }
     },
     computed: {
         tableData() {
             let wellsByStatus = {}
+
+            let proposedWellsByStatus = {}
 
             let dates = {}
 
@@ -37,10 +43,19 @@ export const tableDataMixin = {
                 wellsByStatus[well.status_id].push(well)
             })
 
+            this.proposedWells.forEach(well => {
+                if (!proposedWellsByStatus.hasOwnProperty(well.status_id)) {
+                    proposedWellsByStatus[well.status_id] = []
+                }
+
+                proposedWellsByStatus[well.status_id].push(well)
+            })
+
             dates = Object.keys(dates)
 
             return {
                 wellsByStatus: wellsByStatus,
+                proposedWellsByStatus: proposedWellsByStatus,
                 statuses: Object.keys(statuses),
                 statusNames: Object.values(statuses),
                 dates: dates
@@ -51,34 +66,11 @@ export const tableDataMixin = {
             return this.tableData.statuses.map((status, statusIndex) => ({
                 status_name: this.tableData.statusNames[statusIndex],
                 wells: this.tableData.dates.map(date => {
-                    let wells = this.tableData
-                        .wellsByStatus[status]
-                        .filter(well => well.date === date)
-
-                    let profitable = wells.find(
-                        well => well.profitability === 'profitable'
-                    ) || DEFAULT_WELL
-
-                    let profitless = wells.find(
-                        well => well.profitability === 'profitless'
-                    ) || DEFAULT_WELL
-
-                    let total = {}
-
-                    Object.keys(DEFAULT_WELL).forEach(wellKey => {
-                        profitable[wellKey] = +profitable[wellKey]
-
-                        profitless[wellKey] = +profitless[wellKey]
-
-                        total[wellKey] = profitable[wellKey] + profitless[wellKey]
-                    })
-
-                    return {
-                        profitable: profitable,
-                        profitless: profitless,
-                        total: total
-                    }
-                })
+                    return this.getWellsByDate(status, date, 'wellsByStatus')
+                }),
+                proposedWells: this.tableData.dates.map(date => {
+                    return this.getWellsByDate(status, date, 'proposedWellsByStatus')
+                }),
             }))
         },
 
@@ -142,6 +134,30 @@ export const tableDataMixin = {
             })
 
             return rows
+        },
+
+        getWellsByDate(status, date, tableKey) {
+            let wells = this.tableData[tableKey][status].filter(well => well.date === date)
+
+            let profitable = wells.find(well => well.profitability === 'profitable') || DEFAULT_WELL
+
+            let profitless = wells.find(well => well.profitability === 'profitless') || DEFAULT_WELL
+
+            let total = {}
+
+            Object.keys(DEFAULT_WELL).forEach(wellKey => {
+                profitable[wellKey] = +profitable[wellKey]
+
+                profitless[wellKey] = +profitless[wellKey]
+
+                total[wellKey] = profitable[wellKey] + profitless[wellKey]
+            })
+
+            return {
+                profitable: profitable,
+                profitless: profitless,
+                total: total
+            }
         }
     }
 }

@@ -46,29 +46,29 @@
 
         <div class="d-flex flex-grow-1">
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ row.wells[dateIndex][profitability].uwi_count }}
+            {{ row[wellsKey][dateIndex][profitability].uwi_count }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(row.wells[dateIndex][profitability].liquid_loss, 1000, true) }}
+            {{ localeValue(row[wellsKey][dateIndex][profitability].liquid_loss, 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(row.wells[dateIndex][profitability].oil_loss, 1000, true) }}
+            {{ localeValue(row[wellsKey][dateIndex][profitability].oil_loss, 1000, true) }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
               calcWaterCut(
-                  Math.abs(row.wells[dateIndex][profitability].liquid_loss),
-                  Math.abs(row.wells[dateIndex][profitability].oil_loss)
+                  Math.abs(row[wellsKey][dateIndex][profitability].liquid_loss),
+                  Math.abs(row[wellsKey][dateIndex][profitability].oil_loss)
               )
             }}
           </div>
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
-              localeValue(row.wells[dateIndex][profitability].paused_hours, 24)
+              localeValue(row[wellsKey][dateIndex][profitability].paused_hours, 24)
             }}
           </div>
         </div>
@@ -77,7 +77,7 @@
       <div class="flex-grow-1 d-flex bg-blue font-weight-600">
         <div v-if="isVisibleDates"
              class="border-grey px-3 py-1 width-100px d-flex align-items-center">
-        Всего
+          Всего
         </div>
 
         <div class="d-flex flex-grow-1">
@@ -121,6 +121,11 @@ export default {
       required: true,
       type: Object
     },
+    wellsKey: {
+      required: false,
+      type: String,
+      default: 'wells'
+    },
     dates: {
       required: true,
       type: Array
@@ -148,11 +153,11 @@ export default {
 
       this.dates.forEach((date, dateIndex) => {
         if (this.isProfitable) {
-          sum += status.wells[dateIndex].profitable[statusKey]
+          sum += status[this.wellsKey][dateIndex].profitable[statusKey]
         }
 
         if (this.isProfitless) {
-          sum += status.wells[dateIndex].profitless[statusKey]
+          sum += status[this.wellsKey][dateIndex].profitless[statusKey]
         }
       })
 
@@ -214,7 +219,7 @@ export default {
 
 .customScroll {
   overflow: hidden;
-  height: 230px;
+  height: 140px;
 }
 
 .customScroll::-webkit-scrollbar {

@@ -5,7 +5,7 @@
     </subtitle>
 
     <div class="customScroll">
-      <div class="mt-2 d-flex table-oil-production">
+      <div class="mt-2 d-flex">
         <table-production-loss-row
             v-for="(row, rowIndex) in wellsByDates"
             :key="rowIndex"
@@ -26,7 +26,7 @@
           В т.ч. нерентабельный фонд
         </subtitle>
 
-        <div class="d-flex table-oil-production">
+        <div class="d-flex">
           <table-production-loss-row
               v-for="(row, rowIndex) in wellsByDates"
               :key="rowIndex"
@@ -35,6 +35,27 @@
               :is-visible-dates="rowIndex === 0"
               :class="rowIndex > 0 ? 'ml-3' : ''"
               :style="`min-width: ${rowIndex ? 430 : 530}px`"
+              class="h-100"
+              is-profitless
+          />
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <subtitle font-size="16" class="mb-2 line-height-18px">
+          Предлагаемый вариант
+        </subtitle>
+
+        <div class="d-flex">
+          <table-production-loss-row
+              v-for="(row, rowIndex) in wellsByDates"
+              :key="rowIndex"
+              :row="row"
+              :dates="tableData.dates"
+              :is-visible-dates="rowIndex === 0"
+              :class="rowIndex > 0 ? 'ml-3' : ''"
+              :style="`min-width: ${rowIndex ? 430 : 530}px`"
+              wells-key="proposedWells"
               class="h-100"
               is-profitless
           />

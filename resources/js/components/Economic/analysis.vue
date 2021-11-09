@@ -38,6 +38,8 @@
           :wells="wells"
           :wells-by-status="wellsByStatus"
           :wells-by-loss-status="wellsByLossStatus"
+          :proposed-wells-by-status="proposedWellsByStatus"
+          :proposed-wells-by-loss-status="proposedWellsByLossStatus"
           class="h-100"
           @updateWide="val => isWide = val"/>
     </div>
@@ -92,6 +94,8 @@ export default {
     wells: null,
     wellsByStatus: null,
     wellsByLossStatus: null,
+    proposedWellsByStatus: null,
+    proposedWellsByLossStatus: null,
     isWide: false
   }),
   computed: {
@@ -256,10 +260,18 @@ export default {
         this.wellsByStatus = data.wellsByStatus
 
         this.wellsByLossStatus = data.wellsByLossStatus
+
+        this.proposedWellsByStatus = data.proposedWellsByStatus
+
+        this.proposedWellsByLossStatus = data.proposedWellsByLossStatus
       } catch (e) {
         this.wellsByStatus = null
 
         this.wellsByLossStatus = null
+
+        this.proposedWellsByStatus = null
+
+        this.proposedWellsByLossStatus = null
       }
 
       this.SET_LOADING(false)

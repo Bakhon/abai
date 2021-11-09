@@ -15,12 +15,14 @@
       <table-production-loss
           v-if="activeTab === 'production_loss'"
           :wells="wellsByLossStatus"
+          :proposed-wells="proposedWellsByLossStatus"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
           :wells="wellsByLossStatus"
+          :proposed-wells="proposedWellsByLossStatus"
           key="oil_production_loss"
           class="text-white"
           @updateWide="updateWide"/>
@@ -44,6 +46,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
           :wells="wellsByStatus"
+          :proposed-wells="proposedWellsByStatus"
           key="oil_production_tech_loss"
           class="text-white"
           is-tech-loss
@@ -57,6 +60,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
           :wells="wellsByLossStatus"
+          :proposed-wells="proposedWellsByLossStatus"
           key="prs_cost"
           class="text-white"
           is-prs
@@ -103,6 +107,14 @@ export default {
       type: Array
     },
     wellsByLossStatus: {
+      required: true,
+      type: Array
+    },
+    proposedWellsByStatus: {
+      required: true,
+      type: Array
+    },
+    proposedWellsByLossStatus: {
       required: true,
       type: Array
     },
