@@ -1,7 +1,7 @@
+import apexchart from 'vue-apexcharts';
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
 import {rowsHorizon,actualIndicators,objectList} from '../json/data';
-import apexchart from 'vue-apexcharts';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
 import owcList from '../json/owc_out_uzn_13_osn.json';
@@ -43,6 +43,7 @@ export default {
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
+      show: false
     }
   },
 
