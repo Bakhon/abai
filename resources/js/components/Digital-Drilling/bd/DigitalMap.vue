@@ -105,9 +105,7 @@
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
-                                console.log(this.center)
                                 this.center = [this.coordinates[0].X, this.coordinates[0].Y]
-                                console.log(this.center)
                             } else {
                                 console.log('No data');
                             }

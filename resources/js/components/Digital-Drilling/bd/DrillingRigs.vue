@@ -180,45 +180,61 @@
                 </div>
             </div>
         </div>
-        <div class="characteristic__modal" v-if="characteristicModal && technicalDescription.length>0">
+        <div class="characteristic__modal" v-if="characteristicModal">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>{{trans("digital_drilling.default.technical_description")}} {{technicalDescription[2].value}}</span>
+                    <span class="btn-tech" @click="sensor=false" :class="{active: !sensor}">{{trans("digital_drilling.default.technical_description")}}</span>
+                    <span class="btn-tech" @click="sensor=true" :class="{active: sensor}">{{trans("digital_drilling.default.sensor")}}</span>
                     <div class="characteristic_header-close" @click="closeCharacteristicModal">
                         {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
-                    <table class="table defaultTable modalTable">
-                        <tbody>
-                        <tr>
-                            <th>{{trans("digital_drilling.default.r_name")}}</th>
-                            <th>{{trans("digital_drilling.default.r_value")}}</th>
-                        </tr>
-                        <tr>
-                            <td>{{technicalDescription[0].parameter}}</td>
-                            <td>{{technicalDescription[0].value}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{technicalDescription[1].parameter}}</td>
-                            <td>{{technicalDescription[1].value}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table defaultTable modalTable">
-                        <tbody>
+                    <div v-if="!sensor">
+                        <table class="table defaultTable modalTable">
+                            <tbody>
+                            <tr>
+                                <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                <th>{{trans("digital_drilling.default.r_value")}}</th>
+                            </tr>
+                            <tr v-for="info in technicalDescription.general">
+                                <td>{{info.parameter}}</td>
+                                <td>{{info.value}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table defaultTable modalTable">
+                            <tbody>
                             <tr>
                                 <th>{{trans("digital_drilling.default.parameters")}}</th>
                                 <th>{{trans("digital_drilling.default.measurement_unit")}}</th>
-                                <th>{{trans("digital_drilling.default.r_value")}}</th>
+                                <th class="w-150">{{trans("digital_drilling.default.r_value")}}</th>
                             </tr>
-                            <tr v-for="i in technicalDescription.length-3">
-                                <td>{{technicalDescription[i+2].parameter}}</td>
-                                <td>{{technicalDescription[i+2].unit}}</td>
-                                <td>{{technicalDescription[i+2].value}}</td>
+                            <tr v-for="tech in technicalDescription.tech_parameter">
+                                <td>{{tech.parameter}}</td>
+                                <td>{{tech.unit}}</td>
+                                <td>{{tech.value}}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <table class="table defaultTable modalTable">
+                            <tbody>
+                            <tr>
+                                <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                <th>{{trans("digital_drilling.default.status")}}</th>
+                            </tr>
+                            <tr v-for="info in technicalDescription.sensor">
+                                <td>{{info.parameter}}</td>
+                                <td class="text-center fs-16">
+                                    <span v-if="info.value">+</span>
+                                    <span v-else>-</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -334,11 +350,12 @@
                 center: [52.1108, 43.68999],
                 zoom: 9,
                 characteristicModal: false,
+                sensor: false,
                 characteristicGraph: false,
                 characteristicScheme: false,
                 filter: false,
                 rigs: [],
-                technicalDescription: [],
+                technicalDescription: {},
                 operatingCosts: [
                     {
                         year: '2016 г.',
@@ -384,7 +401,7 @@
                 });
             },
             async getRigsCharacteristics(id){
-                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/rig_tech/'+id).then((response) => {
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/rig/'+id).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.technicalDescription = data;
@@ -477,7 +494,8 @@
     }
     .characteristic_content .characteristic_body{
         margin-top: 15px;
-        height: calc(100% - 40px);
+        max-height: calc(100% - 40px);
+        height: auto;
         overflow-y: scroll;
         overflow-x: hidden;
     }
@@ -485,6 +503,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .btn-tech{
+        cursor: pointer;
+    }
+    .btn-tech.active{
+        font-weight: bold;
+        text-decoration: underline;
     }
     .characteristic_header span{
         font-family: Harmonia Sans Pro Cyr;
