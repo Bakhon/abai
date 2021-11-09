@@ -459,6 +459,12 @@ class DictionaryService
                 case 'gis_kinds_gis_type':
                     $dict = $this->getGisKindsForGisTypeForm();
                     break;
+                case 'repair_type_krs_ktm':
+                    $dict = $this->getRepairTypeDictKrsPrs("CWO");
+                    break;
+                case 'repair_type_prs_ktm':
+                    $dict = $this->getRepairTypeDictKrsPrs("WLO");
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -910,5 +916,27 @@ class DictionaryService
                 }
             )
             ->toArray();
+    }
+
+    private function getRepairTypeDictKrsPrs($type){
+        $items = DB::connection('tbd')
+            ->table('dict.repair_work_type as dr')
+            ->select('dr.id','dr.name_ru as name')
+            ->where('dw.code', $type)            
+            ->join('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')    
+            ->join('prod.well_workover as p', 'p.repair_work_type', 'dr.id')
+            ->join('prod.rwt_to_org as pr', 'p.repair_work_type', 'pr.rwt')  
+            ->distinct()
+            ->orderBy('name', 'asc') 
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+
+        return $items;
     }
 }    
