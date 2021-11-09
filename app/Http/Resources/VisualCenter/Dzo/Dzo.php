@@ -76,13 +76,13 @@ class Dzo {
     );
 
     protected $decreaseReasonFields = array (
-        'opec_explanation_reasons',
-        'impulse_explanation_reasons',
-        'shutdown_explanation_reasons',
-        'accident_explanation_reasons',
-        'restriction_kto_explanation_reasons',
-        'gas_restriction_explanation_reasons',
-        'other_explanation_reasons'
+        'opec_explanation_reasons' => 'opec_oil_losses',
+        'impulse_explanation_reasons' => 'impulse_oil_losses',
+        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
+        'accident_explanation_reasons' => 'accident_oil_losses',
+        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
+        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
+        'other_explanation_reasons' => 'other_oil_losses'
     );
 
     protected $dzoName;
@@ -264,9 +264,9 @@ class Dzo {
     {
         $accidents = array();
         $dzoFactData = $dzoFact[0];
-        foreach($this->decreaseReasonFields as $fieldName) {
-            if (!is_null($dzoFactData['importDecreaseReason']) && isset($dzoFactData['importDecreaseReason'][$fieldName])) {
-               array_push($accidents,$dzoFactData['importDecreaseReason'][$fieldName]);
+        foreach($this->decreaseReasonFields as $fieldName => $key) {
+            if (!is_null($dzoFactData['importDecreaseReason']) && !is_null($dzoFactData['importDecreaseReason'][$fieldName])) {
+               array_push($accidents,array($dzoFactData['importDecreaseReason'][$fieldName],$dzoFactData['importDecreaseReason'][$key]));
             }
         }
         return $accidents;

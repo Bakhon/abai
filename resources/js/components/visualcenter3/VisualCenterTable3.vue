@@ -991,7 +991,7 @@
                       </div>
                     </td>
                     <td
-                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('modalReasonExplanations') : ''"
+                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
@@ -2363,7 +2363,6 @@
         </div>
       </div>
     </div>
-    <modal-reasons :reasons="reasonExplanations"></modal-reasons>
     <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
