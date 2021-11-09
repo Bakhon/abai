@@ -238,6 +238,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 ->name('economic.analysis');
 
             Route::get('get-data', 'EconomicAnalysisController@getData');
+
+            Route::get('get-oil-diff', 'EconomicAnalysisController@getOilDiff');
         });
     });
 });
