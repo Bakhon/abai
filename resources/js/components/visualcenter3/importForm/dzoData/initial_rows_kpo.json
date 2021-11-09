@@ -1,0 +1,82 @@
+[
+  {
+    "column1": "Нефть, т/сут",
+    "column2": "Добыча",
+    "column3": "Сдача",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Карачаганак Петролеум Оперейтинг б.в.",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Попутный газ, тыс.куб.м/сут",
+    "column2": "Добыча",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Карачаганак Петролеум Оперейтинг б.в.",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины отклонения/снижения добычи нефти:",
+    "column2": "Пояснения причин",
+    "column3": "Принимаемые меры",
+    "column4": "Количество скважин, ед.",
+    "column5": "Время простоя, час",
+    "column6": "Потери по нефти, тонн"
+  },
+  {
+    "column1": "Причина 1",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 2",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 3",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  }
+]

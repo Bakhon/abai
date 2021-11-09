@@ -1006,7 +1006,7 @@
         height: calc(100% - 60px);
     }
     .asside-db-tab-content::-webkit-scrollbar {
-        width: 4px; 
+        width: 4px;
         background-color: #143861;
     }
     .asside-db-tab-content__item--org {
@@ -1049,7 +1049,7 @@
         display: flex;
         align-items: center;
     }
-   
+
     .asside-db-link-file:before{
     content: '';
     width: 14px;

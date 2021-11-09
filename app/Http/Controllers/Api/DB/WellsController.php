@@ -52,10 +52,12 @@ class WellsController extends Controller
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
+            'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
             'well_expl' => $this->wellExpl($well),
+            'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'tubeNom' => $this->tubeNom($well),
@@ -130,7 +132,7 @@ class WellsController extends Controller
                 foreach ($items as $item) {
                     $key = array_search($item->id, $parents_id);
                     $allParents[$key] = $item;
-                }
+                } 
             }
         }
         return $allParents;
@@ -160,6 +162,13 @@ class WellsController extends Controller
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
             ->get(['prod.well_constr.od']);
+    }
+
+    private function date_expl(Well $well)
+    {
+        $date_expl = $well->status()                        
+            ->first(['name_ru', 'dbeg']);
+        return $date_expl;
     }
 
 
@@ -200,6 +209,14 @@ class WellsController extends Controller
                ->orderBy('pivot_dbeg', 'desc')          
                ->first(['value_double', 'value_string', 'equip_param']);                          
     } 
+
+    private function wellExplOnRight(Well $well)
+    {
+        return $well->wellExpl()
+                ->withPivot('dend as dend', 'dbeg as dbeg')
+                ->orderBy('dbeg', 'desc')
+                ->first(['name_ru', 'dend', 'dbeg']);
+    }
 
     private function techs(Well $well)
     {

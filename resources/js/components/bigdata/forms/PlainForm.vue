@@ -162,7 +162,7 @@ export default {
       this.activeTab = 0
 
       if (this.values) {
-        this.formValues = this.values
+        this.formValues = Object.assign({}, this.values)
       }
 
       this.updateForm(this.params.code)
@@ -230,6 +230,9 @@ export default {
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {
+
+            this.SET_LOADING(false)
+
             this.errors = []
             this.$refs.form.reset()
             this.$notifySuccess('Ваша форма успешно отправлена')
@@ -241,6 +244,8 @@ export default {
             this.formValues = {}
           })
           .catch(error => {
+
+            this.SET_LOADING(false)
 
             if (error.response.status === 500) {
               this.$notifyError(error.response.data.message)
@@ -266,9 +271,6 @@ export default {
                 }
               }
             }
-          })
-          .finally(() => {
-            this.SET_LOADING(false)
           })
     },
     submitForm(params) {

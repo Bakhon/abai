@@ -29,7 +29,7 @@
                         @click="changeCategory('isCloseMonthActive')"
                 >
                     <div class="insert-data-icon col-1"></div>
-                    <div class="col-7">{{trans('visualcenter.closeMonth')}}</div>
+                    <div class="col-9">{{trans('visualcenter.closeMonth')}} ({{trans('visualcenter.factLowerCase')}})</div>
                 </div>
             </div>
         </div>
@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <div v-if="category.isFactActive || category.isArchieveActive" class="col-2 row mt-3 ml-1">
+            <div v-if="(category.isFactActive || category.isArchieveActive) && !bigDzo.includes(selectedDzo.ticker)" class="col-2 row mt-3 ml-1">
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"

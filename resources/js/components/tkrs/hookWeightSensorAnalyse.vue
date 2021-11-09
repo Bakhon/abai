@@ -25,7 +25,7 @@
         </div>
         
         <div class="tkrs-content">
-            <div>
+            <div div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
                     <img class="hws-tab-img"
@@ -55,51 +55,72 @@
                   <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
                   
                 </div>
-                <Plotly :data="areaChartData" :displaylogo="false" 
-                :layout="layoutData" :display-mode-bar="true" 
-                :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
+                <div class="plotly-graph-custom">
+                  <Plotly :data="areaChartData" :displaylogo="false" 
+                  :layout="layoutData" :display-mode-bar="true" 
+                  :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
+                </div>
                 <div>
-                    <div class="nav nav-tabs all-tabs">
-                      <div style="display:flex">
-                        <li class="nav-item">
-                            <a class="nav-link active tab-header" 
-                            @click="selectTab(1)" href="#">
-                            <img class="hws-tab-img"
-                              src="/img/tkrs/event.svg"
-                              
-                            /><a>{{trans('tkrs.event')}}</a></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link tab-header " 
-                            @click="selectTab(2)" href="#">
-                            <img class="hws-tab-img"
-                              src="/img/tkrs/excess.svg"
-                              
-                            /><a>{{trans('tkrs.excess')}}</a></a>
-                        </li>
-                      </div>
-                        <div class="header-hide-expand-buttons">
-                          <button @click="cancelChat()">
-                            <img
-                              src="/img/PlastFluids/tableArrow.svg"
-                              
-                            /></button
-                          ><button @click="returnChat()">
-                            <img src="/img/PlastFluids/tableArrow.svg" />
-                          </button>
-                        </div>
-                       
-                    </div>
-
-                  <div v-if="currentTab == 1">
-                      <event></event>
-                  </div>
-
-                  <div v-if="currentTab == 2">
-                      <excess></excess>
-                  </div>
-
-
+                  <table>
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Начало</th>
+                    <th>Конец</th>
+                    <th>Продолжительность</th>
+                    <th>ПВ/НПВ</th>
+                    <th>Причина</th>
+                    <th>Ответственный</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>16.08.2021</td>
+                      <td>9:00</td>
+                      <td>10:00</td>
+                      <td>1 час</td>
+                      <td>Непроизводительное время</td>
+                      <td></td>
+                      <td>Заказчик</td>
+                    </tr>
+                    
+                    
+                </tbody>
+              </table>
                 </div>
 
             </div>
@@ -139,20 +160,29 @@ export default {
         shapes: this.shapes, 
         width: 1550,
         height: 600,
-        paper_bgcolor: "#272953",
-        plot_bgcolor: "#272953",
+        margin: {
+          l: 50,
+          r: 5,
+          b: 70,
+          t: 30,
+          pad: 4
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
           color: "#FFFFFF",
           title: 'Время',
           range: [this.minimum, this.maximum],
           type: 'date',
           rangeslider: true,
+          showgrid: false
         
         },
         yaxis: {
           title: 'W (TC)',
           color: "#FFFFFF",
           linecolor: "#EF5350",
+          showgrid: false
         },    
       };
     },
@@ -183,13 +213,12 @@ export default {
     }
   },
   created: async function () {
-    console.log("TEST")  
+    
     await this.axios
       .get(
           'http://172.20.103.203:8090/chooseDatePvNpv/'
         )
       .then((response) => {
-        console.log("TEST2")  
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
@@ -254,7 +283,7 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", false);
         this.axios
             .get(
-                `http://172.20.103.203:8090/chooseDatePvNpv/${this.wellNumber}/${this.wellFile}/`,
+                `http://172.20.103.203:8090/chooseDatePvNpv1/${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
               
@@ -305,14 +334,14 @@ export default {
   
 };
 </script>
-
+<style lang="scss" scoped src="./BaseTableStyles.scss"></style>
 <style scoped>
 .data-analysis-left-block {
   width: 249px;
   flex-shrink: 0;
   display: flex;
   flex-flow: column;
-  height: 865px;
+  height: 100%;
   background: #272953;
   color: #fff;
 }
@@ -451,5 +480,19 @@ table, th, td {
 }
 .comp-charts-icon {
   padding-left: 22px;
+}
+
+.plotly-graph-custom {
+  background-color: #2B2E5E !important;
+  background-image: linear-gradient(#545580 1px, transparent 1px), 
+  linear-gradient(90deg, #545580 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px;
+  height: calc(100% - 287px);
+}
+.sidebar_graph {
+  height: calc(100% - 36px);
+}
+.tkrs-content-down {
+      height: 100%;
 }
 </style>

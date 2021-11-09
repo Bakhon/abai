@@ -10,14 +10,14 @@ class Ktm extends Dzo {
 
     protected $dzoName = 'КТМ';
 
-    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd)
     {
         $summary = array();
         array_push($summary,$companySummary);
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd)
     {
         $summary = array();
         array_push($summary,$companySummary);

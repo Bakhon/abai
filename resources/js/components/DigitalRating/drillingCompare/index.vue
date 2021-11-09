@@ -93,13 +93,13 @@
           <table class="table text-center text-white rating-table mb-0">
             <thead>
               <tr>
-                <th class="align-middle">{{ trans('digital_rating.horizon') }}</th>
-                <th colspan="3" class="align-middle">{{ getSelectedHorizon }}</th>
+                <th class="align-middle" style="width: 50%">{{ trans('digital_rating.object') }}</th>
+                <th colspan="3" class="align-middle">{{ horizon }} горизонт Северо-Западного купола</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in rowsHorizon" :key="index">
-                <td>{{ item['key'] }}</td>
+                <td style="width: 50%">{{ item['key'] }}</td>
                 <td colspan="3" v-if="item['value']">{{ item['value'] }}</td>
                 <td v-if="item['value1']">{{ item['value1'] }}</td>
                 <td v-if="item['value2']">{{ item['value2'] }}</td>
@@ -226,7 +226,7 @@
 }
 
 .rating-content__wrapper {
-  height: calc(100% - 500px);
+  height: calc(100% - 200px);
 }
 
 .leaflet-pane {
@@ -262,5 +262,18 @@
 .dropdown-menu {
   background-color: #5D5F7F;
   padding: 0;
+}
+
+.legend span {
+  position: relative;
+  bottom: 3px;
+}
+
+.legend i {
+  width: 14px;
+  height: 14px;
+  float: left;
+  margin: 0 8px 0 0;
+  opacity: 0.7;
 }
 </style>
