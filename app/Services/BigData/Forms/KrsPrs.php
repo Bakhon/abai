@@ -115,7 +115,7 @@ class KrsPrs extends PlainForm
         }
 
         $this->updateWellStatus();
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }

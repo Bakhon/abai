@@ -1,7 +1,6 @@
 <template>
   <div class="all-contents">
     <div class="well-card_tab-head d-flex" :style="{ width: tabWidth + 'px' }" >
-      <div class="wells-history-title col-2">История скважин:</div>
       <div
               v-for="(well,index) in wellsHistory"
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
@@ -19,25 +18,6 @@
         <div class="well-deal__header">
           {{ this.trans("well.well_passport") }}
         </div>
-        <form action="" class="search-bd">
-          <button class="search-btn-bd">
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 11 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z"
-                fill="#9EA4C9"
-              />
-            </svg>
-          </button>
-          <input type="text" class="search-input-bd" placeholder="Поиск" />
-        </form>
         <div class="directory text-white bg-dark">
           <ul id="myUL">
             <well-card-tree
@@ -101,66 +81,66 @@
           }"
         >
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
-            <div class="row">
-              <div class="middle-block-head">
-                <div class="transparent-select">
-                  {{ this.trans("well.well") }}:
-                  <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+            <div
+                    :class="[getWidthByColumns(),'middle-block-head d-flex well-info_header bg-dark-transparent']"
+            >
+              <div class="transparent-select">
+                {{ this.trans("well.well") }}:
+                <span v-if="wellUwi">{{ wellUwi }}</span>
+                <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+              </div>
+              <form class="search-form d-flex align-items-center">
+                <select
+                  class="select-dzo mr-2"
+                  v-if="dzoSelectOptions.length > 0"
+                  @change="dzoSelectChange($event)"
+                >
+                  <option value="0" selected>
+                    {{ this.trans("well.all_dzo") }}
+                  </option>
+                  <option
+                    v-for="(dzoSelectOption, index) in dzoSelectOptions"
+                    :value="dzoSelectOption['id']"
+                  >
+                    {{ dzoSelectOption["name"] }}
+                  </option>
+                </select>
+                <v-select
+                  class="flex-fill"
+                  :filterable="false"
+                  :options="options"
+                  :placeholder="this.trans('well.number_well')"
+                  @input="selectWell"
+                  @search="onSearch"
+                >
+                  <template slot="option" slot-scope="option">
+                    <span>{{ option.name }}</span>
+                  </template>
+                </v-select>
+              </form>
+              <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
+                <div class="button-block__item">
+                  Легенда
                 </div>
-                <form class="search-form d-flex align-items-center">
-                  <select
-                    class="select-dzo mr-2"
-                    v-if="dzoSelectOptions.length > 0"
-                    @change="dzoSelectChange($event)"
-                  >
-                    <option value="0" selected>
-                      {{ this.trans("well.all_dzo") }}
-                    </option>
-                    <option
-                      v-for="(dzoSelectOption, index) in dzoSelectOptions"
-                      :value="dzoSelectOption['id']"
-                    >
-                      {{ dzoSelectOption["name"] }}
-                    </option>
-                  </select>
-                  <v-select
-                    class="flex-fill"
-                    :filterable="false"
-                    :options="options"
-                    :placeholder="this.trans('well.number_well')"
-                    @input="selectWell"
-                    @search="onSearch"
-                  >
-                    <template slot="option" slot-scope="option">
-                      <span>{{ option.name }}</span>
-                    </template>
-                  </v-select>
-                </form>
-                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
-                  <div class="button-block__item">
-                    Легенда
-                  </div>
-                  <div class="button-block__item">
-                    График
-                  </div>
-                  <div
-                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                          class="button-block__item"
-                  >
-                          Сформировать
-                  </div>
-                  <div
-                          v-else
-                          class="button-block__item"
-                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
-                  >
-                    Исторические сведения
-                  </div>
+                <div class="button-block__item">
+                  График
+                </div>
+                <div
+                        v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
+                        class="button-block__item"
+                >
+                        Сформировать
+                </div>
+                <div
+                        v-else
+                        class="button-block__item"
+                        @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                >
+                  Исторические сведения
                 </div>
               </div>
             </div>
-            <div v-if="wellUwi" class="mid-col__main_row">
+            <div v-if="wellUwi" class="mid-col__main_row pt__40">
               <div v-if="activeFormComponentName">
                 <div
                   :is="activeFormComponentName"
@@ -426,7 +406,7 @@ export default {
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
-        categoryLast: { name_ru: null },
+        category_last: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
         expl_right: { dbeg: null, name_ru: null },
         techs: null,
@@ -513,7 +493,7 @@ export default {
         measWaterCut: "meas_water_cut",
         status: "status",
         category: "category",
-        categoryLast: "category_last",
+        category_last: "category_last",
         expl: "well_expl",
         expl_right: "well_expl_right",
         techs: "techs",
@@ -587,7 +567,8 @@ export default {
       },
       wellsHistory: [],
       tabWidth:0,
-      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
+      maximumWellsCount: 10
     };
   },
   mounted() {
@@ -660,9 +641,9 @@ export default {
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
       let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
-        ? this.well.wellInfo.whc_alt.toFixed(1) +
+        ? this.well.wellInfo.whc_alt +
           " / " +
-          this.well.wellInfo.whc_h.toFixed(1)
+          this.well.wellInfo.whc_h
         : "";
       let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
       let tap = this.well.tap ? this.well.tap.tap : "";
@@ -695,8 +676,8 @@ export default {
         ? this.wellSaptialObjectBottomY
         : "";
       let well_category = this.well.category ? this.well.category.name_ru : "";
-      let categoryLast = this.well.categoryLast
-        ? this.well.categoryLast.name_ru
+      let categoryLast = this.well.category_last
+        ? this.well.category_last.name_ru
         : "";
       let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
           ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
@@ -737,7 +718,7 @@ export default {
           : this.well.techModeProdOil
           ? this.well.techModeProdOil.liquid
           : this.well.measLiq
-          ? this.well.measLiq
+          ? this.well.measLiq.liquid
           : "";
       let techModeProdOil_measWaterCut =
         this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
@@ -835,7 +816,7 @@ export default {
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
-      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
+      let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
@@ -1085,6 +1066,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gaz_factor"),
+          data: '',
+          type: ["all"],
+        },
+        {
           name: this.trans("well.date_krs"),
           data: krsWorkover,
           type: ["all"],
@@ -1223,7 +1209,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {
+            try {                       
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -1232,6 +1218,14 @@ export default {
               }
               if (data.geo[0] != null) {
                 this.wellGeo = data.geo[0];
+              }
+
+              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+                this.setWellObjectData(
+                  Object.keys(this.wellTransform)[i],
+                  Object.values(this.wellTransform)[i],
+                  data
+                );
               }
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
@@ -1250,15 +1244,8 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }
-              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-                this.setWellObjectData(
-                  Object.keys(this.wellTransform)[i],
-                  Object.values(this.wellTransform)[i],
-                  data
-                );
-              }
-
+              }  
+            
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
@@ -1365,7 +1352,7 @@ export default {
       let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
         return e.wellUwi == this.wellUwi;
       }, 0);
-      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
+      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;    
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName
         ? this.activeFormComponentName
@@ -1410,7 +1397,7 @@ export default {
       });
       summaryWellInfo['lastFormInfo'] = this.activeForm;
       this.wellsHistory.push(summaryWellInfo);
-      if (this.wellsHistory.length > 5) {
+      if (this.wellsHistory.length > this.maximumWellsCount) {
           this.wellsHistory.shift();
       }
     },
@@ -1437,6 +1424,15 @@ export default {
       'SET_VISIBLE_INJECTION',
       'SET_VISIBLE_PRODUCTION'
     ]),
+    getWidthByColumns() {
+      if (this.isBothColumnFolded) {
+        return 'width__1700';
+      }
+      if (this.isRightColumnFolded || this.isLeftColumnFolded) {
+        return 'width__1469';
+      }
+      return 'width__1219';
+    }
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -1535,18 +1531,6 @@ $rightColumnFoldedWidth: 50px;
     left: 0;
     border-radius: 0px 5px 5px 0px;
   }
-}
-.search-bd {
-  display: flex;
-  background: #121227;
-  border: 1px solid #363b68;
-  margin-bottom: 2px;
-}
-.search-btn-bd {
-  border: none;
-  background: none;
-  width: 27px;
-  height: 27px;
 }
 .search-input-bd {
   width: 100%;
@@ -1873,7 +1857,7 @@ h4 {
   display: block;
   width: 100%;
   padding: 10px 17px 10px 7px;
-  height: calc(100% - 67px);
+  height: calc(100% - 38px);
   overflow-y: auto;
   ul {
     list-style: none;
@@ -2052,7 +2036,6 @@ h4 {
 .middle-block-head {
     display: flex;
     padding: 0 10px;
-    width: 100%;
     align-items: center;
 }
 .transparent-select{
@@ -2580,8 +2563,7 @@ h4 {
 
     .title,
     .directory,
-    .well-deal__header,
-    .search-bd {
+    .well-deal__header {
       display: none;
     }
 
@@ -2795,4 +2777,22 @@ h4 {
   color: #fff;
   padding-top: 5px;
 }
+.well-info_header {
+  position: fixed;
+  z-index: 999;
+  margin-left: -15px;
+}
+.pt__40 {
+  padding-top: 40px;
+}
+.width__1219 {
+  width: 1219px;
+}
+.width__1700 {
+  width: 1720px;
+}
+.width__1469 {
+  width: 1469px;
+}
+
 </style>
