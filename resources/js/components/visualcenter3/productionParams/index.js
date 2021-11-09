@@ -133,7 +133,6 @@ export default {
         },
 
         async switchView(view) {
-            this.isDecreaseReasonActive = false;
             this.selectAllDzoCompanies();
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
