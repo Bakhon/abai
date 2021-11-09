@@ -9,7 +9,9 @@ use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
+use App\Services\BigData\PlainFormInnerTableService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -26,6 +28,13 @@ abstract class PlainForm extends BaseForm
     protected $originalData;
     protected $submittedData = [];
 
+    protected $innerTableService;
+
+    public function __construct(Request $request, PlainFormInnerTableService $innerTableService)
+    {
+        parent::__construct($request);
+        $this->innerTableService = $innerTableService;
+    }
 
     public function getFields(): Collection
     {
@@ -108,7 +117,7 @@ abstract class PlainForm extends BaseForm
             $id = $dbQuery->insertGetId($data);
         }
 
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
@@ -273,19 +282,11 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentParentId)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
-                }
-            }
+        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        if (!empty($insertedTableFields)) {
+            $this->submittedData['table_fields'] = $insertedTableFields;
         }
     }
 

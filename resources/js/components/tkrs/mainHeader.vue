@@ -67,6 +67,7 @@ export default {
               imagePath: "/img/tkrs/daily_summary.svg",
               showArrow: false,
               position: "right",
+              url: "gps",
             },
             {
               name: this.trans('tkrs.por'),

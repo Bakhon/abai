@@ -208,7 +208,7 @@ return array (
       'number_pipes' => 'Количество труб',
       'poured_cement_volume' => 'Объем залитого цемента',
       'cement_lifting_height' => 'Высота подъема цемента, м.',
-      'wall_thickness' => 'Толщина стенки',
+      'wall_thickness' => 'Толщина стенки, мм.',
       'packer_from' => 'Пакер от',
       'packer_to' => 'Пакер до',
       'column_running_depth' => 'Глубина спуска, м.',

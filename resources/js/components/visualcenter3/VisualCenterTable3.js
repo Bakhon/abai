@@ -117,7 +117,8 @@ export default {
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
-            chartReasons: []
+            chartReasons: [],
+            opecEndDate: moment('01.09.2021', 'DD.MM.YYYY')
         };
     },
     methods: {
@@ -180,7 +181,9 @@ export default {
 
         getReasonExplanations() {
             let reasons = {};
-            this.productionTableData = this.getProductionDataByOpekRestriction();
+            if (this.periodEnd < this.opecEndDate) {
+                this.productionTableData = this.getProductionDataByOpekRestriction();
+            }
             _.forEach(this.productionTableData, (item) => {
                 if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
                     reasons[item.name] = item.decreaseReasonExplanations;
@@ -267,7 +270,7 @@ export default {
         getChartReasons(reasons) {
             this.chartReasons = reasons;
             this.$modal.show('chartModal');
-        }
+        },
     },
     mixins: [
         сompaniesDzo,

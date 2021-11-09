@@ -818,9 +818,12 @@
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
-                      {{ trans("visualcenter.plan") }}
-                      <div>
+                      <div v-if="periodEnd < opecEndDate">
+                        {{ trans("visualcenter.plan") }}
                         {{ trans("visualcenter.dzoOpec") }},
+                      </div>
+                      <div v-else>
+                        {{ trans("visualcenter.correctedOpec") }},
                       </div>
                       <div>
                         {{ getMetricNameByCategorySelected() }}
@@ -915,6 +918,7 @@
                     >
                       <div class="font">
                         {{ getFormattedNumber(item.opek) }}
+                        <span v-if="dzoWithOpekRestriction.includes(item.name)" class="color__yellow"> *</span>
                       </div>
                     </td>
                     <td
@@ -987,11 +991,11 @@
                       </div>
                     </td>
                     <td
-                            @click="$modal.show('modalReasonExplanations')"
+                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('modalReasonExplanations') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : ''">
+                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon cursor-pointer' : ''">
                       </div>
                     </td>
                   </tr>

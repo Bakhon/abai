@@ -152,6 +152,9 @@ class ExcelFormController extends Controller
         if (!$fields_data) {
             $fields_data = $request->request->get('import_field');
         }
+        if (is_null($fields_data)) {
+            return;
+        }
         foreach ($fields_data as $field_name => $field) {
             $dzo_import_field_data = $this->getDzoFieldData($field_name,$dzo_summary_last_record,$field);
             $dzo_import_field_data->save();

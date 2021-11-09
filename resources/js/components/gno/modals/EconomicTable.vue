@@ -145,15 +145,6 @@
           </td>
         </tr>
         <tr>
-          <td>{{trans('pgno.zatraty_za_sut_obsluzh')}}</td>
-          <td>
-            {{ Math.round(expAnalysisData.npvTable1.godovoiZatrSutObs / 1000) }}
-          </td>
-          <td>
-            {{ Math.round(expAnalysisData.npvTable2.godovoiZatrSutObs / 1000) }}
-          </td>
-        </tr>
-        <tr>
           <td>{{trans('pgno.stoimost_arendy_oborudov')}}</td>
           <td>
             {{Math.round(expAnalysisData.npvTable1.godovoiArenda / 1000)}}
