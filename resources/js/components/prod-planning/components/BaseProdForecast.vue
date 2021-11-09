@@ -109,7 +109,7 @@
         </div>
       </div>
       <keep-alive v-else>
-        <component :is="selected" @backToProdForecast="onChangePage()"></component>
+        <component :is="selected"></component>
       </keep-alive>
     </div>
   </div>
@@ -127,7 +127,7 @@ export default {
     return {
       tabs: [
         {
-          title: this.trans("prod-plan.fluid-prediction-method"),
+          title: this.trans("prod-plan.basic-production-and-injection"),
           component: fluidPredictionMethod,
         },
         {
@@ -156,14 +156,13 @@ export default {
       this.$emit(tab.title)
       console.log(i)
     },
-    onChangePage(e) {
-      console.log(e)
-    },
     onGoBack(s) {
       s = !s
-      console.log(s)
       this.isComponentActive = true
     },
+  },
+  mounted() {
+    console.log('mounted')
   }
 }
 </script>

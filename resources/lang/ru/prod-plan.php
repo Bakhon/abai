@@ -20,4 +20,8 @@ return array (
   'long-term-program' => 'Долгосрочная программа',
   'material-balance-method' => 'Прогноз добычи методом материального баланса',
   'oil-production-forecast' => 'Прогноз добычи нефти',
+  'basic-production-and-injection' => 'Базовая добыча и закачка',
+  'geologica-technical-measures-program' => 'Выбор программы ГТМ',
+  'сhoosing-drilling-program' => 'Выбор программы бурения',
+  'optimal-scenario' => 'Оптимальный сценарий',
 );

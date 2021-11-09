@@ -20,4 +20,8 @@ return array (
   'long-term-program' => 'Long term program',
   'material-balance-method' => 'Production forecast by material balance method',
   'oil-production-forecast' => 'Oil production forecast',
+  'basic-production-and-injection' => 'Basic production and injection',
+  'geologica-technical-measures-program' => 'Selection of the geological and technical measures program',
+  'сhoosing-drilling-program' => 'Choosing a drilling program',
+  'optimal-scenario' => 'Optimal scenario',
 );

@@ -143,12 +143,21 @@ Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').de
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
 Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
 
-
 Vue.component('prod-plan-main', require('./components/prod-planning/ProdPlanningMain.vue').default);
 Vue.component('prod-plan-sidebar', require('./components/prod-planning/components/sidebar/Sidebar.vue').default);
-Vue.component('bus-plan', require('./components/prod-planning/components/BusinessPlanning').default)
-Vue.component('monitoring-plan-fact', require('./components/prod-planning/components/MonitoringPlanFact').default)
+Vue.component('bus-plan', require('./components/prod-planning/components/BusinessPlanning').default);
+Vue.component('long-term-program', require('./components/prod-planning/components/BusinessPlanning').default);
+Vue.component('mon-plan-fact', require('./components/prod-planning/components/MonitoringPlanFact').default);
+Vue.component('base-prod-forecast', require('./components/prod-planning/components/BaseProdForecast').default);
 
+Vue.component('fluid-prediction-method', require('./components/prod-planning/components/base-prod-forecast-components/FluidPredictionMethod.vue').default);
+Vue.component('lysenko-calculations', require('./components/prod-planning/components/base-prod-forecast-components/LysenkoCalculations.vue').default);
+Vue.component('ml-learning-method', require('./components/prod-planning/components/base-prod-forecast-components/MachineLearningMethods.vue').default);
+Vue.component('water-cut-prediction-method', require('./components/prod-planning/components/base-prod-forecast-components/WaterCutPredictionMethod.vue').default);
+Vue.component('fluid-prediction-method', require('./components/prod-planning/components/business-planning-components/BasicProductionAndInjection.vue').default);
+Vue.component('fluid-prediction-method', require('./components/prod-planning/components/business-planning-components/ChoosingDrillingProgram.vue').default);
+Vue.component('fluid-prediction-method', require('./components/prod-planning/components/business-planning-components/GeologicalTechnicalMeasuresProgram.vue').default);
+Vue.component('fluid-prediction-method', require('./components/prod-planning/components/business-planning-components/OptimalScenario.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
