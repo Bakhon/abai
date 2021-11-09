@@ -26,6 +26,8 @@ class EconomicAnalysisController extends Controller
 
     const OIL_LOSS_STATUSES = [7, 9, 21];
 
+    const NULLABLE_WHERE_IN_PARAM = "''";
+
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
         $this
@@ -65,15 +67,15 @@ class EconomicAnalysisController extends Controller
                 $tableWellStatus,
                 'status_id'
             ),
+            'wellsByLossStatus' => $this->getSumWellsParamsByStatus(
+                $tableWellLossStatus,
+                'loss_status_id'
+            ),
             'proposedWellsByStatus' => $this->getSumWellsParamsByStatus(
                 $tableWellStatus,
                 'status_id',
                 $profitableWells,
                 $stoppedWells
-            ),
-            'wellsByLossStatus' => $this->getSumWellsParamsByStatus(
-                $tableWellLossStatus,
-                'loss_status_id'
             ),
             'proposedWellsByLossStatus' => $this->getSumWellsParamsByStatus(
                 $tableWellLossStatus,
@@ -285,10 +287,10 @@ class EconomicAnalysisController extends Controller
 
             $wells = DB::table("$tableWellForecast as well_forecast")
                 ->addSelect(DB::raw("
-                well_forecast.uwi, 
-                SUM(well_forecast.oil) as oil_sum,
-                SUM($netBack - ($overallExpenditures)) as operating_profit
-            "))
+                    well_forecast.uwi, 
+                    SUM(well_forecast.oil) as oil_sum,
+                    SUM($netBack - ($overallExpenditures)) as operating_profit
+                "))
                 ->leftjoin("$tableAnalysisParam AS analysis_param", function ($join) {
                     /** @var JoinClause $join */
                     $join
@@ -549,13 +551,14 @@ class EconomicAnalysisController extends Controller
         string $wellForecastAlias = 'well_forecast'
     ): string
     {
-        return "
-        CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
-             THEN 0
-             WHEN $wellForecastAlias.uwi IN ($profitableUwis)
-             THEN $wellForecastAlias.oil_forecast
-             ELSE $wellForecastAlias.oil
-        END";
+        return $profitableUwis === self::NULLABLE_WHERE_IN_PARAM && $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "$wellForecastAlias.oil"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
+                    THEN 0
+                    WHEN $wellForecastAlias.uwi IN ($profitableUwis)
+                    THEN $wellForecastAlias.oil_forecast
+                    ELSE $wellForecastAlias.oil
+               END";
     }
 
     private function sqlQueryLiquid(
@@ -564,31 +567,33 @@ class EconomicAnalysisController extends Controller
         string $wellForecastAlias = 'well_forecast'
     ): string
     {
-        return "
-        CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
-             THEN 0
-             WHEN $wellForecastAlias.uwi IN ($profitableUwis)
-             THEN $wellForecastAlias.liquid_forecast
-             ELSE $wellForecastAlias.liquid
-        END";
+        return $profitableUwis === self::NULLABLE_WHERE_IN_PARAM && $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "$wellForecastAlias.liquid"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
+                    THEN 0
+                    WHEN $wellForecastAlias.uwi IN ($profitableUwis)
+                    THEN $wellForecastAlias.liquid_forecast
+                    ELSE $wellForecastAlias.liquid
+               END";
     }
 
     private function sqlQueryPrsPortion(
-        string $stoppedUwis,
+        string $stoppedUwis = "''",
         string $wellForecastAlias = 'well_forecast'
     ): string
     {
-        return "
-        CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
-             THEN 0
-             ELSE $wellForecastAlias.prs_portion
-        END";
+        return $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "$wellForecastAlias.prs_portion"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
+                    THEN 0
+                    ELSE $wellForecastAlias.prs_portion
+               END";
     }
 
     private function buildSqlQueryWhereIn(array $stringParams): string
     {
         return $stringParams
             ? "'" . implode("','", $stringParams) . "'"
-            : "''";
+            : self::NULLABLE_WHERE_IN_PARAM;
     }
 }
