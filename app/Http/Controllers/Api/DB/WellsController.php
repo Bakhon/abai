@@ -13,6 +13,7 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
+use App\Models\BigData\MeasWell;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
@@ -46,8 +47,9 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-        
-        $orgs = $this->org($well);        
+       
+        $orgs = $this->org($well);  
+                
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
@@ -96,6 +98,7 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
+            'meas_well' => $this->measWell($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -349,6 +352,13 @@ class WellsController extends Controller
             ->first(['water_inj_val', 'pressure_inj']);
     }
 
+    private function measWell(Well $well)
+    {
+        return $well->measWell()
+            ->orderBy('dbeg', 'desc')
+            ->first(['value_double', 'dbeg']);
+    }
+    
     private function wellPerfActual(Well $well)
     {
         return $well->wellPerfActual()

@@ -14,11 +14,10 @@ class WellHistoryController extends Controller
         if (Cache::has('well_history_' . $wellId)) {
             return Cache::get('well_history_' . $wellId);
         }
-
+ 
         $measLiqs = DailyProdOil::where('well', $wellId)
             ->orderBy('date', 'asc')
             ->get();
-
 
         $groupedLiq = $measLiqs->groupBy(function($val) {
             return Carbon::parse($val->date)->format('Y');
@@ -52,7 +51,7 @@ class WellHistoryController extends Controller
                  ));
               }
            }
-        }
+        }    
 
         Cache::put('well_history_' . $wellId, $result, now()->addDay());
         return $result;

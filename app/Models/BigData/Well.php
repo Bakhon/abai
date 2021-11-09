@@ -130,6 +130,11 @@ class Well extends TBDModel
         return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
     }
 
+    public function measWell()
+    {
+        return $this->hasMany(MeasWell::class, 'well', 'id');
+    }
+    
     public function dmartDailyProd()
     {
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
