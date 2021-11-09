@@ -406,7 +406,7 @@ export default {
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
-        categoryLast: { name_ru: null },
+        category_last: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
         expl_right: { dbeg: null, name_ru: null },
         techs: null,
@@ -493,7 +493,7 @@ export default {
         measWaterCut: "meas_water_cut",
         status: "status",
         category: "category",
-        categoryLast: "category_last",
+        category_last: "category_last",
         expl: "well_expl",
         expl_right: "well_expl_right",
         techs: "techs",
@@ -641,9 +641,9 @@ export default {
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
       let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
-        ? this.well.wellInfo.whc_alt.toFixed(1) +
+        ? this.well.wellInfo.whc_alt +
           " / " +
-          this.well.wellInfo.whc_h.toFixed(1)
+          this.well.wellInfo.whc_h
         : "";
       let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
       let tap = this.well.tap ? this.well.tap.tap : "";
@@ -676,8 +676,8 @@ export default {
         ? this.wellSaptialObjectBottomY
         : "";
       let well_category = this.well.category ? this.well.category.name_ru : "";
-      let categoryLast = this.well.categoryLast
-        ? this.well.categoryLast.name_ru
+      let categoryLast = this.well.category_last
+        ? this.well.category_last.name_ru
         : "";
       let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
           ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
@@ -718,7 +718,7 @@ export default {
           : this.well.techModeProdOil
           ? this.well.techModeProdOil.liquid
           : this.well.measLiq
-          ? this.well.measLiq
+          ? this.well.measLiq.liquid
           : "";
       let techModeProdOil_measWaterCut =
         this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
@@ -816,7 +816,7 @@ export default {
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.dbeg)
         : "";
-      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
+      let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
@@ -1066,6 +1066,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gaz_factor"),
+          data: '',
+          type: ["all"],
+        },
+        {
           name: this.trans("well.date_krs"),
           data: krsWorkover,
           type: ["all"],
@@ -1204,7 +1209,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {
+            try {                       
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -1213,6 +1218,14 @@ export default {
               }
               if (data.geo[0] != null) {
                 this.wellGeo = data.geo[0];
+              }
+
+              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+                this.setWellObjectData(
+                  Object.keys(this.wellTransform)[i],
+                  Object.values(this.wellTransform)[i],
+                  data
+                );
               }
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
@@ -1231,15 +1244,8 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }
-              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-                this.setWellObjectData(
-                  Object.keys(this.wellTransform)[i],
-                  Object.values(this.wellTransform)[i],
-                  data
-                );
-              }
-
+              }  
+            
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
@@ -1346,7 +1352,7 @@ export default {
       let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
         return e.wellUwi == this.wellUwi;
       }, 0);
-      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
+      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;    
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName
         ? this.activeFormComponentName
