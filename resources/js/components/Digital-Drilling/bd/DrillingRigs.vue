@@ -303,27 +303,38 @@
                             <div class="well_body-form">
                                 <div class="well_body-form-input">
                                     <label for="DZO">Компания:</label>
-                                    <select name="" id="DZO">
-                                        <option value="" selected="selected">
-                                        </option>
-                                    </select>
+                                    <input type="text" class="select" v-model="form.company">
                                 </div>
                                 <div class="well_body-form-input">
                                     <label for="field">Грузоподъёмность:</label>
-                                    <select  id="field">
-                                        <option value=""  selected="selected"></option>
-                                    </select>
+                                    <div class="range">
+                                        <div class="from">
+                                            <label for="">От</label>
+                                            <input type="number" v-model="form.carrying_capacity.from">
+                                        </div>
+                                        <div class="to">
+                                            <label for="">до</label>
+                                            <input type="number" v-model="form.carrying_capacity.to">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="well_body-form-input">
                                     <label for="field">Номинальная глубина бурения::</label>
-                                    <select  id="field">
-                                        <option value=""  selected="selected"></option>
-                                    </select>
+                                       <div class="range">
+                                           <div class="from">
+                                               <label for="">От</label>
+                                               <input type="number" v-model="form.nominal_drilling.from">
+                                           </div>
+                                           <div class="to">
+                                               <label for="">до</label>
+                                               <input type="number" v-model="form.nominal_drilling.to">
+                                           </div>
+                                       </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="well-create">
+                    <div class="well-create" @click="filterRig">
                         Применить
                     </div>
                 </div>
@@ -381,15 +392,41 @@
                         year: '2021 г.',
                         item: 10325881
                     },
-                ]
+                ],
+                form:{
+                    company: '',
+                    carrying_capacity: {
+                        from: 0,
+                        to: ''
+                    },
+                    nominal_drilling: {
+                        from: 0,
+                        to: ''
+                    }
+                }
             }
         },
         mounted(){
-            this.getRigs()
+            this.getRigs('')
         },
         methods:{
-            async getRigs(){
-                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs').then((response) => {
+            async filterRig(){
+                let query = 'company=' + this.form.company
+                if (this.form.carrying_capacity.to) {
+                    query = query + '&load_capacity=' + this.form.carrying_capacity.from + ',' +this.form.carrying_capacity.to
+                }else{
+                    query = query + '&load_capacity=' + this.form.carrying_capacity.from
+                }
+                if (this.form.nominal_drilling.to) {
+                    query = query + '&nominal_drilling_depth=' + this.form.nominal_drilling.from + ',' +this.form.nominal_drilling.to
+                }else{
+                    query = query + '&nominal_drilling_depth=' + this.form.nominal_drilling.from
+                }
+                this.getRigs(query)
+                this.filter = false
+            },
+            async getRigs(query){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs?'+query).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.rigs = data;

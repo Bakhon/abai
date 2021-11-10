@@ -2,13 +2,13 @@
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/gno/home.png" class="companyLogo">
-        <span class="menu-collapsed companyName d-none"></span>
+        <span class="menu-collapsed companyName d-none nav_item_text">Главная</span>
     </div>
 </a>
 <a href="#" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/gno/star.png" class="companyLogo">
-        <span class="menu-collapsed companyName d-none"></span>
+        <span class="menu-collapsed companyName d-none nav_item_text">Избранное</span>
     </div>
 </a>
 <div class="dropright">
@@ -16,7 +16,7 @@
         <a href="#" class="bg-dark-new list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-start align-items-center">
                 <img src="/img/gno/some-square.png" class="companyLogo">
-                <span class="menu-collapsed companyName d-none"></span>
+                <span class="menu-collapsed companyName d-none nav_item_text">Модули</span>
             </div>
         </a>
     </div>
@@ -96,4 +96,35 @@
             @endif
         </div>
     </div>
+</div>
+
+<div class="nav_bottom">
+<a href="#"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon1.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">Справка</span>
+    </div>
+</a>
+<a href="#"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon2.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">Поддержка</span>
+    </div>
+</a>
+<a href="#"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon3.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">Почта</span>
+    </div>
+</a>
+<a href="#"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon4.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">Чат</span>
+    </div>
+</a>
 </div>

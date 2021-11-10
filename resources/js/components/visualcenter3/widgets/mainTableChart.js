@@ -269,6 +269,9 @@ export default {
 
         switchDecreaseReasonExplanations() {
             this.isDecreaseReasonActive = !this.isDecreaseReasonActive;
+            if (this.isDecreaseReasonActive) {
+                this.switchView('year');
+            }
         }
     }
 }
