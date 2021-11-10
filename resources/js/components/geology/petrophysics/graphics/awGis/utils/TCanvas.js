@@ -22,25 +22,28 @@ export default class TCanvas {
     }
 
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
-        let ctx = this.#__context, y = 0, lastLithology = options.startX[wellID], lastY = 0;
+        let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
         let color = ['gray', 'yellow', '#986321'];
         ctx.save();
         ctx.globalCompositeOperation = "destination-over";
 
         for (const lithology of lithologyData) {
-            if (lithology !== null && !isFloat(lithology) && lithology !== lastLithology) {
-                ctx.fillStyle = color[lithology];
-                ctx.beginPath();
-                ctx.moveTo(0, coord.positionY(lastY));
-                ctx.lineTo(ctx.canvas.width, coord.positionY(lastY));
-                ctx.lineTo(ctx.canvas.width, coord.positionY(y));
-                ctx.lineTo(0, coord.positionY(y));
-                ctx.closePath();
-                ctx.fill();
-                lastLithology = lithology;
-                lastY = y;
+            if (lithology !== lastLithology) {
+                if (lastLithology !== null) {
+                    ctx.fillStyle = color[lithology];
+                    ctx.beginPath();
+                    ctx.moveTo(0, coord.positionY(startPolygonPosition));
+                    ctx.lineTo(ctx.canvas.width, coord.positionY(startPolygonPosition));
+                    ctx.lineTo(ctx.canvas.width, coord.positionY(y));
+                    ctx.lineTo(0, coord.positionY(y));
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                lastLithology = lithology
             }
+
+            if (lithology === null) startPolygonPosition = y
             y++
         }
         ctx.restore();
