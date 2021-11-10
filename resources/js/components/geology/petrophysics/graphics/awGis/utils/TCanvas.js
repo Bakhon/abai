@@ -26,6 +26,8 @@ export default class TCanvas {
         let coord = this.#tCoords;
         let color = ['gray', 'yellow', '#986321'];
         ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+
         for (const lithology of lithologyData) {
             if (lithology !== null && !isFloat(lithology) && lithology !== lastLithology) {
                 ctx.fillStyle = color[lithology];
@@ -54,6 +56,8 @@ export default class TCanvas {
         let dashLine = customParams?.dash && Array.isArray(customParams?.dash.value) ? customParams?.dash.value : customParams?.dash.value.split(',');
 
         ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+
         ctx.beginPath();
         ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
 
