@@ -24,14 +24,20 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
-        let color = ['gray', 'yellow', '#986321'];
-        ctx.save();
-        ctx.globalCompositeOperation = "destination-over";
+        let colorPalette = [
+            {name: "Clay", color: 'gray'},
+            {name: "Sand", color: 'yellow'},
+            {name: "Other", color: '#986321'}
+        ];
 
         for (const lithology of lithologyData) {
             if (lithology !== lastLithology) {
-                if (lastLithology !== null) {
-                    ctx.fillStyle = color[lithology];
+                if (lithology !== null) {
+                    let difference = Math.abs(y - startPolygonPosition);
+
+                    ctx.save();
+                    ctx.fillStyle = colorPalette[lithology].color;
+                    ctx.globalCompositeOperation = "destination-over";
                     ctx.beginPath();
                     ctx.moveTo(0, coord.positionY(startPolygonPosition));
                     ctx.lineTo(ctx.canvas.width, coord.positionY(startPolygonPosition));
@@ -39,14 +45,21 @@ export default class TCanvas {
                     ctx.lineTo(0, coord.positionY(y));
                     ctx.closePath();
                     ctx.fill();
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.globalCompositeOperation = "source-over";
+                    ctx.font = "13px Harmonia-sans";
+                    ctx.textBaseline = "middle";
+                    ctx.textAlign = "center";
+                    ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
+                    ctx.restore();
                 }
                 lastLithology = lithology
+                startPolygonPosition = y
             }
-
-            if (lithology === null) startPolygonPosition = y
             y++
         }
-        ctx.restore();
     }
 
     drawCurve(curve, {options, options: {customParams}, wellID}) {
@@ -58,9 +71,9 @@ export default class TCanvas {
         let curveColor = customParams?.curveColor?.use ? customParams.curveColor?.value : "#000000";
         let dashLine = customParams?.dash && Array.isArray(customParams?.dash.value) ? customParams?.dash.value : customParams?.dash.value.split(',');
 
-        ctx.save();
         ctx.globalCompositeOperation = "source-over";
 
+        ctx.save();
         ctx.beginPath();
         ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(lastY));
 
