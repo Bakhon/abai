@@ -47,9 +47,9 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-       
-        $orgs = $this->org($well);  
-                
+
+        $orgs = $this->org($well);
+                          
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
@@ -355,6 +355,8 @@ class WellsController extends Controller
     private function measWell(Well $well)
     {
         return $well->measWell()
+            ->join('dict.metric', 'prod.meas_well.metric', '=', 'dict.metric.id')
+            ->where('dict.metric.code', '=', 'GASR')
             ->orderBy('dbeg', 'desc')
             ->first(['value_double', 'dbeg']);
     }
