@@ -16,7 +16,7 @@
         class="left-column"
       >
         <div class="well-deal__header">
-          {{ this.trans("well.well_passport") }}
+          {{ this.trans("well.case_well") }}
         </div>
         <div class="directory text-white bg-dark">
           <ul id="myUL">
@@ -2197,7 +2197,7 @@ h4 {
   overflow-x: hidden;
 
   table {
-    background: #ffff99;
+    background: #B5D9ED;
     color: #000;
     font-size: 14px;
   }
