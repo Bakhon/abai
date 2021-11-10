@@ -862,7 +862,7 @@ export default {
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["all"],
+          type: ["dob_oil"],
         },
         {
           name: this.trans("well.org_struct"),
@@ -1203,24 +1203,25 @@ export default {
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
-              if (data.geo[Object.keys(data.geo).length - 1] != null) {
-                this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
-              }
-              if (data.geo[0] != null) {
-                this.wellGeo = data.geo[0];
-              }
+              
               for(let j =0; j < Object.keys(this.well).length; j++){                                             
                  let keys = Object.keys(this.well)[j];                                                          
                  if(keys != 'id'){
                     this.well[keys] = ' ';
                  }                 
                  this.wellOrgName = ' ';
-                 this.wellTechsName = ' ';
-                 this.techModeProdOil = ' ';                 
+                 this.wellTechsName = ' ';                          
                  this.wellSaptialObjectBottomX  = ' ';
-                 this.wellSaptialObjectBottomY  = ' ';                                                                       
+                 this.wellSaptialObjectBottomY  = ' '; 
+                 this.wellGeoFields = ' ';                                                                   
               }
-                                                
+              
+              if (data.geo[Object.keys(data.geo).length - 1] != null) {
+                this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
+              }
+              if (data.geo[0] != null) {
+                this.wellGeo = data.geo[0];
+              }                                                         
               for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {               
                 this.setWellObjectData(
                   Object.keys(this.wellTransform)[i],
