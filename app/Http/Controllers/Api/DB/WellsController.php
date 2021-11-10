@@ -48,7 +48,8 @@ class WellsController extends Controller
             return Cache::get('well_' . $well->id);
         }     
        
-        $orgs = $this->org($well);                  
+        $orgs = $this->org($well);  
+                
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
@@ -96,8 +97,7 @@ class WellsController extends Controller
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
-            'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'meas_well' => $this->measWell($well),
+            'agms' => $this->getTechsByCode($well, [2000000000004]),         
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());

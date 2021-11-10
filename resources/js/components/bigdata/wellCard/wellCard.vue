@@ -820,8 +820,7 @@ export default {
       let depth_nkt = this.well.depth_nkt
         ? this.well.depth_nkt.value_string
         : "";
-      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
-      let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";      
       this.well_passport = [
         {
           name: this.trans("well.well"),
