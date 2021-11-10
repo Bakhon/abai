@@ -21,16 +21,6 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    draw(type, values, options) {
-        if (type === 'curve') {
-            return this.drawCurve(values, options)
-        }
-
-        if (type === 'lithology') {
-            return this.drawLithology(values, options)
-        }
-    }
-
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = options.startX[wellID], lastY = 0;
         let coord = this.#tCoords;
