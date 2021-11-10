@@ -120,7 +120,7 @@
                                                     {{techModeItem.label}}
                                                 </td>
                                                 <td v-if="!techModeItem.disabledForDzo.includes(selectedDzo)">
-                                                    -
+                                                    {{techModeItem.value}}
                                                 </td>
                                             </tr>
                                             <tr class="header-background_dark">
@@ -532,7 +532,13 @@ export default {
             },
             isRowsHide: true,
             summaryDisabledByDzo: ["KGM"],
-            techMode: []
+            techMode: [],
+            techModeMapping: {
+                'liquid': 0,
+                'oil': 2,
+                'wcut': 1,
+                'work_days': 9
+            }
         };
     },
     methods: {
@@ -595,109 +601,109 @@ export default {
                             'techMode': [
                                 {
                                     'label': 'Жидкость',
-                                    'value': _.sumBy(month, item => Number(item.liq)),
+                                    'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Обводненность',
-                                    'value': _.sumBy(month, 'liqCut') / month.length,
+                                    'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Нефть',
-                                    'value': _.sumBy(month, 'oil'),
+                                    'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Обв. с учетом доли ост. св. воды, %',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Нефть. с учетом доли ост. св. воды, %',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Обв. не конд.пробы, %',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Н дин.',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Закючение ГДИС.',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Причина простоя',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Отработанное время',
-                                    'value': 24,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Жидкость м3/сут(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Обводненность, %(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Нефть, т/сут(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Газ.м3/сут(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Газовый фактор, м3/т(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Температура жидкости,%(телеметрия)',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
                                     'label': 'Добыча газа',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
                                     'label': 'Газовый фактор',
-                                    'value': 0,
+                                    'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
                                 }
@@ -749,34 +755,48 @@ export default {
             return new Intl.NumberFormat("ru-RU").format(num);
         },
         async getProductionTechMode() {
-            let selectedYears = _.map(this.historicalData, 'year');
+            let dates = [];
+            for (let i in this.historicalData) {
+                dates.push(moment(this.historicalData[i]['id'],'YYYY/MMM').format('YYYY-MM-DD'));
+            }
             let queryOptions = {
-                'year': selectedYears
+                'year': _.map(this.historicalData, 'year'),
+                'dates': dates
             };
-            console.log(this.historicalData)
-            console.log(selectedYears)
             const response = await axios.get(this.localeUrl(`/api/bigdata/wells/production/techmode/${this.well.id}`),{params:queryOptions});
             return response.data;
+        },
+        async updateByTechMode() {
+            this.SET_LOADING(true);
+            if (this.historicalData.length > 0) {
+                this.techMode = await this.getProductionTechMode();
+            }
+            for (let i in this.historicalData) {
+                let techModeItem = this.techMode.find(o => o.dbeg === this.historicalData[i].date.format("YYYY-MM-DD"));
+                for (let y in techModeItem) {
+                    if (!isNaN(this.techModeMapping[y])) {
+                        this.historicalData[i].params['techMode'][this.techModeMapping[y]].value = techModeItem[y];
+                    }
+                }
+            }
+            this.SET_LOADING(false);
         }
     },
     async mounted() {
         let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
         this.SET_LOADING(true);
         const response = await axios.get(this.localeUrl(uri));
-        this.techMode = await this.getProductionTechMode();
         this.assignInfoByDates(response.data);
         this.nahdleMeasurementSchedule();
-        console.log('end')
-        console.log(this.historicalData)
         this.SET_LOADING(false);
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),
     },
     watch: {
-        "productionMeasurementSchedule": function(data) {
+        "productionMeasurementSchedule": async function(data) {
             this.nahdleMeasurementSchedule();
-            console.log(this.historicalData)
+            this.updateByTechMode();
         }
     }
 }
