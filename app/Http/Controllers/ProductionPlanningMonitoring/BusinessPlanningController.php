@@ -9,6 +9,6 @@ class BusinessPlanningController extends Controller
 {
     public function index()
     {
-        return view('prod-plan-mon.bus-plan');
+        return view('prod_plan_mon.bus_plan');
     }
 }

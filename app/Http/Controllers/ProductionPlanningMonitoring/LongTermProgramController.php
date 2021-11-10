@@ -9,6 +9,6 @@ class LongTermProgramController extends Controller
 {
     public function index()
     {
-        return view('prod-plan-mon.long-term-prog');
+        return view('prod_plan_mon.long_term_program');
     }
 }

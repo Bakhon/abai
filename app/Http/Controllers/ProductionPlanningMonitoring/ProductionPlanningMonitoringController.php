@@ -9,6 +9,6 @@ class ProductionPlanningMonitoringController extends Controller
 {
     public function index()
     {
-        return view('prod-plan-mon.mon-plan-fact');
+        return view('prod_plan_mon.mon_plan_fact');
     }
 }

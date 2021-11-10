@@ -9,6 +9,6 @@ class BaseProductionForecastController extends Controller
 {
     public function index()
     {
-        return view('prod-plan-mon.base-prod-forecast');
+        return view('prod_plan_mon.base_prod_forecast');
     }
 }

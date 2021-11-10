@@ -4,5 +4,5 @@
 @endsection
 @section('module_title', trans('prod-plan.module-title'))
 @section('content')
-<bus-plan></bus-plan>
+<prod-plan-main></prod-plan-main>
 @endsection
