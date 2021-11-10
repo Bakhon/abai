@@ -21,12 +21,27 @@ export default {
   props: ['value'],
   data() {
     return {
-      orgs: []
+      orgs: [],
+      predefinedShortNamesByDzoId: {
+        '3': 'АО ОМГ',
+        '126': '"КОА"',
+        '4': '"АО ЭМГ"',
+        '179': 'ТОО «СП «Казгермунай»',
+        '71': 'КБМ',
+        '112': 'ММГ',
+        '173': 'ТОО «Казахтуркмунай»'
+      }
     }
   },
   mounted() {
     this.axios.get(this.localeUrl('/api/bigdata/dzo')).then(({data}) => {
       this.orgs = data.orgs
+      for (let i = 0; i < data.orgs.length; i++) {
+        let id = data.orgs[i].id
+        if (id in this.predefinedShortNamesByDzoId) {
+          data.orgs[i].name_short_ru = this.predefinedShortNamesByDzoId[id]
+        }
+      }
       this.$emit('input', this.orgs[0].name_short_ru)
     })
   }
