@@ -113,9 +113,14 @@ class Dzo {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
+        if ($periodType === 'period' && count($filteredPlan) > 1) {
+            $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
+            $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
+        }
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
         $companySummary = $dzo->getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd);
+
         return $companySummary;
     }
 
@@ -232,7 +237,7 @@ class Dzo {
             if (count($formattedPlan) !== 0 && array_key_exists($dzoName,$formattedPlan[$formattedDate])) {
                 $planRecord = $formattedPlan[$formattedDate][$dzoName];
             }
-            if ($periodType === 'year') {
+            if ($periodType === 'year' || ($periodType === 'period' && $periodRange > 1)) {
                 $daySummary['plan'] = $planRecord[$this->consolidatedFieldsMapping[$type]['plan']];
                 $daySummary['opek'] = $planRecord[$this->consolidatedFieldsMapping[$type]['opek']];
             } else {
