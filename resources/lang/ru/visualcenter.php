@@ -483,5 +483,7 @@ return array (
   'selectMonth' => 'Выберите месяц',
   'factLowerCase' => 'факт',
   'correctedOpec' => 'Скорр. план ОПЕК+',
-  'losses' => 'Потери'
+  'losses' => 'Потери',
+  'opekEnabled' => 'Действуют ограничения',
+  'oldFact' => 'Данные обновляются'
 );
