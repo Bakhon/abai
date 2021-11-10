@@ -678,48 +678,12 @@ class WellsController extends Controller
     {
         $minYear = min($request->year);
         $maxYear = max($request->year);
-        $workHours = $this->getWorkHoursByWell($request->dates, $wellId);
-        $techMode = TechModeOil::query()
+        return TechModeOil::query()
             ->select()
             ->whereYear('dbeg', '>=', $minYear)
             ->whereYear('dbeg', '<=', $maxYear)
             ->where('well', $wellId)
             ->get()
             ->toArray();
-        foreach($techMode as $index => $item) {
-            $date = Carbon::parse($item['dbeg'])->format("Y/M");
-            if (in_array($date,array_keys($workHours))) {
-                $techMode[$index]['work_days'] = $workHours[$date];
-            }
-        }
-        return $techMode;
-    }
-
-    public function getWorkHoursByWell($dates, $wellId)
-    {
-        $statuses = [3,7,14];
-        $allWorkHours = $WellStatus = WellStatus::query()
-            ->select()
-            ->whereIn('status',$statuses)
-            ->where('well', $wellId)
-            ->get()
-            ->toArray();
-        $filtered = array();
-        foreach($allWorkHours as $item) {
-            $start = Carbon::parse($item['dbeg']);
-            $end = Carbon::parse($item['dend']);
-            foreach($dates as $date) {
-                $date = Carbon::parse($date);
-                if ($start->month === $date->month  && $start->year === $date->year) {
-                    $diff = $date->endOf('month')->day - $start->day;
-                    $filtered[$date->format("Y/M")] = $diff;
-                } elseif ($end->month === $date->month  && $end->year === $date->year) {
-                    $diff = $date->endOf('month')->day - $end->day;
-                    $filtered[$date->format("Y/M")] = $diff;
-                }
-            }
-
-        }
-        return $filtered;
     }
 }

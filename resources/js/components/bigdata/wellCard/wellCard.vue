@@ -1206,6 +1206,7 @@ export default {
     selectWell(well) {
       this.activeFormComponentName = null;
       this.activeForm = null;
+      this.SET_VISIBLE_PRODUCTION(false)
       if (well) {
         this.SET_LOADING(true);
         this.axios
