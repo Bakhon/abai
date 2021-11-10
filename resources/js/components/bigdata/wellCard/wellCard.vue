@@ -495,6 +495,7 @@ export default {
         },
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
+        meas_well: {dbeg: null, value_double: null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -563,6 +564,7 @@ export default {
         depth_nkt: "depth_nkt",
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
+        meas_well: "meas_well",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -659,11 +661,12 @@ export default {
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
+      let wellrot = this.getHrotor(well);
+      /*this.well.wellInfo && (this.well.wellInfo.whc_alt && this.well.wellInfo.whc_h)
         ? this.well.wellInfo.whc_alt +
           " / " +
-          this.well.wellInfo.whc_h
-        : "";
+          this.well.wellInfo.whc_h.toFixed(1)
+        : ""; */
       let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
       let tap = this.well.tap ? this.well.tap.tap : "";
       let gu_agsu =
@@ -729,7 +732,8 @@ export default {
         this.well.perfActual.top && this.well.perfActual.base
           ? this.well.perfActual.top + " - " + this.well.perfActual.base
           : ""; 
-      let techModeProdOil =
+      let techModeProdOil = this.getTechmodeLiqiud(well);
+      /*
         this.well.techModeProdOil && this.well.measLiq
           ? this.well.techModeProdOil.liquid +
             " / " +
@@ -739,6 +743,7 @@ export default {
           : this.well.measLiq
           ? this.well.measLiq.liquid
           : "";
+          */
       let techModeProdOil_measWaterCut =
         this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
           ? this.well.techModeProdOil.wcut +
@@ -851,6 +856,7 @@ export default {
         ? this.well.depth_nkt.value_string
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
+      let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -1086,8 +1092,8 @@ export default {
         },
         {
           name: this.trans("well.gaz_factor"),
-          data: '',
-          type: ["all"],
+          data: meas_well,
+          type: ["dob_oil"],
         },
         {
           name: this.trans("well.date_krs"),
@@ -1220,15 +1226,15 @@ export default {
       });
       return well_passport_data;
     },
-    selectWell(well) {
+    selectWell(well) {         
       this.activeFormComponentName = null;
       this.activeForm = null;
       if (well) {
-        this.SET_LOADING(true);
+        this.SET_LOADING(true);      
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                       
+            try {                                    
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -1238,14 +1244,27 @@ export default {
               if (data.geo[0] != null) {
                 this.wellGeo = data.geo[0];
               }
-
-              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+              for(let j =0; j < Object.keys(this.well).length; j++){                                             
+                 let keys = Object.keys(this.well)[j];                                                          
+                 if(keys != 'id'){
+                    this.well[keys] = ' ';
+                 }                 
+                 this.wellOrgName = ' ';
+                 this.wellTechsName = ' ';
+                 this.well.techModeProdOil = ' ';
+                 this.well.measLiq = ' '; 
+                 this.wellSaptialObjectBottomX  = ' ';
+                 this.wellSaptialObjectBottomY  = ' ';
+                 this.well.dmart_daily_prod_oil = ' ';                                                        
+              }
+                                                
+              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {               
                 this.setWellObjectData(
                   Object.keys(this.wellTransform)[i],
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }
+              }               
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
@@ -1321,6 +1340,41 @@ export default {
       }
       return "";
     },
+    getHrotor(well){
+      if(this.well.wellInfo){
+         if(this.well.wellInfo.whc_alt && this.well.wellInfo.whc_h ){
+             return this.well.wellInfo.whc_alt.toFixed(1) + " / " + this.well.wellInfo.whc_h.toFixed(1);
+         }
+         if(this.well.wellInfo.whc_alt){
+           return this.well.wellInfo.whc_alt.toFixed(1) + " / " + "-"; 
+         }
+         if(this.well.wellInfo.whc_h){
+           return this.well.wellInfo.whc_h.toFixed(1) + " / " + "-"; 
+         }
+      }
+      return "";
+    },
+    getTechmodeLiqiud(well){    
+     if (this.well.techModeProdOil && this.well.measLiq) {
+        if (
+          this.well.techModeProdOil.liquid &&
+          this.well.measLiq.liquid
+        ) {
+          return (
+            this.well.techModeProdOil.liquid.toFixed(1) +
+            " / " +
+            this.well.measLiq.liquid.toFixed(1)
+          );
+        }
+        if (this.well.techModeProdOil.liquid) {
+          return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
+        }
+        if (this.well.measLiq.liquid) {
+          return "-" + " / " + this.well.measLiq.liquid.toFixed(1);
+        }
+      }
+      return "";  
+    },
     getInjPressure(well) {
       if (this.well.tech_mode_inj && this.well.meas_water_inj) {
         if (
@@ -1356,10 +1410,10 @@ export default {
       return "";
     },
     setWellObjectData(key, path, source) {
-      try {
-        if (source[path] != null) {
-          this.well[key] = source[path];
-        } else {
+      try {        
+        if (source[path] != null) {         
+          this.well[key] = source[path];          
+        } else {                             
           variable = null;
         }
       } catch (e) {}
@@ -1423,7 +1477,7 @@ export default {
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
     },
-    handleSelectHistoryWell(well) {
+    handleSelectHistoryWell(well) {            
       this.activeForm = null;
       this.activeFormComponentName = null;
       _.forEach(Object.keys(well), (key) => {
