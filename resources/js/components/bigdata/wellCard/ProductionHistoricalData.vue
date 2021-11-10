@@ -183,10 +183,13 @@ export default {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
                 let sorted = _.sortBy(filtered, 'date');
-                let isChecked = true;
+                let isChecked = sorted.length > 0;
                 _.forEach(sorted, (item) => {
                     isChecked = item.isChecked;
                 });
+                if (yearItem.year === moment().year()) {
+                    isChecked = true;
+                }
                 summary.isChecked = isChecked;
                 calculated.push(summary);
                 calculated = calculated.concat(sorted);

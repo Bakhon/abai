@@ -126,13 +126,7 @@
                   График
                 </div>
                 <div
-                        v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                        class="button-block__item"
-                >
-                        Сформировать
-                </div>
-                <div
-                        v-else
+                        v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
                         class="button-block__item"
                         @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
                 >
