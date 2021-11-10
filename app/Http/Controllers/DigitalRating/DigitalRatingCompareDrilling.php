@@ -50,9 +50,18 @@ class DigitalRatingCompareDrilling extends Controller
    public function get_maps(Request $request):JsonResponse 
    {  
       $horizon = $request->input('horizon');
-      $data =   DB::connection('tbd')->table('digital_rating.outer_owc_omg_json')
-      ->where('digital_rating.outer_owc_omg_json.horizon', $horizon) 
-      ->get();
+      $owc = $request->input('owc');
+      if(empty($owc)) {
+         $data =   DB::connection('tbd')->table('digital_rating.outer_owc_omg_json')
+         ->where('digital_rating.outer_owc_omg_json.horizon', $horizon) 
+         ->get();
+      }else {
+         $data =   DB::connection('tbd')->table('digital_rating.outer_owc_omg_json')
+         ->where('digital_rating.outer_owc_omg_json.horizon', $horizon) 
+         ->where('digital_rating.outer_owc_omg_json.owc_id', $owc) 
+         ->get();
+      }
+     
 
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
