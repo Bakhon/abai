@@ -46,10 +46,8 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.operator_company')}}
                             </td>
-                            <td colspan="2">
-                                <select name="" id="" @change="onChangeOrg($event)" v-model="report.contractor_daily.operator">
-                                    <option :value="operator.id" v-for="operator in operators">{{operator.name_ru}}</option>
-                                </select>
+                            <td colspan="2" class="text-left">
+                               {{report.contractor_daily.operator.name_ru}}
                             </td>
                         </tr>
                         <tr>
@@ -80,10 +78,8 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.well')}}
                             </td>
-                            <td colspan="2">
-                                <select name="" id=""  v-model="report.general_data_daily.well">
-                                    <option :value="well_number" v-for="well_number in well">{{well_number.name_ru}}</option>
-                                </select>
+                            <td colspan="2" class="text-left">
+                                {{report.general_data_daily.well.uwi}}
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.rotation_speed')}}
@@ -102,10 +98,8 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.field')}}
                             </td>
-                            <td colspan="2">
-                                <select name="" id="" @change="onChangeField($event)" v-model="report.general_data_daily.geo">
-                                    <option :value="field.id" v-for="field in fields">{{field.name_ru}}</option>
-                                </select>
+                            <td colspan="2" class="text-left">
+                                {{report.general_data_daily.geo.name_ru}}
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.rotation_torque')}}
@@ -184,8 +178,8 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.daily_meterage')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.drilling_progress">
+                            <td colspan="2" class="text-left">
+                                <span v-if="report.general_data_daily.bhd_24">{{report.general_data_daily.bhd_24 - report.general_data_daily.previous_bhd}}</span>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_lifting')}}
@@ -280,7 +274,7 @@
                                        </tr>
                                        <tr>
                                            <td>Итого:</td>
-                                           <td><input type="text"></td>
+                                           <td>{{getSum(report.staff_daily)}}</td>
                                        </tr>
                                        </tbody>
                                    </table>
@@ -346,30 +340,30 @@
                                             <option :value="operation" v-for="operation in operation1">{{operation.name_ru}}</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" v-model="report.prod_time_daily[i-1].previous"></td>
+                                    <td>{{report.prod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.prod_time_daily[i-1].daily"></td>
-                                    <td><input type="text" v-model="report.prod_time_daily[i-1].total"></td>
+                                    <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
                                         <select name="" id="" v-model="report.unprod_time_daily[i-1].operations_type">
                                             <option :value="operation" v-for="operation in operation2">{{operation.name_ru}}</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" v-model="report.unprod_time_daily[i-1].previous"></td>
+                                    <td>{{report.unprod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.unprod_time_daily[i-1].daily"></td>
-                                    <td><input type="text" v-model="report.unprod_time_daily[i-1].total"></td>
+                                    <td>{{sumValues(report.unprod_time_daily[i-1].previous, report.unprod_time_daily[i-1].daily)}}</td>
                                 </tr>
                                 <tr class="h-31">
                                     <td colspan="3">
                                         {{trans('digital_drilling.daily_raport.total_production_time')}}
                                     </td>
                                     <td>
-                                        0,00
+                                        {{getAllProdTime('')}}
                                     </td>
                                     <td colspan="3">
                                         {{trans('digital_drilling.daily_raport.total_non_productive_time')}}
                                     </td>
                                     <td>
-                                        0,00
+                                        {{getAllProdTime('un')}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -668,11 +662,11 @@
                                     <td>
                                         {{trans('digital_drilling.daily_raport.driving_distance')}}
                                     </td>
-                                    <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].run">
+                                    <td colspan="2" class="text-left">
+                                        {{report.bit_info_daily[0].drilling_to - report.bit_info_daily[0].drilling_from}}
                                     </td>
-                                    <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].run">
+                                    <td colspan="2" class="text-left">
+                                        {{report.bit_info_daily[1].drilling_to - report.bit_info_daily[1].drilling_from}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -1423,10 +1417,10 @@
                             <td><input type="text" v-model="compositionDaily.metrics"></td>
                             <td><input type="text" v-model="compositionDaily.density"></td>
                             <td><input type="text" v-model="compositionDaily.total_consumption"></td>
-                            <td><input type="text" v-model="compositionDaily.availability"></td>
-                            <td><input type="text" v-model="compositionDaily.received_day"></td>
-                            <td><input type="text" v-model="compositionDaily.consumption_day"></td>
-                            <td><input type="text" v-model="compositionDaily.rig_balance"></td>
+                            <td>{{compositionDaily.availability}}</td>
+                            <td><input type="number" v-model="compositionDaily.received_day"></td>
+                            <td><input type="number" v-model="compositionDaily.consumption_day"></td>
+                            <td>{{subtractValues(sumValues(compositionDaily.availability, compositionDaily.received_day), compositionDaily.consumption_day)}}</td>
                             <td @click="deleteComposition(i)"><img src="/img/digital-drilling/delete-row.svg" class="delete-row" alt=""></td>
                         </tr>
                         <tr>
@@ -1454,10 +1448,10 @@
 
                         <tr v-for="(consDaily, i) in report.material_cons_daily">
                             <td><input type="text" v-model="consDaily.name"></td>
-                            <td><input type="text" v-model="consDaily.last"></td>
-                            <td><input type="text" v-model="consDaily.receipts"></td>
-                            <td><input type="text" v-model="consDaily.consumption"></td>
-                            <td><input type="text" v-model="consDaily.total_balance"></td>
+                            <td>{{consDaily.last}}</td>
+                            <td><input type="number" v-model="consDaily.receipts"></td>
+                            <td><input type="number" v-model="consDaily.consumption"></td>
+                            <td>{{subtractValues(sumValues(consDaily.last, consDaily.receipts), consDaily.consumption)}}</td>
                             <td @click="deleteConsDaily(i)"><img src="/img/digital-drilling/delete-row.svg" class="delete-row" alt=""></td>
                         </tr>
                         <tr>
@@ -1781,14 +1775,9 @@
                 catalogError: false,
                 catalogModal: false,
                 catalogModalCompany: false,
-                well:[],
                 rigCharacteristic: [],
                 addRigModal: false,
                 addRigModalError: false,
-                currentOrgId: null,
-                currentGeoId: null,
-                fields: [],
-                operators: [],
                 constructors: [],
                 bushings:[],
                 diameters:[],
@@ -1876,7 +1865,6 @@
             }
         },
         mounted(){
-            this.getOperators()
             this.getRigType()
             this.getRig()
             this.getBitDiameters()
@@ -1914,7 +1902,7 @@
                             sum += this.NozzlesTable[key][value-1]
                         }
                     }
-                    this.report.bit_info_daily[0].tfa = sum
+                    this.report.bit_info_daily[0].tfa = sum.toFixed(3)
                 }else  if (index == 2){
                     for (let i=0; i<nozzles.length; i++) {
                         nozzleValues.push(this.report.bit_info_daily[1].nozzle[nozzles[i]])
@@ -1926,7 +1914,7 @@
                             sum += this.NozzlesTable[key][value-1]
                         }
                     }
-                    this.report.bit_info_daily[1].tfa = sum
+                    this.report.bit_info_daily[1].tfa = sum.toFixed(3)
                 }
             },
             addMudDaily(){
@@ -2360,53 +2348,6 @@
                 });
 
             },
-            getWellNumber(){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/'+this.currentOrgId+'/'+this.currentGeoId).then((response) => {
-                    let data = response.data;
-                    this.well = data
-                });
-
-            },
-            async getFields(){
-                await  this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/'+this.currentOrgId).then((response) => {
-                    let data = response.data;
-                    this.fields = data
-                    this.currentGeoId = this.fields[0].id
-                    this.getWellNumber()
-                });
-
-            },
-            async getOperators(){
-                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/org/').then((response) => {
-                    let data = response.data;
-                    this.operators = data
-                    this.currentOrgId = this.operators[0].id
-                    this.getFields()
-                });
-
-            },
-            onChangeOrg(event){
-                let org_id = event.target.value
-                this.currentOrgId = org_id
-                this.report.general_data_daily.geo = {
-                    id: '',
-                    name_ru: ''
-                }
-                this.report.general_data_daily.well = {
-                    id: '',
-                    name_ru: ''
-                }
-                this.getFields()
-            },
-            onChangeField(event){
-                let fieldId = event.target.value
-                this.currentGeoId = fieldId
-                this.report.general_data_daily.well = {
-                    id: '',
-                    name_ru: ''
-                }
-                this.getWellNumber()
-            },
             addPump(){
                 if (!this.pump[0].active){
                     this.pump[0].active = true
@@ -2453,7 +2394,56 @@
                         }
                     ]
                 }
-            }
+            },
+            getSum(arr){
+                let sum = 0
+                for (let i=0; i<arr.length; i++){
+                    if (arr[i].hours) {
+                        sum += parseInt(arr[i].hours)
+                    }
+                }
+                return sum
+            },
+            sumValues(a, b){
+                if (!a){
+                    a = 0
+                }
+                if (!b){
+                    b = 0
+                }
+                if (!a && !b){
+                    return ''
+                }
+                return parseInt(a) + parseInt(b)
+            },
+            subtractValues(a, b){
+                if (!a){
+                    a = 0
+                }
+                if (!b){
+                    b = 0
+                }
+                if (!a && !b){
+                    return ''
+                }
+                return parseInt(a) - parseInt(b)
+            },
+            getAllProdTime(type){
+                let arr = []
+                if(type=='un'){
+                    arr = this.report.unprod_time_daily
+                }else{
+                    arr = this.report.prod_time_daily
+                }
+                let sum = 0
+                for (let i=0; i<arr.length; i++){
+                    if (arr[i].previous && arr[i].daily) {
+                        sum += parseInt(arr[i].previous) + parseInt(arr[i].daily)
+                    }
+                }
+                return sum
+            },
+
         }
     }
 </script>
