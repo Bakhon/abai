@@ -158,6 +158,7 @@ export default {
             oilFieldsForFilter: [],
             horizontsForFilter: [],
             objectsForFilter: [],
+            showShadow: false,
         };
     },
     computed: {
@@ -255,6 +256,10 @@ export default {
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
+            this.showShadow = false
+        },
+        onHoverTree() {
+          this.showShadow = true
         },
         async onGetTreeData() {
             let body = { url: this.url, body: this.body }
@@ -289,6 +294,7 @@ export default {
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
+            this.showShadow = true
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
                 data: function () {

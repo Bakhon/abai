@@ -482,6 +482,6 @@ return array (
   'closeMonth' => 'Закрытие месяца',
   'selectMonth' => 'Выберите месяц',
   'factLowerCase' => 'факт',
-  'correctedOpec' => 'Корр. план ОПЕК+',
+  'correctedOpec' => 'Скорр. план ОПЕК+',
   'losses' => 'Потери'
 );

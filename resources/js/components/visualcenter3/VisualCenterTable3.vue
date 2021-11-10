@@ -715,7 +715,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonDailyTab}`,'button2']"
+                        :class="[`${buttonDailyTab}`,isDecreaseReasonActive ? 'button__disabled' : 'cursor-pointer','button2']"
                         @click="switchView('day')"
                 >
                   {{ trans("visualcenter.daily") }}
@@ -723,7 +723,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        :class="[`${buttonMonthlyTab}`,'button2 cursor-pointer']"
                         @click="switchView('month')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
@@ -732,7 +732,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex cursor-pointer']">
                   <div
                           class="button1-vc-inner"
                           @click="switchView('year')"
@@ -763,7 +763,7 @@
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
                   <div
-                          :class="[`${buttonPeriodTab}`,'button2']"
+                          :class="[`${buttonPeriodTab}`,'button2 cursor-pointer']"
                   >
                     <span v-if="periodRange === 0">
                       {{ trans("visualcenter.date") }} [{{periodStart.format('DD.MM.YYYY')}}]</span
@@ -794,7 +794,7 @@
                 </div>
               </div>
               <div
-                      v-if="mainMenu.oilCondensateProduction && periodRange > 0"
+                      v-if="mainMenu.oilCondensateProduction"
                       :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
                       @click="switchDecreaseReasonExplanations()"
               ></div>
@@ -991,7 +991,7 @@
                       </div>
                     </td>
                     <td
-                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('modalReasonExplanations') : ''"
+                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
@@ -2363,7 +2363,6 @@
         </div>
       </div>
     </div>
-    <modal-reasons :reasons="reasonExplanations"></modal-reasons>
     <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
