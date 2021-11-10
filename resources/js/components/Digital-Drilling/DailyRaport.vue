@@ -685,10 +685,10 @@
                                         {{trans('digital_drilling.daily_raport.drilling_time_h')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].drilling_time">
+                                        <input type="text" v-model="report.bit_info_daily[0].drilling_time" @input="changeOveralTime(0)">
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].drilling_time">
+                                        <input type="text" v-model="report.bit_info_daily[1].drilling_time" @input="changeOveralTime(1)">
                                     </td>
                                 </tr>
                                 <tr>
@@ -696,10 +696,10 @@
                                         {{trans('digital_drilling.daily_raport.total_drilling_h')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].overall_drilling_time">
+                                        {{report.bit_info_daily[0].overall_drilling_time}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].overall_drilling_time">
+                                        {{report.bit_info_daily[1].overall_drilling_time }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -824,7 +824,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">{{trans('digital_drilling.daily_raport.BHA_length')}}</td>
-                                    <td colspan="2">0,00</td>
+                                    <td colspan="2">{{sumBHA()}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -2393,6 +2393,18 @@
                             "pressure": ""
                         }
                     ]
+                }
+            },
+            changeOveralTime(index){
+                this.report.bit_info_daily[index].overall_drilling_time = parseInt(this.report.bit_info_daily[index].prev_overall_drilling_time)
+                    + parseInt(this.report.bit_info_daily[index].drilling_time)
+            },
+            sumBHA(){
+                let arr = this.report.bha_daily
+                for (let i=arr.length-1; i>=0; i--){
+                    if (arr[i].increasing_length) {
+                        return parseInt(arr[i].increasing_length)
+                    }
                 }
             },
             getSum(arr){
