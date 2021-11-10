@@ -7,6 +7,9 @@ import initialRowsMMG from './dzoData/initial_rows_mmg.json';
 import initialRowsOMG from './dzoData/initial_rows_omg.json';
 import initialRowsYO from './dzoData/initial_rows_yo.json';
 import initialRowsEMG from './dzoData/initial_rows_emg.json';
+import initialRowsTSHO from './dzoData/initial_rows_tsho.json';
+import initialRowsNKO from './dzoData/initial_rows_nko.json';
+import initialRowsKPO from './dzoData/initial_rows_kpo.json';
 import formatMappingKOA from './dzoData/format_mapping_koa.json';
 import formatMappingKTM from './dzoData/format_mapping_ktm.json';
 import formatMappingKBM from './dzoData/format_mapping_kbm.json';
@@ -15,6 +18,9 @@ import formatMappingMMG from './dzoData/format_mapping_mmg.json';
 import formatMappingOMG from './dzoData/format_mapping_omg.json';
 import formatMappingYO from './dzoData/format_mapping_yo.json';
 import formatMappingEMG from './dzoData/format_mapping_emg.json';
+import formatMappingTSHO from './dzoData/format_mapping_tsho.json';
+import formatMappingKPO from './dzoData/format_mapping_kpo.json';
+import formatMappingNKO from './dzoData/format_mapping_nko.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
 import cellsMappingKBM from './dzoData/cells_mapping_kbm.json';
@@ -23,6 +29,9 @@ import cellsMappingMMG from './dzoData/cells_mapping_mmg.json';
 import cellsMappingOMG from './dzoData/cells_mapping_omg.json';
 import cellsMappingYO from './dzoData/cells_mapping_yo.json';
 import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
+import cellsMappingTSHO from './dzoData/cells_mapping_tsho.json';
+import cellsMappingNKO from './dzoData/cells_mapping_nko.json';
+import cellsMappingKPO from './dzoData/cells_mapping_kpo.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
@@ -133,6 +142,36 @@ export default {
                         22: 1
                     }
                 },
+                "ТШО" : {
+                    rows: initialRowsTSHO,
+                    format: formatMappingTSHO,
+                    cells: cellsMappingTSHO,
+                    id: 9999,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
+                },
+                "НКО" : {
+                    rows: initialRowsNKO,
+                    format: formatMappingNKO,
+                    cells: cellsMappingNKO,
+                    id: 9999,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
+                },
+                "КПО" : {
+                    rows: initialRowsKPO,
+                    format: formatMappingKPO,
+                    cells: cellsMappingKPO,
+                    id: 9999,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
+                },
             },
             dzoCompanies: [
                 {
@@ -162,6 +201,18 @@ export default {
                 {
                     ticker: 'УО',
                     name: 'ТОО "Урихтау Оперейтинг"'
+                },
+                {
+                    ticker: 'ТШО',
+                    name: 'ТОО "Тенгизшевройл"'
+                },
+                {
+                    ticker: 'НКО',
+                    name: 'Норт Каспиан Оперейтинг Компани н.в.'
+                },
+                {
+                    ticker: 'КПО',
+                    name: 'Карачаганак Петролеум Оперейтинг б.в.'
                 },
             ],
             selectedDzo: {
@@ -222,7 +273,8 @@ export default {
             },
             dzoUsers: [],
             requiredRows: 0,
-            isNotNullRows: {}
+            isNotNullRows: {},
+            bigDzo: ['ТШО','КПО','НКО']
         };
     },
     props: ['userId'],
@@ -230,13 +282,13 @@ export default {
         this.SET_LOADING(true);
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
-        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
-            this.isChemistryButtonVisible = true;
-            this.$modal.show('additionalParamsReminder');
-        }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
+        }
+        if (this.daysWhenChemistryNeeded.includes(currentDayNumber) && !this.bigDzo.includes(this.selectedDzo.ticker)) {
+            this.isChemistryButtonVisible = true;
+            this.$modal.show('additionalParamsReminder');
         }
         this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
         this.fillPlanColumns();

@@ -10,7 +10,7 @@ class Omg extends Dzo {
 
     protected $dzoName = 'ОМГ';
 
-    protected function getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$fieldName,$periodType)
+    protected function getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd)
     {
         $condensateSummary = $companySummary;
         $condensateSummary['id'] = '';
@@ -23,8 +23,10 @@ class Omg extends Dzo {
         }
         if ($periodType === 'year') {
             $condensateSummary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
-            $condensateSummary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
-            $condensateSummary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
+            $condensateSummary['plan'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
+            $condensateSummary['opek'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
+            $summary['condensatePlan'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
+            $summary['condensateOpek'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
         }
         return $condensateSummary;
     }
@@ -43,20 +45,20 @@ class Omg extends Dzo {
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd)
     {
         $summaryByOil = $companySummary;
-        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
         $summary = array();
         array_push($summary,$summaryByCondensate);
         array_push($summary,$summaryByOil);
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd)
     {
         $summaryByOil = $companySummary;
-        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd);
         $summary = array();
         array_push($summary,$summaryByCondensate);
         array_push($summary,$summaryByOil);

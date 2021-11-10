@@ -1,0 +1,52 @@
+{
+  "oilDzo": {
+    "fields": [
+      "oil_production_fact",
+      "oil_delivery_fact"
+    ],
+    "rowIndex": 1,
+    "rowLength": 2
+  },
+  "associatedGasDzo": {
+    "fields": [
+      "associated_gas_production_fact"
+    ],
+    "rowIndex": 4,
+    "rowLength": 1
+  },
+  "decreaseReason": {
+    "opec": {
+      "fields": [
+        "opec_explanation_reasons",
+        "opec_measures_taken",
+        "opec_wells_number",
+        "opec_downtime",
+        "opec_oil_losses"
+      ],
+      "rowIndex": 7,
+      "rowLength": 5
+    },
+    "impulse": {
+      "fields": [
+        "impulse_explanation_reasons",
+        "impulse_measures_taken",
+        "impulse_wells_number",
+        "impulse_downtime",
+        "impulse_oil_losses"
+      ],
+      "rowIndex": 8,
+      "rowLength": 5
+    },
+    "shutdown": {
+      "fields": [
+        "shutdown_explanation_reasons",
+        "shutdown_measures_taken",
+        "shutdown_wells_number",
+        "shutdown_downtime",
+        "shutdown_oil_losses"
+      ],
+      "rowIndex": 9,
+      "rowLength": 5
+    }
+  }
+}
