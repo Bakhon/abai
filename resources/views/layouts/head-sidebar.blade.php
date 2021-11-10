@@ -2,7 +2,6 @@
     <div class="left-panel h-100">
         <div class=" padding nav-left-panel" aria-expanded="false" data-toggle="collapse show">
             @include('partials.sidebar.menu')
-            @yield('sidebar_menu_additional')
         </div>
     </div>
 </div>

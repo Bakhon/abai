@@ -47,9 +47,8 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-
-        $orgs = $this->org($well);
-                          
+       
+        $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 

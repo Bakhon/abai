@@ -67,4 +67,8 @@ return array (
   'thereIsNoData' => 'Нет данных',
   'modules' => 'Модули',
   'goTo' => 'Перейти',
+  'help' => 'Справка',
+  'support' => 'Поддержка',
+  'mail' => 'Почта',
+  'chat' => 'Чат',
 );
