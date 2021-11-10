@@ -642,12 +642,7 @@ export default {
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.getHrotor(well);
-      /*this.well.wellInfo && (this.well.wellInfo.whc_alt && this.well.wellInfo.whc_h)
-        ? this.well.wellInfo.whc_alt +
-          " / " +
-          this.well.wellInfo.whc_h.toFixed(1)
-        : ""; */
+      let wellrot = this.getHrotor(well);      
       let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
       let tap = this.well.tap ? this.well.tap.tap : "";
       let gu_agsu =
@@ -713,18 +708,7 @@ export default {
         this.well.perfActual.top && this.well.perfActual.base
           ? this.well.perfActual.top + " - " + this.well.perfActual.base
           : ""; 
-      let techModeProdOil = this.getTechmodeLiqiud(well);
-      /*
-        this.well.techModeProdOil && this.well.measLiq
-          ? this.well.techModeProdOil.liquid +
-            " / " +
-            this.well.measLiq.liquid.toFixed(1)
-          : this.well.techModeProdOil
-          ? this.well.techModeProdOil.liquid
-          : this.well.measLiq
-          ? this.well.measLiq.liquid
-          : "";
-          */
+      let techModeProdOil = this.getTechmodeLiqiud(well);   
       let techModeProdOil_measWaterCut =
         this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
           ? this.well.techModeProdOil.wcut +
@@ -1232,11 +1216,9 @@ export default {
                  }                 
                  this.wellOrgName = ' ';
                  this.wellTechsName = ' ';
-                 this.well.techModeProdOil = ' ';
-                 this.well.measLiq = ' '; 
+                 this.techModeProdOil = ' ';                 
                  this.wellSaptialObjectBottomX  = ' ';
-                 this.wellSaptialObjectBottomY  = ' ';
-                 this.well.dmart_daily_prod_oil = ' ';                                                        
+                 this.wellSaptialObjectBottomY  = ' ';                                                                       
               }
                                                 
               for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {               
