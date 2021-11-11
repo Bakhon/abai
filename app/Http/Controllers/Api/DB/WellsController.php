@@ -17,6 +17,7 @@ use App\Models\BigData\MeasWell;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
+use App\Models\BigData\WellStatusProd; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
 use App\Repositories\WellCardGraphRepository;
@@ -47,7 +48,7 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-       
+        
         $orgs = $this->org($well);  
                 
         $wellInfo = [
@@ -97,7 +98,8 @@ class WellsController extends Controller
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
-            'agms' => $this->getTechsByCode($well, [2000000000004]),         
+            'agms' => $this->getTechsByCode($well, [2000000000004]),
+            'meas_well' => $this->measWell($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -168,8 +170,10 @@ class WellsController extends Controller
 
     private function date_expl(Well $well)
     {
-        $date_expl = $well->status()                        
-            ->first(['name_ru', 'dbeg']);
+        $date_expl = $well->wellExplDate()   
+            ->where('status', '=', '3')
+            ->orderBy('dbeg', 'asc')                                 
+            ->first(['dbeg']);
         return $date_expl;
     }
 

@@ -105,6 +105,11 @@ class Well extends TBDModel
         return $this->hasMany(WellPerf::class, 'well', 'id');
     }
 
+    public function wellExplDate()
+    {
+        return $this->hasMany(WellStatusProd::class, 'well', 'id');
+    }
+
     public function techModeProdOil()
     {
         return $this->hasMany(TechModeProdOil::class, 'well', 'id');
