@@ -180,8 +180,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
-                                                <td>{{formatNumber(periodItem.params.techMode[0].value.toFixed(1))}}</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'liq')}}</td>
+                                                <td>{{getSummary(periodItem.params.monthlyData,'liq')}}</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -196,7 +196,7 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>{{periodItem.params.techMode[1].value.toFixed(1)}}</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'liqCut')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr>
@@ -212,8 +212,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
-                                                <td>{{formatNumber(periodItem.params.techMode[2].value.toFixed(1))}}</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'oil')}}</td>
+                                                <td>{{getSummary(periodItem.params.monthlyData,'oil')}}</td>
                                             </tr>
                                             <tr v-if="summaryDisabledByDzo.includes(selectedDzo) && !periodItem.params.techMode[5].isHide">
                                                 <td
@@ -228,8 +228,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'hdin')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-else>
                                                 <td
@@ -242,8 +242,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-if="summaryDisabledByDzo.includes(selectedDzo) && !periodItem.params.techMode[5].isHide">
                                                 <td
@@ -256,8 +256,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'workHours')}}</td>
+                                                <td>{{getSummary(periodItem.params.monthlyData,'workHours')}}</td>
                                             </tr>
                                             <tr v-else>
                                                 <td
@@ -270,8 +270,8 @@
                                                 <td v-else>
 
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-if="summaryDisabledByDzo.includes(selectedDzo) && !periodItem.params.techMode[5].isHide">
                                                 <td
@@ -286,8 +286,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'gas')}}</td>
+                                                <td>{{getSummary(periodItem.params.monthlyData,'gas')}}</td>
                                             </tr>
                                             <tr v-else>
                                                 <td
@@ -314,8 +314,8 @@
                                                 <td v-else>
 
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr>
                                                 <td
@@ -342,8 +342,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -356,8 +356,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -370,8 +370,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -384,8 +384,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -398,8 +398,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td v-for="dayNumber in getDaysCountInMonth(periodItem.id)"> &nbsp; </td>
@@ -417,8 +417,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -431,8 +431,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -445,8 +445,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -459,8 +459,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -473,8 +473,8 @@
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -874,6 +874,15 @@ export default {
                 item[type] = value;
             });
         },
+        getMiddle(data,param) {
+            let values = data.map(function(el) {
+                return el[param];
+            });
+            return this.formatNumber(_.mean(values).toFixed(1));
+        },
+        getSummary(data,param) {
+            return this.formatNumber(_.sumBy(data,param).toFixed(1));
+        }
     },
     async mounted() {
         let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
