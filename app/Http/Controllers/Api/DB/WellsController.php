@@ -17,10 +17,9 @@ use App\Models\BigData\MeasWell;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
+use App\Models\BigData\WellStatusProd; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\TechModeOil;
-use App\Models\BigData\WellStatus;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -49,8 +48,9 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-       
-        $orgs = $this->org($well);                  
+                  
+        $orgs = $this->org($well);  
+                
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
@@ -170,8 +170,10 @@ class WellsController extends Controller
 
     private function date_expl(Well $well)
     {
-        $date_expl = $well->status()                        
-            ->first(['name_ru', 'dbeg']);
+        $date_expl = $well->wellExplDate()   
+            ->where('status', '=', '3')
+            ->orderBy('dbeg', 'asc')                                 
+            ->first(['dbeg']);
         return $date_expl;
     }
 
@@ -364,9 +366,10 @@ class WellsController extends Controller
     
     private function wellPerfActual(Well $well)
     {
-        return $well->wellPerfActual()
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'top', 'base']);
+        return $well->wellPerfActualNew()
+            ->withPivot('perf_date')            
+            ->orderBy('pivot_perf_date', 'desc')
+            ->first(['perf_date', 'top', 'base']);
     }
 
     private function measWaterCut(Well $well)
@@ -673,18 +676,5 @@ class WellsController extends Controller
             );
         }
         return $wellWorkover;
-    }
-
-    public function getProductionTechModeOil(Request $request, $wellId)
-    {
-        $minYear = min($request->year);
-        $maxYear = max($request->year);
-        return TechModeOil::query()
-            ->select()
-            ->whereYear('dbeg', '>=', $minYear)
-            ->whereYear('dbeg', '<=', $maxYear)
-            ->where('well', $wellId)
-            ->get()
-            ->toArray();
     }
 }
