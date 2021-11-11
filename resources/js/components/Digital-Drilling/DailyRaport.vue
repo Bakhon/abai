@@ -695,10 +695,10 @@
                                     <td>
                                         {{trans('digital_drilling.daily_raport.total_drilling_h')}}
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" class="text-left">
                                         {{report.bit_info_daily[0].overall_drilling_time}}
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" class="text-left">
                                         {{report.bit_info_daily[1].overall_drilling_time }}
                                     </td>
                                 </tr>
@@ -2396,8 +2396,12 @@
                 }
             },
             changeOveralTime(index){
-                this.report.bit_info_daily[index].overall_drilling_time = parseInt(this.report.bit_info_daily[index].prev_overall_drilling_time)
-                    + parseInt(this.report.bit_info_daily[index].drilling_time)
+                if (this.report.bit_info_daily[index].drilling_time) {
+                    this.report.bit_info_daily[index].overall_drilling_time = parseInt(this.report.bit_info_daily[index].prev_overall_drilling_time)
+                        + parseInt(this.report.bit_info_daily[index].drilling_time)
+                }else{
+                    this.report.bit_info_daily[index].overall_drilling_time = this.report.bit_info_daily[index].prev_overall_drilling_time
+                }
             },
             sumBHA(){
                 let arr = this.report.bha_daily
