@@ -189,7 +189,7 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].liqCut,
                                                                 periodItem.params.techMode[1],
-                                                                dayNumber,periodItem.params.activity)"
+                                                                dayNumber,periodItem.params.activity,true)"
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].liqCut.toFixed(1)}}
                                                 </td>
@@ -754,11 +754,13 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        getColorByCell(currentValue,techMode,dayNumber,activity) {
+        getColorByCell(currentValue,techMode,dayNumber,activity,isLiqCut) {
             if (this.isWellStopped(dayNumber,activity)) {
                 return 'background__red';
             }
-            if (techMode && this.isTechModeBigger(currentValue,techMode)) {
+            if (isLiqCut && techMode && this.isTechModeLess(currentValue,techMode)) {
+                return 'background__yellow';
+            } else if (!isLiqCut && techMode && this.isTechModeBigger(currentValue,techMode)) {
                 return 'background__yellow';
             }
             return '';
@@ -815,7 +817,10 @@ export default {
                 }
             }
             this.SET_LOADING(false);
-        }
+        },
+        isTechModeLess(currentValue, techMode) {
+            return currentValue > Math.round(techMode.value);
+        },
     },
     async mounted() {
         let uri = `/api/bigdata/wells/productionHistory/${this.well.id}`;
