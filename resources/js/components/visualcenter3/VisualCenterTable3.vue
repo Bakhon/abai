@@ -3074,7 +3074,6 @@
     background: #272953;
     z-index: 1000;
     position: absolute;
-    width: 80%;
     margin-left: 10px;
     border: 1px solid #575975;
     border-radius: 5px;

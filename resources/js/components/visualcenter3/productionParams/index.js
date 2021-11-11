@@ -305,13 +305,25 @@ export default {
             return _.sumBy(this.productionData, 'monthlyPlan');
         },
         summaryFact() {
-            return this.getSummaryFact(this.productionData,'fact');
+            let activeCategories = this.getActiveCategoriesCount();
+            if (activeCategories === 1) {
+                return this.getSummaryFact(this.productionData,'fact');
+            }
+            return this.getSummaryByField(this.productionData,'fact');
         },
         summaryPlan() {
-            return this.getSummaryFact(this.productionData,'plan');
+            let activeCategories = this.getActiveCategoriesCount();
+            if (activeCategories === 1) {
+                return this.getSummaryFact(this.productionData,'plan');
+            }
+            return this.getSummaryByField(this.productionData,'plan');
         },
         summaryOpek() {
-            return this.getSummaryFact(this.productionData,'opek');
+            let activeCategories = this.getActiveCategoriesCount();
+            if (activeCategories === 1) {
+                return this.getSummaryFact(this.productionData,'opek');
+            }
+            return this.getSummaryByField(this.productionData,'opek');
         },
         summaryDifference() {
             return _.sumBy(this.productionData, 'plan') - _.sumBy(this.productionData, 'fact');

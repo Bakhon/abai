@@ -112,7 +112,7 @@ export default {
             timeSelect: "",
             productionData: [],
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
-            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ','ТШО','НКО'],
+            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ','ТШО','НКО','КОА'],
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
             chartReasons: [],
