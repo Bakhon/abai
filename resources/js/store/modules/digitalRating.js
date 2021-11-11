@@ -4,8 +4,8 @@ const digitalRating = {
     sectorNumber: null,
     horizonNumber: 13,
     indicators: null,
-    injDiagramIndicators: [],
-    prodDiagramIndicators: [],
+    injDiagramIndicators: null,
+    prodDiagramIndicators: null,
   },
 
   mutations: {
@@ -26,14 +26,33 @@ const digitalRating = {
     },
     CLEAR_ATLAS(state) {
       state.indicators = null;
-      state.injDiagramIndicators = [];
-      state.prodDiagramIndicators = [];
+      state.injDiagramIndicators = null;
+      state.prodDiagramIndicators = null;
     },
   },
 
   getters: {
-    injDiagramIndicators: (state) => [state.injDiagramIndicators],
-    prodDiagramIndicators: (state) => [state.prodDiagramIndicators?.liquid_prod, state.prodDiagramIndicators?.oil_prod]
+    injDiagramIndicators: (state) => {
+      return {
+        ...state.injDiagramIndicators,
+        type: 'scatter',
+        name: 'Приемистость'
+      }
+    },
+    liguidDiagramIndicators: (state) => {
+      return {
+        ...state.prodDiagramIndicators?.liquid_prod,
+        type: 'scatter',
+        name: 'Дебит жидкости'
+      }
+    },
+    oilProdDiagramIndicators: (state) => {
+      return {
+        ...state.prodDiagramIndicators?.oil_prod,
+        type: 'scatter',
+        name: 'Добыча нефти'
+      }
+    }
   },
 
   actions: {

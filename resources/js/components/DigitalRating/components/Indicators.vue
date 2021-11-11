@@ -21,7 +21,7 @@
         </div>
       </table>
       <Plotly
-        :data="this.prodDiagramIndicators"
+        :data="[this.liguidDiagramIndicators, this.oilProdDiagramIndicators]"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
@@ -49,8 +49,8 @@
         </div>
       </table>
       <Plotly
-        :data="this.injDiagramIndicators"
-        :layout="layout"
+        :data="[this.injDiagramIndicators]"
+        :layout="layoutInj"
         :display-mode-bar="false"
         :displaylogo="false"
         style="width: 45%"
@@ -73,29 +73,15 @@
       return {
         dataInj: [],
         dataProd: [],
-        layout: {
+        generalSettings: {
           height: 320,
           showlegend: true,
           margin: {
             pad: 10
           },
-          xaxis: {
-            title: "",
-            zeroline: false,
-            gridcolor: "#3C4270",
-          },
-          yaxis: {
-            title: "Добыча жидкости,м3.Добыча нефти, т",
-            showlegend: true,
-            zeroline: false,
-            gridcolor: "#3C4270",
-            rangemode: 'tozero'
-          },
-
           paper_bgcolor: "#2B2E5E",
           plot_bgcolor: "#2B2E5E",
           font: { color: "#fff" },
-
           legend: {
             orientation: "h",
             y: -0.3,
@@ -103,6 +89,11 @@
               size: 9.3,
               color: "#fff",
             },
+          },
+          xaxis: {
+            title: "",
+            zeroline: false,
+            gridcolor: "#3C4270",
           },
         },
       }
@@ -127,7 +118,8 @@
       ]),
       ...digitalRatingGetters([
         'injDiagramIndicators',
-        'prodDiagramIndicators'
+        'liguidDiagramIndicators',
+        'oilProdDiagramIndicators'
       ]),
       getInjIndicators() {
         return this.indicators?.df_inj_sum_well?.length;
@@ -178,6 +170,32 @@
             name: 'distance'
           },
         ]
+      },
+
+      layout() {
+        return {
+          ...this.generalSettings,
+          yaxis: {
+            title: "Добыча жидкости,м3.Добыча нефти, т",
+            showlegend: true,
+            zeroline: false,
+            gridcolor: "#3C4270",
+            rangemode: 'tozero'
+          }
+        }
+      },
+
+      layoutInj() {
+        return {
+          ...this.generalSettings,
+          yaxis: {
+            title: "Приемистость, м3",
+            showlegend: true,
+            zeroline: false,
+            gridcolor: "#3C4270",
+            rangemode: 'tozero'
+          },
+        }
       }
     }
   }
