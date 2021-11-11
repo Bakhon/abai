@@ -715,7 +715,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonDailyTab}`,'button2']"
+                        :class="[`${buttonDailyTab}`,isDecreaseReasonActive ? 'button__disabled' : 'cursor-pointer','button2']"
                         @click="switchView('day')"
                 >
                   {{ trans("visualcenter.daily") }}
@@ -723,7 +723,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        :class="[`${buttonMonthlyTab}`,'button2 cursor-pointer']"
                         @click="switchView('month')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
@@ -732,7 +732,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex cursor-pointer']">
                   <div
                           class="button1-vc-inner"
                           @click="switchView('year')"
@@ -763,7 +763,7 @@
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
                   <div
-                          :class="[`${buttonPeriodTab}`,'button2']"
+                          :class="[`${buttonPeriodTab}`,'button2 cursor-pointer']"
                   >
                     <span v-if="periodRange === 0">
                       {{ trans("visualcenter.date") }} [{{periodStart.format('DD.MM.YYYY')}}]</span
@@ -794,7 +794,7 @@
                 </div>
               </div>
               <div
-                      v-if="mainMenu.oilCondensateProduction && periodRange > 0"
+                      v-if="mainMenu.oilCondensateProduction"
                       :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
                       @click="switchDecreaseReasonExplanations()"
               ></div>
@@ -818,9 +818,12 @@
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
-                      {{ trans("visualcenter.plan") }}
-                      <div>
+                      <div v-if="periodEnd < opecEndDate">
+                        {{ trans("visualcenter.plan") }}
                         {{ trans("visualcenter.dzoOpec") }},
+                      </div>
+                      <div v-else>
+                        {{ trans("visualcenter.correctedOpec") }},
                       </div>
                       <div>
                         {{ getMetricNameByCategorySelected() }}
@@ -910,20 +913,39 @@
                       </div>
                     </td>
                     <td
+                            @mouseover="opekHoverIndex = index"
+                            @mouseout="opekHoverIndex = null"
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
                         {{ getFormattedNumber(item.opek) }}
+                        <span v-if="dzoWithOpekRestriction.includes(item.name)" class="color__yellow"> *</span>
+                        <span
+                                v-if="isHoverShouldBeShown() && dzoWithOpekRestriction.includes(item.name)"
+                                v-show="opekHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.opekEnabled')}}
+                      </span>
                       </div>
                     </td>
                     <td
+                            @mouseover="factHoverIndex = index"
+                            @mouseout="factHoverIndex = null"
                             v-if="isConsolidatedCategoryActive()"
                             :class="getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
                         {{ getFormattedNumber(item.fact) }}
                         <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
+                        <span
+                                v-if="isHoverShouldBeShown() && missedCompanies.includes(item.name)"
+                                v-show="factHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.oldFact')}}
+                      </span>
                       </div>
                     </td>
                     <td
@@ -987,11 +1009,11 @@
                       </div>
                     </td>
                     <td
-                            @click="$modal.show('modalReasonExplanations')"
+                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : ''">
+                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon cursor-pointer' : ''">
                       </div>
                     </td>
                   </tr>
@@ -2359,7 +2381,6 @@
         </div>
       </div>
     </div>
-    <modal-reasons :reasons="reasonExplanations"></modal-reasons>
     <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
@@ -3048,6 +3069,16 @@
     width: 40px;
     background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
     background-color: #333975;
+  }
+  .opek-hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    margin-left: 10px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
   }
 
 </style>

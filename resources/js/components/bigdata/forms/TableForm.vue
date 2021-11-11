@@ -830,7 +830,7 @@ body.fixed {
     background: #363B68;
     display: flex;
     justify-content: space-between;
-    height: calc(100vh - 430px);
+    //height: calc(100vh - 430px);
     min-height: 500px;
     padding: 10px;
 
@@ -930,7 +930,7 @@ body.fixed {
     }
 
     td {
-      height: 40px;
+      height: 5px;
       position: relative;
 
       .icon-history {

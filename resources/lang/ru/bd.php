@@ -33,6 +33,7 @@ return [
     'actions' => 'Действия',
     'documents' => 'Документы',
     'forms' => [
+        'title' => 'Формы ввода',
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',
             'uwi_number' => 'Номер скважины',
@@ -1393,7 +1394,7 @@ return [
             'meas_count' => 'Кол-во замеров',
         ],
         'current_g_d_i_s' => [
-            'conclusion' => 'Заключение',
+            'conclusion' => 'Справочник заключений ГДИС',
             'target' => 'Цель',
             'device' => 'Прибор',
             'transcript_dynamogram' => 'Расшифровка динамограммы',
@@ -1591,7 +1592,7 @@ return [
     'end_date' => 'Конечная дата',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
-    'create_report' => 'Создать отчет', 
+    'create_report' => 'Создать отчет',
     'choose_template' => 'Выбрать шаблон',
     'choose_start_month' => 'Выберите начальный месяц',
     'choose_end_month' => 'Выберите конечный месяц',
@@ -1600,5 +1601,7 @@ return [
     'wells' => 'Скважины',
     'select_company' => 'Выберите компанию',
     'show_events' => 'Показывать события',
-    'show_full_history' => 'Показывать всю историю'
+    'show_full_history' => 'Показывать всю историю',
+    'org_structure' => 'Оргструктура',
+    'input_form' => 'Форма ввода'
 ];

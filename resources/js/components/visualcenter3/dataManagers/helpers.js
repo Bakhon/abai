@@ -229,6 +229,24 @@ export default {
                 return this.selectedDzoCompanies.includes(item.name);
             });
         },
+
+        getSummaryByField(data,field) {
+            let summary = 0;
+            _.forEach(data, (item) => {
+                summary+=item[field];
+            });
+            return summary;
+        },
+
+        getActiveCategoriesCount() {
+            let count = 0;
+            _.forEach(this.mainMenu, (item) => {
+                if (item) {
+                    count ++;
+                }
+            });
+            return count;
+        }
     },
     computed: {
         periodSelectFunc() {

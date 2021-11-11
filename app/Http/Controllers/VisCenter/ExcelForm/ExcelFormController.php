@@ -152,6 +152,9 @@ class ExcelFormController extends Controller
         if (!$fields_data) {
             $fields_data = $request->request->get('import_field');
         }
+        if (is_null($fields_data)) {
+            return;
+        }
         foreach ($fields_data as $field_name => $field) {
             $dzo_import_field_data = $this->getDzoFieldData($field_name,$dzo_summary_last_record,$field);
             $dzo_import_field_data->save();
@@ -199,6 +202,9 @@ class ExcelFormController extends Controller
         }
         $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', $isCorrected)->first();
+        $correctedDate = $dzo_summary_last_record->created_at->addHour();
+        $dzo_summary_last_record->created_at = $correctedDate;
+        $dzo_summary_last_record->save();
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;

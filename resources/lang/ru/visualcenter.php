@@ -481,5 +481,9 @@ return array (
   'trialOperating' => 'При пробной эксплуатации',
   'closeMonth' => 'Закрытие месяца',
   'selectMonth' => 'Выберите месяц',
-  'factLowerCase' => 'факт'
+  'factLowerCase' => 'факт',
+  'correctedOpec' => 'Скорр. план ОПЕК+',
+  'losses' => 'Потери',
+  'opekEnabled' => 'Действуют ограничения',
+  'oldFact' => 'Данные обновляются'
 );

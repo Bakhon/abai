@@ -39,16 +39,7 @@
               </div>
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
-            <template #title>
-              {{ trans('digital_rating.year') }}
-            </template>
-          </btn-dropdown>
-          <btn-dropdown :list="coincidences" class="mr-10px">
-            <template #title>
-              {{ trans('digital_rating.coincidencePlannedWellsWithin') }}
-            </template>
-          </btn-dropdown>
+
           <btn-dropdown :list="actualIndicators" @select="handleSelectIndicator">
             <template #title>
               {{ trans('digital_rating.comparisonDesignActualIndicators') }}
@@ -58,7 +49,35 @@
       </div>
       <div class="rating-compare__wrapper">
         <div class="rating-compare__wrapper-maps">
-          <h5>{{ trans('digital_rating.map') }}</h5>
+          <div class="rating-compare__wrapper-title">
+            <h5>{{ trans('digital_rating.map') }}</h5>
+            <div class="d-flex align-items-center">
+              <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
+                <template #title>
+                  {{ trans('digital_rating.year') }}
+                </template>
+              </btn-dropdown>
+              <btn-dropdown :list="coincidences" class="mr-10px">
+                <template #title>
+                  {{ trans('digital_rating.searchRadius') }}
+                </template>
+              </btn-dropdown>
+              <i class="fas fa-info-circle" @mouseover="show = true" @mouseleave="show = false"/>
+              <div v-show="show" class="rating-compare__popover-table">
+                <table class="table text-center text-white rating-table mb-0">
+                  <tbody>
+                    <tr v-for="(item, index) in rowsHorizon" :key="index">
+                      <td style="width: 50%">{{ item['key'] }}</td>
+                      <td colspan="3" v-if="item['value']">{{ item['value'] }}</td>
+                      <td v-if="item['value1']">{{ item['value1'] }}</td>
+                      <td v-if="item['value2']">{{ item['value2'] }}</td>
+                      <td v-if="item['value3']">{{ item['value3'] }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <div class="rating-content__wrapper">
             <div id="wellMap"></div>
           </div>
@@ -88,25 +107,6 @@
               />
             </div>
           </div>
-        </div>
-        <div class="rating-compare__wrapper-table">
-          <table class="table text-center text-white rating-table mb-0">
-            <thead>
-              <tr>
-                <th class="align-middle" style="width: 50%">{{ trans('digital_rating.object') }}</th>
-                <th colspan="3" class="align-middle">{{ horizon }} горизонт Северо-Западного купола</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in rowsHorizon" :key="index">
-                <td style="width: 50%">{{ item['key'] }}</td>
-                <td colspan="3" v-if="item['value']">{{ item['value'] }}</td>
-                <td v-if="item['value1']">{{ item['value1'] }}</td>
-                <td v-if="item['value2']">{{ item['value2'] }}</td>
-                <td v-if="item['value3']">{{ item['value3'] }}</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
         <div class="rating-compare__wrapper-table">
           <table class="table text-center text-white rating-table mb-0">
@@ -156,18 +156,24 @@
     padding: 6px;
     display: flex;
 
-    &-maps {
+    &-title {
       display: flex;
-      width: 50%;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      background: #323370;
+      border: 1px solid #545580;
+      box-sizing: border-box;
 
       h5 {
-        padding: 8px;
-        background: #323370;
-        border: 1px solid #545580;
-        box-sizing: border-box;
         margin: 0;
       }
+    }
+
+    &-maps {
+      display: flex;
+      width: 70%;
+      flex-direction: column;
 
       img {
         width: 100%;
@@ -177,7 +183,7 @@
 
     &-table {
       margin-left: 10px;
-      width: 25%;
+      width: 30%;
 
       .rating-table {
         height: 100%;
@@ -214,6 +220,23 @@
       border: 3px solid #545580;
     }
   }
+
+  &__popover-table {
+    position: absolute;
+    top: 58px;
+    margin: 0;
+    right: 30.5%;
+    width: 26%;
+    z-index: 999;
+
+    .rating-table {
+      height: auto;
+
+      tbody tr:nth-of-type(even) {
+        background-color: #272f5a;
+      }
+    }
+  }
 }
 
 #wellMap {
@@ -233,37 +256,6 @@
   z-index: 90;
 }
 
-.dropdown-menu .dropdown-menu {
-  top: auto;
-  left: 100%;
-  transform: translateY(-2rem);
-}
-.dropdown-item + .dropdown-menu {
-  display: none;
-}
-.dropdown-item.submenu::after {
-  content: '▸';
-  margin-left: 6rem;
-}
-.dropdown-item:hover + .dropdown-menu,
-.dropdown-menu:hover {
-  display: block;
-}
-.dropdown-item:hover, .dropdown-item:focus {
-  color: #fff;
-  background: #4b4c66;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.dropdown-item {
-  padding: 8px;
-  color: #fff;
-}
-.dropdown-menu {
-  background-color: #5D5F7F;
-  padding: 0;
-}
-
 .legend span {
   position: relative;
   bottom: 3px;
@@ -275,12 +267,5 @@
   float: left;
   margin: 0 8px 0 0;
   opacity: 0.7;
-}
-
-.triangle {
-  width: 300px;
-  height: 300px;
-  background: red linear-gradient(red, blue);
-  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
 }
 </style>

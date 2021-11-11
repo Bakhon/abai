@@ -17,7 +17,6 @@
     </div>
 @endsection
 @section('sidebar_menu_additional')
-    @include('partials.sidebar.bigdata_menu')
 @endsection
 @section('content')
     <bigdata-form-mobile></bigdata-form-mobile>

@@ -13,11 +13,14 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
+use App\Models\BigData\MeasWell;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
+use App\Models\BigData\TechModeOil;
+use App\Models\BigData\WellStatus;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -46,12 +49,13 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-        
-        $orgs = $this->org($well);        
+       
+        $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
+            'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
@@ -95,6 +99,7 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
+            'meas_well' => $this->measWell($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -131,7 +136,7 @@ class WellsController extends Controller
                 foreach ($items as $item) {
                     $key = array_search($item->id, $parents_id);
                     $allParents[$key] = $item;
-                }
+                } 
             }
         }
         return $allParents;
@@ -161,6 +166,16 @@ class WellsController extends Controller
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
             ->get(['prod.well_constr.od']);
+    }
+
+    private function date_expl(Well $well)
+    {
+        $date_expl = $well->wellExplDate()   
+                    ->where('status', '=', '3')
+                    ->orderBy('dbeg', 'asc')                                 
+                    ->first(['dbeg']);
+
+        return $date_expl;
     }
 
 
@@ -341,11 +356,22 @@ class WellsController extends Controller
             ->first(['water_inj_val', 'pressure_inj']);
     }
 
+    private function measWell(Well $well)
+    {
+        return $well->measWell()
+            ->join('dict.metric', 'prod.meas_well.metric', '=', 'dict.metric.id')
+            ->where('dict.metric.code', '=', 'GASR')
+            ->orderBy('dbeg', 'desc')
+            ->first(['value_double', 'dbeg']);
+    }
+    
     private function wellPerfActual(Well $well)
     {
-        return $well->wellPerfActual()
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'top', 'base']);
+        return $well->wellPerfActualNew()             
+            ->withPivot('perf_date')            
+            ->orderBy('pivot_perf_date', 'desc')
+            ->first(['perf_date', 'top', 'base']);
+
     }
 
     private function measWaterCut(Well $well)
@@ -652,5 +678,18 @@ class WellsController extends Controller
             );
         }
         return $wellWorkover;
+    }
+
+    public function getProductionTechModeOil(Request $request, $wellId)
+    {
+        $minYear = min($request->year);
+        $maxYear = max($request->year);
+        return TechModeOil::query()
+            ->select()
+            ->whereYear('dbeg', '>=', $minYear)
+            ->whereYear('dbeg', '<=', $maxYear)
+            ->where('well', $wellId)
+            ->get()
+            ->toArray();
     }
 }

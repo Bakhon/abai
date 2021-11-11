@@ -1,7 +1,7 @@
 @extends('layouts.db')
 
 @section('content')
-    <div class="row"  >
-        <proto-form :well-id="{{$well->id}}"></proto-form>
+    <div class="row">
+        <bigdata-form :well-id="{{$well->id}}"></bigdata-form>
     </div>
 @endsection
