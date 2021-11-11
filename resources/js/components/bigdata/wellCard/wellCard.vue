@@ -430,7 +430,7 @@ export default {
         treatmentDate: { treat_date: null },
         actualBottomHole: null,
         artificialBottomHole: null,
-        perfActual: { top: null, base: null, dbeg: null },
+        perfActual: { top: null, base: null, perf_date: null },
         wellInfo: { rte: null },
         date_expl: { dbeg: null, name_ru: null },
         treatmentSko: { treat_date: null },
@@ -653,6 +653,7 @@ export default {
           : this.well.agms.name_ru
           ? this.well.agms.name_ru
           : "";
+      let horizont = this.wellGeo.name_ru ? this.wellGeo.name_ru : "";
       let wellOrgName = this.wellOrgName ? this.wellOrgName : "";
       let well_zone = this.well.zone ? this.well.zone.name_ru : "";
       let wellReactReacting = this.well.wellReactInfl.well_reacting
@@ -803,7 +804,7 @@ export default {
         this.well.meas_water_inj.water_inj_val.toFixed(1)
         : "";
       let perfActualDate = this.well.perfActual
-        ? this.getFormatedDate(this.well.perfActual.dbeg)
+        ? this.getFormatedDate(this.well.perfActual.perf_date)
         : "";
       let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
@@ -841,7 +842,12 @@ export default {
         {
           name: this.trans("well.horizont_rnas"),
           data: neighbors,
-          type: ["all"],
+          type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.horizont"),
+          data: horizont,
+          type: ["nag"],
         },
         {
           name: this.trans("well.h_rotor"),
