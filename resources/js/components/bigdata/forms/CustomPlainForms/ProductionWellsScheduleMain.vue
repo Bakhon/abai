@@ -523,24 +523,7 @@
                     </div>
                 </div>
             </div>
-
-           <div class="mt-2 d-flex justify-content-end bottom-buttons">
-                <div class="p-1 d-flex align-items-center cursor-pointer" @click="nahdleMeasurementSchedule(),SET_VISIBLE_PRODUCTION(false)">
-                    <img class="pr-1" src="/img/icons/repeat.svg" alt="">
-                    Сформировать
-                </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/help.svg" alt="">
-                    Легенда
-                </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/chart.svg" alt="">
-                    <a class="text-white cursor-pointer"
-                       @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
-                </div>
-            </div>
         </div>
-         
 </template>
 <script>
 import ProductionWellsSchedule from "./ProductionWellsSchedule";
@@ -820,6 +803,15 @@ export default {
         },
         isTechModeLess(currentValue, techMode) {
             return currentValue > Math.round(techMode.value);
+        },
+        switchChartVisibility() {
+            this.isScheduleVisible = !this.isScheduleVisible;
+            this.changeColumnsVisible(false);
+        },
+        switchColumnsVisibility(type,value) {
+            _.forEach(this.historicalData, (item) => {
+                item[type] = value;
+            });
         },
     },
     async mounted() {
