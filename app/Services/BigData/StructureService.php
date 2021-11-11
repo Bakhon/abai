@@ -177,7 +177,7 @@ class StructureService
     {
         foreach ($branch as $item) {
             $key = implode(':', [$item['type'], $item['id']]);
-            if (in_array($key, $userSelectedTreeItems)) {
+            if (!empty($userSelectedTreeItems) && in_array($key, $userSelectedTreeItems)) {
                 $tree[] = $item;
                 continue;
             }
