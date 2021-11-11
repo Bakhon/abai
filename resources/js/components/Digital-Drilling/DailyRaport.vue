@@ -410,9 +410,9 @@
                             <td colspan="4" class="border-bottom-0 text-left">{{trans('digital_drilling.daily_raport.delivered')}}</td>
                         </tr>
                         <tr>
-                            <td ><input type="text" v-model="report.job_status_daily[0].tbeg"></td>
-                            <td ><input type="text" v-model="report.job_status_daily[0].tend"></td>
-                            <td ><input type="text" v-model="report.job_status_daily[0].total_time"></td>
+                            <td ><input type="time" v-model="report.job_status_daily[0].tbeg" @change="getTotalTime(0, 24)"></td>
+                            <td ><input type="time" v-model="report.job_status_daily[0].tend" @change="getTotalTime(0, 24)"></td>
+                            <td >{{report.job_status_daily[0].total_time}}</td>
                             <td ><input type="text" v-model="report.job_status_daily[0].rate"></td>
                             <td >
                                 <select name="" id=""  v-model="report.job_status_daily[0].operation_code">
@@ -423,9 +423,9 @@
                             <td rowspan="16" colspan="4" class="w-20 border-top-0"><textarea name="" id="" cols="30" rows="32" v-model="report.comments.comment"></textarea></td>
                         </tr>
                         <tr v-for="i in 15">
-                            <td ><input type="text" v-model="report.job_status_daily[i].tbeg"></td>
-                            <td ><input type="text" v-model="report.job_status_daily[i].tend"></td>
-                            <td ><input type="text" v-model="report.job_status_daily[i].total_time"></td>
+                            <td ><input type="time" v-model="report.job_status_daily[i].tbeg" @change="getTotalTime(i, 24)"></td>
+                            <td ><input type="time" v-model="report.job_status_daily[i].tend" @change="getTotalTime(i, 24)"></td>
+                            <td >{{report.job_status_daily[i].total_time}}</td>
                             <td ><input type="text" v-model="report.job_status_daily[i].rate"></td>
                             <td >
                                 <select name="" id=""  v-model="report.job_status_daily[i].operation_code">
@@ -436,7 +436,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.TOTAL')}}</td>
-                            <td>24:00</td>
+                            <td>{{summTotalTime}}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1205,10 +1205,10 @@
                                 <textarea name=""  cols="30" rows="22" v-model="report.planned_work.planned_work"></textarea>
                             </td>
                         </tr>
-                        <tr v-for="job_status in report.job_status_6_hours">
-                            <td><input type="text" v-model="job_status.tbeg"></td>
-                            <td><input type="text" v-model="job_status.tend"></td>
-                            <td><input type="text" v-model="job_status.total_time"></td>
+                        <tr v-for="(job_status, i) in report.job_status_6_hours">
+                            <td><input type="time" v-model="job_status.tbeg" @change="getTotalTime(i, 6)"></td>
+                            <td><input type="time" v-model="job_status.tend" @change="getTotalTime(i, 6)"></td>
+                            <td>{{job_status.total_time}}</td>
                             <td><input type="text" v-model="job_status.rate"></td>
                             <td>
                                 <select name="" id="" v-model="job_status.operation_code">
@@ -1724,12 +1724,15 @@
     import threadTypesJson from './core/threadType'
     import inclino from './core/inclino'
     import mudDaily from './core/drillingmudDaily'
+    import moment from "moment";
+
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd},
         props: ['report'],
         data(){
             return{
+                summTotalTime: '00:00',
                 pump:[
                     {
                         number: 3,
@@ -2459,6 +2462,75 @@
                 }
                 return sum
             },
+            getTotalTime(i, type){
+                
+                let arr = []
+                if (type == 24){
+                    arr = this.report.job_status_daily
+                }else{
+                    arr = this.report.job_status_6_hours
+                }
+                if (arr[i].tbeg && arr[i].tend) {
+                    let startTime = arr[i].tbeg;
+                    let endTime = arr[i].tend;
+
+                    let todayDate = moment(new Date()).format("MM-DD-YYYY");
+
+                    let startDate = new Date(`${todayDate} ${startTime}`);
+                    let endDate = new Date(`${todayDate } ${endTime}`);
+                    let timeDiff = Math.abs(startDate.getTime() - endDate.getTime());
+
+                    let hh = Math.floor(timeDiff / 1000 / 60 / 60);
+                    hh = ('0' + hh).slice(-2)
+
+                    timeDiff -= hh * 1000 * 60 * 60;
+                    let mm = Math.floor(timeDiff / 1000 / 60);
+                    mm = ('0' + mm).slice(-2)
+
+                    arr[i].total_time = hh + ":" + mm
+                    if (startDate > endDate) {
+                        if (mm == '00'){
+                            arr[i].total_time = (24-hh)  + ":" + mm
+                        } else{
+                            arr[i].total_time = (23-hh)  + ":" + (60-mm)
+                        }
+                    }
+                    if(type == 24){
+                        this.getAllTotalTime()
+                    }
+
+                }
+            },
+            getAllTotalTime(){
+                let sum = '00:00:00'
+                for (let i=0; i<this.report.job_status_daily.length; i++){
+                    if (this.report.job_status_daily[i].total_time){
+                        let time = this.report.job_status_daily[i].total_time + ':00'
+                        sum = this.formatTime(this.timestrToSec(sum) + this.timestrToSec(time));
+                    }
+                }
+                this.summTotalTime = sum.slice(0, -3);
+            },
+             timestrToSec(timestr) {
+                let parts = timestr.split(":");
+                return (parts[0] * 3600) +
+                    (parts[1] * 60) +
+                    (+parts[2]);
+            },
+
+             pad(num) {
+                if(num < 10) {
+                    return "0" + num;
+                } else {
+                    return "" + num;
+                }
+            },
+            formatTime(seconds) {
+                return [this.pad(Math.floor(seconds/3600)),
+                    this.pad(Math.floor(seconds/60)%60),
+                    this.pad(seconds%60),
+                ].join(":");
+            }
 
         }
     }
