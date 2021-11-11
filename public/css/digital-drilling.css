@@ -891,9 +891,11 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+    display: flex;
+    align-items: center;
 
 }
-.well_body-form-input select, .well_body-form-input input{
+.well_body-form-input .select{
     background: #334296;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
@@ -903,6 +905,10 @@ input.rangeInput {
     margin-left: 10px;
     max-width: 200px;
 }
+/* Firefox */
+.range  input[type=number] {
+    -moz-appearance: textfield;
+}
 .well_body-form-input input{
     background: #1F2142;
     padding: 5px 14px;
@@ -910,8 +916,34 @@ input.rangeInput {
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
 }
-.well_body-form-input select:focus{
+.well_body-form-input .select:focus{
     outline: none;
+}
+.range{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    margin-left: 10px;
+}
+.range .from, .range .to{
+    display: flex;
+    align-items: center;
+}
+.range input{
+    width: 70px;
+    margin-left: 10px;
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    padding: 5px!important;
+    font-size: 16px;
+    height: 25px;
+
+}
+.range input::-webkit-outer-spin-button,
+.range  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .input-size{
     position: absolute;

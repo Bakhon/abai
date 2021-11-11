@@ -32,14 +32,18 @@
                     :center="center"
                     :zoom="zoom"
             >
+
                 <MglMarker
                         v-for="(coordinate, i)  in coordinates"
                         :coordinates="[coordinate.X, coordinate.Y]"
                         :key="i"
                 >
                     <div slot="marker">
-                        <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В бурении'">
-                        <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
+                       <div class="marker">
+                           <img src="/img/digital-drilling/drilling-map-icon.svg" alt="" v-if="coordinate.Status == 'В бурении'">
+                           <img src="/img/digital-drilling/drilling-well-icon.svg" alt="" v-else>
+                           <div class="field-name">{{coordinate.field}}</div>
+                       </div>
                     </div>
                 </MglMarker>
             </MglMap>
@@ -60,11 +64,12 @@
 
     import {
         MglMap,
-        MglMarker
+        MglMarker,
+        MglPopup
     } from 'vue-mapbox'
     export default {
         name: "DigitalMap",
-        components:{ MglMap, MglMarker, Dropdown},
+        components:{ MglMap, MglMarker, MglPopup, Dropdown},
         data() {
             return {
                 accessToken: process.env.MIX_MAPBOX_TOKEN,
@@ -105,9 +110,7 @@
                             let data = response.data;
                             if (data) {
                                 this.coordinates = data;
-                                console.log(this.center)
                                 this.center = [this.coordinates[0].X, this.coordinates[0].Y]
-                                console.log(this.center)
                             } else {
                                 console.log('No data');
                             }
@@ -181,5 +184,35 @@
 </script>
 
 <style scoped>
+    .marker{
+       position: relative;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .marker:hover{
+        z-index: 2000;
+    }
+    .field-name{
+        display: block;
+        z-index: 2000;
 
+    }
+    .field-name{
+        position: absolute;
+        top: 0;
+        left: 110%;
+        background: #1F2142;
+        border: 0.5px solid #454FA1;
+        color: #ffffff;
+        padding: 5px;
+        display: none;
+    }
+    .mapboxgl-marker:hover .field-name{
+        display: block;
+        z-index: 2000;
+
+    }
+    .mapboxgl-marker:hover{
+        z-index: 2000;
+    }
 </style>
