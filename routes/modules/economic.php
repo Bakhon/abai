@@ -239,7 +239,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
             Route::get('get-data', 'EconomicAnalysisController@getData');
 
-            Route::get('get-oil-diff', 'EconomicAnalysisController@getOilDiff');
+            Route::get('get-wells-by-date', 'EconomicAnalysisController@getWellsByDate');
         });
     });
 });

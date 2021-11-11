@@ -6,6 +6,7 @@
       </subtitle>
 
       <apexchart
+          v-if="isMounted"
           :options="chartOptions.original"
           :series="chartSeries.original"
           :height="535"/>
@@ -17,6 +18,7 @@
       </subtitle>
 
       <apexchart
+          v-if="isMounted"
           :options="chartOptions.proposed"
           :series="chartSeries.proposed"
           :height="535"/>
@@ -25,7 +27,10 @@
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 import chart from "vue-apexcharts";
+
 import Subtitle from "../Subtitle";
 
 const ru = require("apexcharts/dist/locales/ru.json");
@@ -46,14 +51,22 @@ export default {
       type: Array
     }
   },
+  data: () => ({
+    isMounted: false
+  }),
   created() {
     this.$emit('updateWide', false)
+  },
+  mounted() {
+    this.SET_LOADING(true)
+
+    setTimeout(() => this.isMounted = true)
   },
   computed: {
     sortedUwis() {
       return {
-        original: Object.keys(this.wells),
-        proposed: Object.keys(this.proposedWells),
+        original: this.isMounted ? this.wells.map(well => well.uwi) : [],
+        proposed: this.isMounted ? this.proposedWells.map(well => well.uwi) : [],
       }
     },
 
@@ -72,15 +85,7 @@ export default {
     },
   },
   methods: {
-    sortUwis(wellsKey) {
-      if (!this[wellsKey]) {
-        return []
-      }
-
-      return Object.keys(this[wellsKey]).sort((prev, next) =>
-          +this[wellsKey][prev].operating_profit - +this[wellsKey][next].operating_profit
-      )
-    },
+    ...globalloadingMutations(['SET_LOADING']),
 
     getChartOptions(wellsKey, sortKey) {
       return {
@@ -92,7 +97,10 @@ export default {
         chart: {
           foreColor: '#FFFFFF',
           locales: [ru],
-          defaultLocale: 'ru'
+          defaultLocale: 'ru',
+          events: {
+            animationEnd: (chartContext, config) => this.SET_LOADING(false)
+          }
         },
         markers: {
           size: 1,
@@ -141,13 +149,13 @@ export default {
       return this.sortedUwis[sortKey].map((uwi, uwiIndex) => ({
         seriesIndex: seriesIndex,
         dataPointIndex: uwiIndex,
-        fillColor: this[wellsKey][uwiIndex].is_changed === -1
+        fillColor: this[wellsKey][uwiIndex].is_stopped
             ? '#E31F25'
             : '#009847',
-        strokeColor: this[wellsKey][uwiIndex].is_changed === -1
+        strokeColor: this[wellsKey][uwiIndex].is_stopped
             ? '#E31F25'
             : '#009847',
-        size: this[wellsKey][uwiIndex].is_changed
+        size: +this[wellsKey][uwiIndex].is_stopped
             ? markerSize
             : 0,
         shape: "circle"
@@ -161,10 +169,10 @@ export default {
 
       let operatingProfit = []
 
-      this.sortedUwis[sortKey].forEach(uwi => {
-        oil.push(+this[wellsKey][uwi].oil)
+      this.sortedUwis[sortKey].forEach((uwi, uwiIndex) => {
+        oil.push(+this[wellsKey][uwiIndex].oil)
 
-        operatingProfit.push(+this[wellsKey][uwi].operating_profit)
+        operatingProfit.push(+this[wellsKey][uwiIndex].operating_profit)
       })
 
       series.push(
@@ -180,7 +188,6 @@ export default {
             type: 'line',
             color: '#009847',
             data: operatingProfit,
-            dimension: 1000000,
             dimensionTitle: `
               ${this.trans('economic_reference.million')}.
               ${this.trans('economic_reference.tenge')}

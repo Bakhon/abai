@@ -32,7 +32,7 @@
 
     <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="!loading && wells"
+          v-if="wells"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :wells="wells"
@@ -64,7 +64,7 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import {globalloadingMutations, globalloadingState} from '@store/helpers';
+import {globalloadingMutations} from '@store/helpers';
 
 import {formatValueMixin} from "./mixins/formatMixin";
 import {scenarioMixin} from "./mixins/scenarioMixin";
@@ -103,8 +103,6 @@ export default {
     isWide: false
   }),
   computed: {
-    ...globalloadingState(['loading']),
-
     url() {
       return this.localeUrl('/economic/analysis/get-data')
     },

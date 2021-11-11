@@ -65,6 +65,11 @@
           class="text-white"
           is-prs
           @updateWide="updateWide"/>
+
+      <table-matrix
+          v-else-if="activeTab === 'matrix'"
+          class="text-white"
+          @updateWide="updateWide"/>
     </div>
   </div>
 </template>
@@ -77,6 +82,7 @@ import TableFinancialLoss from "./TableFinancialLoss";
 import TableWellDistribution from "./TableWellDistribution";
 import TableAdditionalStops from "./TableAdditionalStops";
 import TableEconomicTechLoss from "./TableEconomicTechLoss";
+import TableMatrix from "./TableMatrix";
 
 export default {
   name: "Tables",
@@ -88,6 +94,7 @@ export default {
     TableWellDistribution,
     TableAdditionalStops,
     TableEconomicTechLoss,
+    TableMatrix,
   },
   props: {
     scenario: {
@@ -141,6 +148,7 @@ export default {
         oil_production_tech_loss: 'Технологические потери: добыча',
         economic_tech_loss: 'Технологические потери: экономика',
         prs_cost: 'Расходы на ПРС',
+        matrix: 'Матрица',
       }
     },
   },
