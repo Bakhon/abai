@@ -2,13 +2,15 @@
 
 namespace App\Imports;
 
-use App\Console\Commands\Import\ImportMissedTrunkline;
+use App\Console\Commands\Import\ImportPS;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
@@ -17,12 +19,12 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Events\BeforeSheet;
 
-class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas
+class ImportPsPipesObjects implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas
 {
     public $sheetName;
     protected $gu;
     public $command;
-    protected $errors = [];
+    protected $ngdu_name = 'НГДУ-3';
     protected $ngdu;
 
     const COLUMNS = [
@@ -33,39 +35,27 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         'lon' => 4,
         'elevation' => 5,
         'inner_diameter' => 6,
-        'roughness' => 7,
-        'ngdu' => 8,
+        'thickness' => 7,
+        'roughness' => 8,
         'gu' => 9,
         'outside_diameter' => 10,
-        'thickness' => 11,
-        'start_point' => 12,
-        'end_point' => 13,
-        'pipe_end' => 14
-    ];
-
-    const REGULARS = [
-        'koll-koll' => '/&/i',
-        'fl-koll' => '/fl/i',
-        'gu-koll' => '/gu/i',
-        'mgu-koll' => '/mgu/i',
-        'koll-bg' => '/koll.+bg/i',
-        'os-st' => '/os.+st/i',
-        'bg-gu' => '/bg.+gu/i',
-        'bg' => '/bg/i',
-        'st-koll' => '/st/i',
-        'spt-koll' => '/spt/i'
+        'start_point' => 11,
+        'end_point' => 12,
+        'pipe_end' => 13,
+        'between_points' => 14
     ];
 
 
-    public function __construct(ImportMissedTrunkline $command)
+    public function __construct(ImportPS $command)
     {
         $this->command = $command;
         $this->sheetName = null;
+        $this->ngdu = Ngdu::where('name', $this->ngdu_name)->first();
     }
 
     public function collection(Collection $collection)
     {
-        $this->importTrunkline($collection);
+        $this->importPs($collection);
     }
 
     public function registerEvents(): array
@@ -88,11 +78,11 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         return 'P';
     }
 
-    private function importTrunkline(Collection $collection)
+    private function importPs(Collection $collection)
     {
         $collection = $collection->skip(1);
 
-        $pipe = null;
+        $pipe = $well = $zu = null;
 
         foreach ($collection as $row) {
             foreach (self::COLUMNS as $COLUMN) {
@@ -100,14 +90,50 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
             }
 
             if (!empty($row[self::COLUMNS['pipe_name']]) && !$pipe) {
+                $gu = Gu::firstOrCreate(
+                    ['name' => $row[self::COLUMNS['gu']]]
+                );
+
+
+                if ($row[self::COLUMNS['between_points']] == 'well-zu' ||
+                    $row[self::COLUMNS['between_points']] == 'well-collector'
+                ) {
+                    $well = $this->createWell($row, $gu);
+                }
+
                 $pipe = $this->createNewPipe($row);
             }
 
-            $this->command->info('Create Pipe '.$pipe->name.' Coords');
             $this->createPipeCoord($row, $pipe->id);
 
             if ($row[self::COLUMNS['pipe_end']]) {
-                $pipe = null;
+                switch ($row[self::COLUMNS['between_points']]) {
+                    case 'well-zu':
+                    case 'well_collector-zu':
+                        $zu = $this->createZu($row, $gu);
+
+                        if ($well) {
+                            $well->zu_id = $zu->id;
+                            $well->save();
+                        }
+                        break;
+
+                    case 'zu-gu':
+                    case 'zu_coll-gu':
+                        $gu->lat = $row[self::COLUMNS['lat']];
+                        $gu->lon = $row[self::COLUMNS['lon']];
+                        $gu->elevation = $row[self::COLUMNS['elevation']];
+                        $gu->ngdu_id = $this->ngdu->id;
+                        $gu->save();
+                }
+
+                $pipe->well_id = $well ? $well->id : null;
+                $pipe->zu_id = $zu ? $zu->id : null;
+                $pipe->gu_id = $gu->id;
+                $pipe->ngdu_id = $this->ngdu->id;
+                $pipe->save();
+
+                $pipe = $well = $zu = null;
             }
         }
 
@@ -116,7 +142,8 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         $this->command->line(' ');
     }
 
-    public function createNewPipe ($row) {
+    public function createNewPipe($row)
+    {
         $this->command->line('----------------------------');
         $this->command->info('Processing ' . $row[self::COLUMNS['pipe_name']] . ' pipe');
 
@@ -126,29 +153,70 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
         $roughness = floatval($row[self::COLUMNS['roughness']]);
         $material = Material::where('roughness', $roughness)->first();
 
-        $ngdu = Ngdu::where('name', $row[self::COLUMNS['ngdu']])->first();
-
-        $gu = Gu::where('name', $row[self::COLUMNS['gu']])->first();
+        $gu = Gu::firstOrCreate(
+            ['name' => $row[self::COLUMNS['gu']]]
+        );
 
         $pipe = OilPipe::firstOrNew(
             [
-                'name' => $row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']],
-                'ngdu_id' => $ngdu->id
+                'name' => $row[self::COLUMNS['pipe_name']],
+                'ngdu_id' => $this->ngdu->id,
+                'gu_id' => $gu->id
             ]
         );
 
         $pipe->type_id = $pipe_type->id;
         $pipe->material_id = $material->id;
-        $pipe->between_points = $this->getPipeType($row);
+        $pipe->between_points = $row[self::COLUMNS['between_points']];
         $pipe->start_point = $row[self::COLUMNS['start_point']];
         $pipe->end_point = $row[self::COLUMNS['end_point']];
-        $pipe->gu_id = $gu ? $gu->id : null;
 
         $pipe->save();
-        $this->command->info('Pipe created '.$row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']]);
+        $this->command->info('Pipe created ' . $row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']]);
         PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
 
         return $pipe;
+    }
+
+    public function createZu($row, $gu): Zu
+    {
+        $this->command->info('Create if not exists ZU ' . $row[self::COLUMNS['end_point']]);
+
+        $zu = Zu::firstOrNew(
+            [
+                'name' => $row[self::COLUMNS['end_point']]
+            ]
+        );
+
+        $zu->lat = $row[self::COLUMNS['lat']];
+        $zu->lon = $row[self::COLUMNS['lon']];
+        $zu->elevation = $row[self::COLUMNS['elevation']];
+        $zu->gu_id = $gu->id;
+        $zu->ngdu_id = $this->ngdu->id;
+        $zu->save();
+
+        return $zu;
+    }
+
+    public function createWell($row, $gu): Well
+    {
+        $this->command->info('Create Well ' . $row[self::COLUMNS['start_point']]);
+
+        $well = Well::firstOrNew(
+            [
+                'name' => $row[self::COLUMNS['start_point']],
+                'ngdu_id' => $this->ngdu->id,
+                'gu_id' => $gu->id
+            ]
+        );
+
+        $well->zu_id = 0;
+        $well->lat = $row[self::COLUMNS['lat']];
+        $well->lon = $row[self::COLUMNS['lon']];
+        $well->elevation = $row[self::COLUMNS['elevation']];
+        $well->save();
+
+        return $well;
     }
 
     public function startRow(): int
@@ -158,9 +226,7 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
 
     private function createPipeType($row): PipeType
     {
-        $this->command->info('Create Pipe Type if not exists');
         $thickness = ($row[self::COLUMNS['outside_diameter']] - $row[self::COLUMNS['inner_diameter']]) / 2;
-
 
         $pipeType = PipeType::firstOrCreate(
             [
@@ -191,20 +257,11 @@ class MissedTrunklineImport implements ToCollection, WithEvents, WithColumnLimit
 
     private function deleteOldPipe($row)
     {
-        $old_pipe = OilPipe::where('name', $row[self::COLUMNS['pipe_name']])->first();
+        $old_pipe = OilPipe::where('name', $row[self::COLUMNS['pipe_name']])
+            ->where('ngdu_id', $this->ngdu->id)->first();
         if ($old_pipe) {
             PipeCoord::where('oil_pipe_id', $old_pipe->id)->forceDelete();
             $old_pipe->forceDelete();
-        }
-    }
-
-
-    private function getPipeType($row)
-    {
-        foreach (self::REGULARS as $type => $regular) {
-            if (preg_match($regular, $row[self::COLUMNS['pipe_name']])) {
-                return $type;
-            }
         }
     }
 

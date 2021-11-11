@@ -25,7 +25,7 @@ export default {
     created() {
         if (!this.isShowCheckboxes) return;
         if (!('isChecked' in this.node)) {
-            this.node.isChecked = (this.parent.isChecked || false);
+            this.node.isChecked = this.parent.isChecked;
         }
     },
     model: {
@@ -58,21 +58,6 @@ export default {
                 child.level = level + 1;
                 this.updateChildren(child, level + 1, val);
             }
-        },
-        updateParent: async function(val) {
-            let content = this.$parent;
-            while(!!content?.node) {
-                if(!val && this.hasCheckedChildren(content.node)) break;
-                content.node.isChecked = val;
-                content = content.$parent;
-            }
-        },
-        hasCheckedChildren: function(node) {
-            if(!this.isHaveChildren(node)) return false;
-            for(let child of node.children) {
-                if(child.isChecked) return true;
-            }
-            return false;
         },
         isHaveChildren(node) {
             return typeof node !== 'undefined' &&

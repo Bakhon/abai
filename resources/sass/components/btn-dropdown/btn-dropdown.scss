@@ -3,7 +3,7 @@
   font-size: 14px;
 
   &__title {
-    padding-right: 15px;
+    padding-right: 25px;
   }
 
   &__icon {
@@ -11,7 +11,7 @@
     position: absolute;
     top: 0;
     right: 12px;
-    bottom: 3px;
+    bottom: 1px;
     margin: auto;
     width: 8px;
     height: 8px;
@@ -26,4 +26,37 @@
       transform: translateY(2px) rotate(225deg);
     }
   }
+}
+
+
+
+.dropdown-menu .dropdown-menu {
+  top: auto;
+  left: 100%;
+  transform: translateY(-2rem);
+}
+.dropdown-item + .dropdown-menu {
+  display: none;
+}
+.dropdown-item.submenu::after {
+  content: '▸';
+  margin-left: 3.5rem;
+}
+.dropdown-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #fff;
+  background: #4b4c66;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.dropdown-item {
+  padding: 8px;
+  color: #fff;
+}
+.dropdown-menu {
+  background-color: #5D5F7F;
+  padding: 0;
 }
