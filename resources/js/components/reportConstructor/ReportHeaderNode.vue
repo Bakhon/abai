@@ -123,25 +123,23 @@ export default {
       }
 
       this.updateChildren(this.headerNode);
-      this.updateParent(this.headerNode);
+      this.updateParent(this.headerNode.isChecked);
       this.$forceUpdate();
     },
     updateChildren(headerNode) {
       if(!headerNode?.children) return;
       for(let child of headerNode.children) {
-        child.parent = headerNode;
         child.isChecked = headerNode.isChecked;
         this.updateChildren(child);
       }
     },
-    updateParent(headerNode) {
-      let val = headerNode.isChecked;
-      while(headerNode) {
-        if(!val && this.hasSelectedChildren(headerNode)) {
-          break;
-        }
-        headerNode.isChecked = val;
-        headerNode = headerNode.parent; 
+    updateParent(val) {
+      let content = this.$parent;
+      while(!!content?.headerNode) {
+          if(!val && this.hasCheckedChildren(content.headerNode)) break;
+          content.headerNode.isChecked = val;
+          content = content.$parent;
+          content.$forceUpdate();
       }
     },
     hasSelectedChildren(headerNode) {
