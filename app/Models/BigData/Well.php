@@ -180,6 +180,11 @@ class Well extends TBDModel
         return $this->belongsToMany(GdisComplexValue::class, 'prod.gdis_complex', 'well', 'id', 'id', 'gdis_complex');
     }
 
+    public function wellPerfActualNew()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
+    }
+
     public function gis()
     {
         return $this->hasMany(Gis::class, 'well', 'id');
