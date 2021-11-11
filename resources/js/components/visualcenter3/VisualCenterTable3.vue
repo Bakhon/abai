@@ -913,21 +913,39 @@
                       </div>
                     </td>
                     <td
+                            @mouseover="opekHoverIndex = index"
+                            @mouseout="opekHoverIndex = null"
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
                         {{ getFormattedNumber(item.opek) }}
                         <span v-if="dzoWithOpekRestriction.includes(item.name)" class="color__yellow"> *</span>
+                        <span
+                                v-if="isHoverShouldBeShown() && dzoWithOpekRestriction.includes(item.name)"
+                                v-show="opekHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.opekEnabled')}}
+                      </span>
                       </div>
                     </td>
                     <td
+                            @mouseover="factHoverIndex = index"
+                            @mouseout="factHoverIndex = null"
                             v-if="isConsolidatedCategoryActive()"
                             :class="getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
                         {{ getFormattedNumber(item.fact) }}
                         <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
+                        <span
+                                v-if="isHoverShouldBeShown() && missedCompanies.includes(item.name)"
+                                v-show="factHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.oldFact')}}
+                      </span>
                       </div>
                     </td>
                     <td
@@ -3051,6 +3069,17 @@
     width: 40px;
     background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
     background-color: #333975;
+  }
+  .opek-hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    width: 80%;
+    margin-left: 10px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
   }
 
 </style>
