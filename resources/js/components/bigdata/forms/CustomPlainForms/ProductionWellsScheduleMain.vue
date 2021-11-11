@@ -129,10 +129,11 @@
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                                <td colspan="2"  class="drop_down_link">
+                                                <td class="drop_down_link">
                                                     <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Показать поля</a>
                                                     <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Скрыть поля</a>
                                                 </td>
+                                                <td>-</td>
                                             </tr>
                                         <tr class="header-background_light">
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
@@ -140,7 +141,8 @@
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td class="background__light" colspan="2">Мероприятия</td>
+                                            <td class="background__light">Мероприятия</td>
+                                            <td>-</td>
                                         </tr>
                                         </tbody>
                                     </table>
