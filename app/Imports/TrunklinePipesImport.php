@@ -120,7 +120,6 @@ class TrunklinePipesImport implements ToCollection, WithEvents, WithColumnLimit,
         $gu = null;
         if ($row[self::COLUMNS['gu']]) {
             $gu = Gu::where('name', $row[self::COLUMNS['gu']])->first();
-            $this->command->info('$gu ' . $gu->name);
         }
 
         $ngdu = Ngdu::where('name', $row[self::COLUMNS['ngdu']])->first();
@@ -173,7 +172,6 @@ class TrunklinePipesImport implements ToCollection, WithEvents, WithColumnLimit,
 
         $pipeType->name = (int)$row[self::COLUMNS['outside_diameter']] . 'x' . (int)$thickness;
         $pipeType->save();
-        $this->command->info('$pipeType ' . $pipeType->name);
         return $pipeType;
     }
 
