@@ -36,10 +36,12 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :wells="wells"
-          :wells-by-status="wellsByStatus"
-          :wells-by-loss-status="wellsByLossStatus"
-          :proposed-wells-by-status="proposedWellsByStatus"
-          :proposed-wells-by-loss-status="proposedWellsByLossStatus"
+          :wells-sum-by-status="wellsSumByStatus"
+          :wells-sum-by-loss-status="wellsSumByLossStatus"
+          :wells-sum="wellsSum"
+          :proposed-wells-sum="proposedWellsSum"
+          :proposed-wells="proposedWells"
+          :proposed-stopped-wells="proposedStoppedWells"
           class="h-100"
           @updateWide="val => isWide = val"/>
     </div>
@@ -91,11 +93,13 @@ export default {
       org_id: null,
       scenario_id: null
     },
+    wellsSumByStatus: null,
+    wellsSumByLossStatus: null,
+    wellsSum: null,
+    proposedWellsSum: null,
+    proposedWells: null,
+    proposedStoppedWells: null,
     wells: null,
-    wellsByStatus: null,
-    wellsByLossStatus: null,
-    proposedWellsByStatus: null,
-    proposedWellsByLossStatus: null,
     isWide: false
   }),
   computed: {
@@ -255,23 +259,21 @@ export default {
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
+        this.wellsSumByStatus = data.wellsSumByStatus
+
+        this.wellsSumByLossStatus = data.wellsSumByLossStatus
+
+        this.wellsSum = data.wellsSum
+
+        this.proposedWellsSum = data.proposedWellsSum
+
+        this.proposedWells = data.proposedWells
+
+        this.proposedStoppedWells = data.proposedStoppedWells
+
         this.wells = data.wells
-
-        this.wellsByStatus = data.wellsByStatus
-
-        this.wellsByLossStatus = data.wellsByLossStatus
-
-        this.proposedWellsByStatus = data.proposedWellsByStatus
-
-        this.proposedWellsByLossStatus = data.proposedWellsByLossStatus
       } catch (e) {
-        this.wellsByStatus = null
-
-        this.wellsByLossStatus = null
-
-        this.proposedWellsByStatus = null
-
-        this.proposedWellsByLossStatus = null
+        this.wells = null
       }
 
       this.SET_LOADING(false)

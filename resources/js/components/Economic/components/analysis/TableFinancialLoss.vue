@@ -35,7 +35,7 @@
       />
 
       <table-financial-loss-row
-          v-for="(row, rowIndex) in tableOptimizedRows"
+          v-for="(row, rowIndex) in tableProposedRows"
           :key="`${rowIndex}_optimized`"
           :row="row"
           :titles="titles"
@@ -85,6 +85,10 @@ export default {
     wells: {
       required: true,
       type: Array
+    },
+    proposedWells: {
+      required: true,
+      type: Array
     }
   },
   created() {
@@ -92,27 +96,11 @@ export default {
   },
   computed: {
     sumData() {
-      let sum = {}
+      return this.sumWellParamsByProfitability('wells')
+    },
 
-      this.titles.forEach(title => {
-        sum[title.key] = {
-          profitable: 0,
-          profitless: 0,
-          total: 0,
-        }
-      })
-
-      this.wells.forEach(well => {
-        this.titles.forEach(title => {
-          if (!title.key) return
-
-          sum[title.key][well.profitability] += +well[title.key]
-
-          sum[title.key].total += +well[title.key]
-        })
-      })
-
-      return sum
+    sumProposedData() {
+      return this.sumWellParamsByProfitability('proposedWells')
     },
 
     tableRows() {
@@ -149,33 +137,33 @@ export default {
       ]
     },
 
-    tableOptimizedRows() {
+    tableProposedRows() {
       return [
         {
           title: 'Предлагаемый вариант',
           subTitle: '2.',
-          values: this.titles.map((title, titleIndex) => ({
-            value: 0
+          values: this.titles.map(title => ({
+            value: this.sumProposedData[title.key].total
           })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: 0
+          values: this.titles.map(title => ({
+            value: this.sumProposedData[title.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: 0
+          values: this.titles.map(title => ({
+            value: this.sumProposedData[title.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => ({
+          values: this.titles.map(title => ({
             value: 0
           })),
           style: 'background: #2B2E5E'
@@ -190,7 +178,7 @@ export default {
           subTitle: '3.',
           values: this.titles.map((title, titleIndex) => ({
             value: titleIndex
-                ? this.tableOptimizedRows[0].values[titleIndex].value - this.tableRows[0].values[titleIndex].value
+                ? this.tableProposedRows[0].values[titleIndex].value - this.tableRows[0].values[titleIndex].value
                 : 0,
             style: titleIndex === this.titles.length - 1
                 ? 'background: #B97919 !important'
@@ -202,7 +190,7 @@ export default {
           title: 'Нерентабельные',
           values: this.titles.map((title, titleIndex) => ({
             value: titleIndex
-                ? this.tableOptimizedRows[1].values[titleIndex].value - this.tableRows[1].values[titleIndex].value
+                ? this.tableProposedRows[1].values[titleIndex].value - this.tableRows[1].values[titleIndex].value
                 : 0
           })),
           style: 'background: #7D5F52'
@@ -211,7 +199,7 @@ export default {
           title: 'Рентабельные',
           values: this.titles.map((title, titleIndex) => ({
             value: titleIndex
-                ? this.tableOptimizedRows[2].values[titleIndex].value - this.tableRows[2].values[titleIndex].value
+                ? this.tableProposedRows[2].values[titleIndex].value - this.tableRows[2].values[titleIndex].value
                 : 0
           })),
           style: 'background: #1A5855'
@@ -220,7 +208,7 @@ export default {
           title: 'Простой',
           values: this.titles.map((title, titleIndex) => ({
             value: titleIndex
-                ? this.tableOptimizedRows[3].values[titleIndex].value - this.tableRows[3].values[titleIndex].value
+                ? this.tableProposedRows[3].values[titleIndex].value - this.tableRows[3].values[titleIndex].value
                 : 0
           })),
           style: 'background: #2B2E5E'
@@ -304,6 +292,31 @@ export default {
       ]
     }
   },
+  methods: {
+    sumWellParamsByProfitability(wellKey) {
+      let sum = {}
+
+      this.titles.forEach(title => {
+        sum[title.key] = {
+          profitable: 0,
+          profitless: 0,
+          total: 0,
+        }
+      })
+
+      this[wellKey].forEach(well => {
+        this.titles.forEach(title => {
+          if (!title.key) return
+
+          sum[title.key][well.profitability] += +well[title.key]
+
+          sum[title.key].total += +well[title.key]
+        })
+      })
+
+      return sum
+    }
+  }
 }
 </script>
 

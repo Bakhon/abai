@@ -24,7 +24,9 @@ class EconomicAnalysisController extends Controller
 
     const OIL_FACTOR = 1;
 
-    const OIL_LOSS_STATUSES = [7, 9, 21];
+    const OIL_STATUSES = [7, 9, 21];
+
+    const OIL_LOSS_STATUSES = [2, 4, 5];
 
     const NULLABLE_WHERE_IN_PARAM = "''";
 
@@ -51,57 +53,56 @@ class EconomicAnalysisController extends Controller
 
     public function getData(): array
     {
-//        if (Cache::has('analysisWells')) {
-//            list($profitableWells, $stoppedWells) = json_decode(Cache::get('analysisWells'), true);
+//        if (Cache::has('analysis_wells')) {
+//            list($profitableWells, $proposedStoppedWells) = json_decode(Cache::get('analysis_wells'), true);
 //        } else {
-        $wells = $this->getProposedWells();
+            $wells = $this->getProposedWells();
 
-//            Cache::put('analysisWells', json_encode($wells, true), now()->addDay());
+//            Cache::put('analysis_wells', json_encode($wells, true), now()->addDay());
 
-        list($profitableWells, $stoppedWells) = $wells;
+            list($profitableWells, $proposedStoppedWells) = $wells;
 //        }
-
 
         $profitableWells = $this->buildSqlQueryWhereIn($profitableWells);
 
-        $stoppedWells = $this->buildSqlQueryWhereIn($stoppedWells);
+        $stoppedWells = $this->buildSqlQueryWhereIn($proposedStoppedWells);
 
         $tableWellStatus = (new TechnicalWellStatus())->getTable();
 
         $tableWellLossStatus = (new TechnicalWellLossStatus())->getTable();
 
         return [
-//            'wells' => $this->getSumWellsParams(),
-//            'proposedWells' => $this->getSumWellsParams(
-//                $profitableWells,
-//                $stoppedWells
-//            ),
-//            'wellsByStatus' => $this->getSumWellsParamsByStatus(
-//                $tableWellStatus,
-//                'status_id'
-//            ),
-//            'wellsByLossStatus' => $this->getSumWellsParamsByStatus(
-//                $tableWellLossStatus,
-//                'loss_status_id'
-//            ),
-//            'proposedWellsByStatus' => $this->getSumWellsParamsByStatus(
-//                $tableWellStatus,
-//                'status_id',
-//                $profitableWells,
-//                $stoppedWells
-//            ),
-//            'proposedWellsByLossStatus' => $this->getSumWellsParamsByStatus(
-//                $tableWellLossStatus,
-//                'loss_status_id',
-//                $profitableWells,
-//                $stoppedWells
-//            ),
+            'wellsSumByStatus' => $this->getWellsSumByStatus(
+                $tableWellStatus,
+                'status_id'
+            ),
+            'wellsSumByLossStatus' => $this->getWellsSumByStatus(
+                $tableWellLossStatus,
+                'loss_status_id'
+            ),
+            'wellsSum' => $this->getWells(
+                self::NULLABLE_WHERE_IN_PARAM,
+                self::NULLABLE_WHERE_IN_PARAM,
+                true
+            ),
+            'proposedWellsSum' => $this->getWells(
+                $profitableWells,
+                $stoppedWells,
+                true
+            ),
+            'proposedWells' => $this->getWells(
+                $profitableWells,
+                $stoppedWells
+            ),
+            'wells' => $this->getWells(),
+            'proposedStoppedWells' => $proposedStoppedWells
         ];
     }
 
-    private function getSumWellsParams(
+    private function getWells(
         string $profitableUwis = "''",
-        string $stoppedUwis = "''"
+        string $stoppedUwis = "''",
+        bool $isSum = null
     ): array
     {
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
@@ -116,11 +117,15 @@ class EconomicAnalysisController extends Controller
 
         $prsPortion = $this->sqlQueryPrsPortion($stoppedUwis);
 
+        $activeHours = $this->sqlQueryActiveHours($profitableUwis, $stoppedUwis);
+
+        $pausedHours = $this->sqlQueryPausedHours($profitableUwis, $stoppedUwis);
+
         $netBack = $this->sqlQueryNetBack($profitableUwis, $stoppedUwis);
 
         $overallExpenditures = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
 
-        $profitability = $this->sqlQueryProfitability('well_query');
+        $profitability = $this->sqlQueryProfitability();
 
         $query = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
@@ -130,10 +135,10 @@ class EconomicAnalysisController extends Controller
                 analysis_param.permanent_cost as permanent_cost,    
                 analysis_param.avg_prs_cost as avg_prs_cost,    
                 analysis_param.oil_density as oil_density,    
-                well_forecast.uwi as uwi,
-                SUM(well_forecast.active_hours) as active_hours,
-                SUM(well_forecast.paused_hours) as paused_hours,
+                well_forecast.uwi as uwi,              
                 SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,    
+                SUM($activeHours) as active_hours,
+                SUM($pausedHours) as paused_hours,
                 SUM($oil) as oil,
                 SUM($oilLoss) as oil_loss,
                 SUM($liquid) as liquid,
@@ -141,7 +146,8 @@ class EconomicAnalysisController extends Controller
                 SUM($prsPortion) as prs_portion,
                 SUM($netBack) as netback,
                 SUM($overallExpenditures) as overall_expenditures,
-                SUM($netBack - ($overallExpenditures)) as operating_profit
+                SUM($netBack - ($overallExpenditures)) as operating_profit,
+                COUNT(loss_status_id) as loss_status_count
             "))
             ->groupBy([
                 "uwi",
@@ -158,7 +164,6 @@ class EconomicAnalysisController extends Controller
             ->toSql();
 
         $columns = [
-            "uwi",
             "date",
             "netback_fact",
             "variable_cost",
@@ -167,16 +172,24 @@ class EconomicAnalysisController extends Controller
             "oil_density",
         ];
 
+        if (!$isSum) {
+            $columns[] = 'uwi';
+        }
+
+        $isChangedQuery = $isSum
+            ? '0'
+            : $this->sqlQueryIsChanged($profitableUwis, $stoppedUwis, 'wells');
+
+        $uwiQuery = $isSum ? 'COUNT(wells.uwi) as uwi_count' : 'wells.uwi';
+
         return DB::table(DB::raw("($wells) as wells"))
             ->addSelect(DB::raw("
-                wells.uwi,
                 wells.date,
                 wells.netback_fact,
                 wells.variable_cost,
                 wells.permanent_cost,
                 wells.avg_prs_cost,
                 wells.oil_density,
-                well_profitability.profitability as profitability,
                 SUM(wells.oil) as oil,
                 SUM(wells.oil_loss) as oil_loss,
                 SUM(wells.liquid) as liquid,
@@ -188,14 +201,17 @@ class EconomicAnalysisController extends Controller
                 SUM(wells.netback) as netback,
                 SUM(wells.overall_expenditures) as overall_expenditures,
                 SUM(wells.operating_profit) as operating_profit,
-                $profitability as profitability
+                $profitability as profitability,
+                $isChangedQuery,
+                $uwiQuery
             "))
             ->groupBy(array_merge($columns, ['profitability']))
+            ->orderBy("operating_profit")
             ->get()
             ->toArray();
     }
 
-    private function getSumWellsParamsByStatus(
+    private function getWellsSumByStatus(
         string $tableWellStatus,
         string $joinKey,
         string $profitableUwis = "''",
@@ -214,14 +230,19 @@ class EconomicAnalysisController extends Controller
 
         $prsPortion = $this->sqlQueryPrsPortion($stoppedUwis);
 
+        $activeHours = $this->sqlQueryActiveHours($profitableUwis, $stoppedUwis);
+
+        $pausedHours = $this->sqlQueryPausedHours($profitableUwis, $stoppedUwis);
+
         $query = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
                 analysis_param.date as date,
+                analysis_param.avg_prs_cost,
                 well_forecast.uwi as uwi,
                 well_status.id as status_id,    
                 well_status.name as status_name,
-                SUM(well_forecast.active_hours) as active_hours,
-                SUM(well_forecast.paused_hours) as paused_hours,
+                SUM($activeHours) as active_hours,
+                SUM($pausedHours) as paused_hours,
                 SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,    
                 SUM(well_forecast.oil_forecast) as oil_forecast,
                 SUM($oil) as oil,
@@ -237,6 +258,7 @@ class EconomicAnalysisController extends Controller
             ->whereNotNull($joinKey)
             ->groupBy([
                 "date",
+                "avg_prs_cost",
                 "uwi",
                 "status_name",
                 $joinKey
@@ -261,7 +283,8 @@ class EconomicAnalysisController extends Controller
                 SUM(wells.active_hours) AS active_hours,
                 SUM(wells.paused_hours) AS paused_hours,
                 SUM(wells.total_hours) AS total_hours,
-                SUM(wells.prs_portion) AS prs_portion
+                SUM(wells.prs_portion) AS prs_portion,
+                SUM(wells.prs_portion * wells.avg_prs_cost) AS prs_cost
             "))
             ->groupBy([
                 "date",
@@ -311,16 +334,10 @@ class EconomicAnalysisController extends Controller
                 $date
             );
 
-            dd($profitlessWells);
-
-            dd('aa', $profitlessWells);
-
             $profitlessStoppedWells = $this->getWellsForOilLimitWithMaxOperatingProfit(
                 $profitlessWells,
                 $profitableStoppedWells['oil_loss']
             );
-
-            dd($profitlessStoppedWells);
 
             return [
                 $profitableStoppedWells['uwis'],
@@ -342,9 +359,8 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.oil) as oil,
                 SUM(well_forecast.oil_loss) as oil_loss,
                 SUM(well_forecast.oil_forecast) as oil_forecast
-                "
-            ))
-            ->whereRaw("well_forecast.status_id IN ($lossStatuses)")
+            "))
+            ->whereRaw(DB::raw("well_forecast.loss_status_id IN ($lossStatuses)"))
             ->groupBy(["uwi", "date"]);
 
         $wells = $this
@@ -378,6 +394,20 @@ class EconomicAnalysisController extends Controller
 
         $overallExpenditures = $this->sqlQueryOverallExpenditures();
 
+        $lossStatuses = implode(",", self::OIL_LOSS_STATUSES);
+
+        $excludedUwis = DB::table($tableWellForecast)
+            ->addSelect(DB::raw("DISTINCT uwi"))
+//            ->whereRaw(DB::raw("
+//                loss_status_id IS NOT NULL AND
+//                CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) = '$date'
+//            "))
+            ->whereRaw(DB::raw("
+                loss_status_id IN ($lossStatuses) AND
+                CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) = '$date'
+            "))
+            ->toSql();
+
         $query = DB::table("$tableWellForecast as well_forecast")
             ->addSelect(DB::raw("
                 well_forecast.uwi, 
@@ -385,7 +415,8 @@ class EconomicAnalysisController extends Controller
                 SUM($netBack - ($overallExpenditures)) as operating_profit
             "))
             ->whereRaw(DB::raw("
-                well_forecast.loss_status_id is NULL and analysis_param.date = '$date'
+                analysis_param.date = '$date' AND 
+                well_forecast.uwi NOT IN ($excludedUwis)
             "))
             ->havingRaw(DB::raw("
                 operating_profit <= 0 and oil_sum > 0 and oil_sum <= $oilLoss
@@ -492,9 +523,28 @@ class EconomicAnalysisController extends Controller
         ";
     }
 
-    private function sqlQueryProfitability(string $tableAlias): string
+    private function sqlQueryProfitability(): string
     {
-        return "CASE WHEN $tableAlias.operating_profit > 0 THEN 'profitable' ELSE 'profitless' END";
+        return "CASE WHEN operating_profit > 0 THEN 'profitable' ELSE 'profitless' END";
+    }
+
+    private function sqlQueryIsChanged(
+        string $profitableUwis = "''",
+        string $stoppedUwis = "''",
+        string $wellForecastAlias = 'well_forecast'
+    ): string
+    {
+        return $profitableUwis === self::NULLABLE_WHERE_IN_PARAM && $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "CASE WHEN $wellForecastAlias.loss_status_count > 0
+                    THEN -1
+                    ELSE 0
+               END as is_changed"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($profitableUwis)
+                    THEN 1
+                    WHEN $wellForecastAlias.uwi IN ($stoppedUwis) OR $wellForecastAlias.loss_status_count > 0
+                    THEN -1
+                    ELSE 0
+               END as is_changed";
     }
 
     private function sqlQueryOil(
@@ -508,7 +558,7 @@ class EconomicAnalysisController extends Controller
             : "CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
                     THEN 0
                     WHEN $wellForecastAlias.uwi IN ($profitableUwis)
-                    THEN $wellForecastAlias.oil_forecast * 10000000000000000000
+                    THEN $wellForecastAlias.oil_forecast
                     ELSE $wellForecastAlias.oil
                END";
     }
@@ -574,6 +624,37 @@ class EconomicAnalysisController extends Controller
                END";
     }
 
+    private function sqlQueryActiveHours(
+        string $profitableUwis = "''",
+        string $stoppedUwis = "''",
+        string $wellForecastAlias = 'well_forecast'
+    ): string
+    {
+        return $profitableUwis === self::NULLABLE_WHERE_IN_PARAM && $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "$wellForecastAlias.active_hours"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($profitableUwis)
+                    THEN 24
+                    WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
+                    THEN 0
+                    ELSE $wellForecastAlias.active_hours
+               END";
+    }
+
+    private function sqlQueryPausedHours(
+        string $profitableUwis = "''",
+        string $stoppedUwis = "''",
+        string $wellForecastAlias = 'well_forecast'
+    ): string
+    {
+        return $profitableUwis === self::NULLABLE_WHERE_IN_PARAM && $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
+            ? "$wellForecastAlias.paused_hours"
+            : "CASE WHEN $wellForecastAlias.uwi IN ($profitableUwis)
+                    THEN 0
+                    WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
+                    THEN 24
+                    ELSE $wellForecastAlias.paused_hours
+               END";
+    }
 
     private function sqlJoinAnalysisParam(
         Builder $query,
@@ -635,7 +716,7 @@ class EconomicAnalysisController extends Controller
 
         $overallExpenditures = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
 
-        $profitability = $this->sqlQueryProfitability('well_query');
+        $profitability = $this->sqlQueryProfitability();
 
         $columns = ["uwi", "date"];
 

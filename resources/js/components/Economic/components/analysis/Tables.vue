@@ -14,27 +14,29 @@
     <div class="mt-2 w-100 h-100">
       <table-production-loss
           v-if="activeTab === 'production_loss'"
-          :wells="wellsByLossStatus"
-          :proposed-wells="proposedWellsByLossStatus"
+          :wells="wellsSumByLossStatus"
+          :proposed-stopped-wells="proposedStoppedWells"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_loss'"
-          :wells="wellsByLossStatus"
-          :proposed-wells="proposedWellsByLossStatus"
+          :wells="wellsSumByLossStatus"
           key="oil_production_loss"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-financial-loss
           v-else-if="activeTab === 'financial_loss'"
-          :wells="wells"
+          :wells="wellsSum"
+          :proposed-wells="proposedWellsSum"
           class="text-white"
           @updateWide="updateWide"/>
 
       <table-well-distribution
           v-else-if="activeTab === 'well_distribution'"
+          :wells="wells"
+          :proposed-wells="proposedWells"
           class="text-white"
           @updateWide="updateWide"/>
 
@@ -45,8 +47,7 @@
 
       <table-oil-production-loss
           v-else-if="activeTab === 'oil_production_tech_loss'"
-          :wells="wellsByStatus"
-          :proposed-wells="proposedWellsByStatus"
+          :wells="wellsSumByStatus"
           key="oil_production_tech_loss"
           class="text-white"
           is-tech-loss
@@ -59,8 +60,7 @@
 
       <table-oil-production-loss
           v-else-if="activeTab === 'prs_cost'"
-          :wells="wellsByLossStatus"
-          :proposed-wells="proposedWellsByLossStatus"
+          :wells="wellsSumByLossStatus"
           key="prs_cost"
           class="text-white"
           is-prs
@@ -98,23 +98,31 @@ export default {
       required: true,
       type: Object
     },
-    wells: {
+    wells:{
       required: true,
       type: Array
     },
-    wellsByStatus: {
+    wellsSumByStatus: {
       required: true,
       type: Array
     },
-    wellsByLossStatus: {
+    wellsSumByLossStatus: {
       required: true,
       type: Array
     },
-    proposedWellsByStatus: {
+    wellsSum: {
       required: true,
       type: Array
     },
-    proposedWellsByLossStatus: {
+    proposedWellsSum: {
+      required: true,
+      type: Array
+    },
+    proposedWells: {
+      required: true,
+      type: Array
+    },
+    proposedStoppedWells: {
       required: true,
       type: Array
     },

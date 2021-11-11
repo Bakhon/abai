@@ -5,6 +5,7 @@ const DEFAULT_WELL = {
     liquid: 0,
     liquid_loss: 0,
     prs_portion: 0,
+    prs_cost: 0,
     active_hours: 0,
     paused_hours: 0,
     total_hours: 0,
@@ -16,16 +17,10 @@ export const tableDataMixin = {
             required: true,
             type: Array
         },
-        proposedWells: {
-            required: true,
-            type: Array
-        }
     },
     computed: {
         tableData() {
             let wellsByStatus = {}
-
-            let proposedWellsByStatus = {}
 
             let dates = {}
 
@@ -43,19 +38,10 @@ export const tableDataMixin = {
                 wellsByStatus[well.status_id].push(well)
             })
 
-            this.proposedWells.forEach(well => {
-                if (!proposedWellsByStatus.hasOwnProperty(well.status_id)) {
-                    proposedWellsByStatus[well.status_id] = []
-                }
-
-                proposedWellsByStatus[well.status_id].push(well)
-            })
-
             dates = Object.keys(dates)
 
             return {
                 wellsByStatus: wellsByStatus,
-                proposedWellsByStatus: proposedWellsByStatus,
                 statuses: Object.keys(statuses),
                 statusNames: Object.values(statuses),
                 dates: dates
@@ -67,9 +53,6 @@ export const tableDataMixin = {
                 status_name: this.tableData.statusNames[statusIndex],
                 wells: this.tableData.dates.map(date => {
                     return this.getWellsByDate(status, date, 'wellsByStatus')
-                }),
-                proposedWells: this.tableData.dates.map(date => {
-                    return this.getWellsByDate(status, date, 'proposedWellsByStatus')
                 }),
             }))
         },
@@ -83,7 +66,7 @@ export const tableDataMixin = {
         },
 
         tablePrs() {
-            return this.generateTable('prs_portion', 'Общий итог')
+            return this.generateTable('prs_cost', 'Общий итог')
         },
 
         columns() {

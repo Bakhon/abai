@@ -75,7 +75,7 @@
                 :statuses="tableData.statuses"
                 :columns="columns"
                 :style="row.style"
-                :dimension="isPrs ? null : 1000"
+                :dimension="1000"
                 is-absolute
                 class="flex-grow-1"/>
           </div>

@@ -47,18 +47,15 @@
         </subtitle>
 
         <div class="d-flex">
-          <table-production-loss-row
-              v-for="(row, rowIndex) in wellsByDates"
-              :key="rowIndex"
-              :row="row"
-              :dates="tableData.dates"
-              :is-visible-dates="rowIndex === 0"
-              :class="rowIndex > 0 ? 'ml-3' : ''"
-              :style="`min-width: ${rowIndex ? 430 : 530}px`"
-              wells-key="proposedWells"
-              class="h-100"
-              is-profitless
-          />
+          <div> Фактические остановки</div>
+
+          <div class="ml-2">{{ stoppedWellsCount }}</div>
+        </div>
+
+        <div class="d-flex">
+          <div> Предлагаемый вариант</div>
+
+          <div class="ml-2">{{ stoppedWellsCount + proposedStoppedWells.length }}</div>
         </div>
       </div>
     </div>
@@ -77,11 +74,30 @@ export default {
     Subtitle,
     TableProductionLossRow
   },
+  props: {
+    proposedStoppedWells: {
+      required: true,
+      type: Array
+    }
+  },
   mixins: [
     tableDataMixin,
   ],
   created() {
     this.$emit('updateWide', this.tableData.statuses.length > 4)
+  },
+  computed: {
+    stoppedWellsCount() {
+      let count = 0
+
+      this.wellsByDates.forEach(status => {
+        if (!['НРС', 'ЧРФ', 'ОПЕК+'].includes(status.status_name)) return
+
+        status.wells.forEach(date => count += date.profitless.uwi_count)
+      })
+
+      return count
+    }
   }
 }
 </script>
