@@ -43,14 +43,15 @@ const digitalRating = {
       return {
         ...state.prodDiagramIndicators?.liquid_prod,
         type: 'scatter',
-        name: 'Дебит жидкости'
+        name: 'Добыча жидкости',
       }
     },
     oilProdDiagramIndicators: (state) => {
       return {
         ...state.prodDiagramIndicators?.oil_prod,
         type: 'scatter',
-        name: 'Добыча нефти'
+        name: 'Добыча нефти',
+        yaxis: 'y2',
       }
     }
   },

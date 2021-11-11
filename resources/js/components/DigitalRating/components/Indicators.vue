@@ -176,11 +176,13 @@
         return {
           ...this.generalSettings,
           yaxis: {
-            title: "Добыча жидкости,м3.Добыча нефти, т",
-            showlegend: true,
-            zeroline: false,
-            gridcolor: "#3C4270",
-            rangemode: 'tozero'
+            title: "Добыча жидкости,м3",
+          },
+          yaxis2: {
+            title: 'Добыча нефти, т',
+            anchor: 'x',
+            overlaying: 'y',
+            side: 'right',
           }
         }
       },
