@@ -105,11 +105,6 @@ class Well extends TBDModel
         return $this->hasMany(WellPerf::class, 'well', 'id');
     }
 
-    public function wellExplDate()
-    {
-        return $this->hasMany(WellStatusProd::class, 'well', 'id');
-    }
-
     public function techModeProdOil()
     {
         return $this->hasMany(TechModeProdOil::class, 'well', 'id');
@@ -178,11 +173,6 @@ class Well extends TBDModel
     public function gdisComplex()
     {
         return $this->belongsToMany(GdisComplexValue::class, 'prod.gdis_complex', 'well', 'id', 'id', 'gdis_complex');
-    }
-
-    public function wellPerfActualNew()
-    {
-        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
     }
 
     public function gis()

@@ -16,7 +16,7 @@
         class="left-column"
       >
         <div class="well-deal__header">
-          {{ this.trans("well.well_passport") }}
+          {{ this.trans("well.case_well") }}
         </div>
         <div class="directory text-white bg-dark">
           <ul id="myUL">
@@ -126,13 +126,7 @@
                   График
                 </div>
                 <div
-                        v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                        class="button-block__item"
-                >
-                        Сформировать
-                </div>
-                <div
-                        v-else
+                        v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
                         class="button-block__item"
                         @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
                 >
@@ -146,6 +140,7 @@
                   :is="activeFormComponentName"
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  :selectedDzo="selectedDzo"
                 ></div>
               </div>
               <div
@@ -570,7 +565,8 @@ export default {
       wellsHistory: [],
       tabWidth:0,
       measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
-      maximumWellsCount: 10
+      maximumWellsCount: 10,
+      selectedDzo: null
     };
   },
   mounted() {
@@ -808,6 +804,7 @@ export default {
         : "";
       let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
+      this.selectedDzo = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
@@ -1175,7 +1172,6 @@ export default {
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-
       data.forEach(function (item) {
         let type = item.type;
         let exp = item.exp;
@@ -1200,6 +1196,7 @@ export default {
     selectWell(well) {         
       this.activeFormComponentName = null;
       this.activeForm = null;
+      this.SET_VISIBLE_PRODUCTION(false)
       if (well) {
         this.SET_LOADING(true);      
         this.axios
@@ -1468,11 +1465,14 @@ export default {
       'SET_VISIBLE_PRODUCTION'
     ]),
     getWidthByColumns() {
+      if ((this.isRightColumnFolded || this.isLeftColumnFolded) && !this.isBothColumnFolded) {
+        return 'width__1469';
+      }
+      if (this.isProductionWellsHistoricalVisible || this.isInjectionWellsHistoricalVisible) {
+        return 'width__1159';
+      }
       if (this.isBothColumnFolded) {
         return 'width__1700';
-      }
-      if (this.isRightColumnFolded || this.isLeftColumnFolded) {
-        return 'width__1469';
       }
       return 'width__1219';
     }
@@ -2204,7 +2204,7 @@ h4 {
   overflow-x: hidden;
 
   table {
-    background: #ffff99;
+    background: #B5D9ED;
     color: #000;
     font-size: 14px;
   }
@@ -2822,7 +2822,7 @@ h4 {
 }
 .well-info_header {
   position: fixed;
-  z-index: 999;
+  z-index: 5;
   margin-left: -15px;
 }
 .pt__40 {
@@ -2836,6 +2836,9 @@ h4 {
 }
 .width__1469 {
   width: 1469px;
+}
+.width__1159 {
+  width: 1159px;
 }
 
 </style>
