@@ -618,19 +618,19 @@ export default {
                         'params': {
                             'techMode': [
                                 {
-                                    'label': 'Жидкость',
+                                    'label': 'Дебит жидкости, м3/сут',
                                     'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
-                                    'label': 'Обводненность',
+                                    'label': 'Обводненность, %',
                                     'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
-                                    'label': 'Нефть',
+                                    'label': 'Дебит нефти, т/сут',
                                     'value': '-',
                                     'isHide': !this.isRowsHide,
                                     'disabledForDzo': []
@@ -654,7 +654,7 @@ export default {
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
-                                    'label': 'Н дин.',
+                                    'label': 'Ндин, м',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
@@ -672,7 +672,7 @@ export default {
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
-                                    'label': 'Отработанное время',
+                                    'label': 'Отработанное время, час',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
@@ -714,13 +714,74 @@ export default {
                                     'disabledForDzo': ["KGM"]
                                 },
                                 {
-                                    'label': 'Добыча газа',
+                                    'label': 'Дебит газа, тыс. м3/сут',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []
                                 },
                                 {
-                                    'label': 'Газовый фактор',
+                                    'label': 'Газовый фактор, м3/т',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+
+                                {
+                                    'label': 'Трубное давление (Ртр) атм',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Затрубное давление (Рзатр), атм',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Линейное давление, атм',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Температура на устье, С',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Сила тока ПЭД, А',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Частота ПЭД/СК, Гц',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Производительность насоса, %',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Температура ПЭД по ТМС, С',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Давление на приеме, атм',
+                                    'value': '-',
+                                    'isHide': this.isRowsHide,
+                                    'disabledForDzo': []
+                                },
+                                {
+                                    'label': 'Длина хода, м / число качания, об/мин',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []

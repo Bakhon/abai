@@ -2782,7 +2782,7 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
-    div {
+    div:not(:last-child) {
       background: #293688;
       border: 1px solid #3366FF;
       border-radius: 5px;
