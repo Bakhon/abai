@@ -170,8 +170,11 @@ class WellsController extends Controller
 
     private function date_expl(Well $well)
     {
-        $date_expl = $well->status()                        
-            ->first(['name_ru', 'dbeg']);
+        $date_expl = $well->wellExplDate()   
+                    ->where('status', '=', '3')
+                    ->orderBy('dbeg', 'asc')                                 
+                    ->first(['dbeg']);
+
         return $date_expl;
     }
 
@@ -364,9 +367,11 @@ class WellsController extends Controller
     
     private function wellPerfActual(Well $well)
     {
-        return $well->wellPerfActual()
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'top', 'base']);
+        return $well->wellPerfActualNew()             
+            ->withPivot('perf_date')            
+            ->orderBy('pivot_perf_date', 'desc')
+            ->first(['perf_date', 'top', 'base']);
+
     }
 
     private function measWaterCut(Well $well)
