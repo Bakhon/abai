@@ -53,6 +53,7 @@ export default {
     await this.initWellOnMap();
     await this.initContourOnMap();
     await this.initLegends();
+    // await this.draw();
   },
 
   watch: {
@@ -231,11 +232,16 @@ export default {
     initLegends() {
       const legend = L.control({ position: "bottomleft" });
 
-      legend.onAdd = function(map) {
+      legend.onAdd = function() {
         let div = L.DomUtil.create("div", "legend");
         div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
           '<span> - добывающая проектная скважина</span><br>';
-        div.innerHTML += '<i class="fas fa-caret-up" style="color: #fcad00;font-size: 24px;"></i>' +
+        div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
+          'width: 0;\n' +
+          'height: 0;\n' +
+          'border-style: solid;\n' +
+          'border-width: 0 8px 8px 8px;\n' +
+          'border-color: transparent transparent #fcad00 transparent;"></div>' +
           '<span> - нагнетательный скважин</span>';
         return div;
       };
@@ -272,6 +278,22 @@ export default {
 
     getChildren(item) {
       return item?.children?.length;
-    }
+    },
+
+    draw() {
+      const triangle = document.getElementById('triangle');
+      console.log('triangle', triangle.getContext);
+      if (triangle.getContext){
+        const ctx = triangle.getContext('2d');
+        // Stroked triangle
+        ctx.beginPath();
+        ctx.moveTo(24,24);
+        ctx.lineTo(125,45);
+        ctx.lineTo(45,125);
+        ctx.strokeStyle('#fcad00');
+        ctx.closePath();
+        ctx.stroke();
+      }
+    },
   }
 }
