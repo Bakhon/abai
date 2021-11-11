@@ -185,6 +185,16 @@ class Well extends TBDModel
         return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
     } 
 
+    public function wellExplDate()
+    {
+        return $this->hasMany(WellStatusProd::class, 'well', 'id');
+    }
+
+    public function wellPerfActualNew()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
+    }
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
