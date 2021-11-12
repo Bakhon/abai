@@ -79,7 +79,7 @@
           </div>
           <div
               v-for="(tab, index)  in group.items"
-              :key="`tab_${id}_${index}`"
+              :key="tab.key"
               :class="{'active': selectedTab.orgTech === tab.orgTech && selectedTab.form.code === tab.form.code}"
               class="content-db__tab_head__item"
               @click="selectedTab = tab"
@@ -151,9 +151,10 @@ export default {
       if (this.selectedForm) {
         let tab = {
           orgTech: node,
-          form: this.selectedForm
+          form: this.selectedForm,
+          key: `tab_${node.type}_${node.id}_${this.selectedForm.code}`
         }
-        if (!this.tabs.find(tabItem => tabItem.orgTech === tab.orgTech && tabItem.form.code === tab.form.code)) {
+        if (!this.tabs.find(tabItem => tabItem.key === tab.key)) {
           this.tabs.push(tab)
         }
         this.selectedTab = Object.assign({}, tab)
