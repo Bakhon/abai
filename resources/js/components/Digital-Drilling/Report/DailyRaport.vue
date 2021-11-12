@@ -1716,14 +1716,14 @@
 </template>
 
 <script>
-    import SelectInput from  './components/SelectInput'
-    import SelectAdd from  './components/SelectAdd'
-    import NozzlesTable from  './components/NozzlesTable'
-    import componentComposition from './core/componentComposition'
-    import geologicalInformation from './core/geologicalInformation'
-    import threadTypesJson from './core/threadType'
-    import inclino from './core/inclino'
-    import mudDaily from './core/drillingmudDaily'
+    import SelectInput from '../components/SelectInput'
+    import SelectAdd from '../components/SelectAdd'
+    import NozzlesTable from '../components/NozzlesTable'
+    import componentComposition from '../core/componentComposition'
+    import geologicalInformation from '../core/geologicalInformation'
+    import threadTypesJson from '../core/threadType'
+    import inclino from '../core/inclino'
+    import mudDaily from '../core/drillingmudDaily'
     import moment from "moment";
 
     export default {
