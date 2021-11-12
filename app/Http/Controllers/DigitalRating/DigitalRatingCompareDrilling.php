@@ -76,24 +76,24 @@ class DigitalRatingCompareDrilling extends Controller
 
     $horizon = $request->input('horizon');
     $year = $request->input('year');
-    $date_to = $year.'-01-01';
-    $date_end = $year.'-12-31';
-
+    $date_to = $year.'-01-01 00:00:00+06';
+    $date_end = $year.'-12-31 00:00:00+06';
+    $block= $request->input('block');
 
     $actual_wells_count =   DB::connection('tbd')->table('tbdi.well')
         ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
-        ->where('tbdi.well.uwi', 'like', '%UZN%') 
-        ->whereDate('tbdi.well_geo.dbeg', '<=',$date_to)
-        ->whereDate('tbdi.well_geo.dend', '>', $date_end)
+        ->whereDate('tbdi.well.dt', '<',$date_end)
         ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
         ->where('tbdi.geo.name',   $horizon)  
+        ->join('tbdi.well_block', 'tbdi.well_block.well_id', '=', 'tbdi.well.id')
+        ->join('tbdi.block', 'tbdi.block.id', '=', 'tbdi.well_block.block_id')
+        ->where('tbdi.block.name',   $block)  
         ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-        ->whereIn('tbdi.well_category.well_category_type_id', self::WELL_CATEGORY_TYPE_ID)
-        ->whereDate('tbdi.well_category.dbeg', '<=',$date_to)
-        ->whereDate('tbdi.well_category.dend', '>', $date_end)
-        ->select('tbdi.well.uwi','tbdi.well.id','tbdi.geo.name','')
-        ->count();
+        ->where('tbdi.well_category.well_category_type_id', 1)
+        ->get();
 
+
+   dd($actual_wells_count);
     $project_wells_count =   DB::connection('tbd')->table('digital_rating.project_points')
         ->where('digital_rating.project_points.horizon',   $horizon)  
         ->count();
