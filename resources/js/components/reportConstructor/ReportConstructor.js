@@ -680,6 +680,9 @@ export default {
             }
             let maxDepthOfSelectedAttributes = this.getMaxDepthOfTree(attributes[sheetType]) - 2
             let dailyAttributes = this.getDailyAttributesBranch(attributes[sheetType])
+            if (dailyAttributes.length === 0) {
+                return []
+            }
             return this.convertTreeToLayersOfAttributes(dailyAttributes, maxDepthOfSelectedAttributes)
         },
         getDailyAttributesBranch(attributesOfSheet) {

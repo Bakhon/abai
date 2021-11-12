@@ -33,6 +33,7 @@ return [
     'actions' => 'Действия',
     'documents' => 'Документы',
     'forms' => [
+        'title' => 'Формы ввода',
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',
             'uwi_number' => 'Номер скважины',

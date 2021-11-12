@@ -42,7 +42,6 @@ export default {
                 await this.handleClick(this.node);
             }
             if (!this.isHaveChildren(this.node)) {
-                this.isLoading = true;
                 await this.getWells(this);
             }
 
