@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import moment from "moment";
-import axios from "axios";
 
 export default {
   data() {
@@ -119,6 +117,8 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: async function (child) {
+
+      child.isLoading = true
       let node = (typeof child.node === 'undefined') ? child : child.node;
 
       return this.axios.get(this.baseUrl + "get_wells", {

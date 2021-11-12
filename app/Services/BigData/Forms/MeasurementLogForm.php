@@ -148,13 +148,22 @@ abstract class MeasurementLogForm extends TableForm
             return Cache::get('bd_geo_breadcrumb_' . $geo->id);
         }
 
-        $ancestors = $geo->ancestors()
-            ->reverse()
-            ->pluck('name_ru')
-            ->toArray();
+        $path = [];
+        $isFieldFound = false;
+        $ancestors = $geo->ancestors()->reverse();
+        foreach ($ancestors as $ancestor) {
+            if ($ancestor->type->code === 'FLD') {
+                $isFieldFound = true;
+            }
+            if (!$isFieldFound) {
+                continue;
+            }
+            $path[] = $ancestor->name_ru;
+        }
 
-        $ancestors[] = $geo->name;
-        $breadcrumbs = implode(' / ', $ancestors);
+        $path[] = $geo->name_ru;
+
+        $breadcrumbs = implode(' / ', $path);
         Cache::put('bd_geo_breadcrumb_' . $geo->id, $breadcrumbs, now()->addMonth());
 
         return $breadcrumbs;

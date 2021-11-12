@@ -72,5 +72,6 @@ return array (
   'thousandTons' => 'тыс. т',
   'project' => 'Проект',
   'fact' => 'Факт',
-  'deviation' => 'Отклонение'
+  'deviation' => 'Отклонение',
+  'searchRadius' => 'Радиус поиска'
 );
