@@ -119,18 +119,60 @@
                 </v-select>
               </form>
               <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
-                <div class="button-block__item">
-                  Легенда
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/help.svg" alt="">
+                  <a class="text-white cursor-pointer">Легенда</a>
                 </div>
-                <div class="button-block__item">
-                  График
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/chart.svg" alt="">
+                  <a class="text-white cursor-pointer"
+                     @click="$refs.childForm.switchChartVisibility()">Показать график
+                  </a>
                 </div>
                 <div
                         v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
-                        class="button-block__item"
-                        @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                        class="p-1 ml-2 d-flex align-items-center"
                 >
-                  Исторические сведения
+                  <img class="pr-1" src="/img/bd/historical_icon.svg" alt="">
+                  <a
+                          class="text-white cursor-pointer"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
+                    Исторические сведения
+                  </a>
+                </div>
+                <button
+                        type="button"
+                        data-toggle="dropdown"
+                        class="icon-filter"
+                ></button>
+                <div>
+                  <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1 p-1">
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                        <img class="pr-1" src="/img/bd/hide-column.svg" alt="">
+                        <a class="text-white cursor-pointer ml-1"
+                           @click="$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',false)">Скрыть столбцы замеров
+                        </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/hide-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="$refs.childForm.switchColumnsVisibility('isExpanded',false)">Скрыть месяца замеров
+                      </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/show-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="[$refs.childForm.switchColumnsVisibility('isExpanded',true),$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',true)]">Показать все
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -141,6 +183,7 @@
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
                   :selectedDzo="selectedDzo"
+                  ref="childForm"
                 ></div>
               </div>
               <div
@@ -2302,8 +2345,6 @@ h4 {
 .dropdown-menu.show {
   background: #40467e;
   color: white;
-  width: 100%;
-  padding: 0 7px 0 16px;
   border: 1px solid #2e50e9;
   border-radius: 8px;
   margin-top: 7px;
@@ -2741,6 +2782,11 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
+    div:not(:last-child) {
+      background: #293688;
+      border: 1px solid #3366FF;
+      border-radius: 5px;
+    }
 }
 @media (max-width: 1640px) {
 .button-block__item[data-v-b1a5f7e2] {
@@ -2839,6 +2885,16 @@ h4 {
 }
 .width__1159 {
   width: 1159px;
+}
+.icon-filter {
+  width: 20px;
+  background: url(/img/bd/filter.svg) no-repeat;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: none;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 </style>
