@@ -922,7 +922,7 @@
                         {{ getFormattedNumber(item.opek) }}
                         <span v-if="dzoWithOpekRestriction.includes(item.name)" class="color__yellow"> *</span>
                         <span
-                                v-if="isHoverShouldBeShown() && dzoWithOpekRestriction.includes(item.name)"
+                                v-if="isOpekHoverShouldBeShown() && dzoWithOpekRestriction.includes(item.name)"
                                 v-show="opekHoverIndex === index"
                                 class="opek-hovered-tooltip"
                         >
@@ -940,7 +940,7 @@
                         {{ getFormattedNumber(item.fact) }}
                         <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                         <span
-                                v-if="isHoverShouldBeShown() && missedCompanies.includes(item.name)"
+                                v-if="isOpekHoverShouldBeShown() && missedCompanies.includes(item.name)"
                                 v-show="factHoverIndex === index"
                                 class="opek-hovered-tooltip"
                         >
