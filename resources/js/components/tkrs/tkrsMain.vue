@@ -27,19 +27,19 @@
                 <tbody>
                   
                     <tr>
-                      <td>1</td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></td>
+                      <td><a class="a-link" href="hookWeightSensor">1</a></td>
+                      <td><a class="a-link" href="hookWeightSensor"><img class="cursor-pointer" src="/img/tkrs/active.svg" alt=""></a></td>
+                      <td><a class="a-link" href="hookWeightSensor"><img class="cursor-pointer" src="/img/tkrs/connection.svg" alt=""></a></td>
                       <td><img class="cursor-pointer" @click="brigada_modal()" data-toggle="modal" 
                 data-target="#exampleModalCenter"  src="/img/tkrs/brigada_table.svg" alt="">Бригада №11 ТОО "Жанрос Дриллинг</td>
-                      <td>Акшабулак Восточный</td>
+                      <td><a class="a-link" href="hookWeightSensor">Акшабулак Восточный</a></td>
                       <td><img class="cursor-pointer" @click="well_modal()" data-toggle="modal" 
                 data-target="#exampleModalCenter"  src="/img/tkrs/well.svg" alt="">Акш 40</td>
-                      <td>КРС/ПРС</td>
-                      <td>Ремонтно-изоляционные работы (РИР)</td>
+                      <td><a class="a-link" href="hookWeightSensor">КРС/ПРС</a></td>
+                      <td><a class="a-link" href="hookWeightSensor">Ремонтно-изоляционные работы (РИР)</a></td>
                       <td><img class="cursor-pointer" src="/img/tkrs/notification_good.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/gps.svg" alt=""></td>
-                      <td><img class="cursor-pointer" src="/img/tkrs/video.svg" alt=""></td>
+                      <td><a class="a-link" href="gpsPositioning"><img class="cursor-pointer" src="/img/tkrs/gps.svg" alt=""></a></td>
+                      <td><a class="a-link" href="videoSurveillance"><img class="cursor-pointer" src="/img/tkrs/video.svg" alt=""></a></td>
                       <td><img class="cursor-pointer" src="/img/tkrs/force_sensor.svg" alt=""></td>
                     </tr>
                     <tr>
@@ -528,5 +528,11 @@ tr:hover {
 .all-tabs {
   justify-content: center;
   border: solid;
+}
+.a-link {
+  color: #fff;
+}
+.a-link:hover {
+  color: #fff;
 }
 </style>

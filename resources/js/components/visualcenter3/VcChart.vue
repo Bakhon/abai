@@ -227,7 +227,6 @@
                     }
                     this.$emit('chartReasons', this.reasons);
                 }
-
             },
 
             async getDecreaseReasons(date,dzo) {
@@ -247,9 +246,9 @@
                 let presentCompanies = Object.keys(this.reasons);
                 _.forEach(this.dzoWithOpekRestriction, (dzo) => {
                     if (presentCompanies.includes(dzo)) {
-                        this.reasons[dzo].push(this.trans('visualcenter.opekExplanationReason'));
+                        this.reasons[dzo].push([this.trans('visualcenter.opekExplanationReason'),null]);
                     } else {
-                        this.reasons[dzo] = [this.trans('visualcenter.opekExplanationReason')];
+                        this.reasons[dzo] = [[this.trans('visualcenter.opekExplanationReason'),null]];
                     }
                 });
                 return reasons;

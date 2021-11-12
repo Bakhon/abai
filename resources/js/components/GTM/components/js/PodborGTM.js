@@ -158,6 +158,8 @@ export default {
             oilFieldsForFilter: [],
             horizontsForFilter: [],
             objectsForFilter: [],
+            showShadow: false,
+            activeItem: 0
         };
     },
     computed: {
@@ -189,7 +191,8 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onClickWell(v) {
+        onClickWell(v, idx) {
+            this.activeItem = idx
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
             let params = {action_type: 'well_name_clicked', main_data: v, distance: 500}
@@ -221,31 +224,31 @@ export default {
                         data: [
                             {
                                 x: res.fa_plot.labels.pbeg_oil_prod,
-                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.pbeg_oil_prod.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWC,
-                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceWC.color,
                             }, {
                                 x: res.fa_plot.labels.influencePres,
-                                y: res.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influencePres.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influencePres.color,
                             }, {
                                 x: res.fa_plot.labels.influenceLiquidPI,
-                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceLiquidPI.color,
                             }, {
                                 x: res.fa_plot.labels.influenceBHP,
-                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceBHP.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWorkDay,
-                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceWorkDay.color,
                             }, {
                                 x: res.fa_plot.labels.pend_oil_prod,
-                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.pend_oil_prod.color,
                             }
                         ]
@@ -255,6 +258,10 @@ export default {
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
+            this.showShadow = false
+        },
+        onHoverTree() {
+          this.showShadow = true
         },
         async onGetTreeData() {
             let body = { url: this.url, body: this.body }
@@ -289,6 +296,7 @@ export default {
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
+            this.showShadow = true
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
                 data: function () {

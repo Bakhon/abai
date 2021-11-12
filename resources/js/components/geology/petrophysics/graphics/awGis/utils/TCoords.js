@@ -31,6 +31,10 @@ export default class TCoords {
         this.#__settings.offsetY = offsetY;
     }
 
+    get getOffsetY() {
+        return this.#__settings.offsetY;
+    }
+
     set setOffsetX(offsetX) {
         this.#__settings.offsetX = offsetX;
     }

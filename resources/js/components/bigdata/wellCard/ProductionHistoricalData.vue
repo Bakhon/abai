@@ -22,19 +22,19 @@
                         </tr>
                         </thead>
                     <tbody>
-                        <tr v-for="(date,index) in dates" v-if="date.isVisible">
+                        <tr v-for="(date,index) in dates" v-if="date.isVisible" :class="getRowColor(date,index)">
                             <td>
                                 <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
                                 <label v-else class="form-check-label">{{date.month}}</label>
                                 <span class="ml-1"></span>
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
-                            <td>{{date.water.toFixed(2)}}</td>
-                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(1)}}</td>
-                            <td v-else>{{date.oil}}</td>
-                            <td>{{date.waterDebit.toFixed(1)}}</td>
-                            <td>{{date.waterCut.toFixed(0)}}</td>
-                            <td>{{date.oilDebit.toFixed(1)}}</td>
+                            <td>{{formatNumber(date.water.toFixed(2))}}</td>
+                            <td v-if="date.oil !== null && date.oil > 0">{{formatNumber(date.oil.toFixed(1))}}</td>
+                            <td v-else>{{formatNumber(date.oil)}}</td>
+                            <td>{{formatNumber(date.waterDebit.toFixed(1))}}</td>
+                            <td>{{formatNumber(date.waterCut.toFixed(0))}}</td>
+                            <td>{{formatNumber(date.oilDebit.toFixed(1))}}</td>
                             <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
                     </tbody>
@@ -183,10 +183,13 @@ export default {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
                 let sorted = _.sortBy(filtered, 'date');
-                let isChecked = true;
+                let isChecked = sorted.length > 0;
                 _.forEach(sorted, (item) => {
                     isChecked = item.isChecked;
                 });
+                if (yearItem.year === moment().year()) {
+                    isChecked = true;
+                }
                 summary.isChecked = isChecked;
                 calculated.push(summary);
                 calculated = calculated.concat(sorted);
@@ -207,6 +210,20 @@ export default {
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
+        formatNumber(num) {
+            return new Intl.NumberFormat("ru-RU").format(num);
+        },
+        getRowColor(item,index) {
+            let summary = item.water + item.oil + item.waterDebit + item.waterCut + item.oilDebit;
+            if (item.month === null) {
+                return summary > 0 ? 'row__pink' : 'row__gray';
+            }
+            if (index % 2 === 0) {
+                return 'row__yellow';
+            } else {
+                return 'row__blue';
+            }
+        }
     },
     mounted() {
         this.fillDates();
@@ -270,7 +287,7 @@ export default {
         color: #030647;
     }
     td {
-         padding: 2px;
+        padding: 2px;
         background: #bbbfe2;
         border: 1px solid #030647;
         border-top: none;
@@ -284,7 +301,6 @@ export default {
         label {
             min-width: 40px;
             min-width: 40px;
-            color: #030647;
         }
     }
      
@@ -298,6 +314,30 @@ export default {
     &::-webkit-scrollbar-thumb {
         background: #656a8a;
         border-radius: 10px;
+    }
+}
+.row__gray {
+    td {
+        background: #656A8A;
+        color: #fff;
+    }
+}
+.row__pink {
+    td {
+        background: #636CC3;
+        color: #fff;
+    }
+}
+.row__yellow {
+    td {
+        background: #FFFF99;
+        color: black;
+    }
+}
+.row__blue{
+    td {
+        background: #CCFFFF;
+        color: black;
     }
 }
 </style>

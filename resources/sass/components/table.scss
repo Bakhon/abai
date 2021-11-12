@@ -271,8 +271,8 @@ table::-webkit-scrollbar-corner {
       font-weight: bold;
       font-size: 11px;
       min-width: 70px;
-      padding: 10px 0;
-      text-align: center;
+      padding: 10px 30px 10px 10px;
+      text-align: left;
 
       &.selected {
         position: relative;
@@ -350,9 +350,9 @@ table::-webkit-scrollbar-corner {
           border: none;
           border-left: 1px solid #454D7D;
           border-right: 1px solid #454D7D;
-          font-size: 11px;
-          padding: 2px 5px;
-          text-align: center;
+          font-size: 10px;
+          padding: 0 30px 0 10px;
+          text-align: left;
           vertical-align: middle;
 
           a.item_download {
