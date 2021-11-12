@@ -2,7 +2,7 @@
   <div class="mt-2 customScroll overflow-auto" style="max-height: 575px">
     <select-granularity
         :form="form"
-        class="flex-grow-1 mb-2"
+        class="flex-grow-1 mb-3"
         @change="getData()"/>
 
     <vue-table-dynamic
@@ -107,6 +107,10 @@ export default {
         {
           name: 'Q ж, предл',
           key: 'liquid_propose',
+        },
+        {
+          name: 'Предлагаем остановить',
+          key: 'is_stopped',
         },
       ]
     },

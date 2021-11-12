@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\Analysis\EconomicAnalysisWellRequest;
 use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
@@ -10,7 +11,6 @@ use App\Models\Refs\TechnicalWellStatus;
 use App\Services\BigData\StructureService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -108,7 +108,7 @@ class EconomicAnalysisController extends Controller
         ];
     }
 
-    public function getWellsByDate(Request $request): array
+    public function getWellsByDate(EconomicAnalysisWellRequest $request): array
     {
         $proposedWells = $this->getProposedWells();
 
@@ -128,26 +128,37 @@ class EconomicAnalysisController extends Controller
 
         $liquidPropose = $this->sqlQueryOil($profitableUwis, $stoppedUwis);
 
+        $dateMonth = "CAST(DATE_FORMAT(well_forecast.date, '%Y-%m-01') as DATE)";
+
+        $lossStatuses = $this->sqlQueryLossStatuses();
+
         switch ($request->granularity) {
             case Granularity::MONTH:
-                $date = "CAST(DATE_FORMAT(well_forecast.date, '%Y-%m-01') as DATE)";
+                $date = $dateMonth;
                 break;
             default:
                 $date = "well_forecast.date";
                 break;
         }
 
-        $query = DB::table("$tableWellForecast AS well_forecast")
+        $wells = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
                 well_forecast.uwi as uwi,
-                well_forecast.oil as oil,
-                well_forecast.liquid as liquid,
-                well_status.name as status_name,
-                well_loss_status.name as loss_status_name,
-                well_profitability.profitability as profitability,
-                $oilPropose as oil_propose,    
-                $liquidPropose as liquid_propose,
-                $date as date 
+                $date as dt, 
+                $dateMonth as dt_month, 
+                well_status.name as status_name, 
+                well_loss_status.name as loss_status_name, 
+                SUM(well_forecast.oil) as oil,
+                SUM(well_forecast.liquid) as liquid,
+                SUM($oilPropose) as oil_propose,    
+                SUM($liquidPropose) as liquid_propose,
+                CASE WHEN well_forecast.uwi IN ($profitableUwis)
+                    THEN 0
+                    WHEN well_forecast.loss_status_id IN ($lossStatuses) OR 
+                         well_forecast.uwi IN ($stoppedUwis)
+                    THEN 1
+                    ELSE 0
+                END as is_stopped               
             "))
             ->leftjoin("$tableWellStatus AS well_status", function ($join) {
                 /** @var JoinClause $join */
@@ -156,15 +167,53 @@ class EconomicAnalysisController extends Controller
             ->leftjoin("$tableWellLossStatus AS well_loss_status", function ($join) {
                 /** @var JoinClause $join */
                 $join->on("well_forecast.loss_status_id", '=', 'well_loss_status.id');
-            });
+            })
+            ->groupBy([
+                "uwi",
+                "dt",
+                "dt_month",
+                "status_name",
+                "loss_status_name",
+                "is_stopped",
+            ])
+            ->toSql();
+
+        $query = DB::table(DB::raw("($wells) as wells"))
+            ->addSelect(DB::raw("
+                wells.uwi,
+                wells.dt as date,
+                wells.dt_month as date_month,
+                wells.status_name,
+                wells.loss_status_name,
+                wells.is_stopped,
+                wells.oil,
+                wells.oil_propose,
+                wells.liquid,
+                wells.liquid_propose,
+                well_profitability.profitability
+            "))
+            ->groupByRaw(DB::raw("
+                wells.uwi,
+                wells.dt,
+                wells.dt_month,
+                wells.status_name,
+                wells.loss_status_name,
+                wells.is_stopped,
+                wells.oil,
+                wells.oil_propose,
+                wells.liquid,
+                wells.liquid_propose,
+                well_profitability.profitability
+            "));
 
         return $this
             ->sqlJoinWellProfitability(
                 $query,
-                'well_forecast',
-                'well_profitability',
+                "wells",
+                "well_profitability",
                 $profitableUwis,
-                $stoppedUwis
+                $stoppedUwis,
+                "dt_month"
             )
             ->get()
             ->toArray();
@@ -770,19 +819,22 @@ class EconomicAnalysisController extends Controller
         string $wellAlias,
         string $wellProfitabilityAlias,
         string $profitableUwis = "''",
-        string $stoppedUwis = "''"
+        string $stoppedUwis = "''",
+        string $joinDateKey = "date"
     ): Builder
     {
         $wells = $this
             ->builderWellProfitability($profitableUwis, $stoppedUwis)
             ->toSql();
 
-        return $query->leftJoin(DB::raw("($wells) as $wellProfitabilityAlias"), function ($join) use ($wellAlias, $wellProfitabilityAlias) {
-            /** @var JoinClause $join */
-            $join
-                ->on("$wellProfitabilityAlias.uwi", "=", "$wellAlias.uwi")
-                ->on("$wellProfitabilityAlias.date", "=", "$wellAlias.date");
-        });
+        return $query->leftJoin(
+            DB::raw("($wells) as $wellProfitabilityAlias"),
+            function ($join) use ($wellAlias, $wellProfitabilityAlias, $joinDateKey) {
+                /** @var JoinClause $join */
+                $join
+                    ->on("$wellProfitabilityAlias.uwi", "=", "$wellAlias.uwi")
+                    ->on("$wellProfitabilityAlias.date", "=", "$wellAlias.$joinDateKey");
+            });
     }
 
     private function buildSqlQueryWhereIn(array $stringParams): string
