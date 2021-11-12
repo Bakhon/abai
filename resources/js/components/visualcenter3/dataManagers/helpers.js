@@ -246,7 +246,13 @@ export default {
                 }
             });
             return count;
-        }
+        },
+        isOpekHoverShouldBeShown() {
+            return this.isConsolidatedCategoryActive() &&
+                !this.mainMenu.oilCondensateProductionCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryOilResidue;
+        },
     },
     computed: {
         periodSelectFunc() {
