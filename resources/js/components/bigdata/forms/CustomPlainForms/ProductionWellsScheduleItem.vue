@@ -74,33 +74,6 @@
                         },
                     },
                     {
-                        seriesName: this.trans('app.waterCut'),
-                        opposite: true,
-                        min: 0,
-                        max: 0,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.waterCut'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    },
-                    {
                         seriesName: this.trans('app.liquid'),
                         opposite: true,
                         min: 0,
@@ -135,6 +108,33 @@
                             }
                         },
                         show: false
+                    },
+                    {
+                        seriesName: this.trans('app.waterCut'),
+                        opposite: true,
+                        min: 0,
+                        max: 0,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#000000',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(1);
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.waterCut'),
+                            style: {
+                                color: '#000000',
+                            }
+                        },
                     },
                     {
                         seriesName: this.trans('well_card_graph.events'),
@@ -233,11 +233,9 @@
                     this.labels = data.labels;
                 }).finally(() => {
                     this.SET_LOADING(false);
+                    this.$refs.chart.toggleSeries('Мероприятия');
                 });
             },
-            toogleChart() {
-                console.log($refs);
-            }
         },
         mounted() {
             this.getSchuduleData();
@@ -270,6 +268,9 @@
                         locales: [ru],
                         defaultLocale: 'ru',
                     },
+                    markers: {
+                        size: [0,0,0,0,4]
+                    },
                     xaxis: {
                         type: 'datetime',
                         tickAmount: 10,
@@ -284,7 +285,17 @@
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                             let dateItem = ''
                             let events = window.Apex.events
-                            let events_hint = events.info[dataPointIndex]
+                            let events_hint = events.info[dataPointIndex];
+                            let output = '';
+                            if (events_hint !== null) {
+                                let formatted = events_hint.slice(1,-1).slice(1,-1);
+                                formatted = formatted.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+                                let parsed = JSON.parse(formatted);
+                                output = parsed.name_type + '<br>';
+                                for (let i in parsed.parameters) {
+                                    output = output + ' - ' + parsed.parameters[i].name + ' : ' + parsed.parameters[i].value + ', <br>';
+                                }
+                            }
                             return (
                                 '<div class="arrow_box" style="padding: 3px">' +
                                 "<span style='display: block;background: #ccc'>" + dateItem + "</span>" +
@@ -293,7 +304,7 @@
                                 "<span style='display: block;'><b><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + w.globals.initialSeries[3].name + ":</b> " + w.globals.initialSeries[3].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>"
-                                + events_hint +
+                                + output +
                                 "</span>" +
                                 "</div>"
                             );
@@ -309,6 +320,7 @@
         },
         watch: {
             isShowEvents: function (value) {
+                this.$refs.chart.toggleSeries('Мероприятия');
                 if (value) {
                     this.chartPoints = this.tmpChartPoints;
                 } else {
@@ -327,9 +339,9 @@
 
                     this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) * 0.1));
                     this.maximumTick.oil = Math.round(parseFloat(this.maximumTick.oil) + (parseFloat(this.maximumTick.oil) * 0.1));
-                    this.yaxis[2].max = this.maximumTick.oil;
+                    this.yaxis[1].max = this.maximumTick.oil;
                     this.yaxis[0].max = this.maximumTick.hdin;
-                    this.yaxis[1].max = this.maximumTick.waterCut;
+                    this.yaxis[3].max = this.maximumTick.waterCut;
                 }
             }
         }
