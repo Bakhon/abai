@@ -110,8 +110,12 @@ export default {
           ]
         },
         yaxis: this.chartSeries[sortKey].map((chart, index) => {
+          let max = Math.max(...chart.data.map(val => Math.abs(val)))
+
           return {
             show: true,
+            min: -max,
+            max: max,
             opposite: !!index,
             title: {
               text: chart.name
