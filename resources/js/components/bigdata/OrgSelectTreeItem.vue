@@ -41,7 +41,7 @@
   </li>
 </template>
 <script>
-import treeview from "../common/mixins/treeview";
+import treeview from '../common/mixins/treeview'
 
 export default {
   name: "node",
