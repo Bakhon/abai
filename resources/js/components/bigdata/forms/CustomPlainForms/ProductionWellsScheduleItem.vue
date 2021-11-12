@@ -39,7 +39,8 @@
                 maximumTick: {
                     'hdin': 0,
                     'oil': 0,
-                    'waterCut': 110
+                    'waterCut': 110,
+                    'liq': 0
                 },
                 chartSeries: [],
                 chartPoints: [],
@@ -102,6 +103,8 @@
                     },
                     {
                         seriesName: this.trans('app.oil'),
+                        min: 0,
+                        max: 0,
                         labels: {
                             formatter: function (value) {
                                 return value.toFixed(1);
@@ -333,13 +336,17 @@
                     this.maximumTick.hdin = _.maxBy(this.chartSeries[0].data, function(o) {
                         return parseFloat(o);
                     });
-                    this.maximumTick.oil = _.maxBy(this.chartSeries[1].data, function(o) {
+                    this.maximumTick.liq = _.maxBy(this.chartSeries[1].data, function(o) {
+                        return parseFloat(o);
+                    });
+                    this.maximumTick.oil = _.maxBy(this.chartSeries[2].data, function(o) {
                         return parseFloat(o);
                     });
 
                     this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) * 0.1));
                     this.maximumTick.oil = Math.round(parseFloat(this.maximumTick.oil) + (parseFloat(this.maximumTick.oil) * 0.1));
-                    this.yaxis[1].max = this.maximumTick.oil;
+                    this.yaxis[1].max = this.maximumTick.liq;
+                    this.yaxis[2].max = this.maximumTick.oil;
                     this.yaxis[0].max = this.maximumTick.hdin;
                     this.yaxis[3].max = this.maximumTick.waterCut;
                 }
