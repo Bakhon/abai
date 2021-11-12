@@ -482,6 +482,7 @@ export default {
         gdisCurrentValueStatic: { value_double: null },
         gdisCurrentValueRp: { value_double: null, meas_date: null },
         gdisComplex: { value_double: null, dbeg: null, value_string: null },
+        techmode: { well: null, date: null, bhp: null, p_res: null },        
         gis: { gis_date: null },
         gdisCurrentValueBhp: { value_double: null, meas_date: null },
         zone: { name_ru: null },
@@ -583,6 +584,7 @@ export default {
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
+        techmode: "techmode",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -817,22 +819,8 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp =
-        this.well.gdisCurrentValueBhp.value_double &&
-        this.well.gdisCurrentValueBhp.meas_date
-          ? this.well.gdisCurrentValueBhp.value_double +
-            "/" +
-            "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : this.well.gdisCurrentValueBhp.value_double
-          ? this.well.gdisCurrentValueBhp.value_double
-          : this.well.gdisCurrentValueBhp.meas_date
-          ? "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : "";
-
+      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
+        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
