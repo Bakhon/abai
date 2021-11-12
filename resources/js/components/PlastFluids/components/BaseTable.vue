@@ -77,12 +77,17 @@
                 :key="index"
                 :style="
                   currentSelectedSamples &&
+                  reservoilOilInfo[1] === 'graphs-and-tables' &&
                   currentSelectedSamples.includes(index)
                     ? 'background-color: #009000;'
                     : ''
                 "
                 style="cursor: pointer"
-                @click="$emit('select-row', item)"
+                @click="
+                  reservoilOilInfo[1] === 'graphs-and-tables'
+                    ? $emit('select-row', item)
+                    : ''
+                "
               >
                 <td
                   v-for="(itemTD, ind) in item.table_data
@@ -165,6 +170,7 @@ export default {
       perPage: 30,
     };
   },
+  inject: ["reservoilOilInfo"],
   watch: {
     perPage: {
       handler(val) {

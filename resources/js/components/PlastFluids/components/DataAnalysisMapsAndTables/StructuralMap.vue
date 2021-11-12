@@ -1,114 +1,153 @@
 <template>
   <div class="structure-map">
-    <div id="structural-map"></div>
-    <div class="legends-holder" v-if="isDataReady">
-      <p>{{ legends[Object.keys(legends)[0]].depthLevel.toFixed() }} м.</p>
-      <img
-        @click.stop="isLegendsOpen = !isLegendsOpen"
-        src="/img/PlastFluids/hslBar.jpg"
-        alt="map legends"
-      />
-      <p>{{ legends[Object.keys(legends)[19]].depthLevel.toFixed() }} м.</p>
-      <div
-        class="legends"
-        v-show="isLegendsOpen"
-        v-click-outside="closeLegends"
-      >
-        <div
-          class="legend"
-          v-for="(legend, key) in legends"
-          :key="key"
-          :style="'background-color:' + legend.color"
-        >
-          <p>{{ legend.depthLevel.toFixed() }} метров</p>
-        </div>
-      </div>
-    </div>
+    <SmallCatLoader v-show="loading" :loading="loading" />
+    <div v-show="!loading" id="structural-map"></div>
   </div>
 </template>
 
 <script>
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import SmallCatLoader from "../SmallCatLoader.vue";
 import { getIsohypsumModelCoords } from "../../services/mapService";
+import { downloadUserReport } from "../../services/templateService";
+import { mapState } from "vuex";
 
 export default {
   name: "StructuralMap",
+  components: {
+    SmallCatLoader,
+  },
   data() {
     return {
       map: null,
+      loading: false,
       layers: {},
-      legends: {},
-      levelCount: 20,
-      model: 4,
-      isDataReady: false,
-      isLegendsOpen: false,
       mapOptions: {
         doubleClickZoom: false,
         center: [47.78333, 67.76667],
         zoom: 5,
       },
-      maxPolygonLayer: {
-        layerId: -1,
-        layerLength: 0,
-      },
     };
   },
-  methods: {
-    closeLegends() {
-      this.isLegendsOpen = false;
-    },
-    generateHsl(length) {
-      let palette = [];
-      for (let i = length; i >= 1; i--) {
-        palette.push(360 / i);
+  computed: {
+    ...mapState("plastFluidsLocal", ["currentModel"]),
+  },
+  watch: {
+    async currentModel(value) {
+      try {
+        const {
+          id,
+          start_latitude,
+          end_latitude,
+          start_longitude,
+          end_longitude,
+          image_id,
+        } = value;
+        this.loading = true;
+        this.clearLayers();
+        const postData = new FormData();
+        postData.append("file_id", image_id);
+        const image = await downloadUserReport(postData);
+        const blob = new Blob([image.data], {
+          type: "image/png",
+        });
+        const imageUrl = URL.createObjectURL(blob);
+        const bounds = [
+          [start_latitude, start_longitude],
+          [end_latitude, end_longitude],
+        ];
+        L.imageOverlay(imageUrl, bounds).addTo(this.map);
+        const model = await getIsohypsumModelCoords({
+          depth_multiplier: 5,
+          model_id: id,
+        });
+        model.isogyps.forEach((layer) => {
+          const geoJson = {
+            ...layer,
+            type: "FeatureCollection",
+            features: layer.lines,
+          };
+          delete geoJson.lines;
+          this.layers[geoJson.level_number] = new L.featureGroup();
+          L.geoJSON(geoJson, {
+            onEachFeature: this.onEachFeature,
+            style: {
+              weight: 1,
+              color: "#000",
+              fillOpacity: 1,
+            },
+          });
+          this.layers[geoJson.level_number].addTo(this.map);
+        });
+        this.addWells(model.wells);
+        this.map.on("zoomstart", () => {
+          if (this.map.getZoom() >= 13) this.removeTooltips();
+        });
+        this.map.on("zoomend", () => {
+          if (this.map.getZoom() >= 13) this.addTooltips();
+        });
+        this.map.fitBounds(bounds);
+      } catch (error) {
+        alert(error);
+      } finally {
+        this.loading = false;
       }
-      return palette;
+    },
+  },
+  methods: {
+    addWells(wells) {
+      this.layers.wells = new L.featureGroup();
+      wells.forEach((well) => {
+        const icon = L.divIcon({ className: "well-icon" });
+        const wellMarker = L.marker([well.latitude, well.longitude], {
+          icon,
+          wellName: well.well,
+        });
+        this.layers.wells.addLayer(wellMarker);
+      });
+      this.layers.wells.addTo(this.map);
+    },
+    addTooltips() {
+      this.layers.wells.eachLayer((layer) =>
+        layer.bindTooltip(layer.options.wellName, {
+          permanent: true,
+          className: "well-tooltip",
+          opacity: 1,
+          direction: "top",
+        })
+      );
+    },
+    removeTooltips() {
+      this.layers.wells.eachLayer((layer) => layer.unbindTooltip());
+    },
+    clearLayers() {
+      for (let key in this.layers) {
+        this.layers[key].clearLayers();
+      }
+      this.layers = {};
+      this.map.off();
+      this.map.eachLayer((layer) => {
+        this.map.removeLayer(layer);
+      });
     },
     onEachFeature(feature, layer) {
+      layer.bindTooltip(`-${feature.properties.level_depth.toFixed()} м.`, {
+        sticky: true,
+      });
       this.layers[feature.properties.level_number].addLayer(layer);
     },
-    async initMap() {
+    initMap() {
       this.map = L.map("structural-map", this.mapOptions);
-      const model = await getIsohypsumModelCoords({
-        levels_count: this.levelCount,
-        model_id: this.model,
-      });
-      let colors = this.generateHsl(model.length);
-      model.forEach((layer, index) => {
-        const geoJson = {
-          ...layer,
-          type: "FeatureCollection",
-          features: layer.lines,
-        };
-        delete geoJson.lines;
-        const strokeColor = `hsl(${colors[index]}, 50%, 50%)`;
-        this.layers[geoJson.level_number] = new L.featureGroup();
-        this.legends[geoJson.level_number] = {
-          color: strokeColor,
-          depthLevel: geoJson.level_depth,
-        };
-        L.geoJSON(geoJson, {
-          onEachFeature: this.onEachFeature,
-          style: {
-            weight: 1,
-            fillColor: strokeColor,
-            color: strokeColor,
-            fillOpacity: 1,
-          },
-        });
-        this.layers[geoJson.level_number].addTo(this.map);
-        if (this.maxPolygonLayer.layerLength < geoJson.features.length) {
-          this.maxPolygonLayer.layerId = geoJson.level_number;
-          this.maxPolygonLayer.layerLength = geoJson.features.length;
-        }
-      });
-      if (Object.keys(this.legends).length) this.isDataReady = true;
-      this.map.fitBounds(this.layers[this.maxPolygonLayer.layerId].getBounds());
     },
   },
   mounted() {
     this.initMap();
+  },
+  beforeDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
   },
 };
 </script>
@@ -119,53 +158,43 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-}
-
-.legends-holder {
-  position: absolute;
-  right: 0;
-  width: 50px;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-
-.legends-holder > img {
-  height: calc(100% - 65px);
-  cursor: pointer;
-}
-
-.legends-holder > p {
-  height: 21px;
-  margin: 0;
-  color: darkred;
-}
-
-.legends {
-  position: absolute;
-  top: 21px;
-  right: calc(100% + 5px);
-  width: 150px;
-  height: calc(100% - 65px);
-  overflow: auto;
-}
-
-.legend {
-  width: 100%;
-  height: 20px;
-  text-align: center;
-}
-
-.legend > p {
-  margin: 0;
-  font-size: 12px;
+  background-color: #fff;
 }
 
 #structural-map {
   width: 100%;
   height: 100%;
-  background: #c4c4c4;
+  background: #fff;
+}
+
+#structural-map::v-deep .well-icon {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(
+    45.25% 44.82% at 50% 50%,
+    #ffffff 0%,
+    #ffffff 13.19%,
+    #ffec08 100%
+  );
+  border: 1px solid #9e9e9e;
+  border-radius: 50%;
+}
+
+#structural-map::v-deep .well-tooltip {
+  text-decoration: underline;
+  color: #333333;
+  font-size: 16px;
+  padding: 0;
+  background-color: unset;
+  border: none;
+  box-shadow: none;
+}
+
+#structural-map::v-deep .leaflet-tooltip-left:before,
+#structural-map::v-deep .leaflet-tooltip-right:before,
+#structural-map::v-deep .leaflet-tooltip-top:before,
+#structural-map::v-deep .leaflet-tooltip-bottom:before {
+  display: none;
 }
 
 ::-webkit-scrollbar {

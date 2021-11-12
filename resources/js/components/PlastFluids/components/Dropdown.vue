@@ -8,7 +8,8 @@
       <button
         @click="handleSelect(item)"
         v-for="item in items"
-        :key="item[dropKey]"
+        :key="dropKeyRepeat ? item[dropKey] + item.id : item[dropKey]"
+        :title="description ? item['description_' + currentLang] : ''"
       >
         {{
           isParentShortNameExist
@@ -27,7 +28,9 @@ export default {
     items: Array,
     placeholder: String,
     dropKey: String,
+    description: Boolean,
     parentShortName: String,
+    dropKeyRepeat: Boolean,
     selectedValue: {
       type: String,
       default: null,

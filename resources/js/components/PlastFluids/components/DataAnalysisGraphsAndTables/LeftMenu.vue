@@ -107,7 +107,7 @@ export default {
             { key: "Ps", Label: "Ps" },
             { key: "Bs", Label: "Bos" },
             { key: "Ds", Label: "Dos" },
-            { key: "Ms", Label: "μ‎os" },
+            { key: "Ms", Label: "μos" },
           ],
         },
         {
@@ -116,7 +116,7 @@ export default {
           children: [
             { key: "Rs", Label: "Rs" },
             { key: "Ps", Label: "Ps" },
-            { key: "Mo", Label: "μ‎o" },
+            { key: "Mo", Label: "μo" },
             { key: "Ds", Label: "po" },
           ],
         },

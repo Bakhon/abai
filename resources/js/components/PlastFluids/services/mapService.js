@@ -72,9 +72,11 @@ export const createIsohypsumModel = async (payload) => {
 
 export const getIsohypsumModel = async (payload) => {
   try {
+    const params = new URLSearchParams();
+    payload.forEach((horizonID) => params.append("horizon_id", horizonID));
     const response = await axios.get(
       `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps`,
-      { params: { horizon_id: payload } }
+      { params }
     );
     return response.data;
   } catch (error) {

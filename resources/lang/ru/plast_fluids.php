@@ -136,4 +136,8 @@ return array (
   'all_depth_graph_density_separated_oil' => 'Плотность дегазированной нефти от глубины притока',
   'all_depth_graph_pi_ps' => 'Давление насыщения от глубины притока',
   'settings' => 'Настройки',
+  'file_upload' => 'Загрузка файлов',
+  'show_fluid_properties' => 'Показать свойства флюидов',
+  'density_separation_oil' => 'Плотность сепарированной нефти, кг/м3',
+  'pressure_saturation' => 'Давление насыщения, МПа',
 );

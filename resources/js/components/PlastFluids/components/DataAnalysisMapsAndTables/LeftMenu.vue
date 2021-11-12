@@ -11,12 +11,57 @@
         </div>
         <div class="content">
           <div class="settings-input-holder">
-            <input type="radio" id="field settings" />
-            <label for="field settings">Все по месторождению</label>
+            <input type="checkbox" id="all-wells" />
+            <label for="all-wells">Все скважины</label>
           </div>
           <div class="settings-input-holder">
-            <input type="radio" id="horizon settings" />
-            <label for="horizon settings">По Горизонту</label>
+            <input type="checkbox" id="wells-deep-samples" />
+            <label for="wells-deep-samples"
+              >Скважины с отбором глубинных проб</label
+            >
+          </div>
+          <div class="settings-input-holder">
+            <input type="checkbox" id="wells-recombined-samples" />
+            <label for="wells-recombined-samples"
+              >Скважины с отбором рекомбинированных проб</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="content-holder">
+        <div class="content-heading">
+          <img
+            src="/img/PlastFluids/mapsAndTablesFluidsProperties.svg"
+            alt="fluid properties"
+          />
+          <p>{{ trans("plast_fluids.show_fluid_properties") }}</p>
+        </div>
+        <div class="content">
+          <div class="fluid-inputs">
+            <div class="fluid-input-holder">
+              <input type="checkbox" id="gas-content" />
+              <label for="gas-content">{{
+                trans("plast_fluids.gas_content")
+              }}</label>
+            </div>
+            <div class="fluid-input-holder">
+              <input type="checkbox" id="density-separation-oil" />
+              <label for="density-separation-oil"
+                >{{ trans("plast_fluids.density_separation_oil") }}
+              </label>
+            </div>
+            <div class="fluid-input-holder">
+              <input type="checkbox" id="pressure-saturation" />
+              <label for="pressure-saturation">{{
+                trans("plast_fluids.pressure_saturation")
+              }}</label>
+            </div>
+            <div class="fluid-input-holder">
+              <input type="checkbox" id="reservoir-oil-viscosity" />
+              <label for="reservoir-oil-viscosity">{{
+                trans("plast_fluids.reservoir_oil_viscosity")
+              }}</label>
+            </div>
           </div>
         </div>
       </div>
@@ -26,16 +71,18 @@
             src="/img/PlastFluids/mapsAndTablesFileUpload.svg"
             alt="file upload"
           />
-          <p>{{ trans("plast_fluids.settings") }}</p>
+          <p>{{ trans("plast_fluids.file_upload") }}</p>
         </div>
         <div class="content">
           <div class="file-upload-holder">
             <p>Структурная карта</p>
             <Dropdown
               :items="models"
-              :dropKey="'description_' + currentLang"
-              :selectedValue="currentModel['description_' + currentLang]"
+              dropKey="created_datetime"
+              :dropKeyRepeat="true"
+              :selectedValue="currentModel.created_datetime"
               @dropdown-select="SET_CURRENT_MODEL"
+              :description="true"
             />
           </div>
           <div class="file-upload-holder">
@@ -44,10 +91,6 @@
           </div>
           <div class="file-upload-holder">
             <p>Схема контактов</p>
-            <Dropdown dropKey="name" />
-          </div>
-          <div class="file-upload-holder">
-            <p>Тип пробы</p>
             <Dropdown dropKey="name" />
           </div>
         </div>
@@ -59,7 +102,6 @@
 <script>
 import Dropdown from "../Dropdown.vue";
 import { mapState, mapMutations } from "vuex";
-import { getIsohypsumModel } from "../../services/mapService";
 
 export default {
   name: "DataAnalysisMapTablePanel",
@@ -67,20 +109,10 @@ export default {
     Dropdown,
   },
   computed: {
-    ...mapState("plastFluids", ["currentSubsoilHorizon"]),
     ...mapState("plastFluidsLocal", ["models", "currentModel"]),
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_MODELS", "SET_CURRENT_MODEL"]),
-    async getModels() {
-      const data = await getIsohypsumModel(
-        this.currentSubsoilHorizon[0].horizon_id
-      );
-      this.SET_MODELS(data.models);
-    },
-  },
-  mounted() {
-    if (this.currentSubsoilHorizon[0].horizon_id) this.getModels();
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_MODEL"]),
   },
 };
 </script>
@@ -93,6 +125,7 @@ export default {
   background: #272953;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 
 .data-analysis-panel__area {
@@ -129,6 +162,30 @@ export default {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.fluid-inputs {
+  background: #363b68;
+  border: 1px solid #545580;
+  padding: 8px 10px;
+}
+
+.fluid-input-holder {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fluid-input-holder:last-of-type {
+  margin-bottom: 0;
+}
+
+.fluid-input-holder > input {
+  margin-right: 10px;
+}
+
+.fluid-input-holder > label {
+  margin: 0;
+}
+
 .settings-input-holder {
   padding: 8px 10px;
   display: flex;
@@ -144,6 +201,7 @@ export default {
 
 .settings-input-holder > label {
   margin: 0;
+  font-size: 12px;
 }
 
 .file-upload-holder {
@@ -159,5 +217,14 @@ export default {
 .file-upload-holder > p {
   margin: 0 0 8px 4px;
   font-size: 12px;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
 }
 </style>
