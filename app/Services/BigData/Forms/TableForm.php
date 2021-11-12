@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
@@ -22,8 +23,6 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
-
-    abstract protected function saveSingleFieldInDB(array $params): void;
 
     public function __construct(Request $request)
     {
@@ -481,5 +480,23 @@ abstract class TableForm extends BaseForm
             }
         }
         return $query;
+    }
+
+    public function submit(): array
+    {
+        DB::connection('tbd')->beginTransaction();
+
+        try {
+            $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
+            DB::connection('tbd')->commit();
+            return $result;
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
+        }
+    }
+
+    public function submitForm(array $fields, array $filter = [])
+    {
     }
 }
