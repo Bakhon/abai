@@ -390,8 +390,7 @@
     .active {
         border-bottom: 2px solid rgba(46, 80, 233, 1);
     }
-</style>
-<style>
     .apexcharts-legend {
         justify-content: center !important;
-    }</style>
+    }
+</style>
