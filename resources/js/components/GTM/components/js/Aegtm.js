@@ -252,7 +252,7 @@ export default {
                             item.gtm,
                             item.count_plan,
                             item.count_fact,
-                            '0',
+                            item.avg_increase_plan,
                             item.avg_increase_fact,
                             item.add_prod_plan,
                             item.add_prod_fact,

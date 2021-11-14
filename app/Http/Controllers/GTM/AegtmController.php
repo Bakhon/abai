@@ -28,8 +28,32 @@ class AegtmController extends Controller
         $techEfficiencyResultGrouped = $techEfficiencyData->groupBy('gtm')->toArray();
         $techEfficiencyResult = $techEfficiencyData->groupBy('gtm')->map->count();
 
-        $pvrPlan = $grpPlan = $vpsPlan = $pvlgPlan = $vnsPlan = $vnsGrpPlan = $vbdPlan = $zbgsPlan = $zbsPlan = $gsPlan = $gsGrpPlan = 0;
-        $pvrProdPlan = $grpProdPlan = $vpsProdPlan = $pvlgProdPlan = $vnsProdPlan = $vnsGrpProdPlan = $vbdProdPlan = $zbgsProdPlan = $zbsProdPlan = $gsProdPlan = $gsGrpProdPlan = 0;
+        $pvrPlan = $grpPlan = $vpsPlan = $pvlgPlan = $vnsPlan = $vnsGrpPlan = $vbdPlan = $zbgsPlan = $zbsPlan =
+            $gsPlan = $gsGrpPlan = 0;
+
+        $pvrProdPlan = $grpProdPlan = $vpsProdPlan = $pvlgProdPlan = $vnsProdPlan = $vnsGrpProdPlan = $vbdProdPlan =
+            $zbgsProdPlan = $zbsProdPlan = $gsProdPlan = $gsGrpProdPlan = 0;
+
+
+        $gtmAvgIncreasePlans = [
+            'pvr_increase_plan'     => 0,
+            'grp_increase_plan'     => 0,
+            'vps_increase_plan'     => 0,
+            'pvlg_increase_plan'    => 0,
+            'vns_increase_plan'     => 0,
+            'vns_grp_increase_plan' => 0,
+            'vbd_increase_plan'     => 0,
+            'zbgs_increase_plan'    => 0,
+            'zbs_increase_plan'     => 0,
+            'gs_increase_plan'      => 0,
+            'gs_grp_increase_plan'  => 0,
+        ];
+
+        foreach($gtmAvgIncreasePlans as $key => $item) {
+            $gtmAvgIncreasePlans[$key] = $dzoOtmData->average(function($value) use ($key) {
+                return $value[$key] > 0 ? $value[$key]: null;
+            });
+        }
 
         foreach ($dzoOtmData as $item) {
             $pvrPlan+= $item->pvr_plan;
@@ -78,46 +102,57 @@ class AegtmController extends Controller
                     case 'ПВР':
                         $result[$key]['count_plan'] = $pvrPlan;
                         $result[$key]['add_prod_plan'] = round($pvrProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['pvr_increase_plan'], 1);
                         break;
                     case 'ГРП':
                         $result[$key]['count_plan'] = $grpPlan;
                         $result[$key]['add_prod_plan'] = round($grpProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['grp_increase_plan'], 1);
                         break;
                     case 'ВПС':
                         $result[$key]['count_plan'] = $vpsPlan;
                         $result[$key]['add_prod_plan'] = round($vpsProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['vps_increase_plan'], 1);
                         break;
                     case 'ПВЛГ':
                         $result[$key]['count_plan'] = $pvlgPlan;
                         $result[$key]['add_prod_plan'] = round($pvlgProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['pvlg_increase_plan'], 1);
                         break;
                     case 'ВНС':
                         $result[$key]['count_plan'] = $vnsPlan;
                         $result[$key]['add_prod_plan'] = round($vnsProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['vns_increase_plan'], 1);
                         break;
                     case 'ВНС_ГРП':
                         $result[$key]['count_plan'] = $vnsGrpPlan;
                         $result[$key]['add_prod_plan'] = round($vnsGrpProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['vns_grp_increase_plan'], 1);
                         break;
                     case 'ВБД':
                         $result[$key]['count_plan'] = $vbdPlan;
                         $result[$key]['add_prod_plan'] = round($vbdProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['vbd_increase_plan'], 1);
                         break;
                     case 'ЗБГС':
                         $result[$key]['count_plan'] = $zbgsPlan;
                         $result[$key]['add_prod_plan'] = round($zbgsProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['zbgs_increase_plan'], 1);
                         break;
                     case 'ЗБС,ЗБГС':
                         $result[$key]['count_plan'] = $zbsPlan;
                         $result[$key]['add_prod_plan'] = round($zbsProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['zbs_increase_plan'], 1);
                         break;
                     case 'ГС':
                         $result[$key]['count_plan'] = $gsPlan;
                         $result[$key]['add_prod_plan'] = round($gsProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['gs_increase_plan'], 1);
                         break;
                     case 'ГС_ГРП':
                         $result[$key]['count_plan'] = $gsGrpPlan;
                         $result[$key]['add_prod_plan'] = round($gsGrpProdPlan, 1);
+                        $result[$key]['avg_increase_plan'] = round($gtmAvgIncreasePlans['gs_grp_increase_plan'], 1);
                         break;
                 }
             }
