@@ -42,7 +42,7 @@ return array (
   'plannedGrowthReasonsTitle' => 'Причины недостижения планового прироста',
   'successfulWellsProportionTitle' => 'Доля успешных скважин',
   'countTh' => 'Кол-во скв.-опер.',
-  'avgDebitTh' => 'Ср. дебит нефти т/сут.',
+  'avgDebitTh' => 'Ср. прирост т/сут.',
   'additionalMiningTh' => 'Доп.добыча нефти, тыс. т',
   'countThLong' => 'Кол-во скв.-опер.',
   'headway' => 
