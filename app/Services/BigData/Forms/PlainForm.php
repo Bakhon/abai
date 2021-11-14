@@ -9,7 +9,9 @@ use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
+use App\Services\BigData\PlainFormInnerTableService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -26,6 +28,13 @@ abstract class PlainForm extends BaseForm
     protected $originalData;
     protected $submittedData = [];
 
+    protected $innerTableService;
+
+    public function __construct(Request $request, PlainFormInnerTableService $innerTableService)
+    {
+        parent::__construct($request);
+        $this->innerTableService = $innerTableService;
+    }
 
     public function getFields(): Collection
     {
@@ -108,7 +117,7 @@ abstract class PlainForm extends BaseForm
             $id = $dbQuery->insertGetId($data);
         }
 
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
@@ -131,8 +140,10 @@ abstract class PlainForm extends BaseForm
     {
         $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
         $permission = "bigdata {$action} {$this->configurationFileName}";
-        foreach($permissionNames as $permissionName) {
-            if($permission == $permissionName) return;
+        foreach ($permissionNames as $permissionName) {
+            if ($permission == $permissionName) {
+                return;
+            }
         }
         throw new \Exception("You don't have permissions");
     }
@@ -271,19 +282,11 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentParentId)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
-                }
-            }
+        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        if (!empty($insertedTableFields)) {
+            $this->submittedData['table_fields'] = $insertedTableFields;
         }
     }
 
@@ -336,24 +339,30 @@ abstract class PlainForm extends BaseForm
     protected function getColumns(): Collection
     {
         $columns = $this->getFields()->filter(
-            function ($item) {
-                if (isset($item['depends_on'])) {
+            function ($column) {
+                if (isset($this->params()['table_fields'])) {
+                    return in_array($column['code'], $this->params()['table_fields']);
+                }
+
+                if (isset($column['depends_on'])) {
                     return false;
                 }
 
-                if (isset($this->params()['table_fields'])) {
-                    return in_array($item['code'], $this->params()['table_fields']);
-                }
-
-                return $item['type'] !== 'table';
+                return $column['type'] !== 'table';
             }
-        )
-            ->mapWithKeys(
-                function ($item) {
-                    return [$item['code'] => $item];
-                }
-            );
-        return $columns;
+        );
+
+        if (isset($this->params()['table_fields'])) {
+            $columns = $columns->sortBy(function ($column) {
+                return array_search($column['code'], $this->params()['table_fields']);
+            });
+        }
+
+        return $columns->mapWithKeys(
+            function ($item) {
+                return [$item['code'] => $item];
+            }
+        );
     }
 
 }

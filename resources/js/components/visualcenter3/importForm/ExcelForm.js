@@ -7,6 +7,9 @@ import initialRowsMMG from './dzoData/initial_rows_mmg.json';
 import initialRowsOMG from './dzoData/initial_rows_omg.json';
 import initialRowsYO from './dzoData/initial_rows_yo.json';
 import initialRowsEMG from './dzoData/initial_rows_emg.json';
+import initialRowsTSHO from './dzoData/initial_rows_tsho.json';
+import initialRowsNKO from './dzoData/initial_rows_nko.json';
+import initialRowsKPO from './dzoData/initial_rows_kpo.json';
 import formatMappingKOA from './dzoData/format_mapping_koa.json';
 import formatMappingKTM from './dzoData/format_mapping_ktm.json';
 import formatMappingKBM from './dzoData/format_mapping_kbm.json';
@@ -15,6 +18,9 @@ import formatMappingMMG from './dzoData/format_mapping_mmg.json';
 import formatMappingOMG from './dzoData/format_mapping_omg.json';
 import formatMappingYO from './dzoData/format_mapping_yo.json';
 import formatMappingEMG from './dzoData/format_mapping_emg.json';
+import formatMappingTSHO from './dzoData/format_mapping_tsho.json';
+import formatMappingKPO from './dzoData/format_mapping_kpo.json';
+import formatMappingNKO from './dzoData/format_mapping_nko.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
 import cellsMappingKBM from './dzoData/cells_mapping_kbm.json';
@@ -23,13 +29,17 @@ import cellsMappingMMG from './dzoData/cells_mapping_mmg.json';
 import cellsMappingOMG from './dzoData/cells_mapping_omg.json';
 import cellsMappingYO from './dzoData/cells_mapping_yo.json';
 import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
+import cellsMappingTSHO from './dzoData/cells_mapping_tsho.json';
+import cellsMappingNKO from './dzoData/cells_mapping_nko.json';
+import cellsMappingKPO from './dzoData/cells_mapping_kpo.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
-;
 import {globalloadingMutations} from '@store/helpers';
+import Plans from "./dataManagers/plans";
+import CloseMonth from "./dataManagers/closeMonth";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -41,49 +51,126 @@ export default {
                     rows: initialRowsKOA,
                     format: formatMappingKOA,
                     cells: cellsMappingKOA,
-                    id: 110
+                    id: 110,
+                    requiredRows: [1,6,11,16,21,26],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1,
+                        21: 1,
+                    }
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
                     format: formatMappingKTM,
                     cells: cellsMappingKTM,
-                    id: 107
+                    id: 107,
+                    requiredRows: [1,6,11,16,21],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        16: 1
+                    }
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
                     format: formatMappingKBM,
                     cells: cellsMappingKBM,
-                    id: 106
-                },
-                "КГМ" : {
-                    rows: initialRowsKGM,
-                    format: formatMappingKGM,
-                    cells: cellsMappingKGM,
-                    id: 108
+                    id: 106,
+                    requiredRows: [1,4,7,10,13],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        10: 3,
+                    }
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
                     format: formatMappingMMG,
                     cells: cellsMappingMMG,
-                    id: 109
+                    id: 109,
+                    requiredRows: [1,6,11,15,20,25],
+                    isNotNull: {
+                        1: 1,
+                        6: 1,
+                        11: 1,
+                        15: 1,
+                        20: 1,
+                    }
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
                     format: formatMappingOMG,
                     cells: cellsMappingOMG,
-                    id: 112
+                    id: 112,
+                    requiredRows: [1,4,7,10,13,16,19],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        7: 1,
+                        10: 1,
+                        13: 1,
+                        16: 1,
+                    }
                 },
                 "УО" : {
                     rows: initialRowsYO,
                     format: formatMappingYO,
                     cells: cellsMappingYO,
-                    id: 111
+                    id: 111,
+                    requiredRows:[1,7,12,18],
+                    isNotNull: {
+                        1: 1,
+                        7: 1,
+                        12: 1
+                    }
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
-                    id: 113
+                    id: 113,
+                    requiredRows: [1,8,15,22,29],
+                    isNotNull: {
+                        1: 1,
+                        8: 1,
+                        15: 1,
+                        22: 1
+                    }
+                },
+                "ТШО" : {
+                    rows: initialRowsTSHO,
+                    format: formatMappingTSHO,
+                    cells: cellsMappingTSHO,
+                    id: 259,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
+                },
+                "НКО" : {
+                    rows: initialRowsNKO,
+                    format: formatMappingNKO,
+                    cells: cellsMappingNKO,
+                    id: 262,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
+                },
+                "КПО" : {
+                    rows: initialRowsKPO,
+                    format: formatMappingKPO,
+                    cells: cellsMappingKPO,
+                    id: 260,
+                    requiredRows: [1,4],
+                    isNotNull: {
+                        1: 1,
+                    }
                 },
             },
             dzoCompanies: [
@@ -101,11 +188,7 @@ export default {
                 },
                 {
                     ticker: 'КБМ',
-                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
-                },
-                {
-                    ticker: 'КГМ',
-                    name: 'ТОО СП "КАЗГЕРМУНАЙ"'
+                    name: 'АО "Каражанбасмунай"'
                 },
                 {
                     ticker: 'ММГ',
@@ -119,10 +202,22 @@ export default {
                     ticker: 'УО',
                     name: 'ТОО "Урихтау Оперейтинг"'
                 },
+                {
+                    ticker: 'ТШО',
+                    name: 'ТОО "Тенгизшевройл"'
+                },
+                {
+                    ticker: 'НКО',
+                    name: 'Норт Каспиан Оперейтинг Компани н.в.'
+                },
+                {
+                    ticker: 'КПО',
+                    name: 'Карачаганак Петролеум Оперейтинг б.в.'
+                },
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
-                name: 'ТОО "Казахтуркмунай"',
+                name: 'АО "Эмбамунайгаз"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -176,7 +271,10 @@ export default {
                     'formula': (value) => value * 1000
                 }
             },
-            dzoUsers: []
+            dzoUsers: [],
+            requiredRows: 0,
+            isNotNullRows: {},
+            bigDzo: ['ТШО','КПО','НКО']
         };
     },
     props: ['userId'],
@@ -184,18 +282,26 @@ export default {
         this.SET_LOADING(true);
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
-        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
-            this.isChemistryButtonVisible = true;
-            this.$modal.show('additionalParamsReminder');
-        }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
-        if ( this.selectedDzo.ticker === 'КОА') {
-            this.addColumnsToGrid();
+        if (this.daysWhenChemistryNeeded.includes(currentDayNumber) && !this.bigDzo.includes(this.selectedDzo.ticker)) {
+            this.isChemistryButtonVisible = true;
+            this.$modal.show('additionalParamsReminder');
         }
-
+        this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
+        this.fillPlanColumns();
+        this.fillPlanRows();
+        this.plans = await this.getDzoPlans();
+        this.handlePlans();
+        if (this.monthDate.date() <= 10) {
+            this.monthDate = this.monthDate.subtract(1,'month').endOf('month');
+        }
+        this.fillMonthColumns();
+        this.fillMonthRows();
+        this.monthlyFact = await this.getDzoFactByPeriod();
+        this.handleMonthFact();
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
@@ -207,23 +313,6 @@ export default {
         this.SET_LOADING(false);
     },
     methods: {
-        addColumnsToGrid() {
-            for (let i = 7; i < 9; i++) {
-                this.columns.push(
-                    {
-                        prop: "column" + i,
-                        size: 280,
-                        cellProperties: ({prop, model, data, column}) => {
-                            return {
-                                style: {
-                                    border: '1px solid #F4F4F6'
-                                },
-                            };
-                        },
-                    }
-                );
-            }
-        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -246,6 +335,8 @@ export default {
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
+            this.requiredRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].requiredRows);
+            this.isNotNullRows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].isNotNull);
             this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
             this.columnsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
             this.rowsCount = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows).length + 2;
@@ -331,6 +422,7 @@ export default {
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
             } else {
+                this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
             }
             if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
@@ -369,15 +461,15 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text();
-                if (!this.isNumberCellValid(cellValue,selector)) {
+                cellValue = this.getFormattedNumber(cellValue);
+                cellValue = parseFloat(cellValue);
+                if ((isNaN(cellValue) || cellValue < 0) && this.requiredRows.includes(row.rowIndex)) {
                     this.turnErrorForCell(selector);
                     continue;
                 }
-                if (cellValue.trim().length === 0) {
-                    cellValue = null;
-                }
-                if (cellValue) {
-                    cellValue = this.getFormattedNumber(cellValue);
+                if (this.isNotNullRows[row.rowIndex] && this.isNotNullRows[row.rowIndex] === columnIndex && !(cellValue > 0)) {
+                    this.turnErrorForCell(selector);
+                    continue;
                 }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
@@ -415,7 +507,7 @@ export default {
             return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
-            this.setClassToElement($(selector),'cell__color-red');
+            this.setClassToElement($('#factGrid').find(selector),'cell__color-red');
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
@@ -445,14 +537,19 @@ export default {
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
-            this.axios.post(uri, this.excelData).then((response) => {
-                if (response.status === 200) {
-                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
-                } else {
-                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
-                }
-            });
+            this.SET_LOADING(true);
+            this.axios.post(uri, this.excelData)
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.showToast(this.trans("visualcenter.excelFormPlans.successfullySavedBody"), this.trans("visualcenter.excelFormPlans.saveTitle"), 'Success');
+                        this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                    }
+                    this.SET_LOADING(false);
+                })
+                .catch((error) => {
+                    this.showToast(this.trans("visualcenter.excelFormPlans.fillFieldsBody"), this.trans("visualcenter.excelFormPlans.errorTitle"), 'danger');
+                    this.SET_LOADING(false);
+                });
         },
 
         updateTroubledCompaniesByFactorOptions() {
@@ -477,5 +574,5 @@ export default {
     components: {
         VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans,CloseMonth],
 };

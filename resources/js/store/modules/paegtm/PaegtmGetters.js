@@ -3,6 +3,8 @@ export const paegtmGetters = {
     getDateStart: (state) => state.dateStart,
     getDateEnd: (state) => state.dateEnd,
     getDateRange: (state) => state.dateRange,
+    getTreeDate: (state) => state.treeDate,
     dzoId: (state) => state.dzoId,
     dzoName: (state) => state.dzoName,
+    clickableTable: (state) => state.clickableTable
 }

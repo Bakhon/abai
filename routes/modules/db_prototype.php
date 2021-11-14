@@ -48,19 +48,21 @@ Route::group(
                     'bigdata.reports.favorite.remove'
                 );
 
-                Route::get('/protoform', 'bd\DBController@form')->name('bigdata.protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
                 Route::post('/mobileform', 'Api\DB\MobileFormsController@saveMobileForm');
                 Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
-
+               
                 Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
                     'reports.constructor.save.template'
                 );
                 Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
                     'reports.constructor.get.templates'
                 );
+                Route::get('/new-wells', function() {
+                    return view('bigdata.wells.new_index');
+                })->name('new-wells');
             }
         );
     }
@@ -79,6 +81,9 @@ Route::group(
 
                 Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
                 Route::get('forms/tree', 'Api\DB\FormsController@getFormsStructure')->name('bigdata.form.list');
+                Route::get('forms/well/tree', 'Api\DB\FormsController@getWellFormsStructure')->name(
+                    'bigdata.well_form.list'
+                );
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
@@ -127,12 +132,13 @@ Route::group(
                 Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
 
                 Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
-                Route::get('wells/productionHistory/{well}', 'Api\DB\WellsController@getProductionHistory');
+                Route::get('wells/productionHistory/{well}', 'Api\DB\WellHistoryController@getProductionHistory');
                 Route::get('wells/get-activity/{activityInfo}', 'Api\DB\WellsController@getActivityByWell');
-                Route::get(
-                    'well-events',
-                    'Api\DB\WellCardChart@getWellEvents'
-                );
+                Route::get('well-events', 'Api\DB\WellCardChart@getWellEvents');
+                Route::get('well-history', 'Api\DB\WellHistoryController@getProductionHistory');
+
+                Route::get('orgs-by-well/{well}', 'Api\DB\StructureController@getOrgIdsByWellId');
+                Route::get('wells/production/techmode/{well}', 'Api\DB\WellsController@getProductionTechModeOil');
             }
         );
     }

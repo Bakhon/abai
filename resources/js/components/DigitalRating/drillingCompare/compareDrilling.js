@@ -1,7 +1,11 @@
+import apexchart from 'vue-apexcharts';
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsOil,rowsHorizon,horizons,actualIndicators} from '../json/data';
-import apexchart from 'vue-apexcharts';
+import {rowsHorizon,actualIndicators,objectList} from '../json/data';
+import maps from '../mixins/maps.js';
+import wellList from "../json/wells/13.json";
+import owcList from '../json/owc_out_uzn_13_osn.json';
+import { globalloadingMutations } from '@store/helpers';
 
 export default {
   name: 'CompareDrilling',
@@ -11,11 +15,13 @@ export default {
     apexchart
   },
 
+  mixins: [maps],
+
   data() {
     return {
       menu: mainMenu,
       parentType: '',
-      horizonList: horizons,
+      horizonList: objectList,
       actualIndicators: actualIndicators,
       coincidences: [
         {
@@ -31,50 +37,88 @@ export default {
           title: '150 м'
         }
       ],
-      horizon: 12,
+      horizon: 13,
+      year: 2008,
+      type: 'oil_production',
+      rowsOil: [],
+      indicatorTitle: 'Добыча нефти, тыс.т',
+      diagramData: [],
+      show: false
+    }
+  },
+
+  async mounted() {
+    await this.fetchData();
+    await this.initMap('wellMap');
+    await this.initWellOnMap();
+    await this.initContourOnMap();
+    await this.initLegends();
+    // await this.draw();
+  },
+
+  watch: {
+    type() {
+      this.fetchData();
+    },
+    horizon() {
+      this.fetchData();
+    },
+    year() {
+      this.fetchData();
     }
   },
 
   computed: {
-    getSelectedHorizon() {
-      return this.horizon;
-    },
-    rowsOil() {
-      return rowsOil;
-    },
     rowsHorizon() {
       return rowsHorizon;
     },
     chartOptions() {
       return {
+        ...this.generalOptions,
         colors: ["#009847", "#F27E31"],
-        fill: {
-          opacity: 1
-        },
-        stroke: {
-          width: [2, 2]
-        },
-        legend: {
-          horizontalAlign: "left",
-          offsetX: 20
-        },
-        dataLabels: {
-          enabled: false
-        },
         xaxis: {
-          categories: this.getYearList
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
         },
-        toolbar: {
-          show: false,
-        }
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(6, '#fff')
+            },
+            formatter: (val) => val.toFixed(0)
+          }
+        },
+        grid: this.getGrid
       }
     },
     chartOptionsArea() {
       return {
-        chart: {
-          height: 350,
-          type: 'area'
+        ...this.generalOptions,
+        xaxis: {
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
         },
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(7, '#fff')
+            },
+            formatter: (val) => val.toFixed(0)
+          }
+        },
+        grid: this.getGrid
+      }
+    },
+    generalOptions() {
+      return {
         fill: {
           opacity: 1
         },
@@ -84,44 +128,171 @@ export default {
         dataLabels: {
           enabled: false
         },
+        legend:{
+          labels: {
+            colors: ['#FFFFFF']
+          },
+        },
+      }
+    },
+    getGrid() {
+      return {
+        show: true,
+        borderColor: '#454D7D',
+        strokeDashArray: 0,
+        position: 'back',
         xaxis: {
-          categories: this.getYearList
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          },
+        },
+        row: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        column: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         },
       }
     },
     getYearList() {
-      return ['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
+      const years = [];
+      const currentYear = new Date().getFullYear();
+      for (let i = 2007; i < currentYear; i++) {
+        years.push(i);
+      }
+      return years.map(el => el.toString());
     },
-    series() {
-      return [
-        {
-          name: 'Факт',
-          data: [21, 23, 26, 33, 34, 39, 44, 44, 50, 56, 67, 73, 79, 88.5]
-        },
-        {
-          name: "Проект",
-          data: [10, 22, 24, 28, 32, 35, 40, 34, 40, 50, 60, 69, 70, 80]
-        },
-      ]
-    },
-    seriesArea() {
-      return [
-        {
-          name: 'Факт',
-          data: [231, 140, 328, 251, 142, 109, 100, 123, 209, 259, 399, 249, 123, 234, 350]
-        }, {
-          name: 'Проект',
-          data: [114, 322, 245, 232, 434, 152, 241, 132, 100, 150, 234, 328, 294,245,214]
-        }
-      ]
-    }
   },
 
   methods: {
-    menuClick(data) {
-      const path = window.location.pathname.slice(3);
-      if (data?.url && data.url !== path) {
-        window.location.href = this.localeUrl(data.url);
+    async fetchData() {
+      try {
+        this.SET_LOADING(true);
+        const res = await axios.get(this.localeUrl(
+          `digital-rating/api/get_compaer_data?horizon=${this.horizon}&year=${this.year}&type=${this.type}`
+        ));
+        this.rowsOil = res.data;
+        this.setDiagramData(res.data);
+      } finally {
+        this.SET_LOADING(false);
+      }
+    },
+
+    setDiagramData(data) {
+      this.diagramData = [];
+      const obj1 = {};
+      obj1['name'] = 'Факт';
+      obj1['data'] = data.map(el => el.actual);
+      const obj2 = {};
+      obj2['name'] = 'Проект';
+      obj2['data'] = data.map(el => el.project);
+      this.diagramData.push(obj1, obj2);
+    },
+
+    initWellOnMap() {
+      for(let i = 0; i < wellList.length; i++) {
+        const coordinate = this.xy(wellList[i]['x'], wellList[i]['y']);
+        switch (wellList[i]['type']) {
+          case 1:
+            this.setCircleMarker(coordinate, wellList[i]['well'], '#fcad00');
+            break;
+          case 4:
+            this.setTriangleMarker(coordinate, wellList[i]['well'], '#fcad00');
+            break;
+        }
+      }
+    },
+
+    initContourOnMap() {
+      for (let i = 0; i < owcList.length; i++) {
+        owcList[i].reverse();
+      }
+
+      L.polyline(owcList, {
+        renderer: this.renderer,
+        color: 'white',
+        weight: 1,
+        smoothFactor: 1
+      }).addTo(this.map);
+    },
+
+    initLegends() {
+      const legend = L.control({ position: "bottomleft" });
+
+      legend.onAdd = function() {
+        let div = L.DomUtil.create("div", "legend");
+        div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
+          '<span> - добывающая проектная скважина</span><br>';
+        div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
+          'width: 0;\n' +
+          'height: 0;\n' +
+          'border-style: solid;\n' +
+          'border-width: 0 8px 8px 8px;\n' +
+          'border-color: transparent transparent #fcad00 transparent;"></div>' +
+          '<span> - нагнетательный скважин</span>';
+        return div;
+      };
+
+      legend.addTo(this.map);
+    },
+
+    getColors(count, color) {
+      let colors = [];
+      for (let i = 0; i < count; i++) {
+        colors.push(color);
+      }
+      return colors;
+    },
+
+    handleSelectIndicator(indicator) {
+      this.indicatorTitle = indicator.title;
+      if (indicator?.value) {
+        this.type = indicator.value;
+      }
+    },
+
+    handleSelectHorizon(horizon) {
+      this.horizon = horizon?.id;
+    },
+
+    handleSelectYear(year) {
+      this.year = year;
+    },
+
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
+    getChildren(item) {
+      return item?.children?.length;
+    },
+
+    draw() {
+      const triangle = document.getElementById('triangle');
+      console.log('triangle', triangle.getContext);
+      if (triangle.getContext){
+        const ctx = triangle.getContext('2d');
+        // Stroked triangle
+        ctx.beginPath();
+        ctx.moveTo(24,24);
+        ctx.lineTo(125,45);
+        ctx.lineTo(45,125);
+        ctx.strokeStyle('#fcad00');
+        ctx.closePath();
+        ctx.stroke();
       }
     },
   }

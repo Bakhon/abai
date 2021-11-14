@@ -4,7 +4,7 @@
     "name": "Проект (план)",
     "icon_name": "dir.svg",
     "type": "dir",
-    "isVisible": true,
+    "isVisible": false,
     "forms": [
       "well_design"
     ]
@@ -23,13 +23,94 @@
     ]
   },
   {
-    "code": "well_exploitation",
-    "name": "Освоение, обустройство",
+    "code": "fund",
+    "name": "Фонд",
     "icon_name": "dir.svg",
     "type": "dir",
     "isVisible": true,
     "forms": [
-      "well_exploitation"
+      "geo_structure",
+      "org_structure",
+      "well_status",
+      "well_expl",
+      "well_category",
+      "well_zone",
+      "well_tech",
+      "tech_state",
+      "distribution_substation",
+      "joint_wells",
+      "well_block"
+    ]
+  },
+  {
+    "code": "measurement_schedule",
+    "name": "График замеров",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "production_wells_schedule",
+      "injection_wells_schedule"
+    ]
+  },
+  {
+    "code": "performance_indicators",
+    "name": "Эксплуатационные показатели",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "bsw_lab"
+    ]
+  },
+  {
+    "code": "tech_mode",
+    "name": "Технологический режим",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "production_well",
+      "injection_wells",
+      "gas_well",
+      "meas_water_prod"
+    ]
+  },
+  {
+    "code": "research",
+    "name": "Исследования",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "bottom_hole",
+      "bottom_hole_artificial",
+      "research_lab_research",
+      "well_mark",
+      "gdis",
+      "current_g_d_i_s",
+      "gis_type"
+    ]
+  },
+  {
+    "code": "repair",
+    "name": "Ремонт",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "kpc",
+      "prs"
+    ]
+  },
+  {
+    "code": "well_equips",
+    "name": "Оборудование",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "underground_equipment"
     ]
   },
   {
@@ -38,139 +119,10 @@
     "icon_name": "dir.svg",
     "type": "dir",
     "isVisible": true,
-    "children": [
-      {
-        "code": "fund",
-        "name": "Фонд",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "geo_structure",
-          "org_structure",
-          "well_status",
-          "well_expl",
-          "well_category",
-          "well_zone",
-          "well_tech",
-          "tech_state",
-          "distribution_substation",
-          "joint_wells",
-          "well_block"
-        ]
-      },{
-        "code": "measurement_schedule",
-        "name": "График замеров",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "production_wells_schedule",
-          "injection_wells_schedule"
-        ]
-      },
-      {
-        "code": "performance_indicators",
-        "name": "Эксплуатационные показатели",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "bsw_lab"
-        ]
-      },
-      {
-        "code": "tech_mode",
-        "name": "Технологический режим",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "production_well",
-          "injection_wells",
-          "gas_well",
-          "meas_water_prod"
-        ]
-      },
-      {
-        "code": "research",
-        "name": "Исследования",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "bottom_hole",
-          "bottom_hole_artificial",
-          "research_lab_research",
-          "well_mark",
-          "gdis",
-          "current_g_d_i_s",
-          "gis_type"
-        ]
-      },
-      {
-        "code": "well_treats",
-        "name": "Обработка",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "well_treat"
-        ]
-      },
-      {
-        "code": "repair",
-        "name": "Ремонт",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "kpc",
-          "prs"
-        ]
-      },
-      {
-        "code": "well_equips",
-        "name": "Оборудование",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "forms": [
-          "underground_equipment"
-        ]
-      }
-    ],
     "forms": [
-      
-    ]
-  },
-  {
-    "code": "gtm_registers",
-    "name": "ГТМ",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "gtm_register"
-    ]
-  },
-  {
-    "code": "well_documents",
-    "name": "Документы скважины",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "well_document"
-    ]
-  },
-  {
-    "code": "well_perfs",
-    "name": "Интервалы перфорации",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
+      "well_treatment",
+      "gtm_register",
+      "well_document",
       "well_perf"
     ]
   }

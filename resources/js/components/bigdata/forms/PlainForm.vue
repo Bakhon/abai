@@ -162,7 +162,7 @@ export default {
       this.activeTab = 0
 
       if (this.values) {
-        this.formValues = this.values
+        this.formValues = Object.assign({}, this.values)
       }
 
       this.updateForm(this.params.code)
@@ -216,7 +216,7 @@ export default {
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = [...JSON.parse(data.files), ...existedFiles]
+            files[key] = [...data.files, ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })
@@ -230,6 +230,9 @@ export default {
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {
+
+            this.SET_LOADING(false)
+
             this.errors = []
             this.$refs.form.reset()
             this.$notifySuccess('Ваша форма успешно отправлена')
@@ -241,6 +244,8 @@ export default {
             this.formValues = {}
           })
           .catch(error => {
+
+            this.SET_LOADING(false)
 
             if (error.response.status === 500) {
               this.$notifyError(error.response.data.message)
@@ -266,9 +271,6 @@ export default {
                 }
               }
             }
-          })
-          .finally(() => {
-            this.SET_LOADING(false)
           })
     },
     submitForm(params) {
@@ -385,6 +387,10 @@ export default {
 
       let isShowField = true
       field.depends_on.forEach(dependency => {
+        if (dependency.value === false && !this.formValues[dependency.field]) {
+          return;
+        }
+
         if (this.formValues[dependency.field] !== dependency.value) {
           isShowField = false
         }

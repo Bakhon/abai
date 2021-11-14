@@ -3,7 +3,7 @@
         <div class="dropdown__header" @click="isOpen=!isOpen">
             <div class="dropdown__header-title">
                 <div class="dropdown__search" v-if="search">
-                    <input type="text" v-model="query" v-on:input="changeSearch" placeholder="Введите текст |">
+                    <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
                 </div>
                 <span v-if="options.length>0 && !search && currentItem==null">
                     {{options[0].name}}
@@ -40,7 +40,6 @@
                 query: '',
             }
         },
-
         methods:{
             changeCurrentItem(item){
                 this.isOpen = false
@@ -52,7 +51,6 @@
                 this.$emit('search', this.query)
             },
         },
-
     }
 </script>
 
@@ -82,7 +80,7 @@
         transform: rotate(-180deg);
     }
     .dropdown.active .dropdown__body{
-        height: 150px;
+        height: auto;
     }
     .dropdown__body{
         position: absolute;

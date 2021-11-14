@@ -32,6 +32,16 @@ use Illuminate\Support\Facades\Cache;
 
 class VisualCenterController extends Controller
 {
+    private $allCompanies = array('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','ПКИ','КПО','ПКК','ТП','АГ');
+    private $reasonFields = array(
+        'opec_explanation_reasons' => 'opec_oil_losses',
+        'impulse_explanation_reasons' => 'impulse_oil_losses',
+        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
+        'accident_explanation_reasons' => 'accident_oil_losses',
+        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
+        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
+        'other_explanation_reasons' => 'other_oil_losses'
+    );
 
     public function __construct()
     {
@@ -474,6 +484,7 @@ class VisualCenterController extends Controller
             $summary = $daily;
             if (!is_null($daily['import_downtime_reason'])) {
                 $detail = array();
+                unset($daily['import_downtime_reason']['id']);
                 foreach($daily['import_downtime_reason'] as $key => $fondDetail) {
                     if (!is_null($fondDetail)) {
                         $detail[$key] = $fondDetail;
@@ -496,14 +507,34 @@ class VisualCenterController extends Controller
     {
         $startPeriod = Carbon::now()->startOfYear();
         $endPeriod = Carbon::now()->endOfDay();
-        return DzoImportData::query()
-            ->select()
+        $name = 'year_production_' . $startPeriod->format('Y_m_d') . '_' . $endPeriod->format('Y_m_d');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
+        $productionByYear = DzoImportData::query()
+            ->select(['id','dzo_name','date','oil_production_fact','condensate_production_fact','oil_delivery_fact','condensate_delivery_fact'])
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
             ->whereNull('is_corrected')
-            ->with('importDecreaseReason')
+            ->with(['importDecreaseReason' => function($decreaseReason){
+               $decreaseReason->select(
+                  [
+                     'dzo_import_data_id',
+                     'accident_explanation_reasons',
+                     'gas_restriction_explanation_reasons',
+                     'impulse_explanation_reasons',
+                     'opec_explanation_reasons',
+                     'other_explanation_reasons',
+                     'restriction_kto_explanation_reasons',
+                     'shutdown_explanation_reasons'
+                  ]
+                )
+                ->get();
+            }])
             ->get()
             ->toArray();
+        Cache::put($name, $productionByYear, $this->saveTime);
+        return $productionByYear;
     }
     public function getEmergencyHistory(Request $request)
     {
@@ -612,5 +643,56 @@ class VisualCenterController extends Controller
             $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay();
             echo '<br><br>';
         }
+    }
+
+    public function getMissedCompanies()
+    {
+        $presentCompanies = DzoImportData::query()
+            ->select('dzo_name')
+            ->whereDate('date',Carbon::yesterday())
+            ->whereNull('is_corrected')
+            ->get()
+            ->pluck('dzo_name');
+        $diff = array_values(array_diff($this->allCompanies,reset($presentCompanies)));
+        if (in_array('ОМГ', $diff)) {
+            array_push($diff,'ОМГК');
+        }
+        if (in_array('КГМ', $diff)) {
+            array_push($diff,'КГМКМГ');
+        }
+        return $diff;
+    }
+
+    public function getDecreaseReasons(Request $request)
+    {
+        $dailyData = DzoImportData::query()
+            ->select('id','date','dzo_name','is_corrected')
+            ->whereDate('date', Carbon::parse($request->date))
+            ->whereIn('dzo_name',$request->companies)
+            ->whereNull('is_corrected')
+            ->with('importDecreaseReason')
+            ->get();
+        $filtered = array();
+        foreach($dailyData as $company) {
+            if ($company->importDecreaseReason) {
+                $reasons = $this->getFilteredReasons($company->importDecreaseReason);
+                if (count($reasons) > 0) {
+                    $filtered[$company->dzo_name] = $reasons;
+                }
+            }
+        }
+        return $filtered;
+    }
+
+    private function getFilteredReasons($reasons)
+    {
+        $filtered = array();
+        $attributes = $reasons->getAttributes();
+        foreach($attributes as $key => $reason) {
+            if (in_array($key, array_keys($this->reasonFields)) && !is_null($reason)) {
+                array_push($filtered,array($reason,$attributes[$this->reasonFields[$key]]));
+            }
+        }
+        return $filtered;
     }
 }

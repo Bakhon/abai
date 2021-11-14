@@ -1,15 +1,12 @@
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
-import {globalloadingMutations} from "../../../../store/helpers";
+import {globalloadingMutations, paegtmMapActions} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
-import {toArray} from "html-to-image/es/util";
-
+import moment from "moment"
+import {createTreeBody, getTableWell, getTreeData, postTreeData} from "../api/podborGTM";
 
 export default {
     components: {
-        vSelect,
-        apexchart: VueApexCharts
+        apexchart: VueApexCharts,
     },
 
     data: function () {
@@ -18,17 +15,19 @@ export default {
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
             url: process.env.MIX_PODBOR_GTM_URL,
+            isHidden: true,
             bswVal: [],
             liquidRate: [],
             oilRate: [],
             wellNumber: null,
             table: {
-                main_data: {
-                    header: null,
-                    data: null,
-                },
+                header: null,
+                data: null,
             },
-            dataRange: null,
+            dataRangeInfo: {
+                days: Number,
+                is_days_group: Boolean
+            },
             fieldName: null,
             mainData: null,
             serviceOffline: true,
@@ -36,41 +35,6 @@ export default {
                 action_type: 'page_initialized',
                 main_data: "\"название страницы\""
             },
-            dzosForFilter: [
-                {name: 'АО "Озенмунайгаз"', code: 'omg'},
-                {name: 'АО "ЭмбаМунайГаз"', code: 'emba'},
-                {name: 'АО "Мангистаумунайгаз"', code: 'mmg'},
-                {name: 'АО "Каражанбасмунай"', code: 'krm'},
-                {name: 'ТОО "СП "Казгермунай"', code: 'kazger'},
-                {name: 'ТОО "Казтуркмунай"', code: 'ktm'},
-                {name: 'ТОО "Казахойл Актобе"', code: 'koa'},
-            ],
-            oilFieldsForFilter: [
-                {name: 'Акшабулак', code: 'oil_1'},
-                {name: 'Актобе', code: 'oil_2'},
-                {name: 'Алтыколь', code: 'oil_3'},
-                {name: 'Жетыбай', code: 'oil_4'},
-                {name: 'Жыланды', code: 'oil_5'},
-                {name: 'Жыланды', code: 'oil_6'},
-                {name: 'Каламкас', code: 'oil_7'},
-                {name: 'Каражанбас', code: 'oil_8'},
-            ],
-            objectsForFilter: [{name: 'Вариант 1'}],
-            structuresForFilter: [{name: 'Вариант 1'}],
-            gusForFilter: [{name: 'Вариант 1'}],
-            candidates: [
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-            ],
             treeData: [],
             waterFallChartOptions: {
                 chart: {
@@ -79,11 +43,10 @@ export default {
                     foreColor: '#fff'
                 },
                 stroke: {
-                  show: true,
-                  width: 1,
-                  colors: ['#808080'],
+                    show: true,
+                    width: 1,
+                    colors: ['#808080'],
                     curve: 'smooth',
-                    lineCap: 'butt'
                 },
                 plotOptions: {
                     bar: {
@@ -93,7 +56,7 @@ export default {
                 dataLabels: {
                     enabled: true,
                     // formatter: v => v.toFixed()
-                }
+                },
             },
             waterFallChartSeries: null,
             lineChartSeries: null,
@@ -110,9 +73,14 @@ export default {
                     },
                 },
                 colors: ["#04f689", "#fa4202", '#0253fa'],
-
                 dataLabels: {
                     enabled: false
+                },
+                stroke: {
+                    // lineCap: 'butt',
+                    // width: [5, 7, 5],
+                    curve: 'straight',
+                    dashArray: [0, 0, 2]
                 },
                 xaxis: {
                     categories: null,
@@ -122,7 +90,6 @@ export default {
                         tickAmount: 20,
                         min: 10,
                         max: 20,
-
                     },
                     labels: {
                         style: {
@@ -131,20 +98,6 @@ export default {
                     }
                 },
                 yaxis: [
-                    {
-                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
-                        axisTicks: {show: true},
-                        axisBorder: {show: true,},
-                        title: {
-                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
-                                color: undefined,
-                                fontSize: '15px',
-                                fontFamily: 'Helvetica, Arial, sans-serif',
-                                fontWeight: 700,
-                                cssClass: 'apexcharts-yaxis-title',
-                            },
-                        },
-                    },
                     {
                         seriesName: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`,
                         axisTicks: {show: true},
@@ -158,6 +111,20 @@ export default {
                                 cssClass: 'apexcharts-yaxis-title',
                             },
                         }
+                    },
+                    {
+                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
+                        axisTicks: {show: true},
+                        axisBorder: {show: true,},
+                        title: {
+                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        },
                     },
                     {
                         seriesName: `${this.trans('pgno.obvodnenost')} %`,
@@ -185,18 +152,32 @@ export default {
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
-            isMinimize: true
+            isMinimize: true,
+            days: null,
+            dzosForFilter: [],
+            oilFieldsForFilter: [],
+            horizontsForFilter: [],
+            objectsForFilter: [],
+            showShadow: false,
+            activeItem: 0
         };
     },
     computed: {
         ...paegtmMapState([
             'clickable',
+            'treeDate',
+            'clickableTable'
         ]),
     },
     watch: {},
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
+        ]),
+        ...paegtmMapActions([
+            'changeTreeDate',
+            'getTreeDataStore',
+            'onGetTableByClickableValue'
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -210,141 +191,112 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onClickableValue() {
-            const body = {
-                action_type: 'finder_item_clicked',
-                main_data: this.clickable,
-            }
-            this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
-                .then((res) => {
-                    this.table.main_data.header = res.data.main_data.header
-                    this.table.main_data.data = res.data.main_data.data
-                    if (res.status === 200) {
-                        this.setNotify("Данные получены", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
-        },
-        onClickWell(v) {
+        onClickWell(v, idx) {
+            this.activeItem = idx
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
-
+            let params = {action_type: 'well_name_clicked', main_data: v, distance: 500}
+            let body = {url: this.url, body: params}
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'well_name_clicked', main_data: v, distance: 500})
-                .then((res) => {
-                    this.lineChartOptions.xaxis.categories = Object.values(res.data.main_data.dt)
-                    this.lineChartSeries = [
-                        {
-                            name: res.data.main_data.labels.liquid_rate,
-                            data: Object.values(res.data.main_data.liquid_rate),
-                            showLine: false,
-                        },
-                        {
-                            name: res.data.main_data.labels.oil_rate,
-                            data: Object.values(res.data.main_data.oil_rate),
-                            pointBorderColor: "#FFFFFF",
-                        },
-                        {
-                            name: res.data.main_data.labels.bsw_val,
-                            data: Object.values(res.data.main_data.bsw_val),
-                            pointBorderColor: "#FFFFFF",
-                        },
-                    ],
-                        this.waterFallChartSeries = [{
-                            data: [
-                                {
-                                    x: res.data.fa_plot.labels.pbeg_oil_prod,
-                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.pbeg_oil_prod.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceWC,
-                                    y: res.data.fa_plot.influenceWC.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.influenceWC.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influencePres,
-                                    y: res.data.fa_plot.influencePres.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.influencePres.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceLiquidPI,
-                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.influenceLiquidPI.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceBHP,
-                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.influenceBHP.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.influenceWorkDay,
-                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.influenceWorkDay.color,
-                                }, {
-                                    x: res.data.fa_plot.labels.pend_oil_prod,
-                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseInt(a).toFixed(0)),
-                                    fillColor: res.data.fa_plot.pend_oil_prod.color,
-                                }
-                            ]
-                        }]
-
-                    if (res.status === 200) {
-                        this.setNotify("Данные получены", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+            getTableWell(body).then((res) => {
+                this.lineChartOptions.xaxis.categories = Object.values(res.main_data.dt)
+                this.lineChartSeries = [
+                    {
+                        name: res.main_data.labels.liquid_rate,
+                        data: Object.values(res.main_data.liquid_rate),
+                        showLine: false,
+                        stroke: {
+                            dashArray: 2
+                        }
+                    },
+                    {
+                        name: res.main_data.labels.oil_rate,
+                        data: Object.values(res.main_data.oil_rate),
+                        pointBorderColor: "#FFFFFF",
+                    },
+                    {
+                        name: res.main_data.labels.bsw_val,
+                        data: Object.values(res.main_data.bsw_val),
+                        pointBorderColor: "#FFFFFF",
+                    },
+                ],
+                    this.waterFallChartSeries = [{
+                        data: [
+                            {
+                                x: res.fa_plot.labels.pbeg_oil_prod,
+                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.pbeg_oil_prod.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceWC,
+                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.influenceWC.color,
+                            }, {
+                                x: res.fa_plot.labels.influencePres,
+                                y: res.fa_plot.influencePres.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.influencePres.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceLiquidPI,
+                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.influenceLiquidPI.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceBHP,
+                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.influenceBHP.color,
+                            }, {
+                                x: res.fa_plot.labels.influenceWorkDay,
+                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.influenceWorkDay.color,
+                            }, {
+                                x: res.fa_plot.labels.pend_oil_prod,
+                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
+                                fillColor: res.fa_plot.pend_oil_prod.color,
+                            }
+                        ]
+                    }]
+            }).finally(() => {this.SET_LOADING(false);})
         },
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
+            this.showShadow = false
         },
-        getTreeData() {
+        onHoverTree() {
+          this.showShadow = true
+        },
+        async onGetTreeData() {
+            let body = { url: this.url, body: this.body }
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
-                .then((res) => {
-                    this.dataRange = res.data.date_range_model;
-                    this.treeData = res.data.finder_model.children;
-                    this.fieldName = res.data.field_name;
-                }).finally(() => {
+            await getTreeData(body).then((res) => {
+                this.dataRangeInfo = res.date_range_model;
+                this.treeData = res.finder_model.children;
+                this.fieldName = res.org_struct;
+            }).finally(() => {
+                this.SET_LOADING(false);
+            })
+            this.changeTreeDate(this.dataRangeInfo);
+        },
+        onChangeDays(e) {
+            this.dataRangeInfo.days = e.target.value
+        },
+        onHideDays() {
+            this.isHidden = !this.isHidden
+        },
+        async onPostTreeData(v) {
+            this.dataRangeInfo = _.clone(this.treeDate)
+            this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
+            this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
+            this.changeTreeDate(this.dataRangeInfo);
+            const c = createTreeBody('calc_button_pressed',this.dataRangeInfo, this.fieldName, {name: 'root', children: v})
+            let body = {url: this.url, body: c}
+            this.SET_LOADING(true);
+            await postTreeData(body).then((res) => {
+            }).finally(() => {
                 this.SET_LOADING(false);
             })
         },
-        postTreeData(v) {
-            const body = {
-                action_type: 'calc_button_pressed',
-                date_range_model: this.dataRange,
-                fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            }
-            this.SET_LOADING(true);
-            axios.post(this.url, {
-                action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
-                finder_model: {
-                    name: "root",
-                    children: v
-                }
-            })
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.setNotify("Информация о скважинах получена", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
-        },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
+            this.showShadow = true
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
                 data: function () {
@@ -388,7 +340,7 @@ export default {
             };
         },
     },
-    created() {
-        this.getTreeData();
+    mounted() {
+        this.onGetTreeData();
     },
 }

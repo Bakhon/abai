@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="row mx-0 mt-lg-2 gtm">
-      <div class="col-lg-9 lg-border-block" @mouseover="closeTree()">
+    <div class="block-shadow" v-if="showShadow" @click="closeTree()"></div>
+    <div class="row mx-0 mt-lg-2 gtm main-block-gtm">
+      <div class="col-lg-9 lg-border-block">
         <div class="row col-12 p-0 m-0">
           <div :class="!isMinimize ? 'col-6 d-none d-lg-block p-0' : 'maximize-block d-none d-lg-block p-0'">
             <div class="gtm-dark h-100">
@@ -19,7 +20,7 @@
                 </div>
               </div>
               <div class="p-0 pl-0 table-pgtm">
-                <div v-if="!table.main_data.data">
+                <div v-if="!clickableTable.data">
                   <div class="border-block-out">
                     <div class="border-block-in">
                       <div class="p-3 empty-data-title">
@@ -34,7 +35,7 @@
                       <table class="table text-center text-white podbor-middle-table">
                         <thead class="thead" :class="isMinimize">
                         <tr>
-                          <th class="th" v-for="(row, idx) in table.main_data.header" :key="idx"
+                          <th class="th" v-for="(row, idx) in clickableTable.header" :key="idx"
                               :colspan="Array.isArray(row) ? row.length : ''"
                               :rowspan="Array.isArray(row) ? '' : 2"
                           >
@@ -42,7 +43,7 @@
                           </th>
                         </tr>
                         <tr>
-                          <template v-for="(row) in table.main_data.header">
+                          <template v-for="(row) in clickableTable.header">
                             <template v-if="Array.isArray(row)">
                               <th class="th" v-for="r in row">
                                 {{ r }}
@@ -52,8 +53,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="c in table.main_data.data" @click="onClickWell(c[0])">
-                          <th class="bg-body" v-for="row in c" >{{ row }}</th>
+                        <tr  v-for="(c, idx) in clickableTable.data" @click="onClickWell(c[0], idx)" :key="idx" >
+                          <th>{{ idx * 1 + 1 }}</th>
+                          <th :class="{ activeTr: idx === activeItem }" class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -158,7 +160,7 @@
           <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("paegtm.factor_analysis") }}
+                {{ this.trans("paegtm.factor_analyse") }}
               </div>
               <div class="d-flex">
                 <div class="pr-3 pb-1">
@@ -182,7 +184,7 @@
             <div class="gtm-dark h-100">
               <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ this.trans("paegtm.factor_analysis") }}, {{ this.trans("measurements.thousand_tons") }}
+                  {{ this.trans("paegtm.factor_analyse") }}
                 </div>
 
                 <div class="d-flex">
@@ -209,60 +211,68 @@
 
         </div>
       </div>
-      <div class="col-lg-3 p-0 pl-2 pr-1">
-        <div class="block-header gtm-dark p-2">
-          <div class="block-header p-2">
-            {{ this.trans("paegtm.period") }}
+      <div class="col-lg-3 p-0 pl-2 pr-1 right-block">
+        <div class="gtm-dark p-2">
+          <div class="block-header pb-2 pt-1 d-flex">
+            <div>
+              {{ this.trans("paegtm.period") }}
+            </div>
+            <div v-if="isHidden" class="period-block">
+              <div class="pl-1" style="font-weight: normal">
+                <input class="mt-7px pl-1" type="checkbox" value="" v-model="dataRangeInfo.is_days_group">
+                <label class="pl-1">Шаг</label>
+                <input class="period-settings-input" type="number" v-model="dataRangeInfo.days" @input="onChangeDays($event)"/>
+              </div>
+            </div>
+
           </div>
-          <gtm-date-picker
-              :showSettings="true"
-          ></gtm-date-picker>
+          <div class="d-flex gap-10">
+            <gtm-tree-date-picker class="flex-1"></gtm-tree-date-picker>
+            <div class="d-flex calendar-filter-block show-block"  @click="onHideDays">
+              <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
+            </div>
+          </div>
         </div>
 
         <div class="block-header gtm-dark">
-          <div class="gtm-dark gtm-filter mt-2 p-2">
-            <v-select
-                :options="dzosForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_dzo')"
-            >
-            </v-select>
-            <v-select
-                :options="oilFieldsForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_oil_field')"
-            >
-            </v-select>
+          <div class="gtm-dark gtm-filter mt-2">
+            <div class="gtm-select-block pb-12px pt-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_dzo') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="objectsForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_object')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_oil_field') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="structuresForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_structure')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px  p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_object') }}</option>
+              </select>
+            </div>
 
-            <v-select
-                :options="gusForFilter"
-                label="name"
-                :placeholder="this.trans('paegtm.select_gu')"
-            >
-            </v-select>
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_structure') }}</option>
+              </select>
+            </div>
 
+            <div class="gtm-select-block pb-12px p-i-12px">
+              <select class="select-well">
+                <option class="select-well-option" value="" disabled selected>{{ this.trans('paegtm.select_gu') }}</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div class="gtm-dark mt-2 p-2 calc-button text-center" @click="postTreeData(treeData)">
-            {{ trans("paegtm.calc") }}
+        <div class="gtm-dark p-2 calc-button text-center" @click="onPostTreeData(treeData)">
+          {{ trans("paegtm.calc") }}
         </div>
 
-        <div class="gtm-dark mt-2 p-2">
+        <div class="gtm-dark p-2 gtm-tree">
           <div class="block-header p-2 d-flex">
 
             <div class="title-block-tree" @click="showBlock = 1">
@@ -274,7 +284,7 @@
                  width="12" height="12" alt="">
 
           </div>
-          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }">
+          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }" @click="onHoverTree()">
             <div class="position-absolute tree-setting-block d-flex">
               <keep-alive>
                 <component v-bind:is="treeSettingComponent" class="gtm-dark table-border-gtm h-100"></component>
@@ -290,13 +300,12 @@
                   :treeData="treeDataChild"
                   :key="treeDataChild.name"
                   @node-click="nodeClick"
-                  @event-emit="onClickableValue()"
               ></gtm-tree>
             </div>
           </div>
 
         </div>
-        <div class="gtm-dark mt-2 p-2">
+        <div class="gtm-dark p-2">
           <div class="block-header p-2 d-flex">
             <div @click="showBlock = 2">
               {{ trans("paegtm.nearWells") }}
@@ -306,15 +315,15 @@
           </div>
 
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
-            <div class="gtm-dark mt-2 row m-0 p-2">
+            <div class="gtm-dark row m-0 p-2">
               <div class="col-1 text-right mt-1 mb-1 p-0">
                 <img src="../img/lens.svg">
               </div>
-              <div class="col-11 m-0 mt-1 mb-1 row p-0">
+              <div class="col-11 row p-0">
                 <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                 <button class="search-button pl-2 pr-2">{{ trans("paegtm.search") }}</button>
               </div>
-              <div class="gtm-dark text-white h-233 pl-2">
+              <div class="gtm-dark text-white h-221 pl-2">
                 {{ trans("paegtm.all_wells") }}
               </div>
             </div>
@@ -326,8 +335,41 @@
 </template>
 <script src="./js/PodborGTM.js"></script>
 <style scoped>
-.h-233 {
-  min-height: 233px;
+.h-221 {
+  min-height: 221px;
+}
+
+.main-block-gtm {
+  height: 100%;
+  align-items: stretch;
+}
+
+.right-block {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.period-settings-input {
+  width: 60px;
+  height: 24px;
+  background: rgba(31, 33, 66, 0.8);
+  border: 1px solid #454FA1;
+  border-radius: 4px;
+  color: white;
+  outline: none;
+  padding-left: 5px;
+}
+
+.period-block {
+  background-color: #41488b;
+  border: 2px solid #545580;
+  border-radius: 5px;
+  color: white;
+  width: 120px;
+  height: 30px;
+  font-size: 13px;
 }
 
 .lg-border-block {
@@ -340,6 +382,16 @@
   text-align: center;
   font-size: 16px;
   padding-top: 20px;
+}
+
+.period-settings-input[type=number]::-webkit-inner-spin-button {
+  opacity: 1;
+  background-color: #323370;
+}
+.period-settings-input[type="number"]::-webkit-inner-spin-button,
+.period-settings-input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  color: #0E9A00;
 }
 
 .border-color {
@@ -360,7 +412,7 @@
 }
 
 .p-3 {
-  height: 368px;
+  height: 384px !important;
 }
 
 .bg-body {
@@ -382,6 +434,10 @@
   bottom: 176px;
 }
 
+.gap-10 {
+  gap: 10px;
+}
+
 ::-webkit-scrollbar {
   height: 10px;
   width: 10px;
@@ -398,6 +454,7 @@
 .gtm-filter .v-select {
   margin-bottom: 15px;
 }
+
 .maximize-block {
   flex: 1;
 }
@@ -436,13 +493,21 @@
   border-collapse: collapse;
   width: 100%;
 }
+
 .th {
   padding: 8px 15px;
   border: 2px solid #529432;
 }
 
-thead tr:nth-child(1) .th { position: sticky; top: -1px; }
-thead tr:nth-child(2) .th { position: sticky; top: 26px; }
+thead tr:nth-child(1) .th {
+  position: sticky;
+  top: -1px;
+}
+
+thead tr:nth-child(2) .th {
+  position: sticky;
+  top: 26px;
+}
 
 tr:last-child td {
   border-bottom: 1px solid #454d7d !important;
@@ -454,6 +519,107 @@ tr:nth-child(odd) td {
 
 tr:nth-child(even) td {
   background: #272953 !important;
+}
+
+.gear-icon-svg:hover {
+  content: "";
+  opacity: 100;
+  -webkit-animation: gear-icon-svg 3s infinite both;
+  animation: gear-icon-svg 3s infinite both;
+}
+
+@-webkit-keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
+@keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
+.select-well {
+  width: 100%;
+  height: 43.87px;
+  border-radius: 4px;
+  background-color: #333975;
+  outline: none;
+  border: none;
+  color: white;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.select-well option {
+  background-color: #333975;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+.select-well-option {
+  height: 43.87px;
+  background: #323370;
+}
+
+.pb-12px {
+  padding-bottom: 12px;
+}
+
+.pt-12px {
+  padding-top: 12px;
+}
+
+.p-i-12px {
+  padding-inline: 12px;
+}
+
+.gtm-select-block select {
+  outline: none;
+}
+
+.gtm-dark {
+  display: block;
+}
+
+.gtm-tree {
+  z-index: 1;
+}
+
+.block-shadow {
+  width: 100%;
+  height: 95%;
+  background-color: #000000;
+  position: absolute;
+  transition: opacity 0.6s;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.activeTr {
+  background: #2C44BD;
 }
 
 </style>

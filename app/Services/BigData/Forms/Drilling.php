@@ -31,17 +31,6 @@ class Drilling extends TableForm
         $date = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
         $wellIds = $this->getOrgWells((int)$this->request->get('id'), $date);
 
-        $bottomHoles = DB::connection('tbd')
-            ->table('prod.bottom_hole')
-            ->whereIn('well', $wellIds)
-            ->where('data', '<=', $date->endOfDay())
-            ->orderBy('data', 'desc')
-            ->get()
-            ->groupBy('well')
-            ->map(function ($items) {
-                return $items->first();
-            });
-
         $rows = DB::connection('tbd')
             ->table('drill.well_daily_drill as wdd')
             ->select(
@@ -54,10 +43,10 @@ class Drilling extends TableForm
             )
             ->join('dict.well as w', 'wdd.well', 'w.id')
             ->whereIn('w.id', $wellIds)
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->where('dend', '>=', $date->startOfDay())
+            ->where('w.drill_start_date', '<=', $date->endOfDay())
+            ->where('w.drill_end_date', '>=', $date->startOfDay())
             ->get()
-            ->map(function ($item) use ($bottomHoles) {
+            ->map(function ($item) {
                 $result = [];
                 foreach ($item as $key => $value) {
                     if ($key === 'id') {
@@ -66,9 +55,6 @@ class Drilling extends TableForm
                     }
                     $result[$key] = ['value' => $value];
                 }
-
-                $bottomHole = $bottomHoles->get($item->well_id);
-                $result['depth'] = ['value' => $bottomHole ? $bottomHole->depth : ''];
 
                 return $result;
             });

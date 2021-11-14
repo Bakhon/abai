@@ -205,7 +205,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         $uwis = DB::connection('tbd')
             ->table('dict.well')
-            ->selectRaw('well.id,well.uwi as other_uwi')
+            ->selectRaw('well.id,well.uwi,array_agg(b.uwi) joint_well')
             ->leftJoin('prod.joint_wells as j', 'well.id', DB::raw("any(j.well_id_arr)"))
             ->leftJoin('dict.well as b', 'b.id', DB::raw('any(array_remove(j.well_id_arr, well.id))'))
             ->whereIn('well.id', $wellIds)
@@ -216,10 +216,10 @@ class FluidProductionMonth extends MeasLogByMonth
         foreach ($wellIds as $wellId) {
             $uwi = $uwis->where('id', $wellId)->first();
             $result[$wellId] = [
-                'value' => (!$uwi || $uwi->other_uwi === '{NULL}') ? null : str_replace(
+                'value' => (!$uwi || $uwi->joint_well === '{NULL}') ? null : str_replace(
                     ['{', '}'],
                     '',
-                    $uwi->other_uwi
+                    $uwi->joint_well
                 ),
             ];
         }
@@ -352,6 +352,11 @@ class FluidProductionMonth extends MeasLogByMonth
         $well,
         CarbonImmutable $date
     ) {
+        $row = [];
+        $row['tech'] = [
+            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil : null
+        ];
+
         $liquidRow = $this->getLiquidRowData($well, $date);
         $bswRow = $this->getBswRowData($well, $date);
         $oilDensity = $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil_density : 0;

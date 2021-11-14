@@ -1,6 +1,12 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+.main__title-drilling{
+    color: #ffffff;
+}
+.main__title-drilling:hover{
+    color: #ffffff;
+}
 .digital_drilling{
     width: 97vw;
 }
@@ -567,6 +573,7 @@ input.rangeInput {
     border: 1px solid #545580;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 40px;
 }
 
@@ -583,7 +590,48 @@ input.rangeInput {
 .contentBlock__map-search-block{
     display: flex;
     align-items: center;
-    margin-left: auto;
+}
+.all-graph{
+    cursor: pointer;
+}
+.all-graph span{
+    margin-left: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    text-decoration-line: underline;
+    color: #FFFFFF;
+}
+.all-graph-modal{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.5);
+}
+.all-graph-modal-img{
+    width: 1400px;
+    height: 850px;
+    position: relative;
+}
+.all-graph-modal .close{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    background: #656A8A;
+    height: 26px;
+    width: 86px;
+    color: #FFFFFF;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
 }
 .contentBlock__map-search-input{
     background: #272953;
@@ -640,6 +688,17 @@ input.rangeInput {
     border-bottom: 0;
     position: relative;
     overflow: hidden;
+}
+.map__content .dropdown__area{
+    margin-bottom: 15px;
+}
+.map-filter{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    z-index: 5000;
 }
 .contentBlock__map-bottom{
     padding: 0 4px 4px;
@@ -832,8 +891,11 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+    display: flex;
+    align-items: center;
+
 }
-.well_body-form-input select, .well_body-form-input input{
+.well_body-form-input .select{
     background: #334296;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
@@ -841,6 +903,11 @@ input.rangeInput {
     width: 224px;
     height: 28px;
     margin-left: 10px;
+    max-width: 200px;
+}
+/* Firefox */
+.range  input[type=number] {
+    -moz-appearance: textfield;
 }
 .well_body-form-input input{
     background: #1F2142;
@@ -849,8 +916,34 @@ input.rangeInput {
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
 }
-.well_body-form-input select:focus{
+.well_body-form-input .select:focus{
     outline: none;
+}
+.range{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    margin-left: 10px;
+}
+.range .from, .range .to{
+    display: flex;
+    align-items: center;
+}
+.range input{
+    width: 70px;
+    margin-left: 10px;
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    padding: 5px!important;
+    font-size: 16px;
+    height: 25px;
+
+}
+.range input::-webkit-outer-spin-button,
+.range  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .input-size{
     position: absolute;
@@ -878,6 +971,9 @@ input.rangeInput {
 .well_body-form-coordinates{
     display: flex;
     align-items: center;
+}
+.coordinates-title{
+    text-align: right;
 }
 .well_body-form-coordinates:last-child{
     margin-top: 14px;
@@ -1004,6 +1100,7 @@ input.rangeInput {
     text-align: center;
     padding: 0 7px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .digitalDrillingTablesPage table{
     margin-bottom: 20px;
@@ -1035,7 +1132,7 @@ input.rangeInput {
     justify-content: space-between;
 }
 .daily_raport_block-header-first{
-    width: 250px;
+    width: 300px;
     background-color: #323370;
     padding: 8px 0;
     display: flex;
@@ -1073,7 +1170,7 @@ input.rangeInput {
     color: #FFFFFF;
     font-weight: bold;
     height: 98px;
-    width: calc(100% - 450px);
+    width: calc(100% - 500px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1097,8 +1194,9 @@ input.rangeInput {
 .daily_raport_block table thead th{
     background-color: #323370;
     border: 1px solid #454D7D;
-    padding: 5px;
+    padding: 10px  5px;
     text-align: center;
+    font-size: 15px;
 }
 .bg{
     background-color: #323370!important;
@@ -1106,10 +1204,10 @@ input.rangeInput {
 .daily_raport_block table tbody td{
     background-color: #272953;
     border: 1px solid #454D7D;
-    /*width: 8.33%;*/
     text-align: center;
     padding: 5px;
     height: 21px!important;
+    font-size: 12px;
 }
 .daily_raport_block table tbody td:last-of-type {
     border-right: 1px solid #454D7D!important;
@@ -1186,6 +1284,76 @@ td.border-right-none{
 .decryption-content-right{
     margin-left: 100px;
 }
+.daily-report.dropdown-menu {
+    width: 332px !important;
+    min-height: 80px !important;
+}
+.operatingCosts{
+    background: #272953;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.operatingCosts-title{
+    font-family: Harmonia Sans Pro Cyr;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #FFFFFF;
+    margin-bottom: 7px;
+}
+.operatingCosts-single{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    /* or 157% */
+
+    display: flex;
+    align-items: center;
+
+    color: #FFFFFF;
+    margin-bottom: 8px;
+}
+.operatingCosts-single:last-child{
+    margin-bottom: 0;
+}
+.operatingCosts-single-content{
+    flex-grow: 1;
+    background: rgba(69, 77, 125, 0.7);
+    position: relative;
+    height: 22px;
+}
+.value{
+    position: absolute;
+    top: 0;
+    left: 20px;
+}
+progress{
+    width: 100%;
+    height: 22px;
+}
+progress:not([value]) {
+    background: #3D448F;
+}
+progress[value] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+progress[value]::-webkit-progress-bar {
+    background: rgba(69, 77, 125, 0.7);
+}
+progress::-webkit-progress-value {
+    background: #3D448F;
+}
+.operatingCosts-single-title{
+    margin-right: 6px;
+}
+.operatingCosts-single-tg{
+    margin-left: 6px;
+}
+
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;

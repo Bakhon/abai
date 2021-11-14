@@ -38,18 +38,20 @@ class OilCondensateConsolidated {
             "КГМ" => "1.5.",
             "КТМ" => "1.6.",
             "КОА" => "1.7.",
-            "ТШО" => "1.8.",
-            "НКО" => "1.9.",
-            "ПКИ" => "1.10.",
+            'УО' => '1.8.',
+            "ТШО" => "1.9.",
+            "НКО" => "1.10.",
+            'КПО' => '1.11.',
+            "ПКИ" => "1.12.",
             "КГМКМГ" => "",
             "ПККР" => "",
             "ТП" => "",
-            "АГ" => "1.11."
+            "АГ" => "1.13."
         ),
     );
     private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ','ПКК','ТП','АГ');
 
-    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
+    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected,$periodEnd)
     {
         if (!is_null($oneDzoSelected)) {
             $this->companies = array();
@@ -66,7 +68,7 @@ class OilCondensateConsolidated {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
 
-        $summary = $this->getSummary($groupedFact,$planData,$type,$periodType,$yearlyPlan,$pkiSumm);
+        $summary = $this->getSummary($groupedFact,$planData,$type,$periodType,$yearlyPlan,$pkiSumm,$periodEnd);
         if (!is_null($oneDzoSelected)) {
             return $summary;
         }
@@ -88,7 +90,7 @@ class OilCondensateConsolidated {
         return $factData->groupBy('dzo_name');
     }
 
-    private function getSummary($groupedFact,$planData,$type,$periodType,$yearlyPlan,&$pkiSumm)
+    private function getSummary($groupedFact,$planData,$type,$periodType,$yearlyPlan,&$pkiSumm,$periodEnd)
     {
         $summary = array();
         foreach($groupedFact as $dzoName => $dzoFact) {
@@ -99,7 +101,7 @@ class OilCondensateConsolidated {
             if ($dzoName === 'ПКИ') {
                 continue;
             }
-            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan);
+            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan,$periodEnd);
             if (count($updated) > 0) {
                 $summary = array_merge($summary,$updated);
             }
@@ -132,7 +134,7 @@ class OilCondensateConsolidated {
              ->get();
     }
 
-    private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan)
+    private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan,$periodEnd)
     {
         $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzoName);
         if ($dzoName === 'ПКК') {
@@ -143,13 +145,13 @@ class OilCondensateConsolidated {
             return [];
         }
         $dzo = new Dzo();
-        return $dzo->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMapping[$type][$dzoName]);
+        return $dzo->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMapping[$type][$dzoName],$periodEnd);
     }
 
-    public function getChartData($fact,$plan,$dzoName,$type)
+    public function getChartData($fact,$plan,$dzoName,$type,$periodRange,$periodType)
     {
         $dataType = 'production';
-        if (str_contains($type, 'delivery')) {
+        if (str_contains(strtolower($type), 'delivery')) {
             $dataType = 'delivery';
         }
         if (!is_null($dzoName)) {
@@ -164,6 +166,6 @@ class OilCondensateConsolidated {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
         $dzo = new Dzo();
-        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType,$periodRange,$periodType,true);
     }
 }

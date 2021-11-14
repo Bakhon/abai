@@ -128,8 +128,24 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "asc"
+      "order": "desc"
     }
+  ],
+  "table_fields": [
+    "perf_date",
+    "perf_type",
+    "company",
+    "perforator_type",
+    "patron_type",
+    "hole_count",
+    "hole_diameter",
+    "packer_type",
+    "depth",
+    "iso_material_type",
+    "intervals",
+    "actual_intervals",
+    "well",
+    "documents"
   ],
   "tabs": [
     {
@@ -164,8 +180,7 @@
               },
               {
                 "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
+                "type": "text",
                 "title": "marka"
               },
               {
@@ -224,6 +239,40 @@
                 "code": "well",
                 "type": "numeric",
                 "title": "well_e"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_perf_file",
+                  "local_key": "well_perf",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }

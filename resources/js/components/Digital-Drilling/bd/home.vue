@@ -58,8 +58,31 @@
                 <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
             </div>
             <div class="analyticsBlock">
-                <p class="num"><span>14251</span>метров</p>
+                <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
                 <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
+            </div>
+            <div class="operatingCosts">
+                <div class="operatingCosts-title">
+                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
+                </div>
+                <div class="operatingCosts-statistics">
+                    <div class="operatingCosts-single" v-for="costs in operatingCosts">
+                        <div class="operatingCosts-single-title">
+                            {{costs.year}}
+                        </div>
+                        <div class="operatingCosts-single-content">
+                            <progress max="20000000" :value="costs.item">
+                                {{costs.item}}
+                            </progress>
+                            <div class="value">
+                                {{costs.item}},00
+                            </div>
+                        </div>
+                        <div class="operatingCosts-single-tg">
+                            {{ trans('digital_drilling.default.thousands_tenge') }}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="analyticsBlock">
                 <div class="techNumsBlock">
@@ -100,6 +123,36 @@
     export default {
         name: "home",
         components: {DigitalMap},
+        data(){
+            return{
+                operatingCosts: [
+                    {
+                        year: '2016 г.',
+                        item: 8228564
+                    },
+                    {
+                        year: '2017 г.',
+                        item: 8785866
+                    },
+                    {
+                        year: '2018 г.',
+                        item: 7947803
+                    },
+                    {
+                        year: '2019 г.',
+                        item: 14397692
+                    },
+                    {
+                        year: '2020 г.',
+                        item: 15093826
+                    },
+                    {
+                        year: '2021 г.',
+                        item: 10325881
+                    },
+                ]
+            }
+        },
     }
 </script>
 

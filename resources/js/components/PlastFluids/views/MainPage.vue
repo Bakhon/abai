@@ -4,6 +4,7 @@
     <div class="main-content-holder">
       <div class="map-and-page-footer">
         <OilMap />
+        <Footer />
       </div>
       <div class="area-choose-block-and-map-statistics">
         <div class="map-statistics">
@@ -81,7 +82,6 @@
 </template>
 
 <script>
-import leafMap from "../components/leafMap";
 import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
@@ -96,6 +96,7 @@ export default {
   name: "PlastFluidsMain",
   components: {
     Header,
+    Footer,
     OilMap,
     SubsoilTreeMain,
     SubsoilTreeChildren,
@@ -105,21 +106,37 @@ export default {
     return {
       subsoilUserSearch: "",
       subsoilChildrenSearch: "",
-      selectedField: null,
       checkedField: [],
-      fieldData: {
-        kozhasai: {
-          field: 60,
-          deep: 86,
-          recombine: 24,
-          estuarine: 86,
-        },
-      },
     };
+  },
+  watch: {
+    currentSubsoil: {
+      handler(value) {
+        if (value[0]?.owner_id) {
+          this.subsoilUserSearch = value[0].owner_name;
+        } else {
+          this.subsoilUserSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+    currentSubsoilField: {
+      handler(value) {
+        if (value[0]?.field_id) {
+          this.subsoilChildrenSearch = value[0].field_name;
+        } else {
+          this.subsoilChildrenSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
+      "currentSubsoilField",
       "subsoils",
       "subsoilFields",
       "subsoilFieldCounters",

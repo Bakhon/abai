@@ -112,7 +112,8 @@ class DictionaryService
         ],
         'brigades' => [
             'class' => Brigade::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'name_ru',
+            'additional_fields' => ['org']
         ],
         'brigadiers' => [
             'class' => Brigadier::class,
@@ -458,6 +459,12 @@ class DictionaryService
                 case 'gis_kinds_gis_type':
                     $dict = $this->getGisKindsForGisTypeForm();
                     break;
+                case 'repair_type_krs_ktm':
+                    $dict = $this->getRepairTypeDictKrsPrs("CWO");
+                    break;
+                case 'repair_type_prs_ktm':
+                    $dict = $this->getRepairTypeDictKrsPrs("WLO");
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -523,14 +530,18 @@ class DictionaryService
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
+        $selectFields = ['id'];
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $selectFields[] = 'code';
+        }
+        if (!empty(self::DICTIONARIES[$dict]['additional_fields'])) {
+            $selectFields = array_merge($selectFields, self::DICTIONARIES[$dict]['additional_fields']);
+        }
+
         $query = $dictClass::query()
-            ->select('id')
+            ->select($selectFields)
             ->selectRaw("$nameField as name")
             ->orderBy('name', 'asc');
-
-        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
-            $query->selectRaw('code');
-        }
 
         $result = $query->get()->toArray();
 
@@ -578,10 +589,10 @@ class DictionaryService
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent')
+            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent', 'gt.code as type')
             ->distinct()
-            ->orderBy('parent', 'asc')
-            ->orderBy('label', 'asc')
+            ->orderBy('parent')
+            ->orderBy('label')
             ->leftJoin(
                 'dict.geo_parent as gp',
                 function ($join) {
@@ -590,6 +601,7 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->leftJoin('dict.geo_type as gt', 'g.geo_type', 'gt.id')
             ->get()
             ->map(
                 function ($item) {
@@ -598,7 +610,29 @@ class DictionaryService
             )
             ->toArray();
 
-        return $this->generateTree((array)$items);
+        $tree = [];
+        $items = $this->generateTree($items);
+        $geoPermissionsIds = $this->getUserGeoPermissionIds();
+        $this->filterTree($items, $tree, $geoPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserGeoPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_geo as og')
+                ->select('og.geo as geo')
+                ->where('og.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->geo;
+        }, $result));
+        return $result;
     }
 
     private function getWellTechsDict(): array
@@ -619,7 +653,7 @@ class DictionaryService
         $this->filterTree($items, $tree, $techPermissionsIds);
         return $tree;
     }
-
+    
     public function getUserTechPermissionIds() {
         $orgIds = $this->getUserOrgPermissionIds();
         $result = [];
@@ -882,5 +916,27 @@ class DictionaryService
                 }
             )
             ->toArray();
+    }
+
+    private function getRepairTypeDictKrsPrs($type){
+        $items = DB::connection('tbd')
+            ->table('dict.repair_work_type as dr')
+            ->select('dr.id','dr.name_ru as name', 'pr.org as org')
+            ->where('dw.code', $type)          
+            ->leftJoin('prod.well_workover as p', 'p.repair_work_type', 'dr.id')  
+            ->leftJoin('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')   
+            ->leftJoin('prod.rwt_to_org as pr', 'p.repair_work_type', 'pr.rwt')  
+            ->distinct()
+            ->orderBy('name', 'asc') 
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+
+        return $items;
     }
 }    

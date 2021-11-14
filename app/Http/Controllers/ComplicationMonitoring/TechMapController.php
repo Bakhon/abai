@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexTableRequest;
+use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualGu;
 use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
@@ -58,36 +61,33 @@ class TechMapController extends Controller
 
     public function mapData(): array
     {
+        $date = HydroCalcResult::orderBy('date', 'desc')->first()->date;
         $pipes = OilPipe::with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'hydroCalcLong' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 },
-                'hydroCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'hydroCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 },
-                'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'reverseCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 }
             ])
-            ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
             ->get();
 
         $manualPipes = ManualOilPipe::with('coords', 'pipeType')
             ->with([
                 'hydroCalcLong' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 },
                 'hydroCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 },
                 'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 }
             ])
-            ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
             ->get();
 
         $center = [52.854602599069, 43.426262258809];
@@ -153,6 +153,7 @@ class TechMapController extends Controller
             'guPoints' => $guPoints,
             'center' => $center,
             'pipeTypes' => $pipeTypes,
+            'date' => $date
         ];
     }
 
@@ -659,5 +660,17 @@ class TechMapController extends Controller
                 $pipe->save();
             }
         }
+    }
+
+    public function calculate (IndexTableRequest $request)
+    {
+        $job = new ManualCalculateHydroDynamics($request->validated());
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 }

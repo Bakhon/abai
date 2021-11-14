@@ -42,7 +42,7 @@ return array (
   'plannedGrowthReasonsTitle' => 'Причины недостижения планового прироста',
   'successfulWellsProportionTitle' => 'Доля успешных скважин',
   'countTh' => 'Кол-во скв.-опер.',
-  'avgDebitTh' => 'Ср. прирост т/сут.',
+  'avgDebitTh' => 'Ср. дебит нефти т/сут.',
   'additionalMiningTh' => 'Доп.добыча нефти, тыс. т',
   'countThLong' => 'Кол-во скв.-опер.',
   'headway' => 
@@ -148,7 +148,7 @@ return array (
   'forecast_indicators' => 'Прогнозные показатели',
   'current_qualifiers_map' => 'Карта текущих отборов',
   'well' => 'Скважина',
-  'factor_analysis' => 'Факторный анализ по объекту разработки',
+  'factor_analysis' => 'Факторный анализ, тонн',
   'period' => 'Период',
   'calc' => 'Расчет',
   'q_liq' => 'Qж',

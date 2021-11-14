@@ -1,11 +1,10 @@
 <template>
     <div class="main-block">
-        <div class="row">
             <div class="col-12 d-flex header justify-content-between">
                 <div class="col-11 p-2">Исторические сведения по добыче нефти</div>
                 <div class="col-1 cancel-icon" @click="SET_VISIBLE_PRODUCTION(false)"></div>
             </div>
-            <div class="col-12 p-0 left-block">
+            <div class="col-12 p-0 left-block bg-dark">
                 <table class="historical-table">
                     <thead>
                         <tr>
@@ -23,25 +22,24 @@
                         </tr>
                         </thead>
                     <tbody>
-                        <tr v-for="(date,index) in dates" v-if="date.isVisible">
+                        <tr v-for="(date,index) in dates" v-if="date.isVisible" :class="getRowColor(date,index)">
                             <td>
                                 <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
                                 <label v-else class="form-check-label">{{date.month}}</label>
                                 <span class="ml-1"></span>
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
-                            <td>{{date.water.toFixed(2)}}</td>
-                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(2)}}</td>
-                            <td v-else>{{date.oil}}</td>
-                            <td>{{date.waterDebit.toFixed(2)}}</td>
-                            <td>{{date.waterCut.toFixed(0)}}</td>
-                            <td>{{date.oilDebit.toFixed(2)}}</td>
-                            <td>{{(date.hoursWorked*24).toFixed(0)}} дней</td>
+                            <td>{{formatNumber(date.water.toFixed(2))}}</td>
+                            <td v-if="date.oil !== null && date.oil > 0">{{formatNumber(date.oil.toFixed(1))}}</td>
+                            <td v-else>{{formatNumber(date.oil)}}</td>
+                            <td>{{formatNumber(date.waterDebit.toFixed(1))}}</td>
+                            <td>{{formatNumber(date.waterCut.toFixed(0))}}</td>
+                            <td>{{formatNumber(date.oilDebit.toFixed(1))}}</td>
+                            <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
     </div>
 </template>
 
@@ -70,12 +68,13 @@ export default {
                 10: 'Октябрь',
                 11: 'Ноябрь',
                 12: 'Декабрь'
-            }
+            },
+            isDownloadCompleted: false
         };
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD'
+            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD','SET_PRODUCTION_HISTORICAL'
         ]),
         handleYearSelect(date) {
             _.forEach(this.dates, (item) => {
@@ -94,13 +93,14 @@ export default {
                 });
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             } else {
-                this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
                 filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
             this.selectedDates = filtered;
             this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
+            this.SET_PRODUCTION_HISTORICAL(this.productionHistoricalData);
         },
         fillDates() {
+            this.dates = [];
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
                     'id': i,
@@ -182,8 +182,17 @@ export default {
             _.forEach(this.dates, (yearItem) => {
                 let summary = this.getSummaryBy(yearItem.year,yearItem);
                 let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                let sorted = _.sortBy(filtered, 'date');
+                let isChecked = sorted.length > 0;
+                _.forEach(sorted, (item) => {
+                    isChecked = item.isChecked;
+                });
+                if (yearItem.year === moment().year()) {
+                    isChecked = true;
+                }
+                summary.isChecked = isChecked;
                 calculated.push(summary);
-                calculated = calculated.concat(filtered);
+                calculated = calculated.concat(sorted);
             });
             return calculated;
         },
@@ -193,11 +202,28 @@ export default {
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
-            summary['waterCut'] = _.sumBy(filtered, 'waterCut') / 12;
+            summary['waterCut'] = _.meanBy(filtered, 'waterCut');
+            if (!summary['waterCut']) {
+                summary['waterCut'] = 0;
+            }
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
+        formatNumber(num) {
+            return new Intl.NumberFormat("ru-RU").format(num);
+        },
+        getRowColor(item,index) {
+            let summary = item.water + item.oil + item.waterDebit + item.waterCut + item.oilDebit;
+            if (item.month === null) {
+                return summary > 0 ? 'row__pink' : 'row__gray';
+            }
+            if (index % 2 === 0) {
+                return 'row__yellow';
+            } else {
+                return 'row__blue';
+            }
+        }
     },
     mounted() {
         this.fillDates();
@@ -205,12 +231,23 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionHistoricalData']),
+    },
+    watch: {
+        "productionHistoricalData": function() {
+            if (!this.isDownloadCompleted) {
+                this.fillDates();
+                this.dates = this.getHistorical();
+                this.isDownloadCompleted = true;
+                let currentYearIndex = _.findIndex(this.dates, {id: 2021,month: null});
+                this.handleDateSelect(this.dates[currentYearIndex],currentYearIndex);
+                this.SET_VISIBLE_PRODUCTION(false);
+            }
+        }
     }
 }
 </script>
 <style scoped lang="scss">
 .main-block {
-    margin-left: 30px;
     height: 100%;
     min-width: 610px;
     max-width: 610px;
@@ -223,18 +260,18 @@ export default {
 }
 .cancel-icon {
     background: url(/img/bd/cancel-icon.svg) no-repeat;
-    margin-left: 20px;
-    margin-top: 15px;
+    background-position: center;
+    cursor: pointer;
 }
 .historical-table {
     text-align: center;
-    border: 2px solid #293688;
-    width: 630px;
+    border: 1px solid #293688;
 
-    tbody {
-        height: 680px;
-        display: block;
-        overflow-y:scroll;
+    
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 444;
     }
     thead, tbody tr {
         display: table;
@@ -242,27 +279,65 @@ export default {
         width: 100%;
     }
     th {
-        background: #37408B;
-        border: 1px solid rgba(161, 164, 222, 0.3);
+        background: #a5abde;
+        border: 1px solid #030647;
         border-top: none;
-        padding: 5px;
+        padding: 2px;
+        font-size: 12px;
+        color: #030647;
     }
     td {
-        padding: 5px;
-        background: #4D5092;
-        border: 1px solid #A1A4DE;
-        height: 49px;
+        padding: 2px;
+        background: #bbbfe2;
+        border: 1px solid #030647;
+        border-top: none;
+        color: #030647;
+        overflow: hidden;
         span {
-            border-left: 1px solid #A1A4DE;
+            border-left: 1px solid #030647;
             padding-top: 17px;
             padding-bottom: 17px
         }
         label {
             min-width: 40px;
+            min-width: 40px;
         }
     }
+     
 }
 .left-block {
-    height: 810px;
+    height: calc(100% - 36px);
+    overflow-y: auto;
+     &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #656a8a;
+        border-radius: 10px;
+    }
+}
+.row__gray {
+    td {
+        background: #656A8A;
+        color: #fff;
+    }
+}
+.row__pink {
+    td {
+        background: #636CC3;
+        color: #fff;
+    }
+}
+.row__yellow {
+    td {
+        background: #FFFF99;
+        color: black;
+    }
+}
+.row__blue{
+    td {
+        background: #CCFFFF;
+        color: black;
+    }
 }
 </style>

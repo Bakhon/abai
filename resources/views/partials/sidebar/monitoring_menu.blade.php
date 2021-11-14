@@ -1,5 +1,5 @@
 <li class="left-menu-li">
-    <a class="d-flex justify-content-between" href="{{route('monitor')}}">
+    <a class="d-flex justify-content-between" href="{{route('tech-map.index')}}">
         <div>
             <img src="/img/icons/monitor_gray.svg" class="companyLogo">
             {{ trans('monitoring.monitoring_module') }}
@@ -15,6 +15,11 @@
         <li class="left-menu-li">
             <ul>
                 @if(auth()->user()->can('monitoring view main'))
+                    <li class="left-menu-li">
+                        <a href="{{route('monitor')}}">
+                            {{ trans('monitoring.gu-scheme') }}
+                        </a>
+                    </li>
                     <li class="left-menu-li">
                         <a href="{{route('omgca.index')}}">
                             {{ trans('monitoring.omgca.menu') }}
@@ -40,13 +45,6 @@
                             {{ trans('monitoring.omgngdu_well.menu') }}
                         </a>
                     </li>
-                    @if(auth()->user()->can('monitoring list zu-cleanings'))
-                        <li class="left-menu-li">
-                            <a href="{{route('zu-cleanings.index')}}">
-                                {{ trans('monitoring.zu_cleanings.title') }}
-                            </a>
-                        </li>
-                    @endif
                 @endif
 
             </ul>
@@ -229,14 +227,6 @@
                 </div>
             </li>
         @endif
-
-        <li class="left-menu-li">
-            <div class="menu-title">
-                <a href="{{route('facilities')}}">
-                    {{ trans('monitoring.tech_map_prototype') }}
-                </a>
-            </div>
-        </li>
         @if(auth()->user()->can('monitoring list lost_profits'))
             <li class="left-menu-li">
                 <div class="menu-title">

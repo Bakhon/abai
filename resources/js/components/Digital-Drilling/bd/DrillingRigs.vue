@@ -54,36 +54,61 @@
                         <div class="contentBlock__map-search">
                             <div class="contentBlock__map-search-title">
                                 <img src="/img/digital-drilling/icon-map.png" alt="">
-                                <div class="title">Буровые установки</div>
+                                <div class="title">{{trans("digital_drilling.default.drilling_rigs")}}</div>
+                            </div>
+                            <div class="all-graph" @click="allGraphModal=true">
+                                <img src="/img/digital-drilling/all-graph.svg" alt="">
+                                <span>{{ trans('digital_drilling.default.GENERAL_DRILLING_SCHEDULE') }}</span>
                             </div>
                             <div class="contentBlock__map-search-block">
-                                <div class="contentBlock__map-search-input">
-                                    <img src="/img/digital-drilling/search.png" alt="">
-                                    <input type="text" placeholder="Поиск">
-                                    <button>Поиск</button>
-                                </div>
+                                <button class="filter-btn" @click="filter=!filter">Подбор БУ</button>
                                 <button class="full"><img src="/img/digital-drilling/button2.svg" alt=""></button>
                             </div>
                         </div>
                     </div>
-                    <div class="rigs__content">
+                    <div class="rigs__content defaultScroll">
                         <table class="table defaultTable">
                             <tbody>
                                 <tr>
-                                    <th>Наименование компании</th>
-                                    <th>Наименование БУ</th>
-                                    <th>Начальник буровой</th>
-                                    <th>Грузо-подъёмность кН</th>
-                                    <th>Номинальная глубина бурения</th>
-                                    <th>Продолжительность монтажа, сут</th>
-                                    <th>Продолжительность демонтажа, сут</th>
-                                    <th style="width: 100px;">-</th>
-                                    <th>-</th>
+                                    <th>{{trans("digital_drilling.default.company_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.companyman")}}</th>
+                                    <th>{{trans("digital_drilling.default.load_capacity_kN")}}</th>
+                                    <th>{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_up_duration")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_duration")}}</th>
+                                    <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
+                                    <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
                                 </tr>
-                                <tr v-for="i in 12">
-                                    <td v-for="i in 8"></td>
-                                    <td>
-                                        <button class="characteristic" @click="openCharacteristicModal">Тех. характеристики</button>
+                                <tr v-for="rig in rigs">
+                                    <td class="w-150">{{rig.company}}</td>
+                                    <td class="w-150">
+                                        <div class="text-center mb-2">{{rig.name_ru}}</div>
+                                        <button class="characteristic" @click="openCharacteristicModal(rig.id)">
+                                            {{trans("digital_drilling.default.technical_description")}}
+                                        </button>
+                                    </td>
+
+                                    <td>{{rig.superintendent}}</td>
+                                    <td>{{rig.load_capacity}}</td>
+                                    <td>{{rig.nominal_drilling_depth}}</td>
+                                    <td>{{rig.installation_time}}</td>
+                                    <td>{{rig.dismantling_time}}</td>
+                                    <td class="w-150">
+                                        <div class="text-center mb-2">
+                                        </div>
+                                        <button class="characteristic" @click="openCharacteristicGraphModal">
+                                            {{trans("digital_drilling.default.schedule")}}
+                                            <img src="/img/digital-drilling/install-graph.svg" alt="">
+                                        </button>
+                                    </td>
+                                    <td class="w-150">
+                                        <div class="text-center mb-2">
+                                        </div>
+                                        <button class="characteristic" @click="openCharacteristicSchemeModal">
+                                            {{trans("digital_drilling.default.scheme")}}
+                                            <img src="/img/digital-drilling/install-cheme.svg" alt="">
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -100,6 +125,29 @@
             <div class="analyticsBlock">
                 <p class="num"><span>14251</span>метров</p>
                 <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
+            </div>
+            <div class="operatingCosts">
+                <div class="operatingCosts-title">
+                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
+                </div>
+                <div class="operatingCosts-statistics">
+                    <div class="operatingCosts-single" v-for="costs in operatingCosts">
+                        <div class="operatingCosts-single-title">
+                            {{costs.year}}
+                        </div>
+                        <div class="operatingCosts-single-content">
+                            <progress max="20000000" :value="costs.item">
+                                {{costs.item}}
+                            </progress>
+                            <div class="value">
+                                {{costs.item}},00
+                            </div>
+                        </div>
+                        <div class="operatingCosts-single-tg">
+                            {{ trans('digital_drilling.default.thousands_tenge') }}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="analyticsBlock">
                 <div class="techNumsBlock">
@@ -135,26 +183,160 @@
         <div class="characteristic__modal" v-if="characteristicModal">
             <div class="characteristic_content">
                 <div class="characteristic_header">
-                    <span>Технические характеристики ZJ-40</span>
-                    <div class="characteristic_header-close" @click="openCharacteristicModal">
-                        Закрыть
+                    <span class="btn-tech" @click="sensor=false" :class="{active: !sensor}">{{trans("digital_drilling.default.technical_description")}}</span>
+                    <span class="btn-tech" @click="sensor=true" :class="{active: sensor}">{{trans("digital_drilling.default.sensor")}}</span>
+                    <div class="characteristic_header-close" @click="closeCharacteristicModal">
+                        {{trans("digital_drilling.default.close")}}
                     </div>
                 </div>
                 <div class="characteristic_body defaultScroll">
-                    <table class="table defaultTable modalTable">
-                        <tbody>
+                    <div v-if="!sensor">
+                        <table class="table defaultTable modalTable">
+                            <tbody>
                             <tr>
-                                <th>Параметры</th>
-                                <th>Ед.измерения</th>
-                                <th>Значение</th>
+                                <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                <th>{{trans("digital_drilling.default.r_value")}}</th>
                             </tr>
-                            <tr v-for="i in 10">
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr v-for="info in technicalDescription.general">
+                                <td>{{info.parameter}}</td>
+                                <td>{{info.value}}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                        <table class="table defaultTable modalTable">
+                            <tbody>
+                            <tr>
+                                <th>{{trans("digital_drilling.default.parameters")}}</th>
+                                <th>{{trans("digital_drilling.default.measurement_unit")}}</th>
+                                <th class="w-150">{{trans("digital_drilling.default.r_value")}}</th>
+                            </tr>
+                            <tr v-for="tech in technicalDescription.tech_parameter">
+                                <td>{{tech.parameter}}</td>
+                                <td>{{tech.unit}}</td>
+                                <td>{{tech.value}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <table class="table defaultTable modalTable">
+                            <tbody>
+                            <tr>
+                                <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                <th>{{trans("digital_drilling.default.status")}}</th>
+                            </tr>
+                            <tr v-for="info in technicalDescription.sensor">
+                                <td>{{info.parameter}}</td>
+                                <td class="text-center fs-16">
+                                    <span v-if="info.value">+</span>
+                                    <span v-else>-</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="characteristic__modal graph" v-if="characteristicGraph">
+            <div class="characteristic_content">
+                <div class="characteristic_header">
+                    <span>{{trans("digital_drilling.default.drilling_rig_moving_schedule")}} ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <div class="characteristic_header-close" @click="openCharacteristicGraphModal">
+                        {{trans("digital_drilling.default.close")}}
+                    </div>
+                </div>
+                <div class="characteristic_body defaultScroll">
+                    <img src="/img/digital-drilling/scheme.png" alt="">
+                </div>
+                <button class="btn__ok" @click="openCharacteristicGraphModal">
+                    Ok
+                </button>
+            </div>
+        </div>
+        <div class="characteristic__modal scheme" v-if="characteristicScheme">
+            <div class="characteristic_content">
+                <div class="characteristic_header">
+                    <span>{{trans("digital_drilling.default.drilling_rig_moving_scheme")}} ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
+                    <div class="characteristic_header-close" @click="openCharacteristicSchemeModal">
+                        {{trans("digital_drilling.default.close")}}
+                    </div>
+                </div>
+                <div class="characteristic_body defaultScroll">
+                    <div class="map__content">
+                        <MglMap
+                                container="map-test"
+                                :center.sync="center"
+                                :accessToken="accessToken"
+                                :mapStyle="mapStyle"
+                                :zoom="zoom"
+                                class="mglMap"
+                        >
+                            <MglMarker
+                                    :coordinates.sync="center"
+                                    color='green'
+                            />
+                        </MglMap>
+                    </div>
+                    <button class="btn__ok" @click="openCharacteristicSchemeModal">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="all-graph-modal" v-if="allGraphModal">
+            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
+        </div>
+        <div class="newWell" v-if="filter">
+            <div class="well_content">
+                <div class="well_body">
+                    <div class="well_body-header">
+                        <div class="well_body-header-title">
+                            Фильтр по поиску буровой установки
+                        </div>
+                        <div class="well_body-header-close" @click="filter=false">
+                            {{ trans('digital_drilling.default.close') }}
+                        </div>
+                    </div>
+                    <div class="well_body-content">
+                        <div class="well_body-inner">
+                            <div class="well_body-form">
+                                <div class="well_body-form-input">
+                                    <label for="DZO">Компания:</label>
+                                    <input type="text" class="select" v-model="form.company">
+                                </div>
+                                <div class="well_body-form-input">
+                                    <label for="field">Грузоподъёмность:</label>
+                                    <div class="range">
+                                        <div class="from">
+                                            <label for="">От</label>
+                                            <input type="number" v-model="form.carrying_capacity.from">
+                                        </div>
+                                        <div class="to">
+                                            <label for="">до</label>
+                                            <input type="number" v-model="form.carrying_capacity.to">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="well_body-form-input">
+                                    <label for="field">Номинальная глубина бурения::</label>
+                                       <div class="range">
+                                           <div class="from">
+                                               <label for="">От</label>
+                                               <input type="number" v-model="form.nominal_drilling.from">
+                                           </div>
+                                           <div class="to">
+                                               <label for="">до</label>
+                                               <input type="number" v-model="form.nominal_drilling.to">
+                                           </div>
+                                       </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well-create" @click="filterRig">
+                        Применить
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,27 +344,161 @@
 </template>
 
 <script>
+    import {
+        MglMap,
+        MglMarker,
+        MglGeojsonLayer
+    } from 'vue-mapbox'
+
     export default {
         name: "DrillingRigs",
+        components:{ MglMap, MglMarker, MglGeojsonLayer},
         data(){
             return{
-                characteristicModal: false
-            }
-        },
-        methods:{
-            openCharacteristicModal(){
-                if (this.characteristicModal){
-                    this.characteristicModal = false
-                } else{
-                    document.body.overflow = 'hidden'
-                    this.characteristicModal = true
+                allGraphModal: false,
+                accessToken: process.env.MIX_MAPBOX_TOKEN,
+                mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+                center: [52.1108, 43.68999],
+                zoom: 9,
+                characteristicModal: false,
+                sensor: false,
+                characteristicGraph: false,
+                characteristicScheme: false,
+                filter: false,
+                rigs: [],
+                technicalDescription: {},
+                operatingCosts: [
+                    {
+                        year: '2016 г.',
+                        item: 8228564
+                    },
+                    {
+                        year: '2017 г.',
+                        item: 8785866
+                    },
+                    {
+                        year: '2018 г.',
+                        item: 7947803
+                    },
+                    {
+                        year: '2019 г.',
+                        item: 14397692
+                    },
+                    {
+                        year: '2020 г.',
+                        item: 15093826
+                    },
+                    {
+                        year: '2021 г.',
+                        item: 10325881
+                    },
+                ],
+                form:{
+                    company: '',
+                    carrying_capacity: {
+                        from: 0,
+                        to: ''
+                    },
+                    nominal_drilling: {
+                        from: 0,
+                        to: ''
+                    }
                 }
             }
+        },
+        mounted(){
+            this.getRigs('')
+        },
+        methods:{
+            async filterRig(){
+                let query = 'company=' + this.form.company
+                if (this.form.carrying_capacity.to) {
+                    query = query + '&load_capacity=' + this.form.carrying_capacity.from + ',' +this.form.carrying_capacity.to
+                }else{
+                    query = query + '&load_capacity=' + this.form.carrying_capacity.from
+                }
+                if (this.form.nominal_drilling.to) {
+                    query = query + '&nominal_drilling_depth=' + this.form.nominal_drilling.from + ',' +this.form.nominal_drilling.to
+                }else{
+                    query = query + '&nominal_drilling_depth=' + this.form.nominal_drilling.from
+                }
+                this.getRigs(query)
+                this.filter = false
+            },
+            async getRigs(query){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs?'+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.rigs = data;
+                    } else {
+                        console.log('No data');
+                    }
+                }).catch((er)=>{
+                    console.log(er)
+                });
+            },
+            async getRigsCharacteristics(id){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/rig/'+id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.technicalDescription = data;
+                    } else {
+                        console.log('No data');
+                    }
+                }).catch((er)=>{
+                    console.log(er)
+                });
+            },
+            closeCharacteristicModal(){
+                this.characteristicModal = false
+            },
+            openCharacteristicModal(id){
+                this.getRigsCharacteristics(id)
+                document.body.overflow = 'hidden'
+                this.characteristicModal = true
+            },
+            openCharacteristicGraphModal(){
+                if (this.characteristicGraph){
+                    this.characteristicGraph = false
+                } else{
+                    document.body.overflow = 'hidden'
+                    this.characteristicGraph = true
+                }
+            },
+            openCharacteristicSchemeModal(){
+                if (this.characteristicScheme){
+                    this.characteristicScheme = false
+                } else{
+                    document.body.overflow = 'hidden'
+                    this.characteristicScheme = true
+                }
+            },
         }
     }
 </script>
 
 <style scoped>
+    .filter-btn{
+        background: #3366FF;
+        border-radius: 2px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #FFFFFF;
+        border: 0;
+        height: 30px;
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .well_content{
+        min-height: 300px;
+    }
+    .w-150{
+        width: 180px!important;
+    }
     .characteristic__modal{
         position: fixed;
         top: 0;
@@ -201,9 +517,22 @@
         border-radius: 10px;
         padding: 15px;
     }
+    .characteristic__modal.graph,
+    .characteristic__modal.scheme{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .characteristic__modal.graph .characteristic_content,
+    .characteristic__modal.scheme .characteristic_content{
+        max-width: 90%;
+        width: 90%;
+        height: auto;
+    }
     .characteristic_content .characteristic_body{
         margin-top: 15px;
-        height: calc(100% - 40px);
+        max-height: calc(100% - 40px);
+        height: auto;
         overflow-y: scroll;
         overflow-x: hidden;
     }
@@ -211,6 +540,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .btn-tech{
+        cursor: pointer;
+    }
+    .btn-tech.active{
+        font-weight: bold;
+        text-decoration: underline;
     }
     .characteristic_header span{
         font-family: Harmonia Sans Pro Cyr;
@@ -237,22 +573,52 @@
     .rigs__content{
         background-color: #272953;
         width: 100%;
-        height: calc(100% - 60px);
+        height: 916px;
         padding: 0 4px 0;
         position: relative;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
     }
     .modalTable td{
         padding: 15px!important;
     }
-    td{
-        padding: 5px!important;
+    .characteristic__modal td{
+        padding: 10px 5px!important;
     }
     .characteristic{
-        background: #40467E;
+        background: #205AA3;
         border: 0.5px solid #454FA1;
         box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
         border-radius: 10px;
         padding: 5px;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+    }
+    .characteristic img{
+        margin-left: 5px;
+    }
+    .characteristic__modal.scheme .characteristic_body{
+        height: calc(100vh - 200px);
+    }
+    .map__content{
+        height: calc(100% - 80px);
+    }
+    .btn__ok{
+        border: 0;
+        background: #464A8A;
+        border-radius: 6px;
+        width: 170px;
+        height: 26px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+
+        color: #FFFFFF;
+        margin: 25px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

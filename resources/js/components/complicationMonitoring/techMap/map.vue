@@ -30,8 +30,6 @@
             type="date"
             v-model="selectedDate"
             input-class="form-control date"
-            value-zone="Asia/Almaty"
-            zone="Asia/Almaty"
             :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
             :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
             :week-start="1"
@@ -50,13 +48,14 @@
       </div>
     </div>
 
-    <map-legend :variant="mapColorsMode" :referentValue="+referentValue" />
+    <map-legend :variant="mapColorsMode" :referentValue="+referentValue"/>
 
     <div id="map"></div>
 
     <map-context-menu
         v-model="clickedObject"
         @option-clicked="optionClicked"
+        @click-outside="clearSelected"
         ref="contextMenu"
     ></map-context-menu>
 
@@ -137,15 +136,30 @@
         :ok-only="true"
         @ok="resetSelectedObjects()"
     >
-      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell" />
-      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu" />
-      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu" />
+      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell"/>
+      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu"/>
+      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu"/>
+    </b-modal>
+
+    <b-modal
+        size="sm"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="calc-form"
+        :title="trans('monitoring.map.calculate-hydro')"
+        :ok-only="true"
+        @ok="resetSelectedObjects()"
+    >
+      <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
     </b-modal>
 
     <div v-show="false">
-      <gu-tool-tip ref="guToolTip" :gu="objectHovered" />
-      <well-tool-tip ref="wellToolTip" :well="objectHovered" />
-      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
+      <gu-tool-tip ref="guToolTip" :gu="objectHovered"/>
+      <well-tool-tip ref="wellToolTip" :well="objectHovered"/>
+      <pipe-tool-tip ref="pipeToolTip" :pipe="pipeHovered" :paramKey="pipeHoveredParameter"/>
     </div>
   </div>
 </template>
@@ -172,7 +186,8 @@ import wellOmgNgduForm from "./wellOmgNgduForm";
 import guOmgNgduForm from "./guOmgNgduForm"
 import zuOmgNgduForm from "./zuOmgNgduForm"
 import turfLength from '@turf/length';
-import { lineString as turfLineString} from "@turf/helpers";
+import {lineString as turfLineString} from "@turf/helpers";
+import calcForm from "./calcForm";
 
 export default {
   name: "tech-map",
@@ -188,7 +203,8 @@ export default {
     pipeLongInfo,
     wellOmgNgduForm,
     guOmgNgduForm,
-    zuOmgNgduForm
+    zuOmgNgduForm,
+    calcForm
   },
   data() {
     return {
@@ -225,9 +241,10 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
-      mapColorsMode: 'default',
-      selectedDate: moment().format('YYYY-MM-DD'),
-      activeFilter: null,
+      mapColorsMode: 'speedFlow',
+      selectedDate: null,
+      activeFilter: 'speedFlow',
+      isMapLoaded: false,
       mapFilters: [
         {
           name: this.trans('monitoring.map.filters.speed-flow-filter'),
@@ -249,7 +266,8 @@ export default {
       selectedPipe: null,
       selectedWell: null,
       selectedGu: null,
-      selectedZu: null
+      selectedZu: null,
+      calcAlerts: []
     };
   },
   created() {
@@ -271,7 +289,7 @@ export default {
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
     },
-    omgNgduFormModalTitle () {
+    omgNgduFormModalTitle() {
       switch (true) {
         case this.selectedWell != null:
           return this.trans('monitoring.well.enter-omg-ngdu-data');
@@ -316,7 +334,9 @@ export default {
     },
     async initMap() {
       this.SET_LOADING(true);
-      this.pipes = await this.getMapData(this.gu);
+      let data = await this.getMapData(this.gu);
+      this.pipes = data.pipes;
+      this.selectedDate = data.date;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -361,7 +381,7 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip:  ({object}) => {
+        getTooltip: ({object}) => {
           if (object) {
             if (object.last_omgngdu && object.last_omgngdu.well_id) {
               return {
@@ -401,15 +421,16 @@ export default {
           layers: this.layers
         });
 
+        this.isMapLoaded = true;
         this.SET_LOADING(false);
       });
     },
-    getPipeCalcKey (pipe) {
+    getPipeCalcKey(pipe) {
       let keys = [
-          'last_hydro_calc',
-          'last_reverse_calc',
-          'hydro_calc',
-          'reverse_calc'
+        'last_hydro_calc',
+        'last_reverse_calc',
+        'hydro_calc',
+        'reverse_calc'
       ];
 
       for (let key of keys) {
@@ -420,7 +441,7 @@ export default {
 
       return null;
     },
-    getObjectTooltipHtml(object, type){
+    getObjectTooltipHtml(object, type) {
       this.objectHovered = object;
 
       return this.$refs[type].$el.outerHTML;
@@ -497,7 +518,7 @@ export default {
       }
     },
     calculateDistance(lastCoords, currentCoords) {
-      let line = turfLineString([lastCoords ,currentCoords]);
+      let line = turfLineString([lastCoords, currentCoords]);
       return turfLength(line, {units: 'kilometers'}) * 1000;
     },
     handleContextmenu(event) {
@@ -516,9 +537,21 @@ export default {
       this.addMapLayer(layerId);
     },
     createIconLayer(layerId, data, type) {
-      let iconAtlas = type == 'zu' || type == 'gu' ? '/img/icons/barrel.png' : '/img/icons/well.png';
+      let iconAtlas = '';
+      switch (type) {
+        case 'zu':
+          iconAtlas = '/img/icons/map/zu.png';
+          break;
+        case 'gu':
+          iconAtlas = '/img/icons/map/gu.png';
+          break;
+        case "well":
+          iconAtlas = '/img/icons/map/well_black.png';
+          break;
+      }
+
       let name = this.getObjectName(type);
-      let marker = this.getObjectMarker(type);
+      let marker = {x: 0, y: 0, width: 168, height: 168};
 
       return new IconLayer({
         id: layerId,
@@ -529,7 +562,7 @@ export default {
           marker
         },
         getIcon: d => 'marker',
-        sizeScale: type == 'gu' ? 30 : 20,
+        sizeScale: type == 'gu' ? 60 : 40,
         getPosition: (d) => [
           parseFloat(d.lon.toString().replace(',', '.')),
           parseFloat(d.lat.toString().replace(',', '.'))
@@ -673,7 +706,7 @@ export default {
         this.mapClickHandle(option);
       }
     },
-    startNewPipe (option) {
+    startNewPipe(option) {
       this.pipeObject = {
         id: null,
         between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
@@ -712,20 +745,36 @@ export default {
       this.confirmDelete(title);
     },
     onShowDetailInfo(option) {
+      this.clearSelected();
       this.selectedPipe = option.mapObject.object;
       this.$bvModal.show('pipe-calc-modal');
     },
     onShowOmgNgduWellForm(option) {
+      this.clearSelected();
       this.selectedWell = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
     onShowOmgNgduGuForm(option) {
+      this.clearSelected();
       this.selectedGu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
+    onShowCalcForm(option) {
+      this.clearSelected();
+      this.calcAlerts = [];
+      this.selectedGu = option.mapObject.object;
+      this.$bvModal.show('calc-form');
+    },
     onShowOmgNgduZuForm(option) {
+      this.clearSelected();
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
+    },
+    clearSelected(){
+      this.selectedGu = null;
+      this.selectedWell = null;
+      this.selectedZu = null;
+      this.selectedPipe = null;
     },
     optionClicked(option) {
       this.editMode = option.editMode;
@@ -787,7 +836,7 @@ export default {
       method += this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
       this[method]();
     },
-    isInvalid () {
+    isInvalid() {
       let form = this.editMode == 'pipe' ? 'pipeForm' : 'objectForm';
       return this.$refs[form].validate();
     },
@@ -1175,7 +1224,7 @@ export default {
             this.pipeObject.gu_id = info.object.gu_id;
           }
 
-          this.pipeObject.end_point =  info.object.name;
+          this.pipeObject.end_point = info.object.name;
           this.pipeObject.ngdu_id = info.object.ngdu_id;
           this.pipeObject.name = this.pipeObject.start_point + '-' + this.pipeObject.end_point;
 
@@ -1223,30 +1272,15 @@ export default {
           break;
       }
     },
-    getObjectMarker(type) {
-      switch (type) {
-        case 'gu':
-          return {x: 0, y: 0, width: 24, height: 36, mask: true}
-          break;
-
-        case 'zu':
-          return {x: 0, y: 0, width: 24, height: 36, mask: true}
-          break;
-
-        case 'well':
-          return {x: 0, y: 0, width: 52, height: 48, mask: true}
-          break;
-
-        default:
-          return {}
-          break;
-      }
-    },
     formatDate(date) {
       if (!date) return null
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
     async applyFilter() {
+      if (!this.isMapLoaded) {
+        return false
+      }
+
       switch (this.activeFilter) {
         case 'speedFlow':
         case 'pressure':
@@ -1284,13 +1318,62 @@ export default {
     debounceMapRedraw() {
       _.debounce(() => {
         this.mapRedraw();
-      },500)()
+      }, 500)()
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
+    },
+    calcualteHydroDinamycs(date) {
+      this.SET_LOADING(true);
+      this.axios.post(this.localeUrl("/tech-map/calculate"), {gu_id: this.selectedGu.id, date}).then((response) => {
+        let interval = setInterval(() => {
+          this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
+            if (response.data.job.status === 'finished') {
+              this.calcAlerts = [];
+              clearInterval(interval)
+              let isError = false;
+
+              if (response.data.job.output) {
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
+                  isError = true;
+                }
+
+                if (response.data.job.output.alerts) {
+                  this.calcAlerts = response.data.job.output.alerts;
+                  isError = true;
+                }
+              }
+
+              this.SET_LOADING(false);
+
+              if (!isError) {
+                this.loadCalculatedData(date);
+              }
+            }
+
+            if (response.data.job.status === 'failed') {
+              this.SET_LOADING(false);
+              clearInterval(interval)
+              alert(this.trans('monitoring.map.calculate_error'))
+            }
+          })
+        }, 2000)
+      })
+          .catch((error) => this.showToast(error, this.trans('app.error'), 'danger'))
+          .finally(() => {
+            this.SET_LOADING(false);
+          });
+
+    },
+    loadCalculatedData(date) {
+      this.selectedDate = date;
+      this.activeFilter = 'speedFlow';
+      this.$bvModal.hide('calc-form');
+      this.applyFilter();
     }
   }
 }

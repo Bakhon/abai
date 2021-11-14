@@ -1,11 +1,11 @@
 <template>
     <div class="digitalDrillingWindow">
         <main-content
-            left_content="Табличные данные"
-            right_content="Визуализация"
+            :left_content="left_content"
+            :right_content="right_content"
         >
             <template #left_function>
-                <div class="inc__left_functions">
+                <div class="inc__left_functions" @click="exportExcel">
                     <img src="/img/digital-drilling/excel-icon.png" alt="">
                     Выгрузить в MS-Excel
                 </div>
@@ -15,19 +15,19 @@
                     <table class="table defaultTable">
                         <tbody>
                         <tr>
-                            <th colspan="10">Факт</th>
+                            <th colspan="10">{{trans('digital_drilling.fact')}}</th>
                         </tr>
                         <tr>
-                            <th>Глубина по стволу, м</th>
-                            <th>Зенитный угол, гр°</th>
-                            <th>Дирекционный азимут, гр°</th>
-                            <th>Глубина по вертикали, м</th>
-                            <th>Интенсивность искривления, гр°/30м</th>
-                            <th>Интенсивность набора угла.</th>
-                            <th>Интенсивность разворота</th>
-                            <th>Север / Юг , м</th>
-                            <th>Восток / Запад , м</th>
-                            <th>Горизонтальное смещение, м</th>
+                            <th>{{trans("digital_drilling.inclino.measured_depth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.inclination_angle")}}</th>
+                            <th>{{trans("digital_drilling.inclino.directional_azimuth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.true_vertical_depth")}}</th>
+                            <th>{{trans("digital_drilling.inclino.dogleg_severity")}}</th>
+                            <th>{{trans("digital_drilling.inclino.build_up_rate")}}</th>
+                            <th>{{trans("digital_drilling.inclino.turn_rate")}}</th>
+                            <th>{{trans("digital_drilling.inclino.North_South")}}</th>
+                            <th>{{trans("digital_drilling.inclino.East_West")}}</th>
+                            <th>{{trans("digital_drilling.inclino.horizontal_displacement")}}</th>
                         </tr>
                         <tr v-for="item in inclino ">
                             <td>{{item.Measured_Depth}}</td>
@@ -51,7 +51,7 @@
                         :class="{not_active: !d2_Show}"
                     >
                         <div class="inc__2d-title">2D</div>
-                        <div class="inc__2d-name">окно</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
                         <div class="inc__2d-close" v-if="d2_Show">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
@@ -60,7 +60,7 @@
                          :class="{not_active: !d3_Show}"
                     >
                         <div class="inc__2d-title">3D</div>
-                        <div class="inc__2d-name">окно</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
                         <div class="inc__2d-close" v-if="d3_Show">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
@@ -73,16 +73,16 @@
                 >
                     <div class="inc__charts-left" v-if="d2_Show">
                         <div class="inc__charts-left-graph">
-                            <div class="inc__charts-name">Вид сбоку</div>
+                            <div class="inc__charts-name">{{trans("digital_drilling.default.side_view")}}</div>
                             <apexchart height="500" :options="chartOptions" :series="series" v-if="series[0].data.length>0"></apexchart>
                         </div>
                         <div class="inc__charts-left-graph">
-                            <div class="inc__charts-name">Вид сверху</div>
+                            <div class="inc__charts-name">{{trans("digital_drilling.default.view_from_above")}}</div>
                             <apexchart height="500" :options="chartOptionsAbove" :series="seriesAbove" v-if="seriesAbove[0].data.length>0"></apexchart>
                         </div>
                     </div>
                     <div class="inc__charts-right" v-if="d3_Show">
-                        <div class="inc__charts-name">Трехмерный вид</div>
+                        <div class="inc__charts-name">{{trans("digital_drilling.default.3D_view")}}</div>
                         <apexchart height="700" :options="chartOptions" :series="series"></apexchart>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import {digitalDrillingState} from '@store/helpers';
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import VueApexCharts from "vue-apexcharts";
     import MainContent from '../components/MainContent'
     export default {
@@ -107,6 +107,9 @@
                 inclino: [],
                 d2_Show: true,
                 d3_Show: false,
+                maxValue: 50,
+                left_content: "digital_drilling.project_data.tabular_data",
+                right_content: "digital_drilling.project_data.visualization",
                 series: [
                     {
                     name: "Desktops",
@@ -121,27 +124,20 @@
                 ],
                 chartOptions: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
-                        toolbar: {
-                            show: true,
-                        },
+
                         zoom: {
                             enabled: true,
                             type: 'x',
-                            autoScaleYaxis: false,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                            autoScaleYaxis: true,
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         }
                     },
                     dataLabels: {
@@ -215,28 +211,21 @@
 
                     },
                 },
+                chartOptionsAboveLast: {},
                 chartOptionsAbove: {
                     chart: {
+                        animations: {
+                            enabled: false,
+                        },
                         height: 500,
                         type: 'line',
-                        toolbar: {
-                            show: true,
-                        },
                         zoom: {
                             enabled: true,
-                            type: 'x',
+                            type: 'y',
                             autoScaleYaxis: true,
-                            zoomedArea: {
-                                fill: {
-                                    color: '#90CAF9',
-                                    opacity: 0.4
-                                },
-                                stroke: {
-                                    color: '#0D47A1',
-                                    opacity: 0.4,
-                                    width: 1
-                                }
-                            }
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
                         },
                         background: '#2B2E5E',
 
@@ -298,6 +287,7 @@
                     },
                     yaxis:{
                         opposite: true,
+                        max: 50,
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -328,6 +318,14 @@
             }
         },
         methods:{
+            exportExcel(){
+                if (this.currentWell.id) {
+                    window.location.href = process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/' + this.currentWell.id + '/?=download'
+                }
+            },
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
             setParametersChartSideView(){
                 let coordinates = []
                 let coordinate = {}
@@ -338,7 +336,14 @@
                     }
                     coordinates.push(coordinate)
                 }
-                this.series[0].data = coordinates
+                coordinates.push({
+                    x: 9 * this.inclino[this.inclino.length-1].HD,
+                    y: null
+                })
+                this.series=[{
+                    name: "Desktops",
+                        data: coordinates
+                }]
             },
             setParametersChartAboveView(){
                 let coordinates = []
@@ -350,9 +355,121 @@
                     }
                     coordinates.push(coordinate)
                 }
-                this.seriesAbove[0].data = coordinates
+
+                let first = this.inclino[0].N_S
+                let last = this.inclino[this.inclino.length-1].N_S
+                if(first<0){
+                    first = -1 * first
+                }
+                if(last<0){
+                    last = -1 * last
+                }
+                if(last < first){
+                    this.maxValue = first
+                }else{
+                    this.maxValue = last
+                }
+                this.seriesAbove = [{
+                    name: "Desktops",
+                        data: coordinates
+                }]
+                this.chartOptionsAbove = {
+                    chart: {
+                        animations: {
+                            enabled: false,
+                        },
+                        height: 500,
+                            type: 'line',
+                            zoom: {
+                                enabled: true,
+                                type: 'y',
+                                autoScaleYaxis: true,
+                        },
+                        toolbar: {
+                            autoSelected: 'zoom'
+                        },
+                        background: '#2B2E5E',
+
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    colors: ['#2E50E9', '#E3000F'],
+                        stroke: {
+                        curve: 'smooth',
+                    },
+                    legend:{
+                        labels: {
+                            colors: ['#FFFFFF']
+                        },
+                        show: false,
+                    },
+                    tooltip: {
+                        fillSeriesColor: true,
+                    },
+                    grid: {
+                        show: true,
+                            borderColor: '#454D7D',
+                            strokeDashArray: 0,
+                            position: 'back',
+                            xaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true
+                            },
+                        },
+                        row: {
+                            colors: ['transparent'],
+                                opacity: 0.5
+                        },
+                        column: {
+                            colors: ['transparent'],
+                                opacity: 0.5
+                        },
+                        padding: {
+                            top: 0,
+                                right: 0,
+                                bottom: 0,
+                                left: 0
+                        },
+                    },
+                    xaxis: {
+                        max: 2* this.maxValue,
+                        min: -2 * this.maxValue,
+                        labels: {
+                            style: {
+                                colors: '#FFFFFF'
+                            },
+                        },
+                        tickAmount: 9,
+                        position: 'bottom',
+                    },
+                    yaxis:{
+                        opposite: true,
+                        max: 2*this.maxValue,
+                        min: -2 * this.maxValue,
+                        labels: {
+                        style: {
+                            colors: '#FFFFFF'
+                        },
+
+                        formatter: function(val) {
+                            if (val == null)
+                                return 0;
+                            return val.toFixed(0);
+                        },
+                        },
+
+                    },
+                }
+
             },
             async getInclinoByWell(){
+                this.SET_LOADING(true);
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/'+
                         this.currentWell.id).then((response) => {
@@ -369,16 +486,28 @@
                 catch (e) {
                     console.log(e)
                     this.inclino = []
+                    this.seriesAbove = [{
+                        name: "Desktops",
+                        data: []
+                    }]
+                    this.series = [{
+                        name: "Desktops",
+                        data: []
+                    }]
                 }
+                this.SET_LOADING(false);
             },
         },
     }
 </script>
 
 <style scoped>
+    .inc__charts{
+        color: black!important;
+    }
     .apexcharts-tooltip {
-        background: #f3f3f3;
-        color: orange;
+        background: #f3f3f3!important;
+        color: orange!important;
     }
 
     th, td{
@@ -387,6 +516,7 @@
     .inc__left_functions{
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
     .inc__left_functions img{
         margin-right: 8px;

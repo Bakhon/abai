@@ -1,19 +1,21 @@
 <template>
   <div class="approximation-forecast-space-input">
-    <label :for="'approximation-' + labelTransKey">{{
+    <label :for="'approximation-' + labelTransKey + graphType">{{
       trans(`plast_fluids.${labelTransKey}`)
     }}</label
     ><input
       type="number"
       step="0.1"
-      :id="'approximation-' + labelTransKey"
+      :id="'approximation-' + labelTransKey + graphType"
       placeholder="0,0"
       v-model="computedInputText"
       :style="isAxisInput ? 'width: 70px;' : ''"
     />
     <template v-if="isAxisInput">
       <div class="button-holder">
-        <button v-if="!inputText" @click="computedInputText = initialValue">{{ trans("plast_fluids.auto") }}</button>
+        <button v-if="!inputText" @click="computedInputText = initialValue">
+          {{ trans("plast_fluids.auto") }}
+        </button>
         <button v-else @click="computedInputText = ''">
           <img src="/img/PlastFluids/close.svg" alt="reset" /><span>{{
             trans("plast_fluids.reset")
@@ -29,6 +31,7 @@ export default {
   name: "ScatterGraphApproximationLabelInput",
   props: {
     labelTransKey: String,
+    graphType: String,
     inputText: [String, Number],
     isAxisInput: Boolean,
     initialValue: [String, Number],

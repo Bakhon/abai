@@ -279,7 +279,8 @@ return array (
     'dateSelect' => 'Выберите дату',
     'executor' => 'ФИО',
     'reason' => 'Причина',
-    'position' => 'Должность'
+    'position' => 'Должность',
+    'planParams' => 'Плановые показатели'
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',
@@ -464,4 +465,25 @@ return array (
   'dynamicSeaInjection' => 'Динамика закачки морской воды',
   'dynamicWasteInjection' => 'Динамика закачки сточной воды',
   'dynamicStreamInjection' => 'Динамика закачки пара',
+  'excelFormPlans' => array (
+    'fillFieldsBody' => 'Пожалуйста, заполните все поля. Разрешено вводить только числовые значения, либо 0. Для обязательных параметров значение должно быть > 0',
+    'saveBody' => 'Нажмите "Сохранить" для продолжения.',
+    'successfullySavedBody' => 'Данные успешно сохранены.',
+    'saveTitle' => 'Сохранено!',
+    'validateTitle' => 'Проверено!',
+    'errorTitle' => 'Ошибка!',
+    'selectYear' => 'Выберите год'
+  ),
+  'processingAssociatedGasForOwnExpenses' => 'Переработка попутного газа на собственные нужды',
+  'associatedGasFlaring' => 'Сжигание попутного газа на факелах',
+  'volgaWaterInjection' => 'Закачка волжской воды',
+  'dynamicVolgaWater' => 'Динамика закачки волжской воды',
+  'trialOperating' => 'При пробной эксплуатации',
+  'closeMonth' => 'Закрытие месяца',
+  'selectMonth' => 'Выберите месяц',
+  'factLowerCase' => 'факт',
+  'correctedOpec' => 'Скорр. план ОПЕК+',
+  'losses' => 'Потери',
+  'opekEnabled' => 'Действуют ограничения',
+  'oldFact' => 'Данные обновляются'
 );

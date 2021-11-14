@@ -1,11 +1,11 @@
-import axios from 'axios';
-
 const digitalRating = {
   namespaced: true,
   state: {
     sectorNumber: null,
     horizonNumber: 13,
-    indicators: [],
+    indicators: null,
+    injDiagramIndicators: null,
+    prodDiagramIndicators: null,
   },
 
   mutations: {
@@ -18,20 +18,59 @@ const digitalRating = {
     SET_INDICATORS(state, payload) {
       state.indicators = payload;
     },
-    CLEAR_ATLAS(state) {
-      state.indicators = [];
+    SET_INJ_DIAGRAM(state, payload) {
+      state.injDiagramIndicators = payload;
     },
+    SET_PROD_DIAGRAM(state, payload) {
+      state.prodDiagramIndicators = payload;
+    },
+    CLEAR_ATLAS(state) {
+      state.indicators = null;
+      state.injDiagramIndicators = null;
+      state.prodDiagramIndicators = null;
+    },
+  },
+
+  getters: {
+    injDiagramIndicators: (state) => {
+      return {
+        ...state.injDiagramIndicators,
+        type: 'scatter',
+        name: 'Приемистость'
+      }
+    },
+    liguidDiagramIndicators: (state) => {
+      return {
+        ...state.prodDiagramIndicators?.liquid_prod,
+        type: 'scatter',
+        name: 'Добыча жидкости',
+      }
+    },
+    oilProdDiagramIndicators: (state) => {
+      return {
+        ...state.prodDiagramIndicators?.oil_prod,
+        type: 'scatter',
+        name: 'Добыча нефти',
+        yaxis: 'y2',
+      }
+    }
   },
 
   actions: {
     async fetchIndicators({ commit, state }) {
-      const params = {
-        sector: state.sectorNumber,
-        horizon: state.horizonNumber
-      }
+      const { sectorNumber, horizonNumber } = {...state};
       try {
-        const res = await axios.get(this._vm.localeUrl(`digital-rating/search_wells`), {params});
-        commit('SET_INDICATORS', res.data);
+        commit('globalloading/SET_LOADING', true, { root: true });
+        axios.get(
+          `${process.env.MIX_DIGITAL_RATING_MAPS}/graphs/${horizonNumber}/${sectorNumber}`
+        ).then(res => {
+          commit('SET_INDICATORS', res.data);
+          commit('SET_INJ_DIAGRAM', res.data?.df_inj_sum_date?.injection);
+          commit('SET_PROD_DIAGRAM', res.data?.df_prod_sum_date);
+        }).finally(() => {
+          commit('globalloading/SET_LOADING', false, { root: true });
+        })
+
       } catch(e) {
         throw new Error(e);
       }

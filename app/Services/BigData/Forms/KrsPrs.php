@@ -22,7 +22,26 @@ class KrsPrs extends PlainForm
 
     protected function getRows(): Collection
     {
-        $rows = parent::getRows();
+        $wellId = $this->request->get('well_id');
+        $query = DB::connection('tbd')
+            ->table('prod.well_workover as ww')
+            ->select('ww.*')
+            ->join('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
+            ->where('ww.well', $wellId)
+            ->where('wrt.code', $this->repairType)
+            ->orderBy('ww.id', 'desc');
+
+        $rows = $query->get();
+
+        if (!empty($this->params()['sort'])) {
+            foreach ($this->params()['sort'] as $sort) {
+                if ($sort['order'] === 'desc') {
+                    $rows = $rows->sortByDesc($sort['field']);
+                } else {
+                    $rows = $rows->sortBy($sort['field']);
+                }
+            }
+        }
 
         if (!empty($rows)) {
             $rows = $this->attachDocuments($rows);
@@ -96,14 +115,14 @@ class KrsPrs extends PlainForm
         }
 
         $this->updateWellStatus();
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     protected function prepareDataToSubmit()
     {
-        $data = $this->request->except('well_status', 'documents');
+        $data = $this->request->except('well_status', 'documents', 'no_change_tech_status');
 
         $kpc = DB::connection('tbd')
             ->table('dict.well_repair_type')

@@ -1,6 +1,6 @@
 {
   "table": "prod.well_workover",
-  "default_values":{
+  "default_values": {
     "file_type": 4
   },
   "sort": [
@@ -8,6 +8,16 @@
       "field": "dbeg",
       "order": "desc"
     }
+  ],
+  "table_fields": [
+    "dbeg",
+    "dend",
+    "repair_work_type",
+    "work_list",
+    "contractor",
+    "brigadier",
+    "reason_equip_fail",
+    "documents"
   ],
   "tabs": [
     {
@@ -27,8 +37,9 @@
                 "code": "repair_work_type",
                 "type": "dict",
                 "title": "type_rep_work",
-                "validation": "required|exists:tbd.dict.repair_work_type,id",
-                "dict": "repair_type_prs"
+                "validation": "required|exists:tbd.dict.repair_work_type",
+                "dict": "repair_type_prs_ktm",
+                "filter_by_well_orgs": true
               },
               {
                 "code": "work_plan",
@@ -45,7 +56,13 @@
                 "type": "dict",
                 "title": "contractor",
                 "dict": "companies",
-                "validation": "required_unless:by_ourselves,true"
+                "validation": "required_unless:by_ourselves,true",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": false
+                  }
+                ]
               },
               {
                 "code": "brigadier",
@@ -58,7 +75,8 @@
                     "field": "by_ourselves",
                     "value": true
                   }
-                ]
+                ],
+                "filter_by_well_orgs": true
               },
               {
                 "code": "brigadier",
@@ -203,21 +221,20 @@
                 "code": "reason_equip_fail",
                 "type": "dict",
                 "title": "cause_h_failure",
-                "validation": "required|exists:tbd.dict.reason,id",
+                "validation": "nullable|exists:tbd.dict.reason,id",
                 "dict": "reason_ref"
               },
               {
                 "code": "add_reason_equip_fail",
                 "type": "dict",
                 "title": "add_f",
-                "validation": "required|exists:tbd.dict.reason_equip_fail,id",
+                "validation": "nullable|exists:tbd.dict.reason_equip_fail,id",
                 "dict": "reason_equip_fail"
               },
               {
                 "code": "more_info_reason_fail",
                 "type": "text",
-                "title": "reason_type",
-                "validation": "required"
+                "title": "reason_type"
               }
             ]
           }

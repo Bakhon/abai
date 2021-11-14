@@ -154,6 +154,12 @@ export const globalloadingMutations = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const globalloadingActions = arrNames => ({
+    ...mapActions('globalloading', [
+        ...arrNames,
+    ]),
+});
 // End global loading //
 
 // geology //
@@ -187,6 +193,12 @@ export const digitalRatingMutations = arrNames => ({
     ...mapMutations('digitalRating', [
         ...arrNames
     ]),
+});
+
+export const digitalRatingGetters = arrNames => ({
+    ...mapGetters('digitalRating', [
+        ...arrNames
+    ])
 });
 
 export const digitalRatingActions = arrNames => ({

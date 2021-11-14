@@ -1180,11 +1180,11 @@ export default {
       const self = this;
       filteredResult.sort(function (a, b) {
         const grow1 =
-          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
-          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+          self.getStringOrFirstItem(a, "tp_idn_liq_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_liq");
         const grow2 =
-          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
-          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+          self.getStringOrFirstItem(b, "tp_idn_liq_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_liq");
         if (grow2 > grow1) return 1;
         if (grow2 < grow1) return -1;
         return 0;
@@ -1678,15 +1678,14 @@ export default {
   },
   created() {
     this.$store.commit("globalloading/SET_LOADING", true);
-    if (this.$store.getters["tr/chart"])
-      this.chartShow = this.$store.getters["tr/chart"];
+    if (this.$store.state.tr.chart)
+      this.chartShow = this.$store.state.tr.chart;
     let mm, yyyy;
-    if (this.$store.getters["tr/month"] && this.$store.getters["tr/year"]) {
-      mm = this.$store.getters["tr/month"];
-      yyyy = this.$store.getters["tr/year"];
+    if (this.$store.state.tr.month && this.$store.state.tr.year) {
+      mm = this.$store.state.tr.month;
+      yyyy = this.$store.state.tr.year;
     } else {
       const today = new Date();
-      const dd = today.getDate();
       mm = today.getMonth() + 1;
       yyyy = today.getFullYear();
       this.$store.commit("tr/SET_MONTH", mm);

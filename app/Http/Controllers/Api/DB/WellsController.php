@@ -6,26 +6,38 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\BottomHole;
 use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\GdisCurrent;
-use App\Models\BigData\GdisCurrentValue;
+use App\Models\BigData\Gtm;
 use App\Models\BigData\LabResearchValue;
-use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
-use App\Models\BigData\Well;
+use App\Models\BigData\MeasLiqInjection;
+use App\Models\BigData\MeasWell;
+use App\Models\BigData\PzabTechMode;
+use App\Models\BigData\DmartDailyProd;
+use App\Models\BigData\WellDailyDrill;
+use App\Models\BigData\Well; 
+use App\Models\BigData\WellEquipParam;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\Gtm;
+use App\Models\BigData\TechModeOil;
+use App\Models\BigData\WellStatus;
+use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class WellsController extends Controller
 {
+
+    private $wellCardGraphRepo;
+
+    public function __construct(WellCardGraphRepository $wellCardGraphRepo)
+    {
+        $this->wellCardGraphRepo = $wellCardGraphRepo;
+    }
+
     public function getStructureTree(StructureService $service, Request $request)
     {
         return $service->getTreeWithPermissions();
@@ -33,23 +45,29 @@ class WellsController extends Controller
 
     public function wellInfo($well)
     {
-        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
+    
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }
-
+        }     
+       
+        $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
+            'wellDailyDrill' => $this->wellDailyDrill($well), 
             'status' => $this->status($well),
-            'tube_nom' => $this->tubeNom($well),
+            'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
             'well_expl' => $this->wellExpl($well),
+            'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
+            'tubeNom' => $this->tubeNom($well),
             'well_type' => $this->wellType($well),
-            'org' => $this->org($well),
+            'org' => $this->structureOrg($orgs),
+            'main_org_code'=>$this->orgCode($orgs),
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
@@ -57,31 +75,35 @@ class WellsController extends Controller
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
+            'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
             'tech_mode_inj' => $this->techModeInj($well),
-            'meas_liq' => $this->measLiq($well),
-            'meas_water_cut' => $this->measWaterCut($well),
+            'meas_water_inj' => $this->measLiqInjection($well),
+            'meas_water_cut' => $this->measWaterCut($well),    
+            'measLiq' => $this->measLiq($well),        
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
-            'gdis_current' => $this->gdisCurrent($well),
-            'gdis_conclusion' => $this->gdisConclusion($well),
-            'gdis_current_value' => $this->gdisCurrentValue($well),
-            'gdis_current_value_pmpr' => $this->gdisCurrentValuePmpr($well),
-            'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well),
-            'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
-            'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
-            'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
-            'gtm' => $this->gtm($well),
-            'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
+            'gtm' => $this->gtm($well),                 
+            'gdisCurrent' => $this->gdisCurrent($well),               
+            'rzatr_atm' => $this->gdisCurrentValueOtp($well),
+            'type_sk' => $this->wellEquipParam($well, 'TSK'),
+            'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),   
+            'well_equip_param' => $this->wellEquipParam($well, 'PSD'),  
+            'pump_code' => $this->wellEquipParam($well, 'NAS'),                  
+            'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),
+            'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),                   
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
+            'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
+            'meas_well' => $this->measWell($well),
+            'techmode' => $this->pzabWell($well),
         ];
-
+                
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
@@ -97,34 +119,27 @@ class WellsController extends Controller
         $allParents = [];
         $parent = null;
         $item = $well->getGeo($this->getToday());
-        if(isset($item))
-        {
+        if (isset($item)) {
             $geo_tree = $geo_object->parentTree($item->id);
-            $not_duplicate=[];
-            $count_tree = count($geo_tree)-1;
-            foreach($geo_tree as $key=>$geo_item)
-            {
-                if(!in_array($geo_item->geo,$not_duplicate))
-                {
+            $not_duplicate = [];
+            $count_tree = count($geo_tree) - 1;
+            foreach ($geo_tree as $key => $geo_item) {
+                if (!in_array($geo_item->geo, $not_duplicate)) {
                     $parents_id[] = $geo_item->geo;
                     $not_duplicate[] = $geo_item->geo;
                 }
-                if($key==$count_tree)
-                {
+                if ($key == $count_tree) {
                     $parents_id[] = $geo_item->parent;
                 }
             }
 
-            if(isset($parents_id))
-            {
+            if (isset($parents_id)) {
                 $items = $geo_object->getItems($parents_id);
-                foreach($items as $item)
-                {
-                        $key = array_search($item->id, $parents_id);
-                        $allParents[$key] = $item;
-                }
+                foreach ($items as $item) {
+                    $key = array_search($item->id, $parents_id);
+                    $allParents[$key] = $item;
+                } 
             }
-
         }
         return $allParents;
     }
@@ -152,8 +167,19 @@ class WellsController extends Controller
             ->wherePivot('project_drill', '=', 'false')
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
-            ->get(['od']);
+            ->get(['prod.well_constr.od']);
     }
+
+    private function date_expl(Well $well)
+    {
+        $date_expl = $well->wellExplDate()   
+                    ->where('status', '=', '3')
+                    ->orderBy('dbeg', 'asc')                                 
+                    ->first(['dbeg']);
+
+        return $date_expl;
+    }
+
 
     private function category(Well $well)
     {
@@ -179,8 +205,26 @@ class WellsController extends Controller
     {
         return $well->wellExpl()
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg', 'desc')
+            ->orderBy('dbeg', 'asc')
             ->first(['name_ru', 'dend', 'dbeg']);
+    }
+
+    private function wellEquipParam(Well $well, $method)
+    {
+        return $well->wellEquipParam()->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
+               ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
+               ->withPivot('dbeg')
+               ->where('metric.code', '=', $method) 
+               ->orderBy('pivot_dbeg', 'desc')          
+               ->first(['value_double', 'value_string', 'equip_param']);                          
+    } 
+
+    private function wellExplOnRight(Well $well)
+    {
+        return $well->wellExpl()
+                ->withPivot('dend as dend', 'dbeg as dbeg')
+                ->orderBy('dbeg', 'desc')
+                ->first(['name_ru', 'dend', 'dbeg']);
     }
 
     private function techs(Well $well)
@@ -188,15 +232,12 @@ class WellsController extends Controller
         $tech = new Tech();
         $allParents = [];
         $item = $well->getRelationTech($this->getToday());
-        if ($item)
-        {
+        if ($item) {
             $dict_techs = $tech->parentTree($item->id);
-            foreach($dict_techs as $dict_tech)
-            {
+            foreach ($dict_techs as $dict_tech) {
                 $allParents[]['name_ru'] = $dict_tech->name;
             }
-            if(!empty($allParents))
-            {
+            if (!empty($allParents)) {
                 $allParents = array_reverse($allParents);
             }
         }
@@ -220,16 +261,34 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
+        $dict_orgs = [];
         $org_object = new Org();
-        $allParents = [];
         $item = $well->getRelationOrg($this->getToday());
-        if (isset($item))
-        {
+        if (isset($item)) {
             $dict_orgs = $org_object->parentTree($item->id);
-            foreach($dict_orgs as $dict_org)
+        }
+
+        return $dict_orgs;
+    }
+
+    private function orgCode(array $dict_orgs)
+    {
+        foreach($dict_orgs as $dict_org)
+        {
+            if(!$dict_org->parent)
             {
-                $allParents[]['name_ru'] = $dict_org->name;
+                return $dict_org->code;
             }
+        }
+        return null;
+    }
+
+    private function structureOrg(array $dict_orgs)
+    {
+        $allParents = [];
+        foreach($dict_orgs as $dict_org)
+        {
+            $allParents[]['name_ru'] = $dict_org->name;
         }
 
         return $allParents;
@@ -259,6 +318,20 @@ class WellsController extends Controller
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
     }
 
+    private function pzabWell(Well $well)
+    {
+        return $well->pzabWell()
+               ->orderBy('date', 'desc')
+               ->first(['well', 'date', 'p_res', 'bhp']);
+    }
+
+    private function dmartDailyProd(Well $well)
+    {
+        return $well->dmartDailyProd()
+            ->orderBy('date', 'desc')
+            ->first('oil');
+    }
+
     private function labResearchValue(Well $well)
     {
         $lab_research_value = new LabResearchValue();
@@ -285,10 +358,29 @@ class WellsController extends Controller
             ->first('liquid');
     }
 
+    private function measLiqInjection(Well $well)
+    {
+        return $well->measLiqInjection()
+            ->orderBy('dbeg', 'desc')
+            ->first(['water_inj_val', 'pressure_inj']);
+    }
+
+    private function measWell(Well $well)
+    {
+        return $well->measWell()
+            ->join('dict.metric', 'prod.meas_well.metric', '=', 'dict.metric.id')
+            ->where('dict.metric.code', '=', 'GASR')
+            ->orderBy('dbeg', 'desc')
+            ->first(['value_double', 'dbeg']);
+    }
+    
     private function wellPerfActual(Well $well)
     {
-        return $well->wellPerfActual()
-            ->first();
+        return $well->wellPerfActualNew()             
+            ->withPivot('perf_date')            
+            ->orderBy('pivot_perf_date', 'desc')
+            ->first(['perf_date', 'top', 'base']);
+
     }
 
     private function measWaterCut(Well $well)
@@ -300,7 +392,9 @@ class WellsController extends Controller
 
     private function getKrsPrs(Well $well, $code)
     {
-        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(
+            ['dbeg', 'dend']
+        );
         if (isset($wellWorkover)) {
             return $wellWorkover;
         }
@@ -326,6 +420,12 @@ class WellsController extends Controller
         return $well->wellTreatment()
             ->where('treatment_type', '=', '21')
             ->first(['treat_date']);
+    }
+
+    private function wellDailyDrill(Well $well)
+    {
+        return $well->wellDailyDrill()
+              ->first(['dbeg', 'dend']);
     }
 
     private function gdisConclusion(Well $well)
@@ -396,25 +496,33 @@ class WellsController extends Controller
             ->first(['value_double', 'meas_date']);
     }
 
+    private function gdisCurrentValueOtp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'OTP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
     private function gdisCurrentValueRzatr(Well $well, $method)
     {
         return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
-            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->where('metric_otp.code', '=', 'OTP')
-            ->where('metric_otp.code', '=', $method)
-            ->first();
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')                      
+            ->where('dict.metric.code', '=', $method)
+            ->get()
+            ->last();
     }
-
+  
     private function gdisComplex(Well $well)
     {
         return $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
-            ->withPivot('research_date as research_date')
-            ->where('metric.code', '=', 'RP')
-            ->orderBy('research_date', 'desc')
-            ->first(['value_double', 'research_date']);
+            ->withPivot('dbeg')
+            ->where('metric.code', '=', 'PVOP')
+            ->orderBy('dbeg', 'desc')
+            ->first(['value_string', 'dbeg']);     
     }
 
     private function gis(Well $well)
@@ -457,7 +565,7 @@ class WellsController extends Controller
 
     public function search(StructureService $service, Request $request): array
     {
-        if (empty($request->get('query'))) {
+        if (empty($request->get('query')) || strlen($request->get('query')) < 2) {
             return [];
         }
         $selectedUserDzo = $request->get('selectedUserDzo');
@@ -465,139 +573,50 @@ class WellsController extends Controller
         $orgsTree = $service->getTree(Carbon::now());
         if ($selectedUserDzo) {
             $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
-        } else {
-            $userDzoIds = array_map(function ($item) {
-                return substr($item, strpos($item, ":") + 1);
-            }, auth()->user()->org_structure);
-            foreach ($userDzoIds as $userDzoId) {
-                $childrenIds = array_merge($childrenIds, $service::getChildIds($orgsTree, $userDzoId));
-            }
         }
-        $wells = Well::query()
-            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'");
+
+        $wellQuery = Well::query()
+            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'")
+            ->with('orgs');
         if ($childrenIds) {
-            $wells->whereHas('orgs', function ($query) use ($childrenIds) {
+            $wellQuery->whereHas(
+                'orgs',
+                function ($query) use ($childrenIds) {
                     $query->whereIn('org.id', $childrenIds);
-                });
+                }
+            );
         }
-        $wells = $wells->paginate(30);
+        $wells = $wellQuery->limit(50)->get();
+
+        $orgsToFilter = [];
+        $userDzoIds = array_map(function ($item) {
+            return substr($item, strpos($item, ":") + 1);
+        }, auth()->user()->org_structure);
+        foreach ($userDzoIds as $userDzoId) {
+            $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
+        }
+        if (!empty($orgsToFilter)) {
+            $wells = $wells->filter(function ($well) use ($orgsToFilter) {
+                $wellOrgs = $well->orgs->pluck('id')->toArray();
+                return !empty(array_intersect($wellOrgs, $orgsToFilter));
+            });
+        }
 
         return [
             'items' => WellSearchResource::collection($wells)
         ];
     }
 
-    public function getProductionWellsScheduleData(Request $request):array {
-        $result = [
-            'measLiq' => [
-                'name' => trans('app.liquid'),
-                'type' => 'area',
-                'data' => [],
-                ],
-            'measWaterCut' => [
-                'name' => trans('app.waterCut'),
-                'type' => 'line',
-                'data' => [],
-                ],
-            'oil' => [
-                'name' => trans('app.oil'),
-                'type' => 'area',
-                'data' => [],
-                ],
-            'ndin' => [
-                'name' => trans('app.ndin'),
-                'type' => 'line',
-                'data' => [],
-            ],
-            'labels' => [],
-            'wellStatuses' => [],
-        ];
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getProductionWellsScheduleData(Request $request): object
+    {
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $dateFrom = Carbon::now('Asia/Almaty');
-        $measLiqs = MeasLiq::where('well', $wellId);
-        $measWaterCuts = MeasWaterCut::where('well', $wellId);
-        $wellStatuses = WellStatus::where('well', $wellId);
-        $gdisCurrent = GdisCurrent::where('well', $wellId);
-        $gdisCurrentValueResult = [];
-        if ($period) {
-            $dateFrom->subDays($period);
-            $measLiqs->where('dbeg', '>=', $dateFrom);
-            $measWaterCuts->where('dbeg', '>=', $dateFrom);
-            $wellStatuses->where('dbeg', '>=', $dateFrom);
-            if ($gdisCurrent) {
-                $gdisCurrent->where('meas_date', '>=', $dateFrom);
-            }
-        }
-        $measLiqs = $measLiqs->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        $measWaterCuts = $measWaterCuts->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        $wellStatuses = $wellStatuses->with('statusType')
-            ->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
-        if ($gdisCurrent) {
-            $gdisCurrent = $gdisCurrent
-                ->get()
-                ->toArray();
-            $gdisCurrent = array_map(function ($item) {
-                return $item['id'];
-            }, $gdisCurrent);
-            if ($gdisCurrent) {
-                $metric = Metric::where('code', 'FLVL')->first();
-                if($metric) {
-                    $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
-                        ->whereIn('gdis_curr', $gdisCurrent)
-                        ->with('gdisCurrent')
-                        ->get();
-                    foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
-                        $gdisCurrentValueResult[] = [
-                            'value_double' => $gdisCurrentValueItem['value_double'],
-                            'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
-                        ];
-                    }
-                }
-            }
-        }
-        foreach ($wellStatuses as $wellStatus) {
-            $result['wellStatuses'][] = [
-                DateTime::createFromFormat('Y-m-d H:i:sP', $wellStatus['dbeg'])->format('Y-m-d'),
-                $wellStatus['status_type']['code'],
-                $wellStatus['status_type']['name_ru'],
-            ];
-        }
-
-        foreach ($measLiqs as $measLiq) {
-            $measWaterCutVal = $oilVal = $gdisCurrentVal = 0;
-            $dateTime = DateTime::createFromFormat('Y-m-d H:i:sP', $measLiq['dbeg']);
-            $result['measLiq']['data'][] = $measLiq['liquid'];
-            $result['labels'][] = $dateTime->format('Y-m-d');
-            foreach ($measWaterCuts as $measWaterCut) {
-                $dateTimeWCBeg = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
-                $dateTimeWCEnd = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dend']);
-                if ($dateTimeWCBeg >= $dateTime && $dateTime >= $dateTimeWCEnd) {
-                    $measWaterCutVal = $measWaterCut['water_cut'];
-                    $oilVal = round(abs($measLiq['liquid'] * (1 - $measWaterCut['water_cut'] / 100) * 0.86));
-                    break;
-                }
-            }
-            foreach ($gdisCurrentValueResult as $gdisCurrentValueResultItem) {
-                $dateTimeGdis = DateTime::createFromFormat('Y-m-d H:i:s',
-                    $gdisCurrentValueResultItem['meas_date'] . ' 00:00:00');
-                if ($dateTime == $dateTimeGdis) {
-                    $gdisCurrentVal = $gdisCurrentValueResultItem['value_double'];
-                    break;
-                }
-            }
-            $result['measWaterCut']['data'][] = $measWaterCutVal;
-            $result['oil']['data'][] = $oilVal;
-            $result['ndin']['data'][] = $gdisCurrentVal;
-        }
-
-        return $result;
+        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        return  response()->json($result);
     }
 
     public function getInjectionHistory($wellId)
@@ -605,145 +624,81 @@ class WellsController extends Controller
         $measLiqs = MeasLiq::where('well', $wellId)
             ->orderBy('dbeg', 'asc')
             ->get();
-        $groupedLiq = $measLiqs->groupBy(function($val) {
+        $groupedLiq = $measLiqs->groupBy(function ($val) {
             return Carbon::parse($val->dbeg)->format('Y');
         });
         $liqByMonths = array();
-        foreach($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
-                   return Carbon::parse($val->dbeg)->format('m');
+        foreach ($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
+                return Carbon::parse($val->dbeg)->format('m');
             });
         }
 
         $result = array();
-        foreach($liqByMonths as $yearNumber => $monthes) {
-           foreach($monthes as $monthNumber => $month) {
-              $result[$yearNumber][$monthNumber] = array();
-              foreach($month as $dayNumber => $day) {
-                 $date = Carbon::parse($day['dbeg']);
-                 $dateEnd = Carbon::parse($day['dend']);
+        foreach ($liqByMonths as $yearNumber => $monthes) {
+            foreach ($monthes as $monthNumber => $month) {
+                $result[$yearNumber][$monthNumber] = array();
+                foreach ($month as $dayNumber => $day) {
+                    $date = Carbon::parse($day['dbeg']);
+                    $dateEnd = Carbon::parse($day['dend']);
 
-                 array_push($result[$yearNumber][$monthNumber], array (
-                    'liq' => $day['liquid'],
-                    'date' => $date->format('Y-m-d'),
-                    'workHours' => $date->diffInDays($dateEnd),
-                 ));
-              }
-           }
+                    array_push($result[$yearNumber][$monthNumber], array(
+                        'liq' => $day['liquid'],
+                        'date' => $date->format('Y-m-d'),
+                        'workHours' => $date->diffInDays($dateEnd),
+                    ));
+                }
+            }
         }
         return $result;
     }
 
-    public function getProductionHistory($wellId)
+    public function getActivityByWell(Request $request, $wellId)
     {
-
-        if (Cache::has('well_history_' . $wellId)) {
-            return Cache::get('well_history_' . $wellId);
-        }
-
-        ini_set('max_execution_time', 600);
-
-        $measLiqs = MeasLiq::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $groupedLiq = $measLiqs->groupBy(function($val) {
-            return Carbon::parse($val->dbeg)->format('Y');
-        });
-        $liqByMonths = array();
-        foreach($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
-                   return Carbon::parse($val->dbeg)->format('m');
-            });
-        }
-
-        $measWaterCuts = MeasWaterCut::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $gdisCurrent = GdisCurrent::where('well', $wellId)
-            ->select(['id'])
-            ->get()
-            ->toArray();
-        $gdisCurrentValueResult = [];
-        $gdisCurrent = array_map(function ($item) {
-            return $item['id'];
-        }, $gdisCurrent);
-
-        $metric = Metric::where('code', 'FLVL')->first();
-        $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
-            ->whereIn('gdis_curr', $gdisCurrent)
-            ->with('gdisCurrent')
-            ->get();
-
-        foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
-            $gdisCurrentValueResult[] = [
-                'value_double' => $gdisCurrentValueItem['value_double'],
-                'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
-            ];
-        }
-
-        $result = array();
-        foreach($liqByMonths as $yearNumber => $monthes) {
-           foreach($monthes as $monthNumber => $month) {
-              $result[$yearNumber][$monthNumber] = array();
-              foreach($month as $dayNumber => $day) {
-                 $date = Carbon::parse($day['dbeg']);
-                 $dateEnd = Carbon::parse($day['dend']);
-                 $liqCut = $measWaterCuts->filter(function ($val) use ($date) {
-                    return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
-                 })->sum('water_cut');
-                 $gdis = array_filter(
-                     $gdisCurrentValueResult,
-                     function ($val) use ($date) {
-                          return Carbon::parse($val['meas_date'])->format('d m Y') === $date->format('d m Y');
-                     },
-                     ARRAY_FILTER_USE_KEY
-                 );
-                 array_push($result[$yearNumber][$monthNumber], array (
-                    'liq' => $day['liquid'],
-                    'date' => $date->format('Y-m-d'),
-                    'liqCut' => $liqCut,
-                    'workHours' => $date->diffInDays($dateEnd) * 24,
-                    'oil' => round(abs($day['liquid'] * (1 - $liqCut / 100) * 0.86))
-                 ));
-              }
-           }
-        }
-
-        Cache::put('well_history_' . $wellId, $result, now()->addDay());
-        return $result;
-    }
-    public function getActivityByWell(Request $request,$wellId)
-    {
-
         $wellWorkover = WellWorkover::query()
-            ->select(['dbeg','well','repair_type','work_plan','well_status'])
-            ->whereIn('repair_type', [1,3])
-            ->whereYear('dbeg',$request->year)
-            ->whereMonth('dbeg',$request->month)
-            ->where('well',$wellId)
+            ->select(['dbeg', 'well', 'repair_type', 'work_plan', 'well_status'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dbeg', $request->year)
+            ->whereMonth('dbeg', $request->month)
+            ->where('well', $wellId)
             ->get();
         $wellWorkoverEnd = WellWorkover::query()
-            ->select(['dend','well','repair_type','well_status','work_list'])
-            ->whereIn('repair_type', [1,3])
-            ->whereYear('dend',$request->year)
-            ->whereMonth('dend',$request->month)
-            ->where('well',$wellId)
+            ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dend', $request->year)
+            ->whereMonth('dend', $request->month)
+            ->where('well', $wellId)
             ->get();
-        foreach($wellWorkoverEnd as $workEnd) {
+        foreach ($wellWorkoverEnd as $workEnd) {
             $wellWorkover->push($workEnd);
         }
         $gtms = Gtm::query()
-            ->select(['param_result','gtm_type','dbeg'])
+            ->select(['param_result', 'gtm_type', 'dbeg'])
             ->where('well', $wellId)
-            ->whereYear('dbeg',$request->year)
-            ->whereMonth('dbeg',$request->month)
+            ->whereYear('dbeg', $request->year)
+            ->whereMonth('dbeg', $request->month)
             ->get();
-        foreach($gtms as $gtm) {
-            $wellWorkover->push(array(
-                'dbeg' => $gtm->dbeg,
-                'repair_type' => $gtm->gtm_type->name_ru
-            ));
+        foreach ($gtms as $gtm) {
+            $wellWorkover->push(
+                array(
+                    'dbeg' => $gtm->dbeg,
+                    'repair_type' => $gtm->gtm_type->name_ru
+                )
+            );
         }
         return $wellWorkover;
+    }
+
+    public function getProductionTechModeOil(Request $request, $wellId)
+    {
+        $minYear = min($request->year);
+        $maxYear = max($request->year);
+        return TechModeOil::query()
+            ->select()
+            ->whereYear('dbeg', '>=', $minYear)
+            ->whereYear('dbeg', '<=', $maxYear)
+            ->where('well', $wellId)
+            ->get()
+            ->toArray();
     }
 }

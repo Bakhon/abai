@@ -275,4 +275,8 @@ export default {
     mounted() {
         this.dzosForFilter = this.dzos;
     },
+    created() {
+        console.log(this.horizontsForFilter)
+        console.log(this.objectsForFilter)
+    }
 }

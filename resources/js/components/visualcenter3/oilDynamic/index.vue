@@ -127,7 +127,7 @@ export default {
                 },
                 {
                     id: 8,
-                    ticker: 'ОМГ',
+                    ticker: 'ОМГК',
                     name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK') + ' (' + this.trans('visualcenter.condensate') + ')',
                 },
                 {
@@ -229,6 +229,9 @@ export default {
         };
     },
     async mounted() {
+        if (moment().date() === 1) {
+            this.selectedMonth = this.selectedMonth - 1;
+        }
         this.fillMonthes();
         this.updateDailyView();
     },

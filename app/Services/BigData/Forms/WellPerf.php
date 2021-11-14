@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class WellPerf extends PlainForm
 {
     protected $configurationFileName = 'well_perf';
+
+    use WithDocumentsUpload;
 
     public function getFormByRow(array $row): array
     {
@@ -47,6 +50,17 @@ class WellPerf extends PlainForm
         return ['form' => $form];
     }
 
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
+        return $rows;
+    }
+
     protected function formatRows(Collection $wellPerforations): Collection
     {
         $wellPerforations = parent::formatRows($wellPerforations);
@@ -55,16 +69,19 @@ class WellPerf extends PlainForm
 
         $intervals = DB::connection('tbd')
             ->table('prod.well_perf_interval')
+            ->selectRaw('id, well_perf, geo, top::REAL, base::REAL')
             ->whereIn('well_perf', $wellPerfIds)
             ->orderBy('top')
             ->get()
             ->map(function ($interval) {
-                $interval->dbeg = Carbon::parse($interval->dbeg, 'Asia/Almaty');
                 return $interval;
             });
 
         return $wellPerforations->map(function ($perf) use ($wellPerforations, $intervals) {
-            $perf->intervals = $this->formatIntervals($intervals->where('well_perf', $perf->id));
+            $perf->intervals = [
+                'value' => $intervals->where('well_perf', $perf->id),
+                'formated_value' => $this->formatIntervals($intervals->where('well_perf', $perf->id))
+            ];
 
             $actualIntervals = $this->getActiveIntervals($perf, $wellPerforations, $intervals);
             $perf->actual_intervals = $this->formatIntervals($actualIntervals);
@@ -111,7 +128,7 @@ class WellPerf extends PlainForm
                     ->where('perf_date', '<=', $perfDate);
 
                 foreach ($intervalsToCompare as $intervalToCompare) {
-                    if ($intervalToCompare->top <= $interval->top && $intervalToCompare->base >= $interval->base) {
+                    if ($intervalToCompare->base <= $interval->base && $intervalToCompare->top >= $interval->top) {
                         return false;
                     }
                 }
@@ -126,21 +143,64 @@ class WellPerf extends PlainForm
         return $intervals->whereIn('well_perf', $isolatedPerforationIds);
     }
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentId)
     {
-        if (!empty($this->tableFields)) {
-            foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
-                    $this->submittedData['table_fields'][$field['code']] = [];
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        $data['dbeg'] = $this->request->get('perf_date');
-                        $data['dend'] = Well::DEFAULT_END_DATE;
-                        $this->submittedData['table_fields'][$field['code']][] = $data;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
-                    }
+        if (empty($this->tableFields)) {
+            return;
+        }
+
+        foreach ($this->tableFields as $field) {
+            if (empty($this->request->get($field['code']))) {
+                continue;
+            }
+            if ($field['code'] === 'documents') {
+                $this->submitFiles($parentId, $field);
+                continue;
+            }
+
+            $this->submittedData['table_fields'][$field['code']] = [];
+            if (!is_array($this->request->get($field['code']))) {
+                continue;
+            }
+
+            $ids = [];
+            foreach ($this->request->get($field['code']) as $data) {
+                $data[$field['parent_column']] = $parentId;
+                $data['dbeg'] = $this->request->get('perf_date');
+                $data['dend'] = Well::DEFAULT_END_DATE;
+                $this->submittedData['table_fields'][$field['code']][] = $data;
+                if ($data['id']) {
+                    DB::connection('tbd')
+                        ->table($field['table'])
+                        ->where('id', $data['id'])
+                        ->update($data);
+                    $ids[] = $data['id'];
+                } else {
+                    DB::connection('tbd')->table($field['table'])->insert($data);
                 }
             }
+
+            DB::connection('tbd')
+                ->table($field['table'])
+                ->where($field['parent_column'], $parentId)
+                ->whereNotIn('id', $ids)
+                ->delete();
         }
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        $data = array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        if (array_key_exists('actual_intervals', $data)) {
+            unset($data['actual_intervals']);
+        }
+        return $data;
     }
 }

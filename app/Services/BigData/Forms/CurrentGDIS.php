@@ -93,44 +93,46 @@ class CurrentGDIS extends TableForm
         'SHDMD',
         'SHDME',
         'RPM',
+        'WCUT'
     ];
 
-    protected $fieldsOrder = [
-        'target',
-        'device',
+    protected $fieldsOrder = [       
         'conclusion',
-        'transcript_dynamogram',
-        'TBP',
-        'OTP',
-        'OTPM',
-        'STLV',
         'FLVL',
+        'STLV',
         'BHP',
         'RP',
-        'RRP',
-        'MLP',
-        'BP',
-        'STP',
-        'RSVT',
+        'TBP',        
+        'OTP',
+        'GASR',
+        'target',
         'INJR',
         'FLRT',
         'FLRD',
-        'GASR',
+        'WCUT',
+        'MLP',       
         'ADMCF',
         'PDCF',
+        'RRP',
+        'BP',
+        'STP',
+        'RSVT',
+        'device',
+        'transcript_dynamogram',       
         'RSD',
         'PRDK',
         'DBD',
         'SLHDM',
         'PSHDM',
+        'note',        
         'PSD',
+        'OTPM',       
         'TPDM',
         'PLST',
         'PMPR',
         'SHDMD',
         'SHDME',
-        'RPM',
-        'note',
+        'RPM',       
         'conclusion_text',
         'file_dynamogram'
     ];
@@ -284,7 +286,7 @@ class CurrentGDIS extends TableForm
     public function getGdisMetricRows(Collection $measurements)
     {
         $metricNames = Metric::whereIn('code', $this->metricCodes)
-            ->pluck('name_ru', 'code')
+            ->pluck('name_short_ru', 'code')
             ->toArray();
 
         $rows = [];
@@ -358,7 +360,7 @@ class CurrentGDIS extends TableForm
             'origin' => 'dynamogramm',
             'user_id' => auth()->id(),
         ];
-        $files = json_decode($this->attachmentService->upload($this->request->uploads, $query));
+        $files = $this->attachmentService->upload($this->request->uploads, $query);
 
         $measurement = GdisCurrent::query()
             ->where('well', $row['id'])

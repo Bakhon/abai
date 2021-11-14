@@ -28,8 +28,8 @@
     </div>
 
     @if($isForecast)
-        <economic-data-component is-forecast></economic-data-component>
+        <economic-data-cost-component is-forecast></economic-data-cost-component>
     @else
-        <economic-data-component></economic-data-component>
+        <economic-data-cost-component></economic-data-cost-component>
     @endif
 @endsection

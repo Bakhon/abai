@@ -287,7 +287,7 @@ export default {
           .then(result => {
             if (result === true) {
               this.axios.delete(this.localeUrl(`/api/bigdata/forms/${this.code}/${row.id}`)).then(({data}) => {
-                this.rows.splice(rowIndex, 1)
+                this.updateResults()
               })
             }
           })
@@ -299,6 +299,13 @@ export default {
       ) {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
+        if (column.multiple) {
+          return row[column.code].map(itemId => {
+            let value = dict.find(dictItem => dictItem.id === itemId)
+            return value.name || value.label
+          }).join(', ')
+        }
+
         let value = dict.find(dictItem => dictItem.id === row[column.code])
 
         if (!value) return null
@@ -309,6 +316,9 @@ export default {
             if (value.parent) {
               value = dict.find(dictItem => dictItem.id === value.parent)
               result.push(value.label)
+              if (column.dict === 'geos') {
+                if (value.type === 'FLD') break;
+              }
               continue;
             }
             break;
@@ -343,9 +353,14 @@ export default {
         if (!row[column.code]) return ''
         return Object.values(row[column.code]).map(item => {
           return item.values.file.map(file => {
-            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.filename} (${file.info.size})</a>`
+            if (!file.info) return null
+            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.file_name} (${file.info.file_size})</a>`
           }).join('<br>')
         }).join('<br>')
+      }
+
+      if (row[column.code] && typeof row[column.code] === 'object') {
+        return row[column.code].formated_value
       }
 
       return row[column.code]
@@ -363,11 +378,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container-body {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -378,6 +401,7 @@ export default {
       font-weight: normal;
       padding: 5px 13px;
       vertical-align: middle;
+      text-align: left;
 
       p {
         margin: 0;
@@ -410,7 +434,9 @@ export default {
   &-column-header {
     background-color: #505684;
     min-height: 50px;
+    position: sticky;
     text-align: center;
+    top: 0;
 
     .row {
       flex-wrap: nowrap;
@@ -441,7 +467,7 @@ export default {
       padding: 9px 13px;
 
       p {
-        float: right;
+        float: left;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;
@@ -476,6 +502,7 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {

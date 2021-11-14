@@ -99,6 +99,11 @@ export default {
                     'name': this.trans('visualcenter.associatedGasExpenses'),
                     'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
                 },
+                'processingAssociatedGas': {
+                    'head': this.trans('visualcenter.pererabotkapoputGazDynamic'),
+                    'name': this.trans('visualcenter.pererabotkapoputGaz'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
                 'waterInjection': {
                     'head': this.trans('visualcenter.injectionWaterChartName'),
                     'name': this.trans('visualcenter.liq'),
@@ -124,12 +129,18 @@ export default {
                     'name': this.trans('visualcenter.streamInjection'),
                     'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
                 },
+                'volgaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicVolgaWater'),
+                    'name': this.trans('visualcenter.volgaWaterInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
             },
             selectedChartCategory: {
                 'head': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'name': this.trans('visualcenter.oilCondensateProduction'),
                 'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
-            }
+            },
+            isDecreaseReasonActive: false
         };
     },
     methods: {
@@ -255,5 +266,12 @@ export default {
         setTotalFact(monthlyFact) {
             this.dzoYearlyData.totallyFact += monthlyFact;
         },
+
+        switchDecreaseReasonExplanations() {
+            this.isDecreaseReasonActive = !this.isDecreaseReasonActive;
+            if (this.isDecreaseReasonActive) {
+                this.switchView('year');
+            }
+        }
     }
 }

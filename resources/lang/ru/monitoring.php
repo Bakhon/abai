@@ -247,6 +247,10 @@ return array (
       'temperature' => 'Температура',
     ),
     'referent_value' => 'Референтное значение',
+    'calculate-chain' => 'Расчитать цепь',
+    'calculate-hydro' => 'Расчет гидравлики',
+    'calculate' => 'Расчитать',
+    'calculate_error' => 'Ошибка в расчете',
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -417,6 +421,7 @@ return array (
       'no-pressure-data' => 'нет данных по давлению !',
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
+      'no-pressure-on-gu-omgdu' => 'На задано давление на ГУ',
     ),
     'error' => 
     array (
@@ -580,4 +585,5 @@ return array (
     'no_date' => 'Не выбрана дата',
     'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
+  'gu-scheme' => 'Схема ГУ',
 );

@@ -74,35 +74,12 @@ export default {
                 'КГМКМГ': '50% * 33%',
                 'ТП': '50% * 33%',
                 'АГ': '100%'
-            }
+            },
+            opekHoverIndex: null,
+            factHoverIndex: null
         };
     },
     methods: {
-        getSelectedDzoCompanies(type, category, regionName) {
-            this.disableDzoRegions();
-            if (!regionName) {
-                return _.cloneDeep(this.dzoCompanies).filter(company => company[category] === type).map(company => company.ticker);
-            }
-            this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
-            if (regionName === 'zhambul') {
-                category = regionName;
-                type = type.toLowerCase().replace('is','');
-                return ['АГ'];
-            }
-            if (this.dzoRegionsMapping[regionName].isActive) {
-                category = regionName;
-                type = type.toLowerCase().replace('is','');
-                return _.cloneDeep(this.dzoCompanies).filter(company => company[type] === category).map(company => company.ticker);
-            }
-            return _.cloneDeep(this.dzoCompanies).map(company => company.ticker);
-        },
-
-        selectMultipleDzoCompanies(type,category,regionName) {
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.disableDzoCompaniesVisibility();
-            this.switchDzoCompaniesVisibility(type,category,regionName);
-        },
-
         disableDzoCompaniesVisibility() {
             _.forEach(this.dzoCompanies, function (dzo) {
                 _.set(dzo, 'selected', false);
@@ -126,7 +103,7 @@ export default {
 
         selectAllDzoCompanies() {
             if (!this.isOneDzoSelected) {
-                this.productionData = _.cloneDeep(this.productionTableData);
+                //this.productionData = _.cloneDeep(this.productionTableData);
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);

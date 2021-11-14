@@ -1,50 +1,53 @@
 <template>
-  <div class="bd-forms col-12 p-0 pl-2 h-100">
-    <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3 scrollable blueblock">
-        <tree-view
-            v-for="(treeData, index) in filterTree"
-            :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
-            :node="treeData"
-            :key="`${index}-${treeData.id}`"
-            :handle-click="nodeClick"
-            :get-wells="getWells"
-            :isShowCheckboxes="false"
-            :isWell="isWell"
-            :currentWellId="currentWellId"
-        ></tree-view>
-      </div>
-    </div>
-  </div>
+  <ul class="asside-db-list">
+    <org-select-tree-item
+        v-for="(treeData, index) in tree"
+        :key="`${index}-${treeData.id}`"
+        :currentWellId="currentWellId"
+        :get-wells="getWells"
+        :handle-click="nodeClick"
+        :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
+        :isShowCheckboxes="false"
+        :isWell="isWell"
+        :node="treeData"
+    ></org-select-tree-item>
+  </ul>
 </template>
 
 <script>
-import forms from '../../json/bd/forms.json'
-import moment from "moment";
-import BigDataTableForm from "./forms/TableForm";
+import OrgSelectTreeItem from './OrgSelectTreeItem'
 
 export default {
   components: {
-    BigDataTableForm
+    OrgSelectTreeItem
   },
   props: {
     currentWellId: {
       type: Number,
       required: false
     },
+    searchQuery: {
+      type: String,
+      required: false
+    },
+    structureTypes: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
-    let activeForm = {};
-    forms.forEach((form) => {
-      if (form.code === 'fluid_production') {
-        activeForm = form;
-      }
-    });
     return {
-      forms: forms,
-      activeForm: activeForm,
-      date: moment().toISOString(),
-      filterTree: [],
+      tree: [],
+    }
+  },
+  computed: {
+    filteredTree() {
+      if (!this.searchQuery) return this.tree
+
+      return this.tree.filter(treeItem => {
+
+      })
+
     }
   },
   mounted() {
@@ -53,13 +56,16 @@ export default {
   methods: {
     init() {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
-        this.filterTree = data.data
+        this.tree = data.data
       })
     },
     nodeClick(node) {
+      if (this.structureTypes.length > 0 && !this.structureTypes.includes(node.type)) return false
       this.$emit('idChange', {
         id: node.id,
-        type: node.type
+        type: node.type,
+        name: node.name,
+        fullName: node.full_name
       })
     },
     isNodeOnBottomLevelOfHierarchy: function (node) {
@@ -69,6 +75,10 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {
+      if (!this.structureTypes.includes('well')) return
+
+      child.isLoading = true;
+
       let node = child.node
       this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {
         params: {
@@ -84,7 +94,7 @@ export default {
             return child.type !== 'well';
           });
           data.data.forEach((well) => {
-            newChildren.push({id: well.id, name: well.uwi, type: 'well'});
+            newChildren.push({id: well.id, name: well.uwi, type: 'well', full_name: `${node.full_name} / ${well.uwi}`});
           });
           node.children = newChildren;
         }
