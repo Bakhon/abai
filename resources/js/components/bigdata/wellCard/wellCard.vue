@@ -853,6 +853,7 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
