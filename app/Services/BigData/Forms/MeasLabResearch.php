@@ -70,7 +70,7 @@ class MeasLabResearch extends TableForm
                                 $cellValue = ['value' => $value];
                             } else {
                                 $cellValue = [
-                                    'date' => $cellData ? $cellData->research_date : null,
+                                    'date' => $cellData ? $research->research_date : null,
                                     'old_value' => $value
                                 ];
                             }
