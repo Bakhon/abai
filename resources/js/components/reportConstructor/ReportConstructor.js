@@ -417,7 +417,7 @@ export default {
             if (this.endDate) {
                 dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
             } else {
-                dates.push(null)
+                dates.push(formatDate.getTodayDateFormatted());
             }
             return dates
         },
