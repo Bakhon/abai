@@ -994,6 +994,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
+        },
+        {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
