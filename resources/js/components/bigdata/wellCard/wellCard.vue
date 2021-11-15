@@ -515,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -585,6 +586,7 @@ export default {
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
         techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -851,6 +853,7 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -992,6 +995,11 @@ export default {
           name: this.trans("well.type_pump"),
           data: pump_code,
           type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
         },
         {
           name: this.trans("well.diameter_pump"),
