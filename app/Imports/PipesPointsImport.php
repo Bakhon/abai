@@ -99,7 +99,8 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 continue;
             }
 
-            $oil_pipe_id =  $oil_pipe[0]->oil_pipe_id;
+            $oil_pipe_id = $oil_pipe[0]->oil_pipe_id;
+            $oil_pipe_old = $oil_pipe;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
@@ -121,6 +122,11 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
+            if (!$trunkline_end_point) {
+                $this->command->line('$trunkline_end_point');
+                dd($trunkline_end_point);
+            }
+
             $trunkline_end_point->oil_pipe_id = $oil_pipe_id;
             $trunkline_end_point->save();
 
@@ -135,9 +141,23 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
+            if (!$trunkline_start_point) {
+                $this->command->line('$trunkline_start_point');
+                dd($trunkline_start_point);
+            }
             $trunkline_start_point->oil_pipe_id = $oil_pipe_id;
 
             $oil_pipe = OilPipe::find($oil_pipe_id);
+
+
+            if (!$oil_pipe) {
+                $this->command->line('$oil_pipe');
+                dump($oil_pipe_id);
+                dump($oil_pipe_old);
+
+                dd($oil_pipe);
+            }
+
             $oil_pipe->start_point = $row[self::START_POINT];
             $oil_pipe->end_point = $row[self::END_POINT];
             $oil_pipe->save();
