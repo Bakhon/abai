@@ -1,7 +1,6 @@
 <template>
     <div>
-        <daily-raport v-if="created1" :report="report"/>
-        <previous-daily-raport v-if="created" :report="report"/>
+        <daily-raport v-if="created" :report="report"/>
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -83,10 +82,9 @@
 
 <script>
     import DailyRaport from './DailyRaport'
-    import PreviousDailyRaport from './PreviousDailyRaport'
     export default {
         name: "DailyReportOpen",
-        components: {DailyRaport, PreviousDailyRaport},
+        components: {DailyRaport},
         data(){
             return{
                 newWell: "new",
@@ -97,7 +95,6 @@
                 currentField: '',
                 currentWell: '',
                 created: false,
-                created1: false,
                 report: {},
             }
         },

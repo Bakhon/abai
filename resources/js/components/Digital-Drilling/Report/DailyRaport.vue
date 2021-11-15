@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!previous">
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily_raport_block-header">
@@ -17,6 +17,9 @@
                         {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
                     </div>
                     <div class="daily_raport_block-header-save">
+                        <button v-if="report.previous_report.id" class="save" @click="previous=true">
+                            Предыдущий отчет
+                        </button>
                         <button class="save">
                             {{trans('app.save')}}
                         </button>
@@ -1713,6 +1716,7 @@
             </div>
         </div>
     </div>
+    <previous-daily-raport v-else :report="previousReport" @closePreviousReport="previous=false"/>
 </template>
 
 <script>
@@ -1725,13 +1729,16 @@
     import inclino from '../core/inclino'
     import mudDaily from '../core/drillingmudDaily'
     import moment from "moment";
+    import PreviousDailyRaport from './PreviousDailyRaport'
 
     export default {
         name: "DailyRaport",
-        components: {SelectInput, NozzlesTable, SelectAdd},
+        components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
         props: ['report'],
         data(){
             return{
+                previous: false,
+                previousReport: false,
                 summTotalTime: '00:00',
                 pump:[
                     {
@@ -1888,8 +1895,22 @@
             this.getoperation2()
             this.getDeviceType()
             this.getBHAelements()
+            this.getPreviousReport()
         },
         methods: {
+            getPreviousReport(){
+                if (this.report.previous_report.id) {
+                    this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.previous_report.id).then((response) => {
+                        if (response) {
+                            this.previousReport = response.data
+                        } else {
+                            console.log("No data");
+                        }
+                    })
+                        .catch((error) => console.log(error))
+                }
+
+            },
             nozzleSelect(index){
                 let nozzles = ['nozzle_1', 'nozzle_2', 'nozzle_3', 'nozzle_4', 'nozzle_5', 'nozzle_6', 'nozzle_7']
                 let nozzleValues = []

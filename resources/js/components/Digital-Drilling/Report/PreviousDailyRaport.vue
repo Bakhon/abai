@@ -17,8 +17,8 @@
                         {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
                     </div>
                     <div class="daily_raport_block-header-save">
-                        <button class="save">
-                            {{trans('app.save')}}
+                        <button class="save" @click="back">
+                            Текущий отчет
                         </button>
                     </div>
                 </div>
@@ -1444,6 +1444,9 @@
             }
         },
         methods:{
+            back(){
+                this.$emit('closePreviousReport')
+            },
             sumValues(a, b){
                 if (!a){
                     a = 0

@@ -1101,9 +1101,11 @@ input.rangeInput {
     width: 300px;
     background-color: #323370;
     padding: 8px 0;
-    display: flex;
-    flex-direction: column;
+    height: 85px;
     align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .daily_raport_block-header-input{
     display: flex;
@@ -1124,18 +1126,23 @@ input.rangeInput {
     outline: none;
 }
 .daily_raport_block-header-save{
-    height: 70px;
+    height: 85px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 200px;
     background-color: #323370;
 }
+.daily_raport_block-header-save .save{
+    padding: 6px!important;
+    margin-bottom: 10px;
+}
 .daily_raport_block-header-center{
     background-color: #323370;
     color: #FFFFFF;
     font-weight: bold;
-    height: 70px;
+    height: 85px;
     width: calc(100% - 500px);
     display: flex;
     align-items: center;
