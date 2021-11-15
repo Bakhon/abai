@@ -6,18 +6,18 @@
     >
       <div class="asside-db-tab-top">
         <div
-            :class="{'active': selector === 'org'}"
-            class="asside-db-tab_item"
-            @click="selector = 'org'"
-        >
-          {{ trans('bd.org_structure') }}
-        </div>
-        <div
             :class="{'active': selector === 'form'}"
             class="asside-db-tab_item"
             @click="selector = 'form'"
         >
           {{ trans('bd.input_form') }}
+        </div>
+        <div
+            :class="{'active': selector === 'org'}"
+            class="asside-db-tab_item"
+            @click="selector = 'org'"
+        >
+          {{ trans('bd.org_structure') }}
         </div>
       </div>
       <form action="" class="search-bd">
@@ -37,10 +37,16 @@
       <div class="asside-db-tab-content">
         <div v-show="selector === 'org'" class="asside-db-tab-content__item asside-db-tab-content__item--org">
           <bigdata-org-select-tree
+              v-if="selectedForm"
+              :key="`org_selector_${selectedForm.code}`"
               :currentWellId="orgTech.id"
               :query="searchOrgQuery"
+              :structure-types="selectedForm.structure_types"
               @idChange="idChange">
           </bigdata-org-select-tree>
+          <div v-else class="asside-db-tab-content-msg">
+            <span>Выберите форму</span>
+          </div>
         </div>
 
         <div v-show="selector === 'form'" class="asside-db-tab-content__item asside-db-tab-content__item--form">
@@ -73,12 +79,13 @@
           </div>
           <div
               v-for="(tab, index)  in group.items"
-              :key="`tab_${id}_${index}`"
+              :key="tab.key"
               :class="{'active': selectedTab.orgTech === tab.orgTech && selectedTab.form.code === tab.form.code}"
               class="content-db__tab_head__item"
               @click="selectedTab = tab"
+              :title="tab.orgTech.fullName"
           >
-            {{ tab.form.name }}
+            {{ tab.orgTech.name }}
             <span
                 class="content-db__tab_head__item__close"
                 @click.stop="closeTab(tab)"
@@ -97,10 +104,6 @@
         >
         </bigdata-form>
       </div>
-      <div class="content-db-bottom">
-        <span class="db_button">Сохранить</span>
-        <span class="db_button gray">Отмена</span>
-      </div>
     </div>
 
   </div>
@@ -113,12 +116,13 @@ export default {
     return {
       isSidebarOpen: true,
       tabs: [],
-      selector: 'org',
+      selector: 'form',
       orgTech: {
         id: null,
         name: null,
         type: null
       },
+      selectedForm: null,
       selectedTab: null,
       searchOrgQuery: '',
       searchFormQuery: '',
@@ -128,14 +132,13 @@ export default {
     tabGroups() {
       let result = {}
       this.tabs.forEach(tab => {
-        if (!result[tab.orgTech.id]) {
-          result[tab.orgTech.id] = {
-            name: tab.orgTech.name,
-            fullName: tab.orgTech.fullName,
+        if (!result[tab.form.code]) {
+          result[tab.form.code] = {
+            name: tab.form.name,
             items: []
           }
         }
-        result[tab.orgTech.id].items.push(tab)
+        result[tab.form.code].items.push(tab)
       })
       return result
     }
@@ -145,24 +148,25 @@ export default {
   },
   methods: {
     idChange(node) {
-      this.orgTech = node
+      if (this.selectedForm) {
+        let tab = {
+          orgTech: node,
+          form: this.selectedForm,
+          key: `tab_${node.type}_${node.id}_${this.selectedForm.code}`
+        }
+        if (!this.tabs.find(tabItem => tabItem.key === tab.key)) {
+          this.tabs.push(tab)
+        }
+        this.selectedTab = Object.assign({}, tab)
+      } else {
+        this.$notifyWarning('Выберите форму')
+      }
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen
     },
     onFormSelected(selectedForm) {
-      if (this.orgTech.id) {
-        let tab = {
-          orgTech: this.orgTech,
-          form: selectedForm
-        }
-        if (!this.tabs.find(tabItem => tabItem.orgTech === tab.orgTech && tabItem.form.code === tab.form.code)) {
-          this.tabs.push(tab)
-        }
-        this.selectedTab = Object.assign({}, tab)
-      } else {
-        this.$notifyWarning('Выберите элемент оргструктуры')
-      }
+      this.selectedForm = selectedForm
     },
     isTabSelected(tab) {
       return tab.orgTech === this.selectedTab.orgTech && tab.form.code === this.selectedTab.form.code

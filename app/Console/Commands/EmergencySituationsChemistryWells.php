@@ -17,9 +17,13 @@ class EmergencySituationsChemistryWells extends Command
      */
     protected $signature = 'create-emergency-chemistry-wells:cron';
     protected $companies = array('КОА','КГМ','ЭМГ','КТМ','КБМ','ММГ','ОМГ');
-    protected $typeMapping = array(
+    protected $titleMapping = array(
          'chemistry' => 'Не заполнена Химизация',
          'wellsWorkover' => 'Не заполнен Ремонт скважин'
+    );
+    protected $types = array(
+        'chemistry' => 2,
+        'wellsWorkover' => 3
     );
     /**
      * The console command description.
@@ -62,7 +66,7 @@ class EmergencySituationsChemistryWells extends Command
     {
         $companyDifference = $this->getDifference($existingCompanies);
         foreach($companyDifference as $company) {
-            $this->store($company,$this->typeMapping[$type]);
+            $this->store($company,$this->titleMapping[$type],$this->types[$type]);
         }
     }
     private function getDifference($existingCompanies)
@@ -73,12 +77,12 @@ class EmergencySituationsChemistryWells extends Command
         }
        return array_diff($this->companies,$presentCompanies);
     }
-    private function store($company,$type)
+    private function store($company,$title,$type)
     {
         $incident = array (
             'date' => Carbon::now(),
-            'type' => 1,
-            'title' => $type,
+            'type' => $type,
+            'title' => $title,
             'description' => $company
         );
         EmergencyHistory::create($incident);

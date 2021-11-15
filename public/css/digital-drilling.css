@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 .digital_drilling{
-    width: 97vw;
+    width: 96.5vw;
 }
 .digital_drilling *{
     box-sizing: border-box;
@@ -171,6 +171,7 @@
     width:2px;
 }
 
+
 .digital_drilling .mainBlock__content.allPage{
     width: calc(100% - 30px);
 }
@@ -274,7 +275,8 @@
 }
 
 .digital_drilling .col-sm-10.leftBlock {
-    max-width: 79.5%;
+    height: 100%;
+    max-width: 80%;
 }
 
 .digital_drilling .col-sm-2.rightBlock {
@@ -299,8 +301,10 @@
 
 .digital_drilling .resultsBlock {
     width: 100%;
-    display: table;
-    background: #20274F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
     border-radius: 3px;
 }
 
@@ -308,11 +312,15 @@
     display: table;
     width: 100%;
     margin: 0;
+    background-color: #20274F;
+    height: 100%;
+    align-items: stretch;
+    padding: 23px 0;
 }
 
 .digital_drilling .resultsBlock ul li {
     display: inline-table;
-    width: 25%;
+    width: 16.6%;
     margin: 0;
     padding: 0;
     border-right: 0.5669px solid #454D7D;
@@ -322,7 +330,7 @@
     display: table;
     margin: 0 auto;
     width: 85%;
-    padding: 24px 0 17px;
+    padding: 0;
 }
 
 .digital_drilling .resultsBlock ul li .block p.num {
@@ -339,7 +347,7 @@
 .digital_drilling .resultsBlock ul li .block p.num span.big {
     margin: 0;
     color: #fff;
-    font-size: 58px;
+    font-size: 49px;
     line-height: 0.9;
     font-weight: 600;
 }
@@ -386,11 +394,8 @@
 }
 
 .digital_drilling .analyticsBlock {
-    background: #272953;
-    border-radius: 3px;
-    display: table;
     width: 100%;
-    margin: 0 0 10px;
+    margin: 0;
 }
 .digital_drilling .analyticsBlock:first-child{
 }
@@ -442,7 +447,7 @@
     display: table;
     margin: 0 0 20px;
     width: 100%;
-    padding: 16px 18px 0;
+    padding: 0 18px 0;
     color: #82BAFF;
     font-size: 16px;
 }
@@ -450,7 +455,7 @@
 .digital_drilling .analyticsBlock p.num span {
     display: table;
     color: #fff;
-    font-size: 64px;
+    font-size: 50px;
     font-weight: 600;
     line-height: 1;
 }
@@ -475,6 +480,7 @@
     display: inline-table;
     vertical-align: middle;
     margin: 0 12px 0 0;
+    width: 20px;
 }
 
 .digital_drilling button.alarm {
@@ -557,7 +563,12 @@ input.rangeInput {
     padding: 20px;
 }
 .contentBlock{
-    height: calc(100% - 184px);
+    min-height: 500px;
+    height: calc(100% - 190px);
+}
+.contentBlock.fullPage{
+    height: 100%;
+    margin: 0;
 }
 .contentBlock__map{
     width: 100%;
@@ -591,15 +602,46 @@ input.rangeInput {
     display: flex;
     align-items: center;
 }
+.contentBlock__filter{
+    display: flex;
+    align-items: center;
+}
 .all-graph{
     cursor: pointer;
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.filter-btn{
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    height: 30px;
+    min-width: 100px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter-btn img{
+    margin-right: 6px;
 }
 .all-graph span{
     margin-left: 10px;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    text-decoration-line: underline;
     color: #FFFFFF;
 }
 .all-graph-modal{
@@ -891,9 +933,11 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+    display: flex;
+    align-items: center;
 
 }
-.well_body-form-input select, .well_body-form-input input{
+.well_body-form-input .select{
     background: #334296;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
@@ -903,6 +947,10 @@ input.rangeInput {
     margin-left: 10px;
     max-width: 200px;
 }
+/* Firefox */
+.range  input[type=number] {
+    -moz-appearance: textfield;
+}
 .well_body-form-input input{
     background: #1F2142;
     padding: 5px 14px;
@@ -910,8 +958,34 @@ input.rangeInput {
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
 }
-.well_body-form-input select:focus{
+.well_body-form-input .select:focus{
     outline: none;
+}
+.range{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    margin-left: 10px;
+}
+.range .from, .range .to{
+    display: flex;
+    align-items: center;
+}
+.range input{
+    width: 70px;
+    margin-left: 10px;
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    padding: 5px!important;
+    font-size: 16px;
+    height: 25px;
+
+}
+.range input::-webkit-outer-spin-button,
+.range  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .input-size{
     position: absolute;
@@ -1260,6 +1334,7 @@ td.border-right-none{
     background: #272953;
     margin-bottom: 10px;
     padding: 10px;
+    height: calc(100% - 350px);
 }
 .operatingCosts-title{
     font-family: Harmonia Sans Pro Cyr;
@@ -1269,7 +1344,7 @@ td.border-right-none{
     line-height: 18px;
 
     color: #FFFFFF;
-    margin-bottom: 7px;
+    margin-bottom: 15px;
 }
 .operatingCosts-single{
     font-style: normal;
@@ -1282,7 +1357,7 @@ td.border-right-none{
     align-items: center;
 
     color: #FFFFFF;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 .operatingCosts-single:last-child{
     margin-bottom: 0;

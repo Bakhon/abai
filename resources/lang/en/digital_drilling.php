@@ -100,6 +100,8 @@ return array (
         'schedule_planning' => 'Schedule planning',
         'rig_movement_scheme' => 'Rig movement scheme',
         'technical_description' => 'Technical description',
+        'sensor' => 'Sensors',
+        'status' => 'Status',
         'schedule' => 'Schedule',
         'scheme' => 'Scheme',
         'close' => 'Close',

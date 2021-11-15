@@ -100,6 +100,8 @@ return array (
         'schedule_planning' => 'Жоспарлау кестесі',
         'rig_movement_scheme' => 'Қозғалыс схемасы',
         'technical_description' => 'Техникалық сипаттама',
+        'sensor' => 'Датчиктер',
+        'status' => 'Статус',
         'schedule' => 'Кесте',
         'scheme' => 'Схема',
         'close' => 'Жабу',

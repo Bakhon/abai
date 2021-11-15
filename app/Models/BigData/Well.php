@@ -134,10 +134,20 @@ class Well extends TBDModel
     {
         return $this->hasMany(MeasWell::class, 'well', 'id');
     }
+
+    public function wellEquip()
+    {
+        return $this->hasMany(WellEquip::class, 'well', 'id');
+    }
     
     public function dmartDailyProd()
     {
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+        public function pzabWell()
+    {
+        return $this->hasMany(PzabTechMode::class, 'well', 'id');
     }
 
     public function wellDailyDrill()
@@ -184,6 +194,16 @@ class Well extends TBDModel
     {
         return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
     } 
+
+    public function wellExplDate()
+    {
+        return $this->hasMany(WellStatusProd::class, 'well', 'id');
+    }
+
+    public function wellPerfActualNew()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
+    }
 
     public function zone()
     {
@@ -267,8 +287,6 @@ class Well extends TBDModel
             'pbuf_after',
             'hdin',
             'pzab',
-            'hstat',
-            'ppl',
             'work_hours',
             'well_status',
             'well_expl',
@@ -278,8 +296,6 @@ class Well extends TBDModel
             'wcut_telemetry',
             'oil_telemetry',
             'gas_telemetry',
-            'gas_factor_telemetry',
-            'liquid_temp',
             'park_indicator'
           )->orderBy('date')->get();
         return $query;

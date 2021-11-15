@@ -14,11 +14,15 @@ use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\MeasWell;
+use App\Models\BigData\PzabTechMode;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
+use App\Models\BigData\WellEquip;
 use App\Models\BigData\WellWorkover;
+use App\Models\BigData\TechModeOil;
+use App\Models\BigData\WellStatus;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -47,7 +51,7 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-       
+                  
         $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
@@ -98,12 +102,14 @@ class WellsController extends Controller
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
             'meas_well' => $this->measWell($well),
+            'techmode' => $this->pzabWell($well),
+            'diametrStuzer' => $this->wellEquip($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
-
+    
     private function getToday(): Carbon
     {
         return Carbon::today();
@@ -168,8 +174,11 @@ class WellsController extends Controller
 
     private function date_expl(Well $well)
     {
-        $date_expl = $well->status()                        
-            ->first(['name_ru', 'dbeg']);
+        $date_expl = $well->wellExplDate()   
+                    ->where('status', '=', '3')
+                    ->orderBy('dbeg', 'asc')                                 
+                    ->first(['dbeg']);
+
         return $date_expl;
     }
 
@@ -311,11 +320,29 @@ class WellsController extends Controller
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
     }
 
+    private function pzabWell(Well $well)
+    {
+        return $well->pzabWell()
+               ->orderBy('date', 'desc')
+               ->first(['well', 'date', 'p_res', 'bhp']); 
+    }
+
     private function dmartDailyProd(Well $well)
     {
         return $well->dmartDailyProd()
             ->orderBy('date', 'desc')
             ->first('oil');
+    }
+
+    private function wellEquip(Well $well)
+    {
+       return $well->wellEquip()             
+             ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
+             ->join('dict.equip_type', 'prod.well_equip.equip_type', '=', 'dict.equip_type.id')
+             ->where('dict.equip_type.code', '=', 'CHK')
+             ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
+             ->where('dict.metric.code', '=', 'BND')
+             ->first(['prm', 'value_double']); 
     }
 
     private function labResearchValue(Well $well)
@@ -362,9 +389,11 @@ class WellsController extends Controller
     
     private function wellPerfActual(Well $well)
     {
-        return $well->wellPerfActual()
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'top', 'base']);
+        return $well->wellPerfActualNew()             
+            ->withPivot('perf_date')            
+            ->orderBy('pivot_perf_date', 'desc')
+            ->first(['perf_date', 'top', 'base']);
+
     }
 
     private function measWaterCut(Well $well)
@@ -671,5 +700,18 @@ class WellsController extends Controller
             );
         }
         return $wellWorkover;
+    }
+
+    public function getProductionTechModeOil(Request $request, $wellId)
+    {
+        $minYear = min($request->year);
+        $maxYear = max($request->year);
+        return TechModeOil::query()
+            ->select()
+            ->whereYear('dbeg', '>=', $minYear)
+            ->whereYear('dbeg', '<=', $maxYear)
+            ->where('well', $wellId)
+            ->get()
+            ->toArray();
     }
 }

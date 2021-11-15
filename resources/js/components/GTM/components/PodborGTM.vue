@@ -53,9 +53,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  v-for="(c, idx) in clickableTable.data" @click="onClickWell(c[0])" :key="idx">
+                        <tr  v-for="(c, idx) in clickableTable.data" @click="onClickWell(c[0], idx)" :key="idx" >
                           <th>{{ idx * 1 + 1 }}</th>
-                          <th class="bg-body" v-for="row in c">{{ row }}</th>
+                          <th :class="{ activeTr: idx === activeItem }" class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -284,7 +284,7 @@
                  width="12" height="12" alt="">
 
           </div>
-          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }" @mouseover.native="onHoverTree()">
+          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }" @click="onHoverTree()">
             <div class="position-absolute tree-setting-block d-flex">
               <keep-alive>
                 <component v-bind:is="treeSettingComponent" class="gtm-dark table-border-gtm h-100"></component>
@@ -616,6 +616,10 @@ tr:nth-child(even) td {
   transition: opacity 0.6s;
   z-index: 1;
   opacity: 0.5;
+}
+
+.activeTr {
+  background: #2C44BD;
 }
 
 </style>

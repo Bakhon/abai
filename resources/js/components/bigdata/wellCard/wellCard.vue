@@ -119,24 +119,60 @@
                 </v-select>
               </form>
               <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
-                <div class="button-block__item">
-                  Легенда
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/help.svg" alt="">
+                  <a class="text-white cursor-pointer">Легенда</a>
                 </div>
-                <div class="button-block__item">
-                  График
-                </div>
-                <div
-                        v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                        class="button-block__item"
-                >
-                        Сформировать
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/chart.svg" alt="">
+                  <a class="text-white cursor-pointer"
+                     @click="$refs.childForm.switchChartVisibility()">Показать график
+                  </a>
                 </div>
                 <div
-                        v-else
-                        class="button-block__item"
-                        @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                        v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
+                        class="p-1 ml-2 d-flex align-items-center"
                 >
-                  Исторические сведения
+                  <img class="pr-1" src="/img/bd/historical_icon.svg" alt="">
+                  <a
+                          class="text-white cursor-pointer"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
+                    Исторические сведения
+                  </a>
+                </div>
+                <button
+                        type="button"
+                        data-toggle="dropdown"
+                        class="icon-filter"
+                ></button>
+                <div>
+                  <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1 p-1">
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                        <img class="pr-1" src="/img/bd/hide-column.svg" alt="">
+                        <a class="text-white cursor-pointer ml-1"
+                           @click="$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',false)">Скрыть столбцы замеров
+                        </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/hide-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="$refs.childForm.switchColumnsVisibility('isExpanded',false)">Скрыть месяца замеров
+                      </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/show-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="[$refs.childForm.switchColumnsVisibility('isExpanded',true),$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',true)]">Показать все
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -146,6 +182,8 @@
                   :is="activeFormComponentName"
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  :selectedDzo="selectedDzo"
+                  ref="childForm"
                 ></div>
               </div>
               <div
@@ -430,7 +468,7 @@ export default {
         treatmentDate: { treat_date: null },
         actualBottomHole: null,
         artificialBottomHole: null,
-        perfActual: { top: null, base: null, dbeg: null },
+        perfActual: { top: null, base: null, perf_date: null },
         wellInfo: { rte: null },
         date_expl: { dbeg: null, name_ru: null },
         treatmentSko: { treat_date: null },
@@ -444,6 +482,7 @@ export default {
         gdisCurrentValueStatic: { value_double: null },
         gdisCurrentValueRp: { value_double: null, meas_date: null },
         gdisComplex: { value_double: null, dbeg: null, value_string: null },
+        techmode: { well: null, date: null, bhp: null, p_res: null },        
         gis: { gis_date: null },
         gdisCurrentValueBhp: { value_double: null, meas_date: null },
         zone: { name_ru: null },
@@ -476,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -545,6 +585,8 @@ export default {
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
+        techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -570,7 +612,8 @@ export default {
       wellsHistory: [],
       tabWidth:0,
       measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
-      maximumWellsCount: 10
+      maximumWellsCount: 10,
+      selectedDzo: null
     };
   },
   mounted() {
@@ -653,6 +696,7 @@ export default {
           : this.well.agms.name_ru
           ? this.well.agms.name_ru
           : "";
+      let horizont = this.wellGeo.name_ru ? this.wellGeo.name_ru : "";
       let wellOrgName = this.wellOrgName ? this.wellOrgName : "";
       let well_zone = this.well.zone ? this.well.zone.name_ru : "";
       let wellReactReacting = this.well.wellReactInfl.well_reacting
@@ -777,22 +821,8 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp =
-        this.well.gdisCurrentValueBhp.value_double &&
-        this.well.gdisCurrentValueBhp.meas_date
-          ? this.well.gdisCurrentValueBhp.value_double +
-            "/" +
-            "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : this.well.gdisCurrentValueBhp.value_double
-          ? this.well.gdisCurrentValueBhp.value_double
-          : this.well.gdisCurrentValueBhp.meas_date
-          ? "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : "";
-
+      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
+        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -803,10 +833,11 @@ export default {
         this.well.meas_water_inj.water_inj_val.toFixed(1)
         : "";
       let perfActualDate = this.well.perfActual
-        ? this.getFormatedDate(this.well.perfActual.dbeg)
+        ? this.getFormatedDate(this.well.perfActual.perf_date)
         : "";
       let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
+      this.selectedDzo = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
@@ -822,6 +853,7 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -841,7 +873,12 @@ export default {
         {
           name: this.trans("well.horizont_rnas"),
           data: neighbors,
-          type: ["all"],
+          type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.horizont"),
+          data: horizont,
+          type: ["nag"],
         },
         {
           name: this.trans("well.h_rotor"),
@@ -958,6 +995,11 @@ export default {
           name: this.trans("well.type_pump"),
           data: pump_code,
           type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
         },
         {
           name: this.trans("well.diameter_pump"),
@@ -1169,7 +1211,6 @@ export default {
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-
       data.forEach(function (item) {
         let type = item.type;
         let exp = item.exp;
@@ -1194,6 +1235,7 @@ export default {
     selectWell(well) {         
       this.activeFormComponentName = null;
       this.activeForm = null;
+      this.SET_VISIBLE_PRODUCTION(false)
       if (well) {
         this.SET_LOADING(true);      
         this.axios
@@ -1462,11 +1504,14 @@ export default {
       'SET_VISIBLE_PRODUCTION'
     ]),
     getWidthByColumns() {
+      if ((this.isRightColumnFolded || this.isLeftColumnFolded) && !this.isBothColumnFolded) {
+        return 'width__1469';
+      }
+      if (this.isProductionWellsHistoricalVisible || this.isInjectionWellsHistoricalVisible) {
+        return 'width__1159';
+      }
       if (this.isBothColumnFolded) {
         return 'width__1700';
-      }
-      if (this.isRightColumnFolded || this.isLeftColumnFolded) {
-        return 'width__1469';
       }
       return 'width__1219';
     }
@@ -2296,8 +2341,6 @@ h4 {
 .dropdown-menu.show {
   background: #40467e;
   color: white;
-  width: 100%;
-  padding: 0 7px 0 16px;
   border: 1px solid #2e50e9;
   border-radius: 8px;
   margin-top: 7px;
@@ -2735,6 +2778,11 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
+    div:not(:last-child) {
+      background: #293688;
+      border: 1px solid #3366FF;
+      border-radius: 5px;
+    }
 }
 @media (max-width: 1640px) {
 .button-block__item[data-v-b1a5f7e2] {
@@ -2816,7 +2864,7 @@ h4 {
 }
 .well-info_header {
   position: fixed;
-  z-index: 999;
+  z-index: 5;
   margin-left: -15px;
 }
 .pt__40 {
@@ -2830,6 +2878,19 @@ h4 {
 }
 .width__1469 {
   width: 1469px;
+}
+.width__1159 {
+  width: 1159px;
+}
+.icon-filter {
+  width: 20px;
+  background: url(/img/bd/filter.svg) no-repeat;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: none;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 </style>
