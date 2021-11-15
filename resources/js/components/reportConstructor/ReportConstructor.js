@@ -367,7 +367,9 @@ export default {
                     });
             }
 
-            return selectedObjects;
+            return selectedObjects.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
         },
         async updateChildrenOfNode(node, level) {
             if (!node?.children) return;
@@ -415,7 +417,7 @@ export default {
             if (this.endDate) {
                 dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
             } else {
-                dates.push(null)
+                dates.push(formatDate.getTodayDateFormatted());
             }
             return dates
         },
