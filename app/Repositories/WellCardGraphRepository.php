@@ -33,15 +33,36 @@ class WellCardGraphRepository  implements WellRepositoryInterface
    public function collectData(object $data):array
    {
        $result = [
-           'measLiq' => ['name' => trans('app.liquid'),'type' => 'area','data'=>[]],
-           'measWaterCut' => ['name' => trans('app.waterCut'),'type' => 'line','data'=>[]],
-           'oil' => ['name' => trans('app.oil'),'type' => 'area','data'=>[]],
-           'ndin' => ['name' => trans('app.ndin'),'type' => 'line','data'=>[]],
+           'measLiq' => [
+                'name' => trans('app.liquid'),
+                'type' => 'area',
+                'data'=>[]
+           ],
+           'measWaterCut' => [
+                'name' => trans('app.waterCut'),
+                'type' => 'line',
+                'data'=>[]
+           ],
+           'oil' => [
+                'name' => trans('app.oil'),
+                'type' => 'area',
+                'data'=>[]
+           ],
+           'ndin' => [
+                'name' => trans('app.ndin'),
+                'type' => 'line',
+                'data'=>[]
+           ],
            'labels' => [],
-           'events'=>['name'=>trans('well_card_graph.events'),
-                      'type'=>'column',
-                      'data'=>[]
-            ]
+           'events'=>[
+                'name'=>trans('well_card_graph.events'),
+                'type'=>'scatter',
+                'marker' => [
+                    'enabled' => true,
+                    'radius' => 4
+                ],
+                'data'=>[]
+           ]
        ];
 
        foreach($data->well_data as $item)
@@ -53,7 +74,7 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            $result['ndin']['data'][] = $item->hdin;
            $result['labels'][] = $dateItem;
 
-           $result['events']['data'][] = $item->activity ? 2 : 0;
+           $result['events']['data'][] = $item->activity ? 10 : 0;
            $result['events']['info'][] = $item->activity;
        }
 

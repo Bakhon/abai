@@ -67,6 +67,15 @@ export default {
                 "АГ" : {
                     id: 0
                 },
+                "ТШО": {
+                    id: 259
+                },
+                "НКО": {
+                    id: 262
+                },
+                "КПО": {
+                    id: 260
+                }
             },
             oneDzoSelected: null,
             isOneDzoSelected: false,

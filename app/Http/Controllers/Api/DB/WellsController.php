@@ -14,6 +14,7 @@ use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\MeasWell;
+use App\Models\BigData\PzabTechMode;
 use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
@@ -100,6 +101,7 @@ class WellsController extends Controller
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
             'meas_well' => $this->measWell($well),
+            'techmode' => $this->pzabWell($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -314,6 +316,13 @@ class WellsController extends Controller
     private function artificialBottomHole(Well $well)
     {
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
+    }
+
+    private function pzabWell(Well $well)
+    {
+        return $well->pzabWell()
+               ->orderBy('date', 'desc')
+               ->first(['well', 'date', 'p_res', 'bhp']);
     }
 
     private function dmartDailyProd(Well $well)
