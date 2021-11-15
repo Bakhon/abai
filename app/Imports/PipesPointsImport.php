@@ -99,7 +99,8 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 continue;
             }
 
-            $oil_pipe_id =  $oil_pipe[0]->oil_pipe_id;
+            $oil_pipe_id = $oil_pipe[0]->oil_pipe_id;
+            $oil_pipe_old = $oil_pipe;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
@@ -136,7 +137,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             );
 
             $trunkline_start_point->oil_pipe_id = $oil_pipe_id;
-
+            
             $oil_pipe = OilPipe::find($oil_pipe_id);
             $oil_pipe->start_point = $row[self::START_POINT];
             $oil_pipe->end_point = $row[self::END_POINT];
