@@ -4,6 +4,7 @@ const DEFAULT_WELL = {
     oil_loss: 0,
     liquid: 0,
     liquid_loss: 0,
+    liquid_forecast: 0,
     prs_portion: 0,
     prs_cost: 0,
     active_hours: 0,
@@ -51,9 +52,9 @@ export const tableDataMixin = {
         wellsByDates() {
             return this.tableData.statuses.map((status, statusIndex) => ({
                 status_name: this.tableData.statusNames[statusIndex],
-                wells: this.tableData.dates.map(date => {
-                    return this.getWellsByDate(status, date, 'wellsByStatus')
-                }),
+                wells: this.tableData.dates.map(date => (
+                    this.getWellsByDate(status, date, 'wellsByStatus')
+                )),
             }))
         },
 

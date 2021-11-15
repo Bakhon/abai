@@ -2,7 +2,7 @@
   <div class="d-flex text-center">
     <div :style="row.style"
          class="px-2 py-1 border-grey min-width-50px text-center font-weight-600">
-      {{ row.subTitle || '' }}
+      {{ row.order || '' }}
     </div>
 
     <div :style="row.style"
@@ -10,12 +10,12 @@
       {{ row.title }}
     </div>
 
-    <div v-for="(title, titleIndex) in titles"
-         :key="titleIndex"
-         :class="title.styleClass"
-         :style="`${row.style || ''}; ${row.values[titleIndex].style || ''}`"
+    <div v-for="(header, headerIndex) in headers"
+         :key="headerIndex"
+         :class="header.styleClass"
+         :style="`${row.style || ''}; ${row.values[headerIndex].style || ''}`"
          class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-      {{ localeValue(row.values[titleIndex].value, title.dimension) }}
+      {{ localeValue(row.values[headerIndex].value, header.dimension) }}
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
       required: true,
       type: Object
     },
-    titles: {
+    headers: {
       required: true,
       type: Array
     },

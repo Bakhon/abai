@@ -6,7 +6,7 @@
         line-height="36"
         class="text-nowrap">
       <span>
-          {{ +header.value.toFixed(2) }}
+          {{ header.value }}
       </span>
 
       <span class="text-blue font-size-16px line-height-20px">
@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import Divider from "../Divider";
-import EconomicTitle from "../EconomicTitle";
-import Subtitle from "../Subtitle";
+import Divider from "../../components/Divider";
+import EconomicTitle from "../../components/EconomicTitle";
+import Subtitle from "../../components/Subtitle";
 
 export default {
   name: "CalculatedHeader",

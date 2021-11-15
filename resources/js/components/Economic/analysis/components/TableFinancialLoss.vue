@@ -13,16 +13,16 @@
           Наименование
         </div>
 
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             :class="title.styleClass"
+        <div v-for="(header, headerIndex) in tableHeaders"
+             :key="headerIndex"
+             :class="header.styleClass"
              class="bg-blue d-flex flex-column flex-95px">
           <div class="px-1 py-3 border-grey flex-grow-1 w-100 d-flex align-items-center justify-content-center">
-            {{ title.name }}
+            {{ header.title }}
           </div>
 
           <div class="p-1 border-grey">
-            {{ title.dimensionTitle }}
+            {{ header.dimensionTitle }}
           </div>
         </div>
       </div>
@@ -31,39 +31,39 @@
           v-for="(row, rowIndex) in tableRows"
           :key="rowIndex"
           :row="row"
-          :titles="titles"
+          :headers="tableHeaders"
       />
 
       <table-financial-loss-row
           v-for="(row, rowIndex) in tableProposedRows"
           :key="`${rowIndex}_optimized`"
           :row="row"
-          :titles="titles"
+          :headers="tableHeaders"
           :class="rowIndex ? '' : 'mt-2'"
       />
 
       <table-financial-loss-row
-          v-for="(row, rowIndex) in tableSubtractionRows"
+          v-for="(row, rowIndex) in tableDiffRows"
           :key="`${rowIndex}_subtraction`"
           :row="row"
-          :titles="titles"
+          :headers="tableHeaders"
           :class="rowIndex ? '' : 'mt-2'"
       />
 
-      <div v-for="(subTitle, subTitleIndex) in subTitles"
-           :key="`${subTitleIndex}_subtitle`"
+      <div v-for="(row, rowIndex) in tableGrowthRows"
+           :key="`${rowIndex}_growth`"
            class="mt-2 d-flex text-center font-weight-600">
         <div class="px-2 py-1 border-grey min-width-50px text-center bg-dark-blue">
-          {{ 4 + subTitleIndex }}
+          {{ row.order }}
         </div>
 
         <div class="px-2 py-1 border-grey min-width-300px flex-grow-1 text-left bg-dark-blue">
-          {{ subTitle.name }}
+          {{ row.title }}
         </div>
 
         <div class="bg-dark-blue ml-2 flex-285px d-flex justify-content-end">
           <div class="py-1 pr-1 border-grey bg-orange flex-95px">
-            {{ subTitle.value }}
+            {{ row.value }}
           </div>
         </div>
       </div>
@@ -72,15 +72,20 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../../mixins/formatMixin";
+
 import Subtitle from "../../components/Subtitle";
 import TableFinancialLossRow from "./TableFinancialLossRow";
 
 export default {
-  name: "TableFinancialLoss",
+  title: "TableFinancialLoss",
   components: {
     Subtitle,
     TableFinancialLossRow
   },
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     wells: {
       required: true,
@@ -95,6 +100,13 @@ export default {
     this.$emit('updateWide', false)
   },
   computed: {
+    sumKeys() {
+      return [
+        ...this.tableHeaders.map(header => header.key),
+        ...['prs_cost']
+      ]
+    },
+
     sumData() {
       return this.sumWellParamsByProfitability('wells')
     },
@@ -103,33 +115,92 @@ export default {
       return this.sumWellParamsByProfitability('proposedWells')
     },
 
+    tableHeaders() {
+      return [
+        {
+          title: 'Кол-во скважин',
+          dimensionTitle: 'ед.',
+          key: 'uwi_count'
+        },
+        {
+          title: 'Добыча жидкости',
+          dimension: 1000,
+          dimensionTitle: 'тыс. м3',
+          key: 'liquid'
+        },
+        {
+          title: 'Добыча нефти',
+          dimension: 1000,
+          dimensionTitle: 'тыс. тон',
+          key: 'oil'
+        },
+        {
+          title: 'Время всего',
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'total_hours',
+        },
+        {
+          title: 'Отр время',
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'active_hours'
+        },
+        {
+          title: 'Дни простоя',
+          dimension: 24,
+          dimensionTitle: 'дни',
+          key: 'paused_hours'
+        },
+        {
+          title: 'Доходы',
+          dimension: 1000,
+          dimensionTitle: 'млн. тенге',
+          key: 'netback',
+          styleClass: 'ml-2',
+        },
+        {
+          title: 'Расходы',
+          dimension: 1000,
+          dimensionTitle: 'млн. тенге',
+          key: 'overall_expenditures',
+        },
+        {
+          title: 'Прибыль / убыток',
+          dimension: 1000,
+          dimensionTitle: 'млн. тенге',
+          key: 'operating_profit',
+        },
+      ]
+    },
+
     tableRows() {
       return [
         {
           title: 'Фактические показатели',
-          subTitle: '1.',
-          values: this.titles.map(title => ({
-            value: this.sumData[title.key].total
+          order: '1.',
+          values: this.tableHeaders.map(header => ({
+            value: this.sumData[header.key].total
           })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map(title => ({
-            value: this.sumData[title.key].profitless
+          values: this.tableHeaders.map(header => ({
+            value: this.sumData[header.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map(title => ({
-            value: this.sumData[title.key].profitable
+          values: this.tableHeaders.map(header => ({
+            value: this.sumData[header.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map(title => ({
+          values: this.tableHeaders.map(header => ({
             value: 0
           })),
           style: 'background: #2B2E5E'
@@ -141,29 +212,29 @@ export default {
       return [
         {
           title: 'Предлагаемый вариант',
-          subTitle: '2.',
-          values: this.titles.map(title => ({
-            value: this.sumProposedData[title.key].total
+          order: '2.',
+          values: this.tableHeaders.map(header => ({
+            value: this.sumProposedData[header.key].total
           })),
           style: 'background: #333868',
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map(title => ({
-            value: this.sumProposedData[title.key].profitless
+          values: this.tableHeaders.map(header => ({
+            value: this.sumProposedData[header.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map(title => ({
-            value: this.sumProposedData[title.key].profitable
+          values: this.tableHeaders.map(header => ({
+            value: this.sumProposedData[header.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map(title => ({
+          values: this.tableHeaders.map(header => ({
             value: 0
           })),
           style: 'background: #2B2E5E'
@@ -171,16 +242,14 @@ export default {
       ]
     },
 
-    tableSubtractionRows() {
+    tableDiffRows() {
       return [
         {
           title: 'Предлагаемый вариант минус фактические показатели',
-          subTitle: '3.',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex
-                ? this.tableProposedRows[0].values[titleIndex].value - this.tableRows[0].values[titleIndex].value
-                : 0,
-            style: titleIndex === this.titles.length - 1
+          order: '3.',
+          values: this.tableHeaders.map((header, headerIndex) => ({
+            value: this.getTableDiff(headerIndex, 0),
+            style: headerIndex === this.tableHeaders.length - 1
                 ? 'background: #B97919 !important'
                 : ''
           })),
@@ -188,116 +257,68 @@ export default {
         },
         {
           title: 'Нерентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex
-                ? this.tableProposedRows[1].values[titleIndex].value - this.tableRows[1].values[titleIndex].value
-                : 0
+          values: this.tableHeaders.map((header, headerIndex) => ({
+            value: this.getTableDiff(headerIndex, 1),
           })),
           style: 'background: #7D5F52'
         },
         {
           title: 'Рентабельные',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex
-                ? this.tableProposedRows[2].values[titleIndex].value - this.tableRows[2].values[titleIndex].value
-                : 0
+          values: this.tableHeaders.map((header, headerIndex) => ({
+            value: this.getTableDiff(headerIndex, 2),
           })),
           style: 'background: #1A5855'
         },
         {
           title: 'Простой',
-          values: this.titles.map((title, titleIndex) => ({
-            value: titleIndex
-                ? this.tableProposedRows[3].values[titleIndex].value - this.tableRows[3].values[titleIndex].value
-                : 0
+          values: this.tableHeaders.map((header, headerIndex) => ({
+            value: this.getTableDiff(headerIndex, 3),
           })),
           style: 'background: #2B2E5E'
         }
       ]
     },
 
-    titles() {
+    tableGrowthRows() {
       return [
         {
-          name: 'Кол-во скважин',
-          dimensionTitle: 'ед.',
-          key: 'uwi_count'
+          title: 'Рост прибыли от подбора нерентабельных скважин',
+          order: '4.',
+          value: this.localeValue(
+              this.sumProposedData.operating_profit.profitable -
+              this.sumData.operating_profit.profitable,
+              1000
+          ),
         },
         {
-          name: 'Добыча жидкости',
-          dimension: 1000,
-          dimensionTitle: 'тыс. м3',
-          key: 'liquid'
+          title: 'Рост прибыли от исключения ПРС на отключаемых скважинах',
+          order: '5.',
+          value: this.localeValue(
+              this.sumData.prs_cost.profitless -
+              this.sumProposedData.prs_cost.profitless,
+              1000
+          ),
         },
         {
-          name: 'Добыча нефти',
-          dimension: 1000,
-          dimensionTitle: 'тыс. тон',
-          key: 'oil'
-        },
-        {
-          name: 'Время всего',
-          dimension: 24,
-          dimensionTitle: 'дни',
-          key: 'total_hours',
-        },
-        {
-          name: 'Отр время',
-          dimension: 24,
-          dimensionTitle: 'дни',
-          key: 'active_hours'
-        },
-        {
-          name: 'Дни простоя',
-          dimension: 24,
-          dimensionTitle: 'дни',
-          key: 'paused_hours'
-        },
-        {
-          name: 'Доходы',
-          dimension: 1000000,
-          dimensionTitle: 'млн. тенге',
-          key: 'netback',
-          styleClass: 'ml-2',
-        },
-        {
-          name: 'Расходы',
-          dimension: 1000000,
-          dimensionTitle: 'млн. тенге',
-          key: 'overall_expenditures',
-        },
-        {
-          name: 'Прибыль / убыток',
-          dimension: 1000000,
-          dimensionTitle: 'млн. тенге',
-          key: 'operating_profit',
+          title: 'Снижение прибыли из-за оставления 70% ФОТ, постоянных',
+          order: '6.',
+          value: this.localeValue(
+              this.sumData.operating_profit.profitless -
+              this.sumProposedData.operating_profit.profitless -
+              this.sumData.prs_cost.profitless +
+              this.sumProposedData.prs_cost.profitless,
+              1000
+          ),
         },
       ]
     },
-
-    subTitles() {
-      return [
-        {
-          name: 'Рост прибыли от подбора нерентабельных скважин',
-          value: 1000
-        },
-        {
-          name: 'Рост прибыли от исключения ПРС на отключаемых скважинах',
-          value: 2000
-        },
-        {
-          name: 'Снижение прибыли из-за оставления 70% ФОТ, постоянных',
-          value: 3000
-        },
-      ]
-    }
   },
   methods: {
     sumWellParamsByProfitability(wellKey) {
       let sum = {}
 
-      this.titles.forEach(title => {
-        sum[title.key] = {
+      this.sumKeys.forEach(key => {
+        sum[key] = {
           profitable: 0,
           profitless: 0,
           total: 0,
@@ -305,16 +326,26 @@ export default {
       })
 
       this[wellKey].forEach(well => {
-        this.titles.forEach(title => {
-          if (!title.key) return
+        this.sumKeys.forEach(key => {
+          sum[key][well.profitability] += +well[key]
 
-          sum[title.key][well.profitability] += +well[title.key]
-
-          sum[title.key].total += +well[title.key]
+          sum[key].total += +well[key]
         })
       })
 
       return sum
+    },
+
+    getTableDiff(headerIndex, rowIndex) {
+      if (!headerIndex) {
+        return 0
+      }
+
+      let proposedValue = this.tableProposedRows[rowIndex].values[headerIndex].value
+
+      let originalValue = this.tableRows[rowIndex].values[headerIndex].value
+
+      return proposedValue - originalValue
     }
   }
 }

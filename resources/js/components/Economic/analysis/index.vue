@@ -64,6 +64,12 @@
 <script>
 const fileDownload = require("js-file-download");
 
+const LOSS_STATUS_NRS = 2
+const LOSS_STATUS_OPEK = 4
+const LOSS_STATUS_CRF = 5
+
+const LOSS_STATUSES = [LOSS_STATUS_NRS, LOSS_STATUS_OPEK, LOSS_STATUS_CRF]
+
 import {globalloadingMutations} from '@store/helpers';
 
 import {formatValueMixin} from "../mixins/formatMixin";
@@ -108,39 +114,113 @@ export default {
     },
 
     calculatedHeaders() {
-      let blocks = [
-        {
-          title: 'НРС ОМГ',
-          value: 202
-        },
-        {
-          title: 'ЧРФ ОМГ',
-          value: 134
-        },
-        {
-          title: 'ОПЕК +',
-          value: 78
+      let defaultWell = {uwi_count: 0, oil_loss: 0}
+
+      let wellKeys = Object.keys(defaultWell)
+
+      let wellsByStatus = {
+        profitable: {...defaultWell},
+        profitless: {...defaultWell},
+      }
+
+      LOSS_STATUSES.forEach(status => {
+        wellsByStatus[status] = {
+          profitable: {...defaultWell},
+          profitless: {...defaultWell},
+          total: {...defaultWell},
         }
-      ]
+      })
+
+      let wells = this.wellsSumByLossStatus || []
+
+      wells.forEach(well => {
+        if (!LOSS_STATUSES.includes(well.status_id)) return
+
+        wellKeys.forEach(wellKey => {
+          let value = Math.abs(+well[wellKey])
+
+          wellsByStatus[well.status_id][well.profitability][wellKey] += value
+
+          wellsByStatus[well.status_id].total[wellKey] += value
+
+          wellsByStatus[well.profitability][wellKey] += value
+        })
+      })
 
       return [
         {
           name: 'Количество фактических остановленных скважин',
-          value: 418,
+          value: this.localeValue(
+              wellsByStatus.profitable.uwi_count + wellsByStatus.profitless.uwi_count
+          ),
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
-          blocks: blocks,
+          blocks: [
+            {
+              title: 'НРС ОМГ',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_NRS].total.uwi_count)
+            },
+            {
+              title: 'ЧРФ ОМГ',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_CRF].total.uwi_count)
+            },
+            {
+              title: 'ОПЕК +',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_OPEK].total.uwi_count)
+            }
+          ]
         },
         {
           name: 'Количество предлагаемых скважин на остановку',
-          value: 421,
+          value: this.localeValue(
+              wellsByStatus.profitless.uwi_count +
+              (this.proposedStoppedWells ? this.proposedStoppedWells.length : 0)
+          ),
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
-          blocks: blocks,
+          blocks: [
+            {
+              title: 'НРС ОМГ',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_NRS].profitless.uwi_count)
+            },
+            {
+              title: 'ЧРФ ОМГ',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_CRF].profitless.uwi_count)
+            },
+            {
+              title: 'ОПЕК +',
+              value: this.localeValue(wellsByStatus[LOSS_STATUS_OPEK].profitless.uwi_count)
+            }
+          ],
         },
         {
           name: 'Потеря добычи на остановках',
-          value: 43,
+          value: this.localeValue(
+              wellsByStatus.profitable.oil_loss + wellsByStatus.profitless.oil_loss,
+              1000
+          ),
           dimension: this.trans('economic_reference.thousand_tons'),
-          blocks: blocks,
+          blocks: [
+            {
+              title: 'НРС ОМГ',
+              value: this.localeValue(
+                  wellsByStatus[LOSS_STATUS_NRS].total.oil_loss,
+                  1000
+              )
+            },
+            {
+              title: 'ЧРФ ОМГ',
+              value: this.localeValue(
+                  wellsByStatus[LOSS_STATUS_CRF].total.oil_loss,
+                  1000
+              )
+            },
+            {
+              title: 'ОПЕК +',
+              value: this.localeValue(
+                  wellsByStatus[LOSS_STATUS_OPEK].total.oil_loss,
+                  1000
+              )
+            }
+          ],
         }
       ]
     },
@@ -276,6 +356,24 @@ export default {
 
       this.SET_LOADING(false)
     },
+
+    getWellsByStatus(wellKey) {
+      let wells = this[wellKey] || []
+
+      wells.forEach(well => {
+        if (![LOSS_STATUS_NRS, LOSS_STATUS_OPEK, LOSS_STATUS_CRF].includes(well.status_id)) {
+          return
+        }
+
+        if (!wellsByStatus.hasOwnProperty(well.status_id)) {
+          wellsByStatus[well.status_id] = 0
+        }
+
+        wellsByStatus[well.status_name] += well.uwi_count
+      })
+
+      return wells
+    }
   }
 };
 </script>

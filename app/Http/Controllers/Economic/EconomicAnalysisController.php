@@ -100,10 +100,7 @@ class EconomicAnalysisController extends Controller
                 $tableWellLossStatus,
                 'loss_status_id'
             ),
-            'wellsSum' => $this->getWellsSum(
-                self::NULLABLE_WHERE_IN_PARAM,
-                self::NULLABLE_WHERE_IN_PARAM,
-            ),
+            'wellsSum' => $this->getWellsSum(),
             'proposedWellsSum' => $this->getWellsSum(
                 $profitableWells,
                 $stoppedWells,
@@ -114,11 +111,22 @@ class EconomicAnalysisController extends Controller
                 false
             ),
             'wells' => $this->getWellsSum(
-                null,
-                null,
+                self::NULLABLE_WHERE_IN_PARAM,
+                self::NULLABLE_WHERE_IN_PARAM,
                 false
             ),
-            'proposedStoppedWells' => $profitlessStoppedWells
+            'proposedStoppedWells' => DB::table((new TechnicalWellForecast())->getTable())
+                ->selectRaw(DB::raw("
+                    CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) as dt_month,
+                    COUNT(DISTINCT uwi) as uwi_count,
+                    SUM(oil) as oil_loss,
+                    SUM(liquid) as liquid_loss,
+                    SUM(active_hours + paused_hours) as paused_hours
+                "))
+                ->whereIn('uwi', $profitlessStoppedWells)
+                ->groupByRaw(DB::raw("dt_month"))
+                ->get()
+                ->toArray()
         ];
     }
 
@@ -363,6 +371,7 @@ class EconomicAnalysisController extends Controller
                 SUM(wells.paused_hours) as paused_hours,
                 SUM(wells.total_hours) as total_hours,
                 SUM(wells.prs_portion) as prs_portion,
+                SUM(wells.prs_portion * wells.avg_prs_cost) as prs_cost,
                 SUM(wells.netback) as netback,
                 SUM(wells.overall_expenditures) as overall_expenditures,
                 SUM(wells.operating_profit) as operating_profit,
