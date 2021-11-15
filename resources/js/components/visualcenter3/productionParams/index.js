@@ -326,10 +326,10 @@ export default {
             return this.getSummaryByField(this.productionData,'opek');
         },
         summaryDifference() {
-            return _.sumBy(this.productionData, 'plan') - _.sumBy(this.productionData, 'fact');
+            return this.summaryPlan - this.summaryFact;
         },
         summaryOpekDifference() {
-            return _.sumBy(this.productionData, 'opek') - _.sumBy(this.productionData, 'fact');
+            return this.summaryOpek - this.summaryFact;
         },
         summaryTargetPlan() {
             return _.sumBy(this.productionData, 'yearlyPlan') - _.sumBy(this.productionData, 'plan');
