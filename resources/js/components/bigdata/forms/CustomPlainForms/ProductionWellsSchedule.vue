@@ -67,7 +67,7 @@ export default {
         return {
             wells: [],
             options: [],
-            isShowEvents: true
+            isShowEvents: false
         }
     },
     methods: {
