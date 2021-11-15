@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 .digital_drilling{
-    width: 97vw;
+    width: 96.5vw;
 }
 .digital_drilling *{
     box-sizing: border-box;
@@ -274,7 +274,8 @@
 }
 
 .digital_drilling .col-sm-10.leftBlock {
-    max-width: 79.5%;
+    height: 100%;
+    max-width: 80%;
 }
 
 .digital_drilling .col-sm-2.rightBlock {
@@ -299,8 +300,10 @@
 
 .digital_drilling .resultsBlock {
     width: 100%;
-    display: table;
-    background: #20274F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
     border-radius: 3px;
 }
 
@@ -308,11 +311,15 @@
     display: table;
     width: 100%;
     margin: 0;
+    background-color: #20274F;
+    height: 100%;
+    align-items: stretch;
+    padding: 23px 0;
 }
 
 .digital_drilling .resultsBlock ul li {
     display: inline-table;
-    width: 25%;
+    width: 16.6%;
     margin: 0;
     padding: 0;
     border-right: 0.5669px solid #454D7D;
@@ -322,7 +329,7 @@
     display: table;
     margin: 0 auto;
     width: 85%;
-    padding: 24px 0 17px;
+    padding: 0;
 }
 
 .digital_drilling .resultsBlock ul li .block p.num {
@@ -339,7 +346,7 @@
 .digital_drilling .resultsBlock ul li .block p.num span.big {
     margin: 0;
     color: #fff;
-    font-size: 58px;
+    font-size: 49px;
     line-height: 0.9;
     font-weight: 600;
 }
@@ -386,11 +393,8 @@
 }
 
 .digital_drilling .analyticsBlock {
-    background: #272953;
-    border-radius: 3px;
-    display: table;
     width: 100%;
-    margin: 0 0 10px;
+    margin: 0;
 }
 .digital_drilling .analyticsBlock:first-child{
 }
@@ -442,7 +446,7 @@
     display: table;
     margin: 0 0 20px;
     width: 100%;
-    padding: 16px 18px 0;
+    padding: 0 18px 0;
     color: #82BAFF;
     font-size: 16px;
 }
@@ -450,7 +454,7 @@
 .digital_drilling .analyticsBlock p.num span {
     display: table;
     color: #fff;
-    font-size: 64px;
+    font-size: 50px;
     font-weight: 600;
     line-height: 1;
 }
@@ -475,6 +479,7 @@
     display: inline-table;
     vertical-align: middle;
     margin: 0 12px 0 0;
+    width: 20px;
 }
 
 .digital_drilling button.alarm {
@@ -557,7 +562,12 @@ input.rangeInput {
     padding: 20px;
 }
 .contentBlock{
-    height: calc(100% - 184px);
+    min-height: 500px;
+    height: calc(100% - 190px);
+}
+.contentBlock.fullPage{
+    height: 100%;
+    margin: 0;
 }
 .contentBlock__map{
     width: 100%;
