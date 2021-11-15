@@ -237,9 +237,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('', 'EconomicAnalysisController@index')
                 ->name('economic.analysis');
 
+            Route::get('wells', 'EconomicAnalysisController@indexWells');
+
             Route::get('get-data', 'EconomicAnalysisController@getData');
 
-            Route::get('get-wells-by-date', 'EconomicAnalysisController@getWellsByDate');
+            Route::get('get-wells', 'EconomicAnalysisController@getWells');
         });
     });
 });

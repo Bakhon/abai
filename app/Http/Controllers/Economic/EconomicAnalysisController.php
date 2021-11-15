@@ -64,6 +64,11 @@ class EconomicAnalysisController extends Controller
         return view('economic.analysis.input_params');
     }
 
+    public function indexWells(): View
+    {
+        return view('economic.analysis.wells');
+    }
+
     public function getData(): array
     {
         $proposedWells = $this->getProposedWells();
@@ -95,28 +100,31 @@ class EconomicAnalysisController extends Controller
                 $tableWellLossStatus,
                 'loss_status_id'
             ),
-            'wellsSum' => $this->getWells(
+            'wellsSum' => $this->getWellsSum(
                 self::NULLABLE_WHERE_IN_PARAM,
                 self::NULLABLE_WHERE_IN_PARAM,
-                true
             ),
-            'proposedWellsSum' => $this->getWells(
+            'proposedWellsSum' => $this->getWellsSum(
                 $profitableWells,
                 $stoppedWells,
-                true
             ),
-            'proposedWells' => $this->getWells(
+            'proposedWells' => $this->getWellsSum(
                 $profitableWells,
-                $stoppedWells
+                $stoppedWells,
+                false
             ),
-            'wells' => $this->getWells(),
+            'wells' => $this->getWellsSum(
+                null,
+                null,
+                false
+            ),
             'proposedStoppedWells' => $profitlessStoppedWells
         ];
     }
 
-    public function getWellsByDate(EconomicAnalysisWellRequest $request): array
+    public function getWells(EconomicAnalysisWellRequest $request): array
     {
-        $cacheKey = self::CACHE_BY_DATE_KEY . $request->granularity;
+        $cacheKey = self::CACHE_BY_DATE_KEY . json_encode($request->validated(), true);
 
         if (Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
@@ -140,9 +148,13 @@ class EconomicAnalysisController extends Controller
 
         $liquidPropose = $this->sqlQueryLiquid($profitableUwis, $stoppedUwis);
 
-        $netBack = $this->sqlQueryNetBack($profitableUwis, $stoppedUwis);
+        $netBack = $this->sqlQueryNetBack();
 
-        $overallExpenditures = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
+        $netBackPropose = $this->sqlQueryNetBack($profitableUwis, $stoppedUwis);
+
+        $overallExpenditures = $this->sqlQueryOverallExpenditures();
+
+        $overallExpendituresPropose = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
 
         $changedStatus = $this->sqlQueryChangedStatus($profitableUwis, $stoppedUwis);
 
@@ -177,7 +189,8 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.liquid) as liquid,
                 SUM(well_forecast.liquid_forecast) as liquid_forecast,
                 SUM($liquidPropose) as liquid_propose,
-                SUM($netBack - ($overallExpenditures)) as operating_profit
+                SUM($netBack - ($overallExpenditures)) as operating_profit,
+                SUM($netBackPropose - ($overallExpendituresPropose)) as operating_profit_propose
             "))
             ->leftjoin("$tableWellStatus AS well_status", function ($join) {
                 /** @var JoinClause $join */
@@ -195,6 +208,10 @@ class EconomicAnalysisController extends Controller
                 "loss_status_name",
                 "changed_status",
             ]);
+
+        if ($request->uwi) {
+            $query->whereRaw(DB::raw("well_forecast.uwi = '{$request->uwi}'"));
+        }
 
         $query = $this
             ->sqlJoinAnalysisParam($query)
@@ -215,6 +232,7 @@ class EconomicAnalysisController extends Controller
                 wells.liquid_forecast,
                 wells.liquid_propose,
                 wells.operating_profit,
+                wells.operating_profit_propose,
                 $profitability as profitability
             "))
             ->groupByRaw(DB::raw("
@@ -231,6 +249,7 @@ class EconomicAnalysisController extends Controller
                 wells.liquid_forecast,
                 wells.liquid_propose,
                 wells.operating_profit,
+                wells.operating_profit_propose,
                 profitability
             "))
             ->get()
@@ -245,10 +264,10 @@ class EconomicAnalysisController extends Controller
         return $wells;
     }
 
-    private function getWells(
+    private function getWellsSum(
         string $profitableUwis = "''",
         string $stoppedUwis = "''",
-        bool $isSum = false
+        bool $isSum = true
     ): array
     {
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
@@ -480,6 +499,7 @@ class EconomicAnalysisController extends Controller
 
             $profitableWellsByDate[$date]['oil_loss'] += (float)$well['oil_loss'];
         }
+
 
         $proposedWells = [];
 

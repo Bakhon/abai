@@ -11,6 +11,7 @@ class EconomicAnalysisWellRequest extends FormRequest
     public function rules()
     {
         return [
+            'uwi' => 'nullable|string',
             'granularity' => [
                 'nullable',
                 'string',

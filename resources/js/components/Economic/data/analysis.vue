@@ -59,8 +59,8 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
-import TableAnalysisParam from "../components/analysis/TableAnalysisParam";
-import TableTechnicalWellForecast from "../components/analysis/TableTechnicalWellForecast";
+import TableAnalysisParam from "../analysis/components/TableAnalysisParam";
+import TableTechnicalWellForecast from "../analysis/components/TableTechnicalWellForecast";
 
 export default {
   name: "economic-data-analysis-component",
