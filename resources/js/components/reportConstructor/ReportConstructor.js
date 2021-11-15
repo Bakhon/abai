@@ -367,7 +367,9 @@ export default {
                     });
             }
 
-            return selectedObjects;
+            return selectedObjects.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
         },
         async updateChildrenOfNode(node, level) {
             if (!node?.children) return;

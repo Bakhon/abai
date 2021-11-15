@@ -4,7 +4,7 @@
       <label>
         <input name="checkbox" type="checkbox" 
           v-if="renderComponent"
-          @click="handleChange" :checked="headerNode.isChecked"
+          @click.stop="handleChange" :checked="headerNode.isChecked"
         /></label>
       {{ translateAttribute(headerNode.label) }}
       <div

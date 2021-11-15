@@ -54,8 +54,10 @@ export default {
         updateChildren: async function (node, level, val) {
             if (!node?.children) return;
             for (let child of node.children) {
+                if(!('level' in child)) {
+                    child.level = level + 1;
+                }
                 child.isChecked = val;
-                child.level = level + 1;
                 this.updateChildren(child, level + 1, val);
             }
         },
@@ -63,6 +65,9 @@ export default {
             let content = this.$parent;
             while(!!content?.node) {
                 if(!val && this.hasCheckedChildren(content.node)) break;
+                if(!('level' in content.node)) {
+                    content.node.level = content.level;
+                }
                 content.node.isChecked = val;
                 content = content.$parent;
             }
