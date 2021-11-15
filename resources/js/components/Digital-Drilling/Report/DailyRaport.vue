@@ -20,7 +20,7 @@
                         <button v-if="report.previous_report.id" class="save" @click="previous=true">
                             Предыдущий отчет
                         </button>
-                        <button class="save">
+                        <button class="save" @click="saveReport">
                             {{trans('app.save')}}
                         </button>
                     </div>
@@ -2007,6 +2007,16 @@
             },
             deleteConsDaily(index){
                 this.report.material_cons_daily.splice(index, 1);
+            },
+            saveReport(){
+                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report',
+                    this.report).then((response) => {
+                    if (response) {
+                        console.log(response)
+                    } else {
+                        console.log("No data");
+                    }
+                }).catch((error) => console.log(error))
             },
             saveCatalog(){
                 if (this.catalog != '') {
