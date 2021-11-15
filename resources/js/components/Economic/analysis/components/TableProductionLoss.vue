@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Subtitle from "../Subtitle";
+import Subtitle from "../../components/Subtitle";
 import TableProductionLossRow from "./TableProductionLossRow";
 
 import {tableDataMixin} from "../../mixins/analysisMixin";

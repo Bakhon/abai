@@ -9,6 +9,11 @@
           :class="index ? 'ml-2' : ''"
           class="px-2 d-flex align-items-center h-50px"
           @click.native="selectTab(tab)"/>
+
+      <chart-button
+          :text="trans('economic_reference.matrix')"
+          class="ml-2 px-2 d-flex align-items-center h-50px"
+          @click.native="openMatrix"/>
     </div>
 
     <div class="mt-2 w-100 h-100">
@@ -65,24 +70,18 @@
           class="text-white"
           is-prs
           @updateWide="updateWide"/>
-
-      <table-matrix
-          v-else-if="activeTab === 'matrix'"
-          class="text-white"
-          @updateWide="updateWide"/>
     </div>
   </div>
 </template>
 
 <script>
-import ChartButton from "../ChartButton";
+import ChartButton from "../../components/ChartButton";
 import TableProductionLoss from "./TableProductionLoss";
 import TableOilProductionLoss from "./TableOilProductionLoss";
 import TableFinancialLoss from "./TableFinancialLoss";
 import TableWellDistribution from "./TableWellDistribution";
 import TableAdditionalStops from "./TableAdditionalStops";
 import TableEconomicTechLoss from "./TableEconomicTechLoss";
-import TableMatrix from "./TableMatrix";
 
 export default {
   name: "Tables",
@@ -94,7 +93,6 @@ export default {
     TableWellDistribution,
     TableAdditionalStops,
     TableEconomicTechLoss,
-    TableMatrix,
   },
   props: {
     scenario: {
@@ -148,7 +146,6 @@ export default {
         oil_production_tech_loss: 'Технологические потери: добыча',
         economic_tech_loss: 'Технологические потери: экономика',
         prs_cost: 'Расходы на ПРС',
-        matrix: 'Матрица',
       }
     },
   },
@@ -161,6 +158,10 @@ export default {
 
     updateWide(val) {
       this.$emit('updateWide', val)
+    },
+
+    openMatrix() {
+      window.open(this.localeUrl('/economic/analysis/wells'), '_blank')
     }
   }
 }

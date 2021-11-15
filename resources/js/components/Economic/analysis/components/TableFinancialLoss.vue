@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import Subtitle from "../Subtitle";
+import Subtitle from "../../components/Subtitle";
 import TableFinancialLossRow from "./TableFinancialLossRow";
 
 export default {

@@ -66,16 +66,16 @@ const fileDownload = require("js-file-download");
 
 import {globalloadingMutations} from '@store/helpers';
 
-import {formatValueMixin} from "./mixins/formatMixin";
-import {scenarioMixin} from "./mixins/scenarioMixin";
-import {calcPercentMixin} from "./mixins/percentMixin";
+import {formatValueMixin} from "../mixins/formatMixin";
+import {scenarioMixin} from "../mixins/scenarioMixin";
+import {calcPercentMixin} from "../mixins/percentMixin";
 
-import EconomicBlock from "./components/analysis/EconomicBlock";
-import SelectScenarioVariations from "./components/SelectScenarioVariations";
-import CalculatedHeader from "./components/analysis/CalculatedHeader";
-import RemoteHeader from "./components/RemoteHeader";
-import MonthHeaders from "./components/analysis/MonthHeaders";
-import Tables from "./components/analysis/Tables";
+import EconomicBlock from "./components/EconomicBlock";
+import SelectScenarioVariations from "../components/SelectScenarioVariations";
+import CalculatedHeader from "./components/CalculatedHeader";
+import RemoteHeader from "../components/RemoteHeader";
+import MonthHeaders from "./components/MonthHeaders";
+import Tables from "./components/Tables";
 
 export default {
   name: "economic-analysis",

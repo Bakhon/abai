@@ -70,9 +70,9 @@
 </template>
 
 <script>
-import Divider from "../Divider";
-import PercentBadgeIcon from "../PercentBadgeIcon";
-import PercentProgress from "../PercentProgress";
+import Divider from "../../components/Divider";
+import PercentBadgeIcon from "../../components/PercentBadgeIcon";
+import PercentProgress from "../../components/PercentProgress";
 
 export default {
   name: "EconomicBlock",

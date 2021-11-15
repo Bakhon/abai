@@ -1,71 +1,117 @@
 <template>
-  <div class="mt-2 customScroll overflow-auto" style="max-height: 575px">
-    <select-granularity
-        :form="form"
-        class="flex-grow-1 mb-2"
-        @change="getData()"/>
+  <div>
+    <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
+      <select-granularity
+          :form="form"
+          class="flex-grow-1 mb-3"
+          @change="toggleGranularity()"/>
 
-    <div class="form-check mb-2 mr-2">
-      <input v-model="isGroupData"
-             id="table_sum"
-             type="checkbox"
-             class="form-check-input">
-      <label for="table_sum"
-             class="form-check-label text-blue">
-        Сгруппировать значения
-      </label>
+      <div>
+        <div v-if="form.granularity === 'month'" class="form-check">
+          <input id="sort_group"
+                 type="checkbox"
+                 class="form-check-input"
+                 :checked="sort.isGroup"
+                 @change="toggleSortKey('isGroup')">
+          <label for="sort_group"
+                 class="form-check-label text-blue">
+            Сгруппировать значения
+          </label>
+        </div>
+
+        <select
+            v-show="form.granularity === 'day'"
+            v-model="form.uwi"
+            title="Выберите скважину"
+            data-style="text-white bg-main1 border-white"
+            data-live-search="true"
+            class="well-search"
+            @change="getData()">
+          <option v-for="uwi in uwis" :key="uwi">
+            {{ uwi }}
+          </option>
+        </select>
+      </div>
     </div>
 
-    <vue-table-dynamic
-        :params="tableParams"
-        class="matrix-table bg-main1 pb-0">
-      <template
-          v-for="(header, index) in tableHeaders"
-          :slot="`column-${index}`" slot-scope="{ props }">
-        <div :class="isGroupData && header.isMultiple && props.cellData && props.cellData.length > 34
+    <div class="mx-auto max-width-88vw bg-main1 pt-4 px-4 pb-2">
+      <vue-table-dynamic
+          :params="tableParams"
+          class="matrix-table">
+        <template
+            v-for="(header, index) in tableHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
+          <div :class="sort.isGroup && header.isMultiple && props.cellData && props.cellData.length > 34
                      ? 'pt-35px'
                      : 'pt-2'"
-             class="h-100 customScroll pb-2 d-flex align-items-center"
-             style="overflow-x: hidden; overflow-y: auto">
-          {{ header.isString ? props.cellData : (+props.cellData.toFixed(2)).toLocaleString() }}
-        </div>
-      </template>
-    </vue-table-dynamic>
+               class="h-100 customScroll pb-2 d-flex align-items-center"
+               style="overflow-x: hidden; overflow-y: auto">
+            {{ header.isString ? props.cellData : (+props.cellData.toFixed(2)).toLocaleString() }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+    </div>
   </div>
 </template>
 
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectGranularity from "../SelectGranularity";
+import SelectGranularity from "../components/SelectGranularity";
+
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import 'bootstrap-select/dist/js/bootstrap-select.min';
+import 'bootstrap-select/dist/js/i18n/defaults-ru_RU.min';
 
 export default {
-  name: "TableMatrix",
+  name: "economic-analysis-wells",
   components: {
     SelectGranularity
   },
   data: () => ({
     form: {
+      uwi: null,
       granularity: 'month'
     },
     wells: null,
-    isGroupData: true
+    sort: {
+      isGroup: true
+    },
+    uwis: []
   }),
-  created() {
+  async mounted() {
     this.$emit('updateWide', false)
 
-    this.getData()
+    await this.getData()
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
+      if (this.form.granularity === 'day') {
+        this.sort.isGroup = false
+
+        if (!this.form.uwi) {
+          return $('.well-search').selectpicker()
+        }
+      } else {
+        this.form.uwi = null
+
+        $('.well-search').selectpicker('destroy')
+      }
+
       this.SET_LOADING(true)
+
+      this.wells = null
 
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
         this.wells = data
+
+        if (!this.uwis.length) {
+          this.setUwis()
+        }
       } catch (e) {
         this.wells = null
       }
@@ -87,20 +133,70 @@ export default {
     },
 
     getTableRow(well, isConvertChangedStatus = false) {
-      return this.tableHeaders.map(header =>
-          isConvertChangedStatus && header.key === 'changed_status'
-              ? this.getChangedStatus(well)
-              : well[header.key]
-      )
+      return this.tableHeaders.map(header => {
+        if (header.key === 'changed_status' && isConvertChangedStatus) {
+          return this.getChangedStatus(well)
+        }
+
+        return header.isString ? well[header.key] : +well[header.key]
+      })
+    },
+
+    setUwis() {
+      let uwis = {}
+
+      this.wells.forEach(well => {
+        uwis[well.uwi] = 1
+      })
+
+      this.uwis = Object.keys(uwis)
+    },
+
+    toggleSortKey(sortKey) {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.sort[sortKey] = !this.sort[sortKey]
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    toggleGranularity() {
+      this.wells = null
+
+      if (this.form.granularity === 'day') {
+        this.sort.isGroup = false
+
+        if (!this.form.uwi) {
+          return $('.well-search').selectpicker()
+        }
+      } else {
+        this.form.uwi = null
+
+        $('.well-search').selectpicker('destroy')
+      }
+
+      this.getData()
     }
   },
   computed: {
     url() {
-      return this.localeUrl('/economic/analysis/get-wells-by-date')
+      return this.localeUrl('/economic/analysis/get-wells')
+    },
+
+    sumRow() {
+      return this.tableHeaders.map((header, headerIndex) => {
+        if (!headerIndex) {
+          return 'Всего'
+        }
+
+        return header.isString ? '' : 0
+      })
     },
 
     tableParams() {
-      let tableData = this.isGroupData ? 'tableGroupData' : 'tableData'
+      let tableData = this.sort.isGroup ? 'tableGroupData' : 'tableData'
 
       return {
         data: [...[this.tableHeaders.map(header => header.name)], ...this[tableData]],
@@ -109,7 +205,8 @@ export default {
         border: true,
         stripe: true,
         pagination: true,
-        pageSize: 10,
+        pageSize: 20,
+        pageSizes: [20, 50, 100],
         headerHeight: 80,
         rowHeight: 50,
         columnWidth: this.tableHeaders.map((header, headerIndex) => ({
@@ -137,12 +234,12 @@ export default {
         {
           name: 'Q н, факт',
           key: 'oil',
-          width: 80,
+          width: 90,
         },
         {
           name: 'Q ж, факт',
           key: 'liquid',
-          width: 80,
+          width: 90,
         },
         {
           name: 'Состояние',
@@ -161,7 +258,7 @@ export default {
         {
           name: 'Операционная прибыль',
           key: 'operating_profit',
-          width: 120,
+          width: 160,
         },
         {
           name: 'Рентабельность',
@@ -187,14 +284,19 @@ export default {
           width: 140,
         },
         {
-          name: 'Q н, предл',
+          name: 'Q н, предл.',
           key: 'oil_propose',
-          width: 80,
+          width: 100,
         },
         {
-          name: 'Q ж, предл',
+          name: 'Q ж, предл.',
           key: 'liquid_propose',
-          width: 80,
+          width: 100,
+        },
+        {
+          name: 'Операционная прибыль, предл.',
+          key: 'operating_profit_propose',
+          width: 180,
         },
       ]
     },
@@ -210,13 +312,25 @@ export default {
         return rows
       }
 
+      let sumRow = this.sumRow
+
       this.wells.forEach(well => {
         if (well.date === well.date_month && !well.status_name && !well.loss_status_name) {
           well.date = `${well.date} - ...`
         }
 
-        rows.push(this.getTableRow(well, true))
+        let row = this.getTableRow(well, true)
+
+        this.tableHeaders.forEach((header, headerIndex) => {
+          if (header.isString) return
+
+          sumRow[headerIndex] += row[headerIndex]
+        })
+
+        rows.push(row)
       })
+
+      rows.unshift(sumRow)
 
       return rows
     },
@@ -228,12 +342,20 @@ export default {
         return rows
       }
 
+      let sumRow = this.sumRow
+
       let currentWell = null
 
       this.wells.forEach(well => {
         well = {...well}
 
         well.changed_status = this.getChangedStatus(well)
+
+        this.tableHeaders.forEach((header, headerIndex) => {
+          if (header.isString) return
+
+          sumRow[headerIndex] += +well[header.key]
+        })
 
         if (!currentWell) {
           return currentWell = well
@@ -259,7 +381,9 @@ export default {
           })
         }
 
-        currentWell.profitability = currentWell.operating_profit > 0 ? 'profitable' : 'profitless'
+        currentWell.profitability = currentWell.operating_profit > 0
+            ? 'profitable'
+            : 'profitless'
 
         rows.push(this.getTableRow(currentWell))
 
@@ -270,6 +394,8 @@ export default {
         rows.push(this.getTableRow(currentWell))
       }
 
+      rows.unshift(sumRow)
+
       return rows
     },
   }
@@ -277,12 +403,16 @@ export default {
 </script>
 
 <style scoped>
+.max-width-88vw {
+  max-width: 88vw;
+}
+
 .matrix-table >>> .v-table-body {
   height: fit-content !important;
 }
 
 .matrix-table >>> .v-table-row {
-  height: 42px !important;
+  height: 45px !important;
 }
 
 .matrix-table >>> .table-cell {
