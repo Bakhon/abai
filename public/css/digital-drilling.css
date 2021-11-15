@@ -171,6 +171,7 @@
     width:2px;
 }
 
+
 .digital_drilling .mainBlock__content.allPage{
     width: calc(100% - 30px);
 }
@@ -601,15 +602,46 @@ input.rangeInput {
     display: flex;
     align-items: center;
 }
+.contentBlock__filter{
+    display: flex;
+    align-items: center;
+}
 .all-graph{
     cursor: pointer;
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.filter-btn{
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    height: 30px;
+    min-width: 100px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter-btn img{
+    margin-right: 6px;
 }
 .all-graph span{
     margin-left: 10px;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    text-decoration-line: underline;
     color: #FFFFFF;
 }
 .all-graph-modal{
@@ -1302,6 +1334,7 @@ td.border-right-none{
     background: #272953;
     margin-bottom: 10px;
     padding: 10px;
+    height: calc(100% - 350px);
 }
 .operatingCosts-title{
     font-family: Harmonia Sans Pro Cyr;
@@ -1311,7 +1344,7 @@ td.border-right-none{
     line-height: 18px;
 
     color: #FFFFFF;
-    margin-bottom: 7px;
+    margin-bottom: 15px;
 }
 .operatingCosts-single{
     font-style: normal;
@@ -1324,7 +1357,7 @@ td.border-right-none{
     align-items: center;
 
     color: #FFFFFF;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 .operatingCosts-single:last-child{
     margin-bottom: 0;

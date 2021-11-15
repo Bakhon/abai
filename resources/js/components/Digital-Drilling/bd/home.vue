@@ -74,32 +74,6 @@
         data(){
             return{
                 cardFull: false,
-                operatingCosts: [
-                    {
-                        year: '2016 г.',
-                        item: 8228564
-                    },
-                    {
-                        year: '2017 г.',
-                        item: 8785866
-                    },
-                    {
-                        year: '2018 г.',
-                        item: 7947803
-                    },
-                    {
-                        year: '2019 г.',
-                        item: 14397692
-                    },
-                    {
-                        year: '2020 г.',
-                        item: 15093826
-                    },
-                    {
-                        year: '2021 г.',
-                        item: 10325881
-                    },
-                ]
             }
         },
     }
