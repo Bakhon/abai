@@ -25,7 +25,7 @@ export default {
     created() {
         if (!this.isShowCheckboxes) return;
         if (!('isChecked' in this.node)) {
-            this.node.isChecked = this.parent.isChecked;
+            this.node.isChecked = (this.parent.isChecked || false);
         }
     },
     model: {
@@ -42,6 +42,7 @@ export default {
                 await this.handleClick(this.node);
             }
             if (!this.isHaveChildren(this.node)) {
+                this.isLoading = true;
                 await this.getWells(this);
             }
 
