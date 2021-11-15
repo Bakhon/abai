@@ -856,7 +856,7 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
       let water_cut = this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : 1;
       let liquid = this.well.measLiq.liquid ? this.well.measLiq.liquid : 1;      
-      let oil_density = this.well.techModeProdOil.oil_density ? this.well?.techModeProdOil.oil_density : 1;
+      let oil_density = this.well.techModeProdOil.oil_density ? this.well.techModeProdOil.oil_density : 1;
       let debit_oil_raschet = (liquid* (1 - water_cut/100)) * oil_density;
       let oil_production = debit_oil_raschet * 1;
       let gas_production = meas_well ? (meas_well * oil_production).toFixed(1) : oil_production.toFixed(1);      
@@ -1103,7 +1103,7 @@ export default {
           data: techModeProdOil_measWaterCut2,
           type: ["dob_oil"],
         },
-                {
+        {
           name: this.trans("well.gas_production"),
           data: gas_production,
           type: ["all"],
