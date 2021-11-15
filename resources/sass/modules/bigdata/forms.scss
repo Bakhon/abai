@@ -24,7 +24,11 @@
   position: relative;
   font-size: 11px;
   line-height: 1.4;
-  color: #FFFFFF;
+
+  &.active {
+    font-size: 13px;
+    font-weight: bold;
+  }
 }
 
 .asside-db-form__list li:after {
@@ -79,14 +83,9 @@
 }
 
 .content-db-container {
-  height: calc(100vh - 177px);
+  height: calc(100vh - 122px);
   background: #181837;
   overflow-y: auto;
-}
-
-.content-db-bottom {
-  margin-top: 10px;
-  text-align: center;
 }
 
 .content-db__tab_head {
@@ -260,6 +259,18 @@
   background: #272953;
   overflow-y: auto;
   height: calc(100% - 60px);
+
+  &-msg {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    span {
+      color: #fff;
+    }
+  }
 }
 
 .asside-db-tab-content::-webkit-scrollbar {
@@ -268,6 +279,7 @@
 }
 
 .asside-db-tab-content__item--org {
+  height: 100%;
   padding: 10px 7px;
 }
 

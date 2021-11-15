@@ -1,7 +1,8 @@
 <template>
   <div>
+    <div class="block-shadow" v-if="showShadow" @click="closeTree()"></div>
     <div class="row mx-0 mt-lg-2 gtm main-block-gtm">
-      <div class="col-lg-9 lg-border-block" @mouseover="closeTree()">
+      <div class="col-lg-9 lg-border-block">
         <div class="row col-12 p-0 m-0">
           <div :class="!isMinimize ? 'col-6 d-none d-lg-block p-0' : 'maximize-block d-none d-lg-block p-0'">
             <div class="gtm-dark h-100">
@@ -52,8 +53,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  v-for="c in clickableTable.data" @click="onClickWell(c[0])" >
-                          <th class="bg-body" v-for="row in c">{{ row }}</th>
+                        <tr  v-for="(c, idx) in clickableTable.data" @click="onClickWell(c[0], idx)" :key="idx" >
+                          <th>{{ idx * 1 + 1 }}</th>
+                          <th :class="{ activeTr: idx === activeItem }" class="bg-body" v-for="row in c">{{ row }}</th>
                         </tr>
                         </tbody>
                       </table>
@@ -270,7 +272,7 @@
           {{ trans("paegtm.calc") }}
         </div>
 
-        <div class="gtm-dark p-2">
+        <div class="gtm-dark p-2 gtm-tree">
           <div class="block-header p-2 d-flex">
 
             <div class="title-block-tree" @click="showBlock = 1">
@@ -282,7 +284,7 @@
                  width="12" height="12" alt="">
 
           </div>
-          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }">
+          <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }" @click="onHoverTree()">
             <div class="position-absolute tree-setting-block d-flex">
               <keep-alive>
                 <component v-bind:is="treeSettingComponent" class="gtm-dark table-border-gtm h-100"></component>
@@ -601,4 +603,23 @@ tr:nth-child(even) td {
 .gtm-dark {
   display: block;
 }
+
+.gtm-tree {
+  z-index: 1;
+}
+
+.block-shadow {
+  width: 100%;
+  height: 95%;
+  background-color: #000000;
+  position: absolute;
+  transition: opacity 0.6s;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.activeTr {
+  background: #2C44BD;
+}
+
 </style>

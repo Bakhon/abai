@@ -46,9 +46,8 @@ export default {
   data: function () {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
+      ecnPump: null,
       updateCurveTrigger: true,
-      devBlockRatedFeed: null,
-      devBlockFrequency: null,
       steel: null,
       techmodeDate: null,
       curveSettings: {},
@@ -318,6 +317,8 @@ export default {
         this.ao = 'АО "ММГ"';
       } else if (["UZN", "KMB"].includes(this.field)) {
         this.ao = 'АО "ОМГ"';
+      } else if (["ASY", "NUR", "AKSH"].includes(this.field)) {
+        this.ao = "КГМ";
       } else {
         this.ao = null;
       }
@@ -333,6 +334,7 @@ export default {
         this.curveSelect = "hdyn";
         this.mech_sep = false;
       } else if (this.well.expMeth === "ЭЦН") {
+        this.ecnPump = this.well.pumpType.split(" ")[1].split("/")[0]
         this.curveSelect = "hdyn";
         this.mech_sep = true;
       } else if (this.well.expMeth === "ФОН") {
@@ -365,7 +367,7 @@ export default {
       this.horizon = this.well.horizon;
       if (this.well.wellError === "no_well_data") {
         this.setNotify(this.trans('pgno.notify_well_doesnt_exist'), "Error", 'danger')
-      } else if (!this.well.newWell && !this.isSkExist(this.skType)) {
+      } else if (!this.well.newWell && !this.isSkExist(this.skType) && this.well.expMeth==="ШГН") {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Warning", "warning");
 
       }
