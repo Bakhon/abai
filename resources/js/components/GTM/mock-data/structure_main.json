@@ -15,6 +15,7 @@
     "children": [
       {
         "name": "Добыча нефти:",
+        "id": 1,
         "children": [
           {
             "name": "Добыча жидкости:",
@@ -22,6 +23,7 @@
               {
                 "name": "Забойное давление:",
                 "children": [],
+                "id": 6,
                 "setting_model": {
                   "name": "root",
                   "children": [
@@ -53,6 +55,7 @@
               {
                 "name": "Пластовое давление:",
                 "children": [],
+                "id": 7,
                 "setting_model": {
                   "name": "root",
                   "children": [
@@ -84,6 +87,7 @@
               {
                 "name": "Кпрод. жидкости:",
                 "children": [],
+                "id": 8,
                 "setting_model": {
                   "name": "root",
                   "children": [
@@ -298,11 +302,13 @@
                   "value": null
                 }
               ]
-            }
+            },
+            "id": 3
           },
           {
             "name": "Обводненность:",
             "children": [],
+            "id": 4,
             "setting_model": {
               "name": "root",
               "children": [
@@ -341,6 +347,7 @@
           {
             "name": "Отработанные дни:",
             "children": [],
+            "id": 5,
             "setting_model": {
               "name": "root",
               "children": [
@@ -445,6 +452,7 @@
       {
         "name": "Интервалы для дострела:",
         "children": [],
+        "id": 2,
         "setting_model": {
           "name": "root",
           "children": [

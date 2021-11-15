@@ -26,6 +26,7 @@
             :node="child"
             :key="child.name"
             :handle-click="handleClick"
+            :class="{ activated: node.id === activeItem }"
         ></node>
       </ul>
     </div>
@@ -47,7 +48,9 @@ export default {
     toggleUl: function (el) {
       this.showChildren = !this.showChildren;
     },
-    toggleCheckState: function () {
+    toggleCheckState: function (node) {
+      this.activeItem = node.id
+      console.log(this.activeItem, node.id, node)
       let clickable = this.node.clickable
       if (this.node.clickable) {
         this.changeClickable(clickable)
@@ -64,6 +67,7 @@ export default {
       showChildren: showChildren,
       checkState: this.node.check_state,
       checkable: this.node.checkable,
+      activeItem: 0
     };
   },
   computed: {
@@ -87,6 +91,10 @@ $ident: 10px;
 
 ul {
   margin-left: $ident;
+}
+
+.activated {
+  background-color: #0d3365;
 }
 
 .treeUl {
