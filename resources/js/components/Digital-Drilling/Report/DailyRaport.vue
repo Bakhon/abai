@@ -1208,7 +1208,7 @@
                                 <textarea name=""  cols="30" rows="22" v-model="report.planned_work.planned_work"></textarea>
                             </td>
                         </tr>
-                        <tr v-for="(job_status, i) in report.job_status_6_hours">
+                        <tr v-for="(job_status, i) in report.job_status_6_hours_daily">
                             <td><input type="time" v-model="job_status.tbeg" @change="getTotalTime(i, 6)"></td>
                             <td><input type="time" v-model="job_status.tend" @change="getTotalTime(i, 6)"></td>
                             <td>{{job_status.total_time}}</td>
@@ -2499,7 +2499,7 @@
                 if (type == 24){
                     arr = this.report.job_status_daily
                 }else{
-                    arr = this.report.job_status_6_hours
+                    arr = this.report.job_status_6_hours_daily
                 }
                 if (arr[i].tbeg && arr[i].tend) {
                     let startTime = arr[i].tbeg;
