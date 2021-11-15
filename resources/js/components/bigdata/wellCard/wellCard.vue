@@ -515,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -585,6 +586,7 @@ export default {
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
         techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
