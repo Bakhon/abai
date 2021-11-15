@@ -32,6 +32,8 @@
             @input="updateChildNode"
             :group="group"
             :rowKey="rowKey"
+            :updateThisComponent="updateThisComponent"
+            :renderComponent="renderComponent"
         >
           <span>{{ translateAttribute(item.label) }}</span>
         </ReportHeaderNode>
@@ -71,6 +73,8 @@ export default {
       default: "label",
     },
     translateAttribute: Function,
+    renderComponent: Number,
+    updateThisComponent: Function,
   },
   data() {
     return {
@@ -123,7 +127,39 @@ export default {
       } else {
         this.headerNode.isChecked = !this.headerNode.isChecked
       }
+
+      this.updateChildren(this.headerNode);
+      this.updateParent(this.headerNode.isChecked);
+      this.updateThisComponent();
     },
+    updateChildren(headerNode) {
+      if(!headerNode?.children) return;
+      for(let child of headerNode.children) {
+        child.isChecked = headerNode.isChecked;
+        this.updateChildren(child);
+      }
+    },
+    updateParent(val) {
+      let content = this.$parent;
+      while(!!content) {
+        if(!content.headerNode) {
+          content = content.$parent;
+          continue;
+        }
+        if(!val && this.hasSelectedChildren(content.headerNode)) {
+          break;
+        }
+        content.headerNode.isChecked = val;
+        content = content.$parent;
+      }
+    },
+    hasSelectedChildren(headerNode) {
+      if(!headerNode?.children) return false;
+      for(let child of headerNode.children) {
+        if(child.isChecked || this.hasSelectedChildren(child)) return true;
+      }
+      return false;
+    }
   },
 };
 </script>
