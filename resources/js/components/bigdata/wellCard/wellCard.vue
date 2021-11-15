@@ -854,6 +854,12 @@ export default {
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
       let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
+      let water_cut = this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : 1;
+      let liquid = this.well.measLiq.liquid ? this.well.measLiq.liquid : 1;      
+      let oil_density = this.well.techModeProdOil.oil_density ? this.well?.techModeProdOil.oil_density : 1;
+      let debit_oil_raschet = (liquid* (1 - water_cut/100)) * oil_density;
+      let oil_production = debit_oil_raschet * 1;
+      let gas_production = meas_well ? (meas_well * oil_production).toFixed(1) : oil_production.toFixed(1);      
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -1097,6 +1103,11 @@ export default {
           data: techModeProdOil_measWaterCut2,
           type: ["dob_oil"],
         },
+                {
+          name: this.trans("well.gas_production"),
+          data: gas_production,
+          type: ["all"],
+        },
         {
           name: this.trans("well.gaz_factor"),
           data: meas_well,
@@ -1241,7 +1252,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                                    
+            try {                                                 
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
