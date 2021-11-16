@@ -64,12 +64,6 @@
 <script>
 const fileDownload = require("js-file-download");
 
-const LOSS_STATUS_NRS = 2
-const LOSS_STATUS_OPEK = 4
-const LOSS_STATUS_CRF = 5
-
-const LOSS_STATUSES = [LOSS_STATUS_NRS, LOSS_STATUS_OPEK, LOSS_STATUS_CRF]
-
 import {globalloadingMutations} from '@store/helpers';
 
 import {formatValueMixin} from "../mixins/formatMixin";
@@ -83,6 +77,8 @@ import RemoteHeader from "../components/RemoteHeader";
 import MonthHeaders from "./components/MonthHeaders";
 import Tables from "./components/Tables";
 
+import {TechnicalWellLossStatus} from "../models/TechnicalWellLossStatus";
+
 export default {
   name: "economic-analysis",
   components: {
@@ -93,7 +89,11 @@ export default {
     RemoteHeader,
     MonthHeaders,
   },
-  mixins: [formatValueMixin, scenarioMixin, calcPercentMixin],
+  mixins: [
+    formatValueMixin,
+    scenarioMixin,
+    calcPercentMixin
+  ],
   data: () => ({
     form: {
       org_id: null,
@@ -123,7 +123,7 @@ export default {
         profitless: {...defaultWell},
       }
 
-      LOSS_STATUSES.forEach(status => {
+      TechnicalWellLossStatus.factualIds.forEach(status => {
         wellsByStatus[status] = {
           profitable: {...defaultWell},
           profitless: {...defaultWell},
@@ -133,8 +133,12 @@ export default {
 
       let wells = this.wellsSumByLossStatus || []
 
+      let proposedStoppedWellsCount = (this.proposedStoppedWells || []).reduce((prev, next) => {
+        return prev + next.uwi_count
+      }, 0)
+
       wells.forEach(well => {
-        if (!LOSS_STATUSES.includes(well.status_id)) return
+        if (!TechnicalWellLossStatus.factualIds.includes(well.status_id)) return
 
         wellKeys.forEach(wellKey => {
           let value = Math.abs(+well[wellKey])
@@ -156,67 +160,79 @@ export default {
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
           blocks: [
             {
-              title: 'НРС ОМГ',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_NRS].total.uwi_count)
+              title: 'НРС',
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.NRS].total.uwi_count
+              )
             },
             {
-              title: 'ЧРФ ОМГ',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_CRF].total.uwi_count)
+              title: 'ЧРФ',
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.CRF].total.uwi_count
+              )
             },
             {
               title: 'ОПЕК +',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_OPEK].total.uwi_count)
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.OPEK].total.uwi_count
+              )
             }
           ]
         },
         {
           name: 'Количество предлагаемых скважин на остановку',
           value: this.localeValue(
-              wellsByStatus.profitless.uwi_count +
-              (this.proposedStoppedWells ? this.proposedStoppedWells.length : 0)
+              wellsByStatus.profitless.uwi_count + proposedStoppedWellsCount
           ),
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
           blocks: [
             {
-              title: 'НРС ОМГ',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_NRS].profitless.uwi_count)
+              title: 'НРС',
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.NRS].profitless.uwi_count
+              )
             },
             {
-              title: 'ЧРФ ОМГ',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_CRF].profitless.uwi_count)
+              title: 'ЧРФ',
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.CRF].profitless.uwi_count
+              )
             },
             {
               title: 'ОПЕК +',
-              value: this.localeValue(wellsByStatus[LOSS_STATUS_OPEK].profitless.uwi_count)
+              value: this.localeValue(
+                  wellsByStatus[TechnicalWellLossStatus.OPEK].profitless.uwi_count
+              )
+            },
+            {
+              title: 'ДОП',
+              value: this.localeValue(proposedStoppedWellsCount)
             }
           ],
         },
         {
           name: 'Потеря добычи на остановках',
-          value: this.localeValue(
-              wellsByStatus.profitable.oil_loss + wellsByStatus.profitless.oil_loss,
-              1000
-          ),
+          value: this.localeValue(wellsByStatus.profitable.oil_loss, 1000),
           dimension: this.trans('economic_reference.thousand_tons'),
           blocks: [
             {
-              title: 'НРС ОМГ',
+              title: 'НРС',
               value: this.localeValue(
-                  wellsByStatus[LOSS_STATUS_NRS].total.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatus.NRS].profitable.oil_loss,
                   1000
               )
             },
             {
-              title: 'ЧРФ ОМГ',
+              title: 'ЧРФ',
               value: this.localeValue(
-                  wellsByStatus[LOSS_STATUS_CRF].total.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatus.CRF].profitable.oil_loss,
                   1000
               )
             },
             {
               title: 'ОПЕК +',
               value: this.localeValue(
-                  wellsByStatus[LOSS_STATUS_OPEK].total.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatus.OPEK].profitable.oil_loss,
                   1000
               )
             }
@@ -356,24 +372,6 @@ export default {
 
       this.SET_LOADING(false)
     },
-
-    getWellsByStatus(wellKey) {
-      let wells = this[wellKey] || []
-
-      wells.forEach(well => {
-        if (![LOSS_STATUS_NRS, LOSS_STATUS_OPEK, LOSS_STATUS_CRF].includes(well.status_id)) {
-          return
-        }
-
-        if (!wellsByStatus.hasOwnProperty(well.status_id)) {
-          wellsByStatus[well.status_id] = 0
-        }
-
-        wellsByStatus[well.status_name] += well.uwi_count
-      })
-
-      return wells
-    }
   }
 };
 </script>

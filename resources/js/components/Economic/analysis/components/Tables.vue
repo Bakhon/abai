@@ -58,9 +58,13 @@
           is-tech-loss
           @updateWide="updateWide"/>
 
-      <table-economic-tech-loss
+      <table-oil-production-loss
           v-else-if="activeTab === 'economic_tech_loss'"
+          :wells="wellsSumByStatus"
+          title="Технологические потери: упущенная выгода, расходы на ПРС"
+          key="economic_tech_loss"
           class="text-white"
+          is-prs
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
@@ -81,7 +85,6 @@ import TableOilProductionLoss from "./TableOilProductionLoss";
 import TableFinancialLoss from "./TableFinancialLoss";
 import TableWellDistribution from "./TableWellDistribution";
 import TableAdditionalStops from "./TableAdditionalStops";
-import TableEconomicTechLoss from "./TableEconomicTechLoss";
 
 export default {
   name: "Tables",
@@ -92,7 +95,6 @@ export default {
     TableFinancialLoss,
     TableWellDistribution,
     TableAdditionalStops,
-    TableEconomicTechLoss,
   },
   props: {
     scenario: {
@@ -103,7 +105,7 @@ export default {
       required: true,
       type: Object
     },
-    wells:{
+    wells: {
       required: true,
       type: Array
     },

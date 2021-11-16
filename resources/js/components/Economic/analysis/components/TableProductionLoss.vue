@@ -55,6 +55,7 @@
               :class="rowIndex > 0 ? 'ml-3' : ''"
               :style="`min-width: ${rowIndex ? 430 : 530}px`"
               :is-visible-dates="rowIndex === 0"
+              :is-profitable="row.isProfitable"
               is-profitless
               is-visible-header
               class="h-100"
@@ -74,16 +75,16 @@ const STOPPED_WELL = {
   liquid: 0,
   liquid_forecast: 0,
   liquid_loss: 0,
+  paused_hours: 0,
   total_hours: 0,
 }
-
-const LOSS_STATUS_DOWNLOAD_LIMIT = 3
-const LOSS_STATUS_DEOPTIMIZATION = 7
 
 import Subtitle from "../../components/Subtitle";
 import TableProductionLossRow from "./TableProductionLossRow";
 
 import {tableDataMixin} from "../../mixins/analysisMixin";
+
+import {TechnicalWellLossStatus} from "../../models/TechnicalWellLossStatus";
 
 export default {
   name: "TableProductionLoss",
@@ -119,6 +120,20 @@ export default {
     tableProposedWells() {
       let wellKeys = Object.keys(STOPPED_WELL)
 
+      let factualStoppedWells = this.proposedStoppedWells.map(() => {
+        return {...STOPPED_WELL}
+      })
+
+      this.wellsByDates.forEach(status => {
+        if (!TechnicalWellLossStatus.factualIds.includes(status.status_id)) return
+
+        status.wells.forEach((date, dateIndex) => {
+          wellKeys.forEach(wellKey => {
+            factualStoppedWells[dateIndex][wellKey] += Math.abs(+date.profitless[wellKey])
+          })
+        })
+      })
+
       let proposedStoppedWells = this.proposedStoppedWells.map(well => {
         well = {...well}
 
@@ -127,21 +142,11 @@ export default {
         return well
       })
 
-      let totalWellsByDate = JSON.parse(JSON.stringify(proposedStoppedWells));
-
-      this.wellsByDates.forEach(status => {
-        status.wells.forEach((date, dateIndex) => {
-          wellKeys.forEach(wellKey => {
-            totalWellsByDate[dateIndex][wellKey] += Math.abs(+date.profitless[wellKey])
-          })
-        })
-      })
-
       return [
         {
           status_name: 'Фактические остановки',
           wells: this.tableData.dates.map((date, dateIndex) => ({
-            profitless: totalWellsByDate[dateIndex]
+            profitless: factualStoppedWells[dateIndex]
           }))
         },
         {
@@ -150,12 +155,21 @@ export default {
             profitless: proposedStoppedWells[dateIndex]
           }))
         },
-        this.wellsByDates[this.tableData.statuses.findIndex(
-            status => +status === LOSS_STATUS_DEOPTIMIZATION
-        )],
-        this.wellsByDates[this.tableData.statuses.findIndex(
-            status => +status === LOSS_STATUS_DOWNLOAD_LIMIT
-        )],
+        {
+          status_name: 'Доп. остановки из менее рентаб. фонда',
+          wells: this.tableData.dates.map(() => ({
+            profitless: {...STOPPED_WELL}
+          }))
+        },
+        this.wellsByDates.find(wells =>
+            wells.status_id === TechnicalWellLossStatus.DEOPTIMIZATION
+        ),
+        {
+          ...{isProfitable: true},
+          ...this.wellsByDates.find(wells =>
+              wells.status_id === TechnicalWellLossStatus.DOWNLOAD_LIMIT
+          )
+        },
       ]
     }
   }

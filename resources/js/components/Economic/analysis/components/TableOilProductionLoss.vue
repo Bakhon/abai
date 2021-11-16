@@ -1,11 +1,7 @@
 <template>
   <div>
     <subtitle font-size="16" class="line-height-18px">
-      {{
-        isTechLoss
-            ? 'Технологические потери: добыча рентабельных и нерентабельных скважин'
-            : 'Потери от остановок: добыча рентабельных и нерентабельных скважин'
-      }}
+      {{ subTitle }}
     </subtitle>
 
     <div class="customScroll overflow-auto">
@@ -16,7 +12,7 @@
             {{
               isTechLoss
                   ? 'Количество скважин в простое по технологическим причинам'
-                  : 'Количество скважин, остановленных НРС, ЧРФ, Опек+'
+                  : 'Количество остановленных скважин'
             }}
           </div>
         </div>
@@ -112,10 +108,25 @@ export default {
     isPrs: {
       required: false,
       type: Boolean
+    },
+    title: {
+      required: false,
+      type: String
     }
   },
   created() {
     this.$emit('updateWide', this.tableData.statuses.length > 6)
+  },
+  computed: {
+    subTitle() {
+      if (this.title) {
+        return this.title
+      }
+
+      return this.isTechLoss
+          ? 'Технологические потери: добыча рентабельных и нерентабельных скважин'
+          : 'Потери от остановок: добыча рентабельных и нерентабельных скважин'
+    }
   }
 }
 </script>

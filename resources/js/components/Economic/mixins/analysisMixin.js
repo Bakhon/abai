@@ -51,6 +51,7 @@ export const tableDataMixin = {
 
         wellsByDates() {
             return this.tableData.statuses.map((status, statusIndex) => ({
+                status_id: +status,
                 status_name: this.tableData.statusNames[statusIndex],
                 wells: this.tableData.dates.map(date => (
                     this.getWellsByDate(status, date, 'wellsByStatus')

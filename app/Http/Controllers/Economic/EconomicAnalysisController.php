@@ -33,11 +33,6 @@ class EconomicAnalysisController extends Controller
     const OIL_FACTOR = 1;
     const OIL_COEF = 1;
 
-    const OIL_LOSS_STATUS_NRS = 2;
-    const OIL_LOSS_STATUS_OPEK = 4;
-    const OIL_LOSS_STATUS_CRF = 5;
-    const OIL_LOSS_STATUS_DEOPTIMIZATION = 7;
-
     const CHANGED_STATUS_NOT_CHANGE = 0;
     const CHANGED_STATUS_STOP = -1;
     const CHANGED_STATUS_LAUNCH = 1;
@@ -839,7 +834,7 @@ class EconomicAnalysisController extends Controller
     ): string
     {
         $lossStatuses = $this->sqlQueryLossStatuses();
-        $lossStatusDeoptimization = self::OIL_LOSS_STATUS_DEOPTIMIZATION;
+        $lossStatusDeoptimization = TechnicalWellLossStatus::DEOPTIMIZATION;
 
         $statusNotChange = self::CHANGED_STATUS_NOT_CHANGE;
         $statusStop = self::CHANGED_STATUS_STOP;
@@ -871,14 +866,10 @@ class EconomicAnalysisController extends Controller
 
     private function sqlQueryLossStatuses(bool $hasDeoptimization = false): string
     {
-        $statuses = [
-            self::OIL_LOSS_STATUS_NRS,
-            self::OIL_LOSS_STATUS_OPEK,
-            self::OIL_LOSS_STATUS_CRF,
-        ];
+        $statuses = TechnicalWellLossStatus::factualIds();
 
         if ($hasDeoptimization) {
-            $statuses[] = self::OIL_LOSS_STATUS_DEOPTIMIZATION;
+            $statuses[] = TechnicalWellLossStatus::DEOPTIMIZATION;
         }
 
         return implode(",", $statuses);
