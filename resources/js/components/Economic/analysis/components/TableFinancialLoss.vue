@@ -39,7 +39,7 @@
           :key="`${rowIndex}_optimized`"
           :row="row"
           :headers="tableHeaders"
-          :class="rowIndex ? '' : 'mt-2'"
+          :class="rowIndex ? '' : 'mt-14px'"
       />
 
       <table-financial-loss-row
@@ -47,12 +47,12 @@
           :key="`${rowIndex}_subtraction`"
           :row="row"
           :headers="tableHeaders"
-          :class="rowIndex ? '' : 'mt-2'"
+          :class="rowIndex ? '' : 'mt-14px'"
       />
 
       <div v-for="(row, rowIndex) in tableGrowthRows"
            :key="`${rowIndex}_growth`"
-           class="mt-2 d-flex text-center font-weight-600">
+           class="mt-14px d-flex text-center font-weight-600">
         <div class="px-2 py-1 border-grey min-width-50px text-center bg-dark-blue">
           {{ row.order }}
         </div>
@@ -398,5 +398,9 @@ export default {
 
 .min-width-300px {
   min-width: 300px;
+}
+
+.mt-14px {
+  margin-top: 14px;
 }
 </style>

@@ -8,21 +8,16 @@ use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
-use App\Services\BigData\StructureService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use SplFixedArray;
 
 class EconomicAnalysisController extends Controller
 {
-    protected $druidClient;
-    protected $structureService;
-
     const CACHE_KEY = 'economic_analysis';
     const CACHE_BY_DATE_KEY = 'economic_analysis_by_date';
 
@@ -38,15 +33,11 @@ class EconomicAnalysisController extends Controller
     const CHANGED_STATUS_LAUNCH = 1;
     const CHANGED_STATUS_DEOPTIMIZATION = 2;
 
-    public function __construct(DruidClient $druidClient, StructureService $structureService)
+    public function __construct()
     {
         $this
             ->middleware('can:economic view main')
-            ->only('index', 'getData');
-
-        $this->druidClient = $druidClient;
-
-        $this->structureService = $structureService;
+            ->only('index', 'getData', 'getWells');
     }
 
     public function index(): View
@@ -110,18 +101,9 @@ class EconomicAnalysisController extends Controller
                 self::NULLABLE_WHERE_IN_PARAM,
                 false
             ),
-            'proposedStoppedWells' => DB::table((new TechnicalWellForecast())->getTable())
-                ->selectRaw(DB::raw("
-                    CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) as dt_month,
-                    COUNT(DISTINCT uwi) as uwi_count,
-                    SUM(oil) as oil_loss,
-                    SUM(liquid) as liquid_loss,
-                    SUM(active_hours + paused_hours) as paused_hours
-                "))
-                ->whereIn('uwi', $profitlessStoppedWells)
-                ->groupByRaw(DB::raw("dt_month"))
-                ->get()
-                ->toArray()
+            'proposedStoppedWells' => $this->getProposedStoppedWells(
+                $profitlessStoppedWells
+            )
         ];
     }
 
@@ -477,7 +459,7 @@ class EconomicAnalysisController extends Controller
             ->toArray();
     }
 
-    public function getProposedWells(): array
+    private function getProposedWells(): array
     {
         if (Cache::has(self::CACHE_KEY)) {
             return json_decode(Cache::get(self::CACHE_KEY), true);
@@ -525,6 +507,22 @@ class EconomicAnalysisController extends Controller
         }
 
         return $proposedWells;
+    }
+
+    private function getProposedStoppedWells(array $uwis): array
+    {
+        return DB::table((new TechnicalWellForecast())->getTable())
+            ->selectRaw(DB::raw("
+                    CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) as dt_month,
+                    COUNT(DISTINCT uwi) as uwi_count,
+                    SUM(oil) as oil_loss,
+                    SUM(liquid) as liquid_loss,
+                    SUM(active_hours + paused_hours) as paused_hours
+                "))
+            ->whereIn('uwi', $uwis)
+            ->groupByRaw(DB::raw("dt_month"))
+            ->get()
+            ->toArray();
     }
 
     private function getProfitableStoppedWellsByDate(): array
