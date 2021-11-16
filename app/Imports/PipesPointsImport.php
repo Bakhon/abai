@@ -52,7 +52,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
 
                 $this->command->line(' ');
                 $this->command->line('----------------------------');
-                $this->command->info('sheet name '.$this->sheetName);
+                $this->command->info('sheet name ' . $this->sheetName);
                 $this->command->line('----------------------------');
                 $this->command->line(' ');
             }
@@ -95,11 +95,11 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             );
 
             if (!$oil_pipe) {
-                $this->command->line('Not found pipe for '.$row[self::START_POINT].' - '.$row[self::END_POINT]);
+                $this->command->line('Not found pipe for ' . $row[self::START_POINT] . ' - ' . $row[self::END_POINT]);
                 continue;
             }
 
-            $oil_pipe_id =  $oil_pipe[0]->oil_pipe_id;
+            $oil_pipe_id = $oil_pipe[0]->oil_pipe_id;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
@@ -142,8 +142,14 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             $oil_pipe->end_point = $row[self::END_POINT];
             $oil_pipe->save();
 
-            if (strpos($trunkline_start_point->name, 'ГУ') !== false) {
-                $gu = Gu::where('name', $trunkline_start_point->name)->first();
+            $start_point_name = str_replace("MGU", "ГУ", $trunkline_start_point->name);
+            $start_point_name = str_replace("PS", "ПС", $start_point_name);
+            
+            if (strpos($start_point_name, 'ГУ') === 0 ||
+                strpos($start_point_name, 'ПС') === 0)
+            {
+
+                $gu = Gu::where('name', $start_point_name)->first();
                 $trunkline_start_point->gu_id = $gu->id;
             }
 

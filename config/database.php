@@ -89,7 +89,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'schema' => 'cmon',
+            'schema' => env('TBD_CMON_SCHEMA', 'cmon'),
             'sslmode' => 'prefer',
         ],
 

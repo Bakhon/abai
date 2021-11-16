@@ -29,6 +29,10 @@ export default {
     searchQuery: {
       type: String,
       required: false
+    },
+    structureTypes: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -56,6 +60,7 @@ export default {
       })
     },
     nodeClick(node) {
+      if (this.structureTypes.length > 0 && !this.structureTypes.includes(node.type)) return false
       this.$emit('idChange', {
         id: node.id,
         type: node.type,
@@ -70,6 +75,10 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {
+      if (!this.structureTypes.includes('well')) return
+
+      child.isLoading = true;
+
       let node = child.node
       this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {
         params: {

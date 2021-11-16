@@ -28,7 +28,7 @@ import {
     GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
 } from "./geologyGis.const";
 
-import {uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
+import {isFloat, uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
 import AwGisClass from "../../components/geology/petrophysics/graphics/awGis/utils/AwGisClass";
 import {
     Fetch_Curves,
@@ -135,7 +135,7 @@ const geologyGis = {
         },
 
         [SET_WELLS](state, data) {
-            state.WELLS = data
+            state.WELLS = data.filter((item) => ['UZN_1428', 'UZN_0144', 'UZN_1027', 'UZN_9093'].includes(item.name));
         },
 
         [SET_SCROLL_BLOCK_Y](state, y) {
@@ -207,7 +207,7 @@ const geologyGis = {
             for (const curveName of state.selectedGisCurves) {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
-                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}};
+                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}};
                     state.awGis.editElementData(curveName, {
                         curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
                             let curve = state.CURVES_OF_SELECTED_WELLS[id];
@@ -216,7 +216,7 @@ const geologyGis = {
                             curveOptions.min[key] = Math.min(...curveWithoutNull);
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
-
+                            curveOptions.isLithology[key] = !curveWithoutNull.some((n)=>isFloat(n))
                             if (curve) acc[key] = curve;
                             return acc
                         }, {})

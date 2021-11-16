@@ -286,7 +286,7 @@ class CurrentGDIS extends TableForm
     public function getGdisMetricRows(Collection $measurements)
     {
         $metricNames = Metric::whereIn('code', $this->metricCodes)
-            ->pluck('name_ru', 'code')
+            ->pluck('name_short_ru', 'code')
             ->toArray();
 
         $rows = [];

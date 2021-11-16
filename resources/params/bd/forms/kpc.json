@@ -88,8 +88,9 @@
               "type": "dict",
               "title": "repair_work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_type_krs",
-              "is_editable": true
+              "dict": "repair_type_krs_ktm",
+              "is_editable": true,
+              "filter_by_well_orgs": true
             },
             {
               "code": "work_plan",

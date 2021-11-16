@@ -131,13 +131,14 @@ Route::group(
                 Route::post('/las/gis', 'Api\DB\LasController@attachFileToGis')->name('las.attach_to_gis');
                 Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
 
-                Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
+                Route::get('wells/injectionHistory/{well}', 'Api\DB\WellHistoryController@getInjectionHistory');
                 Route::get('wells/productionHistory/{well}', 'Api\DB\WellHistoryController@getProductionHistory');
                 Route::get('wells/get-activity/{activityInfo}', 'Api\DB\WellsController@getActivityByWell');
                 Route::get('well-events', 'Api\DB\WellCardChart@getWellEvents');
                 Route::get('well-history', 'Api\DB\WellHistoryController@getProductionHistory');
 
                 Route::get('orgs-by-well/{well}', 'Api\DB\StructureController@getOrgIdsByWellId');
+                Route::get('wells/production/techmode/{well}', 'Api\DB\WellsController@getProductionTechModeOil');
             }
         );
     }

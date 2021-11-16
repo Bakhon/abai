@@ -19,7 +19,7 @@ class Ag extends Dzo {
         if ($periodType === 'month') {
             $summary['monthlyPlan'] = $summary['condensatePlan'] * $daysInMonth;
         }
-        if ($periodType === 'year') {
+        if ($periodType === 'year' || ($periodType === 'period' && count($filteredPlan) > 1)) {
             $summary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
             $summary['plan'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
             $summary['opek'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);

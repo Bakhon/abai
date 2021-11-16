@@ -74,7 +74,9 @@ export default {
                 'КГМКМГ': '50% * 33%',
                 'ТП': '50% * 33%',
                 'АГ': '100%'
-            }
+            },
+            opekHoverIndex: null,
+            factHoverIndex: null
         };
     },
     methods: {

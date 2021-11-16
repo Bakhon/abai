@@ -146,7 +146,7 @@ export default {
                     rows: initialRowsTSHO,
                     format: formatMappingTSHO,
                     cells: cellsMappingTSHO,
-                    id: 9999,
+                    id: 259,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
@@ -156,7 +156,7 @@ export default {
                     rows: initialRowsNKO,
                     format: formatMappingNKO,
                     cells: cellsMappingNKO,
-                    id: 9999,
+                    id: 262,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
@@ -166,7 +166,7 @@ export default {
                     rows: initialRowsKPO,
                     format: formatMappingKPO,
                     cells: cellsMappingKPO,
-                    id: 9999,
+                    id: 260,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
