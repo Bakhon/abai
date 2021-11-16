@@ -39,14 +39,13 @@
           :params="tableParams"
           class="matrix-table">
         <template
-            v-for="(header, index) in tableHeaders"
-            :slot="`column-${index}`" slot-scope="{ props }">
-          <div :class="sort.isGroup && header.isMultiple && props.cellData && props.cellData.length > 34
-                     ? 'pt-35px'
-                     : 'pt-2'"
+            v-for="(header, headerIndex) in tableHeaders"
+            :slot="`column-${headerIndex}`"
+            slot-scope="{ props }">
+          <div :class="getHeaderStyleClass(header, props.cellData)"
                class="h-100 customScroll pb-2 d-flex align-items-center"
                style="overflow-x: hidden; overflow-y: auto">
-            {{ header.isString ? props.cellData : (+props.cellData.toFixed(2)).toLocaleString() }}
+            {{ getHeaderValue(header, props.row, props.cellData) }}
           </div>
         </template>
       </vue-table-dynamic>
@@ -140,6 +139,22 @@ export default {
 
         return header.isString ? well[header.key] : +well[header.key]
       })
+    },
+
+    getHeaderValue(header, rowIndex, value) {
+      if (header.isString) {
+        return value
+      }
+
+      let fractionDigits = rowIndex > 1 ? 2 : 0
+
+      return (+value.toFixed(fractionDigits)).toLocaleString()
+    },
+
+    getHeaderStyleClass(header, value) {
+      return this.sort.isGroup && header.isMultiple && value && value.length > 34
+          ? 'pt-35px'
+          : 'pt-2';
     },
 
     setUwis() {
@@ -256,7 +271,7 @@ export default {
           width: 130,
         },
         {
-          name: 'Операционная прибыль',
+          name: 'Операционная прибыль, факт',
           key: 'operating_profit',
           width: 160,
         },
@@ -281,7 +296,7 @@ export default {
           key: 'changed_status',
           isString: true,
           isMultiple: true,
-          width: 140,
+          width: 160,
         },
         {
           name: 'Q н, предл.',
@@ -296,7 +311,7 @@ export default {
         {
           name: 'Операционная прибыль, предл.',
           key: 'operating_profit_propose',
-          width: 180,
+          width: 160,
         },
       ]
     },
@@ -426,6 +441,12 @@ export default {
 .matrix-table >>> .v-table-header-wrap .is-header .table-cell {
   background: #2E50E9 !important;
   color: #fff;
+}
+
+.matrix-table >>> .v-table .vue-scroll-view > div:nth-child(2) .table-cell,
+.matrix-table >>> .v-table .vue-scroll-view > div:nth-child(2) .table-row {
+  background: #333975;
+  font-weight: 600;
 }
 
 .matrix-table >>> .table-pagination .page-item,
