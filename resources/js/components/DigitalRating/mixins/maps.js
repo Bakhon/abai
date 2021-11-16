@@ -25,6 +25,7 @@ export default {
         zoomControl: false,
         minZoom: this.minZoom,
         maxZoom: this.maxZoom,
+        attributionControl: false
       });
 
       L.control.zoom({

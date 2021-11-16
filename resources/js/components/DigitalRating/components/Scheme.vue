@@ -1,21 +1,46 @@
 <template>
   <div class="correlation-scheme">
-    <div class="correlation-scheme__item" v-for="(item, idx) in 3">
-      <div class="correlation-scheme__header">
-        <div class="correlation-scheme__header-title">
-          {{ trans('digital_rating.correlationScheme') + idx + 1 }}
-        </div>
-      </div>
-      <div class="correlation-scheme__content">
-        <img src="/img/digital-rating/scheme.svg" alt="">
-      </div>
-    </div>
+    <AwGis />
+<!--    <div class="correlation-scheme__item" v-for="(item, idx) in 3">-->
+<!--      <div class="correlation-scheme__header">-->
+<!--        <div class="correlation-scheme__header-title">-->
+<!--          {{ trans('digital_rating.correlationScheme') + idx + 1 }}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="correlation-scheme__content">-->
+<!--        <img src="/img/digital-rating/scheme.svg" alt="">-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
+import AwGis from '../../geology/petrophysics/graphics/awGis/AwGis';
+import {FETCH_WELLS_MNEMONICS, SET_WELLS_BLOCKS} from "../../../store/modules/geologyGis.const";
+
 export default {
-  name: "Scheme"
+  name: "Scheme",
+
+  components: {
+    AwGis
+  },
+
+  data() {
+    return {
+      wellList: ['UZN_1428', 'UZN_0144', 'UZN_9093', 'UZN_1027']
+    }
+  },
+
+  async mounted() {
+    await this.fetchGraphs();
+  },
+
+  methods: {
+    async fetchGraphs() {
+      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.wellList);
+      this.$store.commit(SET_WELLS_BLOCKS, this.wellList);
+    }
+  }
 }
 </script>
 
