@@ -520,7 +520,9 @@ class DictionaryService
         $path = [$value['label']];
         while (isset($value['parent'])) {
             $value = $dict->where('id', $value['parent'])->first();
-            $path[] = $value['label'];
+            if ($value) {
+                $path[] = $value['label'];
+            }
         }
         return implode(' / ', array_reverse($path));
     }
