@@ -11,8 +11,13 @@
       <div class="heading-title-wrapper">
         <div class="heading-title">
           <img
+            @click.stop="isMapSettingsOpen = true"
             src="/img/PlastFluids/mapsAndTablesMapSettings.png"
             alt="map settings"
+          />
+          <StructuralMapSettingsModal
+            v-show="isMapSettingsOpen"
+            @close-modal="isMapSettingsOpen = false"
           />
         </div>
       </div>
@@ -32,6 +37,7 @@
 <script>
 import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
 import StructuralMap from "./StructuralMap.vue";
+import StructuralMapSettingsModal from "./StructuralMapSettingsModal.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { getIsohypsumModel } from "../../services/mapService";
 
@@ -40,6 +46,12 @@ export default {
   components: {
     DataAnalysisDataTable,
     StructuralMap,
+    StructuralMapSettingsModal,
+  },
+  data() {
+    return {
+      isMapSettingsOpen: false,
+    };
   },
   computed: {
     ...mapState("plastFluids", [
@@ -116,6 +128,7 @@ export default {
 
 .heading-title {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: flex-end;
   width: 100%;

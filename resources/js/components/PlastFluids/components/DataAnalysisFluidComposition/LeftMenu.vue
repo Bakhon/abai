@@ -38,7 +38,7 @@
       <div class="data-analysis-panel__area">
         <div class="data-analysis-panel__area-setting">
           <span>Единица измерения</span>
-          <Dropdown :items="pressures" dropKey="name" />
+          <Dropdown :items="pressures" :dropKey="['name']" />
         </div>
       </div>
       <div class="data-analysis-panel__area">

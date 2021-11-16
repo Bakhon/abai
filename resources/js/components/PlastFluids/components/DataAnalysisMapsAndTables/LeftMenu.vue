@@ -78,20 +78,24 @@
             <p>Структурная карта</p>
             <Dropdown
               :items="models"
-              dropKey="created_datetime"
+              :dropKey="['horizon', 'created_datetime']"
               :dropKeyRepeat="true"
-              :selectedValue="currentModel.created_datetime"
+              :selectedValue="
+                currentModel.id
+                  ? currentModel.horizon + ' ' + currentModel.created_datetime
+                  : ''
+              "
               @dropdown-select="SET_CURRENT_MODEL"
               :description="true"
             />
           </div>
           <div class="file-upload-holder">
             <p>Схема разломов</p>
-            <Dropdown dropKey="name" />
+            <Dropdown :dropKey="['name']" />
           </div>
           <div class="file-upload-holder">
             <p>Схема контактов</p>
-            <Dropdown dropKey="name" />
+            <Dropdown :dropKey="['name']" />
           </div>
         </div>
       </div>

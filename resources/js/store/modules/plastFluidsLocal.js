@@ -26,6 +26,9 @@ const plastFluidsLocal = {
     currentSelectedSamples: [],
     models: [],
     currentModel: {},
+    depthMultiplier: 5,
+    isIsohypsShown: true,
+    isTileLayerShown: true,
   },
 
   mutations: {
@@ -96,6 +99,15 @@ const plastFluidsLocal = {
     },
     SET_CURRENT_MODEL(state, payload) {
       state.currentModel = payload;
+    },
+    SET_DEPTH_MULTIPLIER(state, payload) {
+      state.depthMultiplier = payload;
+    },
+    SET_IS_ISOHYPS_SHOWN(state, payload) {
+      state.isIsohypsShown = payload;
+    },
+    SET_IS_TILE_LAYER_SHOWN(state, payload) {
+      state.isTileLayerShown = payload;
     },
   },
 

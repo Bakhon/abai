@@ -140,4 +140,8 @@ return array (
   'show_fluid_properties' => 'Показать свойства флюидов',
   'density_separation_oil' => 'Плотность сепарированной нефти, кг/м3',
   'pressure_saturation' => 'Давление насыщения, МПа',
+  'show_isohyps' => 'Показывать изогипсы',
+  'between_isohyps' => 'Между изогипсами',
+  'show_tile_layer' => 'Показывать цветную подложку карты',
+  'apply' => 'Применить',
 );

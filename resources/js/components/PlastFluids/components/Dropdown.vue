@@ -7,14 +7,14 @@
     <div v-show="isOpen" v-click-outside="closeDropdown">
       <button
         @click="handleSelect(item)"
-        v-for="item in items"
-        :key="dropKeyRepeat ? item[dropKey] + item.id : item[dropKey]"
+        v-for="(item, index) in items"
+        :key="index"
         :title="description ? item['description_' + currentLang] : ''"
       >
         {{
           isParentShortNameExist
-            ? item[dropKey] + " - " + parentShortName
-            : item[dropKey]
+            ? getItem(item) + " - " + parentShortName
+            : getItem(item)
         }}
       </button>
     </div>
@@ -27,7 +27,7 @@ export default {
   props: {
     items: Array,
     placeholder: String,
-    dropKey: String,
+    dropKey: [Array],
     description: Boolean,
     parentShortName: String,
     dropKeyRepeat: Boolean,
@@ -47,6 +47,12 @@ export default {
     },
   },
   methods: {
+    getItem(item) {
+      return this.dropKey.reduce((acc, current) => {
+        acc += item[current] + " ";
+        return acc;
+      }, "");
+    },
     closeDropdown() {
       this.isOpen = false;
     },

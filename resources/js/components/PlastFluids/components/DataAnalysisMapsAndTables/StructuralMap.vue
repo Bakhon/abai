@@ -12,6 +12,7 @@ import SmallCatLoader from "../SmallCatLoader.vue";
 import { getIsohypsumModelCoords } from "../../services/mapService";
 import { downloadUserReport } from "../../services/templateService";
 import { mapState } from "vuex";
+import { eventBus } from "../../eventBus";
 
 export default {
   name: "StructuralMap",
@@ -23,15 +24,25 @@ export default {
       map: null,
       loading: false,
       layers: {},
+      model: {},
+      currentModelImage: null,
+      currentModelBounds: null,
+      imageOverlay: null,
       mapOptions: {
         doubleClickZoom: false,
         center: [47.78333, 67.76667],
         zoom: 5,
+        attributionControl: false,
       },
     };
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["currentModel"]),
+    ...mapState("plastFluidsLocal", [
+      "currentModel",
+      "depthMultiplier",
+      "isIsohypsShown",
+      "isTileLayerShown",
+    ]),
   },
   watch: {
     async currentModel(value) {
@@ -52,42 +63,29 @@ export default {
         const blob = new Blob([image.data], {
           type: "image/png",
         });
-        const imageUrl = URL.createObjectURL(blob);
-        const bounds = [
+        this.currentModelImage = URL.createObjectURL(blob);
+        this.currentModelBounds = [
           [start_latitude, start_longitude],
           [end_latitude, end_longitude],
         ];
-        L.imageOverlay(imageUrl, bounds).addTo(this.map);
-        const model = await getIsohypsumModelCoords({
-          depth_multiplier: 5,
+        this.imageOverlay = L.imageOverlay(
+          this.currentModelImage,
+          this.currentModelBounds
+        );
+        this.model = await getIsohypsumModelCoords({
+          depth_multiplier: this.depthMultiplier,
           model_id: id,
         });
-        model.isogyps.forEach((layer) => {
-          const geoJson = {
-            ...layer,
-            type: "FeatureCollection",
-            features: layer.lines,
-          };
-          delete geoJson.lines;
-          this.layers[geoJson.level_number] = new L.featureGroup();
-          L.geoJSON(geoJson, {
-            onEachFeature: this.onEachFeature,
-            style: {
-              weight: 1,
-              color: "#000",
-              fillOpacity: 1,
-            },
-          });
-          this.layers[geoJson.level_number].addTo(this.map);
-        });
-        this.addWells(model.wells);
+        this.isTileLayerShown ? this.addTileLayer() : "";
+        this.isIsohypsShown ? this.addIsohyps() : "";
+        this.addWells();
         this.map.on("zoomstart", () => {
           if (this.map.getZoom() >= 13) this.removeTooltips();
         });
         this.map.on("zoomend", () => {
           if (this.map.getZoom() >= 13) this.addTooltips();
         });
-        this.map.fitBounds(bounds);
+        this.map.fitBounds(this.currentModelBounds);
       } catch (error) {
         alert(error);
       } finally {
@@ -96,9 +94,42 @@ export default {
     },
   },
   methods: {
-    addWells(wells) {
+    addIsohyps() {
+      this.model.isogyps.forEach((layer) => {
+        const geoJson = {
+          ...layer,
+          type: "FeatureCollection",
+          features: layer.lines,
+        };
+        delete geoJson.lines;
+        this.layers[geoJson.level_number] = new L.featureGroup();
+        L.geoJSON(geoJson, {
+          onEachFeature: this.onEachFeature,
+          style: {
+            weight: 1,
+            color: "#000",
+            fillOpacity: 1,
+          },
+        });
+        this.layers[geoJson.level_number].addTo(this.map);
+      });
+    },
+    removeIsohyps() {
+      for (let key in this.layers) {
+        if (key === "wells") continue;
+        this.layers[key].clearLayers();
+        delete this.layers[key];
+      }
+    },
+    addTileLayer() {
+      this.imageOverlay.addTo(this.map);
+    },
+    removeTileLayer() {
+      this.imageOverlay.remove();
+    },
+    addWells() {
       this.layers.wells = new L.featureGroup();
-      wells.forEach((well) => {
+      this.model.wells.forEach((well) => {
         const icon = L.divIcon({ className: "well-icon" });
         const wellMarker = L.marker([well.latitude, well.longitude], {
           icon,
@@ -120,6 +151,13 @@ export default {
     },
     removeTooltips() {
       this.layers.wells.eachLayer((layer) => layer.unbindTooltip());
+    },
+    handleMapChanges(data) {
+      const { isIsohypsShown, isTileLayerShown } = data;
+      if (isIsohypsShown !== "remain")
+        isIsohypsShown ? this.addIsohyps() : this.removeIsohyps();
+      if (isTileLayerShown !== "remain")
+        isTileLayerShown ? this.addTileLayer() : this.removeTileLayer();
     },
     clearLayers() {
       for (let key in this.layers) {
@@ -143,6 +181,7 @@ export default {
   },
   mounted() {
     this.initMap();
+    eventBus.$on("apply-map-changes", (data) => this.handleMapChanges(data));
   },
   beforeDestroy() {
     if (this.map) {

@@ -55,7 +55,7 @@
           @dropdown-select="updateCurrentCorrelation(key, ...arguments)"
           :placeholder="trans('plast_fluids.choose')"
           :items="correlations"
-          dropKey="name"
+          :dropKey="['name']"
         />
       </div>
     </div>
