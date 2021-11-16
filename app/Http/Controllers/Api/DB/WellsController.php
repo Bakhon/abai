@@ -634,40 +634,6 @@ class WellsController extends Controller
         return  response()->json($result);
     }
 
-    public function getInjectionHistory($wellId)
-    {
-        $measLiqs = MeasLiq::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $groupedLiq = $measLiqs->groupBy(function ($val) {
-            return Carbon::parse($val->dbeg)->format('Y');
-        });
-        $liqByMonths = array();
-        foreach ($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
-                return Carbon::parse($val->dbeg)->format('m');
-            });
-        }
-
-        $result = array();
-        foreach ($liqByMonths as $yearNumber => $monthes) {
-            foreach ($monthes as $monthNumber => $month) {
-                $result[$yearNumber][$monthNumber] = array();
-                foreach ($month as $dayNumber => $day) {
-                    $date = Carbon::parse($day['dbeg']);
-                    $dateEnd = Carbon::parse($day['dend']);
-
-                    array_push($result[$yearNumber][$monthNumber], array(
-                        'liq' => $day['liquid'],
-                        'date' => $date->format('Y-m-d'),
-                        'workHours' => $date->diffInDays($dateEnd),
-                    ));
-                }
-            }
-        }
-        return $result;
-    }
-
     public function getActivityByWell(Request $request, $wellId)
     {
         $wellWorkover = WellWorkover::query()
