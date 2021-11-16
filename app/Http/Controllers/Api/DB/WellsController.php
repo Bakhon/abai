@@ -28,7 +28,6 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class WellsController extends Controller
 {
@@ -37,8 +36,7 @@ class WellsController extends Controller
 
     public function __construct(WellCardGraphRepository $wellCardGraphRepo)
     {
-        $this->wellCardGraphRepo = $wellCardGraphRepo;
-        $this->connection = DB::connection('tbd');
+        $this->wellCardGraphRepo = $wellCardGraphRepo;        
     }
 
     public function getStructureTree(StructureService $service, Request $request)
