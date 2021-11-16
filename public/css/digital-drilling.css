@@ -12,7 +12,7 @@ sup{
     color: #ffffff;
 }
 .digital_drilling{
-    width: 97vw;
+    width: 96.5vw;
 }
 .digital_drilling *{
     box-sizing: border-box;
@@ -318,7 +318,7 @@ sup{
     background-color: #20274F;
     height: 100%;
     align-items: stretch;
-    padding: 23px 0;
+    padding: 10px 0;
 }
 
 .digital_drilling .resultsBlock ul li {
@@ -350,7 +350,7 @@ sup{
 .digital_drilling .resultsBlock ul li .block p.num span.big {
     margin: 0;
     color: #fff;
-    font-size: 49px;
+    font-size: 35px;
     line-height: 0.9;
     font-weight: 600;
 }
@@ -359,9 +359,9 @@ sup{
 
 .digital_drilling .resultsBlock ul li .block p.title {
     display: table;
-    margin: 15px 0 0;
+    margin: 10px 0 0;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     border-bottom: 3px solid transparent;
     padding-bottom: 3px;
 }
@@ -456,11 +456,11 @@ sup{
 }
 
 .digital_drilling .analyticsBlock p.num span {
-    display: table;
     color: #fff;
-    font-size: 50px;
+    font-size: 35px;
     font-weight: 600;
     line-height: 1;
+    margin-right: 10px;
 }
 
 .digital_drilling .analyticsBlock p.name {
@@ -567,7 +567,7 @@ input.rangeInput {
 }
 .contentBlock{
     min-height: 500px;
-    height: calc(100% - 190px);
+    height: calc(100% - 140px);
 }
 .contentBlock.fullPage{
     height: 100%;
@@ -1360,7 +1360,8 @@ td.border-right-none{
     background: #272953;
     margin-bottom: 10px;
     padding: 10px;
-    height: calc(100% - 350px);
+    min-height: 380px!important;
+    height: calc(100% - 250px);
 }
 .operatingCosts-title{
     font-family: Harmonia Sans Pro Cyr;
