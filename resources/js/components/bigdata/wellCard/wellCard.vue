@@ -1194,7 +1194,7 @@ export default {
         {
           name: this.trans("well.rzab"),
           data: gdisCurrentValueBhp,
-          type: ["dob_oil"],
+          type: ["all"],
         },
         {
           name: this.trans("well.rzatr"),
