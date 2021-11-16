@@ -20,7 +20,7 @@
                         <button v-if="report.previous_report.id" class="save" @click="previous=true">
                             Предыдущий отчет
                         </button>
-                        <button class="save" @click="saveReport">
+                        <button class="save" @click="saveModal=true">
                             {{trans('app.save')}}
                         </button>
                     </div>
@@ -337,19 +337,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="i in 19">
+                                <tr v-for="i in 17">
                                     <td class="w-15">
-                                        <select name="" id="" v-model="report.prod_time_daily[i-1].operations_type">
-                                            <option :value="operation" v-for="operation in operation1">{{operation.name_ru}}</option>
-                                        </select>
+                                        {{report.prod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.prod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.prod_time_daily[i-1].daily"></td>
                                     <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
-                                        <select name="" id="" v-model="report.unprod_time_daily[i-1].operations_type">
-                                            <option :value="operation" v-for="operation in operation2">{{operation.name_ru}}</option>
-                                        </select>
+                                       {{report.unprod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.unprod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.unprod_time_daily[i-1].daily"></td>
@@ -896,8 +892,8 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
-                            <td class="w-7">
+                            <td colspan="4" class="w-50">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
+                            <td class="w-50">
                                 <select name="" id="" v-model="report.well_parameters_daily.last_casing_dia">
                                     <option :value="diameter" v-for="diameter in diameters">
                                         {{diameter.diameter}}
@@ -1208,7 +1204,7 @@
                                 <textarea name=""  cols="30" rows="22" v-model="report.planned_work.planned_work"></textarea>
                             </td>
                         </tr>
-                        <tr v-for="(job_status, i) in report.job_status_6_hours_daily">
+                        <tr v-for="(job_status, i) in report.job_status_6_hours">
                             <td><input type="time" v-model="job_status.tbeg" @change="getTotalTime(i, 6)"></td>
                             <td><input type="time" v-model="job_status.tend" @change="getTotalTime(i, 6)"></td>
                             <td>{{job_status.total_time}}</td>
@@ -1715,6 +1711,23 @@
                 </div>
             </div>
         </div>
+        <div class="catalog-add" v-if="saveModal">
+            <div class="catalog-add-inner">
+                <div class="catalog-add-form m-height">
+                    <div class="catalog-add-header justify-content-center">
+                        <div class="catalog-add-title text-center">
+                            Вы точно хотите сохранить?
+                        </div>
+                    </div>
+                    <div class="catalog-add-content flex align-items-center justify-content-between">
+                        <button class="catalog-add-close" @click="saveModal=false">
+                            Отмена
+                        </button>
+                        <button @click="saveReport">{{trans('app.save')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <previous-daily-raport v-else :report="previousReport" @closePreviousReport="previous=false"/>
 </template>
@@ -1737,6 +1750,7 @@
         props: ['report'],
         data(){
             return{
+                saveModal: false,
                 previous: false,
                 previousReport: false,
                 summTotalTime: '00:00',
@@ -1896,6 +1910,8 @@
             this.getDeviceType()
             this.getBHAelements()
             this.getPreviousReport()
+            this.changeTotalTime(24)
+            this.changeTotalTime(6)
         },
         methods: {
             getPreviousReport(){
@@ -2493,13 +2509,23 @@
                 }
                 return sum
             },
-            getTotalTime(i, type){
-                
+            changeTotalTime(type){
                 let arr = []
                 if (type == 24){
                     arr = this.report.job_status_daily
                 }else{
-                    arr = this.report.job_status_6_hours_daily
+                    arr = this.report.job_status_6_hours
+                }
+                for (let i=0; i<arr.length; i++){
+                    this.getTotalTime(i, type)
+                }
+            },
+            getTotalTime(i, type){
+                let arr = []
+                if (type == 24){
+                    arr = this.report.job_status_daily
+                }else{
+                    arr = this.report.job_status_6_hours
                 }
                 if (arr[i].tbeg && arr[i].tend) {
                     let startTime = arr[i].tbeg;
@@ -2716,6 +2742,20 @@
     }
     .catalog-add-content input:focus{
         outline: none;
+    }
+    .catalog-add-content.flex{
+        display: flex;
+    }
+    .catalog-add-content.flex .catalog-add-close{
+        background-color: rgba(101, 106, 138, 1);;
+    }
+    .catalog-add-content.flex button{
+        width: 45%;
+        padding: 0!important;
+        height: 30px!important;
+    }
+    .m-height{
+        min-height: 140px;
     }
     .catalog-add-content button{
         background: rgba(46, 80, 233, 0.5);

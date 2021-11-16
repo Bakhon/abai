@@ -265,7 +265,7 @@
                                        </tr>
                                        <tr>
                                            <td>Итого:</td>
-                                           <td>getSum</td>
+                                           <td>{{getSum(report.staff_daily)}}</td>
                                        </tr>
                                        </tbody>
                                    </table>
@@ -325,32 +325,32 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="i in 19">
+                                <tr v-for="i in 17">
                                     <td class="w-15">
                                         {{report.prod_time_daily[i-1].operations_type.name_ru}}
                                     </td>
                                     <td>{{report.prod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.prod_time_daily[i-1].daily"></td>
-                                    <td>sumValues</td>
+                                    <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
                                         {{report.unprod_time_daily[i-1].operations_type.name_ru}}
                                     </td>
                                     <td>{{report.unprod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.unprod_time_daily[i-1].daily"></td>
-                                    <td>sumValues</td>
+                                    <td>{{sumValues(report.unprod_time_daily[i-1].previous, report.unprod_time_daily[i-1].daily)}}</td>
                                 </tr>
                                 <tr class="h-31">
                                     <td colspan="3">
                                         {{trans('digital_drilling.daily_raport.total_production_time')}}
                                     </td>
                                     <td>
-                                        getAllProdTime
+                                        {{getAllProdTime('')}}
                                     </td>
                                     <td colspan="3">
                                         {{trans('digital_drilling.daily_raport.total_non_productive_time')}}
                                     </td>
                                     <td>
-                                        getAllProdTime
+                                        {{getAllProdTime('un')}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -396,9 +396,9 @@
                             </td>
                             <td colspan="4" class="border-bottom-0 text-left">{{trans('digital_drilling.daily_raport.delivered')}}</td>
                         </tr>
-                        <tr>
-                            <td ><input type="time" v-model="report.job_status_daily[0].tbeg"></td>
-                            <td ><input type="time" v-model="report.job_status_daily[0].tend"></td>
+                        <tr class="text-left">
+                            <td >{{report.job_status_daily[0].tbeg}}</td>
+                            <td >{{report.job_status_daily[0].tend}}</td>
                             <td >{{report.job_status_daily[0].total_time}}</td>
                             <td ><input type="text" v-model="report.job_status_daily[0].rate"></td>
                             <td >
@@ -407,9 +407,9 @@
                             <td ><input type="text" v-model="report.job_status_daily[0].operations"></td>
                             <td rowspan="16" colspan="4" class="w-20 border-top-0"><textarea name="" id="" cols="30" rows="32" v-model="report.comments.comment"></textarea></td>
                         </tr>
-                        <tr v-for="i in 15">
-                            <td ><input type="time" v-model="report.job_status_daily[i].tbeg"></td>
-                            <td ><input type="time" v-model="report.job_status_daily[i].tend"></td>
+                        <tr v-for="i in 15" class="text-left">
+                            <td >{{report.job_status_daily[i].tbeg}}</td>
+                            <td >{{report.job_status_daily[i].tend}}</td>
                             <td >{{report.job_status_daily[i].total_time}}</td>
                             <td ><input type="text" v-model="report.job_status_daily[i].rate"></td>
                             <td >
@@ -419,7 +419,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.TOTAL')}}</td>
-                            <td>summTotalTime</td>
+                            <td>{{summTotalTime}}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -502,15 +502,19 @@
                                         <input type="text" v-model="report.bit_info_daily[1].serial">
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr >
                                     <td>
                                         {{trans('digital_drilling.daily_raport.nozzles')}}
                                     </td>
-                                    <td colspan="2" class="nozzles-td">
-                                        NOZZLE1
+                                    <td colspan="2" class="nozzles-td text-left">
+                                        <span v-for="i in 7" class="mr-1" v-if="report.bit_info_daily[0].nozzle['nozzle_'+i]">
+                                            {{report.bit_info_daily[0].nozzle['nozzle_'+i]}};
+                                        </span>
                                     </td>
-                                    <td colspan="2" class="nozzles-td">
-                                       NOZZLE2
+                                    <td colspan="2" class="nozzles-td text-left">
+                                        <span v-for="i in 7" class="mr-1" v-if="report.bit_info_daily[1].nozzle['nozzle_'+i]">
+                                            {{report.bit_info_daily[1].nozzle['nozzle_'+i]}};
+                                        </span>
                                     </td>
 
                                 </tr>
@@ -599,21 +603,21 @@
                                         <div class="select__name">
                                             <div v-for="letter in bitWareLetters">{{letter}}</div>
                                         </div>
-                                        <!--<div class="selects">-->
-                                            <!--<select name="" id="" v-for="letter in bitWareLetters" v-model="report.bit_info_daily[0].bit_cond_iadc[bit_cond_iadc_letter[letter]]">-->
-                                                <!--<option :value="opt" v-for="opt in bitWare[letter]">{{opt}}</option>-->
-                                            <!--</select>-->
-                                        <!--</div>-->
+                                        <div class="selects">
+                                            <div v-for="letter in bitWareLetters" >
+                                                {{report.bit_info_daily[0].bit_cond_iadc[bit_cond_iadc_letter[letter]]}}
+                                            </div>
+                                        </div>
                                     </td>
                                     <td colspan="2" class="align-middle bit-ware">
                                         <div class="select__name">
                                             <div v-for="letter in bitWareLetters">{{letter}}</div>
                                         </div>
-                                        <!--<div class="selects">-->
-                                            <!--<select name="" id="" v-for="letter in bitWareLetters" v-model="report.bit_info_daily[1].bit_cond_iadc[bit_cond_iadc_letter[letter]]">-->
-                                                <!--<option :value="opt" v-for="opt in bitWare[letter]">{{opt}}</option>-->
-                                            <!--</select>-->
-                                        <!--</div>-->
+                                        <div class="selects">
+                                            <div v-for="letter in bitWareLetters" >
+                                                {{report.bit_info_daily[1].bit_cond_iadc[bit_cond_iadc_letter[letter]]}}
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -708,7 +712,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">{{trans('digital_drilling.daily_raport.BHA_length')}}</td>
-                                    <td colspan="2">SUM BHA</td>
+                                    <td colspan="2">{{sumBHA()}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -777,8 +781,8 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
-                            <td class="w-7">
+                            <td colspan="4" class="w-50">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
+                            <td class="w-50">
                                 {{report.well_parameters_daily.last_casing_dia.diameter}}
                             </td>
                         </tr>
@@ -1051,9 +1055,9 @@
                                 <textarea name=""  cols="30" rows="22" v-model="report.planned_work.planned_work"></textarea>
                             </td>
                         </tr>
-                        <tr v-for="(job_status, i) in report.job_status_6_hours">
-                            <td><input type="time" v-model="job_status.tbeg"></td>
-                            <td><input type="time" v-model="job_status.tend"></td>
+                        <tr v-for="(job_status, i) in report.job_status_6_hours" class="text-left">
+                            <td>{{job_status.tbeg}}</td>
+                            <td>{{job_status.tend}}</td>
                             <td>{{job_status.total_time}}</td>
                             <td><input type="text" v-model="job_status.rate"></td>
                             <td>
@@ -1440,7 +1444,26 @@
         data(){
             return{
                 bitWareLetters: ["I", "O", "D", "L", "B", "G", "D1", "R"],
+                bit_cond_iadc_letter: {
+                    I: 'inner_rows',
+                    O: 'outer_rows',
+                    D: 'dull_characteristics',
+                    L: 'location',
+                    B: 'bearing_seals',
+                    G: 'gauge',
+                    D1: 'other_dull_characteristics',
+                    R: 'reason_for_pulling_bit',
 
+                },
+                summTotalTime: '00:00',
+            }
+        },
+        mounted(){
+            this.changeTotalTime(24)
+            this.changeTotalTime(6)
+            var inputs = document.getElementsByTagName("INPUT");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = true;
             }
         },
         methods:{
@@ -1485,6 +1508,17 @@
                     }
                 }
                 return sum
+            },
+            changeTotalTime(type){
+                let arr = []
+                if (type == 24){
+                    arr = this.report.job_status_daily
+                }else{
+                    arr = this.report.job_status_6_hours
+                }
+                for (let i=0; i<arr.length; i++){
+                    this.getTotalTime(i, type)
+                }
             },
             getTotalTime(i, type){
 
@@ -1554,7 +1588,24 @@
                     this.pad(Math.floor(seconds/60)%60),
                     this.pad(seconds%60),
                 ].join(":");
-            }
+            },
+            getSum(arr){
+                let sum = 0
+                for (let i=0; i<arr.length; i++){
+                    if (arr[i].hours) {
+                        sum += parseInt(arr[i].hours)
+                    }
+                }
+                return sum
+            },
+            sumBHA(){
+                let arr = this.report.bha_daily
+                for (let i=arr.length-1; i>=0; i--){
+                    if (arr[i].increasing_length) {
+                        return parseInt(arr[i].increasing_length)
+                    }
+                }
+            },
         }
 
     }
@@ -1587,7 +1638,7 @@
     }
     .select__name div{
         text-align: left;
-        margin-left:4px
+        padding: 5px;
     }
     .bit-ware .selects{
         display: flex;
@@ -1597,21 +1648,10 @@
         border-radius: 5px;
         margin-top: 2px;
     }
-    .selects select{
-        margin-left: 2px;
+    .selects div{
+       padding: 5px;
     }
-    .select__name div:nth-child(1), .select__name div:nth-child(2),
-    .select__name div:nth-child(4), .select__name div:nth-child(5),
-    .selects select:nth-child(1), .selects select:nth-child(2),
-    .selects select:nth-child(4), .selects select:nth-child(5){
-        width: 30px;
-    }
-    .select__name div:nth-child(3), .select__name div:nth-child(6),
-    .select__name div:nth-child(7), .select__name div:nth-child(8),
-    .selects select:nth-child(3), .selects select:nth-child(6),
-    .selects select:nth-child(7), .selects select:nth-child(8){
-        width: 40px;
-    }
+
 .pump td{
     width: 7.35%!important
 }
