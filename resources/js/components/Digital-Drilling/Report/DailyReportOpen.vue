@@ -44,7 +44,7 @@
                             </div>
                             <div class="well_body-form-input" v-if="newWell=='new'">
                                 <label for="well">{{ trans('digital_drilling.passport.well') }}:</label>
-                                <input type="text" placeholder="| Введите скважину" id="well">
+                                <input type="text" placeholder="| Введите скважину" id="well" class="new">
                             </div>
                             <div class="well_body-form-coordinates" v-if="newWell=='new'">
                                 <div class="coordinates-title">

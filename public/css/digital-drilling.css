@@ -940,8 +940,8 @@ input.rangeInput {
     align-items: center;
 
 }
-.well_body-form-input .select{
-    background: #334296;
+.well_body-form-input .select, .well_body-form-input select{
+    background: #334296!important;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
     border-radius: 4px;
@@ -957,6 +957,16 @@ input.rangeInput {
 .well_body-form-input input{
     background: #1F2142;
     padding: 5px 14px;
+}
+.well_body-form-input input.new{
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 224px;
+    height: 28px;
+    margin-left: 10px;
+    max-width: 200px
 }
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
