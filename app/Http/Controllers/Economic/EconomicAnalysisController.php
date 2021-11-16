@@ -26,7 +26,7 @@ class EconomicAnalysisController extends Controller
     const TABLE_WELL_FORECAST = 'well_forecast';
 
     const OIL_FACTOR = 1;
-    const OIL_COEF = 1;
+    const OIL_DEVIATION = 1;
 
     const CHANGED_STATUS_NOT_CHANGE = 0;
     const CHANGED_STATUS_STOP = -1;
@@ -103,6 +103,9 @@ class EconomicAnalysisController extends Controller
             ),
             'proposedStoppedWells' => $this->getProposedStoppedWells(
                 $profitlessStoppedWells
+            ),
+            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs(
+                $profitlessStoppedWells
             )
         ];
     }
@@ -152,7 +155,7 @@ class EconomicAnalysisController extends Controller
                 $date = "
                 CASE WHEN well_forecast.status_id IS NOT NULL OR well_forecast.loss_status_id IS NOT NULL
 	                 THEN well_forecast.date
-	                 ELSE CAST(DATE_FORMAT(well_forecast.date, '%Y-%m-01') as DATE)
+	                 ELSE $dateMonth
                 END";
                 break;
             default:
@@ -427,7 +430,7 @@ class EconomicAnalysisController extends Controller
                 wells.status_name as status_name,
                 wells.status_id as status_id,
                 wells.date as date,
-                well_profitability.profitability as profitability,
+                well_profitability.profitability_propose as profitability,
                 COUNT(wells.uwi) AS uwi_count,
                 SUM(wells.oil) AS oil,
                 SUM(wells.oil_loss) AS oil_loss,
@@ -509,17 +512,19 @@ class EconomicAnalysisController extends Controller
         return $proposedWells;
     }
 
-    private function getProposedStoppedWells(array $uwis): array
+    private function getProposedStoppedWells(array $stoppedUwis): array
     {
+        $dateMonth = $this->sqlQueryDateMonth(null);
+
         return DB::table((new TechnicalWellForecast())->getTable())
             ->selectRaw(DB::raw("
-                    CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) as dt_month,
+                    $dateMonth as dt_month,
                     COUNT(DISTINCT uwi) as uwi_count,
                     SUM(oil) as oil_loss,
                     SUM(liquid) as liquid_loss,
                     SUM(active_hours + paused_hours) as paused_hours
                 "))
-            ->whereIn('uwi', $uwis)
+            ->whereIn('uwi', $stoppedUwis)
             ->groupByRaw(DB::raw("dt_month"))
             ->get()
             ->toArray();
@@ -554,7 +559,11 @@ class EconomicAnalysisController extends Controller
             ->whereRaw(DB::raw("well_profitability.profitability = 'profitable'"));
 
         return $this
-            ->sqlJoinWellProfitability($query, 'wells', 'well_profitability')
+            ->sqlJoinWellProfitability(
+                $query,
+                'wells',
+                'well_profitability'
+            )
             ->get()
             ->toArray();
     }
@@ -571,11 +580,13 @@ class EconomicAnalysisController extends Controller
 
         $lossStatuses = $this->sqlQueryLossStatuses();
 
+        $dateMonth = $this->sqlQueryDateMonth(null);
+
         $excludedUwis = DB::table($tableWellForecast)
             ->addSelect(DB::raw("DISTINCT uwi"))
             ->whereRaw(DB::raw("
                 loss_status_id IN ($lossStatuses) AND
-                CAST(DATE_FORMAT(date, '%Y-%m-01') as DATE) = '$date'
+                $dateMonth = '$date'
             "))
             ->toSql();
 
@@ -601,9 +612,60 @@ class EconomicAnalysisController extends Controller
             ->toArray();
     }
 
+    private function getProfitlessWellsWithPrs(array $stoppedUwis): array
+    {
+        $stoppedUwis = $this->buildSqlQueryWhereIn($stoppedUwis);
+
+        $dateMonth = $this->sqlQueryDateMonth(null);
+
+        $wells = DB::table((new TechnicalWellForecast())->getTable())
+            ->selectRaw(DB::raw("
+                uwi,
+                SUM(oil) as oil,
+                $dateMonth as dt_month,
+                CASE WHEN uwi in ($stoppedUwis) 
+                     THEN 1
+                     ELSE 0
+                END as is_stopped     
+            "))
+            ->whereRaw(DB::raw("prs_portion > 0"))
+            ->groupByRaw(DB::raw("uwi, dt_month"))
+            ->toSql();
+
+        $query = DB::table(DB::raw("($wells) as wells"))
+            ->addSelect(DB::raw("
+                wells.dt_month as date,
+                wells.is_stopped,
+                CASE WHEN well_profitability.profitability = 'profitless' AND 
+                          well_profitability.profitability_without_prs = 'profitable'
+                     THEN 1
+                     ELSE 0
+                END as is_become_profitable,     
+                COUNT(DISTINCT wells.uwi) as uwi_count,
+                SUM(wells.oil) as oil,
+                SUM(well_profitability.operating_profit) as operating_profit,
+                SUM(well_profitability.operating_profit_propose) as operating_profit_propose,
+                SUM(well_profitability.operating_profit_without_prs) as operating_profit_without_prs
+            "))
+            ->whereRaw(DB::raw("well_profitability.profitability = 'profitless'"))
+            ->groupByRaw(DB::raw("wells.dt_month, wells.is_stopped, is_become_profitable"));
+
+        return $this
+            ->sqlJoinWellProfitability(
+                $query,
+                "wells",
+                "well_profitability",
+                self::NULLABLE_WHERE_IN_PARAM,
+                self::NULLABLE_WHERE_IN_PARAM,
+                "dt_month"
+            )
+            ->get()
+            ->toArray();
+    }
+
     private function getWellsForOilLimitWithMaxOperatingProfit(array $wells, float $oilLimit): array
     {
-        $oilLimit = (int)floor(abs($oilLimit) * self::OIL_FACTOR * self::OIL_COEF);
+        $oilLimit = (int)floor(abs($oilLimit) * self::OIL_FACTOR * self::OIL_DEVIATION);
 
         $wellsCount = count($wells);
 
@@ -677,12 +739,13 @@ class EconomicAnalysisController extends Controller
         string $profitableUwis = "''",
         string $stoppedUwis = "''",
         string $wellForecastAlias = 'well_forecast',
-        string $analysisParamAlias = 'analysis_param'
+        string $analysisParamAlias = 'analysis_param',
+        bool $hasPrs = true
     ): string
     {
         $liquid = $this->sqlQueryLiquid($profitableUwis, $stoppedUwis, $wellForecastAlias);
 
-        $prsPortion = $this->sqlQueryPrsPortion($stoppedUwis, $wellForecastAlias);
+        $prsPortion = $this->sqlQueryPrsPortion($stoppedUwis, $wellForecastAlias, $hasPrs);
 
         return "
         CASE WHEN $liquid > 0
@@ -782,9 +845,14 @@ class EconomicAnalysisController extends Controller
 
     private function sqlQueryPrsPortion(
         string $stoppedUwis = "''",
-        string $wellForecastAlias = 'well_forecast'
+        string $wellForecastAlias = 'well_forecast',
+        bool $hasPrs = true
     ): string
     {
+        if (!$hasPrs) {
+            return "0";
+        }
+
         return $stoppedUwis === self::NULLABLE_WHERE_IN_PARAM
             ? "$wellForecastAlias.prs_portion"
             : "CASE WHEN $wellForecastAlias.uwi IN ($stoppedUwis)
@@ -852,14 +920,16 @@ class EconomicAnalysisController extends Controller
             END";
     }
 
-    private function sqlQueryProfitability(): string
+    private function sqlQueryProfitability(string $operatingProfit = 'operating_profit'): string
     {
-        return "CASE WHEN operating_profit > 0 THEN 'profitable' ELSE 'profitless' END";
+        return "CASE WHEN $operatingProfit > 0 THEN 'profitable' ELSE 'profitless' END";
     }
 
-    private function sqlQueryDateMonth(string $wellForecastAlias = 'well_forecast'): string
+    private function sqlQueryDateMonth(?string $wellForecastAlias = 'well_forecast'): string
     {
-        return "CAST(DATE_FORMAT($wellForecastAlias.date, '%Y-%m-01') as DATE)";
+        $column = $wellForecastAlias ? "$wellForecastAlias.date" : "date";
+
+        return "CAST(DATE_FORMAT($column, '%Y-%m-01') as DATE)";
     }
 
     private function sqlQueryLossStatuses(bool $hasDeoptimization = false): string
@@ -932,11 +1002,27 @@ class EconomicAnalysisController extends Controller
     {
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
 
-        $netBack = $this->sqlQueryNetBack($profitableUwis, $stoppedUwis);
+        $netBack = $this->sqlQueryNetBack();
 
-        $overallExpenditures = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
+        $netBackPropose = $this->sqlQueryNetBack($profitableUwis, $stoppedUwis);
+
+        $overallExpenditures = $this->sqlQueryOverallExpenditures();
+
+        $overallExpendituresPropose = $this->sqlQueryOverallExpenditures($profitableUwis, $stoppedUwis);
+
+        $overallExpendituresWithoutPrs = $this->sqlQueryOverallExpenditures(
+            $profitableUwis,
+            $stoppedUwis,
+            'well_forecast',
+            'analysis_param',
+            false
+        );
 
         $profitability = $this->sqlQueryProfitability();
+
+        $profitabilityPropose = $this->sqlQueryProfitability('operating_profit_propose');
+
+        $profitabilityWithoutPrs = $this->sqlQueryProfitability('operating_profit_without_prs');
 
         $columns = ["uwi", "date"];
 
@@ -944,7 +1030,9 @@ class EconomicAnalysisController extends Controller
             ->addSelect(DB::raw("
                 well_forecast.uwi as uwi,
                 analysis_param.date as date,
-                SUM($netBack - ($overallExpenditures)) as operating_profit
+                SUM($netBack - ($overallExpenditures)) as operating_profit,
+                SUM($netBackPropose - ($overallExpendituresPropose)) as operating_profit_propose,
+                SUM($netBack - ($overallExpendituresWithoutPrs)) as operating_profit_without_prs
             "))
             ->groupBy($columns);
 
@@ -954,8 +1042,19 @@ class EconomicAnalysisController extends Controller
 
         return DB::table(DB::raw("($query) as well_query"))
             ->addSelect($columns)
-            ->addSelect(DB::raw("$profitability as profitability"))
-            ->groupBy(array_merge($columns, ['profitability']));
+            ->addSelect(DB::raw("
+                $profitability as profitability,
+                $profitabilityPropose as profitability_propose,
+                $profitabilityWithoutPrs as profitability_without_prs,
+                SUM(operating_profit) as operating_profit,
+                SUM(operating_profit_propose) as operating_profit_propose,
+                SUM(operating_profit_without_prs) as operating_profit_without_prs
+            "))
+            ->groupBy(array_merge($columns, [
+                'profitability',
+                'profitability_propose',
+                'profitability_without_prs'
+            ]));
     }
 
 }
