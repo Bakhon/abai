@@ -21,7 +21,7 @@ class Dzo {
 
     protected $consolidatedFieldsMapping = array (
         'production' => array(
-            'fact' => 'oil_production_fact',
+            'fact' => 'oil_production_fact_corrected',
             'plan' => 'plan_oil',
             'opek' => 'plan_oil_opek',
             'condensateFact' => 'condensate_production_fact',
@@ -86,6 +86,7 @@ class Dzo {
     );
 
     protected $dzoName;
+    protected $measuringFactColumn = 'oil_production_fact';
 
     public function getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$dzoId,$periodEnd)
     {
@@ -93,7 +94,11 @@ class Dzo {
         $companySummary = $this->oilCondensateTemplate;
         $companySummary['id'] = $dzoId;
         $companySummary['name'] = $dzoName;
-        $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        if ($type === 'production') {
+            $companySummary['fact'] = $this->getProductionFactSummary($dzoFact,$this->consolidatedFieldsMapping[$type]['fact']);
+        } else {
+            $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        }
         $companySummary['plan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
         $companySummary['opek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['opek']);
         $companySummary['condensatePlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensatePlan']);
@@ -159,7 +164,11 @@ class Dzo {
         $companySummary = $this->oilCondensateTemplate;
         $companySummary['id'] = $dzoId;
         $companySummary['name'] = $dzoName;
-        $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        if ($type === 'production') {
+            $companySummary['fact'] = $this->getProductionFactSummary($dzoFact,$this->consolidatedFieldsMapping[$type]['fact']);
+        } else {
+            $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        }
         $companySummary['plan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
         $companySummary['opek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['opek']);
         $companySummary['condensatePlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensatePlan']);
@@ -231,7 +240,11 @@ class Dzo {
             );
             $formattedDate = Carbon::parse($item['date'])->copy()->firstOfMonth()->startOfDay()->format('d/m/Y');
             $dzoName = $item['dzo_name'];
-            $daySummary['fact'] = $item[$this->consolidatedFieldsMapping[$type]['fact']];
+            if (!is_null($item[$this->consolidatedFieldsMapping[$type]['fact']]) && $item[$this->consolidatedFieldsMapping[$type]['fact']] > 0) {
+                $daySummary['fact'] = $item[$this->consolidatedFieldsMapping[$type]['fact']];
+            } else {
+                $daySummary['fact'] = $item[$this->measuringFactColumn];
+            }
             $planRecord = array(
                 'plan_oil' => 0,
                 'plan_oil_opek' => 0,
@@ -313,5 +326,18 @@ class Dzo {
             }
         }
         return $ordered;
+    }
+
+    private function getProductionFactSummary($dzoFact,$factField)
+    {
+        $summary = 0;
+        foreach($dzoFact as $fact) {
+            if (!is_null($fact[$factField]) && $fact[$factField] > 0) {
+                $summary += $fact[$factField];
+            } else {
+                $summary += $fact[$this->measuringFactColumn];
+            }
+        }
+        return $summary;
     }
 }
