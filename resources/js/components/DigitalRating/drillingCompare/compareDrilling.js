@@ -1,7 +1,7 @@
+import apexchart from 'vue-apexcharts';
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsHorizon,horizons,actualIndicators,objectList} from '../json/data';
-import apexchart from 'vue-apexcharts';
+import {rowsHorizon,actualIndicators,objectList} from '../json/data';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
 import owcList from '../json/owc_out_uzn_13_osn.json';
@@ -43,17 +43,17 @@ export default {
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
+      show: false
     }
   },
 
-  async created() {
-    await this.fetchData();
-  },
-
   async mounted() {
+    await this.fetchData();
     await this.initMap('wellMap');
     await this.initWellOnMap();
     await this.initContourOnMap();
+    await this.initLegends();
+    // await this.draw();
   },
 
   watch: {
@@ -69,9 +69,6 @@ export default {
   },
 
   computed: {
-    getSelectedHorizon() {
-      return this.horizon;
-    },
     rowsHorizon() {
       return rowsHorizon;
     },
@@ -92,6 +89,7 @@ export default {
             style: {
               colors: this.getColors(6, '#fff')
             },
+            formatter: (val) => val.toFixed(0)
           }
         },
         grid: this.getGrid
@@ -112,7 +110,8 @@ export default {
           labels: {
             style: {
               colors: this.getColors(7, '#fff')
-            }
+            },
+            formatter: (val) => val.toFixed(0)
           }
         },
         grid: this.getGrid
@@ -230,6 +229,26 @@ export default {
       }).addTo(this.map);
     },
 
+    initLegends() {
+      const legend = L.control({ position: "bottomleft" });
+
+      legend.onAdd = function() {
+        let div = L.DomUtil.create("div", "legend");
+        div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
+          '<span> - добывающая проектная скважина</span><br>';
+        div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
+          'width: 0;\n' +
+          'height: 0;\n' +
+          'border-style: solid;\n' +
+          'border-width: 0 8px 8px 8px;\n' +
+          'border-color: transparent transparent #fcad00 transparent;"></div>' +
+          '<span> - нагнетательный скважин</span>';
+        return div;
+      };
+
+      legend.addTo(this.map);
+    },
+
     getColors(count, color) {
       let colors = [];
       for (let i = 0; i < count; i++) {
@@ -259,6 +278,22 @@ export default {
 
     getChildren(item) {
       return item?.children?.length;
-    }
+    },
+
+    draw() {
+      const triangle = document.getElementById('triangle');
+      console.log('triangle', triangle.getContext);
+      if (triangle.getContext){
+        const ctx = triangle.getContext('2d');
+        // Stroked triangle
+        ctx.beginPath();
+        ctx.moveTo(24,24);
+        ctx.lineTo(125,45);
+        ctx.lineTo(45,125);
+        ctx.strokeStyle('#fcad00');
+        ctx.closePath();
+        ctx.stroke();
+      }
+    },
   }
 }

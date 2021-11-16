@@ -173,7 +173,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 h1, label {
   color: #fff;
 }

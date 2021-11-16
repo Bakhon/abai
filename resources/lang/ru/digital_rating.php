@@ -63,14 +63,15 @@ return array (
   'sector' => 'Сектор',
   'dateAnalysis' => 'Дата анализа',
   'comparisonActualDrillingPoints' => 'Сравнение фактических точек бурения с ПТД',
-  'coincidencePlannedWellsWithin' => 'Совпадение проектных скважин в пределах',
+  'coincidencePlannedWellsWithin' => 'Совпадение скважин в пределах',
   'year' => 'Год',
-  'comparisonDesignActualIndicators' => 'Сравнение проектных и фактических показателей',
+  'comparisonDesignActualIndicators' => 'Сравнение показателей',
   'wellsCommissioningDrilling' => 'Ввод скважин из бурения',
   'units' => 'ед.',
   'oilProduction' => 'Добыча нефти',
   'thousandTons' => 'тыс. т',
   'project' => 'Проект',
   'fact' => 'Факт',
-  'deviation' => 'Отклонение'
+  'deviation' => 'Отклонение',
+  'searchRadius' => 'Радиус поиска'
 );

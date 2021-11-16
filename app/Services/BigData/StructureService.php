@@ -23,8 +23,8 @@ class StructureService
         $userSelectedTreeItems = auth()->user()->org_structure;
         $fullTree = $this->getTree(Carbon::now());
         $tree = [];
-        $this->fillTree($fullTree, $tree, $userSelectedTreeItems);
-        return $tree;
+        $this->generateTreeWithPermissions($fullTree, $tree, $userSelectedTreeItems);
+        return $this->fillTreeWithFullNames($tree);
     }
 
     public function getTree(Carbon $date, bool $showWells = false, $isCacheResults = true): array
@@ -173,18 +173,39 @@ class StructureService
         return $result;
     }
 
-    public function fillTree($branch, &$tree, $userSelectedTreeItems): void
+    public function generateTreeWithPermissions($branch, &$tree, $userSelectedTreeItems): void
     {
         foreach ($branch as $item) {
             $key = implode(':', [$item['type'], $item['id']]);
-            if (in_array($key, $userSelectedTreeItems)) {
+            if (!empty($userSelectedTreeItems) && in_array($key, $userSelectedTreeItems)) {
                 $tree[] = $item;
                 continue;
             }
             if (!empty($item['children'])) {
-                $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+                $this->generateTreeWithPermissions($item['children'], $tree, $userSelectedTreeItems);
             }
         }
+    }
+
+    private function fillTreeWithFullNames($tree): array
+    {
+        foreach ($tree as $key => $item) {
+            $tree[$key] = $this->addFullNameToTreeItem($item);
+        }
+        return $tree;
+    }
+
+    private function addFullNameToTreeItem($item, $parentName = null): array
+    {
+        $item['full_name'] = $parentName ? $parentName . ' / ' . $item['name'] : $item['name'];
+        if (empty($item['children'])) {
+            return $item;
+        }
+
+        foreach ($item['children'] as $key => $child) {
+            $item['children'][$key] = $this->addFullNameToTreeItem($child, $item['full_name']);
+        }
+        return $item;
     }
 
     private function generateTree($items): array

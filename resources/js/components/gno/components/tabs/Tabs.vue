@@ -3,12 +3,12 @@
   <div>
     <div class="container">
       <ul class="tabs-choose">
-        <li @click="activeTab = '1'" :class="[activeTab === '1' ? 'active' : '']">{{ trans('pgno.shgn') }}</li>
-        <li @click="activeTab = '2'" :class="[activeTab === '2' ? 'active' : '']">{{trans('pgno.ecn')}}</li>
+        <li @click="activeTab = 'shgnTab'" :class="[activeTab === 'shgnTab' ? 'active' : '']">{{ trans('pgno.shgn') }}</li>
+        <li @click="activeTab = 'ecnTab'" :class="[activeTab === 'ecnTab' ? 'active' : '']">{{trans('pgno.ecn')}}</li>
       </ul>
       <div class="tabs-content">
-        <div class="content-shgn" v-if="activeTab === '1'"><shgn @on-submit-params="onPushParams()" :calcKpodTrigger="calcKpodTrigger"></shgn></div>
-        <div class="content" v-if="activeTab === '2'"><ecn></ecn></div>
+        <div class="content-shgn" v-if="activeTab === 'shgnTab'"><shgn @on-submit-params="onPushParams()" :calcKpodTrigger="calcKpodTrigger"></shgn></div>
+        <div class="content" v-if="activeTab === 'ecnTab'"><ecn></ecn></div>
       </div>
     </div>
   </div>
@@ -21,17 +21,28 @@ import Develop from './components/Develop.vue'
 import Fon from './components/Fon.vue'
 
 export default {
-  props: {"calcKpodTrigger": Boolean},
+  props: {"calcKpodTrigger": Boolean,
+          "expMeth": String},
   components: { Shgn, Ecn, Fon, Develop, Economic },
   data: function () {
     return {
-      activeTab: "1"
+      activeTab: "shgnTab"
     }
   },
   methods: {
     onPushParams() {
       this.$emit('onPushParams')
       }
+  },
+  created() {
+    switch(this.expMeth) {
+      case "ШГН":
+        this.activeTab = "shgnTab"
+        break
+      case "ЭЦН":
+        this.activeTab = "ecnTab"
+        break
+    }
   }
 }
 </script>

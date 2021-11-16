@@ -141,6 +141,8 @@ Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default)
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
+Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
+
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
@@ -201,9 +203,10 @@ Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('gis-form-las', require('./components/bigdata/GisFormLas.vue').default);
 Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
-Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
-Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
-Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);
+Vue.component('bigdata-form', require('./components/bigdata/Forms.vue').default);
+Vue.component('bigdata-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
+Vue.component('bigdata-form-selector', require('./components/bigdata/FormSelector.vue').default);
+Vue.component('bigdata-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);
 Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
 Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
@@ -231,6 +234,7 @@ Vue.component('page-geophysics', require('./components/geology/geophysics/PageGe
 Vue.component('section-maps', require('./components/DigitalRating/sectionMaps').default);
 Vue.component('digital-rating-report', require('./components/DigitalRating/reports').default);
 Vue.component('compare-drilling', require('./components/DigitalRating/drillingCompare').default);
+Vue.component('factor-analysis', require('./components/DigitalRating/factorAnalysis').default);
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);

@@ -985,13 +985,28 @@
     .search-input-bd::placeholder {
         color: #fff;
     }
+    .asside-db.hide {
+        background: #272953;
+        width: 50px;
+        overflow: hidden;
+    }
+    .asside-db.hide div ,.asside-db.hide form{
+        display: none;
+    }
+    .asside-db.hide .arrow-hide {
+        display: flex;
+        transform: translateY(-50%) rotate(180deg);
+    }
+    .content-db.hide {
+        width: calc(100% - 60px);
+    }
     .asside-db-tab-content {
         background: #272953;
         overflow-y: auto;
         height: calc(100% - 60px);
     }
     .asside-db-tab-content::-webkit-scrollbar {
-        width: 4px; 
+        width: 4px;
         background-color: #143861;
     }
     .asside-db-tab-content__item--org {
@@ -1030,13 +1045,13 @@
         display: block;
         z-index: 1;
         padding-left: 40px;
-    min-height: 18px;
-    display: flex;
-    align-items: center;
+        min-height: 18px;
+        display: flex;
+        align-items: center;
     }
-   
+
     .asside-db-link-file:before{
-        content: '';
+    content: '';
     width: 14px;
     height: 18px;
     background-image: url(/img/bd/file.svg);

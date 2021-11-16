@@ -2,11 +2,13 @@
   <div class="customization-category">
     <div class="category-header">
       <input
-        :disabled="valueKey === 'temperature' ? true : false"
+        :disabled="
+          valueKey === 'temperature' || valueKey === 'density' ? true : false
+        "
         type="radio"
         :id="'customization-category-' + categoryName"
         :value="valueKey"
-        v-model="computedCurrentGraphic"
+        v-model="computedCurrentGraphicType"
       />
       <label :for="'customization-category-' + categoryName">{{
         trans("plast_fluids." + categoryName)
@@ -18,8 +20,31 @@
         v-for="(child, index) in children"
         :key="index"
       >
-        <input type="checkbox" :id="'customization-' + child" :value="child" />
-        <label :for="'customization-' + child">{{ child }}</label>
+        <input
+          :class="{
+            disabled:
+              currentGraphics.length === 4 &&
+              !computedCurrentGraphics.includes(child.key),
+          }"
+          type="checkbox"
+          :id="'customization-' + child.key"
+          :value="child.key"
+          :disabled="
+            valueKey !== currentGraphicType ||
+            (currentGraphics.length === 4 &&
+              !computedCurrentGraphics.includes(child.key))
+          "
+          v-model="computedCurrentGraphics"
+        />
+        <label
+          :for="'customization-' + child.key"
+          :class="{
+            disabled:
+              currentGraphics.length === 4 &&
+              !computedCurrentGraphics.includes(child.key),
+          }"
+          >{{ child.Label }}</label
+        >
       </div>
     </div>
   </div>
@@ -32,15 +57,26 @@ export default {
     valueKey: String,
     categoryName: String,
     children: Array,
-    currentGraphic: String,
+    currentGraphicType: String,
+    currentGraphics: Array,
   },
   computed: {
-    computedCurrentGraphic: {
+    computedCurrentGraphicType: {
       get() {
-        return this.currentGraphic;
+        return this.currentGraphicType;
       },
       set(value) {
-        this.$emit("update:currentGraphic", value);
+        this.$emit("update:currentGraphicType", value);
+      },
+    },
+    computedCurrentGraphics: {
+      get() {
+        return this.valueKey === this.currentGraphicType
+          ? this.currentGraphics
+          : [];
+      },
+      set(value) {
+        this.$emit("update:currentGraphics", value);
       },
     },
   },
@@ -82,6 +118,10 @@ input {
   align-items: center;
   margin-bottom: 10px;
   width: 100%;
+}
+
+.disabled {
+  cursor: not-allowed;
 }
 
 ::-webkit-scrollbar {

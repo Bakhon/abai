@@ -9,10 +9,6 @@
         <div v-else class="main-block w-100 px-2 py-3">
             <div class="d-flex justify-content-between header_info">
                 <span class="header_icon ml-1"></span>
-                <div class="d-flex justify-content-between">
-                    <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false),isMeasurementScheduleActive = false">Исторические сведения по добыче нефти</span>
-                </div>
             </div>
             <div class="d-flex mt-1">
                 <div class="col-12 center_block d-flex justify-content-between">
@@ -175,10 +171,10 @@
                                 </table>
                             </div>
                             <div class="p-0">
-                                <table class="table text-center text-white text-nowrap historical-table">
+                                <table class="table text-center text-white text-nowrap historical-table days-decomposition">
                                     <thead>
                                         <tr>
-                                            <th v-for="dayNumber in getDaysCountInMonth(periodItem.id)">{{dayNumber}}<br>&nbsp;</th>
+                                            <th v-for="dayNumber in getDaysCountInMonth(periodItem.id)">{{dayNumber}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -323,7 +319,7 @@ export default {
             this.historicalData = this.injectionMeasurementSchedule;
             this.SET_LOADING(true);
             for (let i in this.historicalData) {
-                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+                this.historicalData[i].params['activity'] = [];
             }
             this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
             this.SET_LOADING(false);
@@ -356,10 +352,10 @@ export default {
                         'date': date,
                         'isChecked': false,
                         'isVisible': false,
-                        'waterInjection': _.sumBy(month, item => Number(item.liq)),
-                        'dailyWaterInjection': _.sumBy(month, item => Number(item.liq)) / daysCount,
+                        'waterInjection': _.sumBy(month, 'water_vol'),
+                        'dailyWaterInjection': _.meanBy(month, 'water_vol'),
                         'accumulateWaterInjection': 0,
-                        'hoursWorked': _.sumBy(month, 'workHours'),
+                        'hoursWorked': _.sumBy(month, 'workHours') / 24,
                         'params': {
                             'techMode': [
                                 {
@@ -406,6 +402,11 @@ export default {
     },
     computed: {
         ...bigdatahistoricalVisibleState(['injectionMeasurementSchedule']),
+    },
+    watch: {
+        "injectionMeasurementSchedule": function() {
+            this.nahdleMeasurementSchedule();
+        }
     }
 }
 </script>
@@ -518,5 +519,11 @@ export default {
     background: #293688;
     border: 1px solid #3366FF;
     border-radius: 5px;
+}
+.days-decomposition {
+    th {
+        height: 52.59px;
+        vertical-align: middle;
+    }
 }
 </style>

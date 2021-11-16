@@ -33,6 +33,7 @@ return [
     'actions' => 'Действия',
     'documents' => 'Документы',
     'forms' => [
+        'title' => 'Формы ввода',
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',
             'uwi_number' => 'Номер скважины',
@@ -1393,7 +1394,7 @@ return [
             'meas_count' => 'Кол-во замеров',
         ],
         'current_g_d_i_s' => [
-            'conclusion' => 'Заключение',
+            'conclusion' => 'Справочник заключений ГДИС',
             'target' => 'Цель',
             'device' => 'Прибор',
             'transcript_dynamogram' => 'Расшифровка динамограммы',
@@ -1548,6 +1549,20 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'date' => 'Дата',
         ],
+        'production_plan' => [
+            'title' => 'План добычи/сдачи по месторождениям',
+            'oil_production' => 'Добыча нефти (т)',
+            'water_injection' => 'Закачка воды (м3)',
+            'water_production' => 'Добыча воды (м3)',
+            'liquid_production' => 'Добыча жидкости (м3)',
+            'oil_injection' => 'Сдача нефти (т)',
+            'gas_production' => 'Добыча газа (м3)',
+            'steam_injection' => 'Закачка пара (м3)',
+            'absorption' => 'Поглощение',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'select_ngdu' => 'Выберите НГДУ'
+        ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',
@@ -1577,7 +1592,7 @@ return [
     'end_date' => 'Конечная дата',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
-    'create_report' => 'Создать отчет', 
+    'create_report' => 'Создать отчет',
     'choose_template' => 'Выбрать шаблон',
     'choose_start_month' => 'Выберите начальный месяц',
     'choose_end_month' => 'Выберите конечный месяц',
@@ -1586,5 +1601,7 @@ return [
     'wells' => 'Скважины',
     'select_company' => 'Выберите компанию',
     'show_events' => 'Показывать события',
-    'show_full_history' => 'Показывать всю историю'
+    'show_full_history' => 'Показывать всю историю',
+    'org_structure' => 'Оргструктура',
+    'input_form' => 'Форма ввода'
 ];

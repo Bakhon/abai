@@ -5,7 +5,7 @@
             :right_content="right_content"
         >
             <template #left_function>
-                <div class="inc__left_functions">
+                <div class="inc__left_functions" @click="exportExcel">
                     <img src="/img/digital-drilling/excel-icon.png" alt="">
                     Выгрузить в MS-Excel
                 </div>
@@ -318,6 +318,11 @@
             }
         },
         methods:{
+            exportExcel(){
+                if (this.currentWell.id) {
+                    window.location.href = process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/' + this.currentWell.id + '/?=download'
+                }
+            },
             ...globalloadingMutations([
                 'SET_LOADING'
             ]),
@@ -511,6 +516,7 @@
     .inc__left_functions{
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
     .inc__left_functions img{
         margin-right: 8px;
