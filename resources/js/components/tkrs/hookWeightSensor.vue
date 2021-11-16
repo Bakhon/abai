@@ -57,11 +57,18 @@
                   <button class="calendar-form"><a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}</a></button>
                   
                 </div>
-                <!-- <div class="plotly-graph-custom"> -->
-                <Plotly :data="areaChartData" :displaylogo="false" 
-                :layout="layoutData" :display-mode-bar="true" 
-                :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart" class="plotly-graph-custom"></Plotly>
-                <!-- </div> -->
+                <div class="plotly-graph">
+                </div>
+                <div class="plotly-graph-custom">
+                  <Plotly 
+                    :data="areaChartData" 
+                    :displaylogo="false" 
+                    :layout="layoutData" 
+                    :display-mode-bar="true" 
+                    :mode-bar-buttons-to-remove="buttonsToRemove" 
+                    v-if="isChart">
+                  </Plotly>
+                </div>
                 <div>
                     <div class="nav nav-tabs all-tabs">
                       <div style="display:flex">
@@ -147,31 +154,34 @@ export default {
         modebar: {
           bgcolor: "rgba(0,0,0,0)"
         },
-        width: 1580,
-        height: 600,
+        width: 1587,
+        height: 617,
         margin: {
           l: 50,
           r: 5,
-          b: 70,
-          t: 30,
+          b: 50,
+          t: 20,
           pad: 4
         },
-        paper_bgcolor: "rgba(0,0,0,0)",
-        plot_bgcolor: "rgba(0,0,0,0)",
+        paper_bgcolor: "#1A214A",
+        plot_bgcolor: "#2B2E5E",
+        
         xaxis: {
           color: "#FFFFFF",
+          dtick: 1167567,
           title: 'Время',
           range: [this.minimum, this.maximum],
           type: 'date',
           rangeslider: true,
-          showgrid: false
+          gridcolor: "#3C4270",
         
         },
         yaxis: {
-          title: 'W (TC)',
           color: "#FFFFFF",
+          dtick: 1,
+          title: 'W (TC)',
+          gridcolor: "#3C4270",
           linecolor: "#EF5350",
-          showgrid: false
         },    
       };
     },
@@ -472,17 +482,15 @@ table, th, td {
 }
 
 .plotly-graph-custom {
-  background-color: #2B2E5E !important;
-  background-image: linear-gradient(#545580 1px, transparent 1px), 
-  linear-gradient(90deg, #545580 1px, transparent 1px);
-  background-size: 20px 20px, 20px 20px;
   height: calc(100% - 287px);
+  width: 100%;
+  border: 6px solid #20274F;
 }
 .sidebar_graph {
   height: calc(100% - 36px);
 }
 .tkrs-content-down {
-      height: 100%;
+  height: 100%;
 }
 .custom-dropdown-block {
   background: #1F2142;
@@ -504,5 +512,9 @@ table, th, td {
 }
 .a-link:hover {
   color: #fff;
+}
+.plotly-graph {
+  height: 8px;
+;
 }
 </style>
