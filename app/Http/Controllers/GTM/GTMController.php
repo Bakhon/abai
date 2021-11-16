@@ -683,6 +683,11 @@ class GTMController extends Controller
             0
         ];
 
+        $gtmPlan  = array_column($result, 1);
+        $gtmFact  = array_column($result, 2);
+
+        array_multisort($gtmPlan, SORT_DESC, $gtmFact, SORT_DESC, $result);
+
         return response()->json($result);
     }
 
