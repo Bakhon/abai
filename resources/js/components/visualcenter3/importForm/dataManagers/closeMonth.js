@@ -107,10 +107,8 @@ export default {
                 for (let y=2;y<=Object.keys(row).length;y++) {
                      let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
                      if (fact && fact[this.factFieldsMapping[y]] !== null) {
-                         console.log('set new ' + fact[this.factFieldsMapping[y]]);
                          row['column'+y] = fact[this.factFieldsMapping[y]];
                      } else if (fact && fact[this.measuringFactColumn]) {
-                         console.log('set old ' + fact[this.measuringFactColumn]);
                          row['column'+y] = fact[this.measuringFactColumn];
                      }
                 }
