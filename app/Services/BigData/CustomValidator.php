@@ -13,7 +13,7 @@ class CustomValidator
 
     public function validate(Request $request, array $rules, array $errorNames, array $errors = [])
     {
-        $errors = $this->getValidationErrors($request, $rules, $errorNames, $errors);
+        $errors = $this->getValidationErrors($request->all(), $rules, $errorNames, $errors);
 
         if (!empty($errors)) {
             throw ValidationException::withMessages($errors);
@@ -45,9 +45,9 @@ class CustomValidator
         return $pointInPolygon;
     }
 
-    private function getValidationErrors(Request $request, array $rules, array $errorNames, array $errors = []): array
+    public function getValidationErrors(array $values, array $rules, array $errorNames, array $errors = []): array
     {
-        $validator = Validator::make($request->all(), $rules, [], $errorNames);
+        $validator = Validator::make($values, $rules, [], $errorNames);
         return array_merge_recursive($errors, $validator->messages()->toArray());
     }
 }
