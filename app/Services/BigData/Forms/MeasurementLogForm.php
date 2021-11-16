@@ -169,6 +169,39 @@ abstract class MeasurementLogForm extends TableForm
         return $breadcrumbs;
     }
 
+    public function submitForm(array $fields, array $filter = []): array
+    {
+        foreach ($fields as $wellId => $wellFields) {
+            foreach ($wellFields as $columnCode => $field) {
+                $column = $this->getFieldByCode($columnCode);
+                if (isset($field['id'])) {
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->where('id', $field['id'])
+                        ->update(
+                            [
+                                $column['column'] => $field['value']
+                            ]
+                        );
+                } else {
+                    $data = [
+                        'well' => $wellId,
+                        $column['column'] => $field['value'],
+                        'dbeg' => $filter['date'],
+                        'dend' => $filter['date'],
+                    ];
+                    if (!empty($column['additional_filter'])) {
+                        $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
+                    }
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->insert($data);
+                }
+            }
+        }
+        return [];
+    }
+
     protected function saveSingleFieldInDB(array $params): void
     {
         $column = $this->getFieldByCode($params['field']);

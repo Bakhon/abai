@@ -27,7 +27,7 @@ class CustomValidator
         string $field,
         array $errors = []
     ) {
-        $errors = $this->getValidationErrors($request, $rules, $errorNames, $errors);
+        $errors = $this->getValidationErrors($request->all(), $rules, $errorNames, $errors);
 
         if (isset($errors[$field])) {
             throw ValidationException::withMessages($errors[$field]);

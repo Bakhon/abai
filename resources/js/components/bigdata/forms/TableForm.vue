@@ -170,7 +170,7 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors[row.id] && errors[row.id][column.code]"
+                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]"
                                   class="error">{{ showError(errors[row.id][column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
@@ -218,7 +218,7 @@
                                   class="form-control"
                                   type="text">
                             </div>
-                            <span v-if="errors[row.id] && errors[row.id][column.code]" class="error">
+                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]" class="error">
                               {{ showError(errors[row.id][column.code]) }}
                             </span>
                           </template>
@@ -687,8 +687,12 @@ export default {
       this.rows.map((row, index) => {
         if (!difference[index]) return
         fields[row.id] = difference[index]
+        for (let code in fields[row.id]) {
+          if (row[code].id) {
+            fields[row.id][code].id = row[code].id
+          }
+        }
       })
-
 
       let data = {
         fields: fields,
