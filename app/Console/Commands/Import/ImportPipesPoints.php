@@ -50,6 +50,7 @@ class ImportPipesPoints extends Command
         $manual_pipes_ids = ManualOilPipe::get()->pluck('id');
         $pipes_ids = $pipes_ids->merge($manual_pipes_ids);
         PipeCoord::whereNotIn('oil_pipe_id', $pipes_ids)->forceDelete();
+        TrunklinePoint::truncate();
 
         $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
     }

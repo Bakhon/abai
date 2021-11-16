@@ -112,9 +112,9 @@
                         await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/map/' + this.currentField.id + "/" + this.query).then((response) => {
                             let data = response.data;
                             if (data) {
+                                this.coordinates = data;
                                 this.center = [this.coordinates[0].X, this.coordinates[0].Y]
                                 this.zoom = 13
-                                this.coordinates = data;
                             } else {
                                 console.log('No data');
                             }

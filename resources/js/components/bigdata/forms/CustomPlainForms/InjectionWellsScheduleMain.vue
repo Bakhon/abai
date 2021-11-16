@@ -319,7 +319,7 @@ export default {
             this.historicalData = this.injectionMeasurementSchedule;
             this.SET_LOADING(true);
             for (let i in this.historicalData) {
-                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+                this.historicalData[i].params['activity'] = [];
             }
             this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
             this.SET_LOADING(false);
@@ -352,10 +352,10 @@ export default {
                         'date': date,
                         'isChecked': false,
                         'isVisible': false,
-                        'waterInjection': _.sumBy(month, item => Number(item.liq)),
-                        'dailyWaterInjection': _.sumBy(month, item => Number(item.liq)) / daysCount,
+                        'waterInjection': _.sumBy(month, 'water_vol'),
+                        'dailyWaterInjection': _.meanBy(month, 'water_vol'),
                         'accumulateWaterInjection': 0,
-                        'hoursWorked': _.sumBy(month, 'workHours'),
+                        'hoursWorked': _.sumBy(month, 'workHours') / 24,
                         'params': {
                             'techMode': [
                                 {

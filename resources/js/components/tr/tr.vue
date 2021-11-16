@@ -355,9 +355,9 @@
             aria-labelledby="dropdownMenuLink"
           >
               
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label" >{{trans('tr.start_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
                   <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
@@ -6896,6 +6896,10 @@ table::-webkit-scrollbar-corner {
   border-color: red;
   font-size: 12px;
   height: 31px;
+}
+.input-date-label {
+  margin-left: 8px;
+  color:#fff;
 }
 .modal_table {
   height: 240px !important;
