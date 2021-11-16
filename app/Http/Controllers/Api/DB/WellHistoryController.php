@@ -7,6 +7,8 @@ use App\Models\BigData\DailyProdOil;
 use App\Models\BigData\DailyInjectionOil;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
+use App\Models\BigData\TechModeInj;
 
 class WellHistoryController extends Controller
 {
@@ -104,5 +106,18 @@ class WellHistoryController extends Controller
         }
         Cache::put('well_history_inj_' . $wellId, $result, now()->addDay());
         return $result;
+    }
+
+    public function getInjectionTechModeOil(Request $request, $wellId)
+    {
+        $minYear = min($request->year);
+        $maxYear = max($request->year);
+        return TechModeInj::query()
+            ->select()
+            ->whereYear('dbeg', '>=', $minYear)
+            ->whereYear('dbeg', '<=', $maxYear)
+            ->where('well', $wellId)
+            ->get()
+            ->toArray();
     }
 }

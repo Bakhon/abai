@@ -334,9 +334,8 @@
                 summaryDisabledByDzo: ["KGM"],
                 techMode: [],
                 techModeMapping: {
-                    'liquid': 0,
-                    'oil': 2,
-                    'wcut': 1
+                    'agent_vol': 0,
+                    'inj_pressure': 1,
                 }
             };
         },
@@ -466,7 +465,7 @@
                     'year': _.map(this.historicalData, 'year'),
                     'dates': dates
                 };
-                const response = await axios.get(this.localeUrl(`/api/bigdata/wells/production/techmode/${this.well.id}`),{params:queryOptions});
+                const response = await axios.get(this.localeUrl(`/api/bigdata/wells/injection/techmode/${this.well.id}`),{params:queryOptions});
                 return response.data;
             },
             async updateByTechMode() {
@@ -520,7 +519,7 @@
         watch: {
             "injectionMeasurementSchedule": async function(data) {
                 this.nahdleMeasurementSchedule();
-              //  this.updateByTechMode();
+               this.updateByTechMode();
             }
         }
     }
