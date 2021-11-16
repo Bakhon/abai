@@ -19,6 +19,7 @@ use App\Models\BigData\DmartDailyProd;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
+use App\Models\BigData\WellEquip;
 use App\Models\BigData\WellWorkover;
 use App\Models\BigData\TechModeOil;
 use App\Models\BigData\WellStatus;
@@ -50,7 +51,7 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-       
+                  
         $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
@@ -102,12 +103,13 @@ class WellsController extends Controller
             'agms' => $this->getTechsByCode($well, [2000000000004]),
             'meas_well' => $this->measWell($well),
             'techmode' => $this->pzabWell($well),
+            'diametrStuzer' => $this->wellEquip($well),
         ];
                 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
-
+    
     private function getToday(): Carbon
     {
         return Carbon::today();
@@ -322,7 +324,7 @@ class WellsController extends Controller
     {
         return $well->pzabWell()
                ->orderBy('date', 'desc')
-               ->first(['well', 'date', 'p_res', 'bhp']);
+               ->first(['well', 'date', 'p_res', 'bhp']); 
     }
 
     private function dmartDailyProd(Well $well)
@@ -330,6 +332,17 @@ class WellsController extends Controller
         return $well->dmartDailyProd()
             ->orderBy('date', 'desc')
             ->first('oil');
+    }
+
+    private function wellEquip(Well $well)
+    {
+       return $well->wellEquip()             
+             ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
+             ->join('dict.equip_type', 'prod.well_equip.equip_type', '=', 'dict.equip_type.id')
+             ->where('dict.equip_type.code', '=', 'CHK')
+             ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
+             ->where('dict.metric.code', '=', 'BND')
+             ->first(['prm', 'value_double']); 
     }
 
     private function labResearchValue(Well $well)
@@ -617,40 +630,6 @@ class WellsController extends Controller
         $period = $request->get('period');
         $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
         return  response()->json($result);
-    }
-
-    public function getInjectionHistory($wellId)
-    {
-        $measLiqs = MeasLiq::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $groupedLiq = $measLiqs->groupBy(function ($val) {
-            return Carbon::parse($val->dbeg)->format('Y');
-        });
-        $liqByMonths = array();
-        foreach ($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
-                return Carbon::parse($val->dbeg)->format('m');
-            });
-        }
-
-        $result = array();
-        foreach ($liqByMonths as $yearNumber => $monthes) {
-            foreach ($monthes as $monthNumber => $month) {
-                $result[$yearNumber][$monthNumber] = array();
-                foreach ($month as $dayNumber => $day) {
-                    $date = Carbon::parse($day['dbeg']);
-                    $dateEnd = Carbon::parse($day['dend']);
-
-                    array_push($result[$yearNumber][$monthNumber], array(
-                        'liq' => $day['liquid'],
-                        'date' => $date->format('Y-m-d'),
-                        'workHours' => $date->diffInDays($dateEnd),
-                    ));
-                }
-            }
-        }
-        return $result;
     }
 
     public function getActivityByWell(Request $request, $wellId)

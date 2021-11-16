@@ -63,6 +63,7 @@ export default {
   position: relative;
   width: 230px;
   height: 198px;
+  color: white;
 
   ul {
     background: #40467E;
