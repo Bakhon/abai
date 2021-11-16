@@ -10,7 +10,7 @@
 @section('content')
     <link rel="stylesheet" href="/css/digital-drilling.css">
     <div class="row digital_drilling">
-        <daily-raport />
+        <daily-report-open />
     </div>
 @endsection
 @section('sidebar_menu_additional')
