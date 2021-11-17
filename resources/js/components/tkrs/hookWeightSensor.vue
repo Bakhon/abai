@@ -515,6 +515,6 @@ table, th, td {
 }
 .plotly-graph {
   height: 8px;
-;
 }
+
 </style>

@@ -9,15 +9,15 @@
                 src="/img/PlastFluids/chooseParameters.svg"
                 alt="choose parameters icon"
               />
-              <span>{{trans('tr.parametrs')}}</span>
+              <span>Параметры</span>
             </div>
           </div>
           <div class="dropdown-holder">
       
-            <b-form-select class="custom-dropdown-block"></b-form-select>
+            <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
             <div class="line-block"></div>
 
-            <b-form-select  class="custom-dropdown-block"></b-form-select>
+            <b-form-select  class="custom-dropdown-block" :options="wellDate" @change="onChangeWellDate"></b-form-select>
             <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
           </div>
@@ -57,7 +57,7 @@
                     <tr>
                       <td class="header_name">Дата отчета</td>
                       <td class="input-form-auto header_name">29.05.2020 г.</td>
-                      <td class="input-form-auto header_name_red">Скважина № 283</td>
+                      <td class="input-form-auto header_name_red">{{well_name}}</td>
                       <td class="input-form-auto header_name_red">м/р. Акшабулак </td>
                       <td class="header_name">Начало бурения:</td>
                       <td class="input-form-auto header_name_red">10.08.2012г</td>
@@ -66,40 +66,17 @@
                     </tr>
                     <tr>
                       <td class="header_name"> № отчета:</td>
-                      <td class="input-form-auto header_name">1</td>
+                      <td class="input-form-auto header_name">{{report_number}}</td>
                       <td class="header_name">Задание по программе:</td>
-                      <td class="input-form-auto" colspan="2">
-                            <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle input-form-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Переход на низлежащий горизонт (ПНЛГ)
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Освоение новой скважины после бурения с ГРП</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-                      </td>
+                      <td class="input-form-auto header_name" colspan="2">{{programmes_target_name}}</td>
                       <td class="header_name">Тип скважины:</td>
                       <td class="input-form-auto header_name_red" colspan="2">эксплуатационная</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Тип станка:</td>
-                      <td class="input-form-auto">
-
-                        <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle input-form-dropdown"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    УПА-80  kz 146 АL 11
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-                      </td>
+                      <td class="input-form-auto header_name">{{machine_type}}</td>
                       <td colspan="2" class="header_name">Подрядчик:</td>
-                      <td colspan="3" class="input-form-auto header_name_red">ТОО "Zhanros-Drilling"</td>
+                      <td colspan="3" class="input-form-auto header_name_red">{{contractor_name}}</td>
                     </tr>
                 </tbody>
               </table>
@@ -278,7 +255,7 @@
                 <tbody>
                     <tr>
                       <td rowspan="3">Начальник Б и РС ТОО СП "КГМ"</td>
-                      <td rowspan="3" class="input-form-auto">Кушкинбаев Б. / Сапаров М. </td>
+                      <td rowspan="3" class="input-form-auto">{{chief}}</td>
                       <td>подпись</td>
                       <td>Мастер КПРС</td>
                       <td>ФИО</td>
@@ -289,17 +266,17 @@
                       
                       <td></td>
                       <td>дневная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit"><input class="manual-input"/>{{master_day_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit"><input class="manual-input"/>{{master_day_shift_number}}</td>
                     </tr>
                     <tr>
                       
                       <td></td>
                       <td>ночная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit"><input class="manual-input"/>{{master_night_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit"><input class="manual-input"/>{{master_night_shift_number}}</td>
                     </tr>
                 </tbody>
               </table>
@@ -339,12 +316,162 @@ export default {
     BaseTable,
     baseBlock,
   },
+  computed: {
+  },
   data(){
     return {
-      fields: ['№', 'Начало', 'Конец', 'Продолжительность', 'Количество превышений', 'Событие'],
-      items: [['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '], ['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг ']]
+      currentTab: 1,
+      calendarDate: '2020-06-17',
+      Date1: null,
+      areaChartData: [],
+      
+
+      isChart: true,
+      wellList: [],
+      wellDate: [],
+      wellNumber: null,
+      wellFile: null,
+      maximum: null,
+      minimum: null,
+      chartData: null,
+      contractor_name: null,
+      report_number:  null,
+      machine_type:  null,
+      well_name:  null,
+      programmes_target_name:  null,
+      chief:  null,
+      master_day_shift:  null,
+      master_day_shift_number:  null,
+      master_night_shift:  null,
+      master_night_shift_number:  null,
+      programmes_target_name:  null,
+      
     }
-  }
+  },
+  created: async function () {
+    this.$store.commit("globalloading/SET_LOADING", true);
+    await this.axios
+      .get(
+          'http://172.20.103.203:8090/drWellName/'
+        )
+      .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
+        let data = response.data;
+        if (data) {
+          this.areaChartData = data.data;
+        } else {
+          console.log("No data");
+        }
+        return Promise
+      })
+      .catch((error) => {
+        console.log(error.data);
+        this.$store.commit("globalloading/SET_LOADING", false);
+      });
+      this.getListWell();
+    },
+  
+  methods: {
+    comparison_graphs() {
+        this.$modal.show('comparison_graphs')
+    },
+    onChangeWell(number) {
+      this.wellNumber = number;
+      this.postSelectedtWell();        
+    },
+    onChangeWellDate(number) {
+      this.wellFile = number;
+      this.postSelectedtWellFile();
+    },
+    getListWell() {
+      
+        this.axios
+            .get(
+                'http://172.20.103.203:8090/drWellName/',
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellList = data.data.wells;
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWell() {
+        this.axios
+            .get(
+                `http://172.20.103.203:8090/drWellDates/${this.wellNumber}`,
+            )
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.wellDate = data.data.dates;
+                    
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWellFile() {
+      this.$store.commit("globalloading/SET_LOADING", false);
+        this.axios
+            .get(
+                `http://172.20.103.203:8090/drHeaderWorkReport/${this.wellNumber}/${this.wellFile}/`,
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellFile = data;
+                    this.areaChartData = data.data;
+                    this.contractor_name = data.data.header.contractor_name;
+                    this.report_number = data.data.header.report_number;
+                    this.machine_type = data.data.header.machine_type;
+                    this.well_name = data.data.header.well_name;
+                    this.programmes_target_name = data.data.header.programmes_target_name;
+                    this.chief = data.data.works_report.chief;
+                    this.master_day_shift = data.data.works_report.master_day_shift;
+                    this.master_day_shift_number = data.data.works_report.master_day_shift_number;
+                    this.master_night_shift = data.data.works_report.master_night_shift;
+                    this.master_night_shift_number = data.data.works_report.master_night_shift_number;
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    cancelChat() {
+        this.isChart = false;
+    },
+    returnChat() {
+      this.isChart = true;
+    },
+    
+    selectTab(selectedTab) {
+            this.currentTab = selectedTab
+    },
+    chooseDate() {
+      const { calendarDate} = this;
+      var Date1 = new Date(calendarDate)
+      this.Date1 = Date1.toLocaleDateString();
+      this.axios
+        .get(
+            'http://127.0.0.1:7580/db/' + Date1.toLocaleDateString("en-GB") + '/'
+          )
+        .then((response) => {
+          this.$store.commit("globalloading/SET_LOADING", false);
+          let data = response.data;
+          if (data) {
+            this.areaChartData = data.data;
+          } else {
+            console.log("No data");
+          }
+        })
+    },
+  },
 };
 </script>
 <style lang="scss" scoped src="./InputFormTableStyles.scss"></style>

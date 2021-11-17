@@ -52,6 +52,25 @@
                       <td>Подъём штанг </td>
                       
                     </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>15.06.2021  14:30:26</td>
+                      <td>15.06.2021  14:30:26</td>
+                      <td>14:30:26</td>
+                      <td>1</td>
+                      <td>Подъём штанг </td>
+                      
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>15.06.2021  14:30:26</td>
+                      <td>15.06.2021  14:30:26</td>
+                      <td>14:30:26</td>
+                      <td>1</td>
+                      <td>Подъём штанг </td>
+                      
+                    </tr>
+                    
                 
                   
                   
@@ -127,5 +146,9 @@ export default {
 }
 .summary {
     padding-left: 5px;
+}
+.table-div {
+  overflow: scroll;
+  height: 214px;
 }
 </style>
