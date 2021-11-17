@@ -170,7 +170,8 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                            <span v-if="errors[row.id] && errors[row.id][column.code]"
+                                  class="error">{{ showError(errors[row.id][column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
                       <span class="value">
@@ -210,13 +211,17 @@
                           </template>
                         </template>
                         <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
-                          <div v-if="isCellEdited(row, column)" class="input-wrap">
-                            <input
-                                v-model="row[column.code].value"
-                                class="form-control"
-                                type="text">
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                          </div>
+                          <template v-if="isCellEdited(row, column)">
+                            <div class="input-wrap">
+                              <input
+                                  v-model="row[column.code].value"
+                                  class="form-control"
+                                  type="text">
+                            </div>
+                            <span v-if="errors[row.id] && errors[row.id][column.code]" class="error">
+                              {{ showError(errors[row.id][column.code]) }}
+                            </span>
+                          </template>
                           <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
@@ -703,7 +708,7 @@ export default {
             this.$emit('sent')
           })
           .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
+            this.errors = error.response.data.errors
             this.setLoading(false)
           })
     },
