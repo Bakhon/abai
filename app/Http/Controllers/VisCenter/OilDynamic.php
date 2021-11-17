@@ -121,6 +121,7 @@ class OilDynamic extends Controller
     private $operatingCompanies = array('ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','КГМКМГ');
     private $condensateCompanies = array('ОМГК','АГ');
     private $measuringFactColumn = 'oil_production_fact_corrected';
+    private $measuringCondensateFactColumn = 'condensate_production_fact_corrected';
     private $isCorrectedFactActive;
 
     public function oilDynamic()
@@ -135,6 +136,7 @@ class OilDynamic extends Controller
         $this->isCorrectedFactActive = $request->boolean('isCorrectedFactActive');
         if (!$this->isCorrectedFactActive) {
             $this->measuringFactColumn = 'oil_production_fact';
+            $this->measuringCondensateFactColumn = 'condensate_production_fact';
         }
         if ($this->category === 'НККМГ') {
             return $this->getConsolidated(array_keys($this->allCategories));
@@ -221,7 +223,7 @@ class OilDynamic extends Controller
     private function getDailyFact()
     {
         return DzoImportData::query()
-            ->select('date','dzo_name','oil_production_fact','oil_production_fact_corrected','condensate_production_fact')
+            ->select('date','dzo_name','oil_production_fact','oil_production_fact_corrected','condensate_production_fact','condensate_production_fact_corrected')
             ->whereNull('is_corrected')
             ->whereYear('date', Carbon::now()->year)
             ->whereMonth('date', $this->monthNumber)
@@ -264,8 +266,11 @@ class OilDynamic extends Controller
                  'factYear' => 0,
                  'planYear' => 0
             );
-            if (!in_array($dayFact['dzo_name'],$this->condensateCompanies) && !is_null($dayFact[$this->measuringFactColumn]) && $this->isCorrectedFactActive) {
+            if (!in_array($this->category ,$this->condensateCompanies) && !is_null($dayFact[$this->measuringFactColumn]) && $this->isCorrectedFactActive) {
                 $dayRecord['factDay'] = $dayFact[$this->measuringFactColumn];
+            }
+            if (in_array($this->category ,$this->condensateCompanies) && !is_null($dayFact[$this->measuringCondensateFactColumn]) && $this->isCorrectedFactActive) {
+                $dayRecord['factDay'] = $dayFact[$this->measuringCondensateFactColumn];
             }
             if (array_key_exists('multiplier',$dzoParams)) {
                $dayRecord = $this->getUpdatedByMultiplier($dayRecord,$dzoParams['multiplier']);
@@ -356,6 +361,10 @@ class OilDynamic extends Controller
     {
         $factFields = $this->factField;
         $measuringFactColumn = $this->measuringFactColumn;
+        if (in_array($this->category ,$this->condensateCompanies)) {
+            $measuringFactColumn = $this->measuringCondensateFactColumn;
+        }
+
         $isCorrectedFactActive = $this->isCorrectedFactActive;
         return DzoImportData::query()
             ->select('date','dzo_name','oil_production_fact','oil_production_fact_corrected','condensate_production_fact')
@@ -386,6 +395,7 @@ class OilDynamic extends Controller
             ->whereYear('date', Carbon::now()->year)
             ->whereIn('dzo',$this->dzoName)
             ->get();
+
         $summaryPlan = $this->getSummaryPlan($yearlyPlans);
         return $summaryPlan;
     }
