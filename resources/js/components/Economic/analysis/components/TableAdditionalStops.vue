@@ -107,49 +107,45 @@ export default {
         stopped: 0,
         notStopped: 0,
         oilLoss: 0,
+        operatingProfitLoss: 0,
         style: 'background: #293688;'
       }
 
       let rows = Object.values(this.wellsByDates).map((wells, dateIndex) => {
-        let totalCount = 0
-
-        let profitableCount = 0
-
-        let profitlessCount = 0
-
-        let profitlessStoppedCount = 0
-
-        let oilLoss = 0
+        let row = {
+          title: this.dates[dateIndex],
+          count: 0,
+          profitable: 0,
+          profitless: 0,
+          stopped: 0,
+          notStopped: 0,
+          oilLoss: 0,
+          operatingProfitLoss: 0,
+        }
 
         wells.forEach(well => {
           let count = +well.uwi_count
 
-          totalCount += count
+          row.count += count
 
           if (well.is_become_profitable) {
-            return profitableCount += count
+            return row.profitable += count
           }
 
-          profitlessCount += count
+          row.profitless += count
 
-          well.is_stopped
-              ? profitlessStoppedCount += count
-              : oilLoss += +well.oil
+          if (well.is_stopped) {
+            return row.stopped += count
+          }
+
+          row.oilLoss += +well.oil
+
+          row.operatingProfitLoss += +well.operating_profit_stop - +well.operating_profit
         })
 
-        let row = {
-          title: this.dates[dateIndex],
-          count: totalCount,
-          profitable: profitableCount,
-          profitless: profitlessCount,
-          stopped: profitlessStoppedCount,
-          notStopped: profitlessCount - profitlessStoppedCount,
-          oilLoss: oilLoss
-        }
+        row.notStopped = row.profitless - row.stopped
 
-        Object.keys(totalRow).forEach(key => {
-          totalRow[key] += +row[key]
-        })
+        Object.keys(totalRow).forEach(key => totalRow[key] += +row[key])
 
         return row
       })
@@ -214,8 +210,8 @@ export default {
         },
         {
           title: 'Экономия при доп. отключении (при сохр. 70% пост. рас., ПРС)',
-          key: 'notStopped',
-          dimension: 'ед.',
+          key: 'operatingProfitLoss',
+          dimension: 'тенге',
           style: 'flex: 0 0 15%',
         }
       ]

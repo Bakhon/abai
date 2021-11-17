@@ -49,7 +49,7 @@
 
     <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
       <economic-block
-          v-for="(block, index) in blocks"
+          v-for="(block, index) in economicBlocks"
           :key="index"
           :index="index"
           :block="block"
@@ -57,7 +57,7 @@
           class="mb-10px"
           style="min-height: 160px"/>
 
-      <month-headers :headers="monthHeaders"/>
+      <analysis-block :params="analysisBlocks"/>
     </div>
   </div>
 </template>
@@ -75,7 +75,7 @@ import EconomicBlock from "./components/EconomicBlock";
 import SelectScenarioVariations from "../components/SelectScenarioVariations";
 import CalculatedHeader from "./components/CalculatedHeader";
 import RemoteHeader from "../components/RemoteHeader";
-import MonthHeaders from "./components/MonthHeaders";
+import AnalysisBlock from "./components/AnalysisBlock";
 import Tables from "./components/Tables";
 
 import {TechnicalWellLossStatus} from "../models/TechnicalWellLossStatus";
@@ -88,7 +88,7 @@ export default {
     EconomicBlock,
     CalculatedHeader,
     RemoteHeader,
-    MonthHeaders,
+    AnalysisBlock,
   },
   mixins: [
     formatValueMixin,
@@ -96,10 +96,6 @@ export default {
     calcPercentMixin
   ],
   data: () => ({
-    form: {
-      org_id: null,
-      scenario_id: null
-    },
     wellsSumByStatus: null,
     wellsSumByLossStatus: null,
     wellsSum: null,
@@ -107,6 +103,7 @@ export default {
     proposedWells: null,
     proposedStoppedWells: null,
     profitlessWellsWithPrs: null,
+    analysisParams: null,
     wells: null,
     isWide: false
   }),
@@ -243,52 +240,65 @@ export default {
       ]
     },
 
-    monthHeaders() {
+    analysisBlocks() {
+      let params = this.analysisParams && this.analysisParams.length
+          ? this.analysisParams[0]
+          : {
+            date: '',
+            netback_forecast: 0,
+            variable_cost: 0,
+            permanent_cost: 0,
+            avg_prs_cost: 0,
+            oil_density: 0,
+            days: 0,
+            permanent_stop_cost: 0,
+          }
+
       return [
         {
           name: 'Месяц',
-          value: 'Май',
+          value: params.date,
           dimension: '',
         },
         {
           name: 'Нетбэк 2020 прогноз',
-          value: 51986.1,
+          value: this.localeValue(params.netback_forecast),
           dimension: 'тенге/тонна',
         },
         {
           name: 'Условно-переменные расходы',
-          value: 350.3,
+          value: this.localeValue(params.variable_cost),
           dimension: 'тг/тонну жидкости'
         },
         {
           name: 'Условно-постоянные расходы',
-          value: 67,
+          value: this.localeValue(params.permanent_cost),
           dimension: 'тыс.тг/скв/сут с ФОТ'
         },
         {
           name: 'Средняя стоимость ПРС',
-          value: 1948,
+          value: this.localeValue(params.avg_prs_cost),
           dimension: 'тыс.тг/рем без ФОТ'
         },
         {
           name: 'Плотность нефти',
-          value: 0.8,
+          value: this.localeValue(params.oil_density),
           dimension: 'тн/м3'
         },
         {
           name: 'Дней в месяце',
-          value: 31,
+          value: this.localeValue(params.days),
           dimension: 'дни'
         },
         {
           name: 'Усл.-постоянные расходы для отключаемых скважин',
-          value: 46.9,
+          value: this.localeValue(params.permanent_stop_cost),
           dimension: ''
         }
       ]
     },
 
-    blocks() {
+    economicBlocks() {
       let revenue = this.formatValue(this.scenario.Revenue_total[this.scenarioValueKey])
 
       let expenditures = this.formatValue(this.scenario.Overall_expenditures_full[this.scenarioValueKey])
@@ -368,6 +378,8 @@ export default {
         this.proposedStoppedWells = data.proposedStoppedWells
 
         this.profitlessWellsWithPrs = data.profitlessWellsWithPrs
+
+        this.analysisParams = data.analysisParams
 
         this.wells = data.wells
       } catch (e) {

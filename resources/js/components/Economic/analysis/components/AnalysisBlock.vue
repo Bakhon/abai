@@ -1,19 +1,19 @@
 <template>
   <div class="bg-main1 text-white text-wrap mb-10px">
-    <div v-for="(header, index) in headers"
-         :key="header.name"
+    <div v-for="(param, index) in params"
+         :key="param.name"
          :class="index ? 'border-grey-top' : ''"
          class="d-flex font-size-14px line-height-16px">
       <div class="pl-3 py-2 flex-150px text-wrap">
-        {{ header.name }}
+        {{ param.name }}
       </div>
 
       <div class="mx-2 p-2 bg-grey flex-120px">
-        {{ header.dimension }}
+        {{ param.dimension }}
       </div>
 
       <div class="p-2 flex-120px">
-        {{ header.value }}
+        {{ param.value }}
       </div>
     </div>
   </div>
@@ -21,9 +21,9 @@
 
 <script>
 export default {
-  name: "MonthHeaders",
+  name: "AnalysisBlock",
   props: {
-    headers: {
+    params: {
       required: true,
       type: Array
     }

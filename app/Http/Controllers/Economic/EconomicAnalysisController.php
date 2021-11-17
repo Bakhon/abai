@@ -83,7 +83,8 @@ class EconomicAnalysisController extends Controller
             'proposedWells' => $this->getWellsSum($enabledUwis, $stoppedUwis, false),
             'wells' => $this->getWellsSum(null, null, false),
             'proposedStoppedWells' => $this->getProposedStoppedWells($stoppedUwis),
-            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs($stoppedUwis)
+            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs($stoppedUwis),
+            'analysisParams' => EcoRefsAnalysisParam::all()->toArray()
         ];
     }
 
