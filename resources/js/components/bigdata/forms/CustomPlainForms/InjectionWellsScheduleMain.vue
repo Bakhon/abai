@@ -374,11 +374,6 @@
                 _.forEach(data, (year, key) => {
                     _.forEach(year, (month, monthNumber) => {
                         let date = moment(month[0].date, 'YYYY-MM-DD');
-                        let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
-                        let workHours = _.sumBy(month, 'workHours') / 24;
-                        if (workHours === 0) {
-                            workHours = 1;
-                        }
                         let monthSummary = {
                             'id': date.format('YYYY/MMM'),
                             'isExpanded': true,
