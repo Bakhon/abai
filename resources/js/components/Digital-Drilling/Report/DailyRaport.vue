@@ -6,7 +6,7 @@
                     <div class="daily_raport_block-header-first">
                         <div class="daily_raport_block-header-input">
                             <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
-                            <input type="text" disabled v-model="report.report_daily.date" />
+                            <input type="date" class="date-report" v-model="reportDate" :max="getPreviousDay()"  @change="changeDate">
                         </div>
                         <div class="daily_raport_block-header-input">
                             <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
@@ -17,9 +17,6 @@
                         {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
                     </div>
                     <div class="daily_raport_block-header-save">
-                        <button v-if="report.previous_report.id" class="save" @click="previous=true">
-                            Предыдущий отчет
-                        </button>
                         <button class="save" @click="saveModal=true">
                             {{trans('app.save')}}
                         </button>
@@ -450,7 +447,7 @@
                         {{trans('digital_drilling.daily_raport.TECHNOLOGICAL_INFORMATION')}}
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 pr-0">
+                        <div class="col-xl-7 col-lg-12 pr-0 nozzle-row">
                             <table class="tables table defaultTable">
                                 <thead>
                                     <th colspan="5">
@@ -544,21 +541,25 @@
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_1" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_2" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_3" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_4" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -566,16 +567,19 @@
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_5" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_6" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[0].nozzle.nozzle_7" @change="nozzleSelect(1)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -585,21 +589,25 @@
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_1" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_2" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_3" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_4" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -607,16 +615,19 @@
                                         <div class="nozzles-td-row">
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_5" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_6" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
                                             <div class="nozzles">
                                                 <select name="" id="" v-model="report.bit_info_daily[1].nozzle.nozzle_7" @change="nozzleSelect(2)">
+                                                    <option value=""></option>
                                                     <option :value="nozzle" v-for="nozzle in Nozzles">{{nozzle}}</option>
                                                 </select>
                                             </div>
@@ -765,7 +776,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-sm-6 pl-0">
+                        <div class="col-xl-5 col-lg-12 pl-0 nozzle-row">
                             <table class="tables table defaultTable">
                                 <thead>
                                 <th colspan="6">
@@ -885,14 +896,14 @@
                     <table class="tables table defaultTable">
                         <thead>
                         <tr>
-                            <th colspan="5">
+                            <th colspan="6">
                                 {{trans('digital_drilling.daily_raport.well_control')}}
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="4" class="w-50">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
+                            <td colspan="5" class="w-50">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
                             <td class="w-50">
                                 <select name="" id="" v-model="report.well_parameters_daily.last_casing_dia">
                                     <option :value="diameter" v-for="diameter in diameters">
@@ -902,7 +913,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.depth_descent_last')}}
                             </td>
                             <td>
@@ -910,7 +921,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.diameter_next_column')}}
                             </td>
                             <td>
@@ -922,7 +933,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.depth_descent_next_column')}}
                             </td>
                             <td>
@@ -930,7 +941,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.reservoir_integrity_test')}}
                             </td>
                             <td>
@@ -938,7 +949,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.equivalent_drill_density')}}
                             </td>
                             <td>
@@ -946,7 +957,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_density')}} <sup>3</sup>
                             </td>
                             <td>
@@ -954,7 +965,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.drill_volume_solution')}} <sup>3</sup>
                             </td>
                             <td>
@@ -962,7 +973,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.drill_volume_solution_in_reception')}} <sup>3</sup>
                             </td>
                             <td>
@@ -970,7 +981,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 {{trans('digital_drilling.daily_raport.drill_volume_solution_in_stock')}} <sup>3</sup>
                             </td>
                             <td>
@@ -978,7 +989,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
                             <td colspan="2">
                                 <select-add :options="pumps" name="pump0" :header="report.pump_daily[0].pump_type"
                                             @selectOption="selectOption"
@@ -1025,7 +1036,7 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2</td>
                             <td colspan="2">
                                 <select-add :options="pumps" name="pump1" :header="report.pump_daily[1].pump_type"
                                             @selectOption="selectOption"
@@ -1079,7 +1090,7 @@
                     <table class="pump" v-if="pump[0].active">
                         <tbody>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(2)">-</span></td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(2)">-</span></td>
                             <td colspan="2">
                                 <select-add :options="pumps" name="pump2" :header="report.pump_daily[2].pump_type"
                                             @selectOption="selectOption"
@@ -1129,7 +1140,7 @@
                     <table class="pump" v-if="pump[1].active">
                         <tbody>
                         <tr>
-                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(3)">-</span></td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(3)">-</span></td>
                             <td colspan="2">
                                 <select-add :options="pumps" name="pump3" :header="report.pump_daily[3].pump_type"
                                             @selectOption="selectOption"
@@ -1729,7 +1740,7 @@
             </div>
         </div>
     </div>
-    <previous-daily-raport v-else :report="previousReport" @closePreviousReport="previous=false"/>
+    <previous-daily-raport v-else :report="previousReport" @closePreviousReport="previous=false" @changePreviousReport="changePreviousReport"/>
 </template>
 
 <script>
@@ -1750,6 +1761,7 @@
         props: ['report'],
         data(){
             return{
+                reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                 saveModal: false,
                 previous: false,
                 previousReport: false,
@@ -1914,6 +1926,34 @@
             this.changeTotalTime(6)
         },
         methods: {
+            getPreviousDay(){
+                let date = new Date();
+                date.setDate(date.getDate() - 1);
+                return moment(date).format('YYYY-MM-DD') ;
+            },
+            changeDate(){
+                let date =  moment(this.reportDate, 'YYYY-MM-DD').format('DD-MM-YYYY')
+                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/well/date',{
+                    well: this.report.general_data_daily.well.id,
+                    date: date
+                }).then((response) => {
+                    console.log(response)
+                    if (response) {
+                        this.previousReport = response.data
+                        this.previous = true
+                    } else {
+                        console.log("No data");
+                    }
+                })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                this.reportDate = moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+
+            },
+            changePreviousReport(report){
+                this.previousReport = report
+            },
             getPreviousReport(){
                 if (this.report.previous_report.id) {
                     this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.previous_report.id).then((response) => {
@@ -2888,5 +2928,11 @@
     .delete-row{
         cursor: pointer;
         width: 10px;
+    }
+    .min-829{
+        min-width: 829px!important;
+    }
+    .max-829{
+        max-width: calc(100% - 829px)!important;
     }
 </style>
