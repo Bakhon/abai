@@ -28,6 +28,7 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class WellsController extends Controller
 {
@@ -51,7 +52,38 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-                      
+          
+        $show_param = [];
+        $category = DB::connection('tbd')->table('prod.well_category')
+                   ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
+                   ->where('prod.well_category.well', '=', $well->id)
+                   ->orderBy('dbeg', 'desc')
+                   ->select('dict.well_category_type.code')                  
+                   ->get();
+                              
+        if($category[0]->code == 'OIL')  
+        {            
+            $show_param = [
+                'well_expl_right' => $this->wellExplOnRight($well),
+                'pump_code' => $this->wellEquipParam($well, 'NAS'),   
+                'type_sk' => $this->wellEquipParam($well, 'TSK'),  
+                'well_equip_param' => $this->wellEquipParam($well, 'PSD'),
+                'techModeProdOil' => $this->techModeProdOil($well),
+                'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
+                'meas_water_cut' => $this->measWaterCut($well), 
+                'meas_well' => $this->measWell($well),
+            ];           
+        }
+        if($category[0]->code == 'INJ') 
+        {
+            $show_param = [
+                'diametrStuzer' => $this->wellEquip($well),
+                'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),                
+                'tech_mode_inj' => $this->techModeInj($well),
+                'meas_water_inj' => $this->measLiqInjection($well),
+            ];  
+        }   
+               
         $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
@@ -60,8 +92,7 @@ class WellsController extends Controller
             'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
-            'geo' => $this->geo($well),
-            'well_expl' => $this->wellExpl($well),
+            'geo' => $this->geo($well),            
             'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
@@ -74,12 +105,7 @@ class WellsController extends Controller
             'actual_bottom_hole' => $this->actualBottomHole($well),
             'lab_research_value' => $this->labResearchValue($well),
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
-            'well_perf_actual' => $this->wellPerfActual($well),
-            'techModeProdOil' => $this->techModeProdOil($well),
-            'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
-            'tech_mode_inj' => $this->techModeInj($well),
-            'meas_water_inj' => $this->measLiqInjection($well),
-            'meas_water_cut' => $this->measWaterCut($well),    
+            'well_perf_actual' => $this->wellPerfActual($well),                                                               
             'measLiq' => $this->measLiq($well),        
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
@@ -90,22 +116,18 @@ class WellsController extends Controller
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),                 
             'gdisCurrent' => $this->gdisCurrent($well),               
-            'rzatr_atm' => $this->gdisCurrentValueOtp($well),
-            'type_sk' => $this->wellEquipParam($well, 'TSK'),
-            'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),   
-            'well_equip_param' => $this->wellEquipParam($well, 'PSD'),  
-            'pump_code' => $this->wellEquipParam($well, 'NAS'),                  
-            'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),
+            'rzatr_atm' => $this->gdisCurrentValueOtp($well),                                                                              
             'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),                   
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
-            'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'meas_well' => $this->measWell($well),
-            'techmode' => $this->pzabWell($well),
-            'diametrStuzer' => $this->wellEquip($well),
+            'agms' => $this->getTechsByCode($well, [2000000000004]),            
+            'techmode' => $this->pzabWell($well), 
+            'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),           
         ];
-                
+
+       $wellInfo = array_merge($wellInfo, $show_param);
+      
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
@@ -372,7 +394,7 @@ class WellsController extends Controller
     }
 
     private function measLiqInjection(Well $well)
-    {   
+    {
         return $well->measLiqInjection()
             ->orderBy('dbeg', 'desc')
             ->first(['water_inj_val', 'pressure_inj']); 
@@ -630,6 +652,40 @@ class WellsController extends Controller
         $period = $request->get('period');
         $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
         return  response()->json($result);
+    }
+
+    public function getInjectionHistory($wellId)
+    {
+        $measLiqs = MeasLiq::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get();
+        $groupedLiq = $measLiqs->groupBy(function ($val) {
+            return Carbon::parse($val->dbeg)->format('Y');
+        });
+        $liqByMonths = array();
+        foreach ($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
+                return Carbon::parse($val->dbeg)->format('m');
+            });
+        }
+
+        $result = array();
+        foreach ($liqByMonths as $yearNumber => $monthes) {
+            foreach ($monthes as $monthNumber => $month) {
+                $result[$yearNumber][$monthNumber] = array();
+                foreach ($month as $dayNumber => $day) {
+                    $date = Carbon::parse($day['dbeg']);
+                    $dateEnd = Carbon::parse($day['dend']);
+
+                    array_push($result[$yearNumber][$monthNumber], array(
+                        'liq' => $day['liquid'],
+                        'date' => $date->format('Y-m-d'),
+                        'workHours' => $date->diffInDays($dateEnd),
+                    ));
+                }
+            }
+        }
+        return $result;
     }
 
     public function getActivityByWell(Request $request, $wellId)
