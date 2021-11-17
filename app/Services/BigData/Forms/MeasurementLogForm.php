@@ -202,39 +202,6 @@ abstract class MeasurementLogForm extends TableForm
         return [];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString(),
-                'dend' => $params['date']->toDateTimeString(),
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
-        }
-    }
-
     private function addDefaultData($source)
     {
         $data = [];

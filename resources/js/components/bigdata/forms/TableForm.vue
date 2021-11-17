@@ -185,6 +185,7 @@
                               :id="row.id"
                               :key="`field_${column.code}_${row.id}`"
                               v-model="row[column.code].value"
+                              :editable="isCellEdited(row, column)"
                               :item="getFieldParams(row, column)"
                           >
                           </bigdata-form-field>
@@ -690,6 +691,9 @@ export default {
         for (let code in fields[row.id]) {
           if (row[code].id) {
             fields[row.id][code].id = row[code].id
+          }
+          if (row[code].params) {
+            fields[row.id][code].params = row[code].params
           }
         }
       })
