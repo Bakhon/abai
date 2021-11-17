@@ -15,13 +15,13 @@
 </template>
 
 <script>
+import {globalloadingMutations} from "@store/helpers";
 import AwGis from '../../geology/petrophysics/graphics/awGis/AwGis';
 import {
   FETCH_WELLS_MNEMONICS,
   SET_WELLS_BLOCKS,
   SET_WELLS,
-  FETCH_WELLS,
-  FETCH_WELLS_CURVES, SET_GIS_DATA_FOR_GRAPH
+  FETCH_WELLS_CURVES, SET_GIS_DATA_FOR_GRAPH, SET_SELECTED_WELL_CURVES_FORCE
 } from "../../../store/modules/geologyGis.const";
 
 export default {
@@ -89,10 +89,13 @@ export default {
   },
 
   methods: {
+    ...globalloadingMutations(["SET_LOADING"]),
     async fetchGraphs() {
+      this.SET_LOADING(true);
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getTestWells);
       this.$store.commit(SET_WELLS, [{name: 'UZN_1428'}, {name: 'UZN_0144'}, {name: 'UZN_1027'}, {name: 'UZN_9093'}]);
       this.$store.commit(SET_WELLS_BLOCKS, this.testWells);
+      this.$store.commit(SET_SELECTED_WELL_CURVES_FORCE, ["GR", "LLD", "SP"]);
 
       const awGisData = this.$store.state.geologyGis.awGis.getElementsWithData();
       const {
@@ -101,24 +104,19 @@ export default {
         gisWells: awGisSelectedWells
       } = this.$store.state.geologyGis;
 
-      console.log('loadedCurves', loadedCurves);
-      console.log('awGisSelectedCurves', awGisSelectedCurves);
-      console.log('awGisSelectedWells', awGisSelectedWells);
-      console.log('awGisData', awGisData);
-      let findElement = awGisData.find(el => awGisSelectedWells.find(w => el.wellID.includes(w.name)));
-      console.log('findElement', findElement);
-      // let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
-      //   let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
-      //   if(findElement&&findElement.data){
-      //     let curves = Object.values(findElement.data.curve_id);
-      //     let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));
-      //     if (!hasCurve) acc.push(...curves);
-      //   }
-      //   return acc;
-      // }, []);
+      let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
+        let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
+        if (findElement?.data) {
+          let curves = Object.values(findElement.data.curve_id);
+          let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));
+          if (!hasCurve) acc.push(...curves);
+        }
+        return acc;
+      }, []);
 
-      // await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
-      // this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+      await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
+      this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+      this.SET_LOADING(false);
     },
     getWells(sector) {
       return this.wellList[sector].map(item => item.value);
