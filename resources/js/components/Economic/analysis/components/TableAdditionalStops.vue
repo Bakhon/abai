@@ -6,84 +6,60 @@
 
     <div class="mt-2 text-white font-size-12px line-height-14px">
       <div class="d-flex bg-blue font-weight-600 text-center pr-10px">
-        <div class="py-2 px-1 border-grey d-flex align-items-center justify-content-center flex-20">
-          Месяцы
+        <div :style="headers[0].style"
+             class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
+          {{ headers[0].title }}
         </div>
 
-        <div class="py-2 px-1 border-grey d-flex align-items-center justify-content-center flex-10">
-          Кол-во нерентаб. скважин с ПРС
+        <div :style="headers[1].style"
+             class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
+          {{ headers[1].title }}
         </div>
 
-        <div class="flex-10">
+        <div :style="headers[2].styleSubTitle">
           <div class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
-            В том числе при исключении ПРС
+            {{ headers[2].subTitle }}
           </div>
 
           <div class="d-flex overflow-hidden">
             <div class="flex-50 py-2 px-1 border-grey d-flex align-items-center justify-content-center">
-              Становятся рентаб.
+              {{ headers[2].title }}
             </div>
 
             <div class="flex-50 py-2 px-1 border-grey d-flex align-items-center justify-content-center">
-              Остаются нерент.
+              {{ headers[3].title }}
             </div>
           </div>
         </div>
 
-        <div v-for="(title, titleIndex) in titles"
-             :key="titleIndex"
-             class="py-2 px-1 border-grey d-flex align-items-center justify-content-center flex-15">
-          {{ title.name }}
+        <div v-for="(header, headerIndex) in headers.slice(4)"
+             :key="headerIndex"
+             :style="header.style"
+             class="py-2 px-1 border-grey d-flex align-items-center justify-content-center">
+          {{ header.title }}
         </div>
       </div>
 
       <div class="d-flex bg-blue font-weight-600 text-center pr-10px">
-        <div v-for="dimension in (4 + titles.length)"
-             :class="[
-                 dimension === 1 ? 'flex-20' : '',
-                 dimension === 2 ? 'flex-10' : '',
-                 dimension === 3 || dimension === 4 ? 'flex-5' : '',
-                 dimension >= 5 ? 'flex-15' : '',
-                 ]"
+        <div v-for="(header, headerIndex) in headers"
+             :key="headerIndex"
+             :style="header.style"
              class="p-2 border-grey">
-          {{ dimension === 1 ? '' : 'ед.' }}
+          {{ header.dimension }}
         </div>
       </div>
 
       <div class="d-flex flex-column customScroll">
-        <div v-for="(date, dateIndex) in dates"
-             :key="date"
-             :style="`background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`"
+        <div v-for="(row, rowIndex) in tableData"
+             :key="rowIndex"
+             :style="row.style || `background: ${rowIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`"
              class="flex-grow-1 d-flex text-center">
-          <div class="text-left flex-20 p-3 border-grey">
-            {{ date }}
+          <div v-for="(header, headerIndex) in headers"
+               :key="headerIndex"
+               :style="header.style"
+               class="p-3 border-grey d-flex align-items-center justify-content-center">
+            {{ header.isString ? row[header.key] : localeValue(row[header.key]) }}
           </div>
-
-          <div v-for="dimension in (3 + titles.length)"
-               :class="[
-                 dimension === 1 ? 'flex-10' : '',
-                 dimension === 2 || dimension === 3 ? 'flex-5' : '',
-                 dimension >= 4 ? 'flex-15' : '',
-                 ]"
-               class="p-3 border-grey">
-            {{ dateIndex * 100 + dimension * 10 }}
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex text-center bg-deep-blue font-weight-600 pr-10px">
-        <div class="text-left flex-20 p-3 border-grey">
-          Всего (суммированием с повторами скв.)
-        </div>
-
-        <div v-for="dimension in (3 + titles.length)"
-             :class="[
-                 dimension === 1 ? 'flex-10' : '',
-                 dimension === 2 || dimension === 3 ? 'flex-5' : '',
-                 dimension >= 4 ? 'flex-15' : '',
-                 ]"
-             class="p-3 border-grey">
-          {{ 100 + dimension * 10 }}
         </div>
       </div>
     </div>
@@ -91,88 +67,157 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../../mixins/formatMixin";
+
 import Subtitle from "../../components/Subtitle";
 
 export default {
-  name: "TableOilProductionLoss",
+  name: "TableAdditionalStops",
   components: {
     Subtitle
   },
+  mixins: [
+    formatValueMixin,
+  ],
+  props: {
+    wells: {
+      required: true,
+      type: Array
+    }
+  },
   computed: {
-    tableRows() {
-      let rows = this.dates.map((date, dateIndex) => {
-        return {
-          date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
-            })
-          }),
-          style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
-        }
+    wellsByDates() {
+      let wellByDates = {}
+
+      this.wells.forEach(well => {
+        wellByDates.hasOwnProperty(well.date_month)
+            ? wellByDates[well.date_month].push(well)
+            : wellByDates[well.date_month] = [well]
       })
 
-      rows.push({
-        date: 'Итог скважин (без повторов)',
-        values: this.titles.map((title, titleIndex) => {
-          return this.subTitles.map((subTitle, subTitleIndex) => {
-            let sum = 0
-
-            rows.forEach(row => {
-              sum += row.values[titleIndex][subTitleIndex]
-            })
-
-            return sum
-          })
-        }),
-        style: 'background: #293688; font-weight: 600'
-      })
-
-      return rows
+      return wellByDates
     },
 
-    tableOilRows() {
-      let rows = this.dates.map((date, dateIndex) => {
-        return {
-          date: date,
-          values: this.titles.map((title, titleIndex) => {
-            return this.subTitles.map((subTitle, subTitleIndex) => {
-              return titleIndex * 100 + subTitleIndex * 50
-            })
-          }),
-          style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
+    tableData() {
+      let totalRow = {
+        title: 'Всего',
+        count: 0,
+        profitable: 0,
+        profitless: 0,
+        stopped: 0,
+        notStopped: 0,
+        oilLoss: 0,
+        style: 'background: #293688;'
+      }
+
+      let rows = Object.values(this.wellsByDates).map((wells, dateIndex) => {
+        let totalCount = 0
+
+        let profitableCount = 0
+
+        let profitlessCount = 0
+
+        let profitlessStoppedCount = 0
+
+        let oilLoss = 0
+
+        wells.forEach(well => {
+          let count = +well.uwi_count
+
+          totalCount += count
+
+          if (well.is_become_profitable) {
+            return profitableCount += count
+          }
+
+          profitlessCount += count
+
+          well.is_stopped
+              ? profitlessStoppedCount += count
+              : oilLoss += +well.oil
+        })
+
+        let row = {
+          title: this.dates[dateIndex],
+          count: totalCount,
+          profitable: profitableCount,
+          profitless: profitlessCount,
+          stopped: profitlessStoppedCount,
+          notStopped: profitlessCount - profitlessStoppedCount,
+          oilLoss: oilLoss
         }
+
+        Object.keys(totalRow).forEach(key => {
+          totalRow[key] += +row[key]
+        })
+
+        return row
       })
 
-      rows.push({
-        date: 'Итог потерь нефти',
-        values: this.titles.map((title, titleIndex) => {
-          return this.subTitles.map((subTitle, subTitleIndex) => {
-            let sum = 0
+      totalRow.title = 'Всего'
 
-            rows.forEach(row => {
-              sum += row.values[titleIndex][subTitleIndex]
-            })
-
-            return sum
-          })
-        }),
-        style: 'background: #293688; font-weight: 600'
-      })
+      rows.push(totalRow)
 
       return rows
     },
 
     dates() {
+      return Object.keys(this.wellsByDates)
+    },
+
+    headers() {
       return [
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-        'Сентябрь',
-        'Октябрь',
-        'Ноябрь',
-        'Декабрь',
+        {
+          title: 'Месяцы',
+          key: 'title',
+          dimension: '',
+          style: 'flex: 0 0 10%',
+          isString: true
+        },
+        {
+          title: 'Кол-во нерентаб. скважин с ПРС',
+          key: 'count',
+          dimension: 'ед.',
+          style: 'flex: 0 0 10%',
+        },
+        {
+          title: 'Становятся рентаб.',
+          key: 'profitable',
+          subTitle: 'В том числе при исключении ПРС',
+          dimension: 'ед.',
+          styleSubTitle: 'flex: 0 0 20%',
+          style: 'flex: 0 0 10%',
+        },
+        {
+          title: 'Остаются нерент.',
+          key: 'profitless',
+          dimension: 'ед.',
+          style: 'flex: 0 0 10%',
+        },
+        {
+          title: 'Предложено к отключению (в предл. вар.)',
+          key: 'stopped',
+          dimension: 'ед.',
+          style: 'flex: 0 0 15%',
+        },
+        {
+          title: 'Можно дополнительно отключить скв.',
+          key: 'notStopped',
+          dimension: 'ед.',
+          style: 'flex: 0 0 15%',
+        },
+        {
+          title: 'Потери добычи при доп. отключении',
+          key: 'oilLoss',
+          dimension: 'тонн',
+          style: 'flex: 0 0 15%',
+        },
+        {
+          title: 'Экономия при доп. отключении (при сохр. 70% пост. рас., ПРС)',
+          key: 'notStopped',
+          dimension: 'ед.',
+          style: 'flex: 0 0 15%',
+        }
       ]
     },
 
@@ -204,28 +249,8 @@ export default {
   background: #333975;
 }
 
-.bg-deep-blue {
-  background: #293688;
-}
-
 .border-grey {
   border: 1px solid #454D7D
-}
-
-.flex-5 {
-  flex: 0 0 5%;
-}
-
-.flex-10 {
-  flex: 0 0 10%;
-}
-
-.flex-15 {
-  flex: 0 0 15%;
-}
-
-.flex-20 {
-  flex: 0 0 20%;
 }
 
 .flex-50 {
@@ -254,7 +279,7 @@ export default {
 
 .customScroll {
   overflow-y: scroll;
-  height: 385px
+  height: 455px
 }
 
 .customScroll::-webkit-scrollbar {

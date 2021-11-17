@@ -10,6 +10,7 @@ const DEFAULT_WELL = {
     active_hours: 0,
     paused_hours: 0,
     total_hours: 0,
+    operating_profit: 0
 }
 
 export const tableDataMixin = {
@@ -28,7 +29,7 @@ export const tableDataMixin = {
             let statuses = {}
 
             this.wells.forEach(well => {
-                dates[well.date] = 1
+                dates[well.date_month] = 1
 
                 if (!wellsByStatus.hasOwnProperty(well.status_id)) {
                     wellsByStatus[well.status_id] = []
@@ -49,26 +50,36 @@ export const tableDataMixin = {
             }
         },
 
-        wellsByDates() {
-            return this.tableData.statuses.map((status, statusIndex) => ({
-                status_id: +status,
-                status_name: this.tableData.statusNames[statusIndex],
-                wells: this.tableData.dates.map(date => (
-                    this.getWellsByDate(status, date, 'wellsByStatus')
-                )),
-            }))
+        tableUwiCount() {
+            let table = this.generateTable('uwi_count')
+
+            table.push(this.generateTotalRow('uwi_count', 'Итого скважин'))
+
+            return table
         },
 
-        tableUwiCount() {
-            return this.generateTable('uwi_count', 'Итого скважин')
+        totalRowOilLoss() {
+            return this.generateTotalRow('oil_loss', 'Итог потерь нефти')
+        },
+
+        totalRowOperatingProfit() {
+            return this.generateTotalRow('operating_profit', 'Упущенная выгода')
         },
 
         tableOilLoss() {
-            return this.generateTable('oil_loss', 'Итог потерь нефти')
+            let table = this.generateTable('oil_loss')
+
+            table.push(this.generateTotalRow('oil_loss', 'Итог потерь нефти'))
+
+            return table
         },
 
         tablePrs() {
-            return this.generateTable('prs_cost', 'Общий итог')
+            let table = this.generateTable('prs_cost')
+
+            table.push(this.generateTotalRow('prs_cost', 'Общий итог'))
+
+            return table
         },
 
         columns() {
@@ -87,24 +98,34 @@ export const tableDataMixin = {
                 },
             ]
         },
+
+        wellsByDates() {
+            return this.tableData.statuses.map((status, statusIndex) => ({
+                status_id: +status,
+                status_name: this.tableData.statusNames[statusIndex],
+                wells: this.tableData.dates.map(date => (
+                    this.getWellsByDate(status, date, 'wellsByStatus')
+                )),
+            }))
+        },
     },
     methods: {
-        generateTable(wellKey, sumTitle) {
-            let statuses = Object.keys(this.tableData.statuses)
-
-            let rows = this.tableData.dates.map((date, dateIndex) => ({
+        generateTable(wellKey) {
+            return this.tableData.dates.map((date, dateIndex) => ({
                 date: date,
-                values: statuses.map((status, statusIndex) => {
+                values: this.tableData.statuses.map((status, statusIndex) => {
                     let wells = this.wellsByDates[statusIndex].wells[dateIndex]
 
                     return this.columns.map(column => wells[column.key][wellKey])
                 }),
                 style: `background: ${dateIndex % 2 === 0 ? '#2B2E5E' : '#333868'}`
             }))
+        },
 
-            rows.push({
-                date: sumTitle,
-                values: statuses.map((status, statusIndex) => {
+        generateTotalRow(wellKey, title) {
+            return {
+                date: title,
+                values: this.tableData.statuses.map((status, statusIndex) => {
                     let wells = this.wellsByDates[statusIndex].wells
 
                     return this.columns.map(column => {
@@ -116,13 +137,11 @@ export const tableDataMixin = {
                     })
                 }),
                 style: 'background: #293688; font-weight: 600'
-            })
-
-            return rows
+            }
         },
 
         getWellsByDate(status, date, tableKey) {
-            let wells = this.tableData[tableKey][status].filter(well => well.date === date)
+            let wells = this.tableData[tableKey][status].filter(well => well.date_month === date)
 
             let profitable = wells.find(well => well.profitability === 'profitable') || DEFAULT_WELL
 

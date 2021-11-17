@@ -327,7 +327,7 @@ export default {
         return rows
       }
 
-      let sumRow = this.sumRow
+      let sumRow = [...this.sumRow]
 
       this.wells.forEach(well => {
         if (well.date === well.date_month && !well.status_name && !well.loss_status_name) {
@@ -357,7 +357,7 @@ export default {
         return rows
       }
 
-      let sumRow = this.sumRow
+      let sumRow = [...this.sumRow]
 
       let currentWell = null
 

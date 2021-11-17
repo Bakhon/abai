@@ -7,6 +7,7 @@ use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -58,9 +59,12 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
             return null;
         }
 
+        $date = Date::excelToDateTimeObject($row[self::COLUMNS['date']]);
+
         return new TechnicalWellForecast([
             'uwi' => $row[self::COLUMNS['uwi']],
-            'date' => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
+            'date' => $date,
+            'date_month' => Carbon::parse($date)->setDay(1)->format('Y-m-d'),
             'oil' => round($row[self::COLUMNS['oil']], 12),
             'liquid' => round($row[self::COLUMNS['liquid']], 12),
             'active_hours' => round($row[self::COLUMNS['active_hours']], 12),

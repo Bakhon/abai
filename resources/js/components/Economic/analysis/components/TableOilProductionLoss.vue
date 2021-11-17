@@ -51,6 +51,26 @@
               :columns="columns"
               :style="row.style"
               class="flex-grow-1"/>
+
+          <table-oil-production-loss-row
+              v-if="isUwiCountWithOilLoss"
+              :row="totalRowOilLoss"
+              :statuses="tableData.statuses"
+              :columns="columns"
+              :style="totalRowOilLoss.style"
+              :dimension="1000"
+              class="flex-grow-1"
+              is-absolute/>
+
+          <table-oil-production-loss-row
+              v-if="isUwiCountWithOperatingProfit"
+              :row="totalRowOperatingProfit"
+              :statuses="tableData.statuses"
+              :columns="columns"
+              :style="totalRowOperatingProfit.style"
+              :dimension="1000"
+              class="flex-grow-1"
+              is-absolute/>
         </div>
       </div>
 
@@ -106,6 +126,14 @@ export default {
       type: Boolean
     },
     isPrs: {
+      required: false,
+      type: Boolean
+    },
+    isUwiCountWithOilLoss: {
+      required: false,
+      type: Boolean
+    },
+    isUwiCountWithOperatingProfit: {
       required: false,
       type: Boolean
     },

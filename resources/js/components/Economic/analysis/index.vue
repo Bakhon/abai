@@ -42,6 +42,7 @@
           :proposed-wells-sum="proposedWellsSum"
           :proposed-wells="proposedWells"
           :proposed-stopped-wells="proposedStoppedWells"
+          :profitless-wells-with-prs="profitlessWellsWithPrs"
           class="h-100"
           @updateWide="val => isWide = val"/>
     </div>
@@ -105,6 +106,7 @@ export default {
     proposedWellsSum: null,
     proposedWells: null,
     proposedStoppedWells: null,
+    profitlessWellsWithPrs: null,
     wells: null,
     isWide: false
   }),
@@ -364,6 +366,8 @@ export default {
         this.proposedWells = data.proposedWells
 
         this.proposedStoppedWells = data.proposedStoppedWells
+
+        this.profitlessWellsWithPrs = data.profitlessWellsWithPrs
 
         this.wells = data.wells
       } catch (e) {

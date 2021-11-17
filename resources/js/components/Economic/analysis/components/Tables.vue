@@ -47,6 +47,7 @@
 
       <table-additional-stops
           v-else-if="activeTab === 'additional_stops'"
+          :wells="profitlessWellsWithPrs"
           class="text-white"
           @updateWide="updateWide"/>
 
@@ -65,6 +66,8 @@
           key="economic_tech_loss"
           class="text-white"
           is-prs
+          is-uwi-count-with-oil-loss
+          is-uwi-count-with-operating-profit
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
@@ -133,9 +136,13 @@ export default {
       required: true,
       type: Array
     },
+    profitlessWellsWithPrs: {
+      required: true,
+      type: Array
+    }
   },
   data: () => ({
-    activeTab: 'production_loss',
+    activeTab: 'additional_stops',
   }),
   computed: {
     tabs() {
