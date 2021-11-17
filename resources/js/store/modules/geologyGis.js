@@ -187,7 +187,6 @@ const geologyGis = {
             state.gisWells = blockIds.map(({sort}) => {
                 return state.WELLS[sort];
             })
-            console.log('state.gisWells', state.gisWells);
         },
 
         [SET_WELLS_MNEMONICS](state, mnemonics) {

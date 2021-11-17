@@ -16,7 +16,13 @@
 
 <script>
 import AwGis from '../../geology/petrophysics/graphics/awGis/AwGis';
-import {FETCH_WELLS_MNEMONICS, SET_WELLS_BLOCKS} from "../../../store/modules/geologyGis.const";
+import {
+  FETCH_WELLS_MNEMONICS,
+  SET_WELLS_BLOCKS,
+  SET_WELLS,
+  FETCH_WELLS,
+  FETCH_WELLS_CURVES, SET_GIS_DATA_FOR_GRAPH
+} from "../../../store/modules/geologyGis.const";
 
 export default {
   name: "Scheme",
@@ -25,20 +31,97 @@ export default {
     AwGis
   },
 
+  async created() {
+    await this.fetchGraphs();
+  },
+
   data() {
     return {
-      wellList: ['UZN_1428', 'UZN_0144', 'UZN_9093', 'UZN_1027']
+      testWells: [
+        {sort: 0, value: 'UZN_1428'},
+        {sort: 1, value: 'UZN_0144'},
+        {sort: 2, value: 'UZN_1027'},
+        {sort: 3, value: 'UZN_9093'}
+      ],
+      wellList: {
+        '9313': [
+          {sort: 0, value: 'UZN_1291'},
+          {sort: 1, value: 'UZN_3313'},
+          {sort: 2, value: 'UZN_3314'},
+          {sort: 3, value: 'UZN_3505'},
+          {sort: 4, value: 'UZN_4140'},
+          {sort: 5, value: 'UZN_4439'},
+          {sort: 6, value: 'UZN_7272'},
+          {sort: 7, value: 'UZN_7296'},
+          {sort: 8, value: 'UZN_7934'},
+          {sort: 9, value: 'UZN_9133'},
+        ],
+        '10252': [
+          {sort: 0, value: 'UZN_4439'},
+          {sort: 1, value: 'UZN_5617'},
+        ]
+      },
+      wells: {
+        '9313': [
+          {name: 'UZN_1291'},
+          {name: 'UZN_3313'},
+          {name: 'UZN_3314'},
+          {name: 'UZN_3505'},
+          {name: 'UZN_4140'},
+          {name: 'UZN_4439'},
+          {name: 'UZN_7272'},
+          {name: 'UZN_7296'},
+          {name: 'UZN_7934'},
+          {name: 'UZN_9133'},
+        ],
+        '10252': [
+          {name: 'UZN_4439'},
+          {name: 'UZN_5617'},
+        ]
+      }
     }
   },
 
-  async mounted() {
-    await this.fetchGraphs();
+  computed: {
+    getTestWells() {
+      return this.testWells.map(el => el.value);
+    }
   },
 
   methods: {
     async fetchGraphs() {
-      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.wellList);
-      this.$store.commit(SET_WELLS_BLOCKS, this.wellList);
+      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getTestWells);
+      this.$store.commit(SET_WELLS, [{name: 'UZN_1428'}, {name: 'UZN_0144'}, {name: 'UZN_1027'}, {name: 'UZN_9093'}]);
+      this.$store.commit(SET_WELLS_BLOCKS, this.testWells);
+
+      const awGisData = this.$store.state.geologyGis.awGis.getElementsWithData();
+      const {
+        CURVES_OF_SELECTED_WELLS: loadedCurves,
+        selectedGisCurves: awGisSelectedCurves,
+        gisWells: awGisSelectedWells
+      } = this.$store.state.geologyGis;
+
+      console.log('loadedCurves', loadedCurves);
+      console.log('awGisSelectedCurves', awGisSelectedCurves);
+      console.log('awGisSelectedWells', awGisSelectedWells);
+      console.log('awGisData', awGisData);
+      let findElement = awGisData.find(el => awGisSelectedWells.find(w => el.wellID.includes(w.name)));
+      console.log('findElement', findElement);
+      // let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
+      //   let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
+      //   if(findElement&&findElement.data){
+      //     let curves = Object.values(findElement.data.curve_id);
+      //     let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));
+      //     if (!hasCurve) acc.push(...curves);
+      //   }
+      //   return acc;
+      // }, []);
+
+      // await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
+      // this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+    },
+    getWells(sector) {
+      return this.wellList[sector].map(item => item.value);
     }
   }
 }
