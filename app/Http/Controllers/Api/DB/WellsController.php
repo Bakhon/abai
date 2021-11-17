@@ -36,7 +36,7 @@ class WellsController extends Controller
 
     public function __construct(WellCardGraphRepository $wellCardGraphRepo)
     {
-        $this->wellCardGraphRepo = $wellCardGraphRepo;
+        $this->wellCardGraphRepo = $wellCardGraphRepo;        
     }
 
     public function getStructureTree(StructureService $service, Request $request)
@@ -51,7 +51,7 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-                  
+                      
         $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
@@ -311,12 +311,12 @@ class WellsController extends Controller
     }
 
     private function actualBottomHole(Well $well)
-    {
+    {      
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->first();
     }
 
     private function artificialBottomHole(Well $well)
-    {
+    {       
         return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
     }
 
@@ -346,9 +346,9 @@ class WellsController extends Controller
     }
 
     private function labResearchValue(Well $well)
-    {
+    {    
         $lab_research_value = new LabResearchValue();
-        return $lab_research_value->Rnas($well->id);
+        return $lab_research_value->Rnas($well->id); 
     }
 
     private function techModeInj(Well $well)
@@ -372,10 +372,10 @@ class WellsController extends Controller
     }
 
     private function measLiqInjection(Well $well)
-    {
+    {   
         return $well->measLiqInjection()
             ->orderBy('dbeg', 'desc')
-            ->first(['water_inj_val', 'pressure_inj']);
+            ->first(['water_inj_val', 'pressure_inj']); 
     }
 
     private function measWell(Well $well)
@@ -436,9 +436,9 @@ class WellsController extends Controller
     }
 
     private function wellDailyDrill(Well $well)
-    {
+    {                     
         return $well->wellDailyDrill()
-              ->first(['dbeg', 'dend']);
+              ->first(['dbeg', 'dend']);  
     }
 
     private function gdisConclusion(Well $well)
@@ -510,13 +510,13 @@ class WellsController extends Controller
     }
 
     private function gdisCurrentValueOtp(Well $well)
-    {
+    {    
         return $well->gdisCurrentValue()
             ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
             ->withPivot('meas_date')
             ->where('metric.code', '=', 'OTP')
             ->orderBy('pivot_meas_date', 'desc')
-            ->first(['value_double', 'meas_date']);
+            ->first(['value_double', 'meas_date']); 
     }
 
     private function gdisCurrentValueRzatr(Well $well, $method)
@@ -525,7 +525,7 @@ class WellsController extends Controller
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')                      
             ->where('dict.metric.code', '=', $method)
             ->get()
-            ->last();
+            ->last(); 
     }
   
     private function gdisComplex(Well $well)

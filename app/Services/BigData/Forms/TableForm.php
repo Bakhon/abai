@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Exceptions\JsonException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
@@ -482,6 +483,28 @@ abstract class TableForm extends BaseForm
         return $query;
     }
 
+    protected function validate()
+    {
+        $errors = [];
+
+        $customErrors = $this->getCustomValidationErrors();
+        $rules = $this->getValidationRules();
+        $errorNames = $this->getValidationAttributeNames();
+
+        foreach ($this->request->get('fields') as $id => $values) {
+            $values = array_map(function ($field) {
+                return $field['value'];
+            }, $values);
+            $rowErrors = $this->validator->getValidationErrors($values, $rules, $errorNames, $customErrors);
+            if (!empty($rowErrors)) {
+                $errors[$id] = $rowErrors;
+            }
+        }
+        if (!empty($errors)) {
+            throw new JsonException('The given data was invalid.', $errors);
+        }
+    }
+
     public function submit(): array
     {
         DB::connection('tbd')->beginTransaction();
@@ -496,7 +519,8 @@ abstract class TableForm extends BaseForm
         }
     }
 
-    public function submitForm(array $fields, array $filter = [])
+    public function submitForm(array $fields, array $filter = []): array
     {
+        return [];
     }
 }
