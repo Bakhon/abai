@@ -118,7 +118,7 @@
                       <td
                           v-for="column in visibleColumns"
                           :class="{
-                        'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column),
+                        'editable': isCellEdited(row, column),
                         'freezed': column.freezed
                       }"
                           :style="getCellStyles(column)"
