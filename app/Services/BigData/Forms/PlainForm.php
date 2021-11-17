@@ -282,9 +282,9 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function submitInnerTable(int $parentParentId)
+    protected function submitInnerTable(int $parentId)
     {
-        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        $insertedTableFields = $this->innerTableService->submitTables($parentId, $this->tableFields);
         if (!empty($insertedTableFields)) {
             $this->submittedData['table_fields'] = $insertedTableFields;
         }

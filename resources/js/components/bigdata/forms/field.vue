@@ -152,7 +152,7 @@
           :id="id"
           :form="form"
           :params="item"
-          :values="value.value || value || null"
+          :values="typeof value !== 'undefined' ? (value.value || value) : null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>

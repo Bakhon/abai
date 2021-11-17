@@ -33,10 +33,10 @@ class DigitalRatingCompareDrilling extends Controller
       foreach ($actual as $key => $act) {
          foreach ($project as $prj) {
              if($act->year == $prj->year) {
-                $data[$key]['actual'] = $act->{"actual__$type"} ;
-                $data[$key]['project'] = $prj->{"project__$type"};
+                $data[$key]['actual'] =$act->{"actual__$type"} ;
+                $data[$key]['project'] =  $prj->{"project__$type"};
                 $data[$key]['year'] = $act->year;
-                $data[$key]['total'] = $act->{"actual__$type"} - $prj->{"project__$type"};
+                $data[$key]['total'] = number_format( $act->{"actual__$type"} - $prj->{"project__$type"}, 1);
              }
            
          }
@@ -49,20 +49,21 @@ class DigitalRatingCompareDrilling extends Controller
 
    public function get_maps(Request $request):JsonResponse 
    {  
+      $field = $request->input('field');
       $horizon = $request->input('horizon');
       $owc = $request->input('owc');
       if(empty($owc)) {
          $data =   DB::connection('tbd')->table('digital_rating.outer_owc_omg_json')
+         ->where('digital_rating.outer_owc_omg_json.field', $field) 
          ->where('digital_rating.outer_owc_omg_json.horizon', $horizon) 
          ->get();
       }else {
          $data =   DB::connection('tbd')->table('digital_rating.outer_owc_omg_json')
+         ->where('digital_rating.outer_owc_omg_json.field', $field) 
          ->where('digital_rating.outer_owc_omg_json.horizon', $horizon) 
          ->where('digital_rating.outer_owc_omg_json.owc_id', $owc) 
          ->get();
       }
-     
-
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
    
@@ -73,7 +74,6 @@ class DigitalRatingCompareDrilling extends Controller
    {  
      
      
-
     $horizon = $request->input('horizon');
     $year = $request->input('year');
     $date_to = $year.'-01-01 00:00:00+06';
@@ -93,7 +93,6 @@ class DigitalRatingCompareDrilling extends Controller
         ->get();
 
 
-   dd($actual_wells_count);
     $project_wells_count =   DB::connection('tbd')->table('digital_rating.project_points')
         ->where('digital_rating.project_points.horizon',   $horizon)  
         ->count();
