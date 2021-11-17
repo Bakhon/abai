@@ -694,7 +694,7 @@
     .digital_drilling .resultsBlock ul li .block p.num span.big {
         margin: 0;
         color: #fff;
-        font-size: 58px;
+        font-size: 35px;
         line-height: 0.9;
         font-weight: 600;
     }
@@ -703,9 +703,9 @@
 
     .digital_drilling .resultsBlock ul li .block p.title {
         display: table;
-        margin: 15px 0 0;
+        margin: 10px 0 0;
         color: #fff;
-        font-size: 16px;
+        font-size: 14px;
         border-bottom: 3px solid transparent;
         padding-bottom: 3px;
     }
@@ -724,7 +724,7 @@
 
     .digital_drilling .resultsBlock ul li .block p.percent {
         display: table;
-        margin: 15px 0 0;
+        margin: 10px 0 0;
         color: #82BAFF;
         font-size: 14px;
     }
@@ -803,9 +803,8 @@
     }
 
     .digital_drilling .analyticsBlock p.num span {
-        display: table;
         color: #fff;
-        font-size: 64px;
+        font-size: 35px;
         font-weight: 600;
         line-height: 1;
     }
@@ -865,6 +864,9 @@
 
     input.rangeInput::-webkit-slider-thumb {
         display: none;
+    }
+    .contentBlock{
+        height: calc(100% - 130px);
     }
 
 </style>
