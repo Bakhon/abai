@@ -19,7 +19,7 @@
                     <tr v-for="(date,index) in dates" v-if="date.isVisible" :class="getRowColor(date,index)">
                         <td>
                             <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date)">{{date.year}}</label>
-                            <label v-else class="form-check-label">{{date.month}}</label>
+                            <label v-else class="form-check-label month-name">{{date.month}}</label>
                             <span class="ml-1"></span>
                             <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                         </td>
@@ -150,8 +150,12 @@
             getSummaryBy(year, template) {
                 let filtered = _.filter(this.injectionHistoricalData, (item) => parseInt(item.year) === year);
                 let summary = template;
+                let dailyWaterInjection =  _.meanBy(filtered, 'dailyWaterInjection');
+                if (isNaN(dailyWaterInjection)) {
+                    dailyWaterInjection = 0;
+                }
                 summary['waterInjection'] = _.sumBy(filtered, 'dailyWaterInjection');
-                summary['dailyWaterInjection'] = _.meanBy(filtered, 'dailyWaterInjection');
+                summary['dailyWaterInjection'] = dailyWaterInjection;
                 summary['accumulateWaterInjection'] = 0;
                 summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
                 return summary;
@@ -285,5 +289,8 @@
             background: #CCFFFF;
             color: black;
         }
+    }
+    .month-name {
+        color: black;
     }
 </style>
