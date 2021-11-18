@@ -72,7 +72,8 @@
                     'OTM': 'DzoImportOtm',
                     'Химизация': 'DzoImportChemistry',
                     'Производственные показатели': 'DzoImportData',
-                    'Причины простоя': 'DzoImportDowntimeReason'
+                    'Причины простоя': 'DzoImportDowntimeReason',
+                    'Причины снижения добычи': 'DzoImportDecreaseReason',
                 },
                 operation: {
                     create: 0,
