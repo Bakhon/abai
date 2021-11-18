@@ -1435,8 +1435,7 @@ export default {
         }
       } catch (e) {}
     },
-    switchFormByCode(data) {
-      console.log(data);
+    switchFormByCode(data) {      
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;
