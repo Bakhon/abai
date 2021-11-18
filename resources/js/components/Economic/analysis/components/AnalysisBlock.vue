@@ -30,23 +30,21 @@ export default {
   props: {
     analysisParams: {
       required: true,
-      type: Array
+      type: Object
     }
   },
   computed: {
     params() {
-      let params = this.analysisParams && this.analysisParams.length
-          ? this.analysisParams[0]
-          : {
-            date: '',
-            netback_forecast: 0,
-            variable_cost: 0,
-            permanent_cost: 0,
-            avg_prs_cost: 0,
-            oil_density: 0,
-            days: 0,
-            permanent_stop_cost: 0,
-          }
+      let params = this.analysisParams || {
+        date: '',
+        netback_forecast: 0,
+        variable_cost: 0,
+        permanent_cost: 0,
+        avg_prs_cost: 0,
+        oil_density: 0,
+        days: 0,
+        permanent_stop_cost: 0,
+      }
 
       return [
         {

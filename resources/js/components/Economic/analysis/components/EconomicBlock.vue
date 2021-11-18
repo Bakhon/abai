@@ -42,7 +42,7 @@
       <div v-if="!subBlock.isHidePercent"
            class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
         <percent-badge-icon
-            :percent="subBlock.percent"
+            :percent="subBlock.isReversePercent ? -subBlock.percent : subBlock.percent"
             :reverse="subBlock.isReverse"
             class="font-size-18px line-height-20px mr-1"/>
 

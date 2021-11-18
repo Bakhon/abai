@@ -49,7 +49,7 @@
               class="flex-grow-1"/>
 
           <table-oil-production-loss-row
-              v-if="isUwiCountWithOilLoss"
+              v-if="isOilLossSum"
               :row="totalRowOilLoss"
               :statuses="tableData.statuses"
               :columns="columns"
@@ -58,11 +58,12 @@
               is-absolute/>
 
           <table-oil-production-loss-row
-              v-if="isUwiCountWithOperatingProfit"
+              v-if="isOperatingProfitSum"
               :row="totalRowOperatingProfit"
               :statuses="tableData.statuses"
               :columns="columns"
               :style="totalRowOperatingProfit.style"
+              :dimension="1000"
               class="flex-grow-1"
               is-absolute/>
         </div>
@@ -115,26 +116,22 @@ export default {
       required: true,
       type: Array
     },
-    isTechLoss: {
+    title: {
       required: false,
-      type: Boolean
+      type: String
     },
     isPrs: {
       required: false,
       type: Boolean
     },
-    isUwiCountWithOilLoss: {
+    isOilLossSum: {
       required: false,
       type: Boolean
     },
-    isUwiCountWithOperatingProfit: {
+    isOperatingProfitSum: {
       required: false,
       type: Boolean
     },
-    title: {
-      required: false,
-      type: String
-    }
   },
   created() {
     this.$emit('updateWide', this.tableData.statuses.length > 6)

@@ -424,14 +424,6 @@ export default {
       return this.form.scenario_id ? 'original_value_optimized' : 'original_value'
     },
 
-    dollarRatePercent() {
-      return (+this.res.dollarRate.value - (+this.scenario.dollar_rate)).toFixed(2)
-    },
-
-    oilPricePercent() {
-      return (+this.res.oilPrice.value - (+this.scenario.oil_price)).toFixed(2)
-    },
-
     oilPercent() {
       return +this.scenario.oil.original_value - +this.scenario.oil.original_value_optimized
     },

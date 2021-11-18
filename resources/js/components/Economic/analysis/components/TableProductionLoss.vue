@@ -84,7 +84,7 @@ import TableProductionLossRow from "./TableProductionLossRow";
 
 import {tableDataMixin} from "../../mixins/analysisMixin";
 
-import {TechnicalWellLossStatus} from "../../models/TechnicalWellLossStatus";
+import {TechnicalWellLossStatusModel} from "../../models/TechnicalWellLossStatusModel";
 
 export default {
   name: "TableProductionLoss",
@@ -109,7 +109,7 @@ export default {
       let count = 0
 
       this.wellsByDates.forEach(status => {
-        if (!TechnicalWellLossStatus.factualIds.includes(status.status_id)) return
+        if (!TechnicalWellLossStatusModel.factualIds.includes(status.status_id)) return
 
         status.wells.forEach(date => count += date.profitless.uwi_count)
       })
@@ -125,7 +125,7 @@ export default {
       })
 
       this.wellsByDates.forEach(status => {
-        if (!TechnicalWellLossStatus.factualIds.includes(status.status_id)) return
+        if (!TechnicalWellLossStatusModel.factualIds.includes(status.status_id)) return
 
         status.wells.forEach((date, dateIndex) => {
           wellKeys.forEach(wellKey => {
@@ -162,12 +162,12 @@ export default {
           }))
         },
         this.wellsByDates.find(wells =>
-            wells.status_id === TechnicalWellLossStatus.DEOPTIMIZATION
+            wells.status_id === TechnicalWellLossStatusModel.DEOPTIMIZATION
         ),
         {
           ...{isProfitable: true},
           ...this.wellsByDates.find(wells =>
-              wells.status_id === TechnicalWellLossStatus.DOWNLOAD_LIMIT
+              wells.status_id === TechnicalWellLossStatusModel.DOWNLOAD_LIMIT
           )
         },
       ]

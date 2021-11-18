@@ -65,9 +65,10 @@
           :title="trans('economic_reference.table_economic_tech_loss_title')"
           key="economic_tech_loss"
           class="text-white"
+          is-tech-loss
           is-prs
-          is-uwi-count-with-oil-loss
-          is-uwi-count-with-operating-profit
+          is-oil-loss-sum
+          is-operating-profit-sum
           @updateWide="updateWide"/>
 
       <table-oil-production-loss
@@ -100,14 +101,6 @@ export default {
     TableAdditionalStops,
   },
   props: {
-    scenario: {
-      required: true,
-      type: Object
-    },
-    scenarioVariations: {
-      required: true,
-      type: Object
-    },
     wells: {
       required: true,
       type: Array

@@ -1,4 +1,4 @@
-export class TechnicalWellLossStatus {
+export class TechnicalWellLossStatusModel {
     static NRS = 1
 
     static CRF = 2

@@ -21,6 +21,8 @@ class EconomicAnalysisWellRequest extends FormRequest
                     Granularity::YEAR,
                 ])
             ],
+            'permanent_stop_coefficient' => 'required|numeric',
+            'date' => 'required|date',
         ];
     }
 }

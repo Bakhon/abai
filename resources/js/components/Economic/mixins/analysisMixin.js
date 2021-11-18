@@ -1,16 +1,21 @@
+import {TechnicalWellStatusModel} from "../models/TechnicalWellStatusModel";
+
 const DEFAULT_WELL = {
     uwi_count: 0,
     oil: 0,
     oil_loss: 0,
+    oil_tech_loss: 0,
     liquid: 0,
     liquid_loss: 0,
+    liquid_tech_loss: 0,
     liquid_forecast: 0,
     prs_portion: 0,
     prs_cost: 0,
     active_hours: 0,
     paused_hours: 0,
     total_hours: 0,
-    operating_profit: 0
+    operating_profit: 0,
+    operating_profit_tech_loss: 0
 }
 
 export const tableDataMixin = {
@@ -18,6 +23,10 @@ export const tableDataMixin = {
         wells: {
             required: true,
             type: Array
+        },
+        isTechLoss: {
+            required: false,
+            type: Boolean
         },
     },
     computed: {
@@ -29,15 +38,31 @@ export const tableDataMixin = {
             let statuses = {}
 
             this.wells.forEach(well => {
-                dates[well.date_month] = 1
+                let statusId = +well.status_id
 
-                if (!wellsByStatus.hasOwnProperty(well.status_id)) {
-                    wellsByStatus[well.status_id] = []
+                let statusName = well.status_name
+
+                if (this.isTechLoss) {
+                    let isPrs = statusName.startsWith(this.trans('economic_reference.prs_status'))
+
+                    if (!TechnicalWellStatusModel.ids.includes(statusId) && !isPrs) return
+
+                    if (isPrs) {
+                        statusId = TechnicalWellStatusModel.PRS
+
+                        statusName = this.trans('economic_reference.prs_status')
+                    }
                 }
 
-                statuses[well.status_id] = well.status_name
+                dates[well.date_month] = 1
 
-                wellsByStatus[well.status_id].push(well)
+                if (!wellsByStatus.hasOwnProperty(statusId)) {
+                    wellsByStatus[statusId] = []
+                }
+
+                statuses[statusId] = statusName
+
+                wellsByStatus[statusId].push(well)
             })
 
             dates = Object.keys(dates)
@@ -53,23 +78,37 @@ export const tableDataMixin = {
         tableUwiCount() {
             let table = this.generateTable('uwi_count')
 
-            table.push(this.generateTotalRow('uwi_count', 'Итого скважин'))
+            table.push(this.generateTotalRow(
+                'uwi_count',
+                this.trans('economic_reference.total_wells')
+            ))
 
             return table
         },
 
         totalRowOilLoss() {
-            return this.generateTotalRow('oil_loss', 'Итог потерь нефти')
+            return this.generateTotalRow(
+                this.isTechLoss ? 'oil_tech_loss' : 'oil_loss',
+                this.trans('economic_reference.total_oil_loss')
+            )
         },
 
         totalRowOperatingProfit() {
-            return this.generateTotalRow('operating_profit', 'Упущенная выгода')
+            return this.generateTotalRow(
+                this.isTechLoss ? 'operating_profit_tech_loss' : 'operating_profit',
+                `
+                    ${this.trans('economic_reference.lost_profit')}, 
+                    ${this.trans('economic_reference.thousand_tenge')}
+                `
+            )
         },
 
         tableOilLoss() {
-            let table = this.generateTable('oil_loss')
+            let key = this.isTechLoss ? 'oil_tech_loss' : 'oil_loss'
 
-            table.push(this.generateTotalRow('oil_loss', 'Итог потерь нефти'))
+            let table = this.generateTable(key)
+
+            table.push(this.totalRowOilLoss)
 
             return table
         },
@@ -77,7 +116,10 @@ export const tableDataMixin = {
         tablePrs() {
             let table = this.generateTable('prs_cost')
 
-            table.push(this.generateTotalRow('prs_cost', 'Общий итог'))
+            table.push(this.generateTotalRow(
+                'prs_cost',
+                this.trans('economic_reference.total_grand')
+            ))
 
             return table
         },
@@ -85,15 +127,15 @@ export const tableDataMixin = {
         columns() {
             return [
                 {
-                    name: 'Всего',
+                    name: this.trans('economic_reference.total'),
                     key: 'total'
                 },
                 {
-                    name: 'Рентаб.',
+                    name: this.trans('economic_reference.profitable_short'),
                     key: 'profitable'
                 },
                 {
-                    name: 'Нерент.',
+                    name: this.trans('economic_reference.profitless_short'),
                     key: 'profitless'
                 },
             ]

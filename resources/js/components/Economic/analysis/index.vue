@@ -21,18 +21,67 @@
     </div>
 
     <div class="col-12 p-2 bg-main1 mb-10px">
-      <select-scenario-variations
-          :form="form"
-          :scenario-variation="scenarioVariation"
-          :scenario-variations="scenarioVariations"
-          @changeOrg="getData()"/>
+      <div class="d-flex bg-main1 text-white text-wrap">
+        <div class="ml-2">
+          <div class="text-nowrap font-size-14px line-height-18px font-weight-600">
+            {{ trans('economic_reference.select_optimization_scenarios') }}
+          </div>
+
+          <div class="form-check mt-16px">
+            <input v-model="isFullScreen"
+                   id="isFullScreen"
+                   type="checkbox"
+                   class="form-check-input">
+
+            <label for="isFullScreen" class="form-check-label">
+              {{ trans('economic_reference.full_screen') }}
+            </label>
+          </div>
+        </div>
+
+        <select-organization
+            :form="form"
+            class="ml-2"/>
+
+        <div class="ml-2">
+          <label for="permanent_cost_coefficient">
+            Коэф. оптимизации
+          </label>
+
+          <input
+              v-model="form.permanent_stop_coefficient"
+              id="permanent_cost_coefficient"
+              type="number"
+              step="0.1"
+              min="0"
+              class="form-control text-white border-0"
+              style="background-color: #333975 !important;">
+        </div>
+
+        <div class="ml-2 white-placeholder">
+          <label for="date">
+            {{ trans('economic_reference.date') }}
+          </label>
+
+          <datetime
+              id="date"
+              v-model="form.date"
+              :placeholder="trans('economic_reference.select_date')"
+              format="MM/yyyy"
+              input-class="bg-main4 text-white form-control border-0"
+              class="mr-2"
+              auto
+          />
+        </div>
+
+        <i class="fas fa-search cursor-pointer ml-2 mt-40px"
+           @click="getData()"></i>
+      </div>
     </div>
 
-    <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+    <div :class="isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
           v-if="wells"
-          :scenario="scenario"
-          :scenario-variations="scenarioVariations"
           :wells="wells"
           :wells-sum-by-status="wellsSumByStatus"
           :wells-sum-by-loss-status="wellsSumByLossStatus"
@@ -45,7 +94,7 @@
           @updateWide="val => isWide = val"/>
     </div>
 
-    <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
+    <div v-show="!isFullScreen" class="col-3 pr-0">
       <economic-block
           v-for="(block, index) in economicBlocks"
           :key="index"
@@ -63,34 +112,37 @@
 import {globalloadingMutations} from '@store/helpers';
 
 import {formatValueMixin} from "../mixins/formatMixin";
-import {scenarioMixin} from "../mixins/scenarioMixin";
 import {calcPercentMixin} from "../mixins/percentMixin";
 
-import EconomicBlock from "./components/EconomicBlock";
-import SelectScenarioVariations from "../components/SelectScenarioVariations";
+import SelectOrganization from "../components/SelectOrganization";
 import CalculatedHeader from "./components/CalculatedHeader";
 import RemoteHeader from "../components/RemoteHeader";
+import EconomicBlock from "./components/EconomicBlock";
 import AnalysisBlock from "./components/AnalysisBlock";
 import Tables from "./components/Tables";
 
-import {TechnicalWellLossStatus} from "../models/TechnicalWellLossStatus";
+import {TechnicalWellLossStatusModel} from "../models/TechnicalWellLossStatusModel";
 
 export default {
   name: "economic-analysis",
   components: {
-    SelectScenarioVariations,
-    Tables,
-    EconomicBlock,
+    SelectOrganization,
     CalculatedHeader,
     RemoteHeader,
+    EconomicBlock,
     AnalysisBlock,
+    Tables,
   },
   mixins: [
     formatValueMixin,
-    scenarioMixin,
     calcPercentMixin
   ],
   data: () => ({
+    form: {
+      org_id: null,
+      date: null,
+      permanent_stop_coefficient: 0.7,
+    },
     wellsSumByStatus: null,
     wellsSumByLossStatus: null,
     wellsSum: null,
@@ -100,7 +152,8 @@ export default {
     profitlessWellsWithPrs: null,
     analysisParams: null,
     wells: null,
-    isWide: false
+    isWide: false,
+    isFullScreen: false
   }),
   computed: {
     url() {
@@ -117,7 +170,7 @@ export default {
         profitless: {...defaultWell},
       }
 
-      TechnicalWellLossStatus.factualIds.forEach(status => {
+      TechnicalWellLossStatusModel.factualIds.forEach(status => {
         wellsByStatus[status] = {
           profitable: {...defaultWell},
           profitless: {...defaultWell},
@@ -132,7 +185,7 @@ export default {
       }, 0)
 
       wells.forEach(well => {
-        if (!TechnicalWellLossStatus.factualIds.includes(well.status_id)) return
+        if (!TechnicalWellLossStatusModel.factualIds.includes(well.status_id)) return
 
         wellKeys.forEach(wellKey => {
           let value = Math.abs(+well[wellKey])
@@ -156,19 +209,19 @@ export default {
             {
               title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.NRS].total.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.NRS].total.uwi_count
               )
             },
             {
               title: this.trans('economic_reference.crf'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.CRF].total.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.CRF].total.uwi_count
               )
             },
             {
               title: `${this.trans('economic_reference.opek')} +`,
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.OPEK].total.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.OPEK].total.uwi_count
               )
             }
           ]
@@ -183,19 +236,19 @@ export default {
             {
               title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.NRS].profitless.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.NRS].profitless.uwi_count
               )
             },
             {
               title: this.trans('economic_reference.crf'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.CRF].profitless.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.CRF].profitless.uwi_count
               )
             },
             {
               title: `${this.trans('economic_reference.opek')} +`,
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.OPEK].profitless.uwi_count
+                  wellsByStatus[TechnicalWellLossStatusModel.OPEK].profitless.uwi_count
               )
             },
             {
@@ -212,25 +265,46 @@ export default {
             {
               title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.NRS].profitable.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatusModel.NRS].profitable.oil_loss,
                   1000
               )
             },
             {
               title: this.trans('economic_reference.crf'),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.CRF].profitable.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatusModel.CRF].profitable.oil_loss,
                   1000
               )
             },
             {
               title: this.trans('economic_reference.additionally_short').toLocaleUpperCase(),
               value: this.localeValue(
-                  wellsByStatus[TechnicalWellLossStatus.OPEK].profitable.oil_loss,
+                  wellsByStatus[TechnicalWellLossStatusModel.OPEK].profitable.oil_loss,
                   1000
               )
             }
           ],
+        }
+      ]
+    },
+
+    remoteHeaders() {
+      let oilPrice = this.oilPrice || {url: '', value: 0}
+
+      let dollarRate = this.oilPrice || {url: '', value: 0}
+
+      return [
+        {
+          name: this.trans('economic_reference.oil_price'),
+          url: oilPrice.url,
+          value: oilPrice.value,
+          dimension: '$ / bbl',
+        },
+        {
+          name: this.trans('economic_reference.course_prices'),
+          url: dollarRate.url,
+          value: dollarRate.value,
+          dimension: 'kzt / $',
         }
       ]
     },
@@ -267,7 +341,7 @@ export default {
             `,
             percent: this.calcPercent(expendituresPropose, expenditures),
             percentDimension: '%',
-            isReverse: true
+            isReversePercent: true
           }
         ],
         [
@@ -341,8 +415,28 @@ export default {
 }
 </script>
 <style scoped>
+.font-size-14px {
+  font-size: 14px;
+}
+
+.line-height-18px {
+  line-height: 18px;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
 .mb-10px {
   margin-bottom: 10px;
+}
+
+.mt-16px {
+  margin-top: 16px;
+}
+
+.mt-40px {
+  margin-top: 40px;
 }
 
 .pr-75px {
@@ -355,5 +449,13 @@ export default {
 
 .min-h-160px {
   min-height: 160px;
+}
+
+.white-placeholder >>> *::placeholder {
+  color: #fff;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
