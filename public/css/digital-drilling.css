@@ -1,6 +1,10 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+sup{
+    color: #ffffff;
+    font-size: 12px;
+}
 .main__title-drilling{
     color: #ffffff;
 }
@@ -171,7 +175,6 @@
     width:2px;
 }
 
-
 .digital_drilling .mainBlock__content.allPage{
     width: calc(100% - 30px);
 }
@@ -315,7 +318,7 @@
     background-color: #20274F;
     height: 100%;
     align-items: stretch;
-    padding: 23px 0;
+    padding: 10px 0;
 }
 
 .digital_drilling .resultsBlock ul li {
@@ -347,7 +350,7 @@
 .digital_drilling .resultsBlock ul li .block p.num span.big {
     margin: 0;
     color: #fff;
-    font-size: 49px;
+    font-size: 35px;
     line-height: 0.9;
     font-weight: 600;
 }
@@ -356,9 +359,9 @@
 
 .digital_drilling .resultsBlock ul li .block p.title {
     display: table;
-    margin: 15px 0 0;
+    margin: 10px 0 0;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     border-bottom: 3px solid transparent;
     padding-bottom: 3px;
 }
@@ -453,11 +456,11 @@
 }
 
 .digital_drilling .analyticsBlock p.num span {
-    display: table;
     color: #fff;
-    font-size: 50px;
+    font-size: 35px;
     font-weight: 600;
     line-height: 1;
+    margin-right: 10px;
 }
 
 .digital_drilling .analyticsBlock p.name {
@@ -564,7 +567,7 @@ input.rangeInput {
 }
 .contentBlock{
     min-height: 500px;
-    height: calc(100% - 190px);
+    height: calc(100% - 140px);
 }
 .contentBlock.fullPage{
     height: 100%;
@@ -937,8 +940,8 @@ input.rangeInput {
     align-items: center;
 
 }
-.well_body-form-input .select{
-    background: #334296;
+.well_body-form-input .select, .well_body-form-input select{
+    background: #334296!important;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
     border-radius: 4px;
@@ -954,6 +957,16 @@ input.rangeInput {
 .well_body-form-input input{
     background: #1F2142;
     padding: 5px 14px;
+}
+.well_body-form-input input.new{
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 224px;
+    height: 28px;
+    margin-left: 10px;
+    max-width: 200px
 }
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
@@ -1177,9 +1190,11 @@ input.rangeInput {
     width: 300px;
     background-color: #323370;
     padding: 8px 0;
-    display: flex;
-    flex-direction: column;
+    height: 85px;
     align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .daily_raport_block-header-input{
     display: flex;
@@ -1200,18 +1215,23 @@ input.rangeInput {
     outline: none;
 }
 .daily_raport_block-header-save{
-    height: 98px;
+    height: 85px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 200px;
     background-color: #323370;
 }
+.daily_raport_block-header-save .save{
+    padding: 6px!important;
+    margin-bottom: 10px;
+}
 .daily_raport_block-header-center{
     background-color: #323370;
     color: #FFFFFF;
     font-weight: bold;
-    height: 98px;
+    height: 85px;
     width: calc(100% - 500px);
     display: flex;
     align-items: center;
@@ -1297,10 +1317,16 @@ input.rangeInput {
 .w-25{
     width: 25% !important;
 }
-.h-31{
+.h-31, .h-31 td{
     height: 31px!important;
 }
-
+.pushElement{
+    cursor: pointer;
+}
+.pushElement:hover{
+    background-color: #1b67ca;
+    padding: 7px;
+}
 .w-5{
     width: 5%!important;
 }
@@ -1334,7 +1360,8 @@ td.border-right-none{
     background: #272953;
     margin-bottom: 10px;
     padding: 10px;
-    height: calc(100% - 350px);
+    min-height: 380px!important;
+    height: calc(100% - 250px);
 }
 .operatingCosts-title{
     font-family: Harmonia Sans Pro Cyr;
@@ -1395,6 +1422,13 @@ progress::-webkit-progress-value {
 }
 .operatingCosts-single-tg{
     margin-left: 6px;
+}
+.tech-info-header{
+    background-color: #323370;
+    border: 1px solid #454D7D;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
 }
 
 @media (max-width: 1625px) {

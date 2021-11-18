@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Exceptions\JsonException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
@@ -23,6 +24,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
+    protected $additionalEntities = [];
 
     public function __construct(Request $request)
     {
@@ -196,12 +198,12 @@ abstract class TableForm extends BaseForm
         }
 
         $result = [
-            'id' => $row->id,
             'value' => null,
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
         if ($this->isCurrentDay($row->{$dateField})) {
+            $result['id'] = $row->id;
             $result['value'] = $value;
         } else {
             $result['old_value'] = $value;
@@ -463,14 +465,21 @@ abstract class TableForm extends BaseForm
 
     private function addAdditionalFilters($query, array $field)
     {
+
         if (!empty($field['additional_filter'])) {
             foreach ($field['additional_filter'] as $key => $value) {
                 if (is_array($value)) {
-                    $entityQuery = DB::connection('tbd')->table($value['table']);
-                    foreach ($value['fields'] as $fieldName => $fieldValue) {
-                        $entityQuery->where($fieldName, $fieldValue);
+                    $entityKey = md5($value['table']) . json_encode($value['fields']);
+                    if (isset($this->additionalEntities[$entityKey])) {
+                        $entity = $this->additionalEntities[$entityKey];
+                    } else {
+                        $entityQuery = DB::connection('tbd')->table($value['table']);
+                        foreach ($value['fields'] as $fieldName => $fieldValue) {
+                            $entityQuery->where($fieldName, $fieldValue);
+                        }
+                        $entity = $entityQuery->first();
+                        $this->additionalEntities[$entityKey] = $entity;
                     }
-                    $entity = $entityQuery->first();
                     if (!empty($entity)) {
                         $query = $query->where($key, $entity->id);
                     }
@@ -480,6 +489,28 @@ abstract class TableForm extends BaseForm
             }
         }
         return $query;
+    }
+
+    protected function validate()
+    {
+        $errors = [];
+
+        $customErrors = $this->getCustomValidationErrors();
+        $rules = $this->getValidationRules();
+        $errorNames = $this->getValidationAttributeNames();
+
+        foreach ($this->request->get('fields') as $id => $values) {
+            $values = array_map(function ($field) {
+                return $field['value'];
+            }, $values);
+            $rowErrors = $this->validator->getValidationErrors($values, $rules, $errorNames, $customErrors);
+            if (!empty($rowErrors)) {
+                $errors[$id] = $rowErrors;
+            }
+        }
+        if (!empty($errors)) {
+            throw new JsonException('The given data was invalid.', $errors);
+        }
     }
 
     public function submit(): array
@@ -496,7 +527,8 @@ abstract class TableForm extends BaseForm
         }
     }
 
-    public function submitForm(array $fields, array $filter = [])
+    public function submitForm(array $fields, array $filter = []): array
     {
+        return [];
     }
 }
