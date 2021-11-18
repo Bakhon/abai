@@ -1937,7 +1937,6 @@
                     well: this.report.general_data_daily.well.id,
                     date: date
                 }).then((response) => {
-                    console.log(response)
                     if (response) {
                         this.previousReport = response.data
                         this.previous = true
@@ -2068,11 +2067,13 @@
                 this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report',
                     this.report).then((response) => {
                     if (response) {
-                        console.log(response)
+                        window.location.href = this.localeUrl('/digital-drilling');
                     } else {
                         console.log("No data");
                     }
-                }).catch((error) => console.log(error))
+                }).catch((error) =>{
+                    console.log(error)
+                })
             },
             saveCatalog(){
                 if (this.catalog != '') {
