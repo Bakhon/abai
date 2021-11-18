@@ -246,8 +246,9 @@ Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/o
 
 Vue.component('digital-drilling', require('./components/Digital-Drilling/DigitalDrilling').default);
 
-Vue.component('daily-raport', require('./components/Digital-Drilling/DailyRaport').default);
-Vue.component('import-daily-raport', require('./components/Digital-Drilling/ImportDailyRaport').default);
+Vue.component('daily-raport', require('./components/Digital-Drilling/Report/DailyRaport').default);
+Vue.component('daily-report-open', require('./components/Digital-Drilling/Report/DailyReportOpen').default);
+Vue.component('import-daily-raport', require('./components/Digital-Drilling/Report/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 

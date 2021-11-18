@@ -64,23 +64,14 @@ export default {
       showChildren: showChildren,
       checkState: this.node.check_state,
       checkable: this.node.checkable,
-      active: '',
     };
   },
   computed: {
     pointerClass: function () {
       return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
     },
-    activeClass: function () {
-      return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
-    },
     nodeHasChildren: function () {
       return this.node.children && this.node.children.length;
-    },
-    selected() {
-      if (!this.active.length) return undefined;
-      const id = this.active[0];
-      return this.users.find(user => user.id === id);
     },
     isLeaf: function (node) {
       if (node.hasOwnProperty('value')) {

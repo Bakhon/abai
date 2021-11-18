@@ -119,18 +119,60 @@
                 </v-select>
               </form>
               <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
-                <div class="button-block__item">
-                  Легенда
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/help.svg" alt="">
+                  <a class="text-white cursor-pointer">Легенда</a>
                 </div>
-                <div class="button-block__item">
-                  График
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/chart.svg" alt="">
+                  <a class="text-white cursor-pointer"
+                     @click="$refs.childForm.switchChartVisibility()">Показать график
+                  </a>
                 </div>
                 <div
                         v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
-                        class="button-block__item"
-                        @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                        class="p-1 ml-2 d-flex align-items-center"
                 >
-                  Исторические сведения
+                  <img class="pr-1" src="/img/bd/historical_icon.svg" alt="">
+                  <a
+                          class="text-white cursor-pointer"
+                          @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
+                  >
+                    Исторические сведения
+                  </a>
+                </div>
+                <button
+                        type="button"
+                        data-toggle="dropdown"
+                        class="icon-filter"
+                ></button>
+                <div>
+                  <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1 p-1">
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                        <img class="pr-1" src="/img/bd/hide-column.svg" alt="">
+                        <a class="text-white cursor-pointer ml-1"
+                           @click="$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',false)">Скрыть столбцы замеров
+                        </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/hide-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="$refs.childForm.switchColumnsVisibility('isExpanded',false)">Скрыть месяца замеров
+                      </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/show-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="[$refs.childForm.switchColumnsVisibility('isExpanded',true),$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',true)]">Показать все
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -141,6 +183,7 @@
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
                   :selectedDzo="selectedDzo"
+                  ref="childForm"
                 ></div>
               </div>
               <div
@@ -439,6 +482,7 @@ export default {
         gdisCurrentValueStatic: { value_double: null },
         gdisCurrentValueRp: { value_double: null, meas_date: null },
         gdisComplex: { value_double: null, dbeg: null, value_string: null },
+        techmode: { well: null, date: null, bhp: null, p_res: null },        
         gis: { gis_date: null },
         gdisCurrentValueBhp: { value_double: null, meas_date: null },
         zone: { name_ru: null },
@@ -471,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -540,6 +585,8 @@ export default {
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
+        techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -774,22 +821,8 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp =
-        this.well.gdisCurrentValueBhp.value_double &&
-        this.well.gdisCurrentValueBhp.meas_date
-          ? this.well.gdisCurrentValueBhp.value_double +
-            "/" +
-            "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : this.well.gdisCurrentValueBhp.value_double
-          ? this.well.gdisCurrentValueBhp.value_double
-          : this.well.gdisCurrentValueBhp.meas_date
-          ? "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : "";
-
+      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
+        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -820,6 +853,13 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
+      let water_cut = this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : 1;
+      let liquid = this.well.measLiq.liquid ? this.well.measLiq.liquid : 1;      
+      let oil_density = this.well.techModeProdOil.oil_density ? this.well.techModeProdOil.oil_density : 1;
+      let debit_oil_raschet = (liquid* (1 - water_cut/100)) * oil_density;
+      let oil_production = debit_oil_raschet * 1;
+      let gas_production = meas_well ? (meas_well * oil_production).toFixed(1) : oil_production.toFixed(1);      
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -963,6 +1003,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
+        },
+        {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
@@ -1059,6 +1104,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gas_production"),
+          data: gas_production,
+          type: ["all"],
+        },
+        {
           name: this.trans("well.gaz_factor"),
           data: meas_well,
           type: ["dob_oil"],
@@ -1144,7 +1194,7 @@ export default {
         {
           name: this.trans("well.rzab"),
           data: gdisCurrentValueBhp,
-          type: ["dob_oil"],
+          type: ["all"],
         },
         {
           name: this.trans("well.rzatr"),
@@ -1202,7 +1252,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                                    
+            try {                                                 
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -2302,8 +2352,6 @@ h4 {
 .dropdown-menu.show {
   background: #40467e;
   color: white;
-  width: 100%;
-  padding: 0 7px 0 16px;
   border: 1px solid #2e50e9;
   border-radius: 8px;
   margin-top: 7px;
@@ -2741,6 +2789,11 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
+    div:not(:last-child) {
+      background: #293688;
+      border: 1px solid #3366FF;
+      border-radius: 5px;
+    }
 }
 @media (max-width: 1640px) {
 .button-block__item[data-v-b1a5f7e2] {
@@ -2839,6 +2892,16 @@ h4 {
 }
 .width__1159 {
   width: 1159px;
+}
+.icon-filter {
+  width: 20px;
+  background: url(/img/bd/filter.svg) no-repeat;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: none;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 </style>

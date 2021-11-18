@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import moment from "moment";
-import axios from "axios";
 
 export default {
   data() {
@@ -145,13 +143,15 @@ export default {
       node.isChecked = !node.isChecked;
 
       content.isLoading = true;
+      node.level = content.level;
       content.updateChildren(node, content.level, node.isChecked)
+      .then(
+        content.updateParent(node.isChecked)
+      )
       .then(() => {
         content.updateThisComponent();
         content.isLoading = false;
       });
-
-      node.level = content.level;
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;

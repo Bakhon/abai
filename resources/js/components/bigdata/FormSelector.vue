@@ -9,8 +9,9 @@
           <li
               v-for="form in directory.forms"
               :key="`form_${form.code}`"
+              :class="{'active': selectedForm === form}"
               v-html="form.name"
-              @click="loadForm(form)"
+              @click="selectForm(form)"
           ></li>
         </ul>
       </template>
@@ -33,7 +34,8 @@ export default {
   },
   data() {
     return {
-      formsStructure: []
+      formsStructure: [],
+      selectedForm: null
     }
   },
   computed: {
@@ -68,7 +70,8 @@ export default {
         })
   },
   methods: {
-    loadForm(form) {
+    selectForm(form) {
+      this.selectedForm = form
       this.$emit('selected', form)
     }
   }
