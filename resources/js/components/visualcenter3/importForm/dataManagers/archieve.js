@@ -66,7 +66,6 @@ export default {
            } else {
                await this.changeDefaultDzo();
                await this.updateCurrentData();
-               this.addListeners();
                this.setTableFormat();
            }
        },
@@ -76,7 +75,6 @@ export default {
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
             this.handleSwitchFilter();
-            this.addListeners();
             this.SET_LOADING(false);
         },
         async handleSwitchFilter() {

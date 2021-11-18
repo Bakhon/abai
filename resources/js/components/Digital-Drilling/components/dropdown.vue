@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen">
+        <div class="dropdown__header" @click="isOpen=!isOpen" :class="{report: report}">
             <div class="dropdown__header-title">
                 <span>
                     {{current.name}}
@@ -29,7 +29,7 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search', 'current'],
+        props: ['title', 'options', 'search', 'report', 'current'],
         data(){
             return{
                 isOpen: false,
@@ -115,5 +115,11 @@
     }
     .dropdown__search input:focus{
         outline: none;
+    }
+    .dropdown__header.report{
+        background-color: #334296!important;
+        width: 200px!important;
+        padding: 0!important;
+        height: 100%!important;
     }
 </style>
