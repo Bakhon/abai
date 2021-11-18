@@ -1,5 +1,5 @@
 <template>
-  <div :style="isWide ? 'padding-right: 75px !important' : 'padding-right: 0'"
+  <div :class="isWide ? 'pr-75px' : 'pr-0'"
        class="position-relative row">
     <div class="col-12 px-3 mb-10px">
       <div class="row text-white text-wrap flex-nowrap">
@@ -9,16 +9,14 @@
             :header="header"
             :index="index"
             :class="index ? 'ml-2' : ''"
-            class="flex-grow-1 px-3 py-1"
-            style="min-height: 130px"/>
+            class="flex-grow-1 px-3 py-1 min-h-130px"/>
 
         <remote-header
             v-for="(header, index) in remoteHeaders"
             :key="`remote_${index}`"
             :header="header"
             :form="form"
-            class="flex-grow-1 px-3 py-1 ml-2"
-            style="min-height: 130px"/>
+            class="flex-grow-1 px-3 py-1 ml-2 min-h-130px"/>
       </div>
     </div>
 
@@ -54,17 +52,14 @@
           :index="index"
           :block="block"
           :form="form"
-          class="mb-10px"
-          style="min-height: 160px"/>
+          class="mb-10px min-h-160px"/>
 
-      <analysis-block :params="analysisBlocks"/>
+      <analysis-block :analysis-params="analysisParams"/>
     </div>
   </div>
 </template>
 
 <script>
-const fileDownload = require("js-file-download");
-
 import {globalloadingMutations} from '@store/helpers';
 
 import {formatValueMixin} from "../mixins/formatMixin";
@@ -152,26 +147,26 @@ export default {
 
       return [
         {
-          name: 'Количество фактических остановленных скважин',
+          name: this.trans('economic_reference.count_factual_stopped_wells'),
           value: this.localeValue(
               wellsByStatus.profitable.uwi_count + wellsByStatus.profitless.uwi_count
           ),
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
           blocks: [
             {
-              title: 'НРС',
+              title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.NRS].total.uwi_count
               )
             },
             {
-              title: 'ЧРФ',
+              title: this.trans('economic_reference.crf'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.CRF].total.uwi_count
               )
             },
             {
-              title: 'ОПЕК +',
+              title: `${this.trans('economic_reference.opek')} +`,
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.OPEK].total.uwi_count
               )
@@ -179,57 +174,57 @@ export default {
           ]
         },
         {
-          name: 'Количество предлагаемых скважин на остановку',
+          name: this.trans('economic_reference.count_proposed_stopped_wells'),
           value: this.localeValue(
               wellsByStatus.profitless.uwi_count + proposedStoppedWellsCount
           ),
           dimension: this.trans('economic_reference.wells_count').toLocaleLowerCase(),
           blocks: [
             {
-              title: 'НРС',
+              title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.NRS].profitless.uwi_count
               )
             },
             {
-              title: 'ЧРФ',
+              title: this.trans('economic_reference.crf'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.CRF].profitless.uwi_count
               )
             },
             {
-              title: 'ОПЕК +',
+              title: `${this.trans('economic_reference.opek')} +`,
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.OPEK].profitless.uwi_count
               )
             },
             {
-              title: 'ДОП',
+              title: this.trans('economic_reference.additionally_short').toLocaleUpperCase(),
               value: this.localeValue(proposedStoppedWellsCount)
             }
           ],
         },
         {
-          name: 'Потеря добычи на остановках',
+          name: this.trans('economic_reference.production_loss_at_stops'),
           value: this.localeValue(wellsByStatus.profitable.oil_loss, 1000),
           dimension: this.trans('economic_reference.thousand_tons'),
           blocks: [
             {
-              title: 'НРС',
+              title: this.trans('economic_reference.nrs'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.NRS].profitable.oil_loss,
                   1000
               )
             },
             {
-              title: 'ЧРФ',
+              title: this.trans('economic_reference.crf'),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.CRF].profitable.oil_loss,
                   1000
               )
             },
             {
-              title: 'ОПЕК +',
+              title: this.trans('economic_reference.additionally_short').toLocaleUpperCase(),
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatus.OPEK].profitable.oil_loss,
                   1000
@@ -240,117 +235,64 @@ export default {
       ]
     },
 
-    analysisBlocks() {
-      let params = this.analysisParams && this.analysisParams.length
-          ? this.analysisParams[0]
-          : {
-            date: '',
-            netback_forecast: 0,
-            variable_cost: 0,
-            permanent_cost: 0,
-            avg_prs_cost: 0,
-            oil_density: 0,
-            days: 0,
-            permanent_stop_cost: 0,
-          }
-
-      return [
-        {
-          name: 'Месяц',
-          value: params.date,
-          dimension: '',
-        },
-        {
-          name: 'Нетбэк 2020 прогноз',
-          value: this.localeValue(params.netback_forecast),
-          dimension: 'тенге/тонна',
-        },
-        {
-          name: 'Условно-переменные расходы',
-          value: this.localeValue(params.variable_cost),
-          dimension: 'тг/тонну жидкости'
-        },
-        {
-          name: 'Условно-постоянные расходы',
-          value: this.localeValue(params.permanent_cost),
-          dimension: 'тыс.тг/скв/сут с ФОТ'
-        },
-        {
-          name: 'Средняя стоимость ПРС',
-          value: this.localeValue(params.avg_prs_cost),
-          dimension: 'тыс.тг/рем без ФОТ'
-        },
-        {
-          name: 'Плотность нефти',
-          value: this.localeValue(params.oil_density),
-          dimension: 'тн/м3'
-        },
-        {
-          name: 'Дней в месяце',
-          value: this.localeValue(params.days),
-          dimension: 'дни'
-        },
-        {
-          name: 'Усл.-постоянные расходы для отключаемых скважин',
-          value: this.localeValue(params.permanent_stop_cost),
-          dimension: ''
-        }
-      ]
-    },
-
     economicBlocks() {
-      let revenue = this.formatValue(this.scenario.Revenue_total[this.scenarioValueKey])
+      let netBack = this.getSumByWellKey(this.wellsSum, 'netback')
+      let netBackPropose = this.getSumByWellKey(this.proposedWellsSum, 'netback')
 
-      let expenditures = this.formatValue(this.scenario.Overall_expenditures_full[this.scenarioValueKey])
+      let expenditures = this.getSumByWellKey(this.wellsSum, 'overall_expenditures')
+      let expendituresPropose = this.getSumByWellKey(this.proposedWellsSum, 'overall_expenditures')
 
-      let operatingProfit = this.formatValue(this.scenario.Operating_profit[this.scenarioValueKey])
-
-      let diff = this.formatValue(this.scenario.Operating_profit[this.scenarioValueKey] - this.scenario.Operating_profit.original_value)
+      let operatingProfit = this.getSumByWellKey(this.wellsSum, 'operating_profit')
+      let operatingProfitPropose = this.getSumByWellKey(this.proposedWellsSum, 'operating_profit')
 
       return [
         [
           {
-            name: 'Доходы',
-            value: revenue.value,
-            dimension: revenue.dimension,
-            dimensionSuffix: this.trans('economic_reference.tenge'),
-            percent: this.calcPercent(
-                this.scenario.Revenue_total[this.scenarioValueKey],
-                this.scenario.Revenue_total.original_value
-            ),
+            title: this.trans('economic_reference.income'),
+            value: this.formatValue(netBackPropose).value,
+            dimension: `
+              ${this.formatValue(netBackPropose).dimension}
+              ${this.trans('economic_reference.tenge')}
+            `,
+            percent: this.calcPercent(netBackPropose, netBack),
+            percentDimension: '%',
+            isReverse: true
           },
           {
-            name: 'Расходы',
-            value: expenditures.value,
-            dimension: expenditures.dimension,
-            dimensionSuffix: this.trans('economic_reference.tenge'),
-            percent: this.calcPercent(
-                this.scenario.Overall_expenditures_full[this.scenarioValueKey],
-                this.scenario.Overall_expenditures_full.original_value
-            ),
+            title: this.trans('economic_reference.costs'),
+            value: this.formatValue(expendituresPropose).value,
+            dimension: `
+              ${this.formatValue(expendituresPropose).dimension}
+              ${this.trans('economic_reference.tenge')}
+            `,
+            percent: this.calcPercent(expendituresPropose, expenditures),
+            percentDimension: '%',
+            isReverse: true
           }
         ],
         [
           {
-            name: 'Прибыль',
-            value: operatingProfit.value,
-            dimension: operatingProfit.dimension,
-            dimensionSuffix: this.trans('economic_reference.tenge'),
-            percent: this.calcPercent(
-                this.scenario.Operating_profit[this.scenarioValueKey],
-                this.scenario.Operating_profit.original_value
-            ),
+            title: this.trans('economic_reference.profit'),
+            value: this.formatValue(operatingProfitPropose).value,
+            dimension: `
+              ${this.formatValue(operatingProfitPropose).dimension}
+              ${this.trans('economic_reference.tenge')}
+            `,
+            percent: this.calcPercent(operatingProfitPropose, operatingProfit),
+            percentDimension: '%',
+            isReverse: true
           },
           {
-            name: 'Экономический эффект',
-            value: diff.value,
-            dimension: diff.dimension,
-            dimensionSuffix: this.trans('economic_reference.tenge'),
-            percent: this.calcPercent(
-                this.scenario.Operating_profit[this.scenarioValueKey],
-                this.scenario.Operating_profit.original_value
-            ),
-            diff: true,
+            title: this.trans('economic_reference.economic_effect'),
+            value: this.formatValue(operatingProfitPropose - operatingProfit).value,
+            dimension: `
+              ${this.formatValue(operatingProfitPropose - operatingProfit).dimension}
+              ${this.trans('economic_reference.tenge')}
+            `,
+            percent: this.calcPercent(operatingProfitPropose, operatingProfitPropose),
+            percentDimension: '%',
+            isHidePercent: true,
+            isReverse: true
           },
         ],
       ]
@@ -388,11 +330,30 @@ export default {
 
       this.SET_LOADING(false)
     },
+
+    getSumByWellKey(wells, wellKey) {
+      return wells && wells.length
+          ? wells.reduce((prev, next) => prev + +next[wellKey], 0)
+          : 0
+    },
+
   }
-};
+}
 </script>
 <style scoped>
 .mb-10px {
   margin-bottom: 10px;
+}
+
+.pr-75px {
+  padding-right: 75px !important;
+}
+
+.min-h-130px {
+  min-height: 130px;
+}
+
+.min-h-160px {
+  min-height: 160px;
 }
 </style>

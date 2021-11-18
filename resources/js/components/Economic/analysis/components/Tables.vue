@@ -62,7 +62,7 @@
       <table-oil-production-loss
           v-else-if="activeTab === 'economic_tech_loss'"
           :wells="wellsSumByStatus"
-          title="Технологические потери: упущенная выгода, расходы на ПРС"
+          :title="trans('economic_reference.table_economic_tech_loss_title')"
           key="economic_tech_loss"
           class="text-white"
           is-prs
@@ -147,14 +147,14 @@ export default {
   computed: {
     tabs() {
       return {
-        production_loss: 'Потеря добычи остановок',
-        oil_production_loss: 'Потеря добычи по типу рентабельности',
-        financial_loss: 'Финансовые потери от остановок',
-        well_distribution: 'Распределение остановленных скважин',
-        additional_stops: 'Возможность дополнительных остановок',
-        oil_production_tech_loss: 'Технологические потери: добыча',
-        economic_tech_loss: 'Технологические потери: экономика',
-        prs_cost: 'Расходы на ПРС',
+        production_loss: this.trans('economic_reference.table_production_loss'),
+        oil_production_loss: this.trans('economic_reference.table_oil_production_loss'),
+        financial_loss: this.trans('economic_reference.table_financial_loss'),
+        well_distribution: this.trans('economic_reference.table_well_distribution'),
+        additional_stops: this.trans('economic_reference.table_additional_stops'),
+        oil_production_tech_loss: this.trans('economic_reference.table_oil_production_tech_loss'),
+        economic_tech_loss: this.trans('economic_reference.table_economic_tech_loss'),
+        prs_cost: this.trans('economic_reference.table_prs_cost'),
       }
     },
   },

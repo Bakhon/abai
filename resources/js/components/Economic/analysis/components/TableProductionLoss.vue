@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="16" class="line-height-18px">
-      Потери добычи от остановок за май-октябрь 2020 г.
+      {{ trans('economic_reference.production_loss_from_stops') }}
     </subtitle>
 
     <div class="customScroll">
@@ -23,7 +23,7 @@
 
       <div class="mt-3">
         <subtitle font-size="16" class="mb-2 line-height-18px">
-          В т.ч. нерентабельный фонд
+          {{ trans('economic_reference.incl_profitless_fund') }}
         </subtitle>
 
         <div class="d-flex">
@@ -43,7 +43,7 @@
 
       <div class="mt-3">
         <subtitle font-size="16" class="mb-2 line-height-18px">
-          Предлагаемый вариант
+          {{ trans('economic_reference.proposed_variant') }}
         </subtitle>
 
         <div class="d-flex">
@@ -109,7 +109,7 @@ export default {
       let count = 0
 
       this.wellsByDates.forEach(status => {
-        if (!['НРС', 'ЧРФ', 'ОПЕК+'].includes(status.status_name)) return
+        if (!TechnicalWellLossStatus.factualIds.includes(status.status_id)) return
 
         status.wells.forEach(date => count += date.profitless.uwi_count)
       })
@@ -144,19 +144,19 @@ export default {
 
       return [
         {
-          status_name: 'Фактические остановки',
+          status_name: this.trans('economic_reference.factual_stops'),
           wells: this.tableData.dates.map((date, dateIndex) => ({
             profitless: factualStoppedWells[dateIndex]
           }))
         },
         {
-          status_name: 'Доп. остановки из нерентаб. фонда',
+          status_name: this.trans('economic_reference.additional_stops_from_profitless_fund'),
           wells: this.tableData.dates.map((date, dateIndex) => ({
             profitless: proposedStoppedWells[dateIndex]
           }))
         },
         {
-          status_name: 'Доп. остановки из менее рентаб. фонда',
+          status_name: this.trans('economic_reference.additional_stops_from_less_profitable_fund'),
           wells: this.tableData.dates.map(() => ({
             profitless: {...STOPPED_WELL}
           }))

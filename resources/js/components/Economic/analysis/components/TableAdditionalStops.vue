@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="16" class="line-height-18px">
-      Возможность дополнительных остановок
+      {{ trans('economic_reference.table_additional_stops') }}
     </subtitle>
 
     <div class="mt-2 text-white font-size-12px line-height-14px">
@@ -164,72 +164,55 @@ export default {
     headers() {
       return [
         {
-          title: 'Месяцы',
+          title: this.trans('economic_reference.months'),
           key: 'title',
           dimension: '',
           style: 'flex: 0 0 10%',
           isString: true
         },
         {
-          title: 'Кол-во нерентаб. скважин с ПРС',
+          title: this.trans('economic_reference.count_profitless_wells_with_prs'),
           key: 'count',
-          dimension: 'ед.',
+          dimension: this.trans('economic_reference.units'),
           style: 'flex: 0 0 10%',
         },
         {
-          title: 'Становятся рентаб.',
+          title: this.trans('economic_reference.become_profitable'),
           key: 'profitable',
-          subTitle: 'В том числе при исключении ПРС',
-          dimension: 'ед.',
+          subTitle: this.trans('economic_reference.incl_exclude_prs'),
+          dimension: this.trans('economic_reference.units'),
           styleSubTitle: 'flex: 0 0 20%',
           style: 'flex: 0 0 10%',
         },
         {
-          title: 'Остаются нерент.',
+          title: this.trans('economic_reference.remain_profitless'),
           key: 'profitless',
-          dimension: 'ед.',
+          dimension: this.trans('economic_reference.units'),
           style: 'flex: 0 0 10%',
         },
         {
-          title: 'Предложено к отключению (в предл. вар.)',
+          title: this.trans('economic_reference.proposed_for_stop_in_proposed_variant'),
           key: 'stopped',
-          dimension: 'ед.',
+          dimension: this.trans('economic_reference.units'),
           style: 'flex: 0 0 15%',
         },
         {
-          title: 'Можно дополнительно отключить скв.',
+          title: this.trans('economic_reference.additionally_can_stop'),
           key: 'notStopped',
-          dimension: 'ед.',
+          dimension: this.trans('economic_reference.units'),
           style: 'flex: 0 0 15%',
         },
         {
-          title: 'Потери добычи при доп. отключении',
+          title: this.trans('economic_reference.production_loss_with_additional_stop'),
           key: 'oilLoss',
-          dimension: 'тонн',
+          dimension: this.trans('economic_reference.tons'),
           style: 'flex: 0 0 15%',
         },
         {
-          title: 'Экономия при доп. отключении (при сохр. 70% пост. рас., ПРС)',
+          title: this.trans('economic_reference.savings_with_additional_stop'),
           key: 'operatingProfitLoss',
-          dimension: 'тенге',
+          dimension: this.trans('economic_reference.thousand_tenge'),
           style: 'flex: 0 0 15%',
-        }
-      ]
-    },
-
-    titles() {
-      return [
-        {
-          name: 'Предложено к отключению (в предл.вар.)'
-        },
-        {
-          name: 'Можно дополнительно отключить скв.'
-        },
-        {
-          name: 'Потери добычи при доп. отключении'
-        },
-        {
-          name: 'Экономия при доп. отключении (при сохр. 70% пост. рас., ПРС)'
         }
       ]
     },

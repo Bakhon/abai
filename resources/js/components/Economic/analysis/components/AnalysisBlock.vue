@@ -20,13 +20,80 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../../mixins/formatMixin";
+
 export default {
   name: "AnalysisBlock",
+  mixins: [
+    formatValueMixin
+  ],
   props: {
-    params: {
+    analysisParams: {
       required: true,
       type: Array
     }
+  },
+  computed: {
+    params() {
+      let params = this.analysisParams && this.analysisParams.length
+          ? this.analysisParams[0]
+          : {
+            date: '',
+            netback_forecast: 0,
+            variable_cost: 0,
+            permanent_cost: 0,
+            avg_prs_cost: 0,
+            oil_density: 0,
+            days: 0,
+            permanent_stop_cost: 0,
+          }
+
+      return [
+        {
+          name: this.trans('economic_reference.month'),
+          value: params.date,
+          dimension: '',
+        },
+        {
+          name: this.trans('economic_reference.netback_forecast'),
+          value: this.localeValue(params.netback_forecast),
+          dimension: this.trans('economic_reference.tenge_per_ton'),
+        },
+        {
+          name: this.trans('economic_reference.variable_cost'),
+          value: this.localeValue(params.variable_cost),
+          dimension: this.trans('economic_reference.tn_per_ton_liquid'),
+        },
+        {
+          name: this.trans('economic_reference.conditional_fixed_costs'),
+          value: this.localeValue(params.permanent_cost),
+          dimension: this.trans('economic_reference.conditional_fixed_costs_dimension'),
+        },
+        {
+          name: this.trans('economic_reference.avg_cost_prs'),
+          value: this.localeValue(params.avg_prs_cost),
+          dimension: this.trans('economic_reference.avg_cost_prs_dimension'),
+        },
+        {
+          name: this.trans('economic_reference.oil_density'),
+          value: this.localeValue(params.oil_density),
+          dimension: `
+            ${this.trans('economic_reference.tn')}/
+            ${this.trans('economic_reference.cubic_meter')}
+          `
+        },
+        {
+          name: this.trans('economic_reference.days_in_month'),
+          value: this.localeValue(params.days),
+          dimension: this.trans('economic_reference.days'),
+        },
+        {
+          name: this.trans('economic_reference.permanent_stop_cost'),
+          value: this.localeValue(params.permanent_stop_cost),
+          dimension: ''
+        }
+      ]
+    },
   }
 }
 </script>

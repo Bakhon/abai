@@ -2,7 +2,7 @@
   <div class="h-100 text-center d-flex">
     <div class="flex-50">
       <subtitle font-size="16" class="line-height-18px">
-        Факт
+        {{ trans('economic_reference.fact') }}
       </subtitle>
 
       <apexchart
@@ -14,7 +14,7 @@
 
     <div class="flex-50">
       <subtitle font-size="16" class="line-height-18px">
-        Предлагаемый вариант
+        {{ trans('economic_reference.proposed_variant') }}
       </subtitle>
 
       <apexchart

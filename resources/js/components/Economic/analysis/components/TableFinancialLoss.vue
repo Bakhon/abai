@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="16" class="line-height-18px">
-      Потери добычи от остановок за май-октябрь 2020 г.
+      {{ trans('economic_reference.production_loss_from_stops') }}
     </subtitle>
 
     <div class="mt-2 text-white font-size-14px line-height-16px">
@@ -10,7 +10,7 @@
 
         <div
             class="bg-blue p-2 border-grey flex-grow-1 d-flex align-items-center justify-content-center min-width-300px">
-          Наименование
+          {{ trans('economic_reference.nomination') }}
         </div>
 
         <div v-for="(header, headerIndex) in tableHeaders"
@@ -118,57 +118,60 @@ export default {
     tableHeaders() {
       return [
         {
-          title: 'Кол-во скважин',
-          dimensionTitle: 'ед.',
+          title: this.trans('economic_reference.count_well_short'),
+          dimensionTitle: this.trans('economic_reference.units'),
           key: 'uwi_count'
         },
         {
-          title: 'Добыча жидкости',
+          title: this.trans('economic_reference.liquid_production'),
           dimension: 1000,
-          dimensionTitle: 'тыс. м3',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.cubic_meter')}
+          `,
           key: 'liquid'
         },
         {
-          title: 'Добыча нефти',
+          title: this.trans('economic_reference.oil_production'),
           dimension: 1000,
-          dimensionTitle: 'тыс. тон',
+          dimensionTitle: this.trans('economic_reference.thousand_tons'),
           key: 'oil'
         },
         {
-          title: 'Время всего',
+          title: this.trans('economic_reference.time_all'),
           dimension: 24,
-          dimensionTitle: 'дни',
+          dimensionTitle: this.trans('economic_reference.days'),
           key: 'total_hours',
         },
         {
-          title: 'Отр время',
+          title: this.trans('economic_reference.time_worked'),
           dimension: 24,
-          dimensionTitle: 'дни',
+          dimensionTitle: this.trans('economic_reference.days'),
           key: 'active_hours'
         },
         {
-          title: 'Дни простоя',
+          title: this.trans('economic_reference.downtime_days'),
           dimension: 24,
-          dimensionTitle: 'дни',
+          dimensionTitle: this.trans('economic_reference.days'),
           key: 'paused_hours'
         },
         {
-          title: 'Доходы',
+          title: this.trans('economic_reference.income'),
           dimension: 1000,
-          dimensionTitle: 'млн. тенге',
+          dimensionTitle: this.trans('economic_reference.million_tenge'),
           key: 'netback',
           styleClass: 'ml-2',
         },
         {
-          title: 'Расходы',
+          title: this.trans('economic_reference.costs'),
           dimension: 1000,
-          dimensionTitle: 'млн. тенге',
+          dimensionTitle: this.trans('economic_reference.million_tenge'),
           key: 'overall_expenditures',
         },
         {
-          title: 'Прибыль / убыток',
+          title: this.trans('economic_reference.profit_loss'),
           dimension: 1000,
-          dimensionTitle: 'млн. тенге',
+          dimensionTitle: this.trans('economic_reference.million_tenge'),
           key: 'operating_profit',
         },
       ]
@@ -177,7 +180,7 @@ export default {
     tableRows() {
       return [
         {
-          title: 'Фактические показатели',
+          title: this.trans('economic_reference.factual_indicators'),
           order: '1.',
           values: this.tableHeaders.map(header => ({
             value: this.sumData[header.key].total
@@ -185,21 +188,21 @@ export default {
           style: 'background: #333868',
         },
         {
-          title: 'Нерентабельные',
+          title: this.trans('economic_reference.profitless'),
           values: this.tableHeaders.map(header => ({
             value: this.sumData[header.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
-          title: 'Рентабельные',
+          title: this.trans('economic_reference.profitable'),
           values: this.tableHeaders.map(header => ({
             value: this.sumData[header.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
-          title: 'Простой',
+          title: this.trans('economic_reference.idle'),
           values: this.tableHeaders.map(header => ({
             value: 0
           })),
@@ -211,7 +214,7 @@ export default {
     tableProposedRows() {
       return [
         {
-          title: 'Предлагаемый вариант',
+          title: this.trans('economic_reference.proposed_variant'),
           order: '2.',
           values: this.tableHeaders.map(header => ({
             value: this.sumProposedData[header.key].total
@@ -219,21 +222,21 @@ export default {
           style: 'background: #333868',
         },
         {
-          title: 'Нерентабельные',
+          title: this.trans('economic_reference.profitless'),
           values: this.tableHeaders.map(header => ({
             value: this.sumProposedData[header.key].profitless
           })),
           style: 'background: #7D5F52'
         },
         {
-          title: 'Рентабельные',
+          title: this.trans('economic_reference.profitable'),
           values: this.tableHeaders.map(header => ({
             value: this.sumProposedData[header.key].profitable
           })),
           style: 'background: #1A5855'
         },
         {
-          title: 'Простой',
+          title: this.trans('economic_reference.idle'),
           values: this.tableHeaders.map(header => ({
             value: 0
           })),
@@ -245,7 +248,7 @@ export default {
     tableDiffRows() {
       return [
         {
-          title: 'Предлагаемый вариант минус фактические показатели',
+          title: this.trans('economic_reference.proposed_variant_minus_factual_indicators'),
           order: '3.',
           values: this.tableHeaders.map((header, headerIndex) => ({
             value: this.getTableDiff(headerIndex, 0),
@@ -256,21 +259,21 @@ export default {
           style: 'background: #333868',
         },
         {
-          title: 'Нерентабельные',
+          title: this.trans('economic_reference.profitless'),
           values: this.tableHeaders.map((header, headerIndex) => ({
             value: this.getTableDiff(headerIndex, 1),
           })),
           style: 'background: #7D5F52'
         },
         {
-          title: 'Рентабельные',
+          title: this.trans('economic_reference.profitable'),
           values: this.tableHeaders.map((header, headerIndex) => ({
             value: this.getTableDiff(headerIndex, 2),
           })),
           style: 'background: #1A5855'
         },
         {
-          title: 'Простой',
+          title: this.trans('economic_reference.idle'),
           values: this.tableHeaders.map((header, headerIndex) => ({
             value: this.getTableDiff(headerIndex, 3),
           })),
@@ -282,7 +285,7 @@ export default {
     tableGrowthRows() {
       return [
         {
-          title: 'Рост прибыли от подбора нерентабельных скважин',
+          title: this.trans('economic_reference.profit_growth_from_profitless_wells'),
           order: '4.',
           value: this.localeValue(
               this.sumProposedData.operating_profit.profitable -
@@ -291,7 +294,7 @@ export default {
           ),
         },
         {
-          title: 'Рост прибыли от исключения ПРС на отключаемых скважинах',
+          title: this.trans('economic_reference.profit_growth_from_disable_prs'),
           order: '5.',
           value: this.localeValue(
               this.sumData.prs_cost.profitless -
@@ -300,7 +303,7 @@ export default {
           ),
         },
         {
-          title: 'Снижение прибыли из-за оставления 70% ФОТ, постоянных',
+          title: this.trans('economic_reference.decreased_profits_due_to_abandonment_fot'),
           order: '6.',
           value: this.localeValue(
               this.sumData.operating_profit.profitless -

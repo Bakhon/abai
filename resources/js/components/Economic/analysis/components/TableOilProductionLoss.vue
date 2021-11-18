@@ -9,18 +9,14 @@
            class="mt-2 text-white font-size-12px line-height-14px">
         <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
-            {{
-              isTechLoss
-                  ? 'Количество скважин в простое по технологическим причинам'
-                  : 'Количество остановленных скважин'
-            }}
+            {{ wellTitle }}
           </div>
         </div>
 
         <div class="font-weight-600 pr-10px d-flex">
           <div class="bg-blue p-1 border-grey d-flex align-items-center justify-content-center flex-grow-1"
                style="min-width: 100px">
-            Месяцы
+            {{ trans('economic_reference.months') }}
           </div>
 
           <div v-for="(statusName, statusIndex) in tableData.statusNames"
@@ -58,7 +54,6 @@
               :statuses="tableData.statuses"
               :columns="columns"
               :style="totalRowOilLoss.style"
-              :dimension="1000"
               class="flex-grow-1"
               is-absolute/>
 
@@ -68,7 +63,6 @@
               :statuses="tableData.statuses"
               :columns="columns"
               :style="totalRowOperatingProfit.style"
-              :dimension="1000"
               class="flex-grow-1"
               is-absolute/>
         </div>
@@ -78,7 +72,7 @@
            class="text-white font-size-12px line-height-14px mt-3">
         <div class="bg-blue font-weight-600 text-center border-grey position-relative py-2 height-30px">
           <div class="fixed-header">
-            {{ isPrs ? 'Расходы на ПРС, млн. тенге' : 'Потери нефти, тыс. тонн' }}
+            {{ lossTitle }}
           </div>
         </div>
 
@@ -146,14 +140,26 @@ export default {
     this.$emit('updateWide', this.tableData.statuses.length > 6)
   },
   computed: {
+    wellTitle() {
+      return this.isTechLoss
+          ? this.trans('economic_reference.count_well_for_technological_reasons')
+          : this.trans('economic_reference.count_stopped_wells')
+    },
+
+    lossTitle() {
+      return this.isPrs
+          ? `${this.trans('economic_reference.prs_costs')}, ${this.trans('economic_reference.million_tenge')}`
+          : `${this.trans('economic_reference.oil_losses')}, ${this.trans('economic_reference.thousand_tons')}`
+    },
+
     subTitle() {
       if (this.title) {
         return this.title
       }
 
       return this.isTechLoss
-          ? 'Технологические потери: добыча рентабельных и нерентабельных скважин'
-          : 'Потери от остановок: добыча рентабельных и нерентабельных скважин'
+          ? this.trans('economic_reference.table_oil_production_tech_loss_title')
+          : this.trans('economic_reference.table_oil_production_loss_title')
     }
   }
 }

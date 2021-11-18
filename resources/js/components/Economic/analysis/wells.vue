@@ -15,14 +15,14 @@
                  @change="toggleSortKey('isGroup')">
           <label for="sort_group"
                  class="form-check-label text-blue">
-            Сгруппировать значения
+            {{ trans('economic_reference.group_values') }}
           </label>
         </div>
 
         <select
             v-show="form.granularity === 'day'"
             v-model="form.uwi"
-            title="Выберите скважину"
+            :title="trans('economic_reference.select_well')"
             data-style="text-white bg-main1 border-white"
             data-live-search="true"
             class="well-search"
@@ -121,13 +121,13 @@ export default {
     getChangedStatus(well) {
       switch (well.changed_status) {
         case -1:
-          return 'Кандидат на остановку'
+          return this.trans('economic_reference.candidate_to_stop')
         case 0:
           return ''
         case 1:
-          return 'Кандидат на запуск'
+          return this.trans('economic_reference.candidate_to_launch')
         case 2:
-          return 'Не деоптимизировать'
+          return this.trans('economic_reference.do_not_deoptimize')
       }
     },
 
@@ -160,9 +160,7 @@ export default {
     setUwis() {
       let uwis = {}
 
-      this.wells.forEach(well => {
-        uwis[well.uwi] = 1
-      })
+      this.wells.forEach(well => uwis[well.uwi] = 1)
 
       this.uwis = Object.keys(uwis)
     },
@@ -203,7 +201,7 @@ export default {
     sumRow() {
       return this.tableHeaders.map((header, headerIndex) => {
         if (!headerIndex) {
-          return 'Всего'
+          return this.trans('economic_reference.total')
         }
 
         return header.isString ? '' : 0
@@ -241,75 +239,99 @@ export default {
           width: 100,
         },
         {
-          name: 'Дата',
+          name: this.trans('economic_reference.date'),
           key: 'date',
           isString: true,
           width: 90,
         },
         {
-          name: 'Q н, факт',
+          name: `
+           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.fact').toLocaleLowerCase()}
+          `,
           key: 'oil',
           width: 90,
         },
         {
-          name: 'Q ж, факт',
+          name: `
+           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.fact').toLocaleLowerCase()}
+          `,
           key: 'liquid',
           width: 90,
         },
         {
-          name: 'Состояние',
+          name: this.trans('economic_reference.condition'),
           key: 'status_name',
           isString: true,
           isMultiple: true,
           width: 130,
         },
         {
-          name: 'Причина потерь',
+          name: this.trans('economic_reference.cause_of_loss'),
           key: 'loss_status_name',
           isString: true,
           isMultiple: true,
           width: 130,
         },
         {
-          name: 'Операционная прибыль, факт',
+          name: `
+            ${this.trans('economic_reference.operating_profit')},
+            ${this.trans('economic_reference.fact').toLocaleLowerCase()}
+          `,
           key: 'operating_profit',
           width: 160,
         },
         {
-          name: 'Рентабельность',
+          name: this.trans('economic_reference.profitability'),
           key: 'profitability',
           isString: true,
           width: 130,
         },
         {
-          name: 'Q н, прогноз',
+          name: `
+           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
+          `,
           key: 'oil_forecast',
           width: 100,
         },
         {
-          name: 'Q ж, прогноз',
+          name: `
+           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
+          `,
           key: 'liquid_forecast',
           width: 100,
         },
         {
-          name: 'Примечания',
+          name: this.trans('economic_reference.notes'),
           key: 'changed_status',
           isString: true,
           isMultiple: true,
           width: 160,
         },
         {
-          name: 'Q н, предл.',
+          name: `
+           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
+          `,
           key: 'oil_propose',
           width: 100,
         },
         {
-          name: 'Q ж, предл.',
+          name: `
+           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
+          `,
           key: 'liquid_propose',
           width: 100,
         },
         {
-          name: 'Операционная прибыль, предл.',
+          name: `
+            ${this.trans('economic_reference.operating_profit')},
+            ${this.trans('economic_reference.proposed_short')},
+          `,
           key: 'operating_profit_propose',
           width: 160,
         },

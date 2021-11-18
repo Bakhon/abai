@@ -10,7 +10,7 @@
       <div class="d-flex align-items-center font-size-26px text-nowrap">
         <div class="d-flex align-items-center">
           <span class="font-weight-bold">
-            {{ subBlock.value }}
+            {{ localeValue(subBlock.value) }}
           </span>
 
           <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="text-grey font-size-12px line-height-14px font-weight-bold mb-3">
+      <div class="text-grey font-size-12px line-height-14px font-weight-bold">
         Предлагаемый
       </div>
 
@@ -39,14 +39,15 @@
         </div>
       </div>
 
-      <div class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
+      <div v-if="!subBlock.isHidePercent"
+           class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
         <percent-badge-icon
-            :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
-            :reverse="subBlock.reverse"
+            :percent="subBlock.percent"
+            :reverse="subBlock.isReverse"
             class="font-size-18px line-height-20px mr-1"/>
 
         <span class="font-size-18px line-height-20px font-weight-bold">
-            {{ Math.abs(+subBlock.percent) }}
+            {{ localeValue(Math.abs(+subBlock.percent)) }}
         </span>
 
         <span class="ml-2 d-flex flex-column font-size-12px line-height-14px">
@@ -74,6 +75,8 @@ import Divider from "../../components/Divider";
 import PercentBadgeIcon from "../../components/PercentBadgeIcon";
 import PercentProgress from "../../components/PercentProgress";
 
+import {formatValueMixin} from "../../mixins/formatMixin";
+
 export default {
   name: "EconomicBlock",
   components: {
@@ -81,6 +84,9 @@ export default {
     PercentBadgeIcon,
     PercentProgress
   },
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     form: {
       required: true,
