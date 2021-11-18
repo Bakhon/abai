@@ -1200,6 +1200,9 @@ input.rangeInput {
     display: flex;
     align-items: center;
 }
+.date-report{
+    width: 196px;
+}
 .daily_raport_block-header-input label{
     font-weight: bold;
     margin-right: 12px;
@@ -1431,6 +1434,12 @@ progress::-webkit-progress-value {
     font-weight: bold;
 }
 
+@media (max-width: 1670px) {
+    .nozzle-row{
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;
