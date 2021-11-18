@@ -58,13 +58,13 @@ class WellsController extends Controller
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
                    ->where('prod.well_category.well', '=', $well->id)
                    ->orderBy('dbeg', 'desc')
-                   ->select('dict.well_category_type.code')                  
+                   ->select('dict.well_category_type.code')  
+                   ->take(1)                
                    ->get();
-                              
+                            
         if($category[0]->code == 'OIL')  
         {            
-            $show_param = [
-                'well_expl_right' => $this->wellExplOnRight($well),
+            $show_param = [                
                 'pump_code' => $this->wellEquipParam($well, 'NAS'),   
                 'type_sk' => $this->wellEquipParam($well, 'TSK'),  
                 'well_equip_param' => $this->wellEquipParam($well, 'PSD'),
@@ -72,6 +72,9 @@ class WellsController extends Controller
                 'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
                 'meas_water_cut' => $this->measWaterCut($well), 
                 'meas_well' => $this->measWell($well),
+                'lab_research_value' => $this->labResearchValue($well),
+                'measLiq' => $this->measLiq($well), 
+                'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),   
             ];           
         }
         if($category[0]->code == 'INJ') 
@@ -102,11 +105,9 @@ class WellsController extends Controller
             'main_org_code'=>$this->orgCode($orgs),
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
-            'actual_bottom_hole' => $this->actualBottomHole($well),
-            'lab_research_value' => $this->labResearchValue($well),
+            'actual_bottom_hole' => $this->actualBottomHole($well),            
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
-            'well_perf_actual' => $this->wellPerfActual($well),                                                               
-            'measLiq' => $this->measLiq($well),        
+            'well_perf_actual' => $this->wellPerfActual($well),                                                                                  
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
@@ -116,8 +117,7 @@ class WellsController extends Controller
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),                 
             'gdisCurrent' => $this->gdisCurrent($well),               
-            'rzatr_atm' => $this->gdisCurrentValueOtp($well),                                                                              
-            'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),                   
+            'rzatr_atm' => $this->gdisCurrentValueOtp($well),                                                                                                          
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
