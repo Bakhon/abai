@@ -24,6 +24,7 @@
 </template>
 <script>
     import chart from "vue-apexcharts";
+    import moment from "moment";
     import {globalloadingMutations} from '@store/helpers';
 
     const ru = require("apexcharts/dist/locales/ru.json");
@@ -52,6 +53,7 @@
                         opposite: true,
                         min: 0,
                         max: 0,
+                        reversed: true,
                         axisTicks: {
                             show: true,
                         },
@@ -75,7 +77,7 @@
                         },
                     },
                     {
-                        seriesName: this.trans('app.liquid'),
+                        seriesName: this.trans('prototype_bd.liquid'),
                         opposite: true,
                         min: 0,
                         max: 0,
@@ -95,14 +97,14 @@
                             }
                         },
                         title: {
-                            text: this.trans('app.liquidOil'),
+                            text: this.trans('prototype_bd.oilAndLiq'),
                             style: {
                                 color: '#000000',
                             }
                         },
                     },
                     {
-                        seriesName: this.trans('app.oil'),
+                        seriesName: this.trans('prototype_bd.oil'),
                         min: 0,
                         max: 0,
                         labels: {
@@ -144,6 +146,13 @@
                         opposite: true,
                         min: 0,
                         max: 70,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
                         title: {
                             text: this.trans('well_card_graph.events')
                         },
@@ -262,7 +271,7 @@
                         background: 'rgba(255, 255, 255, 1)',
                         foreColor: '#000000',
                         selection: {
-                            enabled: true,
+                            enabled: false,
                             type: 'x',
                         },
                         toolbar: {
@@ -272,7 +281,11 @@
                         defaultLocale: 'ru',
                     },
                     markers: {
-                        size: [0,0,0,0,4]
+                        size: [0,0,0,0,4],
+                        strokeWidth: 0,
+                        hover: {
+                            sizeOffset: 0
+                        }
                     },
                     xaxis: {
                         type: 'datetime',
@@ -286,7 +299,7 @@
                         custom: function ({series, seriesIndex, dataPointIndex, w}) {
                             let colors = w.globals.colors
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
-                            let dateItem = ''
+                            let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
                             let events = window.Apex.events
                             let events_hint = events.info[dataPointIndex];
                             let output = '';
@@ -299,16 +312,19 @@
                                     output = output + ' - ' + parsed.parameters[i].name + ' : ' + parsed.parameters[i].value + ', <br>';
                                 }
                             }
+                            let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
+                                "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
+                                "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>" + output + "</span>" + "</div>";
+                            if (seriesIndex === 4) {
+                                return activity;
+                            }
                             return (
-                                '<div class="arrow_box" style="padding: 3px">' +
-                                "<span style='display: block;background: #ccc'>" + dateItem + "</span>" +
+                                '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
+                                "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[0] + ";" + style_circle + "'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[1] + ";" + style_circle + "'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + w.globals.initialSeries[3].name + ":</b> " + w.globals.initialSeries[3].data[dataPointIndex].toFixed(1) + "</span>" +
-                                "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>"
-                                + output +
-                                "</span>" +
                                 "</div>"
                             );
 
