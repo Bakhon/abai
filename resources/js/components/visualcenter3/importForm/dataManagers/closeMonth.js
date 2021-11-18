@@ -15,7 +15,9 @@ export default {
             isMonthValidateError: false,
             isMonthFactFilled: false,
             changedRows: [],
-            measuringFactColumn: 'oil_production_fact'
+            measuringFactColumn: 'oil_production_fact',
+            condensateFactColumn: 'condensate_production_fact',
+
         };
     },
     methods: {
@@ -76,7 +78,7 @@ export default {
             if (this.companiesWithCondensate.includes(this.selectedDzo.ticker)) {
                 let currentIndex = Object.keys(header).length + 1;
                 header['column'+(Object.keys(header).length + 1)] = 'Добыча конденсата';
-                this.factFieldsMapping[Object.keys(header).length] = 'condensate_production_fact';
+                this.factFieldsMapping[Object.keys(header).length] = 'condensate_production_fact_corrected';
                 header['column'+(Object.keys(header).length + 1)] = 'Сдача конденсата';
                 this.factFieldsMapping[Object.keys(header).length] = 'condensate_delivery_fact';
             }
@@ -108,7 +110,9 @@ export default {
                      let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
                      if (fact && fact[this.factFieldsMapping[y]] !== null) {
                          row['column'+y] = fact[this.factFieldsMapping[y]];
-                     } else if (fact && fact[this.measuringFactColumn]) {
+                     } else if (fact && fact[this.condensateFactColumn] && this.factFieldsMapping[y].includes('condensate')) {
+                         row['column'+y] = fact[this.condensateFactColumn];
+                     } else if (fact && fact[this.measuringFactColumn] && this.factFieldsMapping[y].includes('oil')) {
                          row['column'+y] = fact[this.measuringFactColumn];
                      }
                 }
