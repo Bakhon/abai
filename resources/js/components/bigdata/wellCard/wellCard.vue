@@ -482,6 +482,7 @@ export default {
         gdisCurrentValueStatic: { value_double: null },
         gdisCurrentValueRp: { value_double: null, meas_date: null },
         gdisComplex: { value_double: null, dbeg: null, value_string: null },
+        techmode: { well: null, date: null, bhp: null, p_res: null },        
         gis: { gis_date: null },
         gdisCurrentValueBhp: { value_double: null, meas_date: null },
         zone: { name_ru: null },
@@ -514,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -583,6 +585,8 @@ export default {
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
+        techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -817,22 +821,8 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp =
-        this.well.gdisCurrentValueBhp.value_double &&
-        this.well.gdisCurrentValueBhp.meas_date
-          ? this.well.gdisCurrentValueBhp.value_double +
-            "/" +
-            "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : this.well.gdisCurrentValueBhp.value_double
-          ? this.well.gdisCurrentValueBhp.value_double
-          : this.well.gdisCurrentValueBhp.meas_date
-          ? "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : "";
-
+      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
+        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -863,6 +853,13 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
+      let water_cut = this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : 1;
+      let liquid = this.well.measLiq.liquid ? this.well.measLiq.liquid : 1;      
+      let oil_density = this.well.techModeProdOil.oil_density ? this.well.techModeProdOil.oil_density : 1;
+      let debit_oil_raschet = (liquid* (1 - water_cut/100)) * oil_density;
+      let oil_production = debit_oil_raschet * 1;
+      let gas_production = meas_well ? (meas_well * oil_production).toFixed(1) : oil_production.toFixed(1);      
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -1006,6 +1003,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
+        },
+        {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
@@ -1102,6 +1104,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gas_production"),
+          data: gas_production,
+          type: ["all"],
+        },
+        {
           name: this.trans("well.gaz_factor"),
           data: meas_well,
           type: ["dob_oil"],
@@ -1187,7 +1194,7 @@ export default {
         {
           name: this.trans("well.rzab"),
           data: gdisCurrentValueBhp,
-          type: ["dob_oil"],
+          type: ["all"],
         },
         {
           name: this.trans("well.rzatr"),
@@ -1245,7 +1252,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                                    
+            try {                                                 
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;

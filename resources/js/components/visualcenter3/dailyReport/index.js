@@ -213,7 +213,63 @@ export default {
                 'shutdown_explanation_reasons'
             ],
             isModalActive: false,
-            decreaseReason: ''
+            decreaseReason: '',
+            reasons: [
+                {
+                    'id': 1,
+                    'dzo': 'АО "Озенмунайгаз"',
+                    'daily': '',
+                    'yearly': 'Необеспечение входящей добычи на 2021г. из-за мер по ограничению добычи нефти в 2020г. (оптимизация ГТМ, остановка нерентабельных и часто ремонтируемых скважин и ограничение закачки воды в пласт для ППД).',
+                },
+                {
+                    'id': 2,
+                    'dzo': 'АО "Эмбамунайгаз"',
+                    'daily': '',
+                    'yearly': 'Последствия остановки 60 скважин из-за выхода из строя системы установки LO-CAT на УКПГ "Прорва".',
+                },
+                {
+                    'id': 3,
+                    'dzo': 'АО "Мангистаумунайгаз"',
+                    'daily': '',
+                    'yearly': 'Последствия вынужденного простоя (забастовка) транспортных подрядных организации ТОО WestOilSoftware, АКТС, а также буровой компании СиБУ с 23.08. по 10.09.2021г.',
+                },
+                {
+                    'id': 4,
+                    'dzo': 'ТОО "Казахойл Актобе"',
+                    'daily': 'КРС - скв. К-135, потери - 19,8 тн. \n' +
+                        'ОПРС - скв. А-027 потери - 7 тн. \n' +
+                        'Общие потери - 26,8 тн.',
+                    'yearly': 'Невыполнение запланированных ГТМ в намечаемые сроки из-за позднего заключения договоров (КРС, ГРП).',
+                },
+                {
+                    'id': 5,
+                    'dzo': 'АО "Каражанбасмунай"',
+                    'daily': '',
+                    'yearly': 'Уменьшение коэффициента эксплуатации из-за роста обводненности добывающих скважин;\n' +
+                        'Увеличение коэффициента падения нефти из-за увеличения количества простаивающего и снижающего фонда скважин;\n' +
+                        'Авар. откл. эл.энергии; \n' +
+                        'Увеличение количества ОПРС с 30 до 60 скв. из-за нехватки бригад ТКРС (в июле и августе т.г. из-за положительных результатов ПЦР тестов КВИ кол. бригад сократилось на 6 ед.).;\n' +
+                        'В декабре т.г. остановка ПГУ-1 для обновления парка.',
+                },
+                {
+                    'id': 6,
+                    'dzo': 'ТОО "Урихтау Оперейтинг"',
+                    'daily': 'с 10.11.2021г. с 16-00ч. остановка скважины ВУ-2 на КРС (ревизия ПО, РИР).',
+                    'yearly': 'ЦКРР РК не принят проект разработки горизонта КТ-1 м/р Урихтау по причине отсутствия концептуального решения разработки газовой части месторождения. Освоение 5-ти скважин в текущем году не планируется.',
+                },
+                {
+                    'id': 7,
+                    'dzo': 'ТОО "Тенгизшевройл"',
+                    'daily': '',
+                    'yearly': 'Послдествия авар. ремонтных работ на ЗВП/ЗСГ.',
+                },
+                {
+                    'id': 8,
+                    'dzo': 'Норт Каспиан Оперейтинг Компани н.в. ',
+                    'daily': '',
+                    'yearly': 'Необеспечение входящей добычи на 2021г. из-за мер по ограничению добычи нефти в 2020г.',
+                }
+            ]
         }
     },
     methods: {
@@ -585,23 +641,41 @@ export default {
             sorted[0].number = '1.1.';
             return sorted;
         },
-        getStyleByDifference(num) {
-            if (num < 0) {
-                return 'color: red';
-            } else {
-                return 'color: green';
-            }
-        },
-        getStyleForSummary(index,isSecondParameterAvailable) {
+        getStyleByDifference(num,index,isMainTable) {
+            let style = '';
             if (index === 0) {
-                return 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
-            } else if (index === 1 && isSecondParameterAvailable) {
-                return 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
-            } else if (index === 1 && !isSecondParameterAvailable) {
-                return 'display: none';
+                style = 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
+            } else if (index === 1 && isMainTable) {
+                style = 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
             } else {
-                return 'font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
+                style = 'font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
             }
+            if (num < 0) {
+                style += 'color: red';
+            } else {
+                style += 'color: green';
+            }
+            return style;
+        },
+        getStyleForSummary(index,isSecondParameterAvailable,type) {
+            let style = '';
+            if (type === 'id') {
+                style += 'text-align: center;';
+            } else if (type === 'name') {
+                style += 'text-align: left;';
+            } else {
+                style += 'text-align:right;';
+            }
+            if (index === 0) {
+                style += 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            } else if (index === 1 && isSecondParameterAvailable) {
+                style += 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            } else if (index === 1 && !isSecondParameterAvailable) {
+                style += 'display: none; ';
+            } else {
+                style += 'font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            }
+            return style;
         },
         tableToExcel(table, name, filename) {
             let uri = 'data:application/vnd.ms-excel;base64,',
@@ -622,6 +696,7 @@ export default {
                 worksheet: name || 'Worksheet',
                 table: table.innerHTML
             };
+            console.log(table.innerHTML)
 
             let link = document.createElement('a');
             link.download = filename;

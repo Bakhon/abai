@@ -1689,6 +1689,7 @@ font-size: large;
 }
 .calinput_date {
 margin-left: 8px;
+color: white; 
 }
 .dropdown-menu .fadropmenu.newmenu {
 background: #1627c4; 

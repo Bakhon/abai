@@ -1,5 +1,7 @@
 {
   "type": "table",
+  "new": true,
+  "update_after_edit": false,
   "filter": [
     {
       "code": "research_type",

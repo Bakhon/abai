@@ -28,9 +28,9 @@
             <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
-                    <img class="hws-tab-img"
+                    <a href="tkrsMain"><img class="hws-tab-img"
                     src="/img/tkrs/back.svg"
-                    />
+                    /></a>
                     
                     <a class="hws-header-info-name back-icon"><img class="hws-tab-img"
                     src="/img/tkrs/brigada_table.svg"
@@ -54,7 +54,7 @@
                       <a class="dropdown-item" href="#">{{trans('tkrs.sensors')}}</a>
                     </div>
                   </div>
-                  <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
+                  <button class="calendar-form"><a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}</a></button>
                   
                 </div>
                 <!-- <div class="plotly-graph-custom"> -->
@@ -498,5 +498,11 @@ table, th, td {
 .comparison-graphs {
   color: #fff;
   font-size: 16px;
+}
+.a-link {
+  color: #fff;
+}
+.a-link:hover {
+  color: #fff;
 }
 </style>

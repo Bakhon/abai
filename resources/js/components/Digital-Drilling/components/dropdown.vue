@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen">
+        <div class="dropdown__header" @click="isOpen=!isOpen" :class="{report: report}">
             <div class="dropdown__header-title">
                 <div class="dropdown__search" v-if="search">
                     <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
@@ -32,7 +32,7 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search'],
+        props: ['title', 'options', 'search', 'report'],
         data(){
             return{
                 isOpen: false,
@@ -121,5 +121,11 @@
     }
     .dropdown__search input:focus{
         outline: none;
+    }
+    .dropdown__header.report{
+        background-color: #334296!important;
+        width: 200px!important;
+        padding: 0!important;
+        height: 100%!important;
     }
 </style>

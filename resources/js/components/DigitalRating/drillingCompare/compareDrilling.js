@@ -53,7 +53,6 @@ export default {
     await this.initWellOnMap();
     await this.initContourOnMap();
     await this.initLegends();
-    // await this.draw();
   },
 
   watch: {
@@ -278,22 +277,6 @@ export default {
 
     getChildren(item) {
       return item?.children?.length;
-    },
-
-    draw() {
-      const triangle = document.getElementById('triangle');
-      console.log('triangle', triangle.getContext);
-      if (triangle.getContext){
-        const ctx = triangle.getContext('2d');
-        // Stroked triangle
-        ctx.beginPath();
-        ctx.moveTo(24,24);
-        ctx.lineTo(125,45);
-        ctx.lineTo(45,125);
-        ctx.strokeStyle('#fcad00');
-        ctx.closePath();
-        ctx.stroke();
-      }
     },
   }
 }
