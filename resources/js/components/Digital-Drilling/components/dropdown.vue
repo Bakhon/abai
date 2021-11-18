@@ -2,14 +2,8 @@
     <div class="dropdown" :class="{active: isOpen}">
         <div class="dropdown__header" @click="isOpen=!isOpen">
             <div class="dropdown__header-title">
-                <div class="dropdown__search" v-if="search">
-                    <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
-                </div>
-                <span v-if="options.length>0 && !search && currentItem==null">
-                    {{options[0].name}}
-                </span>
-                <span v-if="options.length>0 && !search && currentItem!=null">
-                    {{currentItem}}
+                <span>
+                    {{current.name}}
                 </span>
             </div>
             <div class="dropdown__header-icon">
@@ -18,6 +12,9 @@
         </div>
         <div class="dropdown__body">
             <div class="dropdown__content">
+                <div class="dropdown__search" v-if="search">
+                    <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
+                </div>
                 <ul v-if="options.length>0">
                     <li v-for="item in options" @click="changeCurrentItem(item)">{{item.name}}</li>
                 </ul>
@@ -32,19 +29,16 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search'],
+        props: ['title', 'options', 'search', 'current'],
         data(){
             return{
                 isOpen: false,
-                currentItem: null,
                 query: '',
             }
         },
         methods:{
             changeCurrentItem(item){
                 this.isOpen = false
-                this.query = item.name
-                this.currentItem = item.name
                 this.$emit('updateList', item)
             },
             changeSearch(){
