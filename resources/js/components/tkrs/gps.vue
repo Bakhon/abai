@@ -60,9 +60,9 @@
                       <td class="input-form-auto header_name_red">{{well_name}}</td>
                       <td class="input-form-auto header_name_red">м/р. Акшабулак </td>
                       <td class="header_name">Начало бурения:</td>
-                      <td class="input-form-auto header_name_red">10.08.2012г</td>
+                      <td class="input-form-auto header_name_red">{{start_drill}}</td>
                       <td class="header_name">Конец бурения:</td>
-                      <td class="input-form-auto header_name_red">31.08.2012г</td>
+                      <td class="input-form-auto header_name_red">{{end_drill}}</td>
                     </tr>
                     <tr>
                       <td class="header_name"> № отчета:</td>
@@ -106,36 +106,13 @@
                     <tr>
                       <td colspan="3" class="header_name">Дневное время</td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">6:00</td>
-                      <td class="header_name manual-edit">8:00</td>
-                      <td class="header_name input-form-auto">2:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                    <tr v-for="(item, item_index) in test.dbeg" :key="item_index">
+                      <td    class="header_name manual-edit">{{item}}</td>
+                      <td class="header_name manual-edit">{{test.dend[item_index]}}</td>
+                      <td class="header_name input-form-auto"></td>
+                      <td class="manual-edit">{{test.value[item_index]}}<input class="manual-input"/></td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">8:00</td>
-                      <td class="header_name manual-edit">11:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">11:00</td>
-                      <td class="header_name manual-edit">14:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">14:00</td>
-                      <td class="header_name manual-edit">15:00</td>
-                      <td class="header_name input-form-auto">1:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">15:00</td>
-                      <td class="header_name manual-edit">18:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
+                    
                     <tr>
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
@@ -345,6 +322,9 @@ export default {
       master_night_shift:  null,
       master_night_shift_number:  null,
       programmes_target_name:  null,
+      test: [],
+      start_drill:  null,
+      end_drill:  null,
       
     }
   },
@@ -438,6 +418,10 @@ export default {
                     this.master_day_shift_number = data.data.works_report.master_day_shift_number;
                     this.master_night_shift = data.data.works_report.master_night_shift;
                     this.master_night_shift_number = data.data.works_report.master_night_shift_number;
+                    this.test = data.data.works_report_range;
+                    this.start_drill = data.data.header.start_drill;
+                    this.end_drill = data.data.header.start_drill;
+                  console.info(this.test)
                 } else {
                     console.log("No data");
                 }
