@@ -641,23 +641,41 @@ export default {
             sorted[0].number = '1.1.';
             return sorted;
         },
-        getStyleByDifference(num) {
-            if (num < 0) {
-                return 'color: red';
-            } else {
-                return 'color: green';
-            }
-        },
-        getStyleForSummary(index,isSecondParameterAvailable) {
+        getStyleByDifference(num,index,isMainTable) {
+            let style = '';
             if (index === 0) {
-                return 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
-            } else if (index === 1 && isSecondParameterAvailable) {
-                return 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
-            } else if (index === 1 && !isSecondParameterAvailable) {
-                return 'display: none';
+                style = 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
+            } else if (index === 1 && isMainTable) {
+                style = 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
             } else {
-                return 'font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
+                style = 'font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black; ';
             }
+            if (num < 0) {
+                style += 'color: red';
+            } else {
+                style += 'color: green';
+            }
+            return style;
+        },
+        getStyleForSummary(index,isSecondParameterAvailable,type) {
+            let style = '';
+            if (type === 'id') {
+                style += 'text-align: center;';
+            } else if (type === 'name') {
+                style += 'text-align: left;';
+            } else {
+                style += 'text-align:right;';
+            }
+            if (index === 0) {
+                style += 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            } else if (index === 1 && isSecondParameterAvailable) {
+                style += 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            } else if (index === 1 && !isSecondParameterAvailable) {
+                style += 'display: none; ';
+            } else {
+                style += 'font-family: Arial; font-size: 13px; border: 1px solid black; ';
+            }
+            return style;
         },
         tableToExcel(table, name, filename) {
             let uri = 'data:application/vnd.ms-excel;base64,',

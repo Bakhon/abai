@@ -360,31 +360,30 @@
                     </tr>
                     <tr
                             v-for="(item, index) in summaryForExport.byKMG"
-                            :style="getStyleForSummary(index,true)"
                     >
-                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
+                        <td v-if="index !== 3" :style="getStyleForSummary(index,true,'id')">{{item.number}}</td>
                         <td v-else></td>
-                        <td v-if="[3,15,16,17].includes(index)" style="text-align: left">
+                        <td v-if="[3,15,16,17].includes(index)" :style="getStyleForSummary(index,true,'name')">
                             &emsp;&emsp;{{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td v-else style="text-align: left">
+                        <td v-else :style="getStyleForSummary(index,true,'name')"">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.planByDay)}}</td>
-                        <td>{{getFormattedNumber(item.factByDay)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByDay)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByDay)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByDay,index,true)">
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
-                        <td>{{getFormattedNumber(item.planByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByMonth)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByMonth,index,true)">
                             {{getFormattedNumber(item.differenceByMonth)}}
                         </td>
-                        <td>{{getFormattedNumber(item.planByYear)}}</td>
-                        <td>{{getFormattedNumber(item.factByYear)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByYear)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByYear)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByYear,index,true)">
                             {{getFormattedNumber(item.differenceByYear)}}
                         </td>
                     </tr>
@@ -392,31 +391,30 @@
                     </tr>
                     <tr
                             v-for="(item, index) in summaryForExport.byDzo"
-                            :style="getStyleForSummary(index, false)"
                     >
-                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
+                        <td v-if="index !== 3" :style="getStyleForSummary(index,false,'id')">{{item.number}}</td>
                         <td v-else></td>
-                        <td v-if="index === 3" style="text-align: left">
+                        <td v-if="index === 3" :style="getStyleForSummary(index,false,'name')">
                             &emsp;&emsp;{{companiesNameMapping.summaryByDzo[item.dzo]}}
                         </td>
-                        <td v-else style="text-align: left">
+                        <td v-else :style="getStyleForSummary(index,false,'name')">
                             {{companiesNameMapping.summaryByDzo[item.dzo]}}
                         </td>
-                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.planByDay)}}</td>
-                        <td>{{getFormattedNumber(item.factByDay)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByDay)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByDay)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByDay,index)">
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
-                        <td>{{getFormattedNumber(item.planByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByMonth)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByMonth,index)">
                             {{getFormattedNumber(item.differenceByMonth)}}
                         </td>
-                        <td>{{getFormattedNumber(item.planByYear)}}</td>
-                        <td>{{getFormattedNumber(item.factByYear)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByYear)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByYear)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByYear,index)">
                             {{getFormattedNumber(item.differenceByYear)}}
                         </td>
                     </tr>
@@ -435,14 +433,14 @@
                     </tr>
                     <div v-for="item in reasons">
                         <tr>
-                            <td rowspan="2" style="text-align:center">{{item.id}}</td>
-                            <td rowspan="2">{{item.dzo}}</td>
-                            <td style="text-align:center">За сутки</td>
-                            <td colspan="10">{{item.daily}}</td>
+                            <td rowspan="2" style="text-align:center; border: 1px solid black">{{item.id}}</td>
+                            <td rowspan="2" style="border: 1px solid black">{{item.dzo}}</td>
+                            <td style="text-align:center; border: 1px solid black">За сутки</td>
+                            <td colspan="10" style="border: 1px solid black">{{item.daily}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:center">С начала года</td>
-                            <td colspan="10">{{item.yearly}}</td>
+                            <td style="text-align:center; border: 1px solid black">С начала года</td>
+                            <td colspan="10" style="border: 1px solid black">{{item.yearly}}</td>
                         </tr>
                     </div>
                 </table>
