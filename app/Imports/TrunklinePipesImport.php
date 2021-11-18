@@ -62,7 +62,7 @@ class TrunklinePipesImport implements ToCollection, WithEvents, WithColumnLimit,
 
     public function collection(Collection $collection)
     {
-        $this->importPs($collection);
+        $this->importTrunklinePipes($collection);
     }
 
     public function registerEvents(): array
@@ -85,7 +85,7 @@ class TrunklinePipesImport implements ToCollection, WithEvents, WithColumnLimit,
         return 'P';
     }
 
-    private function importPs(Collection $collection)
+    private function importTrunklinePipes(Collection $collection)
     {
         $collection = $collection->skip(1);
 
@@ -145,6 +145,7 @@ class TrunklinePipesImport implements ToCollection, WithEvents, WithColumnLimit,
         $pipe->between_points = $this->getPipeType($row);
         $pipe->start_point = $row[self::COLUMNS['start_point']];
         $pipe->end_point = $row[self::COLUMNS['end_point']];
+        $pipe->trunkline = true;
         $pipe->save();
 
         $this->command->info('Pipe created ' . $row[self::COLUMNS['pipe_name']] . ' point -> ' . $row[self::COLUMNS['start_point']] . '-' . $row[self::COLUMNS['end_point']]);

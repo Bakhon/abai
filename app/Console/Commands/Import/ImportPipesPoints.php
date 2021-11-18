@@ -43,6 +43,7 @@ class ImportPipesPoints extends Command
      */
     public function handle(): void
     {
+        TrunklinePoint::truncate();
         $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
     }
 }
