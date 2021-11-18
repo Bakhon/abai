@@ -66,7 +66,10 @@
       >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <template v-if="item.multiple">
+      <template v-if="!editable">
+        <span>{{ formatedValue.text }}</span>
+      </template>
+      <template v-else-if="item.multiple">
         <template v-if="item.is_editable === false">
           <span>{{ formatedValue ? formatedValue.map(value => value.text).join(',') : '' }}</span>
         </template>
@@ -195,13 +198,20 @@ export default {
     BigdataFileUploadField,
     BigdataCheckboxTableField
   },
-  props: [
-    'id',
-    'item',
-    'value',
-    'error',
-    'form'
-  ],
+  props: {
+    id: {
+      type: Number,
+      required: true
+    },
+    item: {},
+    value: {},
+    error: {},
+    form: {},
+    editable: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: function () {
     return {
       formatedValue: {

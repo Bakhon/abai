@@ -24,6 +24,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
+    protected $additionalEntities = [];
 
     public function __construct(Request $request)
     {
@@ -197,12 +198,12 @@ abstract class TableForm extends BaseForm
         }
 
         $result = [
-            'id' => $row->id,
             'value' => null,
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
         if ($this->isCurrentDay($row->{$dateField})) {
+            $result['id'] = $row->id;
             $result['value'] = $value;
         } else {
             $result['old_value'] = $value;
@@ -464,14 +465,21 @@ abstract class TableForm extends BaseForm
 
     private function addAdditionalFilters($query, array $field)
     {
+
         if (!empty($field['additional_filter'])) {
             foreach ($field['additional_filter'] as $key => $value) {
                 if (is_array($value)) {
-                    $entityQuery = DB::connection('tbd')->table($value['table']);
-                    foreach ($value['fields'] as $fieldName => $fieldValue) {
-                        $entityQuery->where($fieldName, $fieldValue);
+                    $entityKey = md5($value['table']) . json_encode($value['fields']);
+                    if (isset($this->additionalEntities[$entityKey])) {
+                        $entity = $this->additionalEntities[$entityKey];
+                    } else {
+                        $entityQuery = DB::connection('tbd')->table($value['table']);
+                        foreach ($value['fields'] as $fieldName => $fieldValue) {
+                            $entityQuery->where($fieldName, $fieldValue);
+                        }
+                        $entity = $entityQuery->first();
+                        $this->additionalEntities[$entityKey] = $entity;
                     }
-                    $entity = $entityQuery->first();
                     if (!empty($entity)) {
                         $query = $query->where($key, $entity->id);
                     }
