@@ -126,7 +126,7 @@ class WellsController extends Controller
             'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),           
         ];
 
-       $wellInfo = array_merge($wellInfo, $show_param);
+        $wellInfo = array_merge($wellInfo, $show_param);
       
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
