@@ -30,12 +30,44 @@
             <label for="between-isohyps">{{
               trans("plast_fluids.between_isohyps")
             }}</label>
-            <input
-              type="text"
-              readonly
-              name="distance between isohyps"
-              id="between-isohyps"
-            />
+            <div class="between-isohyps-input-holder">
+              <SettingsModalDepthMultiplierButton
+                content="--"
+                :disable="betweenIsohyps - 100 < 10 || !currentModel.id"
+                :accumulator="-100"
+                @update-multiplier="updateMultiplier"
+              />
+              <SettingsModalDepthMultiplierButton
+                content="-"
+                :disable="betweenIsohyps - 10 < 10 || !currentModel.id"
+                :accumulator="-10"
+                @update-multiplier="updateMultiplier"
+              />
+              <input
+                type="text"
+                readonly
+                :value="betweenIsohyps"
+                name="distance between isohyps"
+                id="between-isohyps"
+              />
+              <span>м.</span>
+              <SettingsModalDepthMultiplierButton
+                content="+"
+                :disable="
+                  betweenIsohyps + 10 > maxDepthMultiplier || !currentModel.id
+                "
+                :accumulator="10"
+                @update-multiplier="updateMultiplier"
+              />
+              <SettingsModalDepthMultiplierButton
+                content="++"
+                :disable="
+                  betweenIsohyps + 100 > maxDepthMultiplier || !currentModel.id
+                "
+                :accumulator="100"
+                @update-multiplier="updateMultiplier"
+              />
+            </div>
           </div>
           <div class="content">
             <input
@@ -66,20 +98,27 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { eventBus } from "../../eventBus";
+import SettingsModalDepthMultiplierButton from "./SettingsModalDepthMultiplierButton.vue";
 
 export default {
   name: "StructuralMapSettingsModal",
+  components: {
+    SettingsModalDepthMultiplierButton,
+  },
   data() {
     return {
       showIsohyps: null,
       showTileLayer: null,
+      betweenIsohyps: 0,
     };
   },
   computed: {
     ...mapState("plastFluidsLocal", [
       "depthMultiplier",
+      "maxDepthMultiplier",
       "isIsohypsShown",
       "isTileLayerShown",
+      "currentModel",
     ]),
   },
   methods: {
@@ -88,20 +127,24 @@ export default {
       "SET_IS_ISOHYPS_SHOWN",
       "SET_IS_TILE_LAYER_SHOWN",
     ]),
+    updateMultiplier(acc) {
+      this.betweenIsohyps += acc;
+    },
     applyChanges() {
-      const initialIsohypsShown = this.isIsohypsShown;
       const initialTileLayerShown = this.isTileLayerShown;
+      const initialDepthMultiplier = this.depthMultiplier;
       this.SET_IS_ISOHYPS_SHOWN(this.showIsohyps);
       this.SET_IS_TILE_LAYER_SHOWN(this.showTileLayer);
+      this.SET_DEPTH_MULTIPLIER(this.betweenIsohyps / 10);
       eventBus.$emit("apply-map-changes", {
-        isIsohypsShown:
-          initialIsohypsShown === this.isIsohypsShown
-            ? "remain"
-            : this.isIsohypsShown,
         isTileLayerShown:
           initialTileLayerShown === this.isTileLayerShown
             ? "remain"
             : this.isTileLayerShown,
+        depthMultiplier:
+          initialDepthMultiplier === this.depthMultiplier
+            ? "remain"
+            : this.depthMultiplier,
       });
       this.$emit("close-modal");
     },
@@ -114,128 +157,9 @@ export default {
   mounted() {
     this.showIsohyps = this.isIsohypsShown;
     this.showTileLayer = this.isTileLayerShown;
+    this.betweenIsohyps = this.depthMultiplier * 10;
   },
 };
 </script>
 
-<style scoped>
-label {
-  font-size: 14px;
-  color: #fff;
-  margin: 0;
-}
-
-.cover {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-}
-
-.structural-map-settings-modal > div:nth-of-type(1) {
-  z-index: inherit;
-  position: relative;
-}
-
-.structural-map-settings-modal {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  z-index: 1000;
-}
-
-.modal-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  background: #323370;
-}
-
-.modal-heading > button {
-  background: none;
-  border: none;
-}
-
-.modal-heading > button > img {
-  width: 10px;
-  height: 10px;
-}
-
-.modal-heading-text-image-holder {
-  display: flex;
-  align-items: center;
-}
-
-.modal-heading-text-image-holder > p {
-  margin: 0 0 0 8px;
-  font-size: 16px;
-  color: #fff;
-}
-
-.modal-content-holder {
-  background: #2f315a;
-  padding: 6px;
-}
-
-.modal-content {
-  background: #363b68;
-  border: 1px solid #545580;
-  padding: 8px;
-  margin-bottom: 6px;
-}
-
-.content {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.content:last-of-type {
-  margin-bottom: 0;
-}
-
-.content > input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.content > input[type="text"] {
-  margin-left: 10px;
-  background: #1f2142;
-  border: 0.5px solid #454fa1;
-  border-radius: 4px;
-  padding: 3px 8px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-  width: 110px;
-}
-
-.modal-buttons {
-  display: flex;
-}
-
-.modal-buttons > button {
-  border: 0.2px solid #3366ff;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  width: 137px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 0;
-}
-
-.modal-buttons > button:nth-of-type(1) {
-  background: #334296;
-  margin-right: 4px;
-}
-
-.modal-buttons > button:nth-of-type(2) {
-  background: #656a8a;
-}
-</style>
+<style lang="scss" src="./StructuralMapSettingsModalStyles.scss" scoped></style>

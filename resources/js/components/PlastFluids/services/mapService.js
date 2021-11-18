@@ -70,7 +70,7 @@ export const createIsohypsumModel = async (payload) => {
   }
 };
 
-export const getIsohypsumModel = async (payload) => {
+export const getModels = async (payload) => {
   try {
     const params = new URLSearchParams();
     payload.forEach((horizonID) => params.append("horizon_id", horizonID));
@@ -84,10 +84,22 @@ export const getIsohypsumModel = async (payload) => {
   }
 };
 
-export const getIsohypsumModelCoords = async (payload) => {
+export const getModelIsohypses = async (payload) => {
   try {
     const response = await axios.get(
       `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps-json`,
+      { params: payload }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getModelWells = async (payload) => {
+  try {
+    const response = await axios.get(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps-wells`,
       { params: payload }
     );
     return response.data;

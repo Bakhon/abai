@@ -39,7 +39,7 @@ import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
 import StructuralMap from "./StructuralMap.vue";
 import StructuralMapSettingsModal from "./StructuralMapSettingsModal.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
-import { getIsohypsumModel } from "../../services/mapService";
+import { getModels } from "../../services/mapService";
 
 export default {
   name: "DataAnalysisMapsAndTables",
@@ -70,7 +70,7 @@ export default {
     currentSubsoilHorizon: {
       handler(value) {
         if (value.length) {
-          this.getModels(value);
+          this.getHorizonModels(value);
           return;
         }
         this.SET_MODELS([]);
@@ -84,9 +84,9 @@ export default {
       "handleTableGraphData",
       "handleBlocksFilter",
     ]),
-    async getModels(horizons) {
+    async getHorizonModels(horizons) {
       const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
-      const data = await getIsohypsumModel(horizonIDs);
+      const data = await getModels(horizonIDs);
       this.SET_MODELS(data.models);
     },
   },
@@ -97,7 +97,7 @@ export default {
       });
       this.handleBlocksFilter(this.currentSubsoilHorizon);
       if (this.currentSubsoilHorizon.length)
-        this.getModels(this.currentSubsoilHorizon);
+        this.getHorizonModels(this.currentSubsoilHorizon);
     }
   },
 };

@@ -9,9 +9,9 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import SmallCatLoader from "../SmallCatLoader.vue";
-import { getIsohypsumModelCoords } from "../../services/mapService";
+import { getModelIsohypses, getModelWells } from "../../services/mapService";
 import { downloadUserReport } from "../../services/templateService";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { eventBus } from "../../eventBus";
 
 export default {
@@ -23,8 +23,8 @@ export default {
     return {
       map: null,
       loading: false,
-      layers: {},
-      model: {},
+      isohyps: {},
+      wells: new L.featureGroup(),
       currentModelImage: null,
       currentModelBounds: null,
       imageOverlay: null,
@@ -57,6 +57,7 @@ export default {
         } = value;
         this.loading = true;
         this.clearLayers();
+        this.SET_MAX_DEPTH_MULTIPLIER(value.levels_count * 10);
         const postData = new FormData();
         postData.append("file_id", image_id);
         const image = await downloadUserReport(postData);
@@ -72,37 +73,49 @@ export default {
           this.currentModelImage,
           this.currentModelBounds
         );
-        this.model = await getIsohypsumModelCoords({
+        const model = await getModelIsohypses({
           depth_multiplier: this.depthMultiplier,
           model_id: id,
         });
+        this.addIsohypsLayers(model.isogyps);
         this.isTileLayerShown ? this.addTileLayer() : "";
-        this.isIsohypsShown ? this.addIsohyps() : "";
-        this.addWells();
-        this.map.on("zoomstart", () => {
-          if (this.map.getZoom() >= 13) this.removeTooltips();
-        });
-        this.map.on("zoomend", () => {
-          if (this.map.getZoom() >= 13) this.addTooltips();
-        });
+        this.isIsohypsShown ? this.addIsohypsOnMap() : "";
         this.map.fitBounds(this.currentModelBounds);
       } catch (error) {
         alert(error);
       } finally {
         this.loading = false;
       }
+
+      try {
+        const wells = await getModelWells({ model_id: value.id });
+        this.addWells(wells);
+        this.map.on("zoomstart", () => {
+          if (this.map.getZoom() >= 13) this.removeTooltips();
+        });
+        this.map.on("zoomend", () => {
+          if (this.map.getZoom() >= 13) this.addTooltips();
+        });
+      } catch (error) {
+        alert("ошибка при получении скважин");
+      }
     },
   },
   methods: {
-    addIsohyps() {
-      this.model.isogyps.forEach((layer) => {
+    ...mapMutations("plastFluidsLocal", ["SET_MAX_DEPTH_MULTIPLIER"]),
+    addIsohypsLayers(isohyps) {
+      for (let key in this.isohyps) {
+        this.isohyps[key].clearLayers();
+      }
+      this.isohyps = {};
+      isohyps.forEach((layer) => {
         const geoJson = {
           ...layer,
           type: "FeatureCollection",
           features: layer.lines,
         };
         delete geoJson.lines;
-        this.layers[geoJson.level_number] = new L.featureGroup();
+        this.isohyps[geoJson.level_number] = new L.featureGroup();
         L.geoJSON(geoJson, {
           onEachFeature: this.onEachFeature,
           style: {
@@ -111,14 +124,16 @@ export default {
             fillOpacity: 1,
           },
         });
-        this.layers[geoJson.level_number].addTo(this.map);
       });
     },
+    addIsohypsOnMap() {
+      for (let key in this.isohyps) {
+        this.isohyps[key].addTo(this.map);
+      }
+    },
     removeIsohyps() {
-      for (let key in this.layers) {
-        if (key === "wells") continue;
-        this.layers[key].clearLayers();
-        delete this.layers[key];
+      for (let key in this.isohyps) {
+        this.isohyps[key].remove();
       }
     },
     addTileLayer() {
@@ -127,20 +142,19 @@ export default {
     removeTileLayer() {
       this.imageOverlay.remove();
     },
-    addWells() {
-      this.layers.wells = new L.featureGroup();
-      this.model.wells.forEach((well) => {
+    addWells(wells) {
+      wells.forEach((well) => {
         const icon = L.divIcon({ className: "well-icon" });
         const wellMarker = L.marker([well.latitude, well.longitude], {
           icon,
           wellName: well.well,
         });
-        this.layers.wells.addLayer(wellMarker);
+        this.wells.addLayer(wellMarker);
       });
-      this.layers.wells.addTo(this.map);
+      this.wells.addTo(this.map);
     },
     addTooltips() {
-      this.layers.wells.eachLayer((layer) =>
+      this.wells.eachLayer((layer) =>
         layer.bindTooltip(layer.options.wellName, {
           permanent: true,
           className: "well-tooltip",
@@ -150,20 +164,28 @@ export default {
       );
     },
     removeTooltips() {
-      this.layers.wells.eachLayer((layer) => layer.unbindTooltip());
+      this.wells.eachLayer((layer) => layer.unbindTooltip());
     },
-    handleMapChanges(data) {
-      const { isIsohypsShown, isTileLayerShown } = data;
-      if (isIsohypsShown !== "remain")
-        isIsohypsShown ? this.addIsohyps() : this.removeIsohyps();
+    async handleMapChanges(data) {
+      const { isTileLayerShown, depthMultiplier } = data;
       if (isTileLayerShown !== "remain")
         isTileLayerShown ? this.addTileLayer() : this.removeTileLayer();
+      if (depthMultiplier !== "remain") await this.refreshModel();
+      this.isIsohypsShown ? this.addIsohypsOnMap() : this.removeIsohyps();
+    },
+    async refreshModel() {
+      const model = await getModelIsohypses({
+        depth_multiplier: this.depthMultiplier,
+        model_id: this.currentModel.id,
+      });
+      this.addIsohypsLayers(model.isogyps);
     },
     clearLayers() {
-      for (let key in this.layers) {
-        this.layers[key].clearLayers();
+      for (let key in this.isohyps) {
+        this.isohyps[key].clearLayers();
       }
-      this.layers = {};
+      this.isohyps = {};
+      this.wells.clearLayers();
       this.map.off();
       this.map.eachLayer((layer) => {
         this.map.removeLayer(layer);
@@ -173,7 +195,7 @@ export default {
       layer.bindTooltip(`-${feature.properties.level_depth.toFixed()} м.`, {
         sticky: true,
       });
-      this.layers[feature.properties.level_number].addLayer(layer);
+      this.isohyps[feature.properties.level_number].addLayer(layer);
     },
     initMap() {
       this.map = L.map("structural-map", this.mapOptions);

@@ -27,6 +27,7 @@ const plastFluidsLocal = {
     models: [],
     currentModel: {},
     depthMultiplier: 5,
+    maxDepthMultiplier: 0,
     isIsohypsShown: true,
     isTileLayerShown: true,
   },
@@ -102,6 +103,9 @@ const plastFluidsLocal = {
     },
     SET_DEPTH_MULTIPLIER(state, payload) {
       state.depthMultiplier = payload;
+    },
+    SET_MAX_DEPTH_MULTIPLIER(state, payload) {
+      state.maxDepthMultiplier = payload;
     },
     SET_IS_ISOHYPS_SHOWN(state, payload) {
       state.isIsohypsShown = payload;
