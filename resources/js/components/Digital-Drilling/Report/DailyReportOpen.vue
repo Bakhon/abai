@@ -66,6 +66,7 @@
                                 <dropdown title="Сважина" :options="well" class="dropdown__area"
                                           :search="true"
                                           :report="true"
+                                          :current="currentWell"
                                           @updateList="changeCurrentWell"
                                           @search="filterWell"/>
                             </div>
@@ -109,12 +110,12 @@
                 this.getDailyReport()
             },
             changeCurrentWell(item){
-                this.currentWell = item.id
+                this.currentWell = item
             },
             getDailyReport(){
                 this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
                     {
-                        "well": this.currentWell,
+                        "well": this.currentWell.well_id,
                         "geo": this.currentField,
                         "org": this.currentDZO
                     }).then((response) => {
@@ -171,6 +172,7 @@
                     let data = response.data;
                     if (data) {
                         this.well = data;
+                        this.currentWell = data[0]
                     } else {
                         console.log('No data');
                     }

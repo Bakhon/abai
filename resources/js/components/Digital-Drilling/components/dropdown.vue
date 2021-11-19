@@ -1,12 +1,15 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen" :class="{report: report}">
+        <div class="dropdown__header" :class="{report: report}">
             <div class="dropdown__header-title">
-                <span>
-                    {{current.name}}
+                <div class="cancel" v-if="cancelFilter && current.name" @click="cancelFilterItem">
+                    <img src="/img/digital-drilling/cancel-filter.svg" alt="">
+                </div>
+                <span @click="isOpen=!isOpen" class="name">
+                    <span v-if="!report">{{current.name}}</span><span v-else>{{current.well_num}}</span>
                 </span>
             </div>
-            <div class="dropdown__header-icon">
+            <div class="dropdown__header-icon" @click="isOpen=!isOpen">
                 <img src="/img/digital-drilling/dropdown-toggle-icon.svg" alt="">
             </div>
         </div>
@@ -16,7 +19,7 @@
                     <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
                 </div>
                 <ul v-if="options.length>0">
-                    <li v-for="item in options" @click="changeCurrentItem(item)">{{item.name}}</li>
+                    <li v-for="item in options" @click="changeCurrentItem(item)"><span v-if="!report">{{item.name}}</span><span v-else>{{item.well_num}}</span></li>
                 </ul>
                 <ul v-else>
                     <li>No result</li>
@@ -29,20 +32,26 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search', 'report', 'current'],
+        props: ['title', 'options', 'search', 'current', 'cancelFilter', 'report'],
         data(){
             return{
                 isOpen: false,
+                currentItem: null,
                 query: '',
             }
         },
         methods:{
             changeCurrentItem(item){
                 this.isOpen = false
+                this.query = item.name
+                this.currentItem = item.name
                 this.$emit('updateList', item)
             },
             changeSearch(){
                 this.$emit('search', this.query)
+            },
+            cancelFilterItem(){
+                this.$emit('cancelFilterItem')
             },
         },
     }
@@ -65,6 +74,18 @@
         min-width: 200px;
         height: 23px;
         padding: 0 15px 0 10px;
+        cursor: pointer;
+    }
+    .dropdown__header-title{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .dropdown__header-title .name{
+        flex-grow: 1;
+    }
+    .dropdown__header-title img{
+        margin-right: 10px;
         cursor: pointer;
     }
     .dropdown .dropdown__header-icon{
