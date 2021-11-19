@@ -33,15 +33,19 @@
     export default {
         name: "dropdown",
         props: ['title', 'options', 'search', 'current', 'cancelFilter'],
+        props: ['title', 'options', 'search', 'report'],
         data(){
             return{
                 isOpen: false,
+                currentItem: null,
                 query: '',
             }
         },
         methods:{
             changeCurrentItem(item){
                 this.isOpen = false
+                this.query = item.name
+                this.currentItem = item.name
                 this.$emit('updateList', item)
             },
             changeSearch(){
@@ -133,5 +137,11 @@
     }
     .dropdown__search input:focus{
         outline: none;
+    }
+    .dropdown__header.report{
+        background-color: #334296!important;
+        width: 200px!important;
+        padding: 0!important;
+        height: 100%!important;
     }
 </style>
