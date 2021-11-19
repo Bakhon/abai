@@ -178,8 +178,14 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
-            ->first(['name_ru']);
-        return ($status);
+            ->get(['name_ru'])
+            ->toArray();
+
+        if($status){
+                return $status[0];
+            }
+
+        return "";
     }
 
     private function tubeNom(Well $well)
@@ -418,9 +424,16 @@ class WellsController extends Controller
 
     private function pzabWell(Well $well)
     {
-        return $well->pzabWell()
+        $pzabWell = $well->pzabWell()
                ->orderBy('date', 'desc')
-               ->first(['well', 'date', 'p_res', 'bhp']); 
+               ->get(['well', 'date', 'p_res', 'bhp'])
+               ->toArray();
+
+        if($pzabWell){
+            return $pzabWell[0];
+        }
+
+        return "";
     }
 
     private function dmartDailyProd(Well $well)
@@ -438,13 +451,20 @@ class WellsController extends Controller
 
     private function wellEquip(Well $well)
     {
-       return $well->wellEquip()             
+       $wellEquip = $well->wellEquip()             
              ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
              ->join('dict.equip_type', 'prod.well_equip.equip_type', '=', 'dict.equip_type.id')
              ->where('dict.equip_type.code', '=', 'CHK')
              ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
              ->where('dict.metric.code', '=', 'BND')
-             ->first(['prm', 'value_double']); 
+             ->get(['prm', 'value_double'])
+             ->toArray();
+
+       if($wellEquip){
+           return $wellEquip[0];
+       }      
+
+       return "";
     }
 
     private function labResearchValue(Well $well)
@@ -490,9 +510,15 @@ class WellsController extends Controller
 
     private function measLiqInjection(Well $well)
     {
-        return $well->measLiqInjection()
+        $measLiqInjection = $well->measLiqInjection()
             ->orderBy('dbeg', 'desc')
-            ->first(['water_inj_val', 'pressure_inj']); 
+            ->get(['water_inj_val', 'pressure_inj'])
+            ->toArray();
+        
+        if($measLiqInjection){
+            return $measLiqInjection[0];
+        }    
+        return "";
     }
 
     private function measWell(Well $well)
@@ -536,11 +562,11 @@ class WellsController extends Controller
 
     private function getKrsPrs(Well $well, $code)
     {
-        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(
-            ['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->get(
+            ['dbeg', 'dend'])->toArray();
 
-        if (isset($wellWorkover)) {
-            return $wellWorkover;
+        if ($wellWorkover) {
+            return $wellWorkover[0];
         }
         return ['dend' => '', 'dbeg' => ''];
     }
@@ -549,10 +575,13 @@ class WellsController extends Controller
     {
        $wellTreatment = $well->wellTreatment()
             ->where('treatment_type', '=', '14')
-            ->first(['treat_date']);
+            ->get(['treat_date'])
+            ->toArray();
+
         if($wellTreatment){
             return $wellTreatment[0];
         }
+
         return "";
     }
 
@@ -573,9 +602,15 @@ class WellsController extends Controller
 
     private function wellTreatmentSko(Well $well)
     {
-        return $well->wellTreatment()
+        $wellTreatmentSko = $well->wellTreatment()
             ->where('treatment_type', '=', '21')
-            ->first(['treat_date']);
+            ->get(['treat_date'])
+            ->toArray();
+
+        if($wellTreatmentSko){
+            return $wellTreatmentSko[0];
+        }    
+        return "";
     }
 
     private function wellDailyDrill(Well $well)
@@ -687,12 +722,19 @@ class WellsController extends Controller
   
     private function gdisComplex(Well $well)
     {
-        return $well->gdisComplex()
+        $gdisComplex = $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
             ->withPivot('dbeg')
             ->where('metric.code', '=', 'PVOP')
             ->orderBy('dbeg', 'desc')
-            ->first(['value_string', 'dbeg']);     
+            ->get(['value_string', 'dbeg'])
+            ->toArray(); 
+
+        if($gdisComplex){
+            return $gdisComplex[0];
+        }   
+
+        return "";
     }
 
     private function gis(Well $well)

@@ -1383,7 +1383,7 @@ export default {
         if (this.well.techModeProdOil.liquid) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.measLiq.liquid) {
+        if (this.well.dmart_daily_prod_oil.liquid) {
           return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1);
         }
       }
