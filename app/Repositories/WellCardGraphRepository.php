@@ -34,7 +34,7 @@ class WellCardGraphRepository  implements WellRepositoryInterface
    {
        $result = [
            'measLiq' => [
-                'name' => trans('app.liquid'),
+                'name' => trans('prototype_bd.liquid'),
                 'type' => 'area',
                 'data'=>[]
            ],
@@ -44,7 +44,7 @@ class WellCardGraphRepository  implements WellRepositoryInterface
                 'data'=>[]
            ],
            'oil' => [
-                'name' => trans('app.oil'),
+                'name' => trans('prototype_bd.oil'),
                 'type' => 'area',
                 'data'=>[]
            ],
@@ -57,10 +57,6 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            'events'=>[
                 'name'=>trans('well_card_graph.events'),
                 'type'=>'scatter',
-                'marker' => [
-                    'enabled' => true,
-                    'radius' => 4
-                ],
                 'data'=>[]
            ]
        ];

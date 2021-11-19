@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DzoImportDecreaseReason extends Model
 {
+    protected $guarded = [];
     public $timestamps = false;
 
     public function importData()
