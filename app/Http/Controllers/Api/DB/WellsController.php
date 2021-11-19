@@ -72,9 +72,7 @@ class WellsController extends Controller
                 'techModeProdOil' => $this->techModeProdOil($well),  
                 'dmart_daily_prod_oil' => $this->dmartDailyProd($well),              
                 'meas_well' => $this->measWell($well),
-                'lab_research_value' => $this->labResearchValue($well),
-                'measLiq' => $this->measLiq($well), 
-                'dinzamer' => $this->gdisCurrentValueRzatr($well, 'FLVL'),   
+                'lab_research_value' => $this->labResearchValue($well),                
             ];           
         }
         if($category[0]->code == 'INJ') 
@@ -91,11 +89,11 @@ class WellsController extends Controller
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
-            'status' => $this->status($well),  //
+            'status' => $this->status($well),  
             'date_expl' => $this->date_expl($well),
             'category' => $this->category($well),
             'category_last' => $this->categoryLast($well),
-            'geo' => $this->geo($well),   //          
+            'geo' => $this->geo($well),             
             'well_expl_right' => $this->wellExplOnRight($well), 
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
@@ -116,8 +114,7 @@ class WellsController extends Controller
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),                 
-            'gdisCurrent' => $this->gdisCurrent($well),               
-            'rzatr_atm' => $this->gdisCurrentValueOtp($well),                                                                                                          
+            'gdisCurrent' => $this->gdisCurrent($well),                                                                                                                                 
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gdis_complex' => $this->gdisComplex($well),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
@@ -257,12 +254,19 @@ class WellsController extends Controller
 
     private function wellEquipParam(Well $well, $method)
     {
-        return $well->wellEquipParam()->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
+        $wellEquipParam = $well->wellEquipParam()->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
                ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
                ->withPivot('dbeg')
                ->where('metric.code', '=', $method) 
                ->orderBy('pivot_dbeg', 'desc')          
-               ->first(['value_double', 'value_string', 'equip_param']);                          
+               ->get(['value_double', 'value_string', 'equip_param'])
+               ->toArray();                         
+        
+        if($wellEquipParam){
+                return $wellEquipParam[0];
+        }
+
+                return "";
     } 
 
     private function wellExplOnRight(Well $well)
@@ -415,7 +419,7 @@ class WellsController extends Controller
     {
        $arr = $well->dmartDailyProd()
             ->orderBy('date', 'desc')
-            ->select('oil', 'liquid', 'wcut', 'gas', 'hdin', 'date')
+            ->select('oil', 'liquid', 'wcut', 'gas', 'hdin', 'date', 'pzat')
             ->get()
             ->toArray();
         if($arr){
@@ -443,8 +447,15 @@ class WellsController extends Controller
 
     private function techModeInj(Well $well)
     {
-        return $well->techModeInj()
-            ->first(['inj_pressure', 'agent_vol']);
+        $techModeInj = $well->techModeInj()
+            ->get(['inj_pressure', 'agent_vol'])
+            ->toArray();
+
+        if($techModeInj){
+            return $techModeInj[0];
+        }   
+
+        return "";
     }
 
     private function techModeProdOil(Well $well)
@@ -454,9 +465,11 @@ class WellsController extends Controller
             ->select(['oil', 'liquid', 'wcut', 'oil_density'])
             ->get()
             ->toArray();
+
          if($techmode){
             return $techmode[0]; 
          }
+
          return ""; 
     }
 
@@ -476,11 +489,18 @@ class WellsController extends Controller
 
     private function measWell(Well $well)
     {
-        return $well->measWell()
+        $measWell = $well->measWell()
             ->join('dict.metric', 'prod.meas_well.metric', '=', 'dict.metric.id')
             ->where('dict.metric.code', '=', 'GASR')
             ->orderBy('dbeg', 'desc')
-            ->first(['value_double', 'dbeg']);
+            ->get(['value_double', 'dbeg'])
+            ->toArray();
+        
+            if($measWell){
+                return $measWell[0];
+            }
+
+            return "";
     }
     
     private function wellPerfActual(Well $well)
@@ -539,7 +559,7 @@ class WellsController extends Controller
         if($gdisCurrent){
             return $gdisCurrent[0];
         }  
-
+          
         return "";
     }
 
@@ -644,11 +664,17 @@ class WellsController extends Controller
 
     private function gdisCurrentValueRzatr(Well $well, $method)
     {
-        return $well->gdisCurrentValue()
+        $gdisCurrentRzatr =  $well->gdisCurrentValue()
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')                      
-            ->where('dict.metric.code', '=', $method)
+            ->where('dict.metric.code', '=', $method)            
             ->get()
-            ->last(); 
+            ->toArray(); 
+
+        if($gdisCurrentRzatr){
+            return $gdisCurrentRzatr[0];
+        }    
+
+        return "";
     }
   
     private function gdisComplex(Well $well)

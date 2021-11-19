@@ -817,7 +817,7 @@ export default {
           : this.well.gdisComplex.dbeg
           ? this.getFormatedDate(this.well.gdisComplex.dbeg)
           : "";
-      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : "";
+      let rzatrAtm = this.well.dmart_daily_prod_oil ? this.well.dmart_daily_prod_oil.pzat : "";
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
