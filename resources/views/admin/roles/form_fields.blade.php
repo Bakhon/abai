@@ -83,8 +83,9 @@
                 $('.tab-' + $(this).data('tab')).addClass('active').siblings().removeClass('active')
                 $(this).addClass('active').siblings().removeClass('active')
             })
+
             $('.permissions .tabs .section .choose_all').click(function () {
-                $('.permissions .tabs .section .form-check .form-check-input').addClass('active')
+                $('.permissions .tabs .section .form-check .form-check-input').prop('checked', $('.choose_all').is(':checked'))
             })
         })
     </script>
