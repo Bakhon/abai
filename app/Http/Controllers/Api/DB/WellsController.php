@@ -509,8 +509,8 @@ class WellsController extends Controller
     private function getKrsPrs(Well $well, $code)
     {
         $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(
-            ['dbeg', 'dend']
-        );
+            ['dbeg', 'dend']);
+
         if (isset($wellWorkover)) {
             return $wellWorkover;
         }
@@ -519,16 +519,28 @@ class WellsController extends Controller
 
     private function wellTreatment(Well $well)
     {
-        return $well->wellTreatment()
+       $wellTreatment = $well->wellTreatment()
             ->where('treatment_type', '=', '14')
             ->first(['treat_date']);
+        if($wellTreatment){
+            return $wellTreatment[0];
+        }
+        return "";
     }
 
     private function gdisCurrent(Well $well)
     {
-        return $well->gdisCurrent()
+        $gdisCurrent = $well->gdisCurrent()
             ->orderBy('meas_date', 'desc')
-            ->first(['meas_date', 'note']);
+            ->select(['meas_date', 'note'])
+            ->get()
+            ->toArray();
+
+        if($gdisCurrent){
+            return $gdisCurrent[0];
+        }  
+
+        return "";
     }
 
     private function wellTreatmentSko(Well $well)
@@ -651,10 +663,16 @@ class WellsController extends Controller
 
     private function gis(Well $well)
     {
-        return $well->gis()
+        $gis = $well->gis()
             ->where('gis_type', '=', '1')
             ->orderBy('gis_date', 'desc')
-            ->first(['gis_date']);
+            ->get(['gis_date'])
+            ->toArray();
+
+        if($gis){
+            return $gis[0];
+        }    
+        return "";
     }
 
     private function wellReact(Well $well)
@@ -741,6 +759,40 @@ class WellsController extends Controller
         $period = $request->get('period');
         $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
         return  response()->json($result);
+    }
+
+    public function getInjectionHistory($wellId)
+    {
+        $measLiqs = MeasLiq::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get();
+        $groupedLiq = $measLiqs->groupBy(function ($val) {
+            return Carbon::parse($val->dbeg)->format('Y');
+        });
+        $liqByMonths = array();
+        foreach ($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
+                return Carbon::parse($val->dbeg)->format('m');
+            });
+        }
+
+        $result = array();
+        foreach ($liqByMonths as $yearNumber => $monthes) {
+            foreach ($monthes as $monthNumber => $month) {
+                $result[$yearNumber][$monthNumber] = array();
+                foreach ($month as $dayNumber => $day) {
+                    $date = Carbon::parse($day['dbeg']);
+                    $dateEnd = Carbon::parse($day['dend']);
+
+                    array_push($result[$yearNumber][$monthNumber], array(
+                        'liq' => $day['liquid'],
+                        'date' => $date->format('Y-m-d'),
+                        'workHours' => $date->diffInDays($dateEnd),
+                    ));
+                }
+            }
+        }
+        return $result;
     }
 
     public function getActivityByWell(Request $request, $wellId)
