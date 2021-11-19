@@ -86,7 +86,7 @@ class Dzo {
     );
 
     protected $dzoName;
-    protected $measuringFactColumn = 'oil_production_fact';
+    protected $measuringFactColumn = 'oil_production_fact_corrected';
     protected $condensateFactColumn = 'condensate_production_fact_corrected';
 
     public function getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$dzoId,$periodEnd)
@@ -166,8 +166,8 @@ class Dzo {
         $companySummary['id'] = $dzoId;
         $companySummary['name'] = $dzoName;
         if ($type === 'production') {
-            $companySummary['fact'] = $this->getProductionFactSummary($dzoFact,$this->consolidatedFieldsMapping[$type]['fact'],$this->measuringFactColumn);
-            $companySummary['condensateFact'] = $this->getProductionFactSummary($dzoFact,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->condensateFactColumn);
+            $companySummary['fact'] = $this->getProductionFactSummary($dzoFact,$this->measuringFactColumn,$this->consolidatedFieldsMapping[$type]['fact']);
+            $companySummary['condensateFact'] = $this->getProductionFactSummary($dzoFact,$this->condensateFactColumn,$this->consolidatedFieldsMapping[$type]['condensateFact']);
         } else {
             $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
             $companySummary['condensateFact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['condensateFact']);
@@ -335,7 +335,7 @@ class Dzo {
     {
         $summary = 0;
         foreach($dzoFact as $fact) {
-            if (!is_null($fact[$factField]) && $fact[$factField] > 0) {
+            if (!is_null($fact[$factField])) {
                 $summary += $fact[$factField];
             } else {
                 $summary += $fact[$oldColumn];
