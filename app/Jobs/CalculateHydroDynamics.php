@@ -36,7 +36,7 @@ class CalculateHydroDynamics implements ShouldQueue
     protected $input;
 
     protected $columnNames = [
-        '№',
+        'ID',
         'out_dia',
         'wall_thick',
         'length',
