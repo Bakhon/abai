@@ -125,7 +125,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
       
-        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+      //  Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
     
@@ -203,7 +203,7 @@ class WellsController extends Controller
         if($date_expl){
             return $date_expl[0];
         }
-
+        
         return "";
     }
 
@@ -400,12 +400,20 @@ class WellsController extends Controller
 
     private function actualBottomHole(Well $well)
     {      
-        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->first();
+        $bottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->get()->toArray();
+        if($bottomHole){
+            return $bottomHole[0];
+        }
+        return "";
     }
 
     private function artificialBottomHole(Well $well)
     {       
-        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
+        $BottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->get()->toArray();
+        if($BottomHole){
+            return $BottomHole[0];
+        }
+        return "";
     }
 
     private function pzabWell(Well $well)
@@ -719,9 +727,10 @@ class WellsController extends Controller
     {
         $gtm = $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
             ->where('dict.gtm_type.gtm_kind', '=', '10')
-            ->first(['dbeg']);
-        if (isset($gtm)) {
-            return $gtm;
+            ->get(['dbeg'])
+            ->toArray();
+        if ($gtm) {
+            return $gtm[0];
         }
         return ['dend' => ''];
     }
@@ -785,40 +794,6 @@ class WellsController extends Controller
         $period = $request->get('period');
         $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
         return  response()->json($result);
-    }
-
-    public function getInjectionHistory($wellId)
-    {
-        $measLiqs = MeasLiq::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $groupedLiq = $measLiqs->groupBy(function ($val) {
-            return Carbon::parse($val->dbeg)->format('Y');
-        });
-        $liqByMonths = array();
-        foreach ($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function ($val) {
-                return Carbon::parse($val->dbeg)->format('m');
-            });
-        }
-
-        $result = array();
-        foreach ($liqByMonths as $yearNumber => $monthes) {
-            foreach ($monthes as $monthNumber => $month) {
-                $result[$yearNumber][$monthNumber] = array();
-                foreach ($month as $dayNumber => $day) {
-                    $date = Carbon::parse($day['dbeg']);
-                    $dateEnd = Carbon::parse($day['dend']);
-
-                    array_push($result[$yearNumber][$monthNumber], array(
-                        'liq' => $day['liquid'],
-                        'date' => $date->format('Y-m-d'),
-                        'workHours' => $date->diffInDays($dateEnd),
-                    ));
-                }
-            }
-        }
-        return $result;
     }
 
     public function getActivityByWell(Request $request, $wellId)

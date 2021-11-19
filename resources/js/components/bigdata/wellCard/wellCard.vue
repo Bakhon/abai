@@ -1261,7 +1261,9 @@ export default {
                  this.wellTechsName = ' ';                          
                  this.wellSaptialObjectBottomX  = ' ';
                  this.wellSaptialObjectBottomY  = ' '; 
-                 this.wellGeoFields = ' ';                                                                   
+                 this.wellGeoFields = ' ';   
+                 this.gas_production = ' ';    
+                 this.dmart_daily_prod_oil = ' ';                                                            
               }
               
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
