@@ -24,7 +24,8 @@
             <div class="tabs tab-{{$module['name']}}
             @if($module['name'] == 'monitoring') active @endif">
                 <div class="section mb-4">
-                    <input name="choose_all" class="choose_all" type="checkbox">
+                    <input name="choose_all" class="choose_all choose_all-{{$module['name']}}" 
+                            data-tab="{{$module['name']}}" type="checkbox">
                     <label class="form-check-label">
                         Выбрать все
                     </label>
@@ -54,7 +55,7 @@
 
                             <div class="form-check">
                                 <input
-                                        class="form-check-input"
+                                        class="form-check-input {{$module['name']}}-input"
                                         id="permission_{{$permission->id}}"
                                         type="checkbox"
                                         name="permissions[]"
@@ -85,7 +86,7 @@
             })
 
             $('.permissions .tabs .section .choose_all').click(function () {
-                $('.permissions .tabs .section .form-check .form-check-input').prop('checked', $('.choose_all').is(':checked'))
+                $('.' + $(this).data('tab') + '-input').prop('checked', $('.choose_all-' + $(this).data('tab')).is(':checked'))
             })
         })
     </script>
