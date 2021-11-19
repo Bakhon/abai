@@ -3,7 +3,7 @@
     <div class="span">
       <div
           v-if="node.name"
-          v-bind:class="{ 'cursor-pointer': pointerClass }"
+          v-bind:class="{ 'cursor-pointer': pointerClass, 'activated': node.selected === true}"
           @click.stop="handleClick(node)">
             <span v-if="nodeHasChildren" @click="toggleUl(1)">
               <span class="asd">
@@ -18,7 +18,7 @@
       </span>
         <span v-if="checkable !== undefined"></span>
         <span class="margin-input" @click="toggleCheckState(node)">{{ node.name }} </span>
-        <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
+        <input class="input-tree pl-2" v-if="node.value || node.value === ''" type="text" v-model="node.value">
       </div>
       <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
         <node
@@ -26,14 +26,14 @@
             :node="child"
             :key="child.name"
             :handle-click="handleClick"
-            :class="{ activated: node.id === activeItem }"
         ></node>
       </ul>
     </div>
   </li>
 </template>
 <script>
-import {paegtmMapActions} from "../../../store/helpers";
+import {paegtmMapActions, paegtmMapState} from "../../../store/helpers";
+import {crossTree} from "../components/helpers/changeSelected";
 
 export default {
   name: "node",
@@ -49,9 +49,9 @@ export default {
       this.showChildren = !this.showChildren;
     },
     toggleCheckState: function (node) {
-      this.activeItem = node.id
-      console.log(this.activeItem, node.id, node)
-      let clickable = this.node.clickable
+      let clickable = node.clickable
+      crossTree(this.treeStore)
+      node.selected = !node.selected
       if (this.node.clickable) {
         this.changeClickable(clickable)
         this.$emit('emitValue', clickable)
@@ -67,10 +67,12 @@ export default {
       showChildren: showChildren,
       checkState: this.node.check_state,
       checkable: this.node.checkable,
-      activeItem: 0
     };
   },
   computed: {
+    ...paegtmMapState([
+      'treeStore'
+    ]),
     pointerClass: function () {
       return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
     },
@@ -94,7 +96,8 @@ ul {
 }
 
 .activated {
-  background-color: #0d3365;
+  background-color: #394675;
+  font-weight: 700;
 }
 
 .treeUl {

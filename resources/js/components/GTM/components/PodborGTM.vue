@@ -268,7 +268,7 @@
           </div>
         </div>
 
-        <div class="gtm-dark p-2 calc-button text-center" @click="onPostTreeData(treeData)">
+        <div class="gtm-dark p-2 calc-button text-center" @click="onPostTreeData(treeStore)">
           {{ trans("paegtm.calc") }}
         </div>
 
@@ -296,7 +296,7 @@
             </div>
             <div class="gtm-dark">
               <gtm-tree
-                  v-for="treeDataChild in treeData"
+                  v-for="treeDataChild in treeStore"
                   :treeData="treeDataChild"
                   :key="treeDataChild.name"
                   @node-click="nodeClick"
