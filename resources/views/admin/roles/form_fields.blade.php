@@ -23,7 +23,12 @@
         @foreach($modules as $index => $module)
             <div class="tabs tab-{{$module['name']}}
             @if($module['name'] == 'monitoring') active @endif">
-
+                <div class="section mb-4">
+                    <input name="choose_all" class="choose_all" type="checkbox">
+                    <label class="form-check-label">
+                        Выбрать все
+                    </label>
+                </div>
                 @foreach($sections as $section)
                     @if ($section->module != $module['name'])
                         @continue
@@ -77,6 +82,9 @@
             $('.permissions .navbar button').click(function () {
                 $('.tab-' + $(this).data('tab')).addClass('active').siblings().removeClass('active')
                 $(this).addClass('active').siblings().removeClass('active')
+            })
+            $('.permissions .tabs .section .choose_all').click(function () {
+                $('.permissions .tabs .section .form-check .form-check-input').addClass('active')
             })
         })
     </script>
