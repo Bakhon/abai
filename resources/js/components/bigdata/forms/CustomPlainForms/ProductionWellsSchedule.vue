@@ -40,12 +40,17 @@
                 </div>
             </div>
             <div class="content-block-scrollable">
-                <ProductionWellsScheduleItem
-                    v-for="(well, index) in wells"
-                    :well="well"
-                    :key="well.id"
-                    :isShowEvents="isShowEvents"
-                />
+                <div  v-for="well in wells">
+                    <ProductionWellsScheduleItem
+                        v-if="well.category && well.category.name_ru === productionCategory"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                    />
+                    <div v-else>
+                        НАГНЕТАТЕЛЬНАЯ
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -67,7 +72,8 @@ export default {
         return {
             wells: [],
             options: [],
-            isShowEvents: false
+            isShowEvents: false,
+            productionCategory: 'Нефтяная'
         }
     },
     methods: {
