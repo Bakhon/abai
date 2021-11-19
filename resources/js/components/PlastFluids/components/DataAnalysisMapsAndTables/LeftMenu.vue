@@ -11,20 +11,35 @@
         </div>
         <div class="content">
           <div class="settings-input-holder">
-            <input type="checkbox" id="all-wells" />
-            <label for="all-wells">Все скважины</label>
+            <input
+              v-model="computedSelectedWellsType"
+              value="all"
+              type="checkbox"
+              id="all-wells"
+            />
+            <label for="all-wells">{{ trans("plast_fluids.all_wells") }}</label>
           </div>
           <div class="settings-input-holder">
-            <input type="checkbox" id="wells-deep-samples" />
-            <label for="wells-deep-samples"
-              >Скважины с отбором глубинных проб</label
-            >
+            <input
+              v-model="computedSelectedWellsType"
+              value="deep"
+              type="checkbox"
+              id="wells-deep-samples"
+            />
+            <label for="wells-deep-samples">{{
+              trans("plast_fluids.wells_deep_samples")
+            }}</label>
           </div>
           <div class="settings-input-holder">
-            <input type="checkbox" id="wells-recombined-samples" />
-            <label for="wells-recombined-samples"
-              >Скважины с отбором рекомбинированных проб</label
-            >
+            <input
+              v-model="computedSelectedWellsType"
+              value="recombined"
+              type="checkbox"
+              id="wells-recombined-samples"
+            />
+            <label for="wells-recombined-samples">{{
+              trans("plast_fluids.wells_recombined_samples")
+            }}</label>
           </div>
         </div>
       </div>
@@ -113,10 +128,25 @@ export default {
     Dropdown,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["models", "currentModel"]),
+    ...mapState("plastFluidsLocal", [
+      "models",
+      "currentModel",
+      "selectedWellsType",
+    ]),
+    computedSelectedWellsType: {
+      get() {
+        return this.selectedWellsType;
+      },
+      set(value) {
+        this.SET_SELECTED_WELLS_TYPE(value);
+      },
+    },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_MODEL"]),
+    ...mapMutations("plastFluidsLocal", [
+      "SET_CURRENT_MODEL",
+      "SET_SELECTED_WELLS_TYPE",
+    ]),
   },
 };
 </script>

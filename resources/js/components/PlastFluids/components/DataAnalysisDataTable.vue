@@ -107,6 +107,7 @@ export default {
 
 .title-holder {
   display: flex;
+  align-items: center;
 }
 
 .title-holder > img {

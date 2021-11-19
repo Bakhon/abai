@@ -63,7 +63,10 @@ export default {
   watch: {
     currentSubsoilField: {
       handler(value) {
-        this.handleTableGraphData({ field_id: value[0].field_id });
+        this.handleAnalysisTableData({
+          field_id: value[0].field_id,
+          postUrl: "map/isogyps-wells-table",
+        });
       },
       deep: true,
     },
@@ -81,7 +84,7 @@ export default {
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_MODELS"]),
     ...mapActions("plastFluidsLocal", [
-      "handleTableGraphData",
+      "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
     async getHorizonModels(horizons) {
@@ -92,8 +95,9 @@ export default {
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {
-      await this.handleTableGraphData({
+      await this.handleAnalysisTableData({
         field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "map/isogyps-wells-table",
       });
       this.handleBlocksFilter(this.currentSubsoilHorizon);
       if (this.currentSubsoilHorizon.length)

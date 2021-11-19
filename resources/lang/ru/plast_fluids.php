@@ -144,4 +144,7 @@ return array (
   'between_isohyps' => 'Между изогипсами',
   'show_tile_layer' => 'Показывать цветную подложку карты',
   'apply' => 'Применить',
+  'all_wells' => 'Все скважины',
+  'wells_deep_samples' => 'Скважины с отбором глубинных проб',
+  'wells_recombined_samples' => 'Скважины с отбором рекомбинированных проб',
 );

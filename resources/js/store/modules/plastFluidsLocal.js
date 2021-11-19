@@ -1,6 +1,6 @@
 import translation from "../../VueTranslation/Translation";
 import { getTemplateData } from "../../components/PlastFluids/services/templateService";
-import { getTableGraphData } from "../../components/PlastFluids/services/graphService";
+import { getTableData } from "../../components/PlastFluids/services/mapService";
 import { convertToFormData } from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
@@ -30,6 +30,7 @@ const plastFluidsLocal = {
     maxDepthMultiplier: 0,
     isIsohypsShown: true,
     isTileLayerShown: true,
+    selectedWellsType: [],
   },
 
   mutations: {
@@ -113,6 +114,9 @@ const plastFluidsLocal = {
     SET_IS_TILE_LAYER_SHOWN(state, payload) {
       state.isTileLayerShown = payload;
     },
+    SET_SELECTED_WELLS_TYPE(state, payload) {
+      state.selectedWellsType = payload;
+    }
   },
 
   actions: {
@@ -160,7 +164,8 @@ const plastFluidsLocal = {
         commit("SET_LOADING", false);
       }
     },
-    async handleTableGraphData({ commit, state, rootState }, dataToPost) {
+    async handleAnalysisTableData({ commit, state, rootState }, dataToPost) {
+      const { postUrl, ...rest } = dataToPost;
       try {
         commit("SET_LOADING", true);
         const horizons = rootState.plastFluids.currentSubsoilHorizon;
@@ -179,12 +184,21 @@ const plastFluidsLocal = {
           data_end: "None",
           graph_type: state.graphType,
         };
-        let merged = { ...postDataMock, ...dataToPost };
+        let merged = { ...postDataMock, ...rest };
         const postData = convertToFormData(merged);
-        const data = await getTableGraphData(postData);
-        commit("SET_TABLE_FIELDS", data[0].table_header);
-        commit("SET_LOCAL_HORIZONS", data[1].filter_data);
-        commit("SET_TABLE_ROWS", data.slice(2));
+        const data = await getTableData(postData, postUrl);
+        commit(
+          "SET_TABLE_FIELDS",
+          Array.isArray(data) ? data[0].table_header : data.header
+        );
+        commit(
+          "SET_LOCAL_HORIZONS",
+          Array.isArray(data) ? data[1].filter_data : data.filter_data
+        );
+        commit(
+          "SET_TABLE_ROWS",
+          Array.isArray(data) ? data.slice(2) : data.table
+        );
       } catch (error) {
         console.log(error);
       } finally {

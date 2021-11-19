@@ -1,3 +1,15 @@
+export const getTableData = async (postData, url) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/${url}`,
+      postData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getMapOwners = async () => {
   try {
     const response = await axios.get(
@@ -103,6 +115,18 @@ export const getModelWells = async (payload) => {
       { params: payload }
     );
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getModelWellsProperties = async (payload) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/map/isogyps-wells-menu`,
+      payload
+    );
+    return response.data.well_menu;
   } catch (error) {
     console.log(error);
   }

@@ -170,8 +170,9 @@ export default {
       set(value) {
         this.SET_GRAPH_TYPE(value);
         if (this.currentSubsoilField[0])
-          this.handleTableGraphData({
+          this.handleAnalysisTableData({
             field_id: this.currentSubsoilField[0].field_id,
+            postUrl: "analytics/pvt-data-analysis",
           });
         this.SET_CURRENT_GRAPHICS(this.setInitialGraphics(value));
       },
@@ -186,7 +187,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
+    ...mapActions("plastFluidsLocal", ["handleAnalysisTableData"]),
     ...mapMutations("plastFluidsLocal", [
       "SET_GRAPH_TYPE",
       "SET_CURRENT_GRAPHICS",
