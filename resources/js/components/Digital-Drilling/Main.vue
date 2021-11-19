@@ -7,12 +7,12 @@
                     <img src="/img/digital-drilling/reboot-icon.png" alt="">
                 </div>
                 <div class="main__component-filters">
-                    <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
-                    <dropdown title="Месторождение" :options="fields" class="dropdown__area"
+                    <dropdown title="ДЗО" :options="dzo" :current="currentDZO" class="dropdown__area" @updateList="getField"/>
+                    <dropdown title="Месторождение" :options="fields" :current="currentField" class="dropdown__area"
                               :search="true"
                               @updateList="getWELL"
                               @search="filterField"/>
-                    <dropdown title="Сважина" :options="well" class="dropdown__area"
+                    <dropdown title="Сважина" :options="well" :current="currentWellItem" class="dropdown__area"
                               :search="true"
                               @updateList="changeCurrentWell"
                               @search="filterWell"/>
@@ -46,8 +46,15 @@
                 dzo: [],
                 fields: [],
                 well: [],
-                currentDZO: null,
-                currentField: null,
+                currentDZO: {
+                    name: ''
+                },
+                currentField: {
+                    name: ''
+                },
+                currentWellItem: {
+                    name: ''
+                },
             }
         },
         mounted(){
@@ -127,6 +134,7 @@
 
             },
             changeCurrentWell(item){
+                this.currentWellItem = item
                 this.changeCurrentWellValue(item)
             },
             ...digitalDrillingActions([
