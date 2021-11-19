@@ -59,38 +59,39 @@ class CalculateHydroDynamics implements ShouldQueue
         'height_drop'
     ];
 
-    const ID = 0;
+    const SHORT_ID = 0;
+    const LONG_ID = 1;
     const POINTS_OR_SEGMENT = 0;
 
     protected $hydroCalcLongSchema = [
-        'distance' => 1,
-        'dout' => 2,
-        'wt' => 3,
-        'liq_rate' => 4,
-        'gor' => 5,
-        'wc' => 6,
-        'pin' => 7,
-        'pout' => 8,
-        'tin' => 9,
-        'tout' => 10,
-        'flow_pattern' => 11,
-        'vliq' => 12,
-        'vgas' => 13,
-        'vm' => 14,
-        'pressure_gradient' => 15,
-        'ohtc' => 16,
-        'nre' => 17,
-        'holdup' => 18,
-        'lambda' => 19,
-        'h_soil' => 20,
-        'h_f' => 21,
-        'npr' => 22,
-        'nnu' => 23,
-        'f_f_ratio' => 24,
-        'rs' => 25,
-        'rsw' => 26,
-        'ev' => 27,
-        'comment' => 28
+        'distance' => 2,
+        'dout' => 3,
+        'wt' => 4,
+        'liq_rate' => 5,
+        'gor' => 6,
+        'wc' => 7,
+        'pin' => 8,
+        'pout' => 9,
+        'tin' => 10,
+        'tout' => 11,
+        'flow_pattern' => 12,
+        'vliq' => 13,
+        'vgas' => 14,
+        'vm' => 15,
+        'pressure_gradient' => 16,
+        'ohtc' => 17,
+        'nre' => 18,
+        'holdup' => 19,
+        'lambda' => 20,
+        'h_soil' => 21,
+        'h_f' => 22,
+        'npr' => 23,
+        'nnu' => 24,
+        'f_f_ratio' => 25,
+        'rs' => 26,
+        'rsw' => 27,
+        'ev' => 28,
+        'comment' => 29
     ];
 
     protected $hydroCalcShortSchema = [
@@ -268,7 +269,7 @@ class CalculateHydroDynamics implements ShouldQueue
     protected function storeShortResult(array $data): void
     {
         foreach ($data as $row) {
-            $oilPipe = OilPipe::find($row[self::ID]);
+            $oilPipe = OilPipe::find($row[self::SHORT_ID]);
 
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
@@ -287,15 +288,15 @@ class CalculateHydroDynamics implements ShouldQueue
 
     protected function storeLongResult(array $data): void
     {
+        $pipe = null;
+
         foreach ($data as $row) {
             if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
-                $pointsNames = explode(' - ', $row[self::POINTS_OR_SEGMENT]);
-
-                $pipe = OilPipe::where('start_point', $pointsNames[0])
-                    ->where('end_point', $pointsNames[1])
-                    ->first();
-
                 continue;
+            }
+
+            if (!$pipe) {
+                $pipe = OilPipe::find($row[self::LONG_ID]);
             }
 
             $hydroCalcLong = HydroCalcLong::firstOrCreate(
@@ -311,6 +312,10 @@ class CalculateHydroDynamics implements ShouldQueue
             }
 
             $hydroCalcLong->save();
+
+            if ($row[self::POINTS_OR_SEGMENT] == 9) {
+                $pipe = null;
+            }
         }
     }
 }
