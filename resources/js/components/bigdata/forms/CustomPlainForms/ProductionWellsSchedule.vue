@@ -43,7 +43,7 @@
                 <ProductionWellsScheduleItem
                     v-for="(well, index) in wells"
                     :well="well"
-                    :key="index"
+                    :key="well.id"
                     :isShowEvents="isShowEvents"
                 />
             </div>
@@ -97,7 +97,7 @@ export default {
         ),
         selectWell(well) {
             this.options = [];
-            this.wells.push(well)
+            this.wells.unshift(well);
         },
         removeWellSchedule(well) {
             this.wells.splice(

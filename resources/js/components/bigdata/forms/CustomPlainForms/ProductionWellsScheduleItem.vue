@@ -301,23 +301,24 @@
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                             let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
                             let events = window.Apex.events
-                            let events_hint = events.info[dataPointIndex];
-                            let output = '';
-                            if (events_hint !== null) {
-                                let formatted = events_hint.slice(1,-1).slice(1,-1);
-                                formatted = formatted.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
-                                let parsed = JSON.parse(formatted);
-                                output = parsed.name_type + '<br>';
-                                for (let i in parsed.parameters) {
-                                    output = output + ' - ' + parsed.parameters[i].name + ' : ' + parsed.parameters[i].value + ', <br>';
+                            if (events.info && seriesIndex === 4) {
+                                let events_hint = events.info[dataPointIndex];
+                                let output = '';
+                                if (events_hint !== null) {
+                                    let formatted = events_hint.slice(1,-1).slice(1,-1);
+                                    formatted = formatted.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+                                    let parsed = JSON.parse(formatted);
+                                    output = parsed.name_type + '<br>';
+                                    for (let i in parsed.parameters) {
+                                        output = output + ' - ' + parsed.parameters[i].name + ' : ' + parsed.parameters[i].value + ', <br>';
+                                    }
                                 }
-                            }
-                            let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
-                                "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                                "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>" + output + "</span>" + "</div>";
-                            if (seriesIndex === 4) {
+                                let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
+                                    "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
+                                    "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>" + output + "</span>" + "</div>";
                                 return activity;
                             }
+
                             return (
                                 '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
                                 "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
