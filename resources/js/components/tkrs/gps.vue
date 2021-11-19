@@ -106,34 +106,22 @@
                     <tr>
                       <td colspan="3" class="header_name">Дневное время</td>
                     </tr>
-                    <tr v-for="(item, item_index) in test.dbeg" :key="item_index">
+                    <tr v-for="(item, item_index) in test.dbeg_day" :key="item_index">
                       <td    class="header_name manual-edit">{{item}}</td>
-                      <td class="header_name manual-edit">{{test.dend[item_index]}}</td>
+                      <td class="header_name manual-edit">{{test.dend_day[item_index]}}</td>
                       <td class="header_name input-form-auto"></td>
-                      <td class="manual-edit">{{test.value[item_index]}}<input class="manual-input"/></td>
+                      <td class="manual-edit">{{test.day_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                     
                     <tr>
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">18:00</td>
-                      <td class="header_name manual-edit">21:30</td>
-                      <td class="header_name input-form-auto">3:30</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">21:30</td>
-                      <td class="header_name manual-edit">1:00</td>
-                      <td class="header_name input-form-auto">3:30</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">1:00</td>
-                      <td class="header_name manual-edit">6:00</td>
-                      <td class="input-form-auto">5:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                    <tr v-for="(item, item_index) in test.dbeg_night" :key="item_index">
+                      <td class="header_name manual-edit">{{item}}</td>
+                      <td class="header_name manual-edit">{{test.dend_night[item_index]}}</td>
+                      <td class="header_name input-form-auto"></td>
+                      <td class="manual-edit">{{test.night_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -200,13 +188,7 @@
                       <td class="input-form-auto">0,0</td>
                       <td class="input-form-auto">0,0</td>
                       <td class="input-form-auto">0,0</td>
-                      <td colspan="6" rowspan="4" class="input-form-auto">Завоз тех.воды с плотностью 1,01г/см3 в объеме-60м3.Параметры скважины: Ртр-10атм. Рзтр-15атм. Рм/к-0атм. 
-                        Стравливание трубного и затрубного пространство на выходе газ без жидкостью. Подъём полированного штока до 6-метров. 
-                        Глушение скважины через трубного пространство тех.водой в объёме-40м3 на выходе газ с жидкостью в объёме-21м3. На заполнение закачено-17м3.
-                        Циркуляция скважины до выхода чистой воды 1,5-цикла. Поглошение-2м3.Наблюдение за скважиной на перелив. Перелив отсутствует.Монтаж станка УПА-80. 
-                        Подъём штанги ф22мм и ф19мм с вставным насосом в количестве-210шт из них ф22мм 71шт и ф19мм-139шт.
-                        Демонтаж штанговой ПВО и планшайбы. Монтаж ПВО и опрессовка ПВО на 130 атм в присутствии представителя КФ РГП на ПХВ "ПВАСС". Результат-герметично.
-                         Получено письменное разрешение для дальнейших работ.Подъём замковый опоры и газосеператора на ВНКТ ф73мм в количестве 110шт c тугим отваротом.</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto">{{all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2">метеоусловия</td>
@@ -325,6 +307,7 @@ export default {
       test: [],
       start_drill:  null,
       end_drill:  null,
+      all_works:  null,
       
     }
   },
@@ -421,6 +404,7 @@ export default {
                     this.test = data.data.works_report_range;
                     this.start_drill = data.data.header.start_drill;
                     this.end_drill = data.data.header.start_drill;
+                    this.all_works = data.data.works_report_range.all_works;
                   console.info(this.test)
                 } else {
                     console.log("No data");
