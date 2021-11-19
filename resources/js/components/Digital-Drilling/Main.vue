@@ -116,41 +116,29 @@
             },
             async filterWell(){
                 this.filter = true
+                let url = '/digital_drilling/api/search/wellnum/'+this.currentDZO.id+'/'
                 if (this.query) {
                     this.error = false
                     if (this.currentField.id) {
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id+'?q='+this.query).then((response) => {
-                            let data = response.data;
-                            if (data) {
-                                this.well = data;
-                            } else {
-                                console.log('No data');
-                            }
-                        });
+                       url = '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id+'?q='+this.query
                     }else{
-                        this.SET_LOADING(true);
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/wellnum/'+this.currentDZO.id+'/'+this.query).then((response) => {
-                            let data = response.data;
-                            if (data) {
-                                this.well = data;
-                            } else {
-                                console.log('No data');
-                            }
-                        });
-                        this.SET_LOADING(false);
+                       url ='/digital_drilling/api/search/wellnum/'+this.currentDZO.id+'/'+this.query
                     }
                 }else{
                     if (this.currentField.id) {
-                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id).then((response) => {
-                            let data = response.data;
-                            if (data) {
-                                this.well = data;
-                            } else {
-                                console.log('No data');
-                            }
-                        });
+                        url ='/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id
                     }
                 }
+                this.SET_LOADING(true);
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + url).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.well = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+                this.SET_LOADING(false);
             },
             getDZO(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search').then((response) => {
