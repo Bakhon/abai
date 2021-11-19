@@ -292,6 +292,7 @@ class CalculateHydroDynamics implements ShouldQueue
 
         foreach ($data as $row) {
             if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
+                $pipe = null;
                 continue;
             }
 
@@ -312,10 +313,6 @@ class CalculateHydroDynamics implements ShouldQueue
             }
 
             $hydroCalcLong->save();
-
-            if ($row[self::POINTS_OR_SEGMENT] == 9) {
-                $pipe = null;
-            }
         }
     }
 }
