@@ -821,8 +821,8 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
-        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
+      let gdisCurrentValueBhp = this.well.techmode.value_string && this.well.techmode.dbeg 
+        ? this.well.techmode.value_string.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.dbeg) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";

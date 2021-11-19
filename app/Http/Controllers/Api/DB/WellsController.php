@@ -58,8 +58,7 @@ class WellsController extends Controller
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
                    ->where('prod.well_category.well', '=', $well->id)
                    ->orderBy('dbeg', 'desc')
-                   ->select('dict.well_category_type.code')                    
-                   ->take(1)                
+                   ->select('dict.well_category_type.code')                                                      
                    ->get();
                             
         if($category[0]->code == 'OIL')  
@@ -83,7 +82,7 @@ class WellsController extends Controller
                 'meas_water_inj' => $this->measLiqInjection($well),
             ];  
         }   
-               
+                
         $orgs = $this->org($well);                  
         $wellInfo = [
             'wellInfo' => $well,
@@ -115,10 +114,10 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),                 
             'gdisCurrent' => $this->gdisCurrent($well),                                                                                                                                 
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gdis_complex' => $this->gdisComplex($well),          
+            'gdis_complex' => $this->gdisComplex($well, 'PVOP'),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),            
-            'techmode' => $this->pzabWell($well), 
+            'techmode' => $this->gdisComplex($well, 'BHP'), 
             'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),                     
         ];
 
@@ -719,20 +718,19 @@ class WellsController extends Controller
         return "";
     }
   
-    private function gdisComplex(Well $well)
-    {
+    private function gdisComplex(Well $well, $method)
+    {      
         $gdisComplex = $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
             ->withPivot('dbeg')
-            ->where('metric.code', '=', 'PVOP')
+            ->where('metric.code', '=', $method)
             ->orderBy('dbeg', 'desc')
             ->get(['value_string', 'dbeg'])
             ->toArray(); 
 
-        if($gdisComplex){
+        if($gdisComplex){          
             return $gdisComplex[0];
-        }   
-
+        }         
         return "";
     }
 
