@@ -1,12 +1,15 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen">
+        <div class="dropdown__header">
             <div class="dropdown__header-title">
-                <span>
+                <div class="cancel" v-if="cancelFilter && current.name" @click="cancelFilterItem">
+                    <img src="/img/digital-drilling/cancel-filter.svg" alt="">
+                </div>
+                <span @click="isOpen=!isOpen" class="name">
                     {{current.name}}
                 </span>
             </div>
-            <div class="dropdown__header-icon">
+            <div class="dropdown__header-icon" @click="isOpen=!isOpen">
                 <img src="/img/digital-drilling/dropdown-toggle-icon.svg" alt="">
             </div>
         </div>
@@ -29,7 +32,7 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search', 'current'],
+        props: ['title', 'options', 'search', 'current', 'cancelFilter'],
         data(){
             return{
                 isOpen: false,
@@ -43,6 +46,9 @@
             },
             changeSearch(){
                 this.$emit('search', this.query)
+            },
+            cancelFilterItem(){
+                this.$emit('cancelFilterItem')
             },
         },
     }
@@ -65,6 +71,18 @@
         min-width: 200px;
         height: 23px;
         padding: 0 15px 0 10px;
+        cursor: pointer;
+    }
+    .dropdown__header-title{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .dropdown__header-title .name{
+        flex-grow: 1;
+    }
+    .dropdown__header-title img{
+        margin-right: 10px;
         cursor: pointer;
     }
     .dropdown .dropdown__header-icon{

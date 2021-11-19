@@ -10,17 +10,45 @@
                     <dropdown title="ДЗО" :options="dzo" :current="currentDZO" class="dropdown__area" @updateList="getField"/>
                     <dropdown title="Месторождение" :options="fields" :current="currentField" class="dropdown__area"
                               :search="true"
+                              :cancelFilter="true"
+                              @cancelFilterItem="cancelField"
                               @updateList="getWELL"
                               @search="filterField"/>
-                    <dropdown title="Сважина" :options="well" :current="currentWellItem" class="dropdown__area"
-                              :search="true"
-                              @updateList="changeCurrentWell"
-                              @search="filterWell"/>
+                    <div class="search-well">
+                        <img src="/img/digital-drilling/search.png" alt="">
+                        <input type="text" placeholder="Введите номер скважины" v-model="query" @input="filterWell">
+                        <button class="search" @click="filterWell">
+                            Поиск
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="main__component-body defaultScroll">
-            <component v-bind:is="page.component" />
+            <div class="filter-result" v-if="filter">
+                <div class="filter-head">
+                    <span v-if="!error">Результаты поиска скважин</span>
+                    <span v-else>Введите номер скважины</span>
+
+                </div>
+                <table class="table defaultTable" v-if="!error">
+                    <thead>
+                    <tr>
+                        <th> ДЗО</th>
+                        <th> Месторождение</th>
+                        <th> Скважина</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in well" @click="changeCurrentWell(item)">
+                        <td>{{currentDZO.name}}</td>
+                        <td>{{item.field_name}}</td>
+                        <td>{{item.well_num}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <component v-bind:is="page.component" v-if="!filter"/>
             <div class="filter__not">
                 <div class="filter__not-background">
                     <img src="/img/digital-drilling/toFilter.svg" alt="" class="notFilter">
@@ -35,7 +63,7 @@
 </template>
 
 <script>
-    import {digitalDrillingActions, digitalDrillingState} from '@store/helpers';
+    import {digitalDrillingActions, digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import Dropdown from './components/dropdown'
     export default {
         name: "Main",
@@ -43,6 +71,8 @@
         props: ['page'],
         data(){
             return{
+                filter: false,
+                query: '',
                 dzo: [],
                 fields: [],
                 well: [],
@@ -55,6 +85,7 @@
                 currentWellItem: {
                     name: ''
                 },
+                error: false
             }
         },
         mounted(){
@@ -66,6 +97,9 @@
             ]),
         },
         methods: {
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
             async filterField(query){
                 await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'?q='+query).then((response) => {
                     let data = response.data;
@@ -80,15 +114,43 @@
                     }
                 });
             },
-            filterWell(query){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id+'?q='+query).then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.well = data;
-                    } else {
-                        console.log('No data');
+            async filterWell(){
+                this.filter = true
+                if (this.query) {
+                    this.error = false
+                    if (this.currentField.id) {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id+'?q='+this.query).then((response) => {
+                            let data = response.data;
+                            if (data) {
+                                this.well = data;
+                            } else {
+                                console.log('No data');
+                            }
+                        });
+                    }else{
+                        this.SET_LOADING(true);
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/wellnum/'+this.currentDZO.id+'/'+this.query).then((response) => {
+                            let data = response.data;
+                            if (data) {
+                                this.well = data;
+                            } else {
+                                console.log('No data');
+                            }
+                        });
+                        this.SET_LOADING(false);
                     }
-                });
+                }else{
+                    if (this.currentField.id) {
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id).then((response) => {
+                            let data = response.data;
+                            if (data) {
+                                this.well = data;
+                            } else {
+                                console.log('No data');
+                            }
+                        });
+                    }
+                }
             },
             getDZO(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search').then((response) => {
@@ -106,13 +168,12 @@
             async getField(item){
                 if (item!=''){
                     this.currentDZO = item
+                    this.filterWell()
                 }
                 await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.fields = data;
-                        this.currentField = data[0];
-                        this.getWELL('')
                     } else {
                         console.log('No data');
                     }
@@ -122,18 +183,19 @@
             getWELL(item){
                 if (item!=''){
                     this.currentField = item
+                    this.filterWell()
                 }
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id).then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.well = data;
-                    } else {
-                        console.log('No data');
-                    }
-                });
-
+            },
+            cancelField(){
+                this.currentField = {
+                    id: '',
+                    name: ''
+                }
+                this.filterWell()
             },
             changeCurrentWell(item){
+                this.query = item.well_num
+                this.filter = false
                 this.currentWellItem = item
                 this.changeCurrentWellValue(item)
             },
@@ -218,5 +280,73 @@
         color: #FFFFFF;
         text-align: center;
     }
+    .search-well{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #1F2142;
+        border: 1px solid #454FA1;
+        font-size: 14px;
+        line-height: 1;
+        color: #FFFFFF;
+        width: 260px;
+        min-width: 200px;
+        height: 23px;
+        padding: 0 10px;
+        cursor: pointer;
+    }
+    .search-well img{
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+    }
+    .search-well input{
+        height: 80%;
+        font-size: 14px;
+        background-color: transparent;
+        width: 70%;
+        border: 0;
+    }
+    .search-well input::placeholder{
+        color: #9EA4C9;
+    }
 
+    .search-well input:focus{
+        outline: none;
+    }
+    .search-well button{
+        border: 0;
+        height: 80%;
+        background: #3366FF;
+        border-radius: 2px;
+        color: #FFFFFF;
+        font-size: 12px;
+        line-height: 1;
+        padding: 0 6px;
+        margin-left: 10px;
+        font-weight: bold;
+    }
+    .filter-result{
+        width: 100%;
+        min-height: 100%;
+        background: #272953;
+    }
+    .filter-head{
+        width: 100%;
+        padding: 7px 10px;
+        font-size: 14px;
+        line-height: 17px;
+        background: #323370;
+        margin-bottom: 5px;
+    }
+    .filter-result table tr:hover{
+        background: #3A53B2;
+        cursor: pointer;
+    }
+    .filter-result table td{
+        padding: 7px;
+        font-size: 12px;
+        line-height: 12px;
+        text-align: center;
+    }
 </style>

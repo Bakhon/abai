@@ -65,7 +65,7 @@
                                 <label for="wellID">{{ trans('digital_drilling.passport.well') }}:</label>
                                 <select  id="wellID" v-model="currentWell">
                                     <option value="" disabled selected="selected">Выбор скавжины</option>
-                                    <option :value="item.id" v-for="item in well">{{item.name}}</option>
+                                    <option :value="item.well_id" v-for="item in well">{{item.well_num}}</option>
                                 </select>
                             </div>
                         </div>
