@@ -324,7 +324,7 @@
                 </table>
                 <table class="col-12" id="exportReport" style="display:none">
                     <tr>
-                        <th colspan="20" style="font-family: arial; font-size: 16px; font-weight: bold; text-align: center">Оперативная суточная информация по добыче, сдаче нефти и газового конденсата АО НК "КазМунайГаз"</th>
+                        <th colspan="13" style="font-family: arial; font-size: 16px; font-weight: bold; text-align: center">Оперативная суточная информация по добыче, сдаче нефти и газового конденсата АО НК "КазМунайГаз"</th>
                     </tr>
                     <tr style="font-family: Arial; font-size: 13px; font-style: italic;">
                         <th></th>
@@ -334,253 +334,115 @@
                     <tr style="font-family: Arial; font-size: 13px;">
                         <th style="border: 1px solid black" rowspan="3">№ п/п</th>
                         <th style="border: 1px solid black; width: 300px" rowspan="3">Предприятия</th>
-                        <th style="border: 1px solid black" colspan="18" class="background-delimeters">ДОБЫЧА, тонн</th>
-                        <th style="border: 1px solid black" colspan="18" class="background-delimeters">СДАЧА, тонн</th>
+                        <th style="border: 1px solid black" colspan="11" class="background-delimeters">ДОБЫЧА, тонн</th>
                     </tr>
                     <tr style="font-family: Arial; font-size: 13px;">
                         <th style="border: 1px solid black" rowspan="2">
                             План на {{currentYear}} г.
                         </th>
                         <th style="border: 1px solid black" rowspan="2">
-                            План на {{currentMonthName}} месяц
+                            План на <br>{{currentMonthName}} месяц
                         </th>
-                        <th style="border: 1px solid black" rowspan="2">
-                            План на {{currentMonthName}} месяц <br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
-                        <th style="border: 1px solid black" rowspan="2">
-                            План на {{currentYear}} г.
-                        </th>
-                        <th style="border: 1px solid black" rowspan="2">
-                            План на {{currentMonthName}} месяц
-                        </th>
-                        <th style="border: 1px solid black" rowspan="2">
-                            План на {{currentMonthName}} месяц <br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
-                        <th style="border: 1px solid black" colspan="5" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
+                        <th style="border: 1px solid black" colspan="3" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
+                        <th style="border: 1px solid black" colspan="3" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
+                        <th style="border: 1px solid black" colspan="3" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
                     </tr>
                     <tr style="font-family: Arial; font-size: 13px;">
                         <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
                         <th style="border: 1px solid black" >Факт</th>
                         <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
                         <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
                         <th style="border: 1px solid black" >Факт</th>
                         <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
                         <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
                         <th style="border: 1px solid black" >Факт</th>
                         <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >Факт</th>
-                        <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >Факт</th>
-                        <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >План</th>
-                        <th style="border: 1px solid black" >
-                            План<br>
-                            с учетом ОПЕК+
-                        </th>
-                        <th style="border: 1px solid black" >Факт</th>
-                        <th style="border: 1px solid black" >(+,-)</th>
-                        <th style="border: 1px solid black" >
-                            (+,-)<br>
-                            с учетом ОПЕК+
-                        </th>
                     </tr>
                     <tr
                             v-for="(item, index) in summaryForExport.byKMG"
-                            :style="getStyleForSummary(index,true)"
                     >
-                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
+                        <td v-if="index !== 3" :style="getStyleForSummary(index,true,'id')">{{item.number}}</td>
                         <td v-else></td>
-                        <td v-if="[3,15,16,17].includes(index)" style="text-align: left">
+                        <td v-if="[3,15,16,17].includes(index)" :style="getStyleForSummary(index,true,'name')">
                             &emsp;&emsp;{{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td v-else style="text-align: left">
+                        <td v-else :style="getStyleForSummary(index,true,'name')"">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
-                        <td>{{getFormattedNumber(item.planByDay)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByDay)}}</td>
-                        <td>{{getFormattedNumber(item.factByDay)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByDay)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByDay)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByDay,index,true)">
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByDay)">
-                            {{getFormattedNumber(item.differenceOpecByDay)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.planByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByMonth)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByMonth,index,true)">
                             {{getFormattedNumber(item.differenceByMonth)}}
                         </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByMonth)">
-                            {{getFormattedNumber(item.differenceOpecByMonth)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.planByYear)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByYear)}}</td>
-                        <td>{{getFormattedNumber(item.factByYear)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByYear)">
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td :style="getStyleForSummary(index,true)">{{getFormattedNumber(item.factByYear)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByYear,index,true)">
                             {{getFormattedNumber(item.differenceByYear)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByYear)">
-                            {{getFormattedNumber(item.differenceOpecByYear)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryYearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryMonthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryMonthlyPlanOpec)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByDay)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByDay)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByDay)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByDay)">
-                            {{getFormattedNumber(item.deliveryDifferenceByDay)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByDay)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByDay)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByMonth)">
-                            {{getFormattedNumber(item.deliveryDifferenceByMonth)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByMonth)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByMonth)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByYear)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByYear)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByYear)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByYear)">
-                            {{getFormattedNumber(item.deliveryDifferenceByYear)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByYear)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByYear)}}
                         </td>
                     </tr>
                     <tr class="row-divider">
                     </tr>
                     <tr
                             v-for="(item, index) in summaryForExport.byDzo"
-                            :style="getStyleForSummary(index, false)"
                     >
-                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
+                        <td v-if="index !== 3" :style="getStyleForSummary(index,false,'id')">{{item.number}}</td>
                         <td v-else></td>
-                        <td v-if="index === 3" style="text-align: left">
+                        <td v-if="index === 3" :style="getStyleForSummary(index,false,'name')">
                             &emsp;&emsp;{{companiesNameMapping.summaryByDzo[item.dzo]}}
                         </td>
-                        <td v-else style="text-align: left">
+                        <td v-else :style="getStyleForSummary(index,false,'name')">
                             {{companiesNameMapping.summaryByDzo[item.dzo]}}
                         </td>
-                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
-                        <td>{{getFormattedNumber(item.planByDay)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByDay)}}</td>
-                        <td>{{getFormattedNumber(item.factByDay)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByDay)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByDay)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByDay,index)">
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByDay)">
-                            {{getFormattedNumber(item.differenceOpecByDay)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.planByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByMonth)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByMonth,index)">
                             {{getFormattedNumber(item.differenceByMonth)}}
                         </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByMonth)">
-                            {{getFormattedNumber(item.differenceOpecByMonth)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.planByYear)}}</td>
-                        <td>{{getFormattedNumber(item.planOpecByYear)}}</td>
-                        <td>{{getFormattedNumber(item.factByYear)}}</td>
-                        <td :style="getStyleByDifference(item.differenceByYear)">
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td :style="getStyleForSummary(index,false)">{{getFormattedNumber(item.factByYear)}}</td>
+                        <td :style="getStyleByDifference(item.differenceByYear,index)">
                             {{getFormattedNumber(item.differenceByYear)}}
                         </td>
-                        <td :style="getStyleByDifference(item.differenceOpecByYear)">
-                            {{getFormattedNumber(item.differenceOpecByYear)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryYearlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryMonthlyPlan)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryMonthlyPlanOpec)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByDay)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByDay)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByDay)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByDay)">
-                            {{getFormattedNumber(item.deliveryDifferenceByDay)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByDay)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByDay)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByMonth)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByMonth)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByMonth)">
-                            {{getFormattedNumber(item.deliveryDifferenceByMonth)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByMonth)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByMonth)}}
-                        </td>
-                        <td>{{getFormattedNumber(item.deliveryPlanByYear)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryPlanOpecByYear)}}</td>
-                        <td>{{getFormattedNumber(item.deliveryFactByYear)}}</td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceByYear)">
-                            {{getFormattedNumber(item.deliveryDifferenceByYear)}}
-                        </td>
-                        <td :style="getStyleByDifference(item.deliveryDifferenceOpecByYear)">
-                            {{getFormattedNumber(item.deliveryDifferenceOpecByYear)}}
-                        </td>
                     </tr>
+                    <tr class="row-divider">
+                    </tr>
+                    <tr>
+                        <th colspan="13" style="font-family: arial; font-size: 16px; font-weight: bold; text-align: center">Информация по предприятиям недостигших плановых показателей по добыче нефти (отклонения)</th>
+                    </tr>
+                    <tr class="row-divider">
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; background: #fde3ce; border: 1px solid black">№ п/п</td>
+                        <td style="text-align:center; background: #fde3ce; border: 1px solid black">Предприятия</td>
+                        <td style="text-align:center; background: #fde3ce; border: 1px solid black">Период</td>
+                        <td colspan="10" style="text-align:center; background: #fde3ce; border: 1px solid black">Пояснения</td>
+                    </tr>
+                    <div v-for="item in reasons">
+                        <tr>
+                            <td rowspan="2" style="text-align:center; border: 1px solid black">{{item.id}}</td>
+                            <td rowspan="2" style="border: 1px solid black">{{item.dzo}}</td>
+                            <td style="text-align:center; border: 1px solid black">За сутки</td>
+                            <td colspan="10" style="border: 1px solid black">{{item.daily}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; border: 1px solid black">С начала года</td>
+                            <td colspan="10" style="border: 1px solid black">{{item.yearly}}</td>
+                        </tr>
+                    </div>
                 </table>
            </div>
        </div>

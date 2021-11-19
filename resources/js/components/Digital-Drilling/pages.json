@@ -41,7 +41,7 @@
         "name": "main-table",
         "template": "<structure></structure>"
       },
-      "accordion": true,
+      "accordion": false,
       "parent": "bd",
       "child": [
         {

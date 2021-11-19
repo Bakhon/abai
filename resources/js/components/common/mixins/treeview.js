@@ -25,7 +25,7 @@ export default {
     created() {
         if (!this.isShowCheckboxes) return;
         if (!('isChecked' in this.node)) {
-            this.node.isChecked = this.parent.isChecked;
+            this.node.isChecked = (this.parent.isChecked || false);
         }
     },
     model: {
@@ -42,6 +42,7 @@ export default {
                 await this.handleClick(this.node);
             }
             if (!this.isHaveChildren(this.node)) {
+                this.isLoading = true;
                 await this.getWells(this);
             }
 
@@ -53,10 +54,30 @@ export default {
         updateChildren: async function (node, level, val) {
             if (!node?.children) return;
             for (let child of node.children) {
+                if(!('level' in child)) {
+                    child.level = level + 1;
+                }
                 child.isChecked = val;
-                child.level = level + 1;
                 this.updateChildren(child, level + 1, val);
             }
+        },
+        updateParent: async function(val) {
+            let content = this.$parent;
+            while(!!content?.node) {
+                if(!val && this.hasCheckedChildren(content.node)) break;
+                if(!('level' in content.node)) {
+                    content.node.level = content.level;
+                }
+                content.node.isChecked = val;
+                content = content.$parent;
+            }
+        },
+        hasCheckedChildren: function(node) {
+            if(!this.isHaveChildren(node)) return false;
+            for(let child of node.children) {
+                if(child.isChecked) return true;
+            }
+            return false;
         },
         isHaveChildren(node) {
             return typeof node !== 'undefined' &&

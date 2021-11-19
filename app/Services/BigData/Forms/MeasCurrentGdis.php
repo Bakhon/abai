@@ -137,6 +137,10 @@ class MeasCurrentGdis extends TableForm
                     ];
 
                     foreach ($columns as $column) {
+                        $result[$column['code']] = [
+                            'value' => null
+                        ];
+
                         if ($column['code'] === 'uwi') {
                             $result[$column['code']] = [
                                 'value' => $well->uwi
@@ -144,20 +148,17 @@ class MeasCurrentGdis extends TableForm
                             continue;
                         }
 
-                        if (!$wellMeasurements) {
-                            $result[$column['code']] = [
-                                'value' => null
+                        if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
+                            $result[$column['code']]['params'] = [
+                                'code' => $column['additional_filter']['metric']['fields']['code']
                             ];
+                        }
+
+                        if (!$wellMeasurements) {
                             continue;
                         }
 
                         if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
-                            $result[$column['code']] = [
-                                'params' => [
-                                    'code' => $column['additional_filter']['metric']['fields']['code']
-                                ]
-                            ];
-
                             foreach ($wellMeasurements as $wellMeasurement) {
                                 $metric = $metrics->firstWhere(
                                     'code',
@@ -217,52 +218,62 @@ class MeasCurrentGdis extends TableForm
             ->toArray();
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $column = $this->getFields()->where('code', $params['field'])->first();
-        if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
-            $measurement = GdisCurrent::where('well', $params['wellId'])
-                ->where('meas_date', $params['date'])
-                ->first();
-            if (!$measurement) {
-                $measurement = GdisCurrent::create(
-                    [
-                        'well' => $params['wellId'],
-                        'meas_date' => $params['date']
-                    ]
-                );
+        $date = Carbon::parse($filter['date'], 'Asia/Almaty')->toImmutable();
+        foreach ($rows as $wellId => $row) {
+            foreach ($row as $columnCode => $field) {
+                $column = $this->getFields()->where('code', $columnCode)->first();
+                if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
+                    $measurement = GdisCurrent::where('well', $wellId)
+                        ->where('meas_date', $date)
+                        ->first();
+                    if (!$measurement) {
+                        $measurement = GdisCurrent::create(
+                            [
+                                'well' => $wellId,
+                                'meas_date' => $date
+                            ]
+                        );
+                    }
+                    if (!isset($field['params'])) {
+                        dd($field, $column);
+                    }
+                    $metric = Metric::where('code', $field['params']['code'])->first();
+                    $measurementValue = $measurement->values->where('metric', $metric->id)->first();
+                    if (!$measurementValue) {
+                        $measurementValue = $measurement->values()->create(
+                            [
+                                'metric' => $metric->id
+                            ]
+                        );
+                    }
+                    $measurementValue->update(
+                        [
+                            'value_string' => $field['value']
+                        ]
+                    );
+                } else {
+                    if (isset($field['params']['id'])) {
+                        $measurement = GdisCurrent::find($field['params']['id']);
+                    } else {
+                        $measurement = GdisCurrent::create(
+                            [
+                                'well' => $wellId,
+                                'meas_date' => $date
+                            ]
+                        );
+                    }
+                    $measurement->update(
+                        [
+                            $columnCode => $field['value']
+                        ]
+                    );
+                }
             }
-            $metric = Metric::where('code', $this->request->get('params')['code'])->first();
-            $measurementValue = $measurement->values->where('metric', $metric->id)->first();
-            if (!$measurementValue) {
-                $measurementValue = $measurement->values()->create(
-                    [
-                        'metric' => $metric->id
-                    ]
-                );
-            }
-            $measurementValue->update(
-                [
-                    'value_string' => $params['value']
-                ]
-            );
-        } else {
-            if ($this->request->get('params')) {
-                $measurement = GdisCurrent::find($this->request->get('params')['id']);
-            } else {
-                $measurement = GdisCurrent::create(
-                    [
-                        'well' => $params['wellId'],
-                        'meas_date' => $params['date']
-                    ]
-                );
-            }
-            $measurement->update(
-                [
-                    $params['field'] => $params['value']
-                ]
-            );
         }
+
+        return [];
     }
 
     private function getMetrics()
