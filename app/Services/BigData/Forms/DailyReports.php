@@ -100,10 +100,6 @@ abstract class DailyReports extends TableForm
         return [];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-    }
-
     protected function getReports(\stdClass $filter): Collection
     {
         $startDate = self::getStartDate($filter->date, $filter->period);
