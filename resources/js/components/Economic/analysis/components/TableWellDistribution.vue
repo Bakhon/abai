@@ -11,7 +11,6 @@
         </subtitle>
 
         <apexchart
-            v-if="isMounted"
             :options="chartOptions.original"
             :series="chartSeries.original"
             :height="500"/>
@@ -23,7 +22,6 @@
         </subtitle>
 
         <apexchart
-            v-if="isMounted"
             :options="chartOptions.proposed"
             :series="chartSeries.proposed"
             :height="500"/>
@@ -106,11 +104,13 @@ export default {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
         keys.forEach(key => this[key] = data[key])
+
+        setTimeout(() => this.isMounted = true)
       } catch (e) {
+        console.log(e)
+
         keys.forEach(key => this[key] = null)
       }
-
-      setTimeout(() => this.isMounted = true)
     },
 
     getChartOptions(wellsKey, sortKey) {
