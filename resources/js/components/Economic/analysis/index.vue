@@ -363,24 +363,42 @@ export default {
     async getData() {
       this.SET_LOADING(true)
 
-      let keys = [
+      let singleKeys = [
+        'analysisParams',
+        'oilPrice',
+        'dollarRate'
+      ]
+
+      let kitKeys = [
         'wellsSumByStatus',
         'wellsSumByLossStatus',
         'wellsSum',
         'proposedWellsSum',
         'proposedStoppedWells',
         'profitlessWellsWithPrs',
-        'analysisParams',
-        'oilPrice',
-        'dollarRate'
       ]
 
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
-        keys.forEach(key => this[key] = data[key])
+        singleKeys.forEach(key => this[key] = data[key])
+
+        kitKeys.forEach(kitKey => {
+          let wellsByKit = []
+
+          Object.values(data.wellsByKits).forEach(kit => {
+            wellsByKit = [...wellsByKit, ...kit[kitKey]]
+          })
+
+          this[kitKey] = wellsByKit
+        })
+
       } catch (e) {
-        keys.forEach(key => this[key] = null)
+        console.log(e)
+
+        singleKeys.forEach(key => this[key] = null)
+
+        kitKeys.forEach(key => this[key] = null)
       }
 
       this.SET_LOADING(false)

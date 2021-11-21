@@ -3,7 +3,7 @@
     <div class="d-flex">
       <div v-if="isVisibleHeader && isVisibleDates"
            class="bg-blue border-grey p-1 font-weight-600 d-flex align-items-center justify-content-center width-100px">
-        Месяцы
+        {{ trans('economic_reference.months') }}
       </div>
 
       <div v-if="isVisibleHeader" class="flex-grow-1">
@@ -13,15 +13,18 @@
 
         <div class="bg-blue d-flex font-weight-600">
           <div class="border-grey flex-20 p-1">
-            Скв
+            {{ trans('economic_reference.well_short') }}
           </div>
 
           <div class="border-grey flex-20 p-1">
-            Q ж, тыс. м3
+            {{ trans('economic_reference.liquid_production_q_short') }},
+            {{ trans('economic_reference.thousand') }}
+            {{ trans('economic_reference.cubic_meter') }}
           </div>
 
           <div class="border-grey flex-20 p-1">
-            Q н, тыс. т
+            {{ trans('economic_reference.oil_production_q_short') }},
+            {{ trans('economic_reference.thousand_t') }}
           </div>
 
           <div class="border-grey flex-20 p-1">
@@ -29,7 +32,7 @@
           </div>
 
           <div class="border-grey flex-20 p-1">
-            Дни
+            {{ trans('economic_reference.days') }}
           </div>
         </div>
       </div>
@@ -70,35 +73,6 @@
             {{
               localeValue(row[wellsKey][dateIndex][profitability].paused_hours, 24)
             }}
-          </div>
-        </div>
-      </div>
-
-      <div class="flex-grow-1 d-flex bg-blue font-weight-600">
-        <div v-if="isVisibleDates"
-             class="border-grey px-3 py-1 width-100px d-flex align-items-center">
-          Всего
-        </div>
-
-        <div class="d-flex flex-grow-1">
-          <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ calcSum(row, 'uwi_count') }}
-          </div>
-
-          <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(calcSum(row, 'liquid_loss'), 1000, true) }}
-          </div>
-
-          <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(calcSum(row, 'oil_loss'), 1000, true) }}
-          </div>
-
-          <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ calcWaterCut(calcSum(row, 'liquid_loss'), calcSum(row, 'oil_loss')) }}
-          </div>
-
-          <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
-            {{ localeValue(calcSum(row, 'paused_hours'), 24) }}
           </div>
         </div>
       </div>

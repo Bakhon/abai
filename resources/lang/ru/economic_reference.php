@@ -445,4 +445,5 @@ return array (
   'select_kit' => 'Выберите набор',
   'kits' => 'Наборы',
   'create_kit' => 'Создать набор',
+  'thousand_t' => 'тыс. т',
 );

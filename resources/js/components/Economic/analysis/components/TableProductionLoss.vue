@@ -128,6 +128,10 @@ export default {
         if (!TechnicalWellLossStatusModel.factualIds.includes(status.status_id)) return
 
         status.wells.forEach((date, dateIndex) => {
+          if (!factualStoppedWells[dateIndex]) {
+            factualStoppedWells[dateIndex] = {...STOPPED_WELL}
+          }
+
           wellKeys.forEach(wellKey => {
             factualStoppedWells[dateIndex][wellKey] += Math.abs(+date.profitless[wellKey])
           })

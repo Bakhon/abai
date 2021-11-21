@@ -76,14 +76,7 @@ export const tableDataMixin = {
         },
 
         tableUwiCount() {
-            let table = this.generateTable('uwi_count')
-
-            table.push(this.generateTotalRow(
-                'uwi_count',
-                this.trans('economic_reference.total_wells')
-            ))
-
-            return table
+            return this.generateTable('uwi_count')
         },
 
         totalRowOilLoss() {

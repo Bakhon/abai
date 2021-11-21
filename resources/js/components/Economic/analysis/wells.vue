@@ -19,11 +19,10 @@
 
         <select-technical-well-forecast-kit
             :form="form"
-            form-key="kit_ids"
-            class="ml-2"
-            is-multiple/>
+            form-key="kit_id"
+            class="ml-2"/>
 
-        <i v-if="form.kit_ids.length && form.permanent_stop_coefficient"
+        <i v-if="form.kit_id && form.permanent_stop_coefficient"
            class="fas fa-search cursor-pointer ml-2"
            style="margin-top: 40px"
            @click="getData()"></i>
@@ -97,9 +96,9 @@ export default {
   data: () => ({
     form: {
       granularity: 'month',
-      uwi: null,
       permanent_stop_coefficient: 0.7,
-      kit_ids: [],
+      uwi: null,
+      kit_id: null,
     },
     wells: null,
     sort: {

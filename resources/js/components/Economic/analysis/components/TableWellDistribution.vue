@@ -14,7 +14,7 @@
             v-if="isMounted"
             :options="chartOptions.original"
             :series="chartSeries.original"
-            :height="535"/>
+            :height="500"/>
       </div>
 
       <div class="flex-50">
@@ -26,7 +26,7 @@
             v-if="isMounted"
             :options="chartOptions.proposed"
             :series="chartSeries.proposed"
-            :height="535"/>
+            :height="500"/>
       </div>
     </div>
   </div>

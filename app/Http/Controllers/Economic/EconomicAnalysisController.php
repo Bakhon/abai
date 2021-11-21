@@ -100,6 +100,8 @@ class EconomicAnalysisController extends Controller
 
         $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
 
+        $technicalLogId = $kit->technical_log_id;
+
         list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
             $kit->economic_log_id,
             $kit->technical_log_id,
@@ -172,7 +174,7 @@ class EconomicAnalysisController extends Controller
                 /** @var JoinClause $join */
                 $join->on("well_forecast.loss_status_id", '=', 'well_loss_status.id');
             })
-            ->whereRaw(DB::raw("well_forecast.date_month = '$date'"))
+            ->whereRaw(DB::raw("well_forecast.log_id = $technicalLogId"))
             ->groupBy([
                 "uwi",
                 "dt",
@@ -464,9 +466,9 @@ class EconomicAnalysisController extends Controller
 
         $liquid = $this->sqlQueryLiquid($enabledUwis, $stoppedUwis);
 
-        $liquidTechLoss = $this->sqlQueryLiquidLoss($enabledUwis, $stoppedUwis);
+        $liquidLoss = $this->sqlQueryLiquidLoss($enabledUwis, $stoppedUwis);
 
-        $liquidLoss = $this->sqlQueryLiquidTechLoss($enabledUwis, $stoppedUwis);
+        $liquidTechLoss = $this->sqlQueryLiquidTechLoss($enabledUwis, $stoppedUwis);
 
         $prsPortion = $this->sqlQueryPrsPortion($stoppedUwis);
 
@@ -679,8 +681,8 @@ class EconomicAnalysisController extends Controller
                 SUM(well_forecast.oil_loss) as oil_loss
             "))
             ->whereRaw(DB::raw("
-                well_forecast.loss_status_id IN ($lossStatuses) AND
-                well_forecast.log_id = $technicalLogId
+                well_forecast.log_id = $technicalLogId AND
+                well_forecast.loss_status_id IN ($lossStatuses)
             "))
             ->groupBy(["uwi", "date_month"])
             ->toSql();
@@ -1193,7 +1195,7 @@ class EconomicAnalysisController extends Controller
                         '=',
                         DB::raw("$analysisParamAlias.date")
                     )
-                    ->where(DB::raw("$analysisParamAlias.log_id = $economicLogId"));
+                    ->whereRaw(DB::raw("$analysisParamAlias.log_id = $economicLogId"));
             });
     }
 

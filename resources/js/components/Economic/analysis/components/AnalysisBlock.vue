@@ -14,17 +14,16 @@
         <span v-if="index"> {{ param.dimension }} </span>
 
         <span v-else>
-           <i v-if="analysisParamsCount > 1 && currentIndex > analysisParamsCount - 1"
+           <i v-if="isVisibleNext"
               class="fas fa-arrow-right cursor-pointer"
-              style="position: absolute; right: 20%; top: 50%; transform: translate(0, -50%)"
-              @click="currentIndex +=1"></i>
+              style="position: absolute; right: 10%; top: 50%; transform: translate(0, -50%)"
+              @click="currentIndex += 1"></i>
 
-          <i v-if="analysisParamsCount > 1 && currentIndex > 0"
+          <i v-if="isVisiblePrev"
              class="fas fa-arrow-left cursor-pointer"
-             style="position: absolute; left: 20%; top: 50%; transform: translate(0, -50%)"
-             @click="currentIndex -=1"></i>
+             style="position: absolute; left: 10%; top: 50%; transform: translate(0, -50%)"
+             @click="currentIndex -= 1"></i>
         </span>
-
       </div>
 
       <div class="p-2 flex-120px">
@@ -121,6 +120,14 @@ export default {
         }
       ]
     },
+
+    isVisibleNext() {
+      return this.analysisParamsCount > 1 && this.currentIndex < (this.analysisParamsCount - 1)
+    },
+
+    isVisiblePrev() {
+      return this.analysisParamsCount > 1 && this.currentIndex > 0
+    }
   }
 }
 </script>

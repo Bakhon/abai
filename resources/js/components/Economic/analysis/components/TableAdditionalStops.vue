@@ -100,7 +100,7 @@ export default {
 
     tableData() {
       let totalRow = {
-        title: 'Всего',
+        title: this.trans('economic_reference.total'),
         count: 0,
         profitable: 0,
         profitless: 0,
@@ -150,7 +150,7 @@ export default {
         return row
       })
 
-      totalRow.title = 'Всего'
+      totalRow.title = this.trans('economic_reference.total')
 
       rows.push(totalRow)
 
