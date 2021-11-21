@@ -79,6 +79,10 @@ class EconomicDataLogController extends Controller
             $query->whereAuthorId($request->author_id);
         }
 
+        if ($request->has('is_processed')) {
+            $query->whereIsProcessed($request->is_processed);
+        }
+
         return $query
             ->latest('id')
             ->get()

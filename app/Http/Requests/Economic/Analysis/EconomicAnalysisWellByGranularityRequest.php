@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Level23\Druid\Types\Granularity;
 
-class EconomicAnalysisWellRequest extends FormRequest
+class EconomicAnalysisWellByGranularityRequest extends FormRequest
 {
     public function rules()
     {
@@ -22,7 +22,7 @@ class EconomicAnalysisWellRequest extends FormRequest
                 ])
             ],
             'permanent_stop_coefficient' => 'required|numeric',
-            'date' => 'required|date',
+            'kit_id' => 'required|integer|min:1',
         ];
     }
 }

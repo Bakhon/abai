@@ -1,68 +1,73 @@
 <template>
-  <div class="h-100 text-center d-flex">
-    <div class="flex-50">
-      <subtitle font-size="16" class="line-height-18px">
-        {{ trans('economic_reference.fact') }}
-      </subtitle>
+  <div>
+    <select-technical-well-forecast-kit
+        :form="form"
+        @change="getWells()"/>
 
-      <apexchart
-          v-if="isMounted"
-          :options="chartOptions.original"
-          :series="chartSeries.original"
-          :height="535"/>
-    </div>
+    <div v-if="isMounted" class="h-100 text-center d-flex">
+      <div class="flex-50">
+        <subtitle font-size="16" class="line-height-18px">
+          {{ trans('economic_reference.fact') }}
+        </subtitle>
 
-    <div class="flex-50">
-      <subtitle font-size="16" class="line-height-18px">
-        {{ trans('economic_reference.proposed_variant') }}
-      </subtitle>
+        <apexchart
+            v-if="isMounted"
+            :options="chartOptions.original"
+            :series="chartSeries.original"
+            :height="535"/>
+      </div>
 
-      <apexchart
-          v-if="isMounted"
-          :options="chartOptions.proposed"
-          :series="chartSeries.proposed"
-          :height="535"/>
+      <div class="flex-50">
+        <subtitle font-size="16" class="line-height-18px">
+          {{ trans('economic_reference.proposed_variant') }}
+        </subtitle>
+
+        <apexchart
+            v-if="isMounted"
+            :options="chartOptions.proposed"
+            :series="chartSeries.proposed"
+            :height="535"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+const ru = require("apexcharts/dist/locales/ru.json");
+
 import {globalloadingMutations} from '@store/helpers';
 
 import chart from "vue-apexcharts";
 
 import Subtitle from "../../components/Subtitle";
-
-const ru = require("apexcharts/dist/locales/ru.json");
+import SelectTechnicalWellForecastKit from "../../components/SelectTechnicalWellForecastKit";
 
 export default {
   name: "TableWellDistribution",
   components: {
     apexchart: chart,
-    Subtitle
+    Subtitle,
+    SelectTechnicalWellForecastKit
   },
   props: {
-    wells: {
+    form: {
       required: true,
-      type: Array
-    },
-    proposedWells: {
-      required: true,
-      type: Array
+      type: Object
     }
   },
   data: () => ({
+    wells: null,
+    proposedWells: null,
     isMounted: false
   }),
   created() {
     this.$emit('updateWide', false)
   },
-  mounted() {
-    this.SET_LOADING(true)
-
-    setTimeout(() => this.isMounted = true)
-  },
   computed: {
+    url() {
+      return this.localeUrl('/economic/analysis/get-wells-by-kit')
+    },
+
     sortedUwis() {
       return {
         original: this.isMounted ? this.wells.map(well => well.uwi) : [],
@@ -86,6 +91,27 @@ export default {
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
+
+    async getWells() {
+      this.SET_LOADING(true)
+
+      this.isMounted = false
+
+      let keys = [
+        'wells',
+        'proposedWells',
+      ]
+
+      try {
+        const {data} = await this.axios.get(this.url, {params: this.form})
+
+        keys.forEach(key => this[key] = data[key])
+      } catch (e) {
+        keys.forEach(key => this[key] = null)
+      }
+
+      setTimeout(() => this.isMounted = true)
+    },
 
     getChartOptions(wellsKey, sortKey) {
       return {

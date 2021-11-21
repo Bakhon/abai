@@ -220,6 +220,14 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 Route::get('upload-excel', 'TechnicalWellForecastController@uploadExcel');
                 Route::post('import-excel', 'TechnicalWellForecastController@importExcel')
                     ->name('economic.technical.well_forecast.import');
+
+                Route::group(['prefix' => 'kit'], function () {
+                    Route::post('', 'TechnicalWellForecastKitController@store');
+
+                    Route::delete('{kit_id}', 'TechnicalWellForecastKitController@destroy');
+
+                    Route::get('get-data', 'TechnicalWellForecastKitController@getData');
+                });
             });
         });
 
@@ -241,7 +249,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
             Route::get('get-data', 'EconomicAnalysisController@getData');
 
-            Route::get('get-wells', 'EconomicAnalysisController@getWells');
+            Route::get('get-wells-by-granularity', 'EconomicAnalysisController@getWellsByGranularity');
+
+            Route::get('get-wells-by-kit', 'EconomicAnalysisController@getWellsByKit');
         });
     });
 });

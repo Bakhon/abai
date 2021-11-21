@@ -436,4 +436,13 @@ return array (
   'profitless_short' => 'Нерент.',
   'prs_status' => 'ПРС',
   'select_date' => 'Выберите дату',
+  'group_by' => 'Сгруппировать',
+  'permanent_stop_coefficient' => 'Коэф. оптимизации',
+  'economic_log_is_processing' => 'Предыдущий файл с таким же названием находится в обработке',
+  'processed' => 'Обработан',
+  'in_processing' => 'В обработке',
+  'select_params' => 'Выберите параметры',
+  'select_kit' => 'Выберите набор',
+  'kits' => 'Наборы',
+  'create_kit' => 'Создать набор',
 );

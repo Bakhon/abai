@@ -2,19 +2,25 @@
 
 namespace App\Imports\Economic\Technical;
 
-use App\Models\Refs\EconomicDataLog;
-use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChunkReading
+class TechnicalWellForecastImport implements
+    ToModel,
+    WithBatchInserts,
+    WithChunkReading,
+    ShouldQueue
 {
+    use Importable;
+
     protected $userId;
 
     protected $logId;
@@ -43,14 +49,11 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
         'liquid_tech_loss' => 14,
     ];
 
-    function __construct(int $userId, string $fileName)
+    function __construct(int $userId, int $logId)
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::firstOrCreate(
-            ['name' => $fileName, 'type_id' => EconomicDataLogType::WELL_FORECAST],
-            ['author_id' => $userId]
-        )->id;
+        $this->logId = $logId;
     }
 
     public function model(array $row): ?TechnicalWellForecast

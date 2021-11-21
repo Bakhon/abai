@@ -1,5 +1,7 @@
 <template>
   <div class="bg-main1 text-white text-wrap mb-10px">
+
+
     <div v-for="(param, index) in params"
          :key="param.name"
          :class="index ? 'border-grey-top' : ''"
@@ -8,8 +10,21 @@
         {{ param.name }}
       </div>
 
-      <div class="mx-2 p-2 bg-grey flex-120px">
-        {{ param.dimension }}
+      <div class="mx-2 p-2 bg-grey flex-120px position-relative">
+        <span v-if="index"> {{ param.dimension }} </span>
+
+        <span v-else>
+           <i v-if="analysisParamsCount > 1 && currentIndex > analysisParamsCount - 1"
+              class="fas fa-arrow-right cursor-pointer"
+              style="position: absolute; right: 20%; top: 50%; transform: translate(0, -50%)"
+              @click="currentIndex +=1"></i>
+
+          <i v-if="analysisParamsCount > 1 && currentIndex > 0"
+             class="fas fa-arrow-left cursor-pointer"
+             style="position: absolute; left: 20%; top: 50%; transform: translate(0, -50%)"
+             @click="currentIndex -=1"></i>
+        </span>
+
       </div>
 
       <div class="p-2 flex-120px">
@@ -30,12 +45,23 @@ export default {
   props: {
     analysisParams: {
       required: true,
-      type: Object
+      type: Array
+    },
+    permanentStopCoefficient: {
+      required: true,
+      type: Number
     }
   },
+  data: () => ({
+    currentIndex: 0
+  }),
   computed: {
+    analysisParamsCount() {
+      return this.analysisParams ? this.analysisParams.length : 0
+    },
+
     params() {
-      let params = this.analysisParams || {
+      let params = {
         date: '',
         netback_forecast: 0,
         variable_cost: 0,
@@ -43,7 +69,10 @@ export default {
         avg_prs_cost: 0,
         oil_density: 0,
         days: 0,
-        permanent_stop_cost: 0,
+      }
+
+      if (this.analysisParams && this.analysisParams[this.currentIndex]) {
+        params = this.analysisParams[this.currentIndex]
       }
 
       return [
@@ -87,7 +116,7 @@ export default {
         },
         {
           name: this.trans('economic_reference.permanent_stop_cost'),
-          value: this.localeValue(params.permanent_stop_cost),
+          value: this.localeValue(+params.permanent_cost * +this.permanentStopCoefficient),
           dimension: ''
         }
       ]

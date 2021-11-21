@@ -1,10 +1,33 @@
 <template>
   <div>
     <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
-      <select-granularity
-          :form="form"
-          class="flex-grow-1 mb-3"
-          @change="toggleGranularity()"/>
+      <div class="d-flex mb-3">
+        <div>
+          <label for="granularity">
+            {{ trans('economic_reference.group_by') }}
+          </label>
+
+          <select-granularity
+              id="granularity"
+              :form="form"
+              @change="toggleGranularity()"/>
+        </div>
+
+        <select-permanent-stop-coefficient
+            :form="form"
+            class="ml-2"/>
+
+        <select-technical-well-forecast-kit
+            :form="form"
+            form-key="kit_ids"
+            class="ml-2"
+            is-multiple/>
+
+        <i v-if="form.kit_ids.length && form.permanent_stop_coefficient"
+           class="fas fa-search cursor-pointer ml-2"
+           style="margin-top: 40px"
+           @click="getData()"></i>
+      </div>
 
       <div>
         <div v-if="form.granularity === 'month'" class="form-check">
@@ -57,6 +80,8 @@
 import {globalloadingMutations} from '@store/helpers';
 
 import SelectGranularity from "../components/SelectGranularity";
+import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
+import SelectTechnicalWellForecastKit from "../components/SelectTechnicalWellForecastKit";
 
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-select/dist/js/bootstrap-select.min';
@@ -65,12 +90,16 @@ import 'bootstrap-select/dist/js/i18n/defaults-ru_RU.min';
 export default {
   name: "economic-analysis-wells",
   components: {
-    SelectGranularity
+    SelectGranularity,
+    SelectPermanentStopCoefficient,
+    SelectTechnicalWellForecastKit,
   },
   data: () => ({
     form: {
+      granularity: 'month',
       uwi: null,
-      granularity: 'month'
+      permanent_stop_coefficient: 0.7,
+      kit_ids: [],
     },
     wells: null,
     sort: {
@@ -80,8 +109,6 @@ export default {
   }),
   async mounted() {
     this.$emit('updateWide', false)
-
-    await this.getData()
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -189,13 +216,11 @@ export default {
 
         $('.well-search').selectpicker('destroy')
       }
-
-      this.getData()
     }
   },
   computed: {
     url() {
-      return this.localeUrl('/economic/analysis/get-wells')
+      return this.localeUrl('/economic/analysis/get-wells-by-granularity')
     },
 
     sumRow() {

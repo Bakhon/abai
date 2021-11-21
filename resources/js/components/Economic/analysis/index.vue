@@ -24,7 +24,7 @@
       <div class="d-flex bg-main1 text-white text-wrap">
         <div class="ml-2">
           <div class="text-nowrap font-size-14px line-height-18px font-weight-600">
-            {{ trans('economic_reference.select_optimization_scenarios') }}
+            {{ trans('economic_reference.select_params') }}
           </div>
 
           <div class="form-check mt-16px">
@@ -43,51 +43,30 @@
             :form="form"
             class="ml-2"/>
 
-        <div class="ml-2">
-          <label for="permanent_cost_coefficient">
-            Коэф. оптимизации
-          </label>
+        <select-permanent-stop-coefficient
+            :form="form"
+            class="ml-2"/>
 
-          <input
-              v-model="form.permanent_stop_coefficient"
-              id="permanent_cost_coefficient"
-              type="number"
-              step="0.1"
-              min="0"
-              class="form-control text-white border-0"
-              style="background-color: #333975 !important;">
-        </div>
+        <select-technical-well-forecast-kit
+            :form="form"
+            form-key="kit_ids"
+            class="ml-2"
+            is-multiple/>
 
-        <div class="ml-2 white-placeholder">
-          <label for="date">
-            {{ trans('economic_reference.date') }}
-          </label>
-
-          <datetime
-              id="date"
-              v-model="form.date"
-              :placeholder="trans('economic_reference.select_date')"
-              format="MM/yyyy"
-              input-class="bg-main4 text-white form-control border-0"
-              class="mr-2"
-              auto
-          />
-        </div>
-
-        <i class="fas fa-search cursor-pointer ml-2 mt-40px"
+        <i v-if="form.kit_ids.length && form.permanent_stop_coefficient"
+           class="fas fa-search cursor-pointer ml-3 mt-40px"
            @click="getData()"></i>
       </div>
     </div>
 
     <div :class="isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="wells"
-          :wells="wells"
+          v-if="wellsSum"
+          :form="form"
           :wells-sum-by-status="wellsSumByStatus"
           :wells-sum-by-loss-status="wellsSumByLossStatus"
           :wells-sum="wellsSum"
           :proposed-wells-sum="proposedWellsSum"
-          :proposed-wells="proposedWells"
           :proposed-stopped-wells="proposedStoppedWells"
           :profitless-wells-with-prs="profitlessWellsWithPrs"
           class="h-100"
@@ -103,7 +82,9 @@
           :form="form"
           class="mb-10px min-h-160px"/>
 
-      <analysis-block :analysis-params="analysisParams"/>
+      <analysis-block
+          :analysis-params="analysisParams"
+          :permanent-stop-coefficient="form.permanent_stop_coefficient"/>
     </div>
   </div>
 </template>
@@ -115,6 +96,8 @@ import {formatValueMixin} from "../mixins/formatMixin";
 import {calcPercentMixin} from "../mixins/percentMixin";
 
 import SelectOrganization from "../components/SelectOrganization";
+import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
+import SelectTechnicalWellForecastKit from "../components/SelectTechnicalWellForecastKit";
 import CalculatedHeader from "./components/CalculatedHeader";
 import RemoteHeader from "../components/RemoteHeader";
 import EconomicBlock from "./components/EconomicBlock";
@@ -127,6 +110,8 @@ export default {
   name: "economic-analysis",
   components: {
     SelectOrganization,
+    SelectPermanentStopCoefficient,
+    SelectTechnicalWellForecastKit,
     CalculatedHeader,
     RemoteHeader,
     EconomicBlock,
@@ -140,18 +125,18 @@ export default {
   data: () => ({
     form: {
       org_id: null,
-      date: null,
+      kit_ids: [],
       permanent_stop_coefficient: 0.7,
     },
     wellsSumByStatus: null,
     wellsSumByLossStatus: null,
     wellsSum: null,
     proposedWellsSum: null,
-    proposedWells: null,
     proposedStoppedWells: null,
     profitlessWellsWithPrs: null,
     analysisParams: null,
-    wells: null,
+    oilPrice: null,
+    dollarRate: null,
     isWide: false,
     isFullScreen: false
   }),
@@ -291,7 +276,7 @@ export default {
     remoteHeaders() {
       let oilPrice = this.oilPrice || {url: '', value: 0}
 
-      let dollarRate = this.oilPrice || {url: '', value: 0}
+      let dollarRate = this.dollarRate || {url: '', value: 0}
 
       return [
         {
@@ -378,28 +363,24 @@ export default {
     async getData() {
       this.SET_LOADING(true)
 
+      let keys = [
+        'wellsSumByStatus',
+        'wellsSumByLossStatus',
+        'wellsSum',
+        'proposedWellsSum',
+        'proposedStoppedWells',
+        'profitlessWellsWithPrs',
+        'analysisParams',
+        'oilPrice',
+        'dollarRate'
+      ]
+
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
-        this.wellsSumByStatus = data.wellsSumByStatus
-
-        this.wellsSumByLossStatus = data.wellsSumByLossStatus
-
-        this.wellsSum = data.wellsSum
-
-        this.proposedWellsSum = data.proposedWellsSum
-
-        this.proposedWells = data.proposedWells
-
-        this.proposedStoppedWells = data.proposedStoppedWells
-
-        this.profitlessWellsWithPrs = data.profitlessWellsWithPrs
-
-        this.analysisParams = data.analysisParams
-
-        this.wells = data.wells
+        keys.forEach(key => this[key] = data[key])
       } catch (e) {
-        this.wells = null
+        keys.forEach(key => this[key] = null)
       }
 
       this.SET_LOADING(false)

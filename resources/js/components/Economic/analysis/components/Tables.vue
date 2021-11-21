@@ -40,8 +40,7 @@
 
       <table-well-distribution
           v-else-if="activeTab === 'well_distribution'"
-          :wells="wells"
-          :proposed-wells="proposedWells"
+          :form="form"
           class="text-white"
           @updateWide="updateWide"/>
 
@@ -101,9 +100,9 @@ export default {
     TableAdditionalStops,
   },
   props: {
-    wells: {
+    form: {
       required: true,
-      type: Array
+      type: Object
     },
     wellsSumByStatus: {
       required: true,
@@ -121,10 +120,6 @@ export default {
       required: true,
       type: Array
     },
-    proposedWells: {
-      required: true,
-      type: Array
-    },
     proposedStoppedWells: {
       required: true,
       type: Array
@@ -135,7 +130,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'additional_stops',
+    activeTab: 'production_loss',
   }),
   computed: {
     tabs() {

@@ -173,11 +173,6 @@ export default {
           `,
           key: 'liquid_tech_loss'
         },
-        {
-          label: this.trans('economic_reference.added_date_author'),
-          key: 'user',
-          isUser: true
-        },
       ]
     },
   }

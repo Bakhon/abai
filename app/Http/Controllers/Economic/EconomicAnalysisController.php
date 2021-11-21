@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Analysis\EconomicAnalysisDataRequest;
-use App\Http\Requests\Economic\Analysis\EconomicAnalysisWellRequest;
+use App\Http\Requests\Economic\Analysis\EconomicAnalysisWellByGranularityRequest;
+use App\Http\Requests\Economic\Analysis\EconomicAnalysisWellByKitRequest;
 use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\TechnicalWellForecast;
+use App\Models\Refs\TechnicalWellForecastKit;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Illuminate\Database\Query\Builder;
@@ -20,7 +22,7 @@ use SplFixedArray;
 class EconomicAnalysisController extends Controller
 {
     const CACHE_KEY_PROPOSED_WELLS = 'economic_analysis_proposed_wells';
-    const CACHE_BY_DATE_KEY = 'economic_analysis_by_date';
+    const CACHE_KEY_WELLS_BY_GRANULARITY = 'economic_analysis_wells_by_granularity';
 
     const DEFAULT_WHERE_IN_PARAM = "''";
 
@@ -38,7 +40,7 @@ class EconomicAnalysisController extends Controller
     {
         $this
             ->middleware('can:economic view main')
-            ->only('index', 'getData', 'getWells');
+            ->only('index', 'indexWells', 'inputParams', 'getData', 'getWells', 'getWellsByKit');
     }
 
     public function index(): View
@@ -58,73 +60,49 @@ class EconomicAnalysisController extends Controller
 
     public function getData(EconomicAnalysisDataRequest $request): array
     {
-        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
-            $request->date,
-            $request->permanent_stop_coefficient
-        );
+        $kits = TechnicalWellForecastKit::query()
+            ->whereIn('id', $request->kit_ids)
+            ->get();
 
-        return [
-            'wellsSumByStatus' => $this->getWellsSumByStatus(
-                (new TechnicalWellStatus())->getTable(),
-                'status_id',
-                $request->date,
-                $request->permanent_stop_coefficient
-            ),
-            'wellsSumByLossStatus' => $this->getWellsSumByStatus(
-                (new TechnicalWellLossStatus())->getTable(),
-                'loss_status_id',
-                $request->date,
-                $request->permanent_stop_coefficient
-            ),
-            'wellsSum' => $this->getWellsSum(
-                $request->date,
-                $request->permanent_stop_coefficient
-            ),
-            'proposedWellsSum' => $this->getWellsSum(
-                $request->date,
-                $request->permanent_stop_coefficient,
-                $enabledUwis,
-                $stoppedUwis
-            ),
-            'proposedWells' => $this->getWellsSum(
-                $request->date,
-                $request->permanent_stop_coefficient,
-                $enabledUwis,
-                $stoppedUwis,
-                false
-            ),
-            'wells' => $this->getWellsSum(
-                $request->date,
-                $request->permanent_stop_coefficient,
-                null,
-                null,
-                false
-            ),
-            'proposedStoppedWells' => $this->getProposedStoppedWells(
-                $request->date,
-                $stoppedUwis
-            ),
-            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs(
-                $request->date,
-                $request->permanent_stop_coefficient,
-                $stoppedUwis
-            ),
+        $data = [
             'analysisParams' => EcoRefsAnalysisParam::query()
-                ->where('date', $request->date)
-                ->firstOrFail()
+                ->whereIn('log_id', $kits->pluck('economic_log_id'))
+                ->get()
+                ->toArray(),
+            'dollarRate' => [
+                'value' => EconomicOptimizationController::getDollarRate() ?? '0',
+                'url' => EconomicOptimizationController::DOLLAR_RATE_URL
+            ],
+            'oilPrice' => [
+                'value' => EconomicOptimizationController::getOilPrice() ?? '0',
+                'url' => EconomicOptimizationController::OIL_PRICE_URL
+            ],
+            'wellsByKits' => []
         ];
+
+        foreach ($kits as $kit) {
+            $data['wellsByKits'][$kit->id] = $this->getWellsKit(
+                $kit,
+                $request->permanent_stop_coefficient
+            );
+        }
+
+        return $data;
     }
 
-    public function getWells(EconomicAnalysisWellRequest $request): array
+    public function getWellsByGranularity(EconomicAnalysisWellByGranularityRequest $request): array
     {
-        $cacheKey = self::CACHE_BY_DATE_KEY . json_encode($request->validated(), true);
+        $cacheKey = self::CACHE_KEY_WELLS_BY_GRANULARITY . json_encode($request->validated(), true);
 
         if (Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
         }
 
+        $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
+
         list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
-            $request->date,
+            $kit->economic_log_id,
+            $kit->technical_log_id,
             $request->permanent_stop_coefficient
         );
 
@@ -209,7 +187,7 @@ class EconomicAnalysisController extends Controller
         }
 
         $query = $this
-            ->sqlJoinAnalysisParam($query)
+            ->sqlJoinAnalysisParam($query, $kit->economic_log_id)
             ->toSql();
 
         $wells = DB::table(DB::raw("($query) as wells"))
@@ -259,8 +237,92 @@ class EconomicAnalysisController extends Controller
         return $wells;
     }
 
+    public function getWellsByKit(EconomicAnalysisWellByKitRequest $request): array
+    {
+        $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
+
+        $permanentStopCoefficient = $request->permanent_stop_coefficient;
+
+        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
+            $kit->economic_log_id,
+            $kit->technical_log_id,
+            $permanentStopCoefficient
+        );
+
+        return [
+            'proposedWells' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $enabledUwis,
+                $stoppedUwis,
+                false
+            ),
+            'wells' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                null,
+                null,
+                false
+            ),
+        ];
+    }
+
+    private function getWellsKit(
+        TechnicalWellForecastKit $kit,
+        float $permanentStopCoefficient
+    ): array
+    {
+        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
+            $kit->economic_log_id,
+            $kit->technical_log_id,
+            $permanentStopCoefficient
+        );
+
+        return [
+            'wellsSumByStatus' => $this->getWellsSumByStatus(
+                (new TechnicalWellStatus())->getTable(),
+                'status_id',
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'wellsSumByLossStatus' => $this->getWellsSumByStatus(
+                (new TechnicalWellLossStatus())->getTable(),
+                'loss_status_id',
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'wellsSum' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'proposedWellsSum' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $enabledUwis,
+                $stoppedUwis
+            ),
+            'proposedStoppedWells' => $this->getProposedStoppedWells(
+                $kit->technical_log_id,
+                $stoppedUwis
+            ),
+            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $stoppedUwis
+            ),
+        ];
+    }
+
     private function getWellsSum(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         array $enabledUwis = null,
         array $stoppedUwis = null,
@@ -317,7 +379,7 @@ class EconomicAnalysisController extends Controller
                 SUM($netBack - ($overallExpenditures)) as operating_profit,
                 SUM($lossStatusCount) as loss_status_count
             "))
-            ->whereRaw(DB::raw("well_forecast.date_month = '$date'"))
+            ->whereRaw(DB::raw("well_forecast.log_id = $technicalLogId"))
             ->groupBy([
                 "uwi",
                 "date",
@@ -329,7 +391,7 @@ class EconomicAnalysisController extends Controller
             ]);
 
         $wells = $this
-            ->sqlJoinAnalysisParam($query)
+            ->sqlJoinAnalysisParam($query, $economicLogId)
             ->toSql();
 
         $columns = [
@@ -385,7 +447,8 @@ class EconomicAnalysisController extends Controller
     private function getWellsSumByStatus(
         string $tableWellStatus,
         string $joinKey,
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         array $enabledUwis = null,
         array $stoppedUwis = null
@@ -434,7 +497,9 @@ class EconomicAnalysisController extends Controller
                 /** @var JoinClause $join */
                 $join->on("well_forecast.$joinKey", '=', 'well_status.id');
             })
-            ->whereNotNull($joinKey)
+            ->whereRaw(DB::raw("
+                well_forecast.log_id = $technicalLogId AND $joinKey IS NOT NULL
+            "))
             ->groupBy([
                 "date_month",
                 "avg_prs_cost",
@@ -444,7 +509,7 @@ class EconomicAnalysisController extends Controller
             ]);
 
         $wells = $this
-            ->sqlJoinAnalysisParam($query)
+            ->sqlJoinAnalysisParam($query, $economicLogId)
             ->toSql();
 
         $netBack = $this->sqlQueryNetBack(
@@ -508,7 +573,8 @@ class EconomicAnalysisController extends Controller
         return $this
             ->sqlJoinWellProfitability(
                 $query,
-                $date,
+                $economicLogId,
+                $technicalLogId,
                 $permanentStopCoefficient,
                 'wells',
                 'well_profitability',
@@ -520,18 +586,21 @@ class EconomicAnalysisController extends Controller
     }
 
     private function getProposedWells(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient
     ): array
     {
-        $cacheKey = self::CACHE_KEY_PROPOSED_WELLS . $date . $permanentStopCoefficient;
+        $cacheKey = self::CACHE_KEY_PROPOSED_WELLS .
+            "$economicLogId-$technicalLogId-$permanentStopCoefficient";
 
         if (Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
         }
 
         $profitableStoppedWells = $this->getProfitableStoppedWellsByDate(
-            $date,
+            $economicLogId,
+            $technicalLogId,
             $permanentStopCoefficient
         );
 
@@ -548,7 +617,8 @@ class EconomicAnalysisController extends Controller
         }
 
         $profitlessWells = $this->getProfitlessWellsWithOil(
-            $date,
+            $economicLogId,
+            $technicalLogId,
             $permanentStopCoefficient,
             $profitableOilLoss,
         );
@@ -572,7 +642,10 @@ class EconomicAnalysisController extends Controller
         return $proposedWells;
     }
 
-    private function getProposedStoppedWells(string $date, array $stoppedUwis): array
+    private function getProposedStoppedWells(
+        int $technicalLogId,
+        array $stoppedUwis
+    ): array
     {
         return DB::table((new TechnicalWellForecast())->getTable())
             ->selectRaw(DB::raw("
@@ -583,14 +656,15 @@ class EconomicAnalysisController extends Controller
                     SUM(active_hours + paused_hours) as paused_hours
                 "))
             ->whereIn('uwi', $stoppedUwis)
-            ->where('date_month', $date)
+            ->where('log_id', $technicalLogId)
             ->groupBy("date_month")
             ->get()
             ->toArray();
     }
 
     private function getProfitableStoppedWellsByDate(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient
     ): array
     {
@@ -606,7 +680,7 @@ class EconomicAnalysisController extends Controller
             "))
             ->whereRaw(DB::raw("
                 well_forecast.loss_status_id IN ($lossStatuses) AND
-                well_forecast.date_month = '$date'
+                well_forecast.log_id = $technicalLogId
             "))
             ->groupBy(["uwi", "date_month"])
             ->toSql();
@@ -620,13 +694,19 @@ class EconomicAnalysisController extends Controller
             ->whereRaw(DB::raw("well_profitability.profitability = 'profitable'"));
 
         return $this
-            ->sqlJoinWellProfitability($query, $date, $permanentStopCoefficient)
+            ->sqlJoinWellProfitability(
+                $query,
+                $economicLogId,
+                $technicalLogId,
+                $permanentStopCoefficient
+            )
             ->get()
             ->toArray();
     }
 
     private function getProfitlessWellsWithOil(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         float $oilLoss
     ): array
@@ -646,8 +726,8 @@ class EconomicAnalysisController extends Controller
         $excludedUwis = DB::table($tableWellForecast)
             ->addSelect(DB::raw("DISTINCT uwi"))
             ->whereRaw(DB::raw("
-                date_month = '$date' AND
-                loss_status_id IN ($lossStatuses)
+                loss_status_id IN ($lossStatuses) AND
+                log_id = $technicalLogId
             "))
             ->toSql();
 
@@ -658,7 +738,7 @@ class EconomicAnalysisController extends Controller
                 SUM($netBack - ($overallExpenditures)) as operating_profit
             "))
             ->whereRaw(DB::raw("
-                well_forecast.date_month = '$date' AND
+                well_forecast.log_id = $technicalLogId AND
                 well_forecast.uwi NOT IN ($excludedUwis)
             "))
             ->havingRaw(DB::raw("
@@ -668,13 +748,14 @@ class EconomicAnalysisController extends Controller
             ->orderBy("operating_profit");
 
         return $this
-            ->sqlJoinAnalysisParam($query)
+            ->sqlJoinAnalysisParam($query, $economicLogId)
             ->get()
             ->toArray();
     }
 
     private function getProfitlessWellsWithPrs(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         array $stoppedUwis
     ): array
@@ -691,7 +772,7 @@ class EconomicAnalysisController extends Controller
                      ELSE 0
                 END as is_stopped     
             "))
-            ->whereRaw(DB::raw("date_month = '$date' AND prs_portion > 0"))
+            ->whereRaw(DB::raw("log_id = $technicalLogId AND prs_portion > 0"))
             ->groupByRaw(DB::raw("uwi, date_month"))
             ->toSql();
 
@@ -718,7 +799,12 @@ class EconomicAnalysisController extends Controller
             "));
 
         return $this
-            ->sqlJoinWellProfitability($query, $date, $permanentStopCoefficient)
+            ->sqlJoinWellProfitability(
+                $query,
+                $economicLogId,
+                $technicalLogId,
+                $permanentStopCoefficient
+            )
             ->get()
             ->toArray();
     }
@@ -1090,25 +1176,31 @@ class EconomicAnalysisController extends Controller
 
     private function sqlJoinAnalysisParam(
         Builder $query,
+        int $economicLogId,
         string $wellForecastAlias = 'well_forecast',
         string $analysisParamAlias = 'analysis_param'
     ): Builder
     {
         $tableAnalysisParam = (new EcoRefsAnalysisParam())->getTable();
 
-        return $query->leftjoin("$tableAnalysisParam AS $analysisParamAlias", function ($join) use ($wellForecastAlias, $analysisParamAlias) {
-            /** @var JoinClause $join */
-            $join->on(
-                DB::raw("$wellForecastAlias.date_month"),
-                '=',
-                DB::raw("$analysisParamAlias.date")
-            );
-        });
+        return $query->leftjoin(
+            "$tableAnalysisParam AS $analysisParamAlias",
+            function ($join) use ($wellForecastAlias, $analysisParamAlias, $economicLogId) {
+                /** @var JoinClause $join */
+                $join
+                    ->on(
+                        DB::raw("$wellForecastAlias.date_month"),
+                        '=',
+                        DB::raw("$analysisParamAlias.date")
+                    )
+                    ->where(DB::raw("$analysisParamAlias.log_id = $economicLogId"));
+            });
     }
 
     private function sqlJoinWellProfitability(
         Builder $query,
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         string $wellAlias = "wells",
         string $wellProfitabilityAlias = "well_profitability",
@@ -1118,7 +1210,8 @@ class EconomicAnalysisController extends Controller
     {
         $wells = $this
             ->builderWellProfitability(
-                $date,
+                $economicLogId,
+                $technicalLogId,
                 $permanentStopCoefficient,
                 $enabledUwis,
                 $stoppedUwis
@@ -1143,7 +1236,8 @@ class EconomicAnalysisController extends Controller
     }
 
     private function builderWellProfitability(
-        string $date,
+        int $economicLogId,
+        int $technicalLogId,
         float $permanentStopCoefficient,
         array $enabledUwis = null,
         array $stoppedUwis = null
@@ -1205,7 +1299,6 @@ class EconomicAnalysisController extends Controller
                 analysis_param.date,
                 analysis_param.netback_fact,
                 analysis_param.permanent_cost,
-                analysis_param.permanent_stop_cost,
                 analysis_param.variable_cost,
                 analysis_param.avg_prs_cost,
                 analysis_param.oil_density,
@@ -1214,20 +1307,19 @@ class EconomicAnalysisController extends Controller
                 SUM($netBackPropose - ($overallExpendituresPropose)) as operating_profit_propose,
                 SUM($netBackStop - ($overallExpendituresStop)) as operating_profit_stop
             "))
-            ->whereRaw(DB::raw("well_forecast.date_month = '$date'"))
+            ->whereRaw(DB::raw("well_forecast.log_id = $technicalLogId"))
             ->groupByRaw(DB::raw("
                 well_forecast.uwi,
                 analysis_param.date,
                 analysis_param.netback_fact,
                 analysis_param.permanent_cost,
-                analysis_param.permanent_stop_cost,
                 analysis_param.variable_cost,
                 analysis_param.avg_prs_cost,
                 analysis_param.oil_density
             "));
 
         $wells = $this
-            ->sqlJoinAnalysisParam($query)
+            ->sqlJoinAnalysisParam($query, $economicLogId)
             ->toSql();
 
         return DB::table(DB::raw("($wells) as wells"))
@@ -1236,7 +1328,6 @@ class EconomicAnalysisController extends Controller
                 wells.date,
                 wells.netback_fact,
                 wells.permanent_cost,
-                wells.permanent_stop_cost,
                 wells.variable_cost,
                 wells.avg_prs_cost,
                 wells.oil_density,
@@ -1253,7 +1344,6 @@ class EconomicAnalysisController extends Controller
                 wells.date,
                 wells.netback_fact,
                 wells.permanent_cost,
-                wells.permanent_stop_cost,
                 wells.variable_cost,
                 wells.avg_prs_cost,
                 wells.oil_density,

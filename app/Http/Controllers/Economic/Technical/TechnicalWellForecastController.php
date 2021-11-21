@@ -6,17 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastDataRequest;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastImportExcelRequest;
 use App\Imports\Economic\Technical\TechnicalWellForecastImport;
+use App\Jobs\Economic\Technical\TechnicalWellForecastSuccessImportJob;
+use App\Models\Refs\EconomicDataLog;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecast;
+use App\Models\Refs\TechnicalWellLossStatus;
+use App\Models\Refs\TechnicalWellStatus;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel;
 
 class TechnicalWellForecastController extends Controller
 {
     public function getData(TechnicalWellForecastDataRequest $request): array
     {
-        $query = TechnicalWellForecast::query();
+        $query = DB::table((new TechnicalWellForecast())->getTable());
 
         if ($request->log_id) {
             $query->whereLogId($request->log_id);
@@ -26,10 +30,25 @@ class TechnicalWellForecastController extends Controller
             $query->whereUwi($request->uwi);
         }
 
-        return $query
-            ->with(['user', 'status', 'lossStatus'])
-            ->get()
-            ->toArray();
+        $wells = $query->get()->toArray();
+
+        $statuses = TechnicalWellStatus::all();
+
+        $lossStatuses = TechnicalWellLossStatus::all();
+
+        foreach ($wells as &$well) {
+            $well = (array)$well;
+
+            if ($well['status_id']) {
+                $well['status'] = $statuses->firstWhere('id', $well['status_id']);
+            }
+
+            if ($well['loss_status_id']) {
+                $well['loss_status'] = $lossStatuses->firstWhere('id', $well['loss_status_id']);
+            }
+        }
+
+        return $wells;
     }
 
     public function uploadExcel(): View
@@ -41,17 +60,27 @@ class TechnicalWellForecastController extends Controller
 
     public function importExcel(TechnicalWellForecastImportExcelRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
-            $fileName = pathinfo(
-                $request->file->getClientOriginalName(),
-                PATHINFO_FILENAME
-            );
+        $fileName = pathinfo(
+            $request->file->getClientOriginalName(),
+            PATHINFO_FILENAME
+        );
 
-            Excel::import(
-                new TechnicalWellForecastImport(auth()->id(), $fileName),
-                $request->file
-            );
-        });
+        $userId = auth()->id();
+
+        $log = EconomicDataLog::firstOrCreate(
+            ['type_id' => EconomicDataLogType::WELL_FORECAST, 'name' => $fileName],
+            ['author_id' => $userId, 'is_processed' => false]
+        );
+
+        if ($log->is_processed) {
+            throw new \Exception(__('economic_reference.economic_log_is_processing'));
+        }
+
+        (new TechnicalWellForecastImport($userId, $log->id))
+            ->queue($request->file)
+            ->chain([
+                new TechnicalWellForecastSuccessImportJob($log->id),
+            ]);
 
         return back()->with('success', __('app.success'));
     }

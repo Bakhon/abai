@@ -171,21 +171,6 @@ export default {
           key: 'permanent_year_cost'
         },
         {
-          label: `
-            ${this.trans('economic_reference.conditional_fixed_costs')}
-            (${this.trans('economic_reference.fact').toLocaleLowerCase()})
-          `,
-          key: 'permanent_stop_cost'
-        },
-        {
-          label: `
-            ${this.trans('economic_reference.conditional_fixed_costs')}
-            (${this.trans('economic_reference.proposed').toLocaleLowerCase()})
-          `,
-          key: 'permanent_stop_cost_propose',
-          width: 130
-        },
-        {
           label: this.trans('economic_reference.added_date_author'),
           key: 'user',
           isUser: true
