@@ -110,7 +110,7 @@
                       <td    class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{test.dend_day[item_index]}}</td>
                       <td class="header_name input-form-auto"></td>
-                      <td class="manual-edit">{{test.day_works[item_index]}}<input class="manual-input"/></td>
+                      <td class="manual-edit day-works">{{test.day_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                     
                     <tr>
@@ -121,7 +121,7 @@
                       <td class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{test.dend_night[item_index]}}</td>
                       <td class="header_name input-form-auto"></td>
-                      <td class="manual-edit">{{test.night_works[item_index]}}<input class="manual-input"/></td>
+                      <td class="manual-edit day-works">{{test.night_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -156,7 +156,7 @@
                       <td class="input-form-auto header_name">168,3</td>
                       <td class="input-form-auto header_name">8,94</td>
                       <td class="input-form-auto header_name">0-1869м</td>
-                      <td class="input-form-auto">17,76</td>
+                      <td class="input-form-auto header_name">17,76</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">прочее (ОЗЦ и т.д)</td>
@@ -188,7 +188,7 @@
                       <td class="header_name manual-edit">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
-                      <td colspan="6" rowspan="4" class="input-form-auto">{{all_works}}</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">метеоусловия</td>
@@ -556,5 +556,10 @@ border: none !important;
   font-size: 14px;
   font-weight: bold;
   color: #E31F25;
+}
+.day-works {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
 }
 </style>
