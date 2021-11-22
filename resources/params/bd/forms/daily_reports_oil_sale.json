@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "table_type": "wells",
   "filter": [
     {
@@ -28,7 +29,7 @@
       "code": "plan",
       "type": "float",
       "is_editable": false,
-      "validation": "numeric",
+      "validation": "nullable|numeric",
       "validate_deviation": true
     },
     {
@@ -36,7 +37,7 @@
       "code": "fact",
       "type": "float",
       "is_editable": true,
-      "validation": "numeric",
+      "validation": "nullable|numeric",
       "validate_deviation": true,
       "show_if": {
         "type": [

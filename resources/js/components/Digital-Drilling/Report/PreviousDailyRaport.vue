@@ -192,7 +192,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.drilling_progress">
+                                <input type="text" v-model="report.general_data_daily.reaming_drilling">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}

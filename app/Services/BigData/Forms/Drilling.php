@@ -13,10 +13,6 @@ class Drilling extends TableForm
 {
     protected $configurationFileName = 'drilling';
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-    }
-
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));

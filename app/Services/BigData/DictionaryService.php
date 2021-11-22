@@ -898,9 +898,11 @@ class DictionaryService
     private function getGisMethodTypesForGisTypeForm()
     {
         $dict = $this->get('gis_method_types');
-        return array_filter($dict, function ($item) {
-            return !in_array($item['code'], ['GATR']);
-        });
+        return array_values(
+            array_filter($dict, function ($item) {
+                return !in_array($item['code'], ['GATR']);
+            })
+        );
     }
 
     private function getGisKindsForGisTypeForm()
