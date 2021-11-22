@@ -13,6 +13,7 @@ use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -21,7 +22,10 @@ use SplFixedArray;
 
 class EconomicAnalysisController extends Controller
 {
+    const CACHE_DELIMITER = '_';
+    const CACHE_DAYS = 1;
     const CACHE_KEY_PROPOSED_WELLS = 'economic_analysis_proposed_wells';
+    const CACHE_KEY_WELLS_KIT = 'economic_analysis_wells_kit';
     const CACHE_KEY_WELLS_BY_GRANULARITY = 'economic_analysis_wells_by_granularity';
 
     const DEFAULT_WHERE_IN_PARAM = "''";
@@ -40,7 +44,14 @@ class EconomicAnalysisController extends Controller
     {
         $this
             ->middleware('can:economic view main')
-            ->only('index', 'indexWells', 'inputParams', 'getData', 'getWells', 'getWellsByKit');
+            ->only(
+                'index',
+                'indexWells',
+                'inputParams',
+                'getData',
+                'getWellsByGranularity',
+                'getWellsByKit',
+            );
     }
 
     public function index(): View
@@ -92,12 +103,6 @@ class EconomicAnalysisController extends Controller
 
     public function getWellsByGranularity(EconomicAnalysisWellByGranularityRequest $request): array
     {
-        $cacheKey = self::CACHE_KEY_WELLS_BY_GRANULARITY . json_encode($request->validated(), true);
-
-        if (Cache::has($cacheKey)) {
-            return json_decode(Cache::get($cacheKey), true);
-        }
-
         $kits = TechnicalWellForecastKit::query()
             ->whereIn('id', $request->kit_ids)
             ->get();
@@ -116,14 +121,113 @@ class EconomicAnalysisController extends Controller
         return $wells;
     }
 
-    public function getWellsKitByGranularity(
+    public function getWellsByKit(EconomicAnalysisWellByKitRequest $request): array
+    {
+        $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
+
+        $permanentStopCoefficient = $request->permanent_stop_coefficient;
+
+        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
+            $kit->economic_log_id,
+            $kit->technical_log_id,
+            $permanentStopCoefficient
+        );
+
+        return [
+            'proposedWells' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $enabledUwis,
+                $stoppedUwis,
+                false
+            ),
+            'wells' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                null,
+                null,
+                false
+            ),
+        ];
+    }
+
+    private function getWellsKit(
+        TechnicalWellForecastKit $kit,
+        float $permanentStopCoefficient
+    ): array
+    {
+        $cacheKey = $this->cacheKey(
+            self::CACHE_KEY_WELLS_KIT,
+            [$kit->economic_log_id, $kit->technical_log_id, $permanentStopCoefficient]
+        );
+
+        if (Cache::has($cacheKey)) {
+            return json_decode(Cache::get($cacheKey), true);
+        }
+
+        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
+            $kit->economic_log_id,
+            $kit->technical_log_id,
+            $permanentStopCoefficient
+        );
+
+        $wellsKit = [
+            'wellsSumByStatus' => $this->getWellsSumByStatus(
+                (new TechnicalWellStatus())->getTable(),
+                'status_id',
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'wellsSumByLossStatus' => $this->getWellsSumByStatus(
+                (new TechnicalWellLossStatus())->getTable(),
+                'loss_status_id',
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'wellsSum' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient
+            ),
+            'proposedWellsSum' => $this->getWellsSum(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $enabledUwis,
+                $stoppedUwis
+            ),
+            'proposedStoppedWells' => $this->getProposedStoppedWells(
+                $kit->technical_log_id,
+                $stoppedUwis
+            ),
+            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs(
+                $kit->economic_log_id,
+                $kit->technical_log_id,
+                $permanentStopCoefficient,
+                $stoppedUwis
+            ),
+        ];
+
+        Cache::put($cacheKey, json_encode($wellsKit, true), $this->cacheTime());
+
+        return $wellsKit;
+    }
+
+    private function getWellsKitByGranularity(
         TechnicalWellForecastKit $kit,
         float $permanentStopCoefficient,
         string $granularity,
         string $uwi = null
     ): array
     {
-        $cacheKey = self::CACHE_KEY_WELLS_BY_GRANULARITY . $kit->id . "-$permanentStopCoefficient-$granularity";
+        $cacheKey = $this->cacheKey(
+            self::CACHE_KEY_WELLS_BY_GRANULARITY,
+            [$kit->economic_log_id, $kit->technical_log_id, $permanentStopCoefficient, $granularity]
+        );
 
         if (!$uwi && Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
@@ -260,93 +364,10 @@ class EconomicAnalysisController extends Controller
             ->toArray();
 
         if (!$uwi) {
-            Cache::put($cacheKey, json_encode($wells, true), now()->addDay());
+            Cache::put($cacheKey, json_encode($wells, true), $this->cacheTime());
         }
 
         return $wells;
-    }
-
-    public function getWellsByKit(EconomicAnalysisWellByKitRequest $request): array
-    {
-        $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
-
-        $permanentStopCoefficient = $request->permanent_stop_coefficient;
-
-        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
-            $kit->economic_log_id,
-            $kit->technical_log_id,
-            $permanentStopCoefficient
-        );
-
-        return [
-            'proposedWells' => $this->getWellsSum(
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient,
-                $enabledUwis,
-                $stoppedUwis,
-                false
-            ),
-            'wells' => $this->getWellsSum(
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient,
-                null,
-                null,
-                false
-            ),
-        ];
-    }
-
-    private function getWellsKit(
-        TechnicalWellForecastKit $kit,
-        float $permanentStopCoefficient
-    ): array
-    {
-        list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
-            $kit->economic_log_id,
-            $kit->technical_log_id,
-            $permanentStopCoefficient
-        );
-
-        return [
-            'wellsSumByStatus' => $this->getWellsSumByStatus(
-                (new TechnicalWellStatus())->getTable(),
-                'status_id',
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient
-            ),
-            'wellsSumByLossStatus' => $this->getWellsSumByStatus(
-                (new TechnicalWellLossStatus())->getTable(),
-                'loss_status_id',
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient
-            ),
-            'wellsSum' => $this->getWellsSum(
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient
-            ),
-            'proposedWellsSum' => $this->getWellsSum(
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient,
-                $enabledUwis,
-                $stoppedUwis
-            ),
-            'proposedStoppedWells' => $this->getProposedStoppedWells(
-                $kit->technical_log_id,
-                $stoppedUwis
-            ),
-            'profitlessWellsWithPrs' => $this->getProfitlessWellsWithPrs(
-                $kit->economic_log_id,
-                $kit->technical_log_id,
-                $permanentStopCoefficient,
-                $stoppedUwis
-            ),
-        ];
     }
 
     private function getWellsSum(
@@ -620,8 +641,10 @@ class EconomicAnalysisController extends Controller
         float $permanentStopCoefficient
     ): array
     {
-        $cacheKey = self::CACHE_KEY_PROPOSED_WELLS .
-            "$economicLogId-$technicalLogId-$permanentStopCoefficient";
+        $cacheKey = $this->cacheKey(
+            self::CACHE_KEY_PROPOSED_WELLS,
+            [$economicLogId, $technicalLogId, $permanentStopCoefficient]
+        );
 
         if (Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
@@ -662,11 +685,7 @@ class EconomicAnalysisController extends Controller
             $profitlessStoppedWells['uwis']
         ];
 
-        Cache::put(
-            $cacheKey,
-            json_encode($proposedWells, true),
-            now()->addDay()
-        );
+        Cache::put($cacheKey, json_encode($proposedWells, true), $this->cacheTime());
 
         return $proposedWells;
     }
@@ -1381,5 +1400,16 @@ class EconomicAnalysisController extends Controller
                 profitability_without_prs
             "));
     }
+
+    private function cacheKey(string $cacheName, array $params): string
+    {
+        return $cacheName . implode(self::CACHE_DELIMITER, $params);
+    }
+
+    private function cacheTime(): Carbon
+    {
+        return now()->addDays(self::CACHE_DAYS);
+    }
+
 
 }
