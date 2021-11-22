@@ -262,8 +262,6 @@ class Well extends TBDModel
             'pbuf_after',
             'hdin',
             'pzab',
-            'hstat',
-            'ppl',
             'work_hours',
             'well_status',
             'well_expl',
@@ -273,8 +271,6 @@ class Well extends TBDModel
             'wcut_telemetry',
             'oil_telemetry',
             'gas_telemetry',
-            'gas_factor_telemetry',
-            'liquid_temp',
             'park_indicator'
           )->orderBy('date')->get();
         return $query;

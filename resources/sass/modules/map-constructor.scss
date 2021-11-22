@@ -225,6 +225,7 @@
                 transition: .4s ease;
                 overflow: hidden;
                 cursor: pointer;
+                white-space: normal;
                 &:hover{
                     background: #0079FF;
                 }

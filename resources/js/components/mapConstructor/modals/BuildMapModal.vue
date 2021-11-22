@@ -1,170 +1,125 @@
 <template>
-    <div class="modal fade modal-printer modal-map" id="buildMapModal" tabindex="-1"
-         aria-labelledby="exampleModalLabel4" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-white" aria-hidden="true">&times;</span>
-                    </button>
+    <div class="h-100 p-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a class="nav-link active" data-toggle="tab" href="#data">Данные</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#settings">Настройки</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="data" class="tab-pane fade show active">
+                <div class="input-group mt-4 pl-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFile01">Выбор данных:</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" ref="bubblesFile"
+                               aria-describedby="inputGroupFileAddon01" @change="handleBubbleFileChange()">
+                        <label class="custom-file-label text-right" for="inputGroupFile01">{{ bubblesFileName }}</label>
+                    </div>
                 </div>
-                <div class="modal-body printer-right">
-                    <b-card no-body>
-                        <b-tabs card>
-                            <b-tab title="Данные" active>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p> {{ trans('map_constructor.select_data') }}</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton5" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                данные
-                                            </button>
-                                            <div class="dropdown-menu"
-                                                 aria-labelledby="dropdownMenuButton5">
-                                                <a class="dropdown-item" href="#">данные</a>
-                                                <a class="dropdown-item" href="#">данные</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p> {{ trans('map_constructor.filter') }}</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton6" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                фильтр
-                                            </button>
-                                            <div class="dropdown-menu"
-                                                 aria-labelledby="dropdownMenuButton6">
-                                                <a class="dropdown-item" href="#">фильтр</a>
-                                                <a class="dropdown-item" href="#">фильтр</a>
-                                                <a class="dropdown-item" href="#">фильтр</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </b-tab>
-                            <b-tab title="Метод">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p> {{ trans('map_constructor.method') }}</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton7" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                Кригинг, Метод Шепарда, Метод
-                                            </button>
-                                            <div class="dropdown-menu"
-                                                 aria-labelledby="dropdownMenuButton7">
-                                                <a class="dropdown-item" href="#">Кригинг</a>
-                                                <a class="dropdown-item" href="#">Метод Шепарда</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p> {{ trans('map_constructor.cell_size') }}</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="d-flex align-items-center">
-                                            <input type="checkbox" class="mt-1" aria-label="all pages">
-                                            <span class="mx-2">X</span>
-                                            <input type="number" class="form-control number-s"
-                                                   aria-label="Copies" placeholder="0000">
-                                            <span class="mx-2">Y</span>
-                                            <input type="number" class="form-control number-s"
-                                                   aria-label="Copies" placeholder="0000">
-                                        </div>
-                                    </div>
-                                </div>
-                            </b-tab>
-                            <b-tab title="Тренд">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label for="all-pages3">
-                                            <input id="all-pages3" type="checkbox" class="mt-1"
-                                                   aria-label="all pages">
-                                            <span class="ml-1"> {{ trans('map_constructor.trend_use') }}</span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton8" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                .....
-                                            </button>
-                                            <div class="dropdown-menu"
-                                                 aria-labelledby="dropdownMenuButton8">
-                                                <a class="dropdown-item" href="#">.....</a>
-                                                <a class="dropdown-item" href="#">.....</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label for="all-pages4">
-                                            <input id="all-pages4" type="checkbox" class="mt-1"
-                                                   aria-label="all pages">
-                                            <span class="ml-1"> {{ trans('map_constructor.border_load') }}</span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton9" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                .....
-                                            </button>
-                                            <div class="dropdown-menu"
-                                                 aria-labelledby="dropdownMenuButton9">
-                                                <a class="dropdown-item" href="#">.....</a>
-                                                <a class="dropdown-item" href="#">.....</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label for="all-pages5">
-                                            <input id="all-pages5" type="checkbox" class="mt-1"
-                                                   aria-label="all pages">
-                                            <span class="ml-1"> {{ trans('map_constructor.break_consider') }}</span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6">
-                                    </div>
-                                </div>
-                            </b-tab>
-                        </b-tabs>
-                    </b-card>
+            </div>
+            <div id="settings" class="tab-pane fade">
+                <div class="input-group mt-4 pl-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="diaType">Тип диаграммы:</label>
+                    </div>
+                    <select class="custom-select text-right" id="diaType">
+                        <option value="1" selected>Круговые</option>
+                        <option value="2" disabled>Столбчатая</option>
+                    </select>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                      {{ trans('map_constructor.apply') }}
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                      {{ trans('map_constructor.close') }}
-                    </button>
+                <div class="input-group mt-4 pl-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="coordsSystem">Система координат:</label>
+                    </div>
+                    <select class="custom-select text-right" id="coordsSystem">
+                        <option value="1" disabled>Прямоугольная</option>
+                        <option value="2" selected>Угловая</option>
+                    </select>
+                </div>
+                <div class="input-group mt-4 pl-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" @change="lineFileDisabled = !lineFileDisabled">
+                        </div>
+                    </div>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon02">Загрузить границу:</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile02" ref="lineFile"
+                               aria-describedby="inputGroupFileAddon02" :disabled="lineFileDisabled"
+                               @change="handleLineFileChange()">
+                        <label class="custom-file-label text-right"
+                               :class="{'disabled': lineFileDisabled}"
+                               for="inputGroupFile02">{{ lineFileName }}</label>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="mt-3 d-flex flex-row-reverse w-100">
+            <button type="button" class="btn btn-secondary" @click="$emit('close')"> {{ trans('map_constructor.cancel') }}</button>
+            <button type="button" class="btn btn-primary mr-1" @click="buildMapHandler"> {{ trans('map_constructor.build') }}</button>
+        </div>
     </div>
 </template>
+<script>
+    export default {
+        props: {
+            buildMap: Function,
+        },
+        data: function () {
+            return {
+                bubblesFileName: 'Выберите файл',
+                lineFileName: 'Выберите файл',
+                bubblesFileData: null,
+                lineFileData: null,
+                lineFileDisabled: true,
+            }
+        },
+        methods: {
+            handleBubbleFileChange() {
+                this.bubblesFileData = this.$refs.bubblesFile.files[0];
+                this.bubblesFileName = this.bubblesFileData.name;
+            },
+            handleLineFileChange() {
+                this.lineFileData = this.$refs.lineFile.files[0];
+                this.lineFileName = this.lineFileData.name;
+            },
+            buildMapHandler() {
+                this.buildMap();
+            }
+        }
+    }
+</script>
+<style scoped>
+.card {
+    background-color: rgb(70, 73, 142);
+}
+.nav-link {
+    color: #fff ;
+    border-top-color: rgb(51, 57, 117);
+    border-right-color: rgb(51, 57, 117);
+    border-left-color: rgb(51, 57, 117);
+    border-bottom-color: white;
+}
+.nav-link.active {
+    color: #fff ;
+    background-color: rgb(51, 57, 117);
+    border-bottom-color: rgb(51, 57, 117);
+}
+.custom-file-label::after {
+    content: none;
+}
+.input-group-text {
+    color: #fff ;
+    background-color: rgb(51, 57, 117);
+}
+.custom-file-label.disabled {
+    color: rgb(51, 57, 117);
+    background-color: rgb(51, 57, 117);
+}
+</style>

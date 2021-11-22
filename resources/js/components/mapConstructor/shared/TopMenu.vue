@@ -35,9 +35,8 @@
                     <i class="far fa-map mr-2"></i>
                     <span>{{ trans('map_constructor.map') }}</span>
                 </template>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapSpecificModal">{{ trans('map_constructor.build_current') }}</b-dropdown-item>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapSpecificModal">{{ trans('map_constructor.build_accumulated') }}</b-dropdown-item>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapModal">{{ trans('map_constructor.build_map') }}</b-dropdown-item>
+                <b-dropdown-item @click="buildMapSpecificModal">{{ trans('map_constructor.build_current_accumulated_maps') }}</b-dropdown-item>
+                <b-dropdown-item @click="buildMapModal">{{ trans('map_constructor.build_map') }}</b-dropdown-item>
                 <b-dropdown-item href="#">{{ trans('map_constructor.calculator') }}</b-dropdown-item>
             </b-dropdown>
         </div>
@@ -67,6 +66,8 @@
     export default {
         props: {
             addProjectModal: Function,
+            buildMapModal: Function,
+            buildMapSpecificModal: Function,
         },
         methods: {
             importFile(event) {
