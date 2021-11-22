@@ -35,10 +35,11 @@ class EconomicAnalysisParamImport implements ToModel, WithBatchInserts, WithChun
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::firstOrCreate(
-            ['name' => $fileName, 'type_id' => EconomicDataLogType::ANALYSIS_PARAM],
-            ['author_id' => $userId]
-        )->id;
+        $this->logId = EconomicDataLog::create([
+            'type_id' => EconomicDataLogType::ANALYSIS_PARAM,
+            'name' => $fileName,
+            'author_id' => $userId,
+        ])->id;
     }
 
     public function model(array $row): ?EcoRefsAnalysisParam
