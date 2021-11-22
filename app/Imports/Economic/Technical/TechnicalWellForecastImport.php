@@ -21,6 +21,8 @@ class TechnicalWellForecastImport implements
 {
     use Importable;
 
+    public $timeout = 6000;
+
     protected $userId;
 
     protected $logId;
