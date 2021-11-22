@@ -19,7 +19,10 @@ export default {
                 'is_approved_by_second_master',
                 'created_at',
                 'updated_at',
-                'user_position'
+                'user_position',
+                'oil_production_fact_corrected',
+                'condensate_production_fact_corrected',
+                'user_id'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
@@ -130,7 +133,7 @@ export default {
                     'isFirstMasterApproved': approveItem.is_approved_by_first_master,
                     'isSecondMasterApproved': approveItem.is_approved_by_second_master,
                     'firstMasterApproveTranslation': this.statusTransition[0],
-                    'secondMasterApproveTranslation': this.statusTransition[0],
+                    'secondMasterApproveTranslation': this.statusTransition[0]
                 };
                 if (approve.isFirstMasterApproved) {
                     approve.firstMasterApproveTranslation = this.statusTransition[1]

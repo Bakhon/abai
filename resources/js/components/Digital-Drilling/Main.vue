@@ -155,6 +155,11 @@
             },
             async getField(item){
                 if (item!=''){
+                    if (this.currentDZO != item){
+                        this.currentField = {
+                            name: ''
+                        }
+                    }
                     this.currentDZO = item
                     this.filterWell()
                 }

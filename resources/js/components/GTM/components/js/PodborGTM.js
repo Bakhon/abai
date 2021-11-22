@@ -77,8 +77,6 @@ export default {
                     enabled: false
                 },
                 stroke: {
-                    // lineCap: 'butt',
-                    // width: [5, 7, 5],
                     curve: 'straight',
                     dashArray: [0, 0, 2]
                 },
@@ -166,6 +164,7 @@ export default {
         ...paegtmMapState([
             'clickable',
             'treeDate',
+            'treeStore',
             'clickableTable'
         ]),
     },
@@ -176,8 +175,8 @@ export default {
         ]),
         ...paegtmMapActions([
             'changeTreeDate',
-            'getTreeDataStore',
-            'onGetTableByClickableValue'
+            'onGetTableByClickableValue',
+            'changeTreeStore'
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -268,7 +267,7 @@ export default {
             this.SET_LOADING(true);
             await getTreeData(body).then((res) => {
                 this.dataRangeInfo = res.date_range_model;
-                this.treeData = res.finder_model.children;
+                this.changeTreeStore(res.finder_model.children)
                 this.fieldName = res.org_struct;
             }).finally(() => {
                 this.SET_LOADING(false);
@@ -282,6 +281,7 @@ export default {
             this.isHidden = !this.isHidden
         },
         async onPostTreeData(v) {
+            this.changeTreeStore(v)
             this.dataRangeInfo = _.clone(this.treeDate)
             this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
             this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
