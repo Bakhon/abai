@@ -263,6 +263,7 @@
 import mainHeader from "./mainHeader.vue";
 import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
+import {globalloadingMutations} from '@store/helpers'
 
 
 export default {
@@ -308,17 +309,21 @@ export default {
       start_drill:  null,
       end_drill:  null,
       all_works:  null,
+      postApiUrl: process.env.MIX_TKRS_POST_API_URL,
+      linkWell: "drWellName/",
+      linkWellDate: "drWellDates/",
+      linkWellReport: "drHeaderWorkReport/",
       
     }
   },
   created: async function () {
-    this.$store.commit("globalloading/SET_LOADING", true);
+    this.SET_LOADING(true);
     await this.axios
       .get(
-          'http://172.20.103.203:8090/drWellName/'
+        this.postApiUrl + this.linkWell,
         )
       .then((response) => {
-        this.$store.commit("globalloading/SET_LOADING", false);
+        this.SET_LOADING(false);
         let data = response.data;
         if (data) {
           this.areaChartData = data.data;
@@ -329,12 +334,16 @@ export default {
       })
       .catch((error) => {
         console.log(error.data);
-        this.$store.commit("globalloading/SET_LOADING", false);
+        this.SET_LOADING(false);
       });
       this.getListWell();
     },
   
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     comparison_graphs() {
         this.$modal.show('comparison_graphs')
     },
@@ -350,7 +359,7 @@ export default {
       
         this.axios
             .get(
-                'http://172.20.103.203:8090/drWellName/',
+                this.postApiUrl + this.linkWell,
             )
             .then((response) => {
               
@@ -366,7 +375,7 @@ export default {
     postSelectedtWell() {
         this.axios
             .get(
-                `http://172.20.103.203:8090/drWellDates/${this.wellNumber}`,
+                this.postApiUrl + this.linkWellDate + `${this.wellNumber}/`,
             )
             .then((response) => {
                 let data = response.data;
@@ -380,10 +389,10 @@ export default {
             });
     },
     postSelectedtWellFile() {
-      this.$store.commit("globalloading/SET_LOADING", false);
+      this.SET_LOADING(false);
         this.axios
             .get(
-                `http://172.20.103.203:8090/drHeaderWorkReport/${this.wellNumber}/${this.wellFile}/`,
+                this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
               
@@ -421,24 +430,7 @@ export default {
     selectTab(selectedTab) {
             this.currentTab = selectedTab
     },
-    chooseDate() {
-      const { calendarDate} = this;
-      var Date1 = new Date(calendarDate)
-      this.Date1 = Date1.toLocaleDateString();
-      this.axios
-        .get(
-            'http://127.0.0.1:7580/db/' + Date1.toLocaleDateString("en-GB") + '/'
-          )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.areaChartData = data.data;
-          } else {
-            console.log("No data");
-          }
-        })
-    },
+
   },
 };
 </script>
