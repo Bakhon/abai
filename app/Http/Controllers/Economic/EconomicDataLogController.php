@@ -12,6 +12,7 @@ use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
 use App\Models\Refs\TechnicalWellForecast;
+use App\Models\Refs\TechnicalWellForecastKit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -50,10 +51,14 @@ class EconomicDataLogController extends Controller
 
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
+                    TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->delete();
+
                     TechnicalWellForecast::query()->whereLogId($log->id)->delete();
 
                     break;
                 case EconomicDataLogType::ANALYSIS_PARAM:
+                    TechnicalWellForecastKit::query()->whereEconomicLogId($log->id)->delete();
+
                     EcoRefsAnalysisParam::query()->whereLogId($log->id)->delete();
 
                     break;
