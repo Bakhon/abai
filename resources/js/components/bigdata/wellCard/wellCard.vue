@@ -754,14 +754,14 @@ export default {
           : ""; 
       let techModeProdOil = this.getTechmodeLiqiud(well);   
       let techModeProdOil_measWaterCut =
-        this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
+        this.well?.techModeProdOil?.wcut && this.well?.dmart_daily_prod_oil?.wcut
           ? this.well.techModeProdOil.wcut +
             " / " +
-            this.well.measWaterCut.water_cut
+            this.well.dmart_daily_prod_oil.wcut
           : this.well?.techModeProdOil?.wcut
           ? this.well.techModeProdOil.wcut
-          : this.well?.measWaterCut?.water_cut
-          ? this.well.measWaterCut.water_cut
+          : this.well?.dmart_daily_prod_oil?.wcut
+          ? this.well.dmart_daily_prod_oil.wcut
           : "";
       let krsWorkover = this.well.krsWorkover.dbeg
         ? this.getFormatedDate(this.well.krsWorkover.dbeg)
@@ -796,8 +796,8 @@ export default {
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
         ? this.well.gdisCurrentValuePmpr.value_double
         : "";
-      let gdisCurrentValueFlvl = this.well.dinzamer.value_double
-        ? this.well.dinzamer.value_double
+      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin
+        ? this.well.dmart_daily_prod_oil.hdin
         : "";
       let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
         ? this.well.gdisCurrentValueStatic.value_double
@@ -817,12 +817,12 @@ export default {
           : this.well.gdisComplex.dbeg
           ? this.getFormatedDate(this.well.gdisComplex.dbeg)
           : "";
-      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : "";
+      let rzatrAtm = this.well.dmart_daily_prod_oil ? this.well.dmart_daily_prod_oil.pzat : "";
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
-        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
+      let gdisCurrentValueBhp = this.well.techmode.value_string && this.well.techmode.dbeg 
+        ? this.well.techmode.value_string.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.dbeg) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -853,13 +853,8 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";
-      let water_cut = this.well.measWaterCut.water_cut ? this.well.measWaterCut.water_cut : 1;
-      let liquid = this.well.measLiq.liquid ? this.well.measLiq.liquid : 1;      
-      let oil_density = this.well.techModeProdOil.oil_density ? this.well.techModeProdOil.oil_density : 1;
-      let debit_oil_raschet = (liquid* (1 - water_cut/100)) * oil_density;
-      let oil_production = debit_oil_raschet * 1;
-      let gas_production = meas_well ? (meas_well * oil_production).toFixed(1) : oil_production.toFixed(1);      
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";      
+      let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -1266,7 +1261,9 @@ export default {
                  this.wellTechsName = ' ';                          
                  this.wellSaptialObjectBottomX  = ' ';
                  this.wellSaptialObjectBottomY  = ' '; 
-                 this.wellGeoFields = ' ';                                                                   
+                 this.wellGeoFields = ' ';   
+                 this.gas_production = ' ';    
+                 this.dmart_daily_prod_oil = ' ';                                                            
               }
               
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
@@ -1372,22 +1369,22 @@ export default {
       return "";
     },
     getTechmodeLiqiud(well){    
-     if (this.well.techModeProdOil && this.well.measLiq) {
+     if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
           this.well.techModeProdOil.liquid &&
-          this.well.measLiq.liquid
+          this.well.dmart_daily_prod_oil
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
             " / " +
-            this.well.measLiq.liquid.toFixed(1)
+            this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
         if (this.well.techModeProdOil.liquid) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.measLiq.liquid) {
-          return "-" + " / " + this.well.measLiq.liquid.toFixed(1);
+        if (this.well.dmart_daily_prod_oil.liquid) {
+          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1);
         }
       }
       return "";  
@@ -1435,7 +1432,7 @@ export default {
         }
       } catch (e) {}
     },
-    switchFormByCode(data) {
+    switchFormByCode(data) {      
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;
