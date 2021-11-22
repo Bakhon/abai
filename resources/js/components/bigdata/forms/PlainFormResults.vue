@@ -300,6 +300,7 @@ export default {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
         if (column.multiple) {
+          if (!row[column.code]) return '';
           return row[column.code].map(itemId => {
             let value = dict.find(dictItem => dictItem.id === itemId)
             return value.name || value.label
