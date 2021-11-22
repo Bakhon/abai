@@ -10,6 +10,7 @@ use App\Services\BigData\FieldLimitsService;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -56,37 +57,47 @@ abstract class DailyReports extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $column = $this->getFieldByCode($params['field']);
         $metric = Metric::query()
             ->select('id')
             ->where('code', $this->metricCode)
             ->first();
         if (!$metric) {
-            return;
+            throw new Exception('Something went wrong');
         }
-        $item = ReportOrgDailyCits::where('org', $params['wellId'])
-            ->where('metric', $metric->id)
-            ->whereDate('report_date', '>=', $params['date']->toDateTimeString())
-            ->whereDate('report_date', '<=', $params['date']->toDateTimeString())
-            ->distinct()
-            ->first();
-        if (!$item) {
-            ReportOrgDailyCits::insert(
-                [
-                    'org' => $params['wellId'],
-                    'metric' => $metric->id,
-                    'report_date' => $params['date']->toDateTimeString(),
-                    'plan' => 0,
-                    $column['code'] => $params['value'],
-                ]
-            );
-        } else {
-            $field = $column['code'];
-            $item->$field = $params['value'];
-            $item->save();
+
+        foreach ($rows as $orgId => $row) {
+            $item = ReportOrgDailyCits::where('org', $orgId)
+                ->where('metric', $metric->id)
+                ->whereDate('report_date', '>=', $filter['date'])
+                ->whereDate('report_date', '<=', $filter['date'])
+                ->distinct()
+                ->first();
+
+            $fields = [];
+            foreach ($row as $fieldCode => $field) {
+                $fields[$fieldCode] = $field['value'];
+            }
+
+            if (!$item) {
+                ReportOrgDailyCits::insert(
+                    array_merge(
+                        [
+                            'org' => $orgId,
+                            'metric' => $metric->id,
+                            'report_date' => $filter['date'],
+                            'plan' => 0
+                        ],
+                        $fields
+                    )
+                );
+            } else {
+                $item->update($fields);
+            }
         }
+
+        return [];
     }
 
     protected function getReports(\stdClass $filter): Collection
