@@ -32,7 +32,8 @@
         components: {apexchart: chart},
         props: {
             well: {},
-            isShowEvents: Boolean
+            isShowEvents: Boolean,
+            scheduleData: {}
         },
         data: function () {
             return {
@@ -210,7 +211,7 @@
                     params: {
                         wellId: this.well.id,
                         period: this.activePeriod,
-                        type: 'production'
+                        type: 'Нефтяная'
                     }
                 }).then(({data}) => {
                     this.chartSeries = [
@@ -229,7 +230,8 @@
             },
         },
         mounted() {
-            this.getSchuduleData();
+            this.chartSeries = this.scheduleData.data;
+            this.labels = this.scheduleData.labels;
             this.title = this.well.name;
         },
         computed: {
@@ -315,6 +317,7 @@
         },
         watch: {
             isShowEvents: function (value) {
+                console.log('toogle watch')
                 this.$refs.chart.toggleSeries('Мероприятия');
             },
             chartSeries: function () {

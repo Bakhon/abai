@@ -32,7 +32,8 @@
         components: {apexchart: chart},
         props: {
             well: {},
-            isShowEvents: Boolean
+            isShowEvents: Boolean,
+            scheduleData: {}
         },
         data: function () {
             return {
@@ -43,8 +44,6 @@
                     'liq': 0
                 },
                 chartSeries: [],
-                chartPoints: [],
-                tmpChartPoints: [],
                 labels: [],
                 yaxis: [
                     {
@@ -194,7 +193,7 @@
                     params: {
                         wellId: this.well.id,
                         period: this.activePeriod,
-                        type: 'injection'
+                        type: 'Нагнетательная'
                     }
                 }).then(({data}) => {
                     this.chartSeries = [
@@ -203,8 +202,6 @@
                         data.liquidPressure,
                         data.events
                     ];
-
-                    window.Apex.events = data.events;
                     this.labels = data.labels;
                 }).finally(() => {
                     this.SET_LOADING(false);
@@ -213,7 +210,8 @@
             },
         },
         mounted() {
-            this.getSchuduleData();
+            this.chartSeries = this.scheduleData.data;
+            this.labels = this.scheduleData.labels;
             this.title = this.well.name;
         },
         computed: {
@@ -259,16 +257,15 @@
                     },
                     yaxis: this.yaxis,
                     tooltip: {
-                        custom: function ({series, seriesIndex, dataPointIndex, w}) {
+                        custom: ({series, seriesIndex, dataPointIndex, w}) => {
                             let colors = w.globals.colors
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                             let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
-                            let events = window.Apex.events
-                            if (events.info && seriesIndex === 3) {
-                                let events_hint = events.info[dataPointIndex];
+                            let events = this.chartSeries[3].info[dataPointIndex];
+                            if (events && seriesIndex === 3) {
                                 let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
                                     "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                                    "<span style='display: block;'><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + events_hint + "</span>" + "</div>";
+                                    "<span style='display: block;'><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + events + "</span>" + "</div>";
                                 return activity;
                             }
                             return (
@@ -282,9 +279,6 @@
 
                         }
                     },
-                    annotations: {
-                        points: this.chartPoints,
-                    },
                     colors: this.colors,
                 }
             },
@@ -292,12 +286,6 @@
         watch: {
             isShowEvents: function (value) {
                 this.$refs.chart.toggleSeries('Мероприятия');
-                if (value) {
-                    this.chartPoints = this.tmpChartPoints;
-                } else {
-                    this.tmpChartPoints = this.chartPoints;
-                    this.chartPoints = [];
-                }
             },
             chartSeries: function () {
                 if (this.chartSeries.length > 2) {

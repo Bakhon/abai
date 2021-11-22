@@ -42,16 +42,18 @@
             <div class="content-block-scrollable">
                 <div  v-for="well in wells">
                     <ProductionWellsScheduleItem
-                        v-if="well.category && well.category.name_ru === productionCategory"
+                        v-if="well.category && well.category.name_ru === productionCategory && well.scheduleData"
                         :well="well"
                         :key="well.id"
                         :isShowEvents="isShowEvents"
+                        :scheduleData="well.scheduleData"
                     />
                     <InjectionWellsScheduleItem
-                        v-else-if="well.category && well.category.name_ru === injectionCategory"
+                        v-else-if="well.category && well.category.name_ru === injectionCategory && well.scheduleData"
                         :well="well"
                         :key="well.id"
                         :isShowEvents="isShowEvents"
+                        :scheduleData="well.scheduleData"
                     />
                 </div>
             </div>
@@ -64,6 +66,7 @@ import InjectionWellsScheduleItem from "./InjectionWellsScheduleItem";
 import vSelect from 'vue-select'
 import axios from "axios";
 import {globalloadingMutations} from '@store/helpers';
+import moment from "moment";
 
 export default {
     components: {
@@ -78,9 +81,10 @@ export default {
         return {
             wells: [],
             options: [],
-            isShowEvents: false,
+            isShowEvents: true,
             productionCategory: 'Нефтяная',
-            injectionCategory: 'Нагнетательная'
+            injectionCategory: 'Нагнетательная',
+            initialPeriod: 90
         }
     },
     methods: {
@@ -111,25 +115,52 @@ export default {
             },
             350
         ),
-        selectWell(well) {
-            let wellOptions = [];
+        async selectWell(well) {
+            this.SET_LOADING(true);
             if (Object.keys(well).length > 0) {
-                this.SET_LOADING(true);
-                this.axios
-                    .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
-                    .then(({ data }) => {
-                        try {
-                            well.category = data.category;
-
-                        } catch (e) {
-                            this.SET_LOADING(false);
-                        }
-                    }).finally(() => {
-                    this.SET_LOADING(false);
-                });
+                const response = await axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`));
+                well['category'] = response.data.category;
             }
             this.options = [];
             this.wells.unshift(well);
+            for (let i in this.wells) {
+                let well = this.wells[i];
+                this.wells[i]['scheduleData'] = await this.getScheduleData(well.id,well.category.name_ru);
+            }
+            this.SET_LOADING(false);
+        },
+        async getScheduleData(id,type) {
+            let sheduleData = {};
+            let queryOptions = {
+                'wellId': id,
+                'period': this.initialPeriod,
+                'type': type
+            };
+            const response = await axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'),{params:queryOptions});
+            if (type === this.injectionCategory) {
+                sheduleData = {
+                    'data': [
+                        response.data.ndin,
+                        response.data.liquidInjection,
+                        response.data.liquidPressure,
+                        response.data.events
+                    ],
+                    'labels': response.data.labels
+                };
+            } else {
+                sheduleData = {
+                    'data': [
+                        response.data.ndin,
+                        response.data.measLiq,
+                        response.data.oil,
+                        response.data.measWaterCut,
+                        response.data.events
+                    ],
+                    'labels': response.data.labels
+                };
+            }
+
+            return sheduleData;
         },
         removeWellSchedule(well) {
             this.wells.splice(
@@ -137,8 +168,11 @@ export default {
             );
         }
     },
-    mounted() {
+    async mounted() {
+        this.SET_LOADING(true);
+        this.mainWell['scheduleData'] = await this.getScheduleData(this.mainWell.id,this.mainWell.category.name_ru);
         this.wells.push(this.mainWell);
+        this.SET_LOADING(false);
     }
 }
 </script>
