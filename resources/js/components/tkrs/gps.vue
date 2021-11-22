@@ -137,7 +137,7 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Всего часов, в т.ч:</td>
-                      <td class="header_name manual-edit" >24,0</td>
+                      <td class="input-form-auto header_name" >24,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">24,0</td>
                       <td class="header_name">Превышение стола ротора, м</td>
@@ -167,46 +167,46 @@
                     </tr>
                     <tr>
                       <td colspan="2">Непроизводительное время в т.ч:</td>
-                      <td class="header_name manual-edit">1,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">1,0</td>
+                      <td class="input-form-auto header_name">1,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">1,0</td>
                       <td colspan="2">Искусственный забой, м</td>
-                      <td class="input-form-auto">1856</td>
+                      <td class="input-form-auto header_name">1856</td>
                       <td colspan="2">Текущий забой, м</td>
-                      <td class="input-form-auto">1851м</td>
+                      <td class="input-form-auto header_name">1851м</td>
                     </tr>
                     <tr>
                       <td colspan="2">обеденный перерыв</td>
-                      <td class="input-form-auto">1,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">1,0</td>
+                      <td class="header_name manual-edit">1,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">1,0</td>
                       <td colspan="2">Интервал перфорации</td>
                       <td colspan="4" class="input-form-auto">1700-1710м.</td>
                     </tr>
                     <tr>
                       <td colspan="2">ремонт оборудования</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                       <td colspan="6" rowspan="4" class="input-form-auto">{{all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2">метеоусловия</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
                       <td colspan="2"> ожидание по вине Подрядчика</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
                       <td colspan="2">ожидание по вине третьей стороны</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                 </tbody>
               </table>
