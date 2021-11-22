@@ -457,8 +457,12 @@
                                 <tbody>
                                 <tr>
                                     <td>{{trans('digital_drilling.daily_raport.chisel')}}</td>
-                                    <td  colspan="2">1</td>
-                                    <td  colspan="2">2</td>
+                                    <td  colspan="2">
+                                        <input type="text" v-model="report.bit_info_daily[0].bit_num" disabled>
+                                    </td>
+                                    <td  colspan="2">
+                                        <input type="text" v-model="report.bit_info_daily[1].bit_num" disabled>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
