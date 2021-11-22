@@ -13,13 +13,23 @@ sup{
 }
 .digital_drilling{
     width: 96.5vw;
+    color: #ffffff!important;
+}
+.table{
+    color: #ffffff!important;
+}
+.newWell *{
+    color: #ffffff;
 }
 .digital_drilling *{
     box-sizing: border-box;
-    color: #FFFFFF;
     font-family: Harmonia Sans Pro Cyr;
     font-style: normal;
     font-weight: normal;
+}
+
+.inc__charts{
+    color: #0d092a;
 }
 .digital_drilling .col-sm-12.centerBlock {
     padding: 0 10px;

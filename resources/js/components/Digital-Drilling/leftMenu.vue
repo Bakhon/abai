@@ -49,5 +49,7 @@
 </script>
 
 <style scoped>
-
+.left__menu *{
+    color: #ffffff;
+}
 </style>
