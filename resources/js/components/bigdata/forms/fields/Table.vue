@@ -176,6 +176,8 @@ export default {
         return obj
       })
 
+      this.updateParentField()
+
     },
     openCreateForm() {
       this.editedItemIndex = null
