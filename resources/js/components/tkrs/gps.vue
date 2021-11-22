@@ -58,7 +58,7 @@
                       <td class="header_name">Дата отчета</td>
                       <td class="input-form-auto header_name">29.05.2020 г.</td>
                       <td class="input-form-auto header_name_red">{{well_name}}</td>
-                      <td class="input-form-auto header_name_red">м/р. Акшабулак </td>
+                      <td class="input-form-auto header_name_red">{{field_name}}</td>
                       <td class="header_name">Начало бурения:</td>
                       <td class="input-form-auto header_name_red">{{start_drill}}</td>
                       <td class="header_name">Конец бурения:</td>
@@ -70,7 +70,7 @@
                       <td class="header_name">Задание по программе:</td>
                       <td class="input-form-auto header_name" colspan="2">{{programmes_target_name}}</td>
                       <td class="header_name">Тип скважины:</td>
-                      <td class="input-form-auto header_name_red" colspan="2">эксплуатационная</td>
+                      <td class="input-form-auto header_name_red" colspan="2">{{well_type}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Тип станка:</td>
