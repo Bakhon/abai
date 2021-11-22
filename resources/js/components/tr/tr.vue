@@ -6493,7 +6493,6 @@
 .overflow-auto {
   justify-content: center;
   display: flex;
-  height: calc(100% - 936px);
 }
 .select_pages {
   color: white;
@@ -6688,7 +6687,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 255px);
+  height: calc(100vh - 245px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;

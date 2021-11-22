@@ -51,7 +51,7 @@
                    </tr>
                    <tr>
                        <th>Факт / Actual</th>
-                       <th>Оценка / Expected</th>
+                       <th>Факт / Actual</th>
                    </tr>
                    <tr v-for="i in 15">
                        <td v-for="i in 6"></td>
@@ -109,7 +109,7 @@
                    </tr>
                    <tr>
                        <th>Факт / Actual</th>
-                       <th>Оценка / Expected</th>
+                       <th>Факт / Actual</th>
                    </tr>
                    <tr v-for="i in 15">
                        <td v-for="i in 6"></td>

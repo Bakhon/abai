@@ -24,6 +24,7 @@ return array (
   'mainKvl' => 'КВЛ общий',
   'unsuccessfulKvl' => 'КВЛ не рентаб.',
   'share' => 'Доля, %',
+  'factor_analyse' => 'Факторный анализ, тонн',
   'Jan' => 'Янв',
   'Feb' => 'Фев',
   'Mar' => 'Мар',
@@ -40,7 +41,7 @@ return array (
   'comparisonIndicatorsTitle' => 'Сопоставление плановых и фактических показателей по ГТМ',
   'profitabilityIndexTitle' => 'Индекс прибыльности и сопоставление плановых дебитов нефти с фактическими',
   'plannedGrowthReasonsTitle' => 'Причины недостижения планового прироста',
-  'successfulWellsProportionTitle' => 'Доля успешных скважин',
+  'successfulWellsProportionTitle' => 'Распределение эффективности',
   'countTh' => 'Кол-во скв.-опер.',
   'avgDebitTh' => 'Ср. дебит нефти т/сут.',
   'additionalMiningTh' => 'Доп.добыча нефти, тыс. т',
@@ -144,7 +145,6 @@ return array (
   'year' => 'Год',
   'calc-empty-well' => 'Сделайте расчет прежде чем получить скважины',
   'empty-well-chart' => 'Нажмите на скважину чтобы получить данные',
-  'factor_analyse' => 'Факторный анализ, тонн',
   'paegtm_refs_list' => 'Входные данные для модуля "ПиАЭГТМ"',
   'gtm_fact_costs' => 'Фактические стоимости ГТМ',
   'upload_excel' => 'Добавить данные в Excel',
@@ -152,5 +152,4 @@ return array (
   'download_example' => 'Скачать шаблон',
   'upload_validation_error' => 'Ошибка загрузки файла',
   'import_data_from_excel' => 'Импорт данных из Excel в базу данных MySQL',
-
 );
