@@ -727,21 +727,19 @@ class WellsController extends Controller
             ->where('metric.code', '=', $method)
             ->orderBy('dbeg', 'desc')
             ->get(['value_string', 'dbeg'])
-            ->toArray();          
-        
-            if($gdisComplex){
-                if($method == 'BHP'){                                                
-                    $orgs = $this->org($well);  
-                    $mainOrgCode = $this->orgCode($orgs);                    
-                        if($mainOrgCode == 'KGM'){
-                                $gdisComplex[0]['value_string'] *= 0.987;                           
-                                return $gdisComplex[0];                      
-                            }                             
-                            return $gdisComplex[0];                                 
-                        }                
+            ->toArray(); 
+          
+            $orgs = $this->org($well);  
+            $mainOrgCode = $this->orgCode($orgs);
+            if($method == 'BHP' && $mainOrgCode == 'KGM'){
+                $gdisComplex[0]['value_string'] *= 0.987; 
                 return $gdisComplex[0];
-            }   
-        return "";
+            } 
+            if($gdisComplex){
+                return $gdisComplex[0];
+            }
+          
+            return "";
     }
 
     private function gis(Well $well)
