@@ -98,7 +98,7 @@ class VisualCenterController extends Controller
             $query->where('dzo', $this->dzoName);
         }
         $result = $query->orderBy('date', 'asc')->get();
-        if ($this->periodType !== 'year') {
+        if ($this->periodType !== 'year' && $this->periodType !== 'period') {
             foreach ($result as $dzoItem) {
                 foreach($dzoItem->getAttributes() as $key => $item) {
                     if (is_numeric($item)) {

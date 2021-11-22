@@ -69,22 +69,25 @@ class WellPerf extends PlainForm
 
         $intervals = DB::connection('tbd')
             ->table('prod.well_perf_interval')
+            ->selectRaw('id, well_perf, geo, top::REAL, base::REAL')
             ->whereIn('well_perf', $wellPerfIds)
             ->orderBy('top')
             ->get()
             ->map(function ($interval) {
-                $interval->dbeg = Carbon::parse($interval->dbeg, 'Asia/Almaty');
                 return $interval;
             });
 
         return $wellPerforations->map(function ($perf) use ($wellPerforations, $intervals) {
-            $perf->intervals = $this->formatIntervals($intervals->where('well_perf', $perf->id));
+            $perf->intervals = [
+                'value' => $intervals->where('well_perf', $perf->id),
+                'formated_value' => $this->formatIntervals($intervals->where('well_perf', $perf->id))
+            ];
 
             $actualIntervals = $this->getActiveIntervals($perf, $wellPerforations, $intervals);
             $perf->actual_intervals = $this->formatIntervals($actualIntervals);
 
             $perf->well = $actualIntervals->map(function ($interval) {
-                return $interval->top - $interval->base;
+                return $interval->base - $interval->top;
             })->sum();
 
             return $perf;
@@ -95,7 +98,7 @@ class WellPerf extends PlainForm
     {
         return $intervals
             ->map(function ($interval) {
-                return (float)$interval->base . ' - ' . (float)$interval->top . ';';
+                return (float)$interval->top . ' - ' . (float)$interval->base . ';';
             })
             ->unique()
             ->join('<br>');
@@ -140,7 +143,7 @@ class WellPerf extends PlainForm
         return $intervals->whereIn('well_perf', $isolatedPerforationIds);
     }
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentId)
     {
         if (empty($this->tableFields)) {
             return;
@@ -151,7 +154,7 @@ class WellPerf extends PlainForm
                 continue;
             }
             if ($field['code'] === 'documents') {
-                $this->submitFiles($id, $field);
+                $this->submitFiles($parentId, $field);
                 continue;
             }
 
@@ -159,13 +162,29 @@ class WellPerf extends PlainForm
             if (!is_array($this->request->get($field['code']))) {
                 continue;
             }
+
+            $ids = [];
             foreach ($this->request->get($field['code']) as $data) {
-                $data[$field['parent_column']] = $id;
+                $data[$field['parent_column']] = $parentId;
                 $data['dbeg'] = $this->request->get('perf_date');
                 $data['dend'] = Well::DEFAULT_END_DATE;
                 $this->submittedData['table_fields'][$field['code']][] = $data;
-                DB::connection('tbd')->table($field['table'])->insert($data);
+                if ($data['id']) {
+                    DB::connection('tbd')
+                        ->table($field['table'])
+                        ->where('id', $data['id'])
+                        ->update($data);
+                    $ids[] = $data['id'];
+                } else {
+                    DB::connection('tbd')->table($field['table'])->insert($data);
+                }
             }
+
+            DB::connection('tbd')
+                ->table($field['table'])
+                ->where($field['parent_column'], $parentId)
+                ->whereNotIn('id', $ids)
+                ->delete();
         }
     }
 
@@ -179,7 +198,7 @@ class WellPerf extends PlainForm
             },
             ARRAY_FILTER_USE_KEY
         );
-        if (isset($data['actual_intervals'])) {
+        if (array_key_exists('actual_intervals', $data)) {
             unset($data['actual_intervals']);
         }
         return $data;

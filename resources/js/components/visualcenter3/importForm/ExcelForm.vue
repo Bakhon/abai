@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <div v-if="category.isFactActive || category.isArchieveActive" class="col-2 row mt-3 ml-1">
+            <div v-if="(category.isFactActive || category.isArchieveActive) && !bigDzo.includes(selectedDzo.ticker)" class="col-2 row mt-3 ml-1">
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
@@ -297,7 +297,8 @@
                         :columns="columns"
                         :rowSize="30"
                         @beforeRangeEdit="beforeRangeEdit"
-                        @beforeEdit="beforeRangeEdit"
+                        @beforeEdit="beforeEdit"
+                        @beforeCellFocus="beforeFocus"
                         :frameSize="72"
                 ></v-grid>
                 <v-grid

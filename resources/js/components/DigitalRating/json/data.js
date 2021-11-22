@@ -372,6 +372,39 @@ const actualIndicators = [
     }
 ]
 
+const analysis = [
+    {
+        id: 1,
+        title: 'Сравнение по добыче нефти и фонду скважин',
+        checked: false
+    },
+    {
+        id: 2,
+        title: 'Сравнение по накопленной добыче нефти',
+        checked: false
+    },
+    {
+        id: 3,
+        title: 'Отклонение по добыче нефти и фонду скважин',
+        checked: false
+    },
+    {
+        id: 4,
+        title: 'Отклонение по добыче нефти и дебиту нефти',
+        checked: false
+    },
+    {
+        id: 5,
+        title: 'Распределение отклонений нефти по факторам, тыс.т',
+        checked: false
+    },
+    {
+        id: 6,
+        title: 'Распределение отклонений нефти по факторам, %',
+        checked: false
+    }
+]
+
 export {
     overviews,
     histories,
@@ -385,5 +418,6 @@ export {
     rowsOil,
     rowsHorizon,
     actualIndicators,
-    objectList
+    objectList,
+    analysis
 }

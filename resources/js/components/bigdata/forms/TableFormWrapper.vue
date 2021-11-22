@@ -57,6 +57,29 @@
           </div>
         </template>
       </template>
+      <template v-if="formParams && formParams.new === true">
+        <button
+            v-if="isEditMode === false"
+            class="btn btn-primary"
+            @click="isEditMode = true"
+        >
+          Редактировать
+        </button>
+        <template v-else>
+          <button
+              class="btn btn-primary ml-1"
+              @click="$refs.tableForm.submit()"
+          >
+            Сохранить
+          </button>
+          <button
+              class="btn btn-secondary ml-1"
+              @click="isEditMode = false"
+          >
+            Отмена
+          </button>
+        </template>
+      </template>
     </div>
     <BigDataTableForm
         :id="id"
@@ -64,7 +87,10 @@
         :filter="filter"
         :params="params"
         :type="type"
+        ref="tableForm"
         @initialized="init"
+        :edit-mode="isEditMode"
+        @sent="sent"
     >
     </BigDataTableForm>
   </div>
@@ -106,7 +132,8 @@ export default {
   data() {
     return {
       filter: null,
-      formParams: null
+      formParams: null,
+      isEditMode: false
     }
   },
   watch: {
@@ -159,6 +186,9 @@ export default {
         this.initFilter()
       }
     },
+    sent() {
+      this.isEditMode = false
+    }
   },
 };
 </script>

@@ -35,6 +35,7 @@ export default {
               imagePath: "/img/tkrs/brigada_header.svg",
               showArrow: false,
               position: "right",
+              url: "tkrsMain",
             },
           ],
         },
@@ -51,6 +52,7 @@ export default {
               imagePath: "/img/tkrs/search_header.svg",
               showArrow: false,
               position: "right",
+              url: "hookWeightSensorAnalyse",
             },
           ],
         },
@@ -67,6 +69,7 @@ export default {
               imagePath: "/img/tkrs/daily_summary.svg",
               showArrow: false,
               position: "right",
+              url: "gps",
             },
             {
               name: this.trans('tkrs.por'),

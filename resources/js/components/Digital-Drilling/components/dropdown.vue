@@ -1,25 +1,25 @@
 <template>
     <div class="dropdown" :class="{active: isOpen}">
-        <div class="dropdown__header" @click="isOpen=!isOpen">
+        <div class="dropdown__header" :class="{report: report}">
             <div class="dropdown__header-title">
-                <div class="dropdown__search" v-if="search">
-                    <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
+                <div class="cancel" v-if="cancelFilter && current.name" @click="cancelFilterItem">
+                    <img src="/img/digital-drilling/cancel-filter.svg" alt="">
                 </div>
-                <span v-if="options.length>0 && !search && currentItem==null">
-                    {{options[0].name}}
-                </span>
-                <span v-if="options.length>0 && !search && currentItem!=null">
-                    {{currentItem}}
+                <span @click="isOpen=!isOpen" class="name">
+                    <span v-if="!report">{{current.name}}</span><span v-else>{{current.well_num}}</span>
                 </span>
             </div>
-            <div class="dropdown__header-icon">
+            <div class="dropdown__header-icon" @click="isOpen=!isOpen">
                 <img src="/img/digital-drilling/dropdown-toggle-icon.svg" alt="">
             </div>
         </div>
         <div class="dropdown__body">
             <div class="dropdown__content">
+                <div class="dropdown__search" v-if="search">
+                    <input type="text" v-model="query" v-on:input="changeSearch" :placeholder="trans('digital_drilling.window_head.enter_text')">
+                </div>
                 <ul v-if="options.length>0">
-                    <li v-for="item in options" @click="changeCurrentItem(item)">{{item.name}}</li>
+                    <li v-for="item in options" @click="changeCurrentItem(item)"><span v-if="!report">{{item.name}}</span><span v-else>{{item.well_num}}</span></li>
                 </ul>
                 <ul v-else>
                     <li>No result</li>
@@ -32,7 +32,7 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options', 'search'],
+        props: ['title', 'options', 'search', 'current', 'cancelFilter', 'report'],
         data(){
             return{
                 isOpen: false,
@@ -49,6 +49,9 @@
             },
             changeSearch(){
                 this.$emit('search', this.query)
+            },
+            cancelFilterItem(){
+                this.$emit('cancelFilterItem')
             },
         },
     }
@@ -71,6 +74,18 @@
         min-width: 200px;
         height: 23px;
         padding: 0 15px 0 10px;
+        cursor: pointer;
+    }
+    .dropdown__header-title{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .dropdown__header-title .name{
+        flex-grow: 1;
+    }
+    .dropdown__header-title img{
+        margin-right: 10px;
         cursor: pointer;
     }
     .dropdown .dropdown__header-icon{
@@ -121,5 +136,11 @@
     }
     .dropdown__search input:focus{
         outline: none;
+    }
+    .dropdown__header.report{
+        background-color: #334296!important;
+        width: 200px!important;
+        padding: 0!important;
+        height: 100%!important;
     }
 </style>

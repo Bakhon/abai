@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\DB;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Exceptions\JsonException;
 use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
@@ -27,6 +28,15 @@ class FormsController extends Controller
         );
     }
 
+
+    public function getWellFormsStructure(FormService $formService): JsonResponse
+    {
+        return response()->json(
+            [
+                'tree' => $formService->getWellFormsStructure()
+            ]
+        );
+    }
 
     public function getFormsStructure(FormService $formService): JsonResponse
     {
@@ -78,6 +88,8 @@ class FormsController extends Controller
         $form = $this->getForm($formName);
         try {
             return $form->send();
+        } catch (JsonException $exception) {
+            return response()->json(['errors' => $exception->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (SubmitFormException $exception) {
             return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

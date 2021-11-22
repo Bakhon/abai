@@ -2,13 +2,10 @@
   <div class="column" ref="column" :style="{height: `${heightContainer - columnTopPadding}px`}">
     <div class="column__header d-flex flex-column" :style="{height: `${headerHeight}px`}">
       <div
-          v-for="(el, i) in elements.filter((element)=>getElements.includes(element.data.name)||element.data.name === 'SSTVD')"
+          v-for="(el, i) in elements.filter((element)=>getElements.includes(element.data.name)||element.data.name === 'DEPTH')"
           :key="i">
         <div class="column__header_info">
           {{ el.data.name }}
-        </div>
-        <div class="column__header_info">
-          1: 0
         </div>
       </div>
     </div>
@@ -44,13 +41,13 @@ export default {
       this.setCanvasSize()
     },
     offsetY(val){
-      if(this.elements[0].data.name !== 'SSTVD'){
+      if(this.elements[0].data.name !== 'DEPTH'){
         this.tCanvas.setOffsetY = val*10;
         this.draw();
       }
     },
     "$store.state.geologyGis.changeGisData"() {
-      if(this.elements[0].data.name !== 'SSTVD'){
+      if(this.elements[0].data.name !== 'DEPTH'){
         this.draw();
       }
     }
@@ -72,7 +69,8 @@ export default {
         let {data: {curves}, options} = this.$store.state.geologyGis.awGis.getElement(name)
         for (const [wellID, curve] of Object.entries(curves)) {
           if(wellID !== this.wellName) continue;
-          this.tCanvas.drawCurve(curve, {options, wellID})
+          if(options.isLithology[wellID]&&options.max[wellID] < 3) this.tCanvas.drawLithology(curve, {options, wellID})
+          else this.tCanvas.drawCurve(curve, {options, wellID})
         }
       }
     },

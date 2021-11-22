@@ -1,7 +1,7 @@
+import apexchart from 'vue-apexcharts';
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
 import {rowsHorizon,actualIndicators,objectList} from '../json/data';
-import apexchart from 'vue-apexcharts';
 import maps from '../mixins/maps.js';
 import wellList from "../json/wells/13.json";
 import owcList from '../json/owc_out_uzn_13_osn.json';
@@ -43,14 +43,12 @@ export default {
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
+      show: false
     }
   },
 
-  async created() {
-    await this.fetchData();
-  },
-
   async mounted() {
+    await this.fetchData();
     await this.initMap('wellMap');
     await this.initWellOnMap();
     await this.initContourOnMap();
@@ -233,11 +231,16 @@ export default {
     initLegends() {
       const legend = L.control({ position: "bottomleft" });
 
-      legend.onAdd = function(map) {
+      legend.onAdd = function() {
         let div = L.DomUtil.create("div", "legend");
         div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
           '<span> - добывающая проектная скважина</span><br>';
-        div.innerHTML += '<i class="fas fa-caret-up" style="color: #fcad00;font-size: 24px;"></i>' +
+        div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
+          'width: 0;\n' +
+          'height: 0;\n' +
+          'border-style: solid;\n' +
+          'border-width: 0 8px 8px 8px;\n' +
+          'border-color: transparent transparent #fcad00 transparent;"></div>' +
           '<span> - нагнетательный скважин</span>';
         return div;
       };
@@ -274,6 +277,6 @@ export default {
 
     getChildren(item) {
       return item?.children?.length;
-    }
+    },
   }
 }

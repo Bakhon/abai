@@ -67,14 +67,26 @@
         "icon": "/img/GTM/icon_menu_forecast.svg"
       },
       {
-        "name": "Ранжирование кандидатов",
+        "name": "Выгрузка отчетности",
         "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
+        "icon": "/img/GTM/icon_menu_export.svg"
+      }
+    ]
+  },
+  {
+    "name": "Планирования программы ГТМ",
+    "icon": "/img/GTM/production_planning.svg",
+    "parentType": "productionPlanningAndMonitoring",
+    "children": [
       {
         "name": "Программа ГТМ",
         "component": null,
         "icon": "/img/GTM/icon_menu_programm.svg"
+      },
+      {
+        "name": "Ранжирование кандидатов",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_raging.svg"
       },
       {
         "name": "Выгрузка отчетности",
@@ -88,36 +100,6 @@
     "icon": "/img/GTM/new_wells_rating.svg",
     "parentType": "digitalRating",
     "children": [
-      {
-        "name": "Прогноз эффективности (методика)",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_forecast.svg"
-      },
-      {
-        "name": "Ранжирование кандидатов",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
-      {
-        "name": "Программа бурения",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
-      },
-      {
-        "name": "Выгрузка отчетности",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_export.svg"
-      },
-      {
-        "name": "Отчет",
-        "component": {
-          "name": "child-component",
-          "template": "<div><digital-rating-report></digital-rating-report></div>",
-          "parentType": "digitalRating"
-        },
-        "icon": "/img/GTM/report_icon.svg",
-        "url": "/digital-rating/reports"
-      },
       {
         "name": "Карта секторов",
         "component": {
@@ -137,40 +119,27 @@
         },
         "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
         "url": "/digital-rating/compare-drilling"
-      }
-    ]
-  },
-  {
-    "name": "Планирование добычи и мониторинг",
-    "icon": "/img/GTM/production_planning.svg",
-    "parentType": "productionPlanningAndMonitoring",
-    "children": [
-      {
-        "name": "Критерии подбора",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_criteria.svg"
       },
       {
-        "name": "Прогноз эффективности (методика)",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_forecast.svg"
+        "name": "Отчет",
+        "component": {
+          "name": "child-component",
+          "template": "<div><digital-rating-report></digital-rating-report></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/report_icon.svg",
+        "url": "/digital-rating/reports"
       },
       {
-        "name": "Ранжирование кандидатов",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
-      {
-        "name": "Программа бурения",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
-      },
-      {
-        "name": "Выгрузка отчетности",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_export.svg"
+        "name": "Факторный анализ",
+        "component": {
+          "name": "child-component",
+          "template": "<div><factor-analysis></factor-analysis></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
+        "url": "/digital-rating/factor-analysis"
       }
     ]
   }
-
 ]
