@@ -515,6 +515,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null},        
       },
       wellParent: null,
       tubeNomOd: null,
@@ -585,6 +586,7 @@ export default {
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
         techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -752,14 +754,14 @@ export default {
           : ""; 
       let techModeProdOil = this.getTechmodeLiqiud(well);   
       let techModeProdOil_measWaterCut =
-        this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
+        this.well?.techModeProdOil?.wcut && this.well?.dmart_daily_prod_oil?.wcut
           ? this.well.techModeProdOil.wcut +
             " / " +
-            this.well.measWaterCut.water_cut
+            this.well.dmart_daily_prod_oil.wcut
           : this.well?.techModeProdOil?.wcut
           ? this.well.techModeProdOil.wcut
-          : this.well?.measWaterCut?.water_cut
-          ? this.well.measWaterCut.water_cut
+          : this.well?.dmart_daily_prod_oil?.wcut
+          ? this.well.dmart_daily_prod_oil.wcut
           : "";
       let krsWorkover = this.well.krsWorkover.dbeg
         ? this.getFormatedDate(this.well.krsWorkover.dbeg)
@@ -794,8 +796,8 @@ export default {
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
         ? this.well.gdisCurrentValuePmpr.value_double
         : "";
-      let gdisCurrentValueFlvl = this.well.dinzamer.value_double
-        ? this.well.dinzamer.value_double
+      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin
+        ? this.well.dmart_daily_prod_oil.hdin
         : "";
       let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
         ? this.well.gdisCurrentValueStatic.value_double
@@ -815,12 +817,12 @@ export default {
           : this.well.gdisComplex.dbeg
           ? this.getFormatedDate(this.well.gdisComplex.dbeg)
           : "";
-      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : "";
+      let rzatrAtm = this.well.dmart_daily_prod_oil ? this.well.dmart_daily_prod_oil.pzat : "";
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp = this.well.techmode.bhp && this.well.techmode.date 
-        ? this.well.techmode.bhp.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.date) : "";     
+      let gdisCurrentValueBhp = this.well.techmode.value_string && this.well.techmode.dbeg 
+        ? this.well.techmode.value_string.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.dbeg) : "";     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -851,6 +853,8 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";      
+      let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -994,6 +998,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.diametr_stuzer"),
+          data: '',
+          type: ["nag"],
+        },
+        {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
@@ -1090,6 +1099,11 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gas_production"),
+          data: gas_production,
+          type: ["all"],
+        },
+        {
           name: this.trans("well.gaz_factor"),
           data: meas_well,
           type: ["dob_oil"],
@@ -1175,7 +1189,7 @@ export default {
         {
           name: this.trans("well.rzab"),
           data: gdisCurrentValueBhp,
-          type: ["dob_oil"],
+          type: ["all"],
         },
         {
           name: this.trans("well.rzatr"),
@@ -1233,7 +1247,7 @@ export default {
         this.axios
           .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
           .then(({ data }) => {
-            try {                                    
+            try {                                                 
               this.well_all_data = data;
               this.well.id = data.wellInfo.id;
               this.wellUwi = data.wellInfo.uwi;
@@ -1247,7 +1261,9 @@ export default {
                  this.wellTechsName = ' ';                          
                  this.wellSaptialObjectBottomX  = ' ';
                  this.wellSaptialObjectBottomY  = ' '; 
-                 this.wellGeoFields = ' ';                                                                   
+                 this.wellGeoFields = ' ';   
+                 this.gas_production = ' ';    
+                 this.dmart_daily_prod_oil = ' ';                                                            
               }
               
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
@@ -1353,22 +1369,22 @@ export default {
       return "";
     },
     getTechmodeLiqiud(well){    
-     if (this.well.techModeProdOil && this.well.measLiq) {
+     if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
           this.well.techModeProdOil.liquid &&
-          this.well.measLiq.liquid
+          this.well.dmart_daily_prod_oil
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
             " / " +
-            this.well.measLiq.liquid.toFixed(1)
+            this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
         if (this.well.techModeProdOil.liquid) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.measLiq.liquid) {
-          return "-" + " / " + this.well.measLiq.liquid.toFixed(1);
+        if (this.well.dmart_daily_prod_oil.liquid) {
+          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1);
         }
       }
       return "";  
@@ -1416,7 +1432,7 @@ export default {
         }
       } catch (e) {}
     },
-    switchFormByCode(data) {
+    switchFormByCode(data) {      
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;

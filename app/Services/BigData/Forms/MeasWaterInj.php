@@ -100,6 +100,7 @@ class MeasWaterInj extends MeasLogByMonth
                 'value' => $waterInj ? $waterInj['pressure'] : 0,
                 'is_editable' => true,
                 'params' => [
+                    'well_id' => $well->id,
                     'field' => 'pressure_inj',
                     'date' => $monthDay->format('d.m.Y')
                 ]
@@ -108,6 +109,7 @@ class MeasWaterInj extends MeasLogByMonth
                 'value' => $waterInj ? $waterInj['water_inj'] : 0,
                 'is_editable' => true,
                 'params' => [
+                    'well_id' => $well->id,
                     'field' => 'water_inj_val',
                     'date' => $monthDay->format('d.m.Y')
                 ]
@@ -138,39 +140,43 @@ class MeasWaterInj extends MeasLogByMonth
         return $columns;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $field = $this->request->get('params')['field'];
-        $date = Carbon::parse($this->request->get('params')['date'], 'Asia/Almaty')->toImmutable();
-        if (in_array($field, ['pressure_inj', 'water_inj_val'])) {
-            $pressure = DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('well', $this->request->get('well_id'))
-                ->where('dbeg', $date->startOfDay())
-                ->first();
+        foreach ($rows as $row) {
+            foreach ($row as $date => $field) {
+                $date = Carbon::parse($date, 'Asia/Almaty')->toImmutable();
+                if (in_array($field['params']['field'], ['pressure_inj', 'water_inj_val'])) {
+                    $pressure = DB::connection('tbd')
+                        ->table('prod.meas_water_inj')
+                        ->where('well', $field['params']['well_id'])
+                        ->where('dbeg', $date->startOfDay())
+                        ->first();
 
-            if (empty($pressure)) {
-                DB::connection('tbd')
-                    ->table('prod.meas_water_inj')
-                    ->insert(
-                        [
-                            'dbeg' => $date->startOfDay(),
-                            'dend' => $date->endOfDay(),
-                            'well' => $this->request->get('well_id'),
-                            $field => $params['value']
-                        ]
-                    );
-                return;
+                    if (empty($pressure)) {
+                        DB::connection('tbd')
+                            ->table('prod.meas_water_inj')
+                            ->insert(
+                                [
+                                    'dbeg' => $date->startOfDay(),
+                                    'dend' => $date->endOfDay(),
+                                    'well' => $field['params']['well_id'],
+                                    $field['params']['field'] => $field['value']
+                                ]
+                            );
+                        continue;
+                    }
+
+                    DB::connection('tbd')
+                        ->table('prod.meas_water_inj')
+                        ->where('id', $pressure->id)
+                        ->update(
+                            [
+                                $field['params']['field'] => $field['value']
+                            ]
+                        );
+                }
             }
-
-            DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('id', $pressure->id)
-                ->update(
-                    [
-                        $field => $params['value']
-                    ]
-                );
         }
+        return [];
     }
 }

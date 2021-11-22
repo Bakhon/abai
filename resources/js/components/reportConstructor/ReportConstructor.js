@@ -62,6 +62,7 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            isLeftSectionHided: false,
             wellSheetTypes: {
                 'well_production': 'Добывающие скважины',
                 'well_pump': 'Нагнетательные скважины'
@@ -367,7 +368,9 @@ export default {
                     });
             }
 
-            return selectedObjects;
+            return selectedObjects.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
         },
         async updateChildrenOfNode(node, level) {
             if (!node?.children) return;
@@ -415,7 +418,7 @@ export default {
             if (this.endDate) {
                 dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
             } else {
-                dates.push(null)
+                dates.push(formatDate.getTodayDateFormatted());
             }
             return dates
         },
@@ -886,6 +889,11 @@ export default {
                 return (sheet && Object.keys(sheet).length > 0)
             }
             return (sheet && sheet.length > 0)
+        },
+        onSectionHidingEvent(method) {
+            if(method == 'left'){
+                this.isLeftSectionHided = !this.isLeftSectionHided
+            }
         },
     }
 }

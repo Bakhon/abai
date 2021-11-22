@@ -46,7 +46,7 @@
     </div>
 
 
-    <div class="left-section bg-dark">
+    <div :class="{'hide': isLeftSectionHided}" class="bg-dark left-section">
       <div class="col">
         <div class="row menu">
           <div class="left-section-title" v-bind:class="{active: currentStructureType === 'org'}"
@@ -217,8 +217,13 @@
           </div>
         </div>
       </div>
+      <div class="arrow-hide" @click="onSectionHidingEvent('left')">
+        <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+        </svg>
+      </div>
     </div>
-    <div class="section-main">
+    <div :class="{'hide': isLeftSectionHided}" class="section-main">
       <div class="col">
         <div class="row">
           <div class="col">
@@ -753,6 +758,43 @@ body {
   display: flex;
 }
 
+.left-section.hide{
+  width: 50px;
+  background: #272953;
+  overflow: hidden;
+
+}
+
+.left-section.hide div{
+  display: none;
+}
+
+.left-section.hide .arrow-hide {
+  display: flex;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+
+.arrow-hide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2B3384;
+  border-radius: 5px 0px 0px 5px;
+  top: 50%;
+  transform:translateY(-50%);
+}
+
+.arrow-hide:hover{
+  background: #3366FF;
+  cursor: pointer;
+}
+
 .left-section {
   width: 441px;
   margin-left: 15px;
@@ -978,6 +1020,10 @@ body {
       width: 350px;
     }
   }
+}
+
+.section-main.hide {
+  max-width: calc(100% - 70px);
 }
 
 .section-main {

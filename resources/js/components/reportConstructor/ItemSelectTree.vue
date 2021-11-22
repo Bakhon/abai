@@ -117,8 +117,6 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: async function (child) {
-
-      child.isLoading = true
       let node = (typeof child.node === 'undefined') ? child : child.node;
 
       return this.axios.get(this.baseUrl + "get_wells", {
@@ -145,13 +143,15 @@ export default {
       node.isChecked = !node.isChecked;
 
       content.isLoading = true;
+      node.level = content.level;
       content.updateChildren(node, content.level, node.isChecked)
+      .then(
+        content.updateParent(node.isChecked)
+      )
       .then(() => {
         content.updateThisComponent();
         content.isLoading = false;
       });
-
-      node.level = content.level;
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;

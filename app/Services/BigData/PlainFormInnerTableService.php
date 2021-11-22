@@ -5,6 +5,7 @@ namespace App\Services\BigData;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PlainFormInnerTableService
@@ -16,7 +17,7 @@ class PlainFormInnerTableService
         $this->request = $request;
     }
 
-    public function submitTables(int $parentId, array $tableFields)
+    public function submitTables(int $parentId, ?Collection $tableFields)
     {
         if (empty($tableFields)) {
             return null;

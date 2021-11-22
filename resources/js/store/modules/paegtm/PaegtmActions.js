@@ -44,5 +44,8 @@ export const paegtmActions = {
         }).catch((error) => {
             console.log(error)
         })
+    },
+    changeTreeStore({commit}, value) {
+        commit('CHANGE_TREE_STORE', value)
     }
 }
