@@ -146,7 +146,7 @@ export default {
         return well
       })
 
-      return [
+      let rows = [
         {
           status_name: this.trans('economic_reference.factual_stops'),
           wells: this.tableData.dates.map((date, dateIndex) => ({
@@ -165,16 +165,25 @@ export default {
             profitless: {...STOPPED_WELL}
           }))
         },
-        this.wellsByDates.find(wells =>
-            wells.status_id === TechnicalWellLossStatusModel.DEOPTIMIZATION
-        ),
-        {
-          ...{isProfitable: true},
-          ...this.wellsByDates.find(wells =>
-              wells.status_id === TechnicalWellLossStatusModel.DOWNLOAD_LIMIT
-          )
-        },
       ]
+
+      let wellsWithDeoptimization = this.wellsByDates.find(wells =>
+          wells.status_id === TechnicalWellLossStatusModel.DEOPTIMIZATION
+      )
+
+      if (wellsWithDeoptimization) {
+        rows.push(wellsWithDeoptimization)
+      }
+
+      let wellsWithDownloadLimit = this.wellsByDates.find(wells =>
+          wells.status_id === TechnicalWellLossStatusModel.DOWNLOAD_LIMIT
+      )
+
+      if (wellsWithDownloadLimit) {
+        rows.push({...{isProfitable: true}, ...wellsWithDownloadLimit})
+      }
+
+      return rows
     }
   }
 }
