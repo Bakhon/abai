@@ -65,7 +65,10 @@
                                 colors: '#000000',
                             },
                             formatter: function (value) {
-                                return value.toFixed(1);
+                                if (value !== null) {
+                                    return value.toFixed(1);
+                                }
+                                return value;
                             }
                         },
                         title: {
@@ -256,40 +259,28 @@
                     },
                     yaxis: this.yaxis,
                     tooltip: {
-                        // custom: function ({series, seriesIndex, dataPointIndex, w}) {
-                        //     let colors = w.globals.colors
-                        //     let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
-                        //     let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
-                        //     let events = window.Apex.events
-                        //     if (events.info && seriesIndex === 4) {
-                        //         let events_hint = events.info[dataPointIndex];
-                        //         let output = '';
-                        //         if (events_hint !== null) {
-                        //             let formatted = events_hint.slice(1,-1).slice(1,-1);
-                        //             formatted = formatted.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
-                        //             let parsed = JSON.parse(formatted);
-                        //             output = parsed.name_type + '<br>';
-                        //             for (let i in parsed.parameters) {
-                        //                 output = output + ' - ' + parsed.parameters[i].name + ' : ' + parsed.parameters[i].value + ', <br>';
-                        //             }
-                        //         }
-                        //         let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
-                        //             "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                        //             "<span style='display: block;'><div style='background: " + colors[4] + ";" + style_circle + "'></div>" + output + "</span>" + "</div>";
-                        //         return activity;
-                        //     }
-                        //
-                        //     return (
-                        //         '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
-                        //         "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                        //         "<span style='display: block;'><b><div style='background: " + colors[0] + ";" + style_circle + "'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex].toFixed(1) + "</span>" +
-                        //         "<span style='display: block;'><b><div style='background: " + colors[1] + ";" + style_circle + "'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
-                        //         "<span style='display: block;'><b><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
-                        //         "<span style='display: block;'><b><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + w.globals.initialSeries[3].name + ":</b> " + w.globals.initialSeries[3].data[dataPointIndex].toFixed(1) + "</span>" +
-                        //         "</div>"
-                        //     );
-                        //
-                        // }
+                        custom: function ({series, seriesIndex, dataPointIndex, w}) {
+                            let colors = w.globals.colors
+                            let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
+                            let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
+                            let events = window.Apex.events
+                            if (events.info && seriesIndex === 3) {
+                                let events_hint = events.info[dataPointIndex];
+                                let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
+                                    "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
+                                    "<span style='display: block;'><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + events_hint + "</span>" + "</div>";
+                                return activity;
+                            }
+                            return (
+                                '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
+                                "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
+                                "<span style='display: block;'><b><div style='background: " + colors[0] + ";" + style_circle + "'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex] + "</span>" +
+                                "<span style='display: block;'><b><div style='background: " + colors[1] + ";" + style_circle + "'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
+                                "<span style='display: block;'><b><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
+                                "</div>"
+                            );
+
+                        }
                     },
                     annotations: {
                         points: this.chartPoints,
@@ -320,7 +311,7 @@
                         return parseFloat(o);
                     });
 
-                    this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) * 0.1));
+                    this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) + 8));
                     this.maximumTick.liq = Math.round(parseFloat(this.maximumTick.liq) + (parseFloat(this.maximumTick.liq) * 0.1));
                     this.maximumTick.liqPressure = Math.round(parseFloat(this.maximumTick.liqPressure) + (parseFloat(this.maximumTick.liqPressure) * 0.1));
                     this.yaxis[1].max = this.maximumTick.liq;

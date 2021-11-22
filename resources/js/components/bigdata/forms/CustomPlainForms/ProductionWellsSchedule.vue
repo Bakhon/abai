@@ -63,6 +63,7 @@ import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
 import InjectionWellsScheduleItem from "./InjectionWellsScheduleItem";
 import vSelect from 'vue-select'
 import axios from "axios";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     components: {
@@ -83,6 +84,9 @@ export default {
         }
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         toggleShowEvents() {
             this.isShowEvents = !this.isShowEvents;
         },
@@ -108,6 +112,20 @@ export default {
             350
         ),
         selectWell(well) {
+            let wellOptions = [];
+            if (Object.keys(well).length > 0) {
+                this.SET_LOADING(true);
+                this.axios
+                    .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
+                    .then(({ data }) => {
+                        try {
+                            well.category = data.category
+                        } catch (e) {
+                            this.SET_LOADING(false);
+                        }
+                    });
+                this.SET_LOADING(false);
+            }
             this.options = [];
             this.wells.unshift(well);
         },

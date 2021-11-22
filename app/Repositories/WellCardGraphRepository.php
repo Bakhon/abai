@@ -125,9 +125,8 @@ class WellCardGraphRepository  implements WellRepositoryInterface
           $dateItem = date('Y-m-d',strtotime($item->date));
           $result['liquidInjection']['data'][] = $item->water_vol;
           $result['liquidPressure']['data'][] = $item->pressure_inj;
-          $result['ndin']['data'][] = $item->hdin;
+          $result['ndin']['data'][] = is_null($item->hdin) ? 0 : $item->hdin;
           $result['labels'][] = $dateItem;
-
           $result['events']['data'][] = $item->activity ? 10 : 0;
           $result['events']['info'][] = $item->activity;
       }

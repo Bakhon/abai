@@ -313,7 +313,8 @@ class Well extends TBDModel
             'date',
             'pressure_inj',
             'water_vol',
-            'hdin'
+            'hdin',
+            'activity'
           )->orderBy('date')->get();
         return $query;
     }
