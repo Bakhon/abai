@@ -98,14 +98,41 @@ class EconomicAnalysisController extends Controller
             return json_decode(Cache::get($cacheKey), true);
         }
 
-        $kit = TechnicalWellForecastKit::findOrFail($request->kit_id);
+        $kits = TechnicalWellForecastKit::query()
+            ->whereIn('id', $request->kit_ids)
+            ->get();
 
-        $technicalLogId = $kit->technical_log_id;
+        $wells = [];
+
+        foreach ($kits as $kit) {
+            $wells[$kit->id] = $this->getWellsKitByGranularity(
+                $kit,
+                $request->permanent_stop_coefficient,
+                $request->granularity,
+                $request->uwi
+            );
+        }
+
+        return $wells;
+    }
+
+    public function getWellsKitByGranularity(
+        TechnicalWellForecastKit $kit,
+        float $permanentStopCoefficient,
+        string $granularity,
+        string $uwi = null
+    ): array
+    {
+        $cacheKey = self::CACHE_KEY_WELLS_BY_GRANULARITY . $kit->id . "-$permanentStopCoefficient-$granularity";
+
+        if (!$uwi && Cache::has($cacheKey)) {
+            return json_decode(Cache::get($cacheKey), true);
+        }
 
         list($enabledUwis, $stoppedUwis) = $this->getProposedWells(
             $kit->economic_log_id,
             $kit->technical_log_id,
-            $request->permanent_stop_coefficient
+            $permanentStopCoefficient
         );
 
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
@@ -123,11 +150,11 @@ class EconomicAnalysisController extends Controller
         $netBackPropose = $this->sqlQueryNetBack($enabledUwis, $stoppedUwis);
 
         $overallExpenditures = $this->sqlQueryOverallExpenditures(
-            $request->permanent_stop_coefficient
+            $permanentStopCoefficient
         );
 
         $overallExpendituresPropose = $this->sqlQueryOverallExpenditures(
-            $request->permanent_stop_coefficient,
+            $permanentStopCoefficient,
             $enabledUwis,
             $stoppedUwis
         );
@@ -136,7 +163,7 @@ class EconomicAnalysisController extends Controller
 
         $profitability = $this->sqlQueryProfitability();
 
-        switch ($request->granularity) {
+        switch ($granularity) {
             case Granularity::MONTH:
                 $date = "
                 CASE WHEN well_forecast.status_id IS NOT NULL OR well_forecast.loss_status_id IS NOT NULL
@@ -148,6 +175,8 @@ class EconomicAnalysisController extends Controller
                 $date = "well_forecast.date";
                 break;
         }
+
+        $technicalLogId = $kit->technical_log_id;
 
         $query = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
@@ -184,8 +213,8 @@ class EconomicAnalysisController extends Controller
                 "changed_status",
             ]);
 
-        if ($request->uwi) {
-            $query->whereRaw(DB::raw("well_forecast.uwi = '{$request->uwi}'"));
+        if ($uwi) {
+            $query->whereRaw(DB::raw("well_forecast.uwi = '$uwi'"));
         }
 
         $query = $this
@@ -230,11 +259,9 @@ class EconomicAnalysisController extends Controller
             ->get()
             ->toArray();
 
-        Cache::put(
-            $cacheKey,
-            json_encode($wells, true),
-            now()->addDay()
-        );
+        if (!$uwi) {
+            Cache::put($cacheKey, json_encode($wells, true), now()->addDay());
+        }
 
         return $wells;
     }

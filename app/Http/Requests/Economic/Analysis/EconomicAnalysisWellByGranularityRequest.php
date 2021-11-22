@@ -22,7 +22,8 @@ class EconomicAnalysisWellByGranularityRequest extends FormRequest
                 ])
             ],
             'permanent_stop_coefficient' => 'required|numeric',
-            'kit_id' => 'required|integer|min:1',
+            'kit_ids' => 'required|array|min:1',
+            'kit_ids.*' => 'required|integer|min:1',
         ];
     }
 }

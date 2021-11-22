@@ -19,10 +19,11 @@
 
         <select-technical-well-forecast-kit
             :form="form"
-            form-key="kit_id"
-            class="ml-2"/>
+            form-key="kit_ids"
+            class="ml-2"
+            is-multiple/>
 
-        <i v-if="form.kit_id && form.permanent_stop_coefficient"
+        <i v-if="form.kit_ids.length && form.permanent_stop_coefficient"
            class="fas fa-search cursor-pointer ml-2"
            style="margin-top: 40px"
            @click="getData()"></i>
@@ -98,7 +99,7 @@ export default {
       granularity: 'month',
       permanent_stop_coefficient: 0.7,
       uwi: null,
-      kit_id: null,
+      kit_ids: [],
     },
     wells: null,
     sort: {
@@ -132,7 +133,13 @@ export default {
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
-        this.wells = data
+        let wells = []
+
+        Object.values(data).forEach(wellsByKit => {
+          wells = [...wells, ...wellsByKit]
+        })
+
+        this.wells = wells
 
         if (!this.uwis.length) {
           this.setUwis()
