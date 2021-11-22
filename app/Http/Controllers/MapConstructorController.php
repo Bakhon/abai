@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\GeoParent;
-use App\Models\BigData\Dictionaries\GeoType;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\OrgType;
 use App\Repositories\WellCardGraphRepository;
@@ -16,11 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class MapConstructorController extends Controller
 {
-    protected PolygonsService $polygonsService;
-    protected StructureService $structureService;
-    protected WellCardGraphRepository $wellCardGraphRepo;
-    protected array $orgs;
-    protected array $horizons;
+    protected $polygonsService;
+    protected $structureService;
+    protected $wellCardGraphRepo;
+    protected $orgs;
+    protected $horizons;
 
     const TYPE_DZO = 'dzo';
     const TYPE_FIELD = 'field';
