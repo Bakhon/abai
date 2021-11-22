@@ -304,32 +304,6 @@ export default {
                     bottom_right: [maxX, maxY],
                 })
             }
-            // let popupDiv = document.getElementById('bubblePopup');
-            // if (popupDiv === null) {
-            //     popupDiv = document.createElement('div');
-            //     popupDiv.setAttribute("id", "bubblePopup");
-            // }
-            // let popupOverlay = new Overlay({
-            //     element: popupDiv,
-            // });
-            // this.map.addOverlay(popupOverlay);
-            // this.map.on('pointermove', function (e) {
-            //     let values = [];
-            //     this.forEachFeatureAtPixel(e.pixel, function (f) {
-            //         values = f.values_.values;
-            //         popupOverlay.setPosition(e.coordinate);
-            //         return true;
-            //     });
-            //     if (typeof values !== "undefined" && values.length > 0) {
-            //         let valuesText = '';
-            //         values.forEach(item => {
-            //             valuesText += `<div>${item.key}: ${item.value}</div>`
-            //         });
-            //         popupDiv.innerHTML = `<div class="bubblePopup">${valuesText}</div>`;
-            //     } else {
-            //         popupDiv.innerHTML = '';
-            //     }
-            // });
             let bubbleLayers = [];
             const defaultRadius = 5;
             if (type === 'oil_with_water') {
