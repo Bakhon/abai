@@ -258,13 +258,14 @@ class WellsController extends Controller
 
     private function wellEquipParam(Well $well, $method)
     {
-        $wellEquipParam = $well->wellEquipParam()->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
-               ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
-               ->withPivot('dbeg')
-               ->where('metric.code', '=', $method) 
-               ->orderBy('pivot_dbeg', 'desc')          
-               ->get(['value_double', 'value_string', 'equip_param'])
-               ->toArray();                         
+        $wellEquipParam = $well->wellEquipParam()
+                                ->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
+                                ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
+                                ->withPivot('dbeg')
+                                ->where('metric.code', '=', $method) 
+                                ->orderBy('pivot_dbeg', 'desc')          
+                                ->get(['value_double', 'value_string', 'equip_param'])
+                                ->toArray();                         
         
         if($wellEquipParam){
                 return $wellEquipParam[0];
@@ -728,9 +729,10 @@ class WellsController extends Controller
             ->get(['value_string', 'dbeg'])
             ->toArray(); 
 
-        if($gdisComplex){          
-            return $gdisComplex[0];
-        }         
+        if($gdisComplex){                   
+                return $gdisComplex[0];                             
+            }
+
         return "";
     }
 
