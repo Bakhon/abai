@@ -54,7 +54,7 @@
             is-multiple/>
 
         <i v-if="form.kit_ids.length && form.permanent_stop_coefficient"
-           class="fas fa-search cursor-pointer ml-3 mt-40px"
+           class="fas fa-search cursor-pointer ml-2 mt-40px"
            @click="getData()"></i>
       </div>
     </div>
@@ -262,12 +262,12 @@ export default {
               )
             },
             {
-              title: this.trans('economic_reference.additionally_short').toLocaleUpperCase(),
+              title: `${this.trans('economic_reference.opek')} +`,
               value: this.localeValue(
                   wellsByStatus[TechnicalWellLossStatusModel.OPEK].profitable.oil_loss,
                   1000
               )
-            }
+            },
           ],
         }
       ]

@@ -103,13 +103,21 @@ export default {
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
-        keys.forEach(key => this[key] = data[key])
+        this.wells = data.wells
+
+        this.proposedWells = data.proposedWells
+
+        if (this.wells.length < 2 && this.proposedWells.length < 2) {
+          this.SET_LOADING(false)
+        }
 
         setTimeout(() => this.isMounted = true)
       } catch (e) {
         console.log(e)
 
-        keys.forEach(key => this[key] = null)
+        this.wells = null
+
+        this.proposedWells = null
       }
     },
 
