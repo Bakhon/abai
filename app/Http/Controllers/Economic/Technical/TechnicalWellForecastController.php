@@ -67,14 +67,12 @@ class TechnicalWellForecastController extends Controller
 
         $userId = auth()->id();
 
-        $log = EconomicDataLog::firstOrCreate(
-            ['type_id' => EconomicDataLogType::WELL_FORECAST, 'name' => $fileName],
-            ['author_id' => $userId, 'is_processed' => false]
-        );
-
-        if ($log->is_processed) {
-            throw new \Exception(__('economic_reference.economic_log_is_processing'));
-        }
+        $log = EconomicDataLog::create([
+            'type_id' => EconomicDataLogType::WELL_FORECAST,
+            'name' => $fileName,
+            'author_id' => $userId,
+            'is_processed' => false
+        ]);
 
         (new TechnicalWellForecastImport($userId, $log->id))
             ->queue($request->file)
