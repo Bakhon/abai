@@ -16,7 +16,7 @@
                               @search="filterField"/>
                     <div class="search-well">
                         <img src="/img/digital-drilling/search.png" alt="">
-                        <input type="text" placeholder="Введите номер скважины" v-model="query" @input="filterWell">
+                        <input type="number" placeholder="Введите номер скважины" v-model="query" @input="filterWell">
                         <button class="search" @click="filterWell">
                             Поиск
                         </button>
@@ -200,6 +200,9 @@
 </script>
 
 <style scoped>
+    .main__component *{
+        color: #ffffff;
+    }
     .main__component{
         width: 100%;
         height: 100%;
@@ -299,6 +302,11 @@
         background-color: transparent;
         width: 70%;
         border: 0;
+    }
+    .search-well input::-webkit-outer-spin-button,
+    .search-well  input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
     .search-well input::placeholder{
         color: #9EA4C9;
