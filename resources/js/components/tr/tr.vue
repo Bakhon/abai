@@ -6476,7 +6476,7 @@
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </paginate>
-            <div>
+            <div class="pagination-div">
                     <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
@@ -6493,6 +6493,7 @@
 .overflow-auto {
   justify-content: center;
   display: flex;
+  height: calc(100% - 936px);
 }
 .select_pages {
   color: white;
@@ -6687,7 +6688,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 245px);
+  height: calc(100vh - 255px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
