@@ -82,7 +82,7 @@ export default {
         rowHeight: 50,
         columnWidth: this.headers.map((header, index) => ({
           column: index,
-          width: header.width || (header.isUser ? 180 : 120)
+          width: header.width || (header.isUser ? 180 : 150)
         }))
       }
     },
@@ -145,7 +145,7 @@ export default {
             ${this.trans('economic_reference.without_fot')})
           `,
           key: 'avg_prs_cost',
-          width: 110
+          width: 150
         },
         {
           label: `
