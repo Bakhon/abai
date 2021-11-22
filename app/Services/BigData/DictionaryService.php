@@ -387,7 +387,7 @@ class DictionaryService
         $cacheKey = 'bd_dict_' . $dict;
 
         if ($this->cache->has($cacheKey)) {
-//            return $this->cache->get($cacheKey);
+            return $this->cache->get($cacheKey);
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
