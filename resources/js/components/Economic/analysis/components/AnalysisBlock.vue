@@ -1,7 +1,5 @@
 <template>
   <div class="bg-main1 text-white text-wrap mb-10px">
-
-
     <div v-for="(param, index) in params"
          :key="param.name"
          :class="index ? 'border-grey-top' : ''"

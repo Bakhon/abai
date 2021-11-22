@@ -229,7 +229,7 @@ class EconomicAnalysisController extends Controller
             [$kit->economic_log_id, $kit->technical_log_id, $permanentStopCoefficient, $granularity]
         );
 
-        if (!$uwi && Cache::has($cacheKey)) {
+        if (!$uwi && $granularity === 'month' && Cache::has($cacheKey)) {
             return json_decode(Cache::get($cacheKey), true);
         }
 
