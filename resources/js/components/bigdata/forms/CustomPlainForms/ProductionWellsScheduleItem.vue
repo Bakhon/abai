@@ -44,8 +44,6 @@
                     'liq': 0
                 },
                 chartSeries: [],
-                chartPoints: [],
-                tmpChartPoints: [],
                 labels: [],
                 yaxis: [
                     {
@@ -223,26 +221,6 @@
                         data.events
                     ];
 
-                    window.Apex.events = data.events;
-                    if (data.wellStatuses) {
-                        this.chartPoints = [];
-                        data.wellStatuses.forEach(status => {
-                            this.chartPoints.push({
-                                x: status[0],
-                                y: 0,
-                                marker: {
-                                    size: 10,
-                                    fillColor: '#fff'
-                                },
-                                label: {
-                                    text: status[2],
-                                    style: {
-                                        color: '#000'
-                                    }
-                                }
-                            });
-                        });
-                    }
                     this.labels = data.labels;
                 }).finally(() => {
                     this.SET_LOADING(false);
@@ -297,16 +275,15 @@
                     },
                     yaxis: this.yaxis,
                     tooltip: {
-                        custom: function ({series, seriesIndex, dataPointIndex, w}) {
+                        custom: ({series, seriesIndex, dataPointIndex, w}) => {
                             let colors = w.globals.colors
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                             let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
-                            let events = window.Apex.events
-                            if (events.info && seriesIndex === 4) {
-                                let events_hint = events.info[dataPointIndex];
+                            let events = this.chartSeries[4].info[dataPointIndex];
+                            if (events && seriesIndex === 4) {
                                 let output = '';
-                                if (events_hint !== null) {
-                                    let formatted = events_hint.slice(1,-1).slice(1,-1);
+                                if (events !== null) {
+                                    let formatted = events.slice(1,-1).slice(1,-1);
                                     formatted = formatted.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
                                     let parsed = JSON.parse(formatted);
                                     output = parsed.name_type + '<br>';
@@ -332,9 +309,6 @@
 
                         }
                     },
-                    annotations: {
-                        points: this.chartPoints,
-                    },
                     colors: this.colors,
                 }
             },
@@ -342,12 +316,6 @@
         watch: {
             isShowEvents: function (value) {
                 this.$refs.chart.toggleSeries('Мероприятия');
-                if (value) {
-                    this.chartPoints = this.tmpChartPoints;
-                } else {
-                    this.tmpChartPoints = this.chartPoints;
-                    this.chartPoints = [];
-                }
             },
             chartSeries: function () {
                 if (this.chartSeries.length > 2) {

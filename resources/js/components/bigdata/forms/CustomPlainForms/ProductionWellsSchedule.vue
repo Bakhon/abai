@@ -119,12 +119,14 @@ export default {
                     .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
                     .then(({ data }) => {
                         try {
-                            well.category = data.category
+                            well.category = data.category;
+
                         } catch (e) {
                             this.SET_LOADING(false);
                         }
-                    });
-                this.SET_LOADING(false);
+                    }).finally(() => {
+                    this.SET_LOADING(false);
+                });
             }
             this.options = [];
             this.wells.unshift(well);
