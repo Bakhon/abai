@@ -301,6 +301,23 @@ class Well extends TBDModel
         return $query;
     }
 
+    public function getWellInjectionData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'pressure_inj',
+            'water_vol',
+            'hdin'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
     /**
      * @param int $well_id
      * @param string|null $date
@@ -309,6 +326,19 @@ class Well extends TBDModel
     public function eventsOfWell(int $well_id,?string $date) : ?object
     {
         $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
+        return $query;
+    }
+
+    public function getInjectionEvents(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id)->whereNotNull('activity');
         if($date)
         {
             $query = $query->where('date','>=',$date);

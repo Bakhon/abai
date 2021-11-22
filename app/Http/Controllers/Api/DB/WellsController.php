@@ -628,7 +628,13 @@ class WellsController extends Controller
     {
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        $result = [];
+        if ($request->type === 'production') {
+            $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        } else if ($request->type === 'injection') {
+            $result = $this->wellCardGraphRepo->getInjectionData($wellId,$period);
+        }
+
         return  response()->json($result);
     }
 

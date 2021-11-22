@@ -212,6 +212,7 @@
                     params: {
                         wellId: this.well.id,
                         period: this.activePeriod,
+                        type: 'production'
                     }
                 }).then(({data}) => {
                     this.chartSeries = [

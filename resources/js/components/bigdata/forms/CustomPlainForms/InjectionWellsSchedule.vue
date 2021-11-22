@@ -40,33 +40,44 @@
                 </div>
             </div>
             <div class="content-block-scrollable">
-                <InjectionWellsScheduleItem
-                    v-for="(well, index) in wells"
-                    :well="well"
-                    :key="index"
-                    :isShowEvents="isShowEvents"
-                    :data="historicalData"
-                />
+                <div  v-for="well in wells">
+                    <ProductionWellsScheduleItem
+                        v-if="well.category && well.category.name_ru === productionCategory"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                    />
+                    <InjectionWellsScheduleItem
+                        v-else-if="well.category && well.category.name_ru === injectionCategory"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
 import InjectionWellsScheduleItem from "./InjectionWellsScheduleItem";
+import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
 import vSelect from 'vue-select'
 import axios from "axios";
 
 export default {
     components: {
         vSelect,
-        InjectionWellsScheduleItem
+        InjectionWellsScheduleItem,
+        ProductionWellsScheduleItem
     },
     props: ['mainWell','historicalData'],
     data: function() {
         return {
             wells: [],
             options: [],
-            isShowEvents: true
+            isShowEvents: false,
+            productionCategory: 'Нефтяная',
+            injectionCategory: 'Нагнетательная'
         }
     },
     methods: {

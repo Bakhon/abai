@@ -47,9 +47,12 @@
                         :key="well.id"
                         :isShowEvents="isShowEvents"
                     />
-                    <div v-else>
-                        НАГНЕТАТЕЛЬНАЯ
-                    </div>
+                    <InjectionWellsScheduleItem
+                        v-else-if="well.category && well.category.name_ru === injectionCategory"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                    />
                 </div>
             </div>
         </div>
@@ -57,13 +60,15 @@
 </template>
 <script>
 import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
+import InjectionWellsScheduleItem from "./InjectionWellsScheduleItem";
 import vSelect from 'vue-select'
 import axios from "axios";
 
 export default {
     components: {
         vSelect,
-        ProductionWellsScheduleItem
+        ProductionWellsScheduleItem,
+        InjectionWellsScheduleItem
     },
     props: {
         mainWell: {}
@@ -73,7 +78,8 @@ export default {
             wells: [],
             options: [],
             isShowEvents: false,
-            productionCategory: 'Нефтяная'
+            productionCategory: 'Нефтяная',
+            injectionCategory: 'Нагнетательная'
         }
     },
     methods: {
