@@ -130,10 +130,10 @@
                     <tr>
                       <td class="header_name">Всего за сутки:</td>
                       <td class="input-form-auto header_name">24</td>
-                      <td>Сегодня</td>
-                      <td>Предыдущее</td>
-                      <td>Итого</td>
-                      <td colspan="6">Данные по скважине</td>
+                      <td class="header_name">Сегодня</td>
+                      <td class="header_name">Предыдущее</td>
+                      <td class="header_name">Итого</td>
+                      <td colspan="6" class="header_name">Данные по скважине</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Всего часов, в т.ч:</td>
@@ -145,7 +145,7 @@
                       <td class="header_name">наружный диаметр, мм</td>
                       <td class="header_name">толщина стенки, мм</td>
                       <td class="header_name">глубина спуска, м</td>
-                      <td >объем, литр на 1-метр</td>
+                      <td class="header_name">объем, литр на 1-метр</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Производительное время:</td>
@@ -166,44 +166,44 @@
                       <td colspan="6" class="header_name">Примечание</td>
                     </tr>
                     <tr>
-                      <td colspan="2">Непроизводительное время в т.ч:</td>
+                      <td colspan="2" class="header_name">Непроизводительное время в т.ч:</td>
                       <td class="input-form-auto header_name">1,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">1,0</td>
-                      <td colspan="2">Искусственный забой, м</td>
+                      <td colspan="2" class="header_name">Искусственный забой, м</td>
                       <td class="input-form-auto header_name">1856</td>
-                      <td colspan="2">Текущий забой, м</td>
+                      <td colspan="2" class="header_name">Текущий забой, м</td>
                       <td class="input-form-auto header_name">1851м</td>
                     </tr>
                     <tr>
-                      <td colspan="2">обеденный перерыв</td>
+                      <td colspan="2" class="header_name">обеденный перерыв</td>
                       <td class="header_name manual-edit">1,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">1,0</td>
-                      <td colspan="2">Интервал перфорации</td>
-                      <td colspan="4" class="input-form-auto">1700-1710м.</td>
+                      <td colspan="2" class="header_name">Интервал перфорации</td>
+                      <td colspan="4" class="input-form-auto header_name">1700-1710м.</td>
                     </tr>
                     <tr>
-                      <td colspan="2">ремонт оборудования</td>
+                      <td colspan="2" class="header_name">ремонт оборудования</td>
                       <td class="header_name manual-edit">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td colspan="6" rowspan="4" class="input-form-auto">{{all_works}}</td>
                     </tr>
                     <tr>
-                      <td colspan="2">метеоусловия</td>
+                      <td colspan="2" class="header_name">метеоусловия</td>
                       <td class="header_name manual-edit">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
-                      <td colspan="2"> ожидание по вине Подрядчика</td>
+                      <td colspan="2" class="header_name"> ожидание по вине Подрядчика</td>
                       <td class="header_name manual-edit">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
-                      <td colspan="2">ожидание по вине третьей стороны</td>
+                      <td colspan="2" class="header_name">ожидание по вине третьей стороны</td>
                       <td class="header_name manual-edit">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">0,0</td>
@@ -213,29 +213,29 @@
               <table>
                 <tbody>
                     <tr>
-                      <td rowspan="3">Начальник Б и РС ТОО СП "КГМ"</td>
-                      <td rowspan="3" class="input-form-auto">{{chief}}</td>
-                      <td>подпись</td>
-                      <td>Мастер КПРС</td>
-                      <td>ФИО</td>
-                      <td>подпись</td>
-                      <td>номер телефона</td>
+                      <td rowspan="3" class="header_name">Начальник Б и РС ТОО СП "КГМ"</td>
+                      <td rowspan="3" class="header_name">{{chief}}</td>
+                      <td class="header_name">подпись</td>
+                      <td class="header_name">Мастер КПРС</td>
+                      <td class="header_name">ФИО</td>
+                      <td class="header_name">подпись</td>
+                      <td class="header_name">номер телефона</td>
                     </tr>
                     <tr>
                       
                       <td></td>
-                      <td>дневная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/>{{master_day_shift}}</td>
+                      <td class="header_name">дневная смена</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_day_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/>{{master_day_shift_number}}</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_day_shift_number}}</td>
                     </tr>
                     <tr>
                       
                       <td></td>
-                      <td>ночная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/>{{master_night_shift}}</td>
+                      <td class="header_name">ночная смена</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_night_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/>{{master_night_shift_number}}</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_night_shift_number}}</td>
                     </tr>
                 </tbody>
               </table>
