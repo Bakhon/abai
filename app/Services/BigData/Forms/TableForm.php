@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Exceptions\JsonException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
@@ -517,14 +516,14 @@ abstract class TableForm extends BaseForm
     {
         DB::connection('tbd')->beginTransaction();
 
-        try {
-            $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
-            DB::connection('tbd')->commit();
-            return $result;
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
+//        try {
+        $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
+        DB::connection('tbd')->commit();
+        return $result;
+//        } catch (\Exception $e) {
+//            DB::connection('tbd')->rollBack();
+//            throw new SubmitFormException($e->getMessage());
+//        }
     }
 
     public function submitForm(array $fields, array $filter = []): array

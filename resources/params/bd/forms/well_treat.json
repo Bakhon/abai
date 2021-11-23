@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "table_type": "wells",
   "update_after_edit": false,
   "show_history": false,
@@ -39,7 +40,7 @@
       "table": "prod.well_treatment",
       "column": "pressure_before",
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     },
     {
@@ -48,7 +49,7 @@
       "table": "prod.well_treatment",
       "column": "pressure_after",
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     },
     {
@@ -57,7 +58,7 @@
       "table": "prod.well_treatment",
       "column": "temperature",
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     },
     {
@@ -66,7 +67,7 @@
       "table": "prod.well_treatment",
       "column": "pretreat_buff_pressure",
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     },
     {
@@ -75,7 +76,7 @@
       "table": "prod.well_treatment",
       "column": "posttreat_buff_pressure",
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     },
     {
