@@ -729,7 +729,7 @@ class WellsController extends Controller
             ->get(['value_string', 'dbeg'])
             ->toArray(); 
                  
-        if($method == 'BHP' && $mainOrgCode == 'KGM'){
+        if($gdisComplex && $method == 'BHP' && $mainOrgCode == 'KGM'){            
             $gdisComplex[0]['value_string'] *= 0.987; 
             return $gdisComplex[0];
         } 
