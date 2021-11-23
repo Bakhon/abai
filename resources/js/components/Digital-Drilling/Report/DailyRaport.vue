@@ -90,8 +90,11 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_start_date')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.dbeg">
+                            <td colspan="2" class="text-left">
+                                <span v-if="report.contractor_daily.dbeg != ''">
+                                    {{report.contractor_daily.dbeg}}
+                                </span>
+                                <input type="text" v-model="report.contractor_daily.dbeg" v-else>
                             </td>
                         </tr>
                         <tr>
@@ -209,6 +212,7 @@
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
+                            </td>
                             </td>
                             <td colspan="2">
                                 <input type="text" v-model="report.contractor_daily.drilling_mud_engineer">
@@ -1220,8 +1224,8 @@
                             </td>
                         </tr>
                         <tr v-for="(job_status, i) in report.job_status_6_hours">
-                            <td><input type="time" v-model="job_status.tbeg" @change="getTotalTime(i, 6)"></td>
-                            <td><input type="time" v-model="job_status.tend" @change="getTotalTime(i, 6)"></td>
+                            <td><input type="time" v-model="job_status.tbeg" @input="getTotalTime(i, 6)"></td>
+                            <td><input type="time" v-model="job_status.tend" @input="getTotalTime(i, 6)"></td>
                             <td>{{job_status.total_time}}</td>
                             <td><input type="text" v-model="job_status.rate"></td>
                             <td>
@@ -1925,7 +1929,6 @@
             this.getoperation2()
             this.getDeviceType()
             this.getBHAelements()
-            this.getPreviousReport()
             this.changeTotalTime(24)
             this.changeTotalTime(6)
         },
