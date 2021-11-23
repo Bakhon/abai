@@ -4,9 +4,8 @@
       <div
               v-for="(well,index) in wellsHistory"
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
-              @click="handleSelectHistoryWell(well)"
       >
-          {{well.wellUwi}}
+          <div @click="handleSelectHistoryWell(well)">{{well.wellUwi}}</div>
           <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
       </div>
     </div>
@@ -1384,7 +1383,7 @@ export default {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
         if (this.well.dmart_daily_prod_oil.liquid) {
-          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1);
+          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }
       return "";  
@@ -1490,6 +1489,17 @@ export default {
     },
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
+      if (this.wellsHistory.length === 0) {
+        this.activeForm = null;
+        this.activeFormComponentName = null;
+        this.isBothColumnFolded = false;
+        this.isLeftColumnFolded = false;
+        this.isRightColumnFolded = false;
+        this.wellUwi = null;
+      } else {
+        let lastWell = this.wellsHistory.at(-1);
+        this.selectWell({'id':lastWell.id,'name':lastWell.wellUwi})
+      }
     },
     handleSelectHistoryWell(well) {            
       this.activeForm = null;
