@@ -1,123 +1,50 @@
 <template>
     <div class="CapitalInvestments">
-       <div class="row">
-           <div class="col-sm-6 pr-0">
-               <table class="table defaultTable">
-                   <tbody>
-                   <tr>
-                       <th colspan="6">
-                           Fact
-                       </th>
-                   </tr>
-                   <tr>
-                       <th rowspan="4" >БКП / Account</th>
-                       <th rowspan="4" >Проект / Project</th>
-                       <th rowspan="2" colspan="2">Отчет / Reporting</th>
-                       <th rowspan="2">
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th></th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th rowspan="2">Оценка / Expected</th>
-                       <th rowspan="2">Утв. План / Appr. Рlan</th>
-                   </tr>
-                   <tr>
-                       <th>Факт / Actual</th>
-                       <th>Факт / Actual</th>
-                   </tr>
-                   <tr v-for="i in 15">
-                       <td v-for="i in 6"></td>
-                   </tr>
-                   </tbody>
-               </table>
-           </div>
-           <div class="col-sm-6 pl-0">
-               <table class="table defaultTable">
-                   <tbody>
-                   <tr>
-                       <th colspan="6">
-                           Project
-                       </th>
-                   </tr>
-                   <tr>
-                       <th rowspan="4" >БКП / Account</th>
-                       <th rowspan="4" >Проект / Project</th>
-                       <th rowspan="2" colspan="2">Отчет / Reporting</th>
-                       <th rowspan="2">
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th></th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th rowspan="2">Оценка / Expected</th>
-                       <th rowspan="2">Утв. План / Appr. Рlan</th>
-                   </tr>
-                   <tr>
-                       <th>Факт / Actual</th>
-                       <th>Факт / Actual</th>
-                   </tr>
-                   <tr v-for="i in 15">
-                       <td v-for="i in 6"></td>
-                   </tr>
-                   </tbody>
-               </table>
-           </div>
-       </div>
+        <table class="table defaultTable">
+            <tbody>
+            <tr>
+                <th rowspan="2" >БКП / Account</th>
+                <th rowspan="2" >Проект / Project</th>
+                <th>Факт / Actual</th>
+                <th>Факт / Actual</th>
+                <th>Оценка / Expected</th>
+                <th>Утв. План / Appr. Рlan</th>
+            </tr>
+            <tr>
+                <th>
+                    <select name="" id="">
+                        <option value="" v-for="year in years">
+                            {{year.year}}
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="">
+                        <option value="" v-for="year in years">
+                            {{year.year}}
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="">
+                        <option value="" v-for="year in years">
+                            {{year.year}}
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="">
+                        <option value="" v-for="year in years">
+                            {{year.year}}
+                        </option>
+                    </select>
+                </th>
+            </tr>
+            <tr v-for="i in 15">
+                <td v-for="i in 6"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -133,6 +60,7 @@
                     { year: '2018 г.'},
                     { year: '2019 г.'},
                     { year: '2020 г.'},
+                    { year: '2021 г.'},
                 ],
             }
         },
