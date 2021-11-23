@@ -109,7 +109,7 @@ class EconomicOptimizationController extends Controller
 
     const OIL_PRICE_URL = 'https://ru.investing.com/commodities/brent-oil-historical-data';
 
-    const OIL_KEY = '_last_8833';
+    const OIL_KEY = 'last_last';
 
     const ORG_OZEN = 3;
     const ORG_KARAZANBAS = 4;
@@ -280,7 +280,7 @@ class EconomicOptimizationController extends Controller
         return $wells;
     }
 
-    private function getDollarRate(): ?string
+    public static function getDollarRate(): ?string
     {
         try {
             libxml_use_internal_errors(TRUE);
@@ -311,7 +311,7 @@ class EconomicOptimizationController extends Controller
         return null;
     }
 
-    private function getOilPrice(): ?string
+    public static function getOilPrice(): ?string
     {
         try {
             libxml_use_internal_errors(TRUE);

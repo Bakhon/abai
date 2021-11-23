@@ -1,9 +1,9 @@
 <template>
-    <InjectionWellsSchedule
+    <ProductionWellsSchedule
             v-if="isScheduleVisible"
-            :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+            :mainWell="{id: well.id, name: well.wellInfo.uwi,category: well.category}"
             @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
-    ></InjectionWellsSchedule>
+    ></ProductionWellsSchedule>
     <div v-else class="main-block w-100 px-2 py-3">
         <div class="d-flex mt-1">
             <div class="historical-block-head">
@@ -307,12 +307,12 @@
     </div>
 </template>
 <script>
-    import InjectionWellsSchedule from "./InjectionWellsSchedule";
+    import ProductionWellsSchedule from "./ProductionWellsSchedule";
     import moment from "moment";
     import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState,globalloadingMutations} from '@store/helpers';
 
     export default {
-        components: {InjectionWellsSchedule},
+        components: {ProductionWellsSchedule},
         props: {
             well: {},
             changeColumnsVisible: Function,

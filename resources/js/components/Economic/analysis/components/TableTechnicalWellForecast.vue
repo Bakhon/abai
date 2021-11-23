@@ -17,7 +17,7 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectLog from "../SelectLog";
+import SelectLog from "../../components/SelectLog";
 
 import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
 
@@ -172,11 +172,6 @@ export default {
            ${this.trans('economic_reference.liquid_losses').toLocaleLowerCase()}
           `,
           key: 'liquid_tech_loss'
-        },
-        {
-          label: this.trans('economic_reference.added_date_author'),
-          key: 'user',
-          isUser: true
         },
       ]
     },

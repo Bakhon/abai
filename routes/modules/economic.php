@@ -221,19 +221,38 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 Route::get('upload-excel', 'TechnicalWellForecastController@uploadExcel');
                 Route::post('import-excel', 'TechnicalWellForecastController@importExcel')
                     ->name('economic.technical.well_forecast.import');
+
+                Route::group(['prefix' => 'kit'], function () {
+                    Route::post('', 'TechnicalWellForecastKitController@store');
+
+                    Route::delete('{kit_id}', 'TechnicalWellForecastKitController@destroy');
+
+                    Route::get('get-data', 'TechnicalWellForecastKitController@getData');
+                });
             });
         });
 
         Route::group(['prefix' => 'analysis'], function () {
-            Route::get('input', 'EconomicAnalysisController@inputParams')
-                ->name('economic.analysis.input_params');
-
             Route::group(['prefix' => 'param'], function () {
                 Route::get('get-data', 'EconomicAnalysisParamController@getData');
                 Route::get('upload-excel', 'EconomicAnalysisParamController@uploadExcel');
                 Route::post('import-excel', 'EconomicAnalysisParamController@importExcel')
                     ->name('economic.analysis.param.import');
             });
+
+            Route::get('input', 'EconomicAnalysisController@inputParams')
+                ->name('economic.analysis.input_params');
+
+            Route::get('', 'EconomicAnalysisController@index')
+                ->name('economic.analysis');
+
+            Route::get('wells', 'EconomicAnalysisController@indexWells');
+
+            Route::get('get-data', 'EconomicAnalysisController@getData');
+
+            Route::get('get-wells-by-granularity', 'EconomicAnalysisController@getWellsByGranularity');
+
+            Route::get('get-wells-by-kit', 'EconomicAnalysisController@getWellsByKit');
         });
     });
 });
