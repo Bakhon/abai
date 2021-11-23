@@ -18,6 +18,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('', 'EconomicOptimizationController@index')
                 ->name('economic.optimization');
             Route::get('get-data', 'EconomicOptimizationController@getData');
+            Route::get('get-economic-data', 'EconomicOptimizationController@getEconomicData');
         });
 
         Route::group([], function () {

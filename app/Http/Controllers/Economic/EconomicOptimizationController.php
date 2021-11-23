@@ -11,10 +11,19 @@ use App\Models\EcoRefsMacro;
 use App\Models\EcoRefsNdoRates;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsGtm;
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\Refs\Org;
+use App\Models\Refs\TechnicalDataForecast;
+use App\Models\Refs\TechnicalStructureCdng;
+use App\Models\Refs\TechnicalStructureCompany;
+use App\Models\Refs\TechnicalStructureField;
+use App\Models\Refs\TechnicalStructureGu;
+use App\Models\Refs\TechnicalStructureNgdu;
+use App\Models\Refs\TechnicalStructureSource;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -360,9 +369,36 @@ class EconomicOptimizationController extends Controller
 
     public function getEconomicData()
     {
-        $scFa = 51;
+        $technicalData = $this->getTechnicalQuery()->toSql();
 
-        $defaultScFa = 1;
+        $economicData = $this->getEconomicQuery()->toSql();
+
+        $data = DB::table(DB::raw("($technicalData) as technical"))
+            ->selectRaw(DB::raw("
+                technical.*,
+                economic.*
+            "))
+            ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
+                $join
+                    ->on(DB::raw("technical.company_tbd_id"), '=', DB::raw("economic.company_tbd_id"))
+                    ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
+                    ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
+            })
+            ->get();
+
+        dd($data[0]);
+    }
+
+    public function getEconomicQuery(): Builder
+    {
+        $economicScFa = EcoRefsScFa::query()
+            ->whereId(51)
+            ->firstOrFail()
+            ->id;
+
+        $tableNdoRates = (new EcoRefsNdoRates())->getTable();
+
+        $tableMacros = (new EcoRefsMacro())->getTable();
 
         $saleShares = EcoRefsEmpPer::query()
             ->selectRaw(DB::raw("
@@ -370,9 +406,16 @@ class EconomicOptimizationController extends Controller
                 date,
                 {$this->sqlSumByRoute('emp_per', 'sale_share_')}
             "))
-            ->whereRaw(DB::raw("sc_fa = $scFa"))
+            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
+
+        $saleSharesColumns = $this->sqlSumByRoute(
+            'emp_per',
+            'sale_share_',
+            true,
+            'sale_shares'
+        );
 
         $discounts = EcoRefsDiscontCoefBar::query()
             ->selectRaw(DB::raw("
@@ -382,9 +425,30 @@ class EconomicOptimizationController extends Controller
                 {$this->sqlSumByRoute('macro', 'price_')},
                 {$this->sqlSumByRoute('barr_coef', 'Barrel_ratio_')}
             "))
-            ->whereRaw(DB::raw("sc_fa = $scFa"))
+            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
+
+        $discountColumns = implode(',', [
+            $this->sqlSumByRoute(
+                'discont',
+                'discount_',
+                true,
+                'discounts'
+            ),
+            $this->sqlSumByRoute(
+                'macro',
+                'price_',
+                true,
+                'discounts'
+            ),
+            $this->sqlSumByRoute(
+                'barr_coef',
+                'Barrel_ratio_',
+                true,
+                'discounts'
+            )
+        ]);
 
         $transExpenditures = EcoRefsTarifyTn::query()
             ->selectRaw(DB::raw("
@@ -392,17 +456,23 @@ class EconomicOptimizationController extends Controller
                 date,
                 {$this->sqlSumByRoute('tn_rate', 'trans_exp_')}
             "))
-            ->whereRaw(DB::raw("sc_fa = $scFa"))
+            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
-        $tableNdoRates = (new EcoRefsNdoRates())->getTable();
+        $transExpenditureColumns = $this->sqlSumByRoute(
+            'tn_rate',
+            'trans_exp_',
+            true,
+            'trans_expenditures'
+        );
 
-        $tableMacros = (new EcoRefsMacro())->getTable();
+        $companyTbdId = $this->sqlMapCompanyTbd();
 
-        $tableCosts = DB::table((new EcoRefsCost())->getTable())
+        $costs = DB::table((new EcoRefsCost())->getTable())
             ->selectRaw(DB::raw("
                 company_id,
+                $companyTbdId as company_tbd_id,
                 date,
                 variable,
                 variable_processing,
@@ -417,12 +487,13 @@ class EconomicOptimizationController extends Controller
                 wo,
                 amort
             "))
-            ->whereRaw(DB::raw("sc_fa = $scFa"))
+            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->toSql();
 
-        $costs = DB::table(DB::raw("($tableCosts) as costs"))
+        return DB::table(DB::raw("($costs) as costs"))
             ->selectRaw(DB::raw("
                 costs.company_id,
+                costs.company_tbd_id,
                 costs.date,
                 costs.variable AS cost_variable,
                 costs.variable_processing as cost_variable_processing,
@@ -440,19 +511,19 @@ class EconomicOptimizationController extends Controller
                 ndo_rates.ndo_rates,
                 macros.barrel_world_price AS price_export_world,
                 macros.ex_rate_dol AS currency_ratio,
-                sale_shares.*,
-                discounts.*,
-                trans_expenditures.*
+                $saleSharesColumns,
+                $discountColumns,
+                $transExpenditureColumns
             "))
-            ->leftJoin("$tableNdoRates as ndo_rates", function ($join) use ($scFa) {
+            ->leftJoin("$tableNdoRates as ndo_rates", function ($join) use ($economicScFa) {
                 $join
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("ndo_rates.company_id"))
-                    ->whereRaw(DB::raw("ndo_rates.sc_fa = $scFa"));
+                    ->whereRaw(DB::raw("ndo_rates.sc_fa = $economicScFa"));
             })
-            ->leftJoin("$tableMacros as macros", function ($join) use ($scFa) {
+            ->leftJoin("$tableMacros as macros", function ($join) use ($economicScFa) {
                 $join
                     ->on(DB::raw("costs.date"), '=', DB::raw("macros.date"))
-                    ->whereRaw(DB::raw("macros.sc_fa = $scFa"));
+                    ->whereRaw(DB::raw("macros.sc_fa = $economicScFa"));
             })
             ->leftJoin(DB::raw("($saleShares) as sale_shares"), function ($join) {
                 $join
@@ -464,17 +535,99 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("discounts.company_id"))
                     ->on(DB::raw("costs.date"), '=', DB::raw("discounts.date"));
             })
-            ->leftJoin(DB::raw("($transExpenditures) as trans_expenditures"), function ($join) use ($scFa) {
+            ->leftJoin(DB::raw("($transExpenditures) as trans_expenditures"), function ($join) use ($economicScFa) {
                 $join
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("trans_expenditures.company_id"))
                     ->on(DB::raw("costs.date"), '=', DB::raw("trans_expenditures.date"));
-            })
-            ->get();
-
-        return $costs;
+            });
     }
 
-    private function sqlMapCompanyOrg(string $alias): string
+    public function getTechnicalQuery(): Builder
+    {
+        $technicalSource = TechnicalStructureSource::query()
+            ->whereName('MMG_Scenario_Test')
+            ->firstOrFail()
+            ->id;
+
+        $tableCompanies = (new TechnicalStructureCompany())->getTable();
+
+        $tableFields = (new TechnicalStructureField())->getTable();
+
+        $tableNgdus = (new TechnicalStructureNgdu())->getTable();
+
+        $tableCdngs = (new TechnicalStructureCdng())->getTable();
+
+        $tableGus = (new TechnicalStructureGu())->getTable();
+
+        $companies = DB::table(DB::raw("$tableCompanies as companies"))
+            ->selectRaw(DB::raw("
+                companies.id as company_id,
+                companies.name as company_name,
+                companies.tbd_id as company_tbd_id,
+                fields.id as field_id,
+                fields.name as field_name,
+                ngdus.id as ngdu_id,
+                ngdus.name as ngdu_name,
+                cdngs.id as cdng_id,
+                cdngs.name as cdng_name,
+                gus.id as gu_id,
+                gus.name as gu_name
+            "))
+            ->leftJoin("$tableFields as fields", function ($join) {
+                $join->on(DB::raw("companies.id"), '=', DB::raw("fields.company_id"));
+            })
+            ->leftJoin("$tableNgdus as ngdus", function ($join) {
+                $join->on(DB::raw("fields.id"), '=', DB::raw("ngdus.field_id"));
+            })
+            ->leftJoin("$tableCdngs as cdngs", function ($join) {
+                $join->on(DB::raw("ngdus.id"), '=', DB::raw("cdngs.ngdu_id"));
+            })
+            ->leftJoin("$tableGus as gus", function ($join) {
+                $join->on(DB::raw("cdngs.id"), '=', DB::raw("gus.cdng_id"));
+            })
+            ->toSql();
+
+        $wells = DB::table((new TechnicalDataForecast())->getTable())
+            ->selectRaw(DB::raw("
+                well_id as uwi,
+                gu_id,
+                date,
+                oil,
+                liquid,
+                days_worked,
+                prs,
+                pes_id
+            "))
+            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->toSql();
+
+        return DB::table(DB::raw("($wells) as wells"))
+            ->selectRaw(DB::raw("
+                wells.uwi,
+                wells.date,
+                wells.oil,
+                wells.liquid,
+                wells.days_worked,
+                wells.prs,
+                wells.pes_id,
+                companies.company_id,
+                companies.company_name,
+                companies.company_tbd_id,
+                companies.field_id,
+                companies.field_name,
+                companies.ngdu_id,
+                companies.ngdu_name,
+                companies.cdng_id,
+                companies.cdng_name,
+                companies.gu_id,
+                companies.gu_name
+            "))
+            ->leftJoin(DB::raw("($companies) as companies"), function ($join) {
+                $join->on(DB::raw("wells.gu_id"), '=', DB::raw("companies.gu_id"));
+            });
+    }
+
+    private function sqlMapCompanyTbd(): string
     {
         $companyMap = [
             5 => 2, // OZEN
@@ -487,13 +640,18 @@ class EconomicOptimizationController extends Controller
         $sqlQuery = "";
 
         foreach ($companyMap as $companyId => $tbdOrgId) {
-            $sqlQuery .= "WHEN $alias.company_id = $companyId THEN $alias.$tbdOrgId ";
+            $sqlQuery .= "WHEN company_id = $companyId THEN $tbdOrgId ";
         }
 
         return "CASE $sqlQuery END";
     }
 
-    private function sqlSumByRoute(string $sumKey, string $prefix): string
+    private function sqlSumByRoute(
+        string $sumKey,
+        string $prefix,
+        bool $isColumnNames = false,
+        string $alias = null
+    ): string
     {
         $routeMap = [
             1 => 'export_AA',
@@ -511,7 +669,9 @@ class EconomicOptimizationController extends Controller
         $sqlQuery = "";
 
         foreach ($routeMap as $routeId => $routeName) {
-            $sqlQuery .= "
+            $sqlQuery .= $isColumnNames
+                ? "$alias.$prefix$routeName,"
+                : "
                 SUM(CASE 
                     WHEN route_id = $routeId 
                     THEN $sumKey
