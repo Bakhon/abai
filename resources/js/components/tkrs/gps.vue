@@ -56,7 +56,7 @@
                 <tbody>
                     <tr>
                       <td class="header_name">Дата отчета</td>
-                      <td class="input-form-auto header_name">29.05.2020 г.</td>
+                      <td class="input-form-auto header_name">{{wellFile}}</td>
                       <td class="input-form-auto header_name_red">{{well_name}}</td>
                       <td class="input-form-auto header_name_red">{{field_name}}</td>
                       <td class="header_name">Начало бурения:</td>
@@ -401,7 +401,6 @@ export default {
               
                 let data = response.data;
                 if (data) {
-                    this.wellFile = data;
                     this.areaChartData = data.data;
                     this.contractor_name = data.data.header.contractor_name;
                     this.report_number = data.data.header.report_number;
@@ -418,7 +417,7 @@ export default {
                     this.master_night_shift_number = data.data.works_report.master_night_shift_number;
                     this.works_report_range = data.data.works_report_range;
                     this.start_drill = data.data.header.start_drill;
-                    this.end_drill = data.data.header.start_drill;
+                    this.end_drill = data.data.header.end_drill;
                     this.all_works = data.data.works_report_range.all_works;
                     this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
                     this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
