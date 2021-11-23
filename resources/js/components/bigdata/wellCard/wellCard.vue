@@ -634,6 +634,12 @@ export default {
           this.dzoSelectOptions = data.organizations;
         }
       });
+      let urlParams = new URLSearchParams(window.location.search);
+      let wellId = urlParams.get('wellId');
+      let wellUwi = urlParams.get('wellName');
+      if (wellId !== null && wellUwi !== null) {
+        this.selectWell({'id':wellId,'name':wellUwi})
+      }
   },
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
