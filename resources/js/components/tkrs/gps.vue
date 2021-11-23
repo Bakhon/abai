@@ -9,15 +9,15 @@
                 src="/img/PlastFluids/chooseParameters.svg"
                 alt="choose parameters icon"
               />
-              <span>{{trans('tr.parametrs')}}</span>
+              <span>Параметры</span>
             </div>
           </div>
           <div class="dropdown-holder">
       
-            <b-form-select class="custom-dropdown-block"></b-form-select>
+            <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
             <div class="line-block"></div>
 
-            <b-form-select  class="custom-dropdown-block"></b-form-select>
+            <b-form-select  class="custom-dropdown-block" :options="wellDate" @change="onChangeWellDate"></b-form-select>
             <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
           </div>
@@ -57,49 +57,26 @@
                     <tr>
                       <td class="header_name">Дата отчета</td>
                       <td class="input-form-auto header_name">29.05.2020 г.</td>
-                      <td class="input-form-auto header_name_red">Скважина № 283</td>
-                      <td class="input-form-auto header_name_red">м/р. Акшабулак </td>
+                      <td class="input-form-auto header_name_red">{{well_name}}</td>
+                      <td class="input-form-auto header_name_red">{{field_name}}</td>
                       <td class="header_name">Начало бурения:</td>
-                      <td class="input-form-auto header_name_red">10.08.2012г</td>
+                      <td class="input-form-auto header_name_red">{{start_drill}}</td>
                       <td class="header_name">Конец бурения:</td>
-                      <td class="input-form-auto header_name_red">31.08.2012г</td>
+                      <td class="input-form-auto header_name_red">{{end_drill}}</td>
                     </tr>
                     <tr>
                       <td class="header_name"> № отчета:</td>
-                      <td class="input-form-auto header_name">1</td>
+                      <td class="input-form-auto header_name">{{report_number}}</td>
                       <td class="header_name">Задание по программе:</td>
-                      <td class="input-form-auto" colspan="2">
-                            <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle input-form-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Переход на низлежащий горизонт (ПНЛГ)
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Освоение новой скважины после бурения с ГРП</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-                      </td>
+                      <td class="input-form-auto header_name" colspan="2">{{programmes_target_name}}</td>
                       <td class="header_name">Тип скважины:</td>
-                      <td class="input-form-auto header_name_red" colspan="2">эксплуатационная</td>
+                      <td class="input-form-auto header_name_red" colspan="2">{{well_type}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Тип станка:</td>
-                      <td class="input-form-auto">
-
-                        <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle input-form-dropdown"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    УПА-80  kz 146 АL 11
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-                      </td>
+                      <td class="input-form-auto header_name">{{machine_type}}</td>
                       <td colspan="2" class="header_name">Подрядчик:</td>
-                      <td colspan="3" class="input-form-auto header_name_red">ТОО "Zhanros-Drilling"</td>
+                      <td colspan="3" class="input-form-auto header_name_red">{{contractor_name}}</td>
                     </tr>
                 </tbody>
               </table>
@@ -129,57 +106,22 @@
                     <tr>
                       <td colspan="3" class="header_name">Дневное время</td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">6:00</td>
-                      <td class="header_name manual-edit">8:00</td>
-                      <td class="header_name input-form-auto">2:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                    <tr v-for="(item, item_index) in test.dbeg_day" :key="item_index">
+                      <td    class="header_name manual-edit">{{item}}</td>
+                      <td class="header_name manual-edit">{{test.dend_day[item_index]}}</td>
+                      <td class="header_name input-form-auto"></td>
+                      <td class="manual-edit day-works">{{test.day_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">8:00</td>
-                      <td class="header_name manual-edit">11:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">11:00</td>
-                      <td class="header_name manual-edit">14:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">14:00</td>
-                      <td class="header_name manual-edit">15:00</td>
-                      <td class="header_name input-form-auto">1:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">15:00</td>
-                      <td class="header_name manual-edit">18:00</td>
-                      <td class="header_name input-form-auto">3:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
+                    
                     <tr>
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
                     </tr>
-                    <tr>
-                      <td class="header_name manual-edit">18:00</td>
-                      <td class="header_name manual-edit">21:30</td>
-                      <td class="header_name input-form-auto">3:30</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">21:30</td>
-                      <td class="header_name manual-edit">1:00</td>
-                      <td class="header_name input-form-auto">3:30</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
-                    </tr>
-                    <tr>
-                      <td class="header_name manual-edit">1:00</td>
-                      <td class="header_name manual-edit">6:00</td>
-                      <td class="input-form-auto">5:00</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                    <tr v-for="(item, item_index) in test.dbeg_night" :key="item_index">
+                      <td class="header_name manual-edit">{{item}}</td>
+                      <td class="header_name manual-edit">{{test.dend_night[item_index]}}</td>
+                      <td class="header_name input-form-auto"></td>
+                      <td class="manual-edit day-works">{{test.night_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -188,14 +130,14 @@
                     <tr>
                       <td class="header_name">Всего за сутки:</td>
                       <td class="input-form-auto header_name">24</td>
-                      <td>Сегодня</td>
-                      <td>Предыдущее</td>
-                      <td>Итого</td>
-                      <td colspan="6">Данные по скважине</td>
+                      <td class="header_name">Сегодня</td>
+                      <td class="header_name">Предыдущее</td>
+                      <td class="header_name">Итого</td>
+                      <td colspan="6" class="header_name">Данные по скважине</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Всего часов, в т.ч:</td>
-                      <td class="header_name manual-edit" >24,0</td>
+                      <td class="input-form-auto header_name" >24,0</td>
                       <td class="input-form-auto header_name">0,0</td>
                       <td class="input-form-auto header_name">24,0</td>
                       <td class="header_name">Превышение стола ротора, м</td>
@@ -203,7 +145,7 @@
                       <td class="header_name">наружный диаметр, мм</td>
                       <td class="header_name">толщина стенки, мм</td>
                       <td class="header_name">глубина спуска, м</td>
-                      <td >объем, литр на 1-метр</td>
+                      <td class="header_name">объем, литр на 1-метр</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Производительное время:</td>
@@ -214,7 +156,7 @@
                       <td class="input-form-auto header_name">168,3</td>
                       <td class="input-form-auto header_name">8,94</td>
                       <td class="input-form-auto header_name">0-1869м</td>
-                      <td class="input-form-auto">17,76</td>
+                      <td class="input-form-auto header_name">17,76</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">прочее (ОЗЦ и т.д)</td>
@@ -224,82 +166,76 @@
                       <td colspan="6" class="header_name">Примечание</td>
                     </tr>
                     <tr>
-                      <td colspan="2">Непроизводительное время в т.ч:</td>
+                      <td colspan="2" class="header_name">Непроизводительное время в т.ч:</td>
+                      <td class="input-form-auto header_name">1,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">1,0</td>
+                      <td colspan="2" class="header_name">Искусственный забой, м</td>
+                      <td class="input-form-auto header_name">1856</td>
+                      <td colspan="2" class="header_name">Текущий забой, м</td>
+                      <td class="input-form-auto header_name">1851м</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="header_name">обеденный перерыв</td>
                       <td class="header_name manual-edit">1,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">1,0</td>
-                      <td colspan="2">Искусственный забой, м</td>
-                      <td class="input-form-auto">1856</td>
-                      <td colspan="2">Текущий забой, м</td>
-                      <td class="input-form-auto">1851м</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">1,0</td>
+                      <td colspan="2" class="header_name">Интервал перфорации</td>
+                      <td colspan="4" class="input-form-auto header_name">1700-1710м.</td>
                     </tr>
                     <tr>
-                      <td colspan="2">обеденный перерыв</td>
-                      <td class="input-form-auto">1,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">1,0</td>
-                      <td colspan="2">Интервал перфорации</td>
-                      <td colspan="4" class="input-form-auto">1700-1710м.</td>
+                      <td colspan="2" class="header_name">ремонт оборудования</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{all_works}}</td>
                     </tr>
                     <tr>
-                      <td colspan="2">ремонт оборудования</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td colspan="6" rowspan="4" class="input-form-auto">Завоз тех.воды с плотностью 1,01г/см3 в объеме-60м3.Параметры скважины: Ртр-10атм. Рзтр-15атм. Рм/к-0атм. 
-                        Стравливание трубного и затрубного пространство на выходе газ без жидкостью. Подъём полированного штока до 6-метров. 
-                        Глушение скважины через трубного пространство тех.водой в объёме-40м3 на выходе газ с жидкостью в объёме-21м3. На заполнение закачено-17м3.
-                        Циркуляция скважины до выхода чистой воды 1,5-цикла. Поглошение-2м3.Наблюдение за скважиной на перелив. Перелив отсутствует.Монтаж станка УПА-80. 
-                        Подъём штанги ф22мм и ф19мм с вставным насосом в количестве-210шт из них ф22мм 71шт и ф19мм-139шт.
-                        Демонтаж штанговой ПВО и планшайбы. Монтаж ПВО и опрессовка ПВО на 130 атм в присутствии представителя КФ РГП на ПХВ "ПВАСС". Результат-герметично.
-                         Получено письменное разрешение для дальнейших работ.Подъём замковый опоры и газосеператора на ВНКТ ф73мм в количестве 110шт c тугим отваротом.</td>
+                      <td colspan="2" class="header_name">метеоусловия</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
-                      <td colspan="2">метеоусловия</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td colspan="2" class="header_name"> ожидание по вине Подрядчика</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                     <tr>
-                      <td colspan="2"> ожидание по вине Подрядчика</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">ожидание по вине третьей стороны</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
-                      <td class="input-form-auto">0,0</td>
+                      <td colspan="2" class="header_name">ожидание по вине третьей стороны</td>
+                      <td class="header_name manual-edit">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="input-form-auto header_name">0,0</td>
                     </tr>
                 </tbody>
               </table>
               <table>
                 <tbody>
                     <tr>
-                      <td rowspan="3">Начальник Б и РС ТОО СП "КГМ"</td>
-                      <td rowspan="3" class="input-form-auto">Кушкинбаев Б. / Сапаров М. </td>
-                      <td>подпись</td>
-                      <td>Мастер КПРС</td>
-                      <td>ФИО</td>
-                      <td>подпись</td>
-                      <td>номер телефона</td>
+                      <td rowspan="3" class="header_name">Начальник Б и РС ТОО СП "КГМ"</td>
+                      <td rowspan="3" class="header_name">{{chief}}</td>
+                      <td class="header_name">подпись</td>
+                      <td class="header_name">Мастер КПРС</td>
+                      <td class="header_name">ФИО</td>
+                      <td class="header_name">подпись</td>
+                      <td class="header_name">номер телефона</td>
                     </tr>
                     <tr>
                       
                       <td></td>
-                      <td>дневная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="header_name">дневная смена</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_day_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_day_shift_number}}</td>
                     </tr>
                     <tr>
                       
                       <td></td>
-                      <td>ночная смена</td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="header_name">ночная смена</td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_night_shift}}</td>
                       <td></td>
-                      <td class="manual-edit"><input class="manual-input"/></td>
+                      <td class="manual-edit header_name"><input class="manual-input"/>{{master_night_shift_number}}</td>
                     </tr>
                 </tbody>
               </table>
@@ -327,6 +263,7 @@
 import mainHeader from "./mainHeader.vue";
 import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
+import {globalloadingMutations} from '@store/helpers'
 
 
 export default {
@@ -339,12 +276,161 @@ export default {
     BaseTable,
     baseBlock,
   },
+  computed: {
+  },
   data(){
     return {
-      fields: ['№', 'Начало', 'Конец', 'Продолжительность', 'Количество превышений', 'Событие'],
-      items: [['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '], ['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг '],['1', '15.06.2021  14:30:26', '15.06.2021  14:30:26', '14:30:26', "1", 'Подъём штанг ']]
+      currentTab: 1,
+      calendarDate: '2020-06-17',
+      Date1: null,
+      areaChartData: [],
+      
+
+      isChart: true,
+      wellList: [],
+      wellDate: [],
+      wellNumber: null,
+      wellFile: null,
+      maximum: null,
+      minimum: null,
+      chartData: null,
+      contractor_name: null,
+      report_number:  null,
+      machine_type:  null,
+      well_name:  null,
+      programmes_target_name:  null,
+      chief:  null,
+      master_day_shift:  null,
+      master_day_shift_number:  null,
+      master_night_shift:  null,
+      master_night_shift_number:  null,
+      programmes_target_name:  null,
+      test: [],
+      start_drill:  null,
+      end_drill:  null,
+      all_works:  null,
+      postApiUrl: process.env.MIX_TKRS_POST_API_URL,
+      linkWell: "drWellName/",
+      linkWellDate: "drWellDates/",
+      linkWellReport: "drHeaderWorkReport/",
+      
     }
-  }
+  },
+  created: async function () {
+    this.SET_LOADING(true);
+    await this.axios
+      .get(
+        this.postApiUrl + this.linkWell,
+        )
+      .then((response) => {
+        this.SET_LOADING(false);
+        let data = response.data;
+        if (data) {
+          this.areaChartData = data.data;
+        } else {
+          console.log("No data");
+        }
+        return Promise
+      })
+      .catch((error) => {
+        console.log(error.data);
+        this.SET_LOADING(false);
+      });
+      this.getListWell();
+    },
+  
+  methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
+    comparison_graphs() {
+        this.$modal.show('comparison_graphs')
+    },
+    onChangeWell(number) {
+      this.wellNumber = number;
+      this.postSelectedtWell();        
+    },
+    onChangeWellDate(number) {
+      this.wellFile = number;
+      this.postSelectedtWellFile();
+    },
+    getListWell() {
+      
+        this.axios
+            .get(
+                this.postApiUrl + this.linkWell,
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellList = data.data.wells;
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWell() {
+        this.axios
+            .get(
+                this.postApiUrl + this.linkWellDate + `${this.wellNumber}/`,
+            )
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.wellDate = data.data.dates;
+                    
+                    
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    postSelectedtWellFile() {
+      this.SET_LOADING(false);
+        this.axios
+            .get(
+                this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
+            )
+            .then((response) => {
+              
+                let data = response.data;
+                if (data) {
+                    this.wellFile = data;
+                    this.areaChartData = data.data;
+                    this.contractor_name = data.data.header.contractor_name;
+                    this.report_number = data.data.header.report_number;
+                    this.machine_type = data.data.header.machine_type;
+                    this.well_name = data.data.header.well_name;
+                    this.programmes_target_name = data.data.header.programmes_target_name;
+                    this.chief = data.data.works_report.chief;
+                    this.master_day_shift = data.data.works_report.master_day_shift;
+                    this.master_day_shift_number = data.data.works_report.master_day_shift_number;
+                    this.master_night_shift = data.data.works_report.master_night_shift;
+                    this.master_night_shift_number = data.data.works_report.master_night_shift_number;
+                    this.test = data.data.works_report_range;
+                    this.start_drill = data.data.header.start_drill;
+                    this.end_drill = data.data.header.start_drill;
+                    this.all_works = data.data.works_report_range.all_works;
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    cancelChat() {
+        this.isChart = false;
+    },
+    returnChat() {
+      this.isChart = true;
+    },
+    
+    selectTab(selectedTab) {
+            this.currentTab = selectedTab
+    },
+
+  },
 };
 </script>
 <style lang="scss" scoped src="./InputFormTableStyles.scss"></style>
@@ -469,5 +555,10 @@ border: none !important;
   font-size: 14px;
   font-weight: bold;
   color: #E31F25;
+}
+.day-works {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
 }
 </style>

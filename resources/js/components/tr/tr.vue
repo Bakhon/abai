@@ -6778,7 +6778,6 @@ tr:nth-child(even) td {
   color: black;
 }
 .input_edit_modal {
-
   color: black;
   font-size: 12px;
   height: 31px;
@@ -6797,7 +6796,6 @@ tr:nth-child(even) td {
   border: none;
   margin-left: 11px;
 }
-
 
 ::-webkit-scrollbar {
   width: 5px;
