@@ -75,15 +75,15 @@ class WellsController extends Controller
         }
         if($category[0]->code == 'INJ') 
         {
-            $show_param = [
-                'diametrStuzer' => $this->wellEquip($well),
+            $show_param = [             
                 'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),                
                 'tech_mode_inj' => $this->techModeInj($well),
                 'meas_water_inj' => $this->measLiqInjection($well),
             ];  
         }   
                 
-        $orgs = $this->org($well);                  
+        $orgs = $this->org($well);  
+        $mainOrg = $this->orgCode($orgs);                
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well), 
@@ -114,10 +114,10 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),                 
             'gdisCurrent' => $this->gdisCurrent($well),                                                                                                                                 
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gdis_complex' => $this->gdisComplex($well, 'PVOP'),          
+            'gdis_complex' => $this->gdisComplex($well, 'PVOP', $mainOrg),          
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),            
-            'techmode' => $this->gdisComplex($well, 'BHP'), 
+            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg), 
             'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),                     
         ];
 
@@ -719,7 +719,7 @@ class WellsController extends Controller
         return "";
     }
   
-    private function gdisComplex(Well $well, $method)
+    private function gdisComplex(Well $well, $method, $mainOrgCode)
     {      
         $gdisComplex = $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
@@ -728,11 +728,14 @@ class WellsController extends Controller
             ->orderBy('dbeg', 'desc')
             ->get(['value_string', 'dbeg'])
             ->toArray(); 
-
-        if($gdisComplex){                   
-                return $gdisComplex[0];                             
-            }
-
+                 
+        if($method == 'BHP' && $mainOrgCode == 'KGM'){
+            $gdisComplex[0]['value_string'] *= 0.987; 
+            return $gdisComplex[0];
+        } 
+        if($gdisComplex){
+            return $gdisComplex[0];
+        }          
         return "";
     }
 
