@@ -60,16 +60,16 @@
               </td>
               <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_plan.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_difference.toFixed(1) }}</td>
+              <td class="align-middle" :class="mainTableItem.vns_additional_oil_prod_difference > 0 ? 'growth' : 'fall'">{{ mainTableItem.vns_additional_oil_prod_difference.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_plan.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_difference.toFixed(1) }}</td>
+              <td class="align-middle" :class="mainTableItem.gtm_additional_oil_prod_difference > 0 ? 'growth' : 'fall'">{{ mainTableItem.gtm_additional_oil_prod_difference.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.base_oil_prod_plan.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.base_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.base_oil_prod_difference.toFixed(1) }}</td>
+              <td class="align-middle" :class="mainTableItem.base_oil_prod_difference > 0 ? 'growth' : 'fall'">{{ mainTableItem.base_oil_prod_difference.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.oil_prod_plan.toFixed(1) }}</td>
               <td class="align-middle">{{ mainTableItem.oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.oil_prod_difference.toFixed(1) }}</td>
+              <td class="align-middle" :class="mainTableItem.oil_prod_difference > 0 ? 'growth' : 'fall'">{{ mainTableItem.oil_prod_difference.toFixed(1) }}</td>
             </tr>
             </tbody>
           </table>

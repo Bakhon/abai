@@ -67,7 +67,7 @@ return array (
   'dzo' => 'ДЗО',
   'total_production' => 'Общая добыча нефти, тыс.т',
   'module_title' => 'Подбор и анализ эффективности ГТМ',
-  'oil_production' => 'Добыча нефти',
+  'oil_production' => 'Общая добыча нефти',
   'select_dzo' => 'Выберите ДЗО',
   'select_oil_field' => 'Выберите месторождение',
   'select_object' => 'Выберите объект',

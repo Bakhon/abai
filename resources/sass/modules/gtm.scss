@@ -322,10 +322,28 @@
         padding: 0.3rem !important;
     }
 
+    tr {
+        &.active td.growth {
+            color: #5fc455;
+        }
+
+        &.active td.fall {
+            color: #ff929b;
+        }
+    }
+
     td {
         font-size: 0.8rem;
         padding: 0.3rem !important;
         border-top: none !important;
+
+        &.growth {
+            color: #5fc455;
+        }
+
+        &.fall {
+            color: #ff929b;
+        }
 
         i {
             font-size: 10px;
