@@ -97,7 +97,7 @@
                                     <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                  {{trans('tr.add')}}</a>
+                                  {{trans('tr.show')}}</a>
 
                                   <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
