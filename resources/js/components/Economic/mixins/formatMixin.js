@@ -31,5 +31,17 @@ export const formatValueMixin = {
                 dimension: this.trans('economic_reference.billion')
             }
         },
+
+        localeValue(value, dimension = null, isAbsolute = false) {
+            if (dimension) {
+                value /= dimension
+            }
+
+            if (isAbsolute) {
+                value = Math.abs(value)
+            }
+
+            return (+value.toFixed(2)).toLocaleString()
+        }
     }
 }
