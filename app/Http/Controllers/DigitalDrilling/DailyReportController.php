@@ -10,8 +10,8 @@ class DailyReportController extends Controller
     public function __construct()
     {
         $this->middleware('can:digitalDrilling view main')->only([
-//            'index',
-//            'raport'
+            'index',
+            'raport'
         ]);
     }
 
