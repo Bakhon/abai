@@ -26,14 +26,49 @@
                 <td>{{ item.year }}</td>
                 <td>{{ item.project }}</td>
                 <td>{{ item.fact }}</td>
-                <td>{{ item.difference }}</td>
-                <td>{{ item.wellDifference }}</td>
+                <td>
+                  <i
+                    v-if="item.difference"
+                    :class="`fas fa-caret-${item.difference > 0 ? 'up' : 'down'}`"
+                    :style="`color: ${getColor(item.difference)}; margin-right: 4px;`"
+                  />
+                  {{ item.difference }}
+                </td>
+                <td>
+                  <i
+                    v-if="item.wellDifference"
+                    :class="`fas fa-caret-${item.wellDifference > 0 ? 'up' : 'down'}`"
+                    :style="`color: ${getColor(item.wellDifference)}; margin-right: 4px;`"
+                  />
+                  {{ item.wellDifference }}
+                </td>
                 <td>{{ item.wellDistribution }}</td>
-                <td>{{ item.oilDifference }}</td>
+                <td>
+                  <i
+                    v-if="item.oilDifference"
+                    :class="`fas fa-caret-${item.oilDifference > 0 ? 'up' : 'down'}`"
+                    :style="`color: ${getColor(item.oilDifference)}; margin-right: 4px;`"
+                  />
+                  {{ item.oilDifference }}
+                </td>
                 <td>{{ item.oilDistribution }}</td>
-                <td>{{ item.waterDifference }}</td>
+                <td>
+                  <i
+                    v-if="item.waterDifference"
+                    :class="`fas fa-caret-${item.waterDifference > 0 ? 'up' : 'down'}`"
+                    :style="`color: ${getColor(item.waterDifference)}; margin-right: 4px;`"
+                  />
+                  {{ item.waterDifference }}
+                </td>
                 <td>{{ item.waterDistribution }}</td>
-                <td>{{ item.uploadDifference }}</td>
+                <td>
+                  <i
+                    v-if="item.uploadDifference"
+                    :class="`fas fa-caret-${item.uploadDifference > 0 ? 'up' : 'down'}`"
+                    :style="`color: ${getColor(item.uploadDifference)}; margin-right: 4px;`"
+                  />
+                  {{ item.uploadDifference }}
+                </td>
                 <td>{{ item.uploadDistribution }}</td>
               </tr>
             </tbody>
@@ -86,6 +121,10 @@
       thead th {
         font-size: 14px;
         width: 5%;
+      }
+
+      tbody td {
+        width: 6%;
       }
     }
 

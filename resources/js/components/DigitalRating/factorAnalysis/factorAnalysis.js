@@ -24,12 +24,22 @@ export default {
     },
     rows() {
       return factorRows;
-    }
+    },
   },
 
   methods: {
     handleSelectAnalysis() {
 
+    },
+    getColor(item) {
+      if (item > 0) return '#00A859';
+      return '#ED3237';
+    },
+    getIcon(item) {
+      if (item > 0) {
+        return '<i className="fas fa-caret-down" style="color: #ED3237; margin-right: 4px;"/>';
+      }
+      return '<i className="fas fa-caret-up" style="color: #00A859; margin-right: 4px;"/>';
     },
     menuClick(data) {
       const path = window.location.pathname.slice(3);
