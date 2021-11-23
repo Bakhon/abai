@@ -1,10 +1,14 @@
 import apexchart from 'vue-apexcharts';
 import BtnDropdown from "../components/BtnDropdown";
 import mainMenu from "../../GTM/mock-data/main_menu.json";
-import {analysis} from '../json/data';
+import {analysis, factorTableHeads, factorRows} from '../json/data';
 
 export default {
   name: "factorAnalysis",
+
+  components: {
+    BtnDropdown
+  },
 
   data() {
     return {
@@ -14,9 +18,24 @@ export default {
     }
   },
 
+  computed: {
+    tableHead() {
+      return factorTableHeads;
+    },
+    rows() {
+      return factorRows;
+    }
+  },
+
   methods: {
     handleSelectAnalysis() {
 
-    }
+    },
+    menuClick(data) {
+      const path = window.location.pathname.slice(3);
+      if (data?.url && data.url !== path) {
+        window.location.href = this.localeUrl(data.url);
+      }
+    },
   }
 }
