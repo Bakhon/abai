@@ -213,6 +213,42 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div class="modalTable-title">
+                                Измеряемые параметры во время бурения
+                            </div>
+                            <table class="table defaultTable modalTable">
+                                <tbody>
+                                <tr>
+                                    <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.status")}}</th>
+                                </tr>
+                                <tr v-for="info in technicalDescription.measuring_parameter">
+                                    <td>{{info.parameter}}</td>
+                                    <td class="text-center fs-16">
+                                        <span v-if="info.value">+</span>
+                                        <span v-else>-</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="modalTable-title">
+                                Наличие ГТИ или ДЭЛ
+                            </div>
+                            <table class="table defaultTable modalTable">
+                                <tbody>
+                                <tr>
+                                    <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.status")}}</th>
+                                </tr>
+                                <tr v-for="info in technicalDescription.equipment">
+                                    <td>{{info.parameter}}</td>
+                                    <td class="text-center fs-16">
+                                        <span v-if="info.value">+</span>
+                                        <span v-else>-</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -472,7 +508,11 @@
 </script>
 
 <style scoped>
-
+    .modalTable-title{
+        font-size: 16px;
+        font-weight: bold;
+        margin: 15px 0 0;
+    }
     .well_content{
         min-height: 300px;
     }

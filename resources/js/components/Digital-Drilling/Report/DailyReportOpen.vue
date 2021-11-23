@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="field">{{ trans('digital_drilling.default.field') }}:</label>
+                                <label for="field">{{ trans('digital_drilling.default.field') }}</label>
                                 <select  id="field" v-model="currentField" @change="getWELL">
                                     <option value="" disabled selected="selected">{{ trans('digital_drilling.default.field_selection') }}</option>
                                     <option :value="item.id" v-for="item in fields">{{item.name}}</option>
@@ -63,10 +63,12 @@
                             </div>
                             <div class="well_body-form-input" v-if="newWell=='old'">
                                 <label for="wellID">{{ trans('digital_drilling.passport.well') }}:</label>
-                                <select  id="wellID" v-model="currentWell">
-                                    <option value="" disabled selected="selected">Выбор скавжины</option>
-                                    <option :value="item.id" v-for="item in well">{{item.name}}</option>
-                                </select>
+                                <dropdown title="Сважина" :options="well" class="dropdown__area"
+                                          :search="true"
+                                          :report="true"
+                                          :current="currentWell"
+                                          @updateList="changeCurrentWell"
+                                          @search="filterWell"/>
                             </div>
                         </div>
                     </div>
@@ -82,9 +84,11 @@
 
 <script>
     import DailyRaport from './DailyRaport'
+    import Dropdown from '../components/dropdown'
+
     export default {
         name: "DailyReportOpen",
-        components: {DailyRaport},
+        components: {DailyRaport, Dropdown},
         data(){
             return{
                 newWell: "new",
@@ -105,10 +109,13 @@
             create(){
                 this.getDailyReport()
             },
+            changeCurrentWell(item){
+                this.currentWell = item
+            },
             getDailyReport(){
                 this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
                     {
-                        "well": this.currentWell,
+                        "well": this.currentWell.well_id,
                         "geo": this.currentField,
                         "org": this.currentDZO
                     }).then((response) => {
@@ -150,11 +157,22 @@
                 });
 
             },
+            filterWell(query){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'/'+this.currentField+'?q='+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.well = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
             getWELL(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'/'+this.currentField).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.well = data;
+                        this.currentWell = data[0]
                     } else {
                         console.log('No data');
                     }
@@ -174,6 +192,9 @@
     }
     .Marine{
         width: 160px;
+    }
+    .dropdown__area{
+        margin-left: 10px;
     }
 
 </style>

@@ -3,6 +3,7 @@
         <main-content
             :left_content="left_content"
             :right_content="right_content"
+            @leftClosed="leftClosed"
         >
             <template #left_function>
                 <div class="inc__left_functions" @click="exportExcel">
@@ -50,18 +51,18 @@
                     <div class="inc__2d"
                         :class="{not_active: !d2_Show}"
                     >
-                        <div class="inc__2d-title">2D</div>
-                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d2_Show">
+                        <div class="inc__2d-title" @click="d2Show">2D</div>
+                        <div class="inc__2d-name" @click="d2Show">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d2_Show" @click="d2_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
                     <div class="inc__2d"
                          :class="{not_active: !d3_Show}"
                     >
-                        <div class="inc__2d-title">3D</div>
-                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d3_Show">
+                        <div class="inc__2d-title" @click="d3Show">3D</div>
+                        <div class="inc__2d-name" @click="d3Show">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d3_Show" @click="d3_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
@@ -104,6 +105,7 @@
 
         data(){
             return{
+                leftBlock: false,
                 inclino: [],
                 d2_Show: true,
                 d3_Show: false,
@@ -112,13 +114,13 @@
                 right_content: "digital_drilling.project_data.visualization",
                 series: [
                     {
-                    name: "Desktops",
+                    name: "Глубина по вертикали",
                     data: []
                     },
                 ],
                 seriesAbove: [
                     {
-                        name: "Desktops",
+                        name: "Отход от вертикаля",
                         data: []
                     },
                 ],
@@ -132,12 +134,12 @@
                         background: '#2B2E5E',
 
                         zoom: {
-                            enabled: true,
+                            enabled: false,
                             type: 'x',
                             autoScaleYaxis: true,
                         },
                         toolbar: {
-                            autoSelected: 'zoom'
+                            show: false
                         }
                     },
                     dataLabels: {
@@ -154,7 +156,6 @@
                         show: false,
                     },
                     tooltip: {
-                        fillSeriesColor: true,
                     },
                     grid: {
                         show: true,
@@ -187,6 +188,14 @@
                         },
                     },
                     xaxis: {
+                        title: {
+                            text: 'Отход от вертикаля', style: {
+                                color: '#FFFFFF',
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                            },
+                        },
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -197,6 +206,14 @@
                     },
                     yaxis:{
                         reversed: true,
+                        title: {
+                            text: 'Глубина по вертикали', style: {
+                                color: '#FFFFFF',
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                            },
+                        },
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -211,7 +228,6 @@
 
                     },
                 },
-                chartOptionsAboveLast: {},
                 chartOptionsAbove: {
                     chart: {
                         animations: {
@@ -225,7 +241,7 @@
                             autoScaleYaxis: true,
                         },
                         toolbar: {
-                            autoSelected: 'zoom'
+                            show: false,
                         },
                         background: '#2B2E5E',
 
@@ -285,22 +301,36 @@
                         tickAmount: 9,
                         position: 'bottom',
                     },
-                    yaxis:{
-                        opposite: true,
-                        max: 50,
-                        labels: {
-                            style: {
-                                colors: '#FFFFFF'
-                            },
-
-                            formatter: function(val) {
-                                if (val == null)
-                                    return 0;
-                                return val.toFixed(0);
-                            },
+                    yaxis: [
+                        {
+                            max: 50,
+                            labels: {
+                                style: {
+                                    colors: '#FFFFFF'
+                                },
+                                formatter: function(val) {
+                                    if (val == null)
+                                        return 0;
+                                    return val.toFixed(0);
+                                },
+                            }
+                        },
+                        {
+                            opposite: true,
+                            max: 50,
+                            labels: {
+                                style: {
+                                    colors: '#FFFFFF'
+                                },
+                                formatter: function(val) {
+                                    if (val == null)
+                                        return 0;
+                                    return val.toFixed(0);
+                                },
+                            }
                         },
 
-                    },
+                    ],
                 },
             }
         },
@@ -318,9 +348,35 @@
             }
         },
         methods:{
+            leftClosed(){
+                this.leftBlock = !this.leftBlock
+                if (!this.leftBlock) {
+                    this.d3_Show = false
+                }
+            },
+            d3Show(){
+                if (!this.leftBlock) {
+                    this.d2_Show = false
+                }
+                this.d3_Show = true
+            },
+            d2Show(){
+                if (!this.leftBlock) {
+                    this.d3_Show = false
+                }
+                this.d2_Show = true
+            },
+            d2_Close(){
+                this.d2_Show = false
+                this.d3_Show = true
+            },
+            d3_Close(){
+                this.d3_Show = false
+                this.d2_Show = true
+            },
             exportExcel(){
-                if (this.currentWell.id) {
-                    window.location.href = process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/' + this.currentWell.id + '/?=download'
+                if (this.currentWell.well_id) {
+                    window.location.href = process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/' + this.currentWell.well_id + '/?=download'
                 }
             },
             ...globalloadingMutations([
@@ -341,7 +397,7 @@
                     y: null
                 })
                 this.series=[{
-                    name: "Desktops",
+                    name: "Глубина по вертикали",
                         data: coordinates
                 }]
             },
@@ -370,10 +426,37 @@
                     this.maxValue = last
                 }
                 this.seriesAbove = [{
-                    name: "Desktops",
+                    name: "Отход от вертикаля",
                         data: coordinates
                 }]
                 this.chartOptionsAbove = {
+                    annotations: {
+                        position: 'back',
+                        yaxis: [{
+                            y: 0,
+                            borderColor: '#FFFFFF',
+                            label: {
+                                borderColor: '#FFFFFF',
+                                style: {
+                                    color: '#fff',
+                                    background: '#00E396',
+                                },
+                                text: '',
+                            }
+                        }],
+                        xaxis: [{
+                            x: 0,
+                            borderColor: '#FFFFFF',
+                            label: {
+                                borderColor: '#FFFFFF',
+                                style: {
+                                    color: '#fff',
+                                    background: '#00E396',
+                                },
+                                text: '',
+                            }
+                        }],
+                    },
                     chart: {
                         animations: {
                             enabled: false,
@@ -381,12 +464,12 @@
                         height: 500,
                             type: 'line',
                             zoom: {
-                                enabled: true,
+                                enabled: false,
                                 type: 'y',
                                 autoScaleYaxis: true,
                         },
                         toolbar: {
-                            autoSelected: 'zoom'
+                            show: false,
                         },
                         background: '#2B2E5E',
 
@@ -440,6 +523,14 @@
                     xaxis: {
                         max: 2* this.maxValue,
                         min: -2 * this.maxValue,
+                        title: {
+                            text: 'Отход от вертикаля', style: {
+                                color: '#FFFFFF',
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                            },
+                        },
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -448,23 +539,36 @@
                         tickAmount: 9,
                         position: 'bottom',
                     },
-                    yaxis:{
-                        opposite: true,
-                        max: 2*this.maxValue,
-                        min: -2 * this.maxValue,
-                        labels: {
-                        style: {
-                            colors: '#FFFFFF'
+
+                    yaxis:[
+                        {
+                            opposite: true,
+                            max: 2*this.maxValue,
+                            min: -2 * this.maxValue,
+                            axisTicks: {show: true},
+                            axisBorder: {show: true,},
+                            title: {
+                                text: 'Глубина по вертикали', style: {
+                                    color: '#FFFFFF',
+                                    fontSize: '15px',
+                                    fontFamily: 'Helvetica, Arial, sans-serif',
+                                    fontWeight: 700,
+                                },
+                            },
+                            labels: {
+                                style: {
+                                    colors: '#FFFFFF'
+                                },
+
+                                formatter: function(val) {
+                                    if (val == null)
+                                        return 0;
+                                    return val.toFixed(0);
+                                },
+                            }
                         },
 
-                        formatter: function(val) {
-                            if (val == null)
-                                return 0;
-                            return val.toFixed(0);
-                        },
-                        },
-
-                    },
+                    ],
                 }
 
             },
@@ -472,12 +576,13 @@
                 this.SET_LOADING(true);
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/'+
-                        this.currentWell.id).then((response) => {
+                        this.currentWell.well_id).then((response) => {
                         let data = response.data;
                         if (data) {
                             this.inclino = data;
                             this.setParametersChartSideView()
                             this.setParametersChartAboveView()
+
                         } else {
                             console.log('No data');
                         }
@@ -497,11 +602,15 @@
                 }
                 this.SET_LOADING(false);
             },
+
         },
     }
 </script>
 
 <style scoped>
+    .digitalDrillingWindow{
+        color: black!important;
+    }
     .inc__charts{
         color: black!important;
     }
@@ -563,6 +672,16 @@
     .inc__charts.full .inc__charts-left,
     .inc__charts.full .inc__charts-right{
         width: calc(50% - 7px);
+    }
+    .arrow_box{
+        color: black!important;
+    }
+    .arrow_box span{
+        color: black!important;
+    }
+    .apexcharts-tooltip {
+        background: red!important;
+        color: orange!important;
     }
 </style>
 

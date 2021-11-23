@@ -13,13 +13,23 @@ sup{
 }
 .digital_drilling{
     width: 96.5vw;
+    color: #ffffff!important;
+}
+.table{
+    color: #ffffff!important;
+}
+.newWell *{
+    color: #ffffff;
 }
 .digital_drilling *{
     box-sizing: border-box;
-    color: #FFFFFF;
     font-family: Harmonia Sans Pro Cyr;
     font-style: normal;
     font-weight: normal;
+}
+
+.inc__charts{
+    color: #0d092a;
 }
 .digital_drilling .col-sm-12.centerBlock {
     padding: 0 10px;
@@ -1200,6 +1210,9 @@ input.rangeInput {
     display: flex;
     align-items: center;
 }
+.date-report{
+    width: 196px;
+}
 .daily_raport_block-header-input label{
     font-weight: bold;
     margin-right: 12px;
@@ -1431,6 +1444,12 @@ progress::-webkit-progress-value {
     font-weight: bold;
 }
 
+@media (max-width: 1670px) {
+    .nozzle-row{
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;

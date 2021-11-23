@@ -118,7 +118,7 @@
                       <td
                           v-for="column in visibleColumns"
                           :class="{
-                        'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column),
+                        'editable': isCellEdited(row, column),
                         'freezed': column.freezed
                       }"
                           :style="getCellStyles(column)"
@@ -170,7 +170,8 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]"
+                                  class="error">{{ showError(errors[row.id][column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
                       <span class="value">
@@ -184,6 +185,7 @@
                               :id="row.id"
                               :key="`field_${column.code}_${row.id}`"
                               v-model="row[column.code].value"
+                              :editable="isCellEdited(row, column)"
                               :item="getFieldParams(row, column)"
                           >
                           </bigdata-form-field>
@@ -210,13 +212,17 @@
                           </template>
                         </template>
                         <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
-                          <div v-if="isCellEdited(row, column)" class="input-wrap">
-                            <input
-                                v-model="row[column.code].value"
-                                class="form-control"
-                                type="text">
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                          </div>
+                          <template v-if="isCellEdited(row, column)">
+                            <div class="input-wrap">
+                              <input
+                                  v-model="row[column.code].value"
+                                  class="form-control"
+                                  type="text">
+                            </div>
+                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]" class="error">
+                              {{ showError(errors[row.id][column.code]) }}
+                            </span>
+                          </template>
                           <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
@@ -682,8 +688,15 @@ export default {
       this.rows.map((row, index) => {
         if (!difference[index]) return
         fields[row.id] = difference[index]
+        for (let code in fields[row.id]) {
+          if (row[code].id) {
+            fields[row.id][code].id = row[code].id
+          }
+          if (row[code].params) {
+            fields[row.id][code].params = row[code].params
+          }
+        }
       })
-
 
       let data = {
         fields: fields,
@@ -703,7 +716,7 @@ export default {
             this.$emit('sent')
           })
           .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
+            this.errors = error.response.data.errors
             this.setLoading(false)
           })
     },

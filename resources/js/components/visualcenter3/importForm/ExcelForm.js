@@ -259,17 +259,6 @@ export default {
                     'fields': ['agent_upload_waste_water_injection_fact'],
                     'formula': (totalWaterFact,albsenomanianWaterFact) => totalWaterFact - albsenomanianWaterFact
                 },
-                'ОМГ': {
-                    'fields': [
-                        'natural_gas_production_fact',
-                        'natural_gas_delivery_fact',
-                        'associated_gas_production_fact',
-                        'associated_gas_delivery_fact',
-                        'agent_upload_total_water_injection_fact',
-                        'agent_upload_seawater_injection_fact',
-                        'agent_upload_waste_water_injection_fact'],
-                    'formula': (value) => value * 1000
-                }
             },
             dzoUsers: [],
             requiredRows: 0,

@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "columns": [
     {
       "title": "uwi_number",

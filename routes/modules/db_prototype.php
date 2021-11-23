@@ -139,6 +139,7 @@ Route::group(
 
                 Route::get('orgs-by-well/{well}', 'Api\DB\StructureController@getOrgIdsByWellId');
                 Route::get('wells/production/techmode/{well}', 'Api\DB\WellsController@getProductionTechModeOil');
+                Route::get('wells/injection/techmode/{well}', 'Api\DB\WellHistoryController@getInjectionTechModeOil');
             }
         );
     }
