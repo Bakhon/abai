@@ -122,6 +122,12 @@
                                         {{ trans('economic_reference.optimization_of_development') }}
                                     </a>
                                 </li>
+
+                                <li class="left-menu-li">
+                                    <a href="{{route('economic.analysis')}}">
+                                        {{ trans('economic_reference.analysis_of_actual_stops') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
