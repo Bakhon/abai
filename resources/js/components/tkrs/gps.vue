@@ -414,7 +414,6 @@ export default {
                     this.start_drill = data.data.header.start_drill;
                     this.end_drill = data.data.header.start_drill;
                     this.all_works = data.data.works_report_range.all_works;
-                  console.info(this.test)
                 } else {
                     console.log("No data");
                 }
