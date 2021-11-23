@@ -109,7 +109,7 @@
                     <tr v-for="(item, item_index) in works_report_range.dbeg_day" :key="item_index">
                       <td    class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{works_report_range.dend_day[item_index]}}</td>
-                      <td class="header_name input-form-auto"></td>
+                      <td class="header_name input-form-auto">{{works_report_range.duration_day[item_index]}}</td>
                       <td class="manual-edit day-works">{{works_report_range.day_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                     
@@ -120,7 +120,7 @@
                     <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index">
                       <td class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{works_report_range.dend_night[item_index]}}</td>
-                      <td class="header_name input-form-auto"></td>
+                      <td class="header_name input-form-auto">{{works_report_range.duration_night[item_index]}}</td>
                       <td class="manual-edit day-works">{{works_report_range.night_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                 </tbody>
