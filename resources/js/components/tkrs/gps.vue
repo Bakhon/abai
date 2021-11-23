@@ -106,22 +106,22 @@
                     <tr>
                       <td colspan="3" class="header_name">Дневное время</td>
                     </tr>
-                    <tr v-for="(item, item_index) in test.dbeg_day" :key="item_index">
+                    <tr v-for="(item, item_index) in works_report_range.dbeg_day" :key="item_index">
                       <td    class="header_name manual-edit">{{item}}</td>
-                      <td class="header_name manual-edit">{{test.dend_day[item_index]}}</td>
+                      <td class="header_name manual-edit">{{works_report_range.dend_day[item_index]}}</td>
                       <td class="header_name input-form-auto"></td>
-                      <td class="manual-edit day-works">{{test.day_works[item_index]}}<input class="manual-input"/></td>
+                      <td class="manual-edit day-works">{{works_report_range.day_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                     
                     <tr>
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
                     </tr>
-                    <tr v-for="(item, item_index) in test.dbeg_night" :key="item_index">
+                    <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index">
                       <td class="header_name manual-edit">{{item}}</td>
-                      <td class="header_name manual-edit">{{test.dend_night[item_index]}}</td>
+                      <td class="header_name manual-edit">{{works_report_range.dend_night[item_index]}}</td>
                       <td class="header_name input-form-auto"></td>
-                      <td class="manual-edit day-works">{{test.night_works[item_index]}}<input class="manual-input"/></td>
+                      <td class="manual-edit day-works">{{works_report_range.night_works[item_index]}}<input class="manual-input"/></td>
                     </tr>
                 </tbody>
               </table>
@@ -137,9 +137,9 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Всего часов, в т.ч:</td>
-                      <td class="input-form-auto header_name" >24,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">24,0</td>
+                      <td class="input-form-auto header_name">{{curr_hour_works[0]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[0]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[0]}}</td>
                       <td class="header_name">Превышение стола ротора, м</td>
                       <td class="input-form-auto"></td>
                       <td class="header_name">наружный диаметр, мм</td>
@@ -149,9 +149,9 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Производительное время:</td>
-                      <td class="header_name manual-edit">23,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">23,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[1]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[1]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
                       <td class="input-form-auto header_name">168,3</td>
                       <td class="input-form-auto header_name">8,94</td>
@@ -160,16 +160,16 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">прочее (ОЗЦ и т.д)</td>
-                      <td class="header_name manual-edit">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[2]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[2]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[2]}}</td>
                       <td colspan="6" class="header_name">Примечание</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">Непроизводительное время в т.ч:</td>
-                      <td class="input-form-auto header_name">1,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">1,0</td>
+                      <td class="input-form-auto header_name">{{curr_hour_works[3]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[3]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[3]}}</td>
                       <td colspan="2" class="header_name">Искусственный забой, м</td>
                       <td class="input-form-auto header_name">1856</td>
                       <td colspan="2" class="header_name">Текущий забой, м</td>
@@ -177,36 +177,36 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">обеденный перерыв</td>
-                      <td class="header_name manual-edit">1,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">1,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[4]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[4]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[4]}}</td>
                       <td colspan="2" class="header_name">Интервал перфорации</td>
                       <td colspan="4" class="input-form-auto header_name">1700-1710м.</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">ремонт оборудования</td>
-                      <td class="header_name manual-edit">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[5]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[5]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[5]}}</td>
                       <td colspan="6" rowspan="4" class="input-form-auto day-works">{{all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">метеоусловия</td>
-                      <td class="header_name manual-edit">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[6]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[6]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[6]}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name"> ожидание по вине Подрядчика</td>
-                      <td class="header_name manual-edit">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[7]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[7]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[7]}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">ожидание по вине третьей стороны</td>
-                      <td class="header_name manual-edit">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
-                      <td class="input-form-auto header_name">0,0</td>
+                      <td class="header_name manual-edit">{{curr_hour_works[8]}}</td>
+                      <td class="input-form-auto header_name">{{prev_hour_works[8]}}</td>
+                      <td class="input-form-auto header_name">{{all_day_hour_works[8]}}</td>
                     </tr>
                 </tbody>
               </table>
@@ -284,8 +284,6 @@ export default {
       calendarDate: '2020-06-17',
       Date1: null,
       areaChartData: [],
-      
-
       isChart: true,
       wellList: [],
       wellDate: [],
@@ -296,6 +294,8 @@ export default {
       chartData: null,
       contractor_name: null,
       report_number:  null,
+      well_type:  null,
+      field_name:  null,
       machine_type:  null,
       well_name:  null,
       programmes_target_name:  null,
@@ -305,7 +305,10 @@ export default {
       master_night_shift:  null,
       master_night_shift_number:  null,
       programmes_target_name:  null,
-      test: [],
+      works_report_range: [],
+      all_day_hour_works: [],
+      prev_hour_works: [],
+      curr_hour_works: [],
       start_drill:  null,
       end_drill:  null,
       all_works:  null,
@@ -403,6 +406,9 @@ export default {
                     this.contractor_name = data.data.header.contractor_name;
                     this.report_number = data.data.header.report_number;
                     this.machine_type = data.data.header.machine_type;
+                    this.field_name = data.data.header.field_name;
+                    this.well_type = data.data.header.well_type;
+
                     this.well_name = data.data.header.well_name;
                     this.programmes_target_name = data.data.header.programmes_target_name;
                     this.chief = data.data.works_report.chief;
@@ -410,10 +416,13 @@ export default {
                     this.master_day_shift_number = data.data.works_report.master_day_shift_number;
                     this.master_night_shift = data.data.works_report.master_night_shift;
                     this.master_night_shift_number = data.data.works_report.master_night_shift_number;
-                    this.test = data.data.works_report_range;
+                    this.works_report_range = data.data.works_report_range;
                     this.start_drill = data.data.header.start_drill;
                     this.end_drill = data.data.header.start_drill;
                     this.all_works = data.data.works_report_range.all_works;
+                    this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
+                    this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
+                    this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
                 } else {
                     console.log("No data");
                 }
