@@ -222,7 +222,13 @@
                       </table>
                   </div>
                 </div>
-              </modal>
+    </modal>
+    <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
+      <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
+        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+        <totalTable />
+      </div>
+    </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -404,8 +410,7 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              
-
+    
               <button
                 v-if="isPermission"
                 type="button" 
@@ -6679,7 +6684,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
@@ -6901,6 +6905,10 @@ table::-webkit-scrollbar-corner {
 }
 .modal_table {
   height: 240px !important;
+}
+.total-modal-header {
+  color: #fff;
+  font-size: 16px;
 }
 
     .table-outer{
