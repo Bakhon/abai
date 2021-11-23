@@ -834,9 +834,20 @@ class WellsController extends Controller
      */
     public function getProductionWellsScheduleData(Request $request): object
     {
+
         $wellId = $request->get('wellId');
         $period = $request->get('period');
-        $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        $result = [];
+        if (Cache::has('well_' . $wellId . '_history_chart_' . $request->type)) {
+            return response()->json(Cache::get('well_' . $wellId . '_history_chart_' . $request->type));
+        }
+        if ($request->type === 'Нефтяная') {
+            $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
+        } else if ($request->type === 'Нагнетательная') {
+            $result = $this->wellCardGraphRepo->getInjectionData($wellId,$period);
+        }
+        Cache::put('well_' . $wellId . '_history_chart_' . $request->type, $result, now()->addDay());
+
         return  response()->json($result);
     }
 
