@@ -17,7 +17,7 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectLog from "../SelectLog";
+import SelectLog from "../../components/SelectLog";
 
 import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
 
@@ -82,7 +82,7 @@ export default {
         rowHeight: 50,
         columnWidth: this.headers.map((header, index) => ({
           column: index,
-          width: header.width || (header.isUser ? 180 : 120)
+          width: header.width || (header.isUser ? 180 : 150)
         }))
       }
     },
@@ -145,7 +145,7 @@ export default {
             ${this.trans('economic_reference.without_fot')})
           `,
           key: 'avg_prs_cost',
-          width: 110
+          width: 150
         },
         {
           label: `
@@ -169,21 +169,6 @@ export default {
             ${this.trans('economic_reference.with_fot')})
           `,
           key: 'permanent_year_cost'
-        },
-        {
-          label: `
-            ${this.trans('economic_reference.conditional_fixed_costs')}
-            (${this.trans('economic_reference.fact').toLocaleLowerCase()})
-          `,
-          key: 'variable_stop_cost_fact'
-        },
-        {
-          label: `
-            ${this.trans('economic_reference.conditional_fixed_costs')}
-            (${this.trans('economic_reference.proposed').toLocaleLowerCase()})
-          `,
-          key: 'variable_stop_cost_forecast',
-          width: 130
         },
         {
           label: this.trans('economic_reference.added_date_author'),

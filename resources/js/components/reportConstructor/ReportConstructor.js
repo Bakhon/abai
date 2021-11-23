@@ -502,7 +502,29 @@ export default {
             return sheetByDays
         },
         setActiveTab(wellTypeSelectedAtRequest) {
-            this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
+            if (this.isStatisticsOfTabExists(wellTypeSelectedAtRequest)) {
+                this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
+                return
+            }
+            for (let tabId = 0; tabId < this.sheetTypes.length; tabId++) {
+                let tabName = this.sheetTypes[tabId]
+                if (tabName in this.wellSheetTypes) {
+                    continue
+                }
+                if (this.isStatisticsOfTabExists(tabName)) {
+                    this.activeTab = tabId
+                    return
+                }
+            }
+        },
+        isStatisticsOfTabExists(tabName) {
+            if (!(tabName in this.statistics)) {
+                return false
+            }
+            if (Array.isArray(this.statistics[tabName]) && this.statistics[tabName].length > 0) {
+                return true
+            }
+            return !Array.isArray(this.statistics[tabName]) && Object.keys(this.statistics[tabName]).length > 0;
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
