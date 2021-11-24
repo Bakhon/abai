@@ -189,7 +189,7 @@
                     },
                     xaxis: {
                         title: {
-                            text: 'Отход от вертикали, м.', style: {
+                                text: 'Отход от вертикали, м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -202,7 +202,7 @@
                             },
                         },
                         tickAmount: 9,
-                        position: 'top',
+                        position: 'bottom',
                     },
                     yaxis:{
                         reversed: true,
