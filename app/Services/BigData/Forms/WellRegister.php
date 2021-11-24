@@ -13,7 +13,7 @@ class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
 
-    protected function submitForm(): array
+    protected function prepareDataToSubmit()
     {
         $data = $this->request->except(
             [
@@ -32,10 +32,23 @@ class WellRegister extends PlainForm
             $data = array_merge($this->params()['default_values'], $data);
         }
 
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-        $wellId = $dbQuery->insertGetId($data);
+        return $data;
+    }
+    protected function submitForm(): array
+    {
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
 
-        $this->submittedData['fields'] = $data;
+        $formFields = $this->prepareDataToSubmit();
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+        $wellId = $dbQuery->insertGetId($formFields);
+
+        $this->submittedData['fields'] = $formFields;
         $this->submittedData['id'] = $wellId;
 
         $this->insertWellRelation($wellId, 'org');
@@ -50,8 +63,7 @@ class WellRegister extends PlainForm
         
             $rows = $this->getRows();
 
-            $columns = $this->getColumns();
-            dd($rows);
+            $columns = collect();
             $availableActions = $this->getAvailableActions();
             if ($rows->isNotEmpty()) {
                 $availableActions = array_filter($availableActions, function ($action) {
@@ -83,24 +95,17 @@ class WellRegister extends PlainForm
     }
     protected function getRows(): Collection
     {
-        $wellId = $this->request->get('id');
+        $wellId = (int)$this->request->get('well_id');
         $rows = collect();
         $row = [];
         if (!empty($row)) {
             $row['id'] = $wellId;
             $rows->push($row);
         }
-        dd($rows);
         return $rows;
     }
 
-    protected function getColumns(): Collection
-    {
-        $columns = collect();
-        
-        dd($columns);
-        return $columns;
-    }
+    
 
     protected function getCustomValidationErrors(string $field = null): array
     {
