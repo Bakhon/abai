@@ -21,6 +21,7 @@ use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\OmgNGDUZu;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\ComplicationMonitoring\WaterWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
 use App\Services\DruidService;
@@ -74,6 +75,7 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 }
             ])
+            ->where('water_pipe', false)
             ->get();
 
         $manualPipes = ManualOilPipe::with('coords', 'pipeType')
@@ -143,6 +145,10 @@ class TechMapController extends Controller
         $pipeTypes = PipeType::all();
         $ngdus = Ngdu::all();
         $cdngs = Cdng::all();
+        $water_pipes = OilPipe::with('coords', 'pipeType')
+            ->where('water_pipe', true)
+            ->get();
+        $water_wells = WaterWell::all();
 
         return [
             'pipes' => $pipes,
@@ -153,7 +159,9 @@ class TechMapController extends Controller
             'guPoints' => $guPoints,
             'center' => $center,
             'pipeTypes' => $pipeTypes,
-            'date' => $date
+            'date' => $date,
+            'water_pipes' => $water_pipes,
+            'water_wells' => $water_wells
         ];
     }
 

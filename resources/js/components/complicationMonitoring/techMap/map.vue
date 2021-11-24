@@ -241,6 +241,8 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
+      waterPipes: [],
+      waterWellPoints: [],
       mapColorsMode: 'speedFlow',
       selectedDate: null,
       activeFilter: 'speedFlow',
@@ -336,7 +338,9 @@ export default {
       this.SET_LOADING(true);
       let data = await this.getMapData(this.gu);
       this.pipes = data.pipes;
+      this.waterPipes = data.water_pipes;
       this.selectedDate = data.date;
+      this.waterWellPoints = data.water_wells;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -454,22 +458,28 @@ export default {
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
+      let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
       let guPointsLayer = this.createIconLayer('icon-layer-gu', this.guPoints, 'gu');
       let zuPointsLayer = this.createIconLayer('icon-layer-zu', this.zuPoints, 'zu');
-      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well')
+      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well');
+      let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
 
       this.layersIds = [
+        'water-pipes-layer',
         'path-layer',
         'icon-layer-gu',
         'icon-layer-zu',
+        'icon-layer-water-well',
         'icon-layer-well'
       ];
 
       this.layers = [
+        waterPipesLayer,
         pipesLayer,
         guPointsLayer,
         zuPointsLayer,
-        wellPointsLayer,
+        waterWellPointsLayer,
+        wellPointsLayer
       ];
     },
     async mapClickHandle(e) {
@@ -548,6 +558,9 @@ export default {
         case "well":
           iconAtlas = '/img/icons/map/well_black.png';
           break;
+        case "water-well":
+          iconAtlas = '/img/icons/map/well_normal.png';
+          break;
       }
 
       let name = this.getObjectName(type);
@@ -604,6 +617,10 @@ export default {
       });
     },
     getPipeColor(pipe) {
+      if (pipe.water_pipe) {
+        return pipeColors.default.water_pipe;
+      }
+
       if (this.activeFilter) {
         switch (this.activeFilter) {
           case "speedFlow":
@@ -770,7 +787,7 @@ export default {
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
-    clearSelected(){
+    clearSelected() {
       this.selectedGu = null;
       this.selectedWell = null;
       this.selectedZu = null;
@@ -1267,6 +1284,10 @@ export default {
           return this.trans('monitoring.pipe.pipe')
           break;
 
+        case 'water-well':
+          return this.trans('monitoring.water-well')
+          break;
+
         default:
           return ""
           break;
@@ -1322,6 +1343,8 @@ export default {
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
+      this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
+      this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
