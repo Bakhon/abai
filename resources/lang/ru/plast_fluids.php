@@ -147,4 +147,8 @@ return array (
   'all_wells' => 'Все скважины',
   'wells_deep_samples' => 'Скважины с отбором глубинных проб',
   'wells_recombined_samples' => 'Скважины с отбором рекомбинированных проб',
+  'structural_map_gas_content' => 'Rs',
+  'structural_map_density_separation_liquid' => 'po',
+  'structural_map_saturation_pressure' => 'Ps',
+  'structural_map_reservoir_fluid_viscosity' => 'μos',
 );

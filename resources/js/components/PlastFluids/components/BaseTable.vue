@@ -170,7 +170,7 @@ export default {
       perPage: 30,
     };
   },
-  inject: ["reservoilOilInfo"],
+  inject: { reservoilOilInfo: { default: "template" } },
   watch: {
     perPage: {
       handler(val) {

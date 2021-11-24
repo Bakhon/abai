@@ -10,35 +10,19 @@
           <p>{{ trans("plast_fluids.settings") }}</p>
         </div>
         <div class="content">
-          <div class="settings-input-holder">
+          <div
+            v-for="settings in wellSettingsData"
+            :key="settings.id"
+            class="settings-input-holder"
+          >
             <input
               v-model="computedSelectedWellsType"
-              value="all"
+              :value="settings.checkboxValue"
               type="checkbox"
-              id="all-wells"
+              :id="settings.id"
             />
-            <label for="all-wells">{{ trans("plast_fluids.all_wells") }}</label>
-          </div>
-          <div class="settings-input-holder">
-            <input
-              v-model="computedSelectedWellsType"
-              value="deep"
-              type="checkbox"
-              id="wells-deep-samples"
-            />
-            <label for="wells-deep-samples">{{
-              trans("plast_fluids.wells_deep_samples")
-            }}</label>
-          </div>
-          <div class="settings-input-holder">
-            <input
-              v-model="computedSelectedWellsType"
-              value="recombined"
-              type="checkbox"
-              id="wells-recombined-samples"
-            />
-            <label for="wells-recombined-samples">{{
-              trans("plast_fluids.wells_recombined_samples")
+            <label :for="settings.id">{{
+              trans(`plast_fluids.${settings.langKey}`)
             }}</label>
           </div>
         </div>
@@ -53,28 +37,19 @@
         </div>
         <div class="content">
           <div class="fluid-inputs">
-            <div class="fluid-input-holder">
-              <input type="checkbox" id="gas-content" />
-              <label for="gas-content">{{
-                trans("plast_fluids.gas_content")
-              }}</label>
-            </div>
-            <div class="fluid-input-holder">
-              <input type="checkbox" id="density-separation-oil" />
-              <label for="density-separation-oil"
-                >{{ trans("plast_fluids.density_separation_oil") }}
-              </label>
-            </div>
-            <div class="fluid-input-holder">
-              <input type="checkbox" id="pressure-saturation" />
-              <label for="pressure-saturation">{{
-                trans("plast_fluids.pressure_saturation")
-              }}</label>
-            </div>
-            <div class="fluid-input-holder">
-              <input type="checkbox" id="reservoir-oil-viscosity" />
-              <label for="reservoir-oil-viscosity">{{
-                trans("plast_fluids.reservoir_oil_viscosity")
+            <div
+              v-for="fluid in fluidPropertiesData"
+              :key="fluid.id"
+              class="fluid-input-holder"
+            >
+              <input
+                v-model="computedSelectedFluidProperty"
+                :value="fluid.checkboxValue"
+                type="checkbox"
+                :id="fluid.id"
+              />
+              <label :for="fluid.id">{{
+                trans(`plast_fluids.${fluid.langKey}`)
               }}</label>
             </div>
           </div>
@@ -124,6 +99,49 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "DataAnalysisMapTablePanel",
+  data() {
+    return {
+      wellSettingsData: [
+        {
+          checkboxValue: "all",
+          id: "all-wells",
+          langKey: "all_wells",
+        },
+        {
+          checkboxValue: "deep",
+          id: "wells-deep-samples",
+          langKey: "wells_deep_samples",
+        },
+        {
+          checkboxValue: "recombined",
+          id: "wells-recombined-samples",
+          langKey: "wells_recombined_samples",
+        },
+      ],
+      fluidPropertiesData: [
+        {
+          checkboxValue: "gas_content",
+          id: "gas-content",
+          langKey: "gas_content",
+        },
+        {
+          checkboxValue: "density_separation_liquid",
+          id: "density-separation-oil",
+          langKey: "density_separation_oil",
+        },
+        {
+          checkboxValue: "saturation_pressure",
+          id: "pressure-saturation",
+          langKey: "pressure_saturation",
+        },
+        {
+          checkboxValue: "reservoir_fluid_viscosity",
+          id: "reservoir-oil-viscosity",
+          langKey: "reservoir_oil_viscosity",
+        },
+      ],
+    };
+  },
   components: {
     Dropdown,
   },
@@ -132,6 +150,7 @@ export default {
       "models",
       "currentModel",
       "selectedWellsType",
+      "selectedFluidProperty",
     ]),
     computedSelectedWellsType: {
       get() {
@@ -141,11 +160,20 @@ export default {
         this.SET_SELECTED_WELLS_TYPE(value);
       },
     },
+    computedSelectedFluidProperty: {
+      get() {
+        return this.selectedFluidProperty;
+      },
+      set(value) {
+        this.SET_SELECTED_FLUID_PROPERTY(value);
+      },
+    },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", [
       "SET_CURRENT_MODEL",
       "SET_SELECTED_WELLS_TYPE",
+      "SET_SELECTED_FLUID_PROPERTY",
     ]),
   },
 };

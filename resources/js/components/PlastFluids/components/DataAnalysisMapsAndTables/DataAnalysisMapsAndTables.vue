@@ -58,7 +58,12 @@ export default {
       "currentSubsoilField",
       "currentSubsoilHorizon",
     ]),
-    ...mapState("plastFluidsLocal", ["tableFields", "tableRows", "tableState"]),
+    ...mapState("plastFluidsLocal", [
+      "tableFields",
+      "tableRows",
+      "tableState",
+      "currentModel",
+    ]),
   },
   watch: {
     currentSubsoilField: {
@@ -82,7 +87,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_MODELS"]),
+    ...mapMutations("plastFluidsLocal", ["SET_MODELS", "SET_CURRENT_MODEL"]),
     ...mapActions("plastFluidsLocal", [
       "handleAnalysisTableData",
       "handleBlocksFilter",
@@ -91,6 +96,12 @@ export default {
       const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
       const data = await getModels(horizonIDs);
       this.SET_MODELS(data.models);
+      if (
+        (!horizonIDs.includes(this.currentModel.horizon_id) ||
+          !this.currentModel.id) &&
+        data.models.length
+      )
+        this.SET_CURRENT_MODEL(data.models[0]);
     },
   },
   async mounted() {

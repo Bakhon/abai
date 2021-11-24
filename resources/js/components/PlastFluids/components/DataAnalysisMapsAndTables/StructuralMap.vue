@@ -14,6 +14,7 @@ import {
   getModelWells,
   getModelWellsProperties,
 } from "../../services/mapService";
+import { convertToFormData } from "../../helpers";
 import { downloadUserReport } from "../../services/templateService";
 import { mapState, mapMutations } from "vuex";
 import { eventBus } from "../../eventBus";
@@ -33,6 +34,7 @@ export default {
       recombinedWellLayers: new L.featureGroup(),
       wells: [],
       wellsProperties: [],
+      allWells: [],
       deepWells: [],
       recombinedWells: [],
       currentModelImage: null,
@@ -58,65 +60,64 @@ export default {
       "isIsohypsShown",
       "isTileLayerShown",
       "selectedWellsType",
+      "selectedFluidProperty",
     ]),
-    allWells() {
-      return this.wells.map((well) => {
-        const wellProperty = this.wellsProperties.find(
-          (wellProperty) => well.well_id === wellProperty.well_id
-        );
-        return { ...wellProperty, ...well };
-      });
-    },
   },
   watch: {
     async currentModel(value) {
-      try {
-        const {
-          id,
-          start_latitude,
-          end_latitude,
-          start_longitude,
-          end_longitude,
-          image_id,
-        } = value;
-        this.loading = true;
-        this.clearLayers();
-        this.getWellsProperties();
-        this.SET_MAX_DEPTH_MULTIPLIER(value.levels_count * 10);
-        const postData = new FormData();
-        postData.append("file_id", image_id);
-        const image = await downloadUserReport(postData);
-        const blob = new Blob([image.data], {
-          type: "image/png",
-        });
-        this.currentModelImage = URL.createObjectURL(blob);
-        this.currentModelBounds = [
-          [start_latitude, start_longitude],
-          [end_latitude, end_longitude],
-        ];
-        this.imageOverlay = L.imageOverlay(
-          this.currentModelImage,
-          this.currentModelBounds
-        );
-        const model = await getModelIsohypses({
-          depth_multiplier: this.depthMultiplier,
-          model_id: id,
-        });
-        this.addIsohypsLayers(model.isogyps);
-        this.isTileLayerShown ? this.addTileLayer() : "";
-        this.isIsohypsShown ? this.addIsohypsOnMap() : "";
-        this.map.fitBounds(this.currentModelBounds);
-      } catch (error) {
-        alert(error);
-      } finally {
-        this.loading = false;
-      }
+      if (value.id) {
+        try {
+          const {
+            id,
+            start_latitude,
+            end_latitude,
+            start_longitude,
+            end_longitude,
+            image_id,
+          } = value;
+          this.loading = true;
+          this.clearLayers();
+          this.getWellsProperties();
+          this.SET_MAX_DEPTH_MULTIPLIER(value.levels_count * 10);
+          const postData = new FormData();
+          postData.append("file_id", image_id);
+          const image = await downloadUserReport(postData);
+          const blob = new Blob([image.data], {
+            type: "image/png",
+          });
+          this.currentModelImage = URL.createObjectURL(blob);
+          this.currentModelBounds = [
+            [start_latitude, start_longitude],
+            [end_latitude, end_longitude],
+          ];
+          this.imageOverlay = L.imageOverlay(
+            this.currentModelImage,
+            this.currentModelBounds
+          );
+          const model = await getModelIsohypses({
+            depth_multiplier: this.depthMultiplier,
+            model_id: id,
+          });
+          this.addIsohypsLayers(model.isogyps);
+          this.isTileLayerShown ? this.addTileLayer() : "";
+          this.isIsohypsShown ? this.addIsohypsOnMap() : "";
+          this.map.fitBounds(this.currentModelBounds);
+        } catch (error) {
+          alert(error);
+        } finally {
+          this.loading = false;
+        }
 
-      try {
-        this.wells = await getModelWells({ model_id: value.id });
-        this.SET_SELECTED_WELLS_TYPE(["all"]);
-      } catch (error) {
-        alert("ошибка при получении скважин");
+        try {
+          this.wells = await getModelWells({ model_id: value.id });
+          this.setAllWells();
+          this.SET_SELECTED_WELLS_TYPE(["all"]);
+        } catch (error) {
+          alert("ошибка при получении скважин");
+        }
+      } else {
+        this.map.setZoom(5);
+        this.clearLayers();
       }
     },
     allWells(wells) {
@@ -126,16 +127,55 @@ export default {
       );
       this.handleWells();
     },
-    selectedWellsType() {
+    async selectedWellsType() {
       this.removeWells();
       this.addWellsOnMap();
+      this.closeWellNameTooltips();
+      this.openWellNameTooltips();
+    },
+    selectedFluidProperty(property) {
+      property.length
+        ? this.addFluidProperty(property[0])
+        : this.removeFluidProperty();
+    },
+    currentSubsoilField() {
+      this.SET_CURRENT_MODEL({});
+    },
+    async currentSubsoilHorizon(value) {
+      const horizonIDs = value.map((horizon) => horizon.horizon_id);
+      if (horizonIDs.includes(this.currentModel.horizon_id)) {
+        await this.getWellsProperties();
+        this.setAllWells();
+      } else {
+        this.SET_CURRENT_MODEL({});
+      }
+    },
+    async currentBlocks() {
+      await this.getWellsProperties();
+      this.setAllWells();
     },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", [
+      "SET_CURRENT_MODEL",
       "SET_MAX_DEPTH_MULTIPLIER",
       "SET_SELECTED_WELLS_TYPE",
     ]),
+    setAllWells() {
+      this.allWells = this.wells.map((well) => {
+        let wellProperty = this.wellsProperties.find(
+          (wellProperty) => well.well_id === wellProperty.well_id
+        );
+        wellProperty =
+          wellProperty && wellProperty.well_id
+            ? {
+                isSampleTaken: true,
+                ...wellProperty,
+              }
+            : { isSampleTaken: false };
+        return { ...wellProperty, ...well };
+      });
+    },
     async getWellsProperties() {
       let horizonIDs = "None";
       let blockIDs = "None";
@@ -146,10 +186,11 @@ export default {
 
       if (this.currentBlocks.length)
         blockIDs = this.currentBlocks.map((block) => block.block_id);
-      const postData = new FormData();
-      postData.append("field_id", this.currentSubsoilField[0].field_id);
-      postData.append("horizons", horizonIDs);
-      postData.append("blocks", blockIDs);
+      const postData = convertToFormData({
+        field_id: this.currentSubsoilField[0].field_id,
+        horizons: horizonIDs,
+        blocks: blockIDs,
+      });
       this.wellsProperties = await getModelWellsProperties(postData);
     },
     addIsohypsLayers(isohyps) {
@@ -207,20 +248,24 @@ export default {
         });
         const wellMarker = L.marker([well.latitude, well.longitude], {
           icon,
-          wellName: well.well,
+          ...well,
         });
         this[filterSample + "WellLayers"].addLayer(wellMarker);
       });
     },
     handleWells() {
       this.clearWellLayers();
-      this.map.off("zoomstart", this.removeTooltips);
-      this.map.off("zoomend", this.addTooltips);
+      this.removeWellNameTooltips();
+      this.map.off("zoomstart", this.closeWellNameTooltips);
+      this.map.off("zoomend", this.openWellNameTooltips);
       ["all", "deep", "recombined"].forEach((type) => {
         this.addWellsLayers(this[type + "Wells"], type);
       });
-      this.map.on("zoomstart", this.removeTooltips);
-      this.map.on("zoomend", this.addTooltips);
+      this.addWellNameTooltips();
+      this.closeWellNameTooltips();
+      this.openWellNameTooltips();
+      this.map.on("zoomstart", this.closeWellNameTooltips);
+      this.map.on("zoomend", this.openWellNameTooltips);
     },
     addWellsOnMap() {
       this.selectedWellsType.forEach((type) =>
@@ -234,24 +279,80 @@ export default {
           : ""
       );
     },
-    addTooltips() {
+    addWellNameTooltips() {
+      ["all", "deep", "recombined"].forEach((type) =>
+        this[type + "WellLayers"].eachLayer((layer) =>
+          layer.bindTooltip(layer.options.well, {
+            permanent: true,
+            className: "well-tooltip",
+            opacity: 1,
+            direction: "top",
+          })
+        )
+      );
+    },
+    removeWellNameTooltips() {
+      ["all", "deep", "recombined"].forEach((type) =>
+        this[type + "WellLayers"].eachLayer((layer) => layer.unbindTooltip())
+      );
+    },
+    openWellNameTooltips() {
       if (this.map.getZoom() >= 13)
         this.selectedWellsType.forEach((type) =>
-          this[type + "WellLayers"].eachLayer((layer) =>
-            layer.bindTooltip(layer.options.wellName, {
-              permanent: true,
-              className: "well-tooltip",
-              opacity: 1,
-              direction: "top",
-            })
-          )
+          this[type + "WellLayers"].eachLayer((layer) => layer.openTooltip())
         );
     },
-    removeTooltips() {
-      if (this.map.getZoom() >= 13)
-        this.selectedWellsType.forEach((type) =>
-          this[type + "WellLayers"].eachLayer((layer) => layer.unbindTooltip())
+    closeWellNameTooltips() {
+      this.selectedWellsType.forEach((type) =>
+        this[type + "WellLayers"].eachLayer((layer) => layer.closeTooltip())
+      );
+    },
+    getProperty(options, property) {
+      if (options[property]) {
+        return options[property].toFixed(
+          property === "reservoir_fluid_viscosity" ? 1 : 0
         );
+      } else {
+        return (
+          options["min_" + property].toFixed(
+            property === "reservoir_fluid_viscosity" ? 1 : 0
+          ) +
+          " - " +
+          options["max_" + property].toFixed(
+            property === "reservoir_fluid_viscosity" ? 1 : 0
+          )
+        );
+      }
+    },
+    addFluidProperty(property) {
+      ["all", "deep", "recombined"].forEach((type) =>
+        this[type + "WellLayers"].eachLayer((layer) => {
+          if (layer.options.isSampleTaken) {
+            const div = document.createElement("div");
+            const wellTitle = document.createElement("p");
+            const wellProperty = document.createElement("p");
+            wellTitle.appendChild(document.createTextNode(layer.options.well));
+            wellProperty.appendChild(
+              document.createTextNode(
+                `${this.trans(
+                  `plast_fluids.structural_map_${property}`
+                )}: ${this.getProperty(layer.options, property)}`
+              )
+            );
+            div.append(wellTitle, wellProperty);
+            layer.setTooltipContent(div);
+          }
+        })
+      );
+    },
+    removeFluidProperty() {
+      ["all", "deep", "recombined"].forEach((type) => {
+        this[type + "WellLayers"].eachLayer((layer) => {
+          if (layer.options.isSampleTaken) {
+            layer.setTooltipContent(layer.options.well);
+          }
+        });
+      });
     },
     async handleMapChanges(data) {
       const { isTileLayerShown, depthMultiplier } = data;
@@ -363,6 +464,27 @@ export default {
   padding: 0;
   background-color: unset;
   border: none;
+  box-shadow: none;
+}
+
+#structural-map::v-deep .well-tooltip > div > p {
+  margin: 0;
+}
+
+#structural-map::v-deep .well-tooltip > div > p:nth-of-type(1) {
+  text-align: center;
+}
+
+#structural-map::v-deep .well-tooltip > div > p:nth-of-type(2) {
+  font-size: 14px;
+}
+
+#structural-map::v-deep .well-property-tooltip {
+  color: #333333;
+  font-size: 12px;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #333333;
   box-shadow: none;
 }
 
