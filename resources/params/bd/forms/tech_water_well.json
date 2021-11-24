@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "sort": [
     {
       "field": "dbeg",
