@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-100">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
     </div>
 </template>
@@ -26,6 +26,7 @@
                 xChart: [],
                 yChart: [],
                 zChart: [],
+                dlsColor: [],
                 layout: {
                     showlegend: false,
                     plot_bgcolor: "#272953",
@@ -74,17 +75,13 @@
                 this.xChart = []
                 this.yChart = []
                 this.zChart = []
-                this.dls = []
                 this.dlsColor = []
                 for(let i=0; i<this.data.length; i++) {
                     this.xChart.push(this.data[i].E_W)
                     this.yChart.push(this.data[i].N_S)
                     this.zChart.push(this.data[i].Measured_Depth)
+                    this.dlsColor.push('#2E50E9')
                 }
-                // var indexHpump = this.closestVal(this.hPump, this.zChart)
-                // var pointZ = this.zChart[indexHpump]
-                // var pointX = this.xChart[indexHpump]
-                // var pointY = this.yChart[indexHpump]
                 let maxX = Math.max(...this.xChart.map(a => Math.abs(a)))
                 let maxY = Math.max(...this.yChart.map(a => Math.abs(a)))
 
@@ -107,12 +104,12 @@
                     y: this.yChart,
                     z: this.zChart.map(x => x * -1),
                     text: "Test",
-                    hovertemplate: "",
+                    hovertemplate:  "MD = %{z} м<br>" + "EW = %{x} м<br>" + "NS = %{y} м<br>" + "<extra></extra>",
                     opacity: 1,
                     line: {
                         width: 12,
                         color: this.dlsColor,
-                        colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
+                        colorscale: [[0, '#2E50E9'], [1, '#2E50E9']],
                         type: 'heatmap'
                     },
                 }]

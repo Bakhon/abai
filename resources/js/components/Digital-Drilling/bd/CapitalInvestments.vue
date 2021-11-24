@@ -44,7 +44,7 @@
                 <td></td>
                 <td>{{investment.name_ru}}</td>
                 <td>{{investment.value_fact1}}</td>
-                <td>{{investment.date_fact2}}</td>
+                <td>{{investment.value_fact2}}</td>
                 <td>{{investment.value_plan1}}</td>
                 <td>{{investment.value_plan2}}</td>
             </tr>
