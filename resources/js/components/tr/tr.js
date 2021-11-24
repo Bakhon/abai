@@ -12,7 +12,7 @@ import Paginate from 'vuejs-paginate';
 import moment from 'moment';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-
+import totalTable from "./totalTable.vue";
 Vue.component('paginate', Paginate);
 Vue.component('v-select', vSelect)
 
@@ -29,6 +29,7 @@ export default {
     SearchFormRefresh,
     TrMultiselect,
     Multiselect,
+    totalTable,
   },
   computed: {
     isExpMethButton() {
@@ -848,7 +849,9 @@ export default {
     addpush() {
         this.$modal.show('add_well')
     },
-
+    totalModal() {
+      this.$modal.show('total_modal')
+  },
     handlerSearch(search) {
         this.searchString = search;
     },

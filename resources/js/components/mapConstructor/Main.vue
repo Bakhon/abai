@@ -1,11 +1,16 @@
 <template>
     <div class="map-constructor">
-        <TopMenu @importFile="importFile" :addProjectModal="addProjectModal"></TopMenu>
+        <TopMenu
+            @importFile="importFile"
+            :addProjectModal="addProjectModal"
+            :buildMapModal="buildMapModal"
+            :buildMapSpecificModal="buildMapSpecificModal"
+        ></TopMenu>
         <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">
                 <div class="tools">
                     <div class="left-tools" >
-                        <div class="tool" v-for="tool in leftTools">
+                        <div class="tool" v-for="tool in leftTools" @click="toolAction(tool.action)">
                             <div class="box">
                                 <i :class="tool.icon"></i>
                             </div>
@@ -13,11 +18,13 @@
                         </div>
                     </div>
                     <div class="right-tools">
-                        <div class="tool">
-                            <div class="box">
-                                <i v-if="!selectedMonth" class="far fa-calendar"></i>
-                                <span v-else>{{selectedMonth | dateFormat()}}</span>
-                                <datetime
+                        <div class="tool d-flex">
+                            <div v-if="selectedMonth" class="text-white" @click="monthDown"><</div>
+                            <div>
+                                <div class="box">
+                                    <i v-if="!selectedMonth" class="far fa-calendar"></i>
+                                    <span v-else>{{selectedMonth | dateFormat()}}</span>
+                                    <datetime
                                         type="date"
                                         v-model="selectedMonth"
                                         input-class="form-control filter-input calendar"
@@ -25,10 +32,13 @@
                                         :phrases="{ok: '', cancel: ''}"
                                         auto
                                         :flow="['year', 'month']"
-                                >
-                                </datetime>
+                                        @input="changeDate"
+                                    >
+                                    </datetime>
+                                </div>
+                                <span>{{ trans('map_constructor.date_picker') }}</span>
                             </div>
-                            <span>{{ trans('map_constructor.date_picker') }}</span>
+                            <div v-if="selectedMonth" class="text-white" @click="monthUp">></div>
                         </div>
                         <div class="tool">
                             <div class="box">
@@ -41,12 +51,6 @@
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <span>{{ trans('map_constructor.select_kto') }}</span>
-                        </div>
-                        <div class="tool" @click="showBubbles">
-                            <div class="box">
-                                <i class="fas fa-map"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.show') }}</span>
                         </div>
                     </div>
                 </div>
@@ -90,8 +94,6 @@
             </div>
         </div>
         <PrinterModal></PrinterModal>
-        <BuildMapModal></BuildMapModal>
-        <BuildMapSpecificModal></BuildMapSpecificModal>
         <ReportModal></ReportModal>
         <ExportModal></ExportModal>
 

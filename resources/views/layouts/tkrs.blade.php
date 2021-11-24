@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar_menu_additional')
-    @include('partials.sidebar.tr_menu')
+
 @endsection
 @section('module_icon')
 <svg width="32" height="30" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">

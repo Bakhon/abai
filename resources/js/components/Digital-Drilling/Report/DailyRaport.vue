@@ -90,8 +90,11 @@
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_start_date')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.dbeg">
+                            <td colspan="2" class="text-left">
+                                <span v-if="report.contractor_daily.dbeg != ''">
+                                    {{report.contractor_daily.dbeg}}
+                                </span>
+                                <input type="text" v-model="report.contractor_daily.dbeg" v-else>
                             </td>
                         </tr>
                         <tr>
@@ -199,7 +202,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.drilling_progress">
+                                <input type="text" v-model="report.general_data_daily.reaming_drilling">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
@@ -209,6 +212,7 @@
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
+                            </td>
                             </td>
                             <td colspan="2">
                                 <input type="text" v-model="report.contractor_daily.drilling_mud_engineer">
@@ -867,33 +871,54 @@
 
                         </tr>
                         <tr>
-                            <td><input type="text" v-model="report.slt_daily[0].name_type"></td>
-                            <td><input type="text" v-model="report.slt_daily[0].unit"></td>
+                            <td>{{report.slt_daily[0].name_type}}</td>
+                            <td>{{report.slt_daily[0].unit}}</td>
                             <td><input type="text" v-model="report.slt_daily[0].trip"></td>
-                            <td colspan="2"><input type="text" v-model="report.slt_daily[0].previous"></td>
-                            <td><input type="text" v-model="report.slt_daily[0].daily"></td>
-                            <td><input type="text" v-model="report.slt_daily[0].overall"></td>
+                            <td colspan="2">{{report.slt_daily[0].previous}}</td>
+                            <td><input type="number" v-model="report.slt_daily[0].daily" @input="summSLT(0)"></td>
+                            <td>
+                                <span v-if="report.slt_daily[0].overall">
+                                    {{report.slt_daily[0].overall}}
+                                </span>
+                                <span v-else>
+                                    {{report.slt_daily[0].previous}}
+                                </span>
+                            </td>
                             <td colspan="12" class="border-bottom-0 text-left align-bottom">{{trans('digital_drilling.daily_raport.application_required')}}</td>
 
                         </tr>
                         <tr>
-                            <td><input type="text" v-model="report.slt_daily[1].name_type"></td>
-                            <td><input type="text" v-model="report.slt_daily[1].unit"></td>
+                            <td>{{report.slt_daily[1].name_type}}</td>
+                            <td>{{report.slt_daily[1].unit}}</td>
                             <td><input type="text" v-model="report.slt_daily[1].trip"></td>
-                            <td colspan="2"><input type="text" v-model="report.slt_daily[1].previous"></td>
-                            <td><input type="text" v-model="report.slt_daily[1].daily"></td>
-                            <td><input type="text" v-model="report.slt_daily[1].overall"></td>
+                            <td colspan="2">{{report.slt_daily[1].previous}}</td>
+                            <td><input type="number" v-model="report.slt_daily[1].daily" @input="summSLT(1)"></td>
+                            <td>
+                                <span v-if="report.slt_daily[1].overall">
+                                    {{report.slt_daily[1].overall}}
+                                </span>
+                                <span v-else>
+                                    {{report.slt_daily[1].previous}}
+                                </span>
+                            </td>
                             <td rowspan="3" colspan="12" class="border-top-0">
                                 <textarea name=""  cols="30" rows="10" v-model="report.oztok_daily.request"></textarea>
                             </td>
                         </tr>
                         <tr v-for="i in 2">
-                            <td><input type="text" v-model="report.slt_daily[i+1].name_type"></td>
-                            <td><input type="text" v-model="report.slt_daily[i+1].unit"></td>
+                            <td>{{report.slt_daily[i+1].name_type}}</td>
+                            <td>{{report.slt_daily[i+1].unit}}</td>
                             <td><input type="text" v-model="report.slt_daily[i+1].trip"></td>
-                            <td colspan="2"><input type="text" v-model="report.slt_daily[i+1].previous"></td>
-                            <td><input type="text" v-model="report.slt_daily[i+1].daily"></td>
-                            <td><input type="text" v-model="report.slt_daily[i+1].overall"></td>
+                            <td colspan="2">{{report.slt_daily[i+1].previous}}</td>
+                            <td><input type="number" v-model="report.slt_daily[i+1].daily" @input="summSLT(i+1)"></td>
+                            <td>
+                                <span v-if="report.slt_daily[i+1].overall">
+                                    {{report.slt_daily[i+1].overall}}
+                                </span>
+                                <span v-else>
+                                    {{report.slt_daily[i+1].previous}}
+                                </span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -1220,8 +1245,8 @@
                             </td>
                         </tr>
                         <tr v-for="(job_status, i) in report.job_status_6_hours">
-                            <td><input type="time" v-model="job_status.tbeg" @change="getTotalTime(i, 6)"></td>
-                            <td><input type="time" v-model="job_status.tend" @change="getTotalTime(i, 6)"></td>
+                            <td><input type="time" v-model="job_status.tbeg" @input="getTotalTime(i, 6)"></td>
+                            <td><input type="time" v-model="job_status.tend" @input="getTotalTime(i, 6)"></td>
                             <td>{{job_status.total_time}}</td>
                             <td><input type="text" v-model="job_status.rate"></td>
                             <td>
@@ -1925,7 +1950,6 @@
             this.getoperation2()
             this.getDeviceType()
             this.getBHAelements()
-            this.getPreviousReport()
             this.changeTotalTime(24)
             this.changeTotalTime(6)
         },
@@ -2514,6 +2538,9 @@
                     }
                 }
                 return sum
+            },
+            summSLT(index){
+                this.report.slt_daily[index].overall = this.sumValues(this.report.slt_daily[index].previous, this.report.slt_daily[index].daily)
             },
             sumValues(a, b){
                 if (!a){

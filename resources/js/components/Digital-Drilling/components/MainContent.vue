@@ -58,6 +58,7 @@
         methods:{
             closeLeftBlock(){
                 this.leftClose = !this.leftClose
+                this.$emit('leftClosed')
             },
             closeRightBlock(){
                 this.rightClose = !this.rightClose

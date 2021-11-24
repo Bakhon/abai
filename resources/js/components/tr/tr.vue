@@ -97,7 +97,7 @@
                                     <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                  {{trans('tr.add')}}</a>
+                                  {{trans('tr.show')}}</a>
 
                                   <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
@@ -222,7 +222,13 @@
                       </table>
                   </div>
                 </div>
-              </modal>
+    </modal>
+    <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
+      <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
+        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+        <totalTable />
+      </div>
+    </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -404,8 +410,7 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              
-
+    
               <button
                 v-if="isPermission"
                 type="button" 
@@ -6493,7 +6498,6 @@
 .overflow-auto {
   justify-content: center;
   display: flex;
-  height: calc(100% - 936px);
 }
 .select_pages {
   color: white;
@@ -6680,7 +6684,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
@@ -6688,7 +6691,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 255px);
+  height: calc(100vh - 245px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -6775,7 +6778,6 @@ tr:nth-child(even) td {
   color: black;
 }
 .input_edit_modal {
-
   color: black;
   font-size: 12px;
   height: 31px;
@@ -6794,7 +6796,6 @@ tr:nth-child(even) td {
   border: none;
   margin-left: 11px;
 }
-
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -6904,6 +6905,10 @@ table::-webkit-scrollbar-corner {
 }
 .modal_table {
   height: 240px !important;
+}
+.total-modal-header {
+  color: #fff;
+  font-size: 16px;
 }
 
     .table-outer{
