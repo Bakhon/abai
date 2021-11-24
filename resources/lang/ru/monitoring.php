@@ -587,4 +587,6 @@ return array (
   ),
   'gu-scheme' => 'Схема ГУ',
   'water-well' => 'ПДД',
+  'map-params' => 'Параметры',
+  'legend' => 'Легенда',
 );
