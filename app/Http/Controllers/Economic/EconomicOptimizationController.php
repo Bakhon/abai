@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Well;
+use App\Models\EcoRefsAvgMarketPrice;
 use App\Models\EcoRefsCost;
 use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\EcoRefsEmpPer;
 use App\Models\EcoRefsMacro;
 use App\Models\EcoRefsNdoRates;
+use App\Models\EcoRefsRentTax;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsScFa;
@@ -122,6 +124,32 @@ class EconomicOptimizationController extends Controller
     const COMPANY_MANGISTAU = 7;
     const COMPANY_KARAZANBAS = 8;
     const COMPANY_KAZ_GER = 9;
+
+    const ROUTES_LOCAL = [
+        4 => 'local_ANPZ',
+        5 => 'local_PNHZ',
+        6 => 'local_PKOP',
+        7 => 'local_KBITUM',
+        11 => 'local_other',
+    ];
+    const ROUTES_EXPORT = [
+        1 => 'export_AA',
+        2 => 'export_KTK',
+        3 => 'export_Samara',
+        9 => 'export_Aktau',
+        10 => 'export_other',
+    ];
+
+    const PREFIX_PRICE = 'price_';
+    const PREFIX_BARREL_RATIO = 'Barrel_ratio_';
+    const PREFIX_SALE_SHARE = 'sale_share_';
+    const PREFIX_DISCOUNT = 'discount_';
+    const PREFIX_TRANS_EXPENDITURES = 'trans_exp_';
+    const PREFIX_PRODUCTION = 'production_';
+    const PREFIX_REVENUE = 'Revenue_';
+    const PREFIX_MET_PAYMENTS = 'MET_payments_';
+    const PREFIX_ERT_PAYMENTS = 'ERT_payments_';
+    const PREFIX_ECD_PAYMENTS = 'ECD_payments_';
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -369,14 +397,76 @@ class EconomicOptimizationController extends Controller
 
     public function getEconomicData()
     {
+        $oilPrice = 30;
+
+        $dollarRate = 400;
+
         $technicalData = $this->getTechnicalQuery()->toSql();
 
         $economicData = $this->getEconomicQuery()->toSql();
 
+        $barrelRatioExportScenario = $this->sqlAvgRoutesSum(
+            self::ROUTES_EXPORT,
+            'Barrel_ratio_'
+        );
+
+        $productionLocal = $this->sqlRoutesProduction(false);
+        $productionExport = $this->sqlRoutesProduction(true);
+
+        $revenueLocalRoutes = $this->sqlRoutesRevenue(false);
+        $revenueLocal = $this->sqlRoutesRevenue(false, true);
+        $revenueExportRoutes = $this->sqlRoutesRevenue(true, false, $dollarRate, $oilPrice);
+        $revenueExport = $this->sqlRoutesRevenue(true, true, $dollarRate, $oilPrice);
+
+        $metPaymentsLocalRoutes = $this->sqlRoutesMetPayments(false);
+        $metPaymentsLocal = $this->sqlRoutesMetPayments(false, true);
+        $metPaymentsExportRoutes = $this->sqlRoutesMetPayments(true, false, $dollarRate, $oilPrice);
+        $metPaymentsExport = $this->sqlRoutesMetPayments(true, true, $dollarRate, $oilPrice);
+
+        $ert = EcoRefsRentTax::query()
+            ->select('rate')
+            ->whereScFa(1)
+            ->where('world_price_beg', '<=', $oilPrice)
+            ->where('world_price_end', '>', $oilPrice)
+            ->firstOrFail()
+            ->rate;
+        $ertPaymentsRoutes = $this->sqlRoutesErtPayments(false, $ert, $dollarRate, $oilPrice);
+        $ertPayments = $this->sqlRoutesErtPayments(true, $ert, $dollarRate, $oilPrice);
+
+        $ecd = EcoRefsAvgMarketPrice::query()
+            ->select('exp_cust_duty_rate')
+            ->whereScFa(1)
+            ->where('avg_market_price_beg', '<=', $oilPrice)
+            ->where('avg_market_price_end', '>', $oilPrice)
+            ->firstOrFail()
+            ->exp_cust_duty_rate;
+        $ecdPaymentsRoutes = $this->sqlRoutesEcdPayments(false, $ecd, $dollarRate);
+        $ecdPayments = $this->sqlRoutesEcdPayments(true, $ecd, $dollarRate);
+
         $data = DB::table(DB::raw("($technicalData) as technical"))
             ->selectRaw(DB::raw("
                 technical.*,
-                economic.*
+                economic.*,
+                $ecd AS ecd,
+                $ert AS ert,
+                $barrelRatioExportScenario AS Barrel_ratio_export_scenario,
+                oil * cost_amort AS amort,
+                $productionLocal AS production_local,
+                $productionExport AS production_export,
+                $revenueLocalRoutes,
+                $revenueLocal AS Revenue_local,
+                $revenueExportRoutes,
+                $revenueExport AS Revenue_export,
+                ($revenueLocal + $revenueExport) AS Revenue_total, 
+                $metPaymentsLocalRoutes,
+                $metPaymentsLocal as MET_payments_local,
+                $metPaymentsExportRoutes,
+                $metPaymentsExport as MET_payments_export,
+                ($metPaymentsLocal + $metPaymentsExport) AS MET_payments,
+                $ertPaymentsRoutes,
+                $ertPayments as ERT_payments,
+                $ecdPaymentsRoutes,
+                $ecdPayments as ECD_payments
             "))
             ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
                 $join
@@ -404,7 +494,7 @@ class EconomicOptimizationController extends Controller
             ->selectRaw(DB::raw("
                 company_id,
                 date,
-                {$this->sqlSumByRoute('emp_per', 'sale_share_')}
+                {$this->sqlSumByRoute('emp_per', self::PREFIX_SALE_SHARE)}
             "))
             ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->groupByRaw(DB::raw("company_id, date"))
@@ -412,7 +502,7 @@ class EconomicOptimizationController extends Controller
 
         $saleSharesColumns = $this->sqlSumByRoute(
             'emp_per',
-            'sale_share_',
+            self::PREFIX_SALE_SHARE,
             true,
             'sale_shares'
         );
@@ -421,9 +511,9 @@ class EconomicOptimizationController extends Controller
             ->selectRaw(DB::raw("
                 company_id,
                 date,
-                {$this->sqlSumByRoute('discont', 'discount_')},
-                {$this->sqlSumByRoute('macro', 'price_')},
-                {$this->sqlSumByRoute('barr_coef', 'Barrel_ratio_')}
+                {$this->sqlSumByRoute('discont', self::PREFIX_DISCOUNT)},
+                {$this->sqlSumByRoute('macro', self::PREFIX_PRICE)},
+                {$this->sqlSumByRoute('barr_coef', self::PREFIX_BARREL_RATIO)}
             "))
             ->whereRaw(DB::raw("sc_fa = $economicScFa"))
             ->groupByRaw(DB::raw("company_id, date"))
@@ -432,19 +522,19 @@ class EconomicOptimizationController extends Controller
         $discountColumns = implode(',', [
             $this->sqlSumByRoute(
                 'discont',
-                'discount_',
+                self::PREFIX_DISCOUNT,
                 true,
                 'discounts'
             ),
             $this->sqlSumByRoute(
                 'macro',
-                'price_',
+                self::PREFIX_PRICE,
                 true,
                 'discounts'
             ),
             $this->sqlSumByRoute(
                 'barr_coef',
-                'Barrel_ratio_',
+                self::PREFIX_BARREL_RATIO,
                 true,
                 'discounts'
             )
@@ -462,7 +552,7 @@ class EconomicOptimizationController extends Controller
 
         $transExpenditureColumns = $this->sqlSumByRoute(
             'tn_rate',
-            'trans_exp_',
+            self::PREFIX_TRANS_EXPENDITURES,
             true,
             'trans_expenditures'
         );
@@ -592,8 +682,8 @@ class EconomicOptimizationController extends Controller
                 well_id as uwi,
                 gu_id,
                 date,
-                oil,
-                liquid,
+                oil * 1000 as oil,
+                liquid * 1000 as liquid,
                 days_worked,
                 prs,
                 pes_id
@@ -666,10 +756,10 @@ class EconomicOptimizationController extends Controller
             11 => 'local_other',
         ];
 
-        $sqlQuery = "";
+        $query = "";
 
         foreach ($routeMap as $routeId => $routeName) {
-            $sqlQuery .= $isColumnNames
+            $query .= $isColumnNames
                 ? "$alias.$prefix$routeName,"
                 : "
                 SUM(CASE 
@@ -679,6 +769,231 @@ class EconomicOptimizationController extends Controller
                 END) as '$prefix$routeName',";
         }
 
-        return substr($sqlQuery, 0, -1);
+        return substr($query, 0, -1);
+    }
+
+    private function sqlAvgRoutesSum(array $routes, string $prefix): string
+    {
+        $querySum = "";
+
+        $queryCount = "";
+
+        foreach ($routes as $routeId => $routeName) {
+            $querySum .= "$prefix$routeName+";
+
+            $queryCount .= "CASE WHEN $prefix$routeName > 0 THEN 1 ELSE 0 END +";
+        }
+
+        $querySum = substr($querySum, 0, -1);
+
+        $queryCount = substr($queryCount, 0, -1);
+
+        return "IFNULL(($querySum) / ($queryCount), 0)";
+    }
+
+    private function sqlRoutesProduction(bool $isExport): string
+    {
+        $query = "";
+
+        $querySum = "";
+
+        $production = self::PREFIX_PRODUCTION;
+
+        $routes = $isExport ? self::ROUTES_EXPORT : self::ROUTES_LOCAL;
+
+        foreach ($routes as $routeId => $routeName) {
+            $routeProduction = $this->sqlRouteProduction($routeName);
+
+            $query .= "$routeProduction AS $production$routeName,";
+
+            $querySum .= "$routeProduction +";
+        }
+
+        $query = substr($query, 0, -1);
+
+        $querySum = substr($querySum, 0, -1);
+
+        return "$query, $querySum";
+    }
+
+    private function sqlRouteProduction(string $routeName): string
+    {
+        $saleShare = self::PREFIX_SALE_SHARE . $routeName;
+
+        return "oil * $saleShare";
+    }
+
+    private function sqlRoutesRevenue(
+        bool $isExport,
+        bool $isSum = false,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $query = "";
+
+        $revenue = self::PREFIX_REVENUE;
+
+        $routes = $isExport ? self::ROUTES_EXPORT : self::ROUTES_LOCAL;
+
+        foreach ($routes as $routeId => $routeName) {
+            $routeRevenue = $isExport
+                ? $this->sqlRouteRevenueExport($routeName, $dollarRate, $oilPrice)
+                : $this->sqlRouteRevenueLocal($routeName);
+
+            $query .= $isSum
+                ? "$routeRevenue +"
+                : "$routeRevenue AS $revenue$routeName,";
+        }
+
+        return substr($query, 0, -1);
+    }
+
+    private function sqlRouteRevenueExport(
+        string $routeName,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $routeProduction = $this->sqlRouteProduction($routeName);
+
+        $discount = self::PREFIX_DISCOUNT . $routeName;
+
+        $barrelRatio = self::PREFIX_BARREL_RATIO . $routeName;
+
+        $price = $oilPrice ? $oilPrice : (self::PREFIX_PRICE . $routeName);
+
+        return "($price - $discount) *
+                $routeProduction * 
+                $barrelRatio * 
+                $dollarRate";
+    }
+
+    private function sqlRouteRevenueLocal(string $routeName): string
+    {
+        $price = self::PREFIX_PRICE . $routeName;
+
+        $routeProduction = $this->sqlRouteProduction($routeName);
+
+        return "$price * $routeProduction";
+    }
+
+    private function sqlRoutesMetPayments(
+        bool $isExport,
+        bool $isSum = false,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $query = "";
+
+        $metPayments = self::PREFIX_MET_PAYMENTS;
+
+        $routes = $isExport ? self::ROUTES_EXPORT : self::ROUTES_LOCAL;
+
+        foreach ($routes as $routeId => $routeName) {
+            $routeMetPayments = $isExport
+                ? $this->sqlRouteMetPayments($routeName, true, $dollarRate, $oilPrice)
+                : $this->sqlRouteMetPayments($routeName, false);
+
+            $query .= $isSum
+                ? "$routeMetPayments +"
+                : "$routeMetPayments AS $metPayments$routeName,";
+        }
+
+        return substr($query, 0, -1);
+    }
+
+    private function sqlRouteMetPayments(
+        string $routeName,
+        bool $isExport,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $revenue = $isExport
+            ? $this->sqlRouteRevenueExport($routeName, $dollarRate, $oilPrice)
+            : $this->sqlRouteRevenueLocal($routeName);
+
+        return "$revenue * ndo_rates";
+    }
+
+    private function sqlRoutesErtPayments(
+        bool $isSum,
+        float $ert,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $query = "";
+
+        $ertPayments = self::PREFIX_ERT_PAYMENTS;
+
+        foreach (self::ROUTES_EXPORT as $routeId => $routeName) {
+            $routeErtPayments = $this->sqlRouteErtPayments(
+                $routeName,
+                $ert,
+                $dollarRate,
+                $oilPrice
+            );
+
+            $query .= $isSum
+                ? "$routeErtPayments +"
+                : "$routeErtPayments AS $ertPayments$routeName,";
+        }
+
+        return substr($query, 0, -1);
+    }
+
+    private function sqlRouteErtPayments(
+        string $routeName,
+        float $ert,
+        string $dollarRate = 'currency_ratio',
+        int $oilPrice = null
+    ): string
+    {
+        $production = $this->sqlRouteProduction($routeName);
+
+        $price = $oilPrice ? $oilPrice : (self::PREFIX_PRICE . $routeName);
+
+        $barrelRatio = self::PREFIX_BARREL_RATIO . $routeName;
+
+        return "$production * $price * $ert * $dollarRate * $barrelRatio";
+    }
+
+    private function sqlRoutesEcdPayments(
+        bool $isSum,
+        float $ecd,
+        string $dollarRate = 'currency_ratio'
+    ): string
+    {
+        $query = "";
+
+        $ecdPayments = self::PREFIX_ECD_PAYMENTS;
+
+        foreach (self::ROUTES_EXPORT as $routeId => $routeName) {
+            $routeEcdPayments = $this->sqlRouteEcdPayments(
+                $routeName,
+                $ecd,
+                $dollarRate
+            );
+
+            $query .= $isSum
+                ? "$routeEcdPayments +"
+                : "$routeEcdPayments AS $ecdPayments$routeName,";
+        }
+
+        return substr($query, 0, -1);
+    }
+
+    private function sqlRouteEcdPayments(
+        string $routeName,
+        float $ecd,
+        string $dollarRate = 'currency_ratio'
+    ): string
+    {
+        $production = $this->sqlRouteProduction($routeName);
+
+        return "$production * $ecd * $dollarRate";
     }
 }
