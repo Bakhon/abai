@@ -1226,28 +1226,21 @@ export default {
           data: gdisCurrent_note,
           type: ["all"],
         },
-      ];
-       console.log(this.well_passport);
+      ];       
       this.well_passport = this.rebuildRightSidebar(
         this.well_passport,
         category_id,
         well_expl_name,
         main_org_code
-      );      
-     console.log(category_id);
+      );           
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-      data.forEach(function (item) {
-        console.log(item);
+      data.forEach(function (item) {       
         let type = item.type;
         let exp = item.exp;
         let codes = item.codes;
-        let temp = item.temp;
-        console.log( type.indexOf("all"));
-        console.log("type " + type);        
-        console.log("exp " + exp);
-        console.log("well_expl_name " + well_expl_name);
+        let temp = item.temp;       
         let types = { 13: "dob_oil", 9: "nabl", 5: "nag" };
         if (
           type.indexOf(types[category_id]) != -1 ||
@@ -1264,8 +1257,7 @@ export default {
           if (codes && codes.indexOf(main_org_code) != -1) {
             return;
           }
-          well_passport_data.push(item);
-       //   console.log(well_passport_data);
+          well_passport_data.push(item);       
         }
       });
       return well_passport_data;
