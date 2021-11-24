@@ -21,6 +21,9 @@ sup{
 .newWell *{
     color: #ffffff;
 }
+.dropdown-header{
+    color: #ffffff;
+}
 .digital_drilling *{
     box-sizing: border-box;
     font-family: Harmonia Sans Pro Cyr;
