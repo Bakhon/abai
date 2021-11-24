@@ -51,10 +51,9 @@ class WaterPipesWellsImport implements ToCollection, WithColumnLimit, WithStartR
         $length = null;
         $pipe = null;
         $pipe_length = null;
-        $pipes = 0;
 
         foreach ($collection as $row) {
-            if (!$row[self::COLUMNS['lon']] OR $pipes > 150) {
+            if (!$row[self::COLUMNS['lon']]) {
                 break;
             }
 
@@ -65,7 +64,6 @@ class WaterPipesWellsImport implements ToCollection, WithColumnLimit, WithStartR
             if ($length != $row[self::COLUMNS['length']]) {
                 $pipe = $this->createNewPipe($row);
                 $pipe_length = 0;
-                $pipes++;
             }
 
             $length = $row[self::COLUMNS['length']];
