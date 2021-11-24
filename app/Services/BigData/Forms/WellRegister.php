@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class WellRegister extends PlainForm
@@ -46,11 +47,59 @@ class WellRegister extends PlainForm
 
     public function getResults(): array
     {
+        
+            $rows = $this->getRows();
+
+            $columns = $this->getColumns();
+            dd($rows);
+            $availableActions = $this->getAvailableActions();
+            if ($rows->isNotEmpty()) {
+                $availableActions = array_filter($availableActions, function ($action) {
+                    return !in_array($action, ['create']);
+                });
+            }
+
+            return [
+                'rows' => $rows->values(),
+                'columns' => $columns,
+                'form' => $this->params(),
+                'available_actions' => array_values($availableActions)
+            ];
+        
+        
+    }
+
+    public function getFormParamsToEdit(array $params)
+    {
+        $row = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('id', $params['id'])
+            ->first();
+
         return [
-            'rows' => [],
-            'columns' => [],
-            'form' => $this->params()
+            'well_id' => $row->well,
+            'values' => $row
         ];
+    }
+    protected function getRows(): Collection
+    {
+        $wellId = $this->request->get('id');
+        $rows = collect();
+        $row = [];
+        if (!empty($row)) {
+            $row['id'] = $wellId;
+            $rows->push($row);
+        }
+        dd($rows);
+        return $rows;
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = collect();
+        
+        dd($columns);
+        return $columns;
     }
 
     protected function getCustomValidationErrors(string $field = null): array
