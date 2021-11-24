@@ -586,4 +586,5 @@ return array (
     'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
   'gu-scheme' => 'Схема ГУ',
+  'water-well' => 'ПДД',
 );
