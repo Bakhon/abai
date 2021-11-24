@@ -205,7 +205,6 @@
                     this.labels = data.labels;
                 }).finally(() => {
                     this.SET_LOADING(false);
-                    this.$refs.chart.toggleSeries('Мероприятия');
                 });
             },
         },
