@@ -50,6 +50,8 @@
 
     <map-legend :variant="mapColorsMode" :referentValue="+referentValue"/>
 
+    <map-params :mapParams="mapParams" @mapRedraw="mapRedraw" />
+
     <div id="map"></div>
 
     <map-context-menu
@@ -171,6 +173,7 @@ import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 import mapLegend from "./mapLegend";
+import mapParams from "./mapParams";
 import objectForm from "./objectForm";
 import mapPipeForm from "./mapPipeForm";
 import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
@@ -204,7 +207,8 @@ export default {
     wellOmgNgduForm,
     guOmgNgduForm,
     zuOmgNgduForm,
-    calcForm
+    calcForm,
+    mapParams
   },
   data() {
     return {
@@ -262,6 +266,13 @@ export default {
         },
       ],
       referentValue: 10,
+      mapParams: {
+        show_ppd: {
+          value: true,
+          title: 'Показать ППД',
+          name: 'show_ppd'
+        }
+      },
       objectHovered: null,
       pipeHovered: null,
       pipeHoveredParameter: null,
@@ -458,29 +469,32 @@ export default {
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
-      let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
       let guPointsLayer = this.createIconLayer('icon-layer-gu', this.guPoints, 'gu');
       let zuPointsLayer = this.createIconLayer('icon-layer-zu', this.zuPoints, 'zu');
       let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well');
-      let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
 
       this.layersIds = [
-        'water-pipes-layer',
         'path-layer',
         'icon-layer-gu',
         'icon-layer-zu',
-        'icon-layer-water-well',
         'icon-layer-well'
       ];
 
       this.layers = [
-        waterPipesLayer,
         pipesLayer,
         guPointsLayer,
         zuPointsLayer,
-        waterWellPointsLayer,
         wellPointsLayer
       ];
+
+      if (this.mapParams.show_ppd.value) {
+        let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
+        let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
+        this.layersIds.push('icon-layer-water-well');
+        this.layersIds.push('water-pipes-layer');
+        this.layers.push(waterWellPointsLayer);
+        this.layers.push(waterPipesLayer);
+      }
     },
     async mapClickHandle(e) {
       let elevation = await this.getElevationByCoords({
@@ -1144,12 +1158,18 @@ export default {
             return response.data;
           });
     },
-    layerRedraw(layerId, type, data) {
+    deleteLayer(layerId){
       let layerIndex = this.layers.findIndex((layer) => {
         return layer.id == layerId;
       });
 
-      this.layers.splice(layerIndex, 1);
+      if (layerIndex !== -1){
+        this.layers.splice(layerIndex, 1);
+      }
+    },
+    layerRedraw(layerId, type, data) {
+      this.deleteLayer(layerId);
+
       this.updateLayers();
 
       if (type != 'pipe') {
@@ -1342,9 +1362,15 @@ export default {
       }, 500)()
     },
     mapRedraw() {
+      this.deleteLayer('water-pipes-layer');
+      this.deleteLayer('icon-layer-water-well');
+
+      if (this.mapParams.show_ppd.value) {
+        this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
+        this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
+      }
+
       this.layerRedraw('path-layer', 'pipe', this.pipes);
-      this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
-      this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
