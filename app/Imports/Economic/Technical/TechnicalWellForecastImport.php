@@ -2,18 +2,27 @@
 
 namespace App\Imports\Economic\Technical;
 
-use App\Models\Refs\EconomicDataLog;
-use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
+use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChunkReading
+class TechnicalWellForecastImport implements
+    ToModel,
+    WithBatchInserts,
+    WithChunkReading,
+    ShouldQueue
 {
+    use Importable;
+
+    public $timeout = 6000;
+
     protected $userId;
 
     protected $logId;
@@ -42,14 +51,11 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
         'liquid_tech_loss' => 14,
     ];
 
-    function __construct(int $userId, string $fileName)
+    function __construct(int $userId, int $logId)
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::firstOrCreate(
-            ['name' => $fileName, 'type_id' => EconomicDataLogType::WELL_FORECAST],
-            ['author_id' => $userId]
-        )->id;
+        $this->logId = $logId;
     }
 
     public function model(array $row): ?TechnicalWellForecast
@@ -58,20 +64,23 @@ class TechnicalWellForecastImport implements ToModel, WithBatchInserts, WithChun
             return null;
         }
 
+        $date = Date::excelToDateTimeObject($row[self::COLUMNS['date']]);
+
         return new TechnicalWellForecast([
             'uwi' => $row[self::COLUMNS['uwi']],
-            'date' => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
-            'oil' => round($row[self::COLUMNS['oil']], 2),
-            'liquid' => round($row[self::COLUMNS['liquid']], 2),
-            'active_hours' => (int)$row[self::COLUMNS['active_hours']],
-            'paused_hours' => (int)$row[self::COLUMNS['paused_hours']],
-            'prs_portion' => round($row[self::COLUMNS['prs_portion']], 2),
-            'oil_forecast' => round($row[self::COLUMNS['oil_forecast']], 2),
-            'oil_loss' => round($row[self::COLUMNS['oil_loss']], 2),
-            'liquid_forecast' => round($row[self::COLUMNS['liquid_forecast']], 2),
-            'liquid_loss' => round($row[self::COLUMNS['liquid_loss']], 2),
-            'oil_tech_loss' => round($row[self::COLUMNS['oil_tech_loss']], 2),
-            'liquid_tech_loss' => round($row[self::COLUMNS['liquid_tech_loss']], 2),
+            'date' => $date,
+            'date_month' => Carbon::parse($date)->setDay(1)->format('Y-m-d'),
+            'oil' => round($row[self::COLUMNS['oil']], 12),
+            'liquid' => round($row[self::COLUMNS['liquid']], 12),
+            'active_hours' => round($row[self::COLUMNS['active_hours']], 12),
+            'paused_hours' => round($row[self::COLUMNS['paused_hours']], 12),
+            'prs_portion' => round($row[self::COLUMNS['prs_portion']], 12),
+            'oil_forecast' => round($row[self::COLUMNS['oil_forecast']], 12),
+            'oil_loss' => round($row[self::COLUMNS['oil_loss']], 12),
+            'liquid_forecast' => round($row[self::COLUMNS['liquid_forecast']], 12),
+            'liquid_loss' => round($row[self::COLUMNS['liquid_loss']], 12),
+            'oil_tech_loss' => round($row[self::COLUMNS['oil_tech_loss']], 12),
+            'liquid_tech_loss' => round($row[self::COLUMNS['liquid_tech_loss']], 12),
             'status_id' => $this->getStatusId($row),
             'loss_status_id' => $this->getLossStatusId($row),
             'user_id' => $this->userId,
