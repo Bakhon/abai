@@ -882,6 +882,12 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.block"),
+          data: '',
+          type: ["all"],                   
+          codes: ["KGM"]
+        },
+        {
           name: this.trans("well.horizont"),
           data: horizont,
           type: ["nag"],
@@ -900,12 +906,12 @@ export default {
           name: this.trans("well.otvod"),
           data: tap,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["dob_oil"],
+          type: ["dob_oil"],         
         },
         {
           name: this.trans("well.org_struct"),
@@ -916,19 +922,19 @@ export default {
           name: this.trans("well.zone_well"),
           data: well_zone,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.reactive_wells"),
           data: wellReactReacting,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.influence_well"),
           data: wellReactInfl,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.coord_x_outfall"),
@@ -984,18 +990,18 @@ export default {
           name: this.trans("well.uo_bolt"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr"),
           data: tubeNomOd,
-          type: ["all"],
+          type: ["all"],          
         },
         {
           name: this.trans("well.type_gol"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.type_pump"),
@@ -1013,6 +1019,13 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.pump_capacity"),
+          data: '',
+          type: ["dob_oil"],
+          temp: 2,        
+          codes: ["KGM"],
+        },
+        {
           name: this.trans("well.pump_depth"),
           data: well_equip_param,
           type: ["dob_oil"],
@@ -1025,7 +1038,7 @@ export default {
         {
           name: this.trans("well.sk"),
           data: type_sk,
-          type: ["dob_oil"],
+          type: ["all"],
           exp: 1, // шгн
         },
         {
@@ -1043,8 +1056,9 @@ export default {
         {
           name: this.trans("well.fact_zaboi"),
           data: actualBottomHole,
-          type: ["all"],
+          type: ["dob_oil"],
           codes: ["KGM"],
+          exp: 0,
         },
         {
           name: this.trans("well.synthetic_zaboi"),
@@ -1055,7 +1069,7 @@ export default {
           name: this.trans("well.broken_zaboi"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.depth_down"),
@@ -1066,7 +1080,7 @@ export default {
           name: this.trans("well.kshd"),
           data: "",
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.progress_interval_perforation"),
@@ -1106,7 +1120,7 @@ export default {
         {
           name: this.trans("well.gas_production"),
           data: gas_production,
-          type: ["all"],
+          type: ["dob_oil"],         
         },
         {
           name: this.trans("well.gaz_factor"),
@@ -1122,19 +1136,19 @@ export default {
           name: this.trans("well.date_pfp"),
           data: treatmentDate,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_krp"),
           data: well_gtm,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_sko"),
           data: treatmentSko,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_kpd"),
@@ -1155,19 +1169,19 @@ export default {
           name: this.trans("well.result_gdm"),
           data: gdisConclusion,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.length_hod_gdm"),
           data: gdisCurrentValue,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.count_swing"),
           data: gdisCurrentValuePmpr,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.dynamic_level"),
@@ -1184,7 +1198,7 @@ export default {
           name: this.trans("well.rpl_date"),
           data: gdisCurrentValueRp,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.rpl_sl_gdis"),
@@ -1205,27 +1219,28 @@ export default {
           name: this.trans("well.rzatr_stat"),
           data: rzatrStat,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.note"),
           data: gdisCurrent_note,
           type: ["all"],
         },
-      ];
+      ];       
       this.well_passport = this.rebuildRightSidebar(
         this.well_passport,
         category_id,
         well_expl_name,
         main_org_code
-      );
+      );           
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-      data.forEach(function (item) {
+      data.forEach(function (item) {       
         let type = item.type;
         let exp = item.exp;
         let codes = item.codes;
+        let temp = item.temp;       
         let types = { 13: "dob_oil", 9: "nabl", 5: "nag" };
         if (
           type.indexOf(types[category_id]) != -1 ||
@@ -1233,12 +1248,16 @@ export default {
         ) {
           if (exp == 1 && well_expl_name != "УШГН") {
             return;
+          }    
+          
+          if(temp == 2 && well_expl_name != 'УЭЦН'){
+            return;
           }
-
+                   
           if (codes && codes.indexOf(main_org_code) != -1) {
             return;
           }
-          well_passport_data.push(item);
+          well_passport_data.push(item);       
         }
       });
       return well_passport_data;
