@@ -122,7 +122,7 @@
                 ],
                 seriesAbove: [
                     {
-                        name: "Отход от вертикаля",
+                        name: "Глубина по вертикали",
                         data: []
                     },
                 ],
@@ -191,7 +191,7 @@
                     },
                     xaxis: {
                         title: {
-                            text: 'Отход от вертикаля', style: {
+                            text: 'Отход от вертикали, м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -209,7 +209,7 @@
                     yaxis:{
                         reversed: true,
                         title: {
-                            text: 'Глубина по вертикали', style: {
+                            text: 'Глубина по вертикали, м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -428,7 +428,7 @@
                     this.maxValue = last
                 }
                 this.seriesAbove = [{
-                    name: "Отход от вертикаля",
+                    name: "Север / Юг , м.",
                         data: coordinates
                 }]
                 this.chartOptionsAbove = {
@@ -526,7 +526,7 @@
                         max: 2* this.maxValue,
                         min: -2 * this.maxValue,
                         title: {
-                            text: 'Отход от вертикаля', style: {
+                            text: 'Восток / Запад , м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -550,7 +550,7 @@
                             axisTicks: {show: true},
                             axisBorder: {show: true,},
                             title: {
-                                text: 'Глубина по вертикали', style: {
+                                text: 'Север / Юг , м.', style: {
                                     color: '#FFFFFF',
                                     fontSize: '15px',
                                     fontFamily: 'Helvetica, Arial, sans-serif',

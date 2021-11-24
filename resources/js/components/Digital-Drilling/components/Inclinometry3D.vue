@@ -68,7 +68,6 @@
             }
         },
         mounted(){
-            console.log(this.data)
         },
         methods:{
             async buildModel() {
