@@ -215,6 +215,7 @@
                           <template v-if="isCellEdited(row, column)">
                             <div class="input-wrap">
                               <input
+                                  v-if="row[column.code]"
                                   v-model="row[column.code].value"
                                   class="form-control"
                                   type="text">
