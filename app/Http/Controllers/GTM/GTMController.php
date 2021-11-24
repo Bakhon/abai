@@ -375,7 +375,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.oil_production'),
             'progressValue' => $oilProdFact,
             'progressMax' => $oilProdPlan,
-            'progressPercents' => $oilProdFact / $oilProdPlan * 100,
+            'progressPercents' => $oilProdPlan ? $oilProdFact / $oilProdPlan * 100 : 0,
         ];
 
         return response()->json($result);

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\GTM;
 use App\Http\Controllers\Controller;
 use App\Models\Paegtm\DzoAegtm;
 use App\Models\Paegtm\TechEfficiency;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -180,7 +183,6 @@ class AegtmController extends Controller
             return $q->where('org_name_short', $request->dzoName);
         });
 
-
         $techEfficiencyQuery->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
             return $q->whereBetween('month', [
                 $request->input('dateStart'),
@@ -197,9 +199,10 @@ class AegtmController extends Controller
 
     /**
      * @param Request $request
-     * @return Collection
+     * @param bool $returnQuery
+     * @return Builder[]|Collection
      */
-    public function getDzoOtmData(Request $request): Collection
+    public function getDzoOtmData(Request $request, bool $returnQuery = false)
     {
         $dzoAegtmQuery = DzoAegtm::query();
 
@@ -214,6 +217,105 @@ class AegtmController extends Controller
             ]);
         });
 
-        return $dzoAegtmQuery->orderBy('date')->get();
+        return $returnQuery ?
+            $dzoAegtmQuery :
+            $dzoAegtmQuery->orderBy('date')->get();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAccumulatedOilData(Request $request): JsonResponse
+    {
+        // учитывать фильтр по ГТМ
+        $result = [];
+
+        $period = CarbonPeriod::create($request->dateStart, '1 month', $request->dateEnd);
+
+        foreach ($period as $dt) {
+            $result['months'][] =  $dt->format("m.y");
+        }
+
+        $accumOilProdData = $this->getDzoOtmData($request, true)
+            ->select(
+                'date',
+                DB::raw('sum(gtm_prod_plan_chart) as gtm_prod_plan_chart'),
+                DB::raw('sum(gtm_prod_fact_chart) as gtm_prod_fact_chart')
+            )
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $accumOilProdPlanData = $accumOilProdData->pluck('gtm_prod_plan_chart')->map(function ($row) {
+            return round($row, 2);
+        })->toArray();
+
+        $accumOilProdFactData = $accumOilProdData->pluck('gtm_prod_fact_chart')->map(function ($row) {
+            return round($row, 2);
+        })->toArray();
+
+        $result['series'][] = [
+            'name' => trans('paegtm.accum_additional_oil_prod_plan'),
+            'type' => 'line',
+            'data' => $accumOilProdPlanData
+        ];
+
+        $result['series'][] = [
+            'name' => trans('paegtm.accum_additional_oil_prod_fact'),
+            'type' => 'line',
+            'data' => $accumOilProdFactData
+        ];
+
+        /*
+        $techEfficiencyQuery = TechEfficiency::query();
+
+        $techEfficiencyQuery->when($request->filled('dzoName'), function ($q) use ($request) {
+            return $q->where('org_name_short', $request->dzoName);
+        });
+
+        $techEfficiencyQuery->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
+            return $q->whereBetween('month', [
+                $request->input('dateStart'),
+                $request->input('dateEnd'),
+            ])
+                ->whereBetween('date_start_after_gtm', [
+                    $request->input('dateStart'),
+                    $request->input('dateEnd'),
+                ]);
+        });
+
+        $techEfficiencyResult = $techEfficiencyQuery->get();
+
+        $techEfficiencyResult = $techEfficiencyResult
+            ->groupBy(function($val) {
+                return Carbon::parse($val->date_start_after_gtm)->format('m.y');
+            });
+
+        $techEfficiencyResultSorted = $techEfficiencyResult->sortBy(function ($group, $key) {
+            return $group->first()->date_start_after_gtm;
+        });
+
+        $techEfficiencyResultSorted = $techEfficiencyResultSorted->map(function ($row) {
+            return $row->sum('actual_production_month');
+        });
+
+
+        $accumulatedValue = 0;
+        foreach( $result['months'] as $month) {
+            if (isset($techEfficiencyResultSorted[$month])) {
+                $teResult[$month] = round(($techEfficiencyResultSorted[$month] + $accumulatedValue) / 1000, 2);
+                $accumulatedValue += $techEfficiencyResultSorted[$month];
+            }
+        }
+
+        $result['series'][] = [
+            'name' => trans('paegtm.accum_additional_oil_prod_fact'),
+            'type' => 'line',
+            'data' => array_values($teResult)
+        ];
+        */
+
+        return response()->json($result);
     }
 }

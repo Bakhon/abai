@@ -25,6 +25,7 @@ Route::group(
 
                 Route::group(['prefix' => 'aegtm'], function () {
                     Route::get('/get-comparison-table-data', 'GTM\AegtmController@getComparisonTableData');
+                    Route::get('/get-accumulated-oil-data', 'GTM\AegtmController@getAccumulatedOilData');
                 });
             }
         );

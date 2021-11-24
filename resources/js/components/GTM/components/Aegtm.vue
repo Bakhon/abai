@@ -14,8 +14,10 @@
                     type="line"
                     height="350"
                     :options="lineChartOptions"
-                    :series="[{name: this.trans('paegtm.plan'),data: this.accumOilProdPlanData},{name: this.trans('paegtm.fact'),data: this.accumOilProdFactData}]"
-                    :height="360">
+                    :series="accumOilProdPlanData"
+                    :height="360"
+                    ref="accumOilProdChart"
+                >
                 </apexchart>
               </div>
             </div>

@@ -13,11 +13,10 @@ export default {
     mixins: [filterSelect],
     data: function () {
         return {
-            comparisonIndicators: [],
+            accumOilProdPlanData: [],
+            accumOilProdFactData: [],
             gtmIndicators: [],
             accumOilProdLabels: [],
-            accumOilProdFactData: [],
-            accumOilProdPlanData: [],
             gtmTypesList: [
                 { id: "vns", name: this.trans('paegtm.gtm_vns') },
                 { id: "grp", name: this.trans('paegtm.gtm_grp') },
@@ -66,18 +65,28 @@ export default {
                         }
                     },
                 },
-
-            },
-            lineSeriesChart: [
-                {
-                    name: this.trans('paegtm.plan'),
-                    data: this.accumOilProdPlanData,
+                dataLabels: {
+                    enabled: false,
+                    enabledOnSeries: [0, 1],
+                    background: {
+                        enabled: true,
+                        foreColor: '#fff',
+                        opacity: 0,
+                        padding: 0,
+                        dropShadow: {
+                            enabled: false,
+                        }
+                    },
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'normal'
+                    },
+                    offsetY: -7
                 },
-                {
-                    name: this.trans('paegtm.fact'),
-                    data: this.accumOilProdFactData,
+                legend: {
+                    show: true,
                 }
-            ],
+            },
             barChartOptions: {
                 chart: {
                     type: 'bar',
@@ -149,30 +158,6 @@ export default {
             'dzoId',
             'dzoName',
         ]),
-        accumOilProdData: function () {
-            return [
-                {
-                    label: this.trans('paegtm.fact'),
-                    borderColor: "#F27E31",
-                    backgroundColor: '#F27E31',
-                    data: this.accumOilProdFactData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: this.trans('paegtm.plan'),
-                    borderColor: "#82BAFF",
-                    backgroundColor: '#82BAFF',
-                    data: this.accumOilProdPlanData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                }
-            ]
-        },
         selectAllGtms: {
             get: function () {
                 return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
@@ -197,43 +182,23 @@ export default {
         getData() {
             this.SET_LOADING(true);
             this.axios.get(
-                this.localeUrl('/paegtm/accum_oil_prod_data'),
-                {params: {dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                this.localeUrl('/paegtm/aegtm/get-accumulated-oil-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
-                if (data) {
-                    let accumOilProdFactData = [];
-                    let accumOilProdPlanData = [];
-                    this.accumOilProdLabels = [];
-                    data.forEach((item) => {
-                        this.accumOilProdLabels.push(item.date)
-                        accumOilProdFactData.push(Math.round(item.accumOilProdFactData))
-                        accumOilProdPlanData.push(Math.round(item.accumOilProdPlanData))
-                    });
-                    this.accumOilProdFactData = accumOilProdFactData;
-                    this.accumOilProdPlanData = accumOilProdPlanData;
+
+                if (data && data.series) {
+                    this.accumOilProdPlanData = data.series;
+                    this.accumOilProdFactData = data.series;
+
+                    this.lineChartOptions.labels = data.months;
+
+                    if(typeof this.$refs.accumOilProdChart !== 'undefined') {
+                        this.$refs.accumOilProdChart.updateOptions({ labels: data.months });
+                    }
                 }
+
                 this.loaded = true;
-            });
-            this.axios.get(
-                this.localeUrl('/paegtm/comparison_indicators_data'),
-                {params: {dateStart: this.dateStart, dateEnd: this.dateEnd}}
-            ).then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.comparisonIndicators = [];
-                    data.forEach((item) => {
-                        this.comparisonIndicators.push([
-                            item.gtm_kind,
-                            '-',
-                            item.wellsCount,
-                            Math.round(item.avgDebitPlan * 100) / 100,
-                            Math.round(item.avgDebitFact * 100) / 100,
-                            Math.round(item.plan_add_prod_12m),
-                            Math.round(item.add_prod_12m),
-                        ])
-                    });
-                }
             });
             this.axios.get(
                 this.localeUrl('/paegtm/aegtm/get-comparison-table-data'),
@@ -275,8 +240,5 @@ export default {
     mounted() {
         this.dzosForFilter = this.dzos;
     },
-    created() {
-        console.log(this.horizontsForFilter)
-        console.log(this.objectsForFilter)
-    }
+    created() {}
 }

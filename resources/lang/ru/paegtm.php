@@ -49,7 +49,7 @@ return array (
   'headway' => 
   array (
     'tech' => '% усп (техн.)',
-    'econom' => '% усп (эконом.)',
+    'econom' => '% усп (экон.)',
   ),
   'table' => 'Таблица',
   'map' => 'Карта',
@@ -175,4 +175,6 @@ return array (
   'import_data_from_excel' => 'Импорт данных из Excel в базу данных MySQL',
   'gtm_decline_rate' => 'Темпы падения',
   'aegtm_invalid_data' => 'Отсутствуют данные по плановым и фактическим показателям. Попробуйте изменить параметры фильтра.',
+  'accum_additional_oil_prod_plan' => 'Доп. добыча нефти план, тыc. т',
+  'accum_additional_oil_prod_fact' => 'Доп. добыча нефти факт, тыc. т',
 );
