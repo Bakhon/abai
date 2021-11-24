@@ -398,7 +398,6 @@ export default {
                 this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
-              
                 let data = response.data;
                 if (data) {
                     this.areaChartData = data.data;
@@ -407,7 +406,6 @@ export default {
                     this.machine_type = data.data.header.machine_type;
                     this.field_name = data.data.header.field_name;
                     this.well_type = data.data.header.well_type;
-
                     this.well_name = data.data.header.well_name;
                     this.programmes_target_name = data.data.header.programmes_target_name;
                     this.chief = data.data.works_report.chief;
