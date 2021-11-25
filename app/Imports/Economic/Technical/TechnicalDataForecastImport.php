@@ -77,6 +77,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
             "author_id" => $this->userId,
             "log_id" => $this->logId,
             "gu_id" => $this->getGuId($row),
+            "company_id" => $this->getCompanyId($row),
             "well_id" => $row[self::COLUMNS['well_id']],
             "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
             "oil" => round($row[self::COLUMNS['oil']], 2),

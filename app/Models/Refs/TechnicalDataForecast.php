@@ -10,8 +10,10 @@ class TechnicalDataForecast extends Model
     protected $fillable = [
         'source_id',
         'gu_id',
+        'company_id',
         'well_id',
-        'date', 'oil',
+        'date',
+        'oil',
         'liquid',
         'days_worked',
         'prs',
@@ -35,6 +37,11 @@ class TechnicalDataForecast extends Model
     public function editor()
     {
         return $this->belongsTo(User::class, 'editor_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(TechnicalStructureCompany::class, 'gu_id');
     }
 
     public function gu()

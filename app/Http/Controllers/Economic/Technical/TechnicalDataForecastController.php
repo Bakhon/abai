@@ -9,6 +9,7 @@ use App\Http\Requests\Economic\Technical\TechnicalDataForecastUpdateRequest;
 use App\Imports\Economic\Technical\TechnicalDataForecastImport;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureCdng;
+use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureNgdu;
 use App\Models\Refs\TechnicalStructurePes;
@@ -30,17 +31,31 @@ class TechnicalDataForecastController extends Controller
 
     public function edit(int $id): View
     {
-        $model = TechnicalDataForecast::find($id);
+        $model = TechnicalDataForecast::findOrFail($id);
 
-        $gu = TechnicalStructureGu::get();
+        $fieldIds = TechnicalStructureField::query()
+            ->whereCompanyId($model->company_id)
+            ->pluck('id');
 
-        $source = TechnicalStructureSource::get();
+        $ngduIds = TechnicalStructureNgdu::query()
+            ->whereIn('field_id', $fieldIds)
+            ->pluck('id');
 
-        $pes = TechnicalStructurePes::get();
+        $cdngIds = TechnicalStructureCdng::query()
+            ->whereIn('ngdu_id', $ngduIds)
+            ->pluck('id');
+
+        $gus = TechnicalStructureGu::query()
+            ->whereIn('cdng_id', $cdngIds)
+            ->get();
+
+        $sources = TechnicalStructureSource::all();
+
+        $pes = TechnicalStructurePes::all();
 
         return view(
             'economic.technical.forecast.edit',
-            compact('model', 'gu', 'source', 'pes')
+            compact('model', 'gus', 'sources', 'pes')
         );
     }
 

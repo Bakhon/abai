@@ -144,12 +144,13 @@ class EconomicOptimizationController extends Controller
     const PREFIX_BARREL_RATIO = 'Barrel_ratio_';
     const PREFIX_SALE_SHARE = 'sale_share_';
     const PREFIX_DISCOUNT = 'discount_';
-    const PREFIX_TRANS_EXPENDITURES = 'trans_exp_';
+    const PREFIX_TRANS_EXP = 'trans_exp_';
     const PREFIX_PRODUCTION = 'production_';
     const PREFIX_REVENUE = 'Revenue_';
     const PREFIX_MET_PAYMENTS = 'MET_payments_';
     const PREFIX_ERT_PAYMENTS = 'ERT_payments_';
     const PREFIX_ECD_PAYMENTS = 'ECD_payments_';
+    const PREFIX_TRANS_EXPENDITURES = 'Trans_expenditures_';
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -398,30 +399,27 @@ class EconomicOptimizationController extends Controller
     public function getEconomicData()
     {
         $oilPrice = 30;
-
         $dollarRate = 400;
 
         $technicalData = $this->getTechnicalQuery()->toSql();
-
         $economicData = $this->getEconomicQuery()->toSql();
 
-        $barrelRatioExportScenario = $this->sqlAvgRoutesSum(
-            self::ROUTES_EXPORT,
-            'Barrel_ratio_'
-        );
-
-        $productionLocal = $this->sqlRoutesProduction(false);
-        $productionExport = $this->sqlRoutesProduction(true);
+        $productionLocalRoutes = $this->sqlRoutesProduction(false, false);
+        $productionLocal = $this->sqlRoutesProduction(false, true);
+        $productionExportRoutes = $this->sqlRoutesProduction(true, false);
+        $productionExport = $this->sqlRoutesProduction(true, true);
 
         $revenueLocalRoutes = $this->sqlRoutesRevenue(false);
         $revenueLocal = $this->sqlRoutesRevenue(false, true);
         $revenueExportRoutes = $this->sqlRoutesRevenue(true, false, $dollarRate, $oilPrice);
         $revenueExport = $this->sqlRoutesRevenue(true, true, $dollarRate, $oilPrice);
+        $revenueTotal = "($revenueLocal + $revenueExport)";
 
         $metPaymentsLocalRoutes = $this->sqlRoutesMetPayments(false);
         $metPaymentsLocal = $this->sqlRoutesMetPayments(false, true);
         $metPaymentsExportRoutes = $this->sqlRoutesMetPayments(true, false, $dollarRate, $oilPrice);
         $metPaymentsExport = $this->sqlRoutesMetPayments(true, true, $dollarRate, $oilPrice);
+        $metPayments = "($metPaymentsLocal + $metPaymentsExport)";
 
         $ert = EcoRefsRentTax::query()
             ->select('rate')
@@ -430,6 +428,7 @@ class EconomicOptimizationController extends Controller
             ->where('world_price_end', '>', $oilPrice)
             ->firstOrFail()
             ->rate;
+
         $ertPaymentsRoutes = $this->sqlRoutesErtPayments(false, $ert, $dollarRate, $oilPrice);
         $ertPayments = $this->sqlRoutesErtPayments(true, $ert, $dollarRate, $oilPrice);
 
@@ -440,33 +439,104 @@ class EconomicOptimizationController extends Controller
             ->where('avg_market_price_end', '>', $oilPrice)
             ->firstOrFail()
             ->exp_cust_duty_rate;
+
         $ecdPaymentsRoutes = $this->sqlRoutesEcdPayments(false, $ecd, $dollarRate);
         $ecdPayments = $this->sqlRoutesEcdPayments(true, $ecd, $dollarRate);
 
-        $data = DB::table(DB::raw("($technicalData) as technical"))
+        $transExpendituresLocalRoutes = $this->sqlRoutesTransExpenditures(false, false);
+        $transExpendituresLocal = $this->sqlRoutesTransExpenditures(false, true);
+        $transExpendituresExportRoutes = $this->sqlRoutesTransExpenditures(true, false);
+        $transExpendituresExport = $this->sqlRoutesTransExpenditures(true, true);
+        $transExpenditures = "($transExpendituresLocal + $transExpendituresExport)";
+
+        $netBack = "$revenueTotal - ($metPayments) - ($ertPayments) - ($ecdPayments) - ($transExpenditures)";
+
+        $barrelRatioExportScenario = $this->sqlAvgRoutesSum(
+            self::ROUTES_EXPORT,
+            'Barrel_ratio_'
+        );
+
+        $variableExpenditures = $this->sqlVariableExpenditures();
+
+        $fixedPayrollExpenditures = $this->sqlFixedPayrollExpenditures();
+        $fixedNoWrPayrollExpenditures = $this->sqlFixedNoWrPayrollExpenditures();
+        $fixedNoPayrollExpenditures = $this->sqlFixedNoPayrollExpenditures();
+        $fixedExpenditures = "($fixedNoPayrollExpenditures + $fixedNoWrPayrollExpenditures)";
+
+        $prsNoPayrollExpenditures = $this->sqlPrsNoPayrollExpenditures();
+        $prsExpenditures = $this->sqlPrsExpenditures();
+
+        $productionExpenditures = "($fixedExpenditures + $variableExpenditures + $prsExpenditures)";
+        $gaOverheadExpenditures = $this->sqlGaOverheadExpenditures();
+        $overallExpenditures = "$gaOverheadExpenditures + $productionExpenditures";
+        $overallExpendituresFull = "$overallExpenditures + $metPayments + $ecdPayments + $ertPayments + $transExpenditures";
+
+        $operatingProfit = "$netBack - ($overallExpenditures)";
+        $operatingProfitVariable = "$netBack - ($variableExpenditures)";
+        $operatingProfitVariablePrsNoPayroll = "$operatingProfitVariable - ($prsNoPayrollExpenditures)";
+        $operatingProfitVariablePrs = "$operatingProfitVariable - $prsExpenditures";
+
+        $wells = DB::table(DB::raw("($technicalData) as technical"))
             ->selectRaw(DB::raw("
-                technical.*,
+                technical.uwi,
+                technical.oil,
+                technical.liquid,
+                technical.days_worked,
+                technical.days_worked_by_date,
+                technical.wells_count_by_company_date,
+                technical.prs,
+                technical.company_name,
+                technical.field_id,
+                technical.field_name,
+                technical.ngdu_id,
+                technical.ngdu_name,
+                technical.cdng_id,
+                technical.cdng_name,
+                technical.gu_id,
+                technical.gu_name,
                 economic.*,
                 $ecd AS ecd,
                 $ert AS ert,
                 $barrelRatioExportScenario AS Barrel_ratio_export_scenario,
                 oil * cost_amort AS amort,
+                $productionLocalRoutes,
                 $productionLocal AS production_local,
+                $productionExportRoutes,
                 $productionExport AS production_export,
                 $revenueLocalRoutes,
                 $revenueLocal AS Revenue_local,
                 $revenueExportRoutes,
                 $revenueExport AS Revenue_export,
-                ($revenueLocal + $revenueExport) AS Revenue_total, 
+                $revenueTotal AS Revenue_total, 
                 $metPaymentsLocalRoutes,
-                $metPaymentsLocal as MET_payments_local,
+                $metPaymentsLocal AS MET_payments_local,
                 $metPaymentsExportRoutes,
-                $metPaymentsExport as MET_payments_export,
-                ($metPaymentsLocal + $metPaymentsExport) AS MET_payments,
+                $metPaymentsExport AS MET_payments_export,
+                $metPayments AS MET_payments,
                 $ertPaymentsRoutes,
-                $ertPayments as ERT_payments,
+                $ertPayments AS ERT_payments,
                 $ecdPaymentsRoutes,
-                $ecdPayments as ECD_payments
+                $ecdPayments AS ECD_payments,
+                $transExpendituresLocalRoutes,
+                $transExpendituresLocal AS Trans_expenditures_local,
+                $transExpendituresExportRoutes,
+                $transExpendituresExport AS Trans_expenditures_export,
+                $transExpenditures AS Trans_expenditures,
+                $netBack AS NetBack_bf_pr_exp,
+                $variableExpenditures AS Variable_expenditures,
+                $fixedPayrollExpenditures AS Fixed_payroll_expenditures,
+                $fixedNoWrPayrollExpenditures AS Fixed_noWRpayroll_expenditures,
+                $fixedNoPayrollExpenditures AS Fixed_nopayroll_expenditures,
+                $fixedExpenditures AS Fixed_expenditures,
+                $prsNoPayrollExpenditures AS PRS_nopayroll_expenditures,
+                $prsExpenditures AS PRS_expenditures,
+                $productionExpenditures AS Production_expenditures,
+                $gaOverheadExpenditures AS Gaoverheads_expenditures,
+                $overallExpenditures AS Overall_expenditures,
+                $overallExpendituresFull AS Overall_expenditures_full,
+                $operatingProfit AS Operating_profit,
+                $operatingProfitVariablePrsNoPayroll AS Operating_profit_variable_prs_nopayrall,
+                $operatingProfitVariablePrs AS Operating_profit_variable_prs
             "))
             ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
                 $join
@@ -474,9 +544,47 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
                     ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
             })
+            ->toSql();
+
+        $wellsSum = DB::table(DB::raw("($technicalData) as technical"))
+            ->selectRaw(DB::raw("
+                uwi,
+                SUM($fixedNoPayrollExpenditures) as Fixed_nopayroll_expenditures_sum, 
+                SUM($fixedPayrollExpenditures) as Fixed_payroll_expenditures_sum, 
+                SUM($operatingProfit) AS Operating_profit_sum,
+                SUM($operatingProfitVariablePrs) AS Operating_profit_variable_prs_sum,
+                COUNT(*) as date_count
+            "))
+            ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
+                $join
+                    ->on(DB::raw("technical.company_tbd_id"), '=', DB::raw("economic.company_tbd_id"))
+                    ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
+                    ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
+            })
+            ->groupByRaw(DB::raw("uwi"))
+            ->toSql();
+
+        $profitability = "
+            CASE WHEN Operating_profit_sum > 0
+                 THEN 'profitable'
+                 WHEN Operating_profit_variable_prs_sum < 0 
+                 THEN 'profitless_cat_1'
+                 ELSE 'profitless_cat_2'
+            END   
+        ";
+
+        $wells = DB::table(DB::raw("($wells) as wells"))
+            ->selectRaw(DB::raw("
+                wells.*,
+                wells_sum.*,
+                $profitability AS profitability
+            "))
+            ->leftJoin(DB::raw("($wellsSum) as wells_sum"), function ($join) {
+                $join->on(DB::raw("wells.uwi"), '=', DB::raw("wells_sum.uwi"));
+            })
             ->get();
 
-        dd($data[0]);
+        dd($wells);
     }
 
     public function getEconomicQuery(): Builder
@@ -540,7 +648,7 @@ class EconomicOptimizationController extends Controller
             )
         ]);
 
-        $transExpenditures = EcoRefsTarifyTn::query()
+        $transExp = EcoRefsTarifyTn::query()
             ->selectRaw(DB::raw("
                 company_id,
                 date,
@@ -550,11 +658,11 @@ class EconomicOptimizationController extends Controller
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
-        $transExpenditureColumns = $this->sqlSumByRoute(
+        $transExpColumns = $this->sqlSumByRoute(
             'tn_rate',
-            self::PREFIX_TRANS_EXPENDITURES,
+            self::PREFIX_TRANS_EXP,
             true,
-            'trans_expenditures'
+            'trans_exp'
         );
 
         $companyTbdId = $this->sqlMapCompanyTbd();
@@ -603,7 +711,7 @@ class EconomicOptimizationController extends Controller
                 macros.ex_rate_dol AS currency_ratio,
                 $saleSharesColumns,
                 $discountColumns,
-                $transExpenditureColumns
+                $transExpColumns
             "))
             ->leftJoin("$tableNdoRates as ndo_rates", function ($join) use ($economicScFa) {
                 $join
@@ -625,10 +733,10 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("discounts.company_id"))
                     ->on(DB::raw("costs.date"), '=', DB::raw("discounts.date"));
             })
-            ->leftJoin(DB::raw("($transExpenditures) as trans_expenditures"), function ($join) use ($economicScFa) {
+            ->leftJoin(DB::raw("($transExp) as trans_exp"), function ($join) use ($economicScFa) {
                 $join
-                    ->on(DB::raw("costs.company_id"), '=', DB::raw("trans_expenditures.company_id"))
-                    ->on(DB::raw("costs.date"), '=', DB::raw("trans_expenditures.date"));
+                    ->on(DB::raw("costs.company_id"), '=', DB::raw("trans_exp.company_id"))
+                    ->on(DB::raw("costs.date"), '=', DB::raw("trans_exp.date"));
             });
     }
 
@@ -677,16 +785,31 @@ class EconomicOptimizationController extends Controller
             })
             ->toSql();
 
-        $wells = DB::table((new TechnicalDataForecast())->getTable())
+        $tableForecasts = (new TechnicalDataForecast())->getTable();
+
+        $daysWorkedByDate = DB::table($tableForecasts)
+            ->selectRaw(DB::raw("date, SUM(days_worked) as days_worked_by_date"))
+            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->groupByRaw(DB::raw("date"))
+            ->toSql();
+
+        $wellsCountByDate = DB::table($tableForecasts)
+            ->selectRaw(DB::raw("company_id, date, COUNT(*) as wells_count_by_company_date"))
+            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->groupByRaw(DB::raw("company_id, date"))
+            ->toSql();
+
+        $wells = DB::table($tableForecasts)
             ->selectRaw(DB::raw("
                 well_id as uwi,
                 gu_id,
+                company_id,
+                pes_id,
                 date,
                 oil * 1000 as oil,
                 liquid * 1000 as liquid,
                 days_worked,
-                prs,
-                pes_id
+                IFNULL(prs, 0) as prs
             "))
             ->whereRaw(DB::raw("source_id = $technicalSource"))
             ->toSql();
@@ -700,7 +823,8 @@ class EconomicOptimizationController extends Controller
                 wells.days_worked,
                 wells.prs,
                 wells.pes_id,
-                companies.company_id,
+                wells.company_id,
+                wells.gu_id,
                 companies.company_name,
                 companies.company_tbd_id,
                 companies.field_id,
@@ -709,11 +833,20 @@ class EconomicOptimizationController extends Controller
                 companies.ngdu_name,
                 companies.cdng_id,
                 companies.cdng_name,
-                companies.gu_id,
-                companies.gu_name
+                companies.gu_name,
+                days_worked_by_date.days_worked_by_date,
+                wells_count_by_date.wells_count_by_company_date
             "))
             ->leftJoin(DB::raw("($companies) as companies"), function ($join) {
                 $join->on(DB::raw("wells.gu_id"), '=', DB::raw("companies.gu_id"));
+            })
+            ->leftJoin(DB::raw("($daysWorkedByDate) as days_worked_by_date"), function ($join) {
+                $join->on(DB::raw("wells.date"), '=', DB::raw("days_worked_by_date.date"));
+            })
+            ->leftJoin(DB::raw("($wellsCountByDate) as wells_count_by_date"), function ($join) {
+                $join
+                    ->on(DB::raw("wells.company_id"), '=', DB::raw("wells_count_by_date.company_id"))
+                    ->on(DB::raw("wells.date"), '=', DB::raw("wells_count_by_date.date"));
             });
     }
 
@@ -743,22 +876,11 @@ class EconomicOptimizationController extends Controller
         string $alias = null
     ): string
     {
-        $routeMap = [
-            1 => 'export_AA',
-            2 => 'export_KTK',
-            3 => 'export_Samara',
-            4 => 'local_ANPZ',
-            5 => 'local_PNHZ',
-            6 => 'local_PKOP',
-            7 => 'local_KBITUM',
-            9 => 'export_Aktau',
-            10 => 'export_other',
-            11 => 'local_other',
-        ];
+        $routes = self::ROUTES_LOCAL + self::ROUTES_EXPORT;
 
         $query = "";
 
-        foreach ($routeMap as $routeId => $routeName) {
+        foreach ($routes as $routeId => $routeName) {
             $query .= $isColumnNames
                 ? "$alias.$prefix$routeName,"
                 : "
@@ -791,11 +913,9 @@ class EconomicOptimizationController extends Controller
         return "IFNULL(($querySum) / ($queryCount), 0)";
     }
 
-    private function sqlRoutesProduction(bool $isExport): string
+    private function sqlRoutesProduction(bool $isExport, bool $isSum): string
     {
         $query = "";
-
-        $querySum = "";
 
         $production = self::PREFIX_PRODUCTION;
 
@@ -804,16 +924,12 @@ class EconomicOptimizationController extends Controller
         foreach ($routes as $routeId => $routeName) {
             $routeProduction = $this->sqlRouteProduction($routeName);
 
-            $query .= "$routeProduction AS $production$routeName,";
-
-            $querySum .= "$routeProduction +";
+            $query .= $isSum
+                ? "$routeProduction +"
+                : "$routeProduction AS $production$routeName,";
         }
 
-        $query = substr($query, 0, -1);
-
-        $querySum = substr($querySum, 0, -1);
-
-        return "$query, $querySum";
+        return substr($query, 0, -1);
     }
 
     private function sqlRouteProduction(string $routeName): string
@@ -995,5 +1111,79 @@ class EconomicOptimizationController extends Controller
         $production = $this->sqlRouteProduction($routeName);
 
         return "$production * $ecd * $dollarRate";
+    }
+
+    private function sqlRoutesTransExpenditures(bool $isExport, bool $isSum): string
+    {
+        $query = "";
+
+        $transExpenditures = self::PREFIX_TRANS_EXPENDITURES;
+
+        $routes = $isExport ? self::ROUTES_EXPORT : self::ROUTES_LOCAL;
+
+        foreach ($routes as $routeId => $routeName) {
+            $routeTransExpenditures = $this->sqlRouteTransExpenditures($routeName);
+
+            $query .= $isSum
+                ? "$routeTransExpenditures +"
+                : "$routeTransExpenditures AS $transExpenditures$routeName,";
+        }
+
+        return substr($query, 0, -1);
+    }
+
+    private function sqlRouteTransExpenditures(string $routeName): string
+    {
+        $transExp = self::PREFIX_TRANS_EXP . $routeName;
+
+        $production = $this->sqlRouteProduction($routeName);
+
+        return "$transExp * $production";
+    }
+
+    private function sqlVariableExpenditures(): string
+    {
+        return "oil * cost_variable_processing + liquid * cost_variable";
+    }
+
+    private function sqlFixedPayrollExpenditures(): string
+    {
+        return "cost_fix_payroll * days_worked / days_worked_by_date";
+    }
+
+    private function sqlFixedNoWrPayrollExpenditures(): string
+    {
+        return "cost_fix_noWRpayroll * days_worked / days_worked_by_date";
+    }
+
+    private function sqlFixedNoPayrollExpenditures(): string
+    {
+        return "cost_fix_nopayroll * days_worked / days_worked_by_date";
+    }
+
+    private function sqlPrsNoPayrollExpenditures(): string
+    {
+        return "1000 * prs * cost_WR_nopayroll";
+    }
+
+    private function sqlPrsExpenditures(): string
+    {
+        return "1000 * prs * cost_WR";
+    }
+
+    private function sqlGaOverheadExpenditures(): string
+    {
+        return "cost_Gaoverheads / wells_count_by_company_date";
+    }
+
+    private function getSqlSelectColumnsFromString(string $string)
+    {
+        $offset = strpos($string, 'select') + strlen('select');
+
+        return substr(
+            $string,
+            $offset,
+            strpos($string, 'from') - $offset
+        );
     }
 }
