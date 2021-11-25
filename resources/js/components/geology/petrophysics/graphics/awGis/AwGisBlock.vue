@@ -78,6 +78,7 @@ export default {
     left: 0;
     overflow: hidden;
     white-space: nowrap;
+    color: #212529;
   }
 }
 </style>

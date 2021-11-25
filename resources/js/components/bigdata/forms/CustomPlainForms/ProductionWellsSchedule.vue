@@ -130,7 +130,6 @@ export default {
             this.SET_LOADING(false);
         },
         async getScheduleData(id,type) {
-            let sheduleData = {};
             let queryOptions = {
                 'wellId': id,
                 'period': this.initialPeriod,
@@ -138,7 +137,7 @@ export default {
             };
             const response = await axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'),{params:queryOptions});
             if (type === this.injectionCategory) {
-                sheduleData = {
+                return {
                     'data': [
                         response.data.ndin,
                         response.data.liquidInjection,
@@ -148,7 +147,7 @@ export default {
                     'labels': response.data.labels
                 };
             } else {
-                sheduleData = {
+                return {
                     'data': [
                         response.data.ndin,
                         response.data.measLiq,
@@ -160,7 +159,7 @@ export default {
                 };
             }
 
-            return sheduleData;
+            return {};
         },
         removeWellSchedule(well) {
             this.wells.splice(

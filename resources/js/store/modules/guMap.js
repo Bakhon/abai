@@ -78,7 +78,7 @@ const guMap = {
                     latitude: response.data.center[1],
                     longitude: response.data.center[0]
                 });
-                return {pipes: response.data.pipes, date: response.data.date};
+                return response.data;
             })
         },
 
