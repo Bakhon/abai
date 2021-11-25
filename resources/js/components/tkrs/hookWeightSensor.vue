@@ -103,7 +103,7 @@
                     </div>
 
                   <div v-if="currentTab == 1">
-                      <event :test="test_abat"></event>
+                      <event :table_work="table_work"></event>
                   </div>
 
                   <div v-if="currentTab == 2">
@@ -206,7 +206,7 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
-      test_abat: [],
+      table_work: [],
       
     }
   },
@@ -321,8 +321,7 @@ export default {
           .then((response) => {
               let data = response.data;
               if (data) {
-                this.test_abat = data
-                console.log(this.test_abat);
+                this.table_work = data
 
               } else {
                   console.log("No data");

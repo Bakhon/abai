@@ -114,7 +114,7 @@
                 </thead>
                 <tbody>
                   
-                    <tr v-for="(row, row_index) in test" :key="row_index">
+                    <tr v-for="(row, row_index) in table_work" :key="row_index">
                       <td>{{ row.date }}</td>
                       <td>{{ row.dbeg }}</td>
                       <td>{{ row.dend }}</td>
@@ -134,7 +134,7 @@
 <script>
 export default {
   props: {
-    test: Array,
+    table_work: Array,
   }
 
 }
