@@ -60,51 +60,51 @@ class WellTreat extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
+        protected function saveSingleFieldInDB(array $params): void
+        {
+            $column = $this->getFieldByCode($params['field']);
 
-        $item = DB::connection('tbd')
-            ->table($column['table'])
-            ->where('well', $params['wellId'])
-            ->where('treatment_type', $this->request->get('treatment_type'))
-            ->whereBetween(
-                'treat_date',
-                [
-                    (clone $params['date'])->startOfDay(),
-                    (clone $params['date'])->endOfDay()
-                ]
-            )
-            ->first();
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                'treatment_type' => $this->request->get('treatment_type'),
-                $column['column'] => $params['value'],
-                'treat_date' => $params['date']->toDateTimeString()
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
-            DB::connection('tbd')
+            $item = DB::connection('tbd')
                 ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
+                ->where('well', $params['wellId'])
+                ->where('treatment_type', $this->request->get('treatment_type'))
+                ->whereBetween(
+                    'treat_date',
                     [
-                        $column['column'] => $params['value']
+                        (clone $params['date'])->startOfDay(),
+                        (clone $params['date'])->endOfDay()
                     ]
-                );
+                )
+                ->first();
+
+            if (empty($item)) {
+                $data = [
+                    'well' => $params['wellId'],
+                    'treatment_type' => $this->request->get('treatment_type'),
+                    $column['column'] => $params['value'],
+                    'treat_date' => $params['date']->toDateTimeString()
+                ];
+
+                if (!empty($column['additional_filter'])) {
+                    foreach ($column['additional_filter'] as $key => $val) {
+                        $data[$key] = $val;
+                    }
+                }
+
+                DB::connection('tbd')
+                    ->table($column['table'])
+                    ->insert($data);
+            } else {
+                DB::connection('tbd')
+                    ->table($column['table'])
+                    ->where('id', $item->id)
+                    ->update(
+                        [
+                            $column['column'] => $params['value']
+                        ]
+                    );
+            }
         }
-    }
 
     protected function getCustomValidationErrors(string $field = null): array
     {

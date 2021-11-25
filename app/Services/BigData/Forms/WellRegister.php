@@ -13,7 +13,7 @@ class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
 
-    protected function prepareDataToSubmit()
+    protected function submitForm(): array
     {
         $data = $this->request->except(
             [
@@ -32,23 +32,10 @@ class WellRegister extends PlainForm
             $data = array_merge($this->params()['default_values'], $data);
         }
 
-        return $data;
-    }
-    protected function submitForm(): array
-    {
-        $this->tableFields = $this->getFields()
-            ->filter(
-                function ($item) {
-                    return $item['type'] === 'table';
-                }
-            );
-
-        $formFields = $this->prepareDataToSubmit();
-
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-        $wellId = $dbQuery->insertGetId($formFields);
+        $wellId = $dbQuery->insertGetId($data);
 
-        $this->submittedData['fields'] = $formFields;
+        $this->submittedData['fields'] = $data;
         $this->submittedData['id'] = $wellId;
 
         $this->insertWellRelation($wellId, 'org');
@@ -60,10 +47,11 @@ class WellRegister extends PlainForm
 
     public function getResults(): array
     {
-        
+        try {
             $rows = $this->getRows();
 
-            $columns = collect();
+            $columns = $this->getColumns();
+
             $availableActions = $this->getAvailableActions();
             if ($rows->isNotEmpty()) {
                 $availableActions = array_filter($availableActions, function ($action) {
@@ -77,35 +65,66 @@ class WellRegister extends PlainForm
                 'form' => $this->params(),
                 'available_actions' => array_values($availableActions)
             ];
-        
-        
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
-    public function getFormParamsToEdit(array $params)
-    {
-        $row = DB::connection('tbd')
-            ->table($this->params()['table'])
-            ->where('id', $params['id'])
-            ->first();
-
-        return [
-            'well_id' => $row->well,
-            'values' => $row
-        ];
-    }
     protected function getRows(): Collection
     {
         $wellId = (int)$this->request->get('well_id');
-        $rows = collect();
-        $row = [];
-        if (!empty($row)) {
-            $row['id'] = $wellId;
-            $rows->push($row);
-        }
+
+        
+        $rows = DB::connection('tbd')
+        ->table('dict.well as w')
+        ->select( 
+            'o.org',
+            'g.geo',
+            'w.uwi',
+            'w.project_date',
+            'c.category',
+            'w.whc_alt',
+            'w.whc_h',
+            'w.whc',
+            'w.bottom_coord',
+            'w.drill_start_date',
+            'w.drill_end_date',
+            'w.drill_contractor',
+            'w.drill_contract_num',
+            'w.drill_contract_date',
+            'w.project_depth',
+            'w.gas_factor_avg'
+        )
+        ->distinct()
+        ->leftJoin('prod.well_geo as g', 'w.id', 'g.well')
+        ->leftJoin('prod.well_org as o', 'w.id', 'o.well')
+        ->leftJoin('prod.well_category as c', 'w.id', 'c.well')
+        ->where('w.id', $wellId)
+        ->get();       
+
         return $rows;
     }
 
-    
+
+   
+
+    protected function getColumns(): Collection
+    {
+        $columns = collect();
+        
+        $columns = $columns->merge(
+            $this->getFields()
+                ->mapWithKeys(
+                    function ($item) {
+                        return [$item['code'] => $item];
+                    }
+                )
+        );
+
+        return $columns;
+    }
 
     protected function getCustomValidationErrors(string $field = null): array
     {
@@ -238,5 +257,43 @@ class WellRegister extends PlainForm
             );
         return $bottomCoordId;
     }
+
+    protected function saveSingleFieldInDB(array $params): void
+    {
+        $column = $this->getFieldByCode($params['field']);
+
+        $item = DB::connection('tbd')
+            ->table($column['table'])
+            ->where('well', $params['wellId'])
+            ->first();
+
+        if (empty($item)) {
+            $data = [
+                'well' => $params['wellId'],
+                $column['column'] => $params['value'],
+            ];
+
+            if (!empty($column['additional_filter'])) {
+                foreach ($column['additional_filter'] as $key => $val) {
+                    $data[$key] = $val;
+                }
+            }
+
+            DB::connection('tbd')
+                ->table($column['table'])
+                ->insert($data);
+        } else {
+            DB::connection('tbd')
+                ->table($column['table'])
+                ->where('id', $item->id)
+                
+                ->update(
+                    [
+                        $column['column'] => $params['value']
+                    ]
+                );
+        }
+    }
+
 
 }
