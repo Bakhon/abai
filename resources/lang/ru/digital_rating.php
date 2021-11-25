@@ -73,5 +73,6 @@ return array (
   'project' => 'Проект',
   'fact' => 'Факт',
   'deviation' => 'Отклонение',
-  'searchRadius' => 'Радиус поиска'
+  'searchRadius' => 'Радиус поиска',
+  'factorAnalysis' => 'Факторный анализ'
 );

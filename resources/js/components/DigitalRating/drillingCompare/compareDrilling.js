@@ -43,6 +43,7 @@ export default {
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
+      owcList: [],
       show: false
     }
   },
@@ -215,17 +216,23 @@ export default {
       }
     },
 
-    initContourOnMap() {
-      for (let i = 0; i < owcList.length; i++) {
-        owcList[i].reverse();
-      }
+    async initContourOnMap() {
+      const res = await axios.get(this.localeUrl(
+        `digital-rating/api/get_maps?field=kmb&horizon=14&owc=owc_out_kmb_14_vost`
+      ));
+      if (!res.error) {
+        this.owcList = res?.data[0]?.coordinates;
 
-      L.polyline(owcList, {
-        renderer: this.renderer,
-        color: 'white',
-        weight: 1,
-        smoothFactor: 1
-      }).addTo(this.map);
+        for (let i = 0; i < owcList.length; i++) {
+          owcList[i].reverse();
+        }
+        L.polyline(owcList, {
+          renderer: this.renderer,
+          color: 'white',
+          weight: 1,
+          smoothFactor: 1
+        }).addTo(this.map);
+      }
     },
 
     initLegends() {
