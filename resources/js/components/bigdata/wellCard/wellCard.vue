@@ -1304,8 +1304,7 @@ export default {
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }         
-              console.log(this.well);      
+              }                           
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
@@ -1323,7 +1322,8 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }              
+              }  
+            
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
@@ -1333,8 +1333,7 @@ export default {
                 data.org.reverse(),
                 "name_ru"
               );
-              console.log(data.tubeNom.od);
-              this.tubeNomOd = this.getMultipleValues(data.tubeNom, "od");              
+              this.tubeNomOd = this.getMultipleValues(data.tubeNom, "od");
             } catch (e) {
               this.SET_LOADING(false);
             }
