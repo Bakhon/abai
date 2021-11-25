@@ -16,6 +16,7 @@ use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\MeasWell;
 use App\Models\BigData\PzabTechMode;
 use App\Models\BigData\DmartDailyProd;
+use App\Models\BigData\DailyInjectionOil;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
@@ -49,10 +50,10 @@ class WellsController extends Controller
     {
     
         $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
-        if (Cache::has('well_' . $well->id)) {
+   /*     if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-              
+     */    
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
@@ -77,8 +78,8 @@ class WellsController extends Controller
         {
             $show_param = [             
                 'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),                
-                'tech_mode_inj' => $this->techModeInj($well),
-                'meas_water_inj' => $this->measLiqInjection($well),
+                'tech_mode_inj' => $this->techModeInj($well),          
+                'dailyInjectionOil' => $this->dailyInjectionOil($well),
             ];  
         }   
                 
@@ -123,7 +124,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
       
-        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+   //     Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
     
@@ -188,11 +189,29 @@ class WellsController extends Controller
 
     private function tubeNom(Well $well)
     {
-        return $well->tubeNom()
-            ->wherePivot('project_drill', '=', 'false')
-            ->wherePivot('casing_type', '=', '8', 'or')
-            ->WherePivot('casing_type', '=', '9')
-            ->get(['prod.well_constr.od']);
+        $wellConstr = $well->tubeNom()
+                    ->wherePivot('project_drill', '=', 'false')
+                    ->wherePivot('casing_type', '=', '8', 'or')
+                    ->WherePivot('casing_type', '=', '9')
+                    ->get(['prod.well_constr.od'])
+                    ->toArray();
+
+        if($wellConstr){
+            return $wellConstr[0];
+        }
+        if(!$wellConstr){
+            $wellConstrOd = DB::connection('tbd')
+                            ->table('prod.well_constr')
+                            ->where('well', '=', $well->id)
+                            ->where('od', '!=', null)                        
+                            ->orderBy('id', 'desc')
+                            ->get('od')
+                            ->toArray();   
+        if($wellConstrOd){
+            return $wellConstrOd[0];
+        }
+            return "";
+        }                                     
     }
 
     private function date_expl(Well $well)
@@ -421,6 +440,20 @@ class WellsController extends Controller
         return "";
     }
 
+    private function dailyInjectionOil(Well $well)
+    {
+       $dailyInjectionOil = $well->dailyInjectionOil()
+            ->where('well', '=', $well->id)
+            ->orderBy('date', 'desc')
+            ->get(['water_inj_val', 'pressure_inj', 'pump_stroke', 'choke', 'water_vol'])                        
+            ->toArray();
+
+        if($dailyInjectionOil){
+            return $dailyInjectionOil[0]; 
+        }     
+        return "";                          
+    }
+
     private function pzabWell(Well $well)
     {
         $pzabWell = $well->pzabWell()
@@ -475,7 +508,8 @@ class WellsController extends Controller
     private function techModeInj(Well $well)
     {
         $techModeInj = $well->techModeInj()
-            ->get(['inj_pressure', 'agent_vol'])
+            ->orderBy('dbeg', 'desc')
+            ->get(['inj_pressure', 'agent_vol'])            
             ->toArray();
 
         if($techModeInj){

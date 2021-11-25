@@ -514,7 +514,8 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
-        diametr_stuzer: {prm: null, value_double: null},        
+        diametr_stuzer: {prm: null, value_double: null}, 
+        dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},       
       },
       wellParent: null,
       tubeNomOd: null,
@@ -585,7 +586,8 @@ export default {
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
         techmode: "techmode",
-        diametr_stuzer: "diametr_stuzer"
+        diametr_stuzer: "diametr_stuzer",
+        dailyInjectionOil: "dailyInjectionOil"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -832,10 +834,10 @@ export default {
         ? this.well.rzatrStat.value_double
         : "";
       let injPressure = this.getInjPressure(well);
-      let agentVol = (this.well.tech_mode_inj || this.well.meas_water_inj) && this.well.meas_water_inj.water_inj_val
+      let agentVol = (this.well.tech_mode_inj || this.well.dailyInjectionOil) && this.well.dailyInjectionOil.water_inj_val
         ? this.well.tech_mode_inj.agent_vol +
         " / " +
-        this.well.meas_water_inj.water_inj_val.toFixed(1)
+        this.well.dailyInjectionOil.water_inj_val.toFixed(1)
         : "";
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.perf_date)
@@ -858,7 +860,7 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";      
+      let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       this.well_passport = [
         {
@@ -1010,7 +1012,7 @@ export default {
         },
         {
           name: this.trans("well.diametr_stuzer"),
-          data: '',
+          data: diametr_stuzer,
           type: ["nag"],
         },
         {
@@ -1302,7 +1304,8 @@ export default {
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }               
+              }         
+              console.log(this.well);      
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
@@ -1320,8 +1323,7 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }  
-            
+              }              
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
@@ -1331,7 +1333,8 @@ export default {
                 data.org.reverse(),
                 "name_ru"
               );
-              this.tubeNomOd = this.getMultipleValues(data.tube_nom, "od");
+              console.log(data.tubeNom.od);
+              this.tubeNomOd = this.getMultipleValues(data.tubeNom, "od");              
             } catch (e) {
               this.SET_LOADING(false);
             }
@@ -1414,21 +1417,21 @@ export default {
       return "";  
     },
     getInjPressure(well) {
-      if (this.well.tech_mode_inj && this.well.meas_water_inj) {
+      if (this.well.tech_mode_inj && this.well.dailyInjectionOil) {
         if (
           this.well.tech_mode_inj.inj_pressure != null &&
-          this.well.meas_water_inj.pressure_inj != null
+          this.well.dailyInjectionOil.pressure_inj != null
         ) {
           return (
             this.well.tech_mode_inj.inj_pressure +
             " / " +
-            this.well.meas_water_inj.pressure_inj
+            this.well.dailyInjectionOil.pressure_inj
           );
         }
         if (this.well.tech_mode_inj.inj_pressure === null) {
-          return "-" + " / " + this.well.meas_water_inj.pressure_inj;
+          return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;
         }
-        if (this.well.meas_water_inj.pressure_inj === null) {
+        if (this.well.dailyInjectionOil.pressure_inj === null) {
           return this.well.tech_mode_inj.inj_pressure + " / " + "-";
         }
         return "";
