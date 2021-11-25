@@ -103,7 +103,7 @@
                     </div>
 
                   <div v-if="currentTab == 1">
-                      <event></event>
+                      <event :test="test_abat"></event>
                   </div>
 
                   <div v-if="currentTab == 2">
@@ -156,7 +156,7 @@ export default {
         },
         margin: {
           l: 50,
-          r: 5,
+          r: 15,
           b: 50,
           t: 20,
           pad: 4
@@ -206,6 +206,7 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
+      test_abat: [],
       
     }
   },
@@ -315,12 +316,13 @@ export default {
     getTableWork() {
       this.axios
           .get(
-              `http://172.20.103.203:8090/dayliWork/${this.wellNumber}/${this.wellFile}/`,
+              `http://172.20.103.203:8090/dayliWork1/${this.wellNumber}/${this.wellFile}/`,
           )
           .then((response) => {
               let data = response.data;
-              console.log("TEST3") 
               if (data) {
+                this.test_abat = data
+                console.log(this.test_abat);
 
               } else {
                   console.log("No data");
@@ -476,7 +478,6 @@ table, th, td {
 }
 
 .plotly-graph-custom {
-  // height: calc(100% - 356px);
   width: 100%;
   border: 6px solid #20274F;
 }
