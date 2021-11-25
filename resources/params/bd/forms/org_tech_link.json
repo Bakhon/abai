@@ -10,13 +10,6 @@
             "title": "",
             "items": [
               {
-                "code": "org",
-                "type": "dict_tree",
-                "dict": "orgs",
-                "title": "org",
-                "validation": "exists:tbd.dict.org,id"  
-              },
-              {
                 "code": "tech",
                 "type": "dict_tree",
                 "dict": "techs",
