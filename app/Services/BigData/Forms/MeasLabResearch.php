@@ -59,7 +59,7 @@ class MeasLabResearch extends TableForm
                             $cellValue = [
                                 'id' => $item->id,
                                 'name' => $item->uwi,
-                                'href' => '#'
+                                'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
                             ];
                         } else {
                             $value = $cellData ? $cellData->{$column['column']} : null;
