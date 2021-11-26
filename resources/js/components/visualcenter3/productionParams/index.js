@@ -192,7 +192,6 @@ export default {
 
         async switchCategory(category,parent) {
             this.isDecreaseReasonActive = false;
-            this.selectAllDzoCompanies();
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
             this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
@@ -237,8 +236,11 @@ export default {
                 this.selectedCategory = parent;
             }
             this.chartReasons = this.getReasonExplanations();
-            this.productionData = _.cloneDeep(this.productionTableData);
-
+            this.productionData = this.getFilteredTableData();
+            if (this.productionData.length === 0) {
+                this.selectAllDzoCompanies();
+                this.productionData = _.cloneDeep(this.productionTableData);
+            }
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
