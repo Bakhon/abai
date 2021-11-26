@@ -1303,8 +1303,7 @@ export default {
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              } 
-              console.log(this.well);                                     
+              }                                                
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
