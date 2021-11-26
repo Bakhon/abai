@@ -36,7 +36,11 @@ class WellTreat extends TableForm
             function ($item) use ($rowData) {
                 $result = [
                     'id' => $item->id,
-                    'uwi' => ['value' => $item->uwi]
+                    'uwi' => [
+                        'id' => $item->id,
+                        'name' => $item->uwi,
+                        'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
+                    ],
                 ];
 
                 foreach ($this->getFields() as $field) {
