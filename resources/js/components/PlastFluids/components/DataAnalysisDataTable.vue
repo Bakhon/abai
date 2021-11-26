@@ -30,8 +30,9 @@
         :items="items"
         tableType="analysis"
         :sticky="true"
-        :currentSelectedSamples="currentSelectedSamples"
+        :currentSelectedRow="handleRowSelectState"
         @select-row="selectTableRow"
+        :currentRoute="reservoilOilInfo[1]"
       />
     </div>
   </div>
@@ -50,6 +51,7 @@ export default {
     items: [Array, Object],
     fields: [Array, Object],
   },
+  inject: { reservoilOilInfo: { default: "template" } },
   components: {
     BaseTable,
     SmallCatLoader,
@@ -59,15 +61,42 @@ export default {
       "loading",
       "tableState",
       "currentSelectedSamples",
+      "currentModel",
+      "currentSelectedWell",
     ]),
+    handleRowSelectState() {
+      let state = {};
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          state = this.currentSelectedSamples;
+          break;
+        case "maps-and-tables":
+          state = this.currentSelectedWell;
+          break;
+      }
+      return state;
+    },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", [
       "SET_TABLE_STATE",
       "SET_CURRENT_SELECTED_SAMPLES",
+      "SET_CURRENT_SELECTED_WELL",
     ]),
     selectTableRow(row) {
-      this.SET_CURRENT_SELECTED_SAMPLES(row.key);
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          this.SET_CURRENT_SELECTED_SAMPLES(row.item.key);
+          break;
+        case "maps-and-tables":
+          !this.currentModel.id
+            ? ""
+            : this.SET_CURRENT_SELECTED_WELL({
+                id: row.item.key,
+                index: row.index,
+              });
+          break;
+      }
     },
   },
 };

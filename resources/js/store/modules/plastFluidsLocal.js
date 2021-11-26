@@ -32,6 +32,7 @@ const plastFluidsLocal = {
     isTileLayerShown: true,
     selectedWellsType: [],
     selectedFluidProperty: [],
+    currentSelectedWell: {},
   },
 
   mutations: {
@@ -122,6 +123,16 @@ const plastFluidsLocal = {
       const last = payload.pop();
       state.selectedFluidProperty = [];
       last ? state.selectedFluidProperty.push(last) : "";
+    },
+    SET_CURRENT_SELECTED_WELL(state, payload) {
+      if (
+        state.currentSelectedWell.id === payload.id &&
+        state.currentSelectedWell.index === payload.index
+      ) {
+        state.currentSelectedWell = {};
+        return;
+      }
+      state.currentSelectedWell = payload;
     },
   },
 

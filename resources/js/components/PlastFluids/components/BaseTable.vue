@@ -76,18 +76,10 @@
                 v-for="(item, index) in items"
                 :key="index"
                 :style="
-                  currentSelectedSamples &&
-                  reservoilOilInfo[1] === 'graphs-and-tables' &&
-                  currentSelectedSamples.includes(index)
-                    ? 'background-color: #009000;'
-                    : ''
+                  isPaintRow(item, index) ? 'background-color: #009000;' : ''
                 "
                 style="cursor: pointer"
-                @click="
-                  reservoilOilInfo[1] === 'graphs-and-tables'
-                    ? $emit('select-row', item)
-                    : ''
-                "
+                @click="$emit('select-row', { item, index })"
               >
                 <td
                   v-for="(itemTD, ind) in item.table_data
@@ -163,22 +155,22 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
-    currentSelectedSamples: Array,
+    currentRoute: String,
+    currentSelectedRow: [Object, Array],
   },
   data() {
     return {
       perPage: 30,
     };
   },
-  inject: { reservoilOilInfo: { default: "template" } },
   watch: {
     perPage: {
       handler(val) {
         this.$emit("show-items-per-page", Number(val));
       },
     },
-    currentSelectedSamples(value) {
-      if (value.length) {
+    currentSelectedRow(value) {
+      if (value.length && this.currentRoute === "graphs-and-tables") {
         this.$refs.tableBody.children[value[value.length - 1]].focus();
       }
     },
@@ -222,6 +214,22 @@ export default {
     },
     isObjectArray() {
       return this.fields.some((field) => typeof field === "object");
+    },
+  },
+  methods: {
+    isPaintRow(row, index) {
+      let condition = false;
+      switch (this.currentRoute) {
+        case "graphs-and-tables":
+          condition = this.currentSelectedRow?.includes(index);
+          break;
+        case "maps-and-tables":
+          condition =
+            this.currentSelectedRow.id === row.key &&
+            this.currentSelectedRow.index === index;
+          break;
+      }
+      return condition;
     },
   },
 };

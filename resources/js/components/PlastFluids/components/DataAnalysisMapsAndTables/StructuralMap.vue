@@ -61,10 +61,13 @@ export default {
       "isTileLayerShown",
       "selectedWellsType",
       "selectedFluidProperty",
+      "currentSelectedWell",
     ]),
   },
   watch: {
     async currentModel(value) {
+      this.clearLayers();
+      this.SET_CURRENT_SELECTED_WELL({});
       if (value.id) {
         try {
           const {
@@ -76,7 +79,6 @@ export default {
             image_id,
           } = value;
           this.loading = true;
-          this.clearLayers();
           this.getWellsProperties();
           this.SET_MAX_DEPTH_MULTIPLIER(value.levels_count * 10);
           const postData = new FormData();
@@ -117,7 +119,6 @@ export default {
         }
       } else {
         this.map.setZoom(5);
-        this.clearLayers();
       }
     },
     allWells(wells) {
@@ -154,12 +155,37 @@ export default {
       await this.getWellsProperties();
       this.setAllWells();
     },
+    currentSelectedWell(well) {
+      const animOptions = {
+        animate: true,
+        duration: 0.25,
+        easeLinearity: 0.5,
+      };
+      if (well.id) {
+        for (let type of this.selectedWellsType) {
+          let found = false;
+          this[type + "WellLayers"].eachLayer((layer) => {
+            if (layer.options.well_id === well.id) {
+              this.map.flyTo(layer.getLatLng(), 17, animOptions);
+              found = true;
+            }
+          });
+          if (found) return;
+        }
+        alert("Скважина не найдена на карте");
+        this.SET_CURRENT_SELECTED_WELL({});
+        return;
+      }
+      if (this.currentModel.id && this.currentModelBounds?.length)
+        this.map.flyToBounds(this.currentModelBounds, animOptions);
+    },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", [
       "SET_CURRENT_MODEL",
       "SET_MAX_DEPTH_MULTIPLIER",
       "SET_SELECTED_WELLS_TYPE",
+      "SET_CURRENT_SELECTED_WELL",
     ]),
     setAllWells() {
       this.allWells = this.wells.map((well) => {
@@ -308,26 +334,22 @@ export default {
       );
     },
     getProperty(options, property) {
-      if (options[property]) {
-        return options[property].toFixed(
-          property === "reservoir_fluid_viscosity" ? 1 : 0
-        );
-      } else {
-        return (
-          options["min_" + property].toFixed(
-            property === "reservoir_fluid_viscosity" ? 1 : 0
-          ) +
-          " - " +
-          options["max_" + property].toFixed(
-            property === "reservoir_fluid_viscosity" ? 1 : 0
-          )
-        );
-      }
+      const toFixedDigit = property === "reservoir_fluid_viscosity" ? 1 : 0;
+      return options[property]
+        ? options[property].toFixed(toFixedDigit)
+        : options["min_" + property].toFixed(toFixedDigit) +
+            " - " +
+            options["max_" + property].toFixed(toFixedDigit);
     },
     addFluidProperty(property) {
       ["all", "deep", "recombined"].forEach((type) =>
         this[type + "WellLayers"].eachLayer((layer) => {
-          if (layer.options.isSampleTaken) {
+          if (
+            layer.options.isSampleTaken &&
+            (layer.options[property] ||
+              (layer.options["min_" + property] &&
+                layer.options["max_" + property]))
+          ) {
             const div = document.createElement("div");
             const wellTitle = document.createElement("p");
             const wellProperty = document.createElement("p");
