@@ -64,50 +64,49 @@ class WellTreat extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $fields, array $filter = []): array
     {
-        $column = $this->getFieldByCode($params['field']);
+        $date = Carbon::parse($filter['date'])->toImmutable();
+        foreach ($fields as $wellId => $wellFields) {
+            foreach ($wellFields as $columnCode => $field) {
+                $column = $this->getFieldByCode($columnCode);
 
-        $item = DB::connection('tbd')
-            ->table($column['table'])
-            ->where('well', $params['wellId'])
-            ->where('treatment_type', $this->request->get('treatment_type'))
-            ->whereBetween(
-                'treat_date',
-                [
-                    (clone $params['date'])->startOfDay(),
-                    (clone $params['date'])->endOfDay()
-                ]
-            )
-            ->first();
+                $row = DB::connection('tbd')
+                    ->table($column['table'])
+                    ->where('well', $wellId)
+                    ->whereBetween(
+                        'treat_date',
+                        [
+                            $date->startOfDay(),
+                            $date->endOfDay()
+                        ]
+                    )
+                    ->where('treatment_type', $filter['treatment_type'])
+                    ->first();
 
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                'treatment_type' => $this->request->get('treatment_type'),
-                $column['column'] => $params['value'],
-                'treat_date' => $params['date']->toDateTimeString()
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
+                if (!empty($row)) {
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->where('id', $row->id)
+                        ->update(
+                            [
+                                $column['column'] => $field['value']
+                            ]
+                        );
+                } else {
+                    $data = [
+                        'well' => $wellId,
+                        'treatment_type' => $filter['treatment_type'],
+                        'treat_date' => $date,
+                        $column['column'] => $field['value']
+                    ];
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->insert($data);
                 }
             }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
         }
+        return [];
     }
 
     protected function getCustomValidationErrors(string $field = null): array

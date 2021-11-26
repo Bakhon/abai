@@ -171,8 +171,6 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]"
-                                  class="error">{{ showError(errors[row.id][column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
                       <span class="value">
@@ -221,9 +219,6 @@
                                   class="form-control"
                                   type="text">
                             </div>
-                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]" class="error">
-                              {{ showError(errors[row.id][column.code]) }}
-                            </span>
                           </template>
                           <template v-else-if="row[column.code]">
                       <span class="value">{{
@@ -245,6 +240,12 @@
                             </div>
                           </b-popover>
                         </template>
+                        <span
+                            v-if="isCellEdited(row, column) && errors && errors[row.id] && errors[row.id][column.code]"
+                            class="error"
+                        >
+                          {{ showError(errors[row.id][column.code]) }}
+                        </span>
                       </td>
                     </tr>
                   </template>

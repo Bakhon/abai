@@ -465,7 +465,6 @@ abstract class TableForm extends BaseForm
 
     private function addAdditionalFilters($query, array $field)
     {
-
         if (!empty($field['additional_filter'])) {
             foreach ($field['additional_filter'] as $key => $value) {
                 if (is_array($value)) {
