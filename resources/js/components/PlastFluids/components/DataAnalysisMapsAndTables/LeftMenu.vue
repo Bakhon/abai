@@ -65,7 +65,7 @@
         </div>
         <div class="content">
           <div class="file-upload-holder">
-            <p>Структурная карта</p>
+            <p>{{ trans("plast_fluids.structural_map") }}</p>
             <Dropdown
               :items="models"
               :dropKey="['horizon', 'created_datetime']"
@@ -80,11 +80,11 @@
             />
           </div>
           <div class="file-upload-holder">
-            <p>Схема разломов</p>
+            <p>{{ trans("plast_fluids.fault_scheme") }}</p>
             <Dropdown :dropKey="['name']" />
           </div>
           <div class="file-upload-holder">
-            <p>Схема контактов</p>
+            <p>{{ trans("plast_fluids.contact_scheme") }}</p>
             <Dropdown :dropKey="['name']" />
           </div>
         </div>

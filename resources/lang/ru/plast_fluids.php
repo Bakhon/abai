@@ -151,4 +151,7 @@ return array (
   'structural_map_density_separation_liquid' => 'po',
   'structural_map_saturation_pressure' => 'Ps',
   'structural_map_reservoir_fluid_viscosity' => 'μos',
+  'structural_map' => 'Структурная карта',
+  'fault_scheme' => 'Схема разломов',
+  'contact_scheme' => 'Схема контактов',
 );
