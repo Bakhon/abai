@@ -140,7 +140,7 @@
 @yield('sidebar_menu_additional')
 
 <div class="nav_bottom">
-<a href="#"
+<a href="{{url('/')}}/ru/faq"
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/nav_icon1.svg" class="companyLogo">

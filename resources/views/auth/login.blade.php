@@ -89,7 +89,7 @@
             <h5>Техническая поддержка</h5>
             </a>
 
-            <a href="#" type="button"  data-toggle="modal" data-target="#faqModal" style="
+            <a href="{{url('/')}}/ru/faq" type="button" style="
     color: #e8f0fe;
     padding-right: 20px;
 ">
