@@ -87,9 +87,9 @@
                     </tr>
                     <tr>
                       <td class="header_name">Трубное давление:</td>
-                      <td class="input-form-auto header_name_red"> 0 атм</td>
+                      <td class="input-form-auto header_name_red">{{pipe_pressure}}</td>
                       <td class="header_name">Затрубное давление:</td>
-                      <td class="input-form-auto header_name_red">0 атм</td>
+                      <td class="input-form-auto header_name_red">{{annular_pressure}}</td>
                       <td class="header_name">Межколонное давление:</td>
                       <td class="input-form-auto header_name_red">0 атм</td>
                     </tr>
@@ -153,9 +153,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[1]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
-                      <td class="input-form-auto header_name">168,3</td>
-                      <td class="input-form-auto header_name">8,94</td>
-                      <td class="input-form-auto header_name">0-1869м</td>
+                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
+                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
+                      <td class="input-form-auto header_name">{{wall_thickness}}</td>
                       <td class="input-form-auto header_name">17,76</td>
                     </tr>
                     <tr>
@@ -171,9 +171,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[3]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[3]}}</td>
                       <td colspan="2" class="header_name">Искусственный забой, м</td>
-                      <td class="input-form-auto header_name">1856</td>
+                      <td class="input-form-auto header_name">{{artificial_slaughter}}</td>
                       <td colspan="2" class="header_name">Текущий забой, м</td>
-                      <td class="input-form-auto header_name">1851м</td>
+                      <td class="input-form-auto header_name">{{current_bottomhole}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">обеденный перерыв</td>
@@ -316,6 +316,13 @@ export default {
       linkWell: "drWellName/",
       linkWellDate: "drWellDates/",
       linkWellReport: "drHeaderWorkReport/",
+      annular_pressure: null,
+      descent_depth: null,
+      pipe_pressure: null,
+      artificial_slaughter: null,
+      current_bottomhole: null,
+      prod_casing_outer_d: null,
+      wall_thickness: null,
       
     }
   },
@@ -420,6 +427,13 @@ export default {
                     this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
                     this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
                     this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
+                    this.annular_pressure = data.data.parameters.annular_pressure;
+                    this.descent_depth = data.data.parameters.descent_depth;
+                    this.pipe_pressure = data.data.parameters.pipe_pressure;
+                    this.artificial_slaughter = data.data.parameters.artificial_slaughter;
+                    this.current_bottomhole = data.data.parameters.current_bottomhole;
+                    this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
+                    this.wall_thickness = data.data.parameters.wall_thickness;
                 } else {
                     console.log("No data");
                 }
