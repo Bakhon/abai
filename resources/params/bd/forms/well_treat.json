@@ -21,7 +21,7 @@
     {
       "title": "uwi",
       "code": "uwi",
-      "type": "text",
+      "type": "link",
       "is_editable": false
     },
     {
