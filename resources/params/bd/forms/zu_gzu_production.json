@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "columns": [
     {
       "title": "pf",
@@ -68,8 +69,7 @@
       "table": "prod.meas_gzu_prod",
       "column": "liquid_prod_tel",
       "type": "text",
-      "is_editable": true,
-      "validation": "required|numeric|gt:0"
+      "is_editable": false
     },
     {
       "title": "water_cut",
@@ -98,8 +98,7 @@
       "table": "prod.meas_gzu_prod",
       "column": "water_cut_tel",
       "type": "text",
-      "is_editable": true,
-      "validation": "required|numeric|between:0,100"
+      "is_editable": false
     },
     {
       "title": "oil_prod",
@@ -116,8 +115,7 @@
       "table": "prod.meas_gzu_prod",
       "column": "oil_prod_tel",
       "type": "text",
-      "is_editable": true,
-      "validation": "required|numeric|gt:0"
+      "is_editable": false
     },
     {
       "title": "gaz_prod",
@@ -146,8 +144,7 @@
       "table": "prod.meas_gzu_prod",
       "column": "gaz_prod_tel",
       "type": "text",
-      "is_editable": true,
-      "validation": "required|numeric|gt:0"
+      "is_editable": false
     }
   ]
 }

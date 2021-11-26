@@ -97,7 +97,7 @@
                                     <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                  {{trans('tr.add')}}</a>
+                                  {{trans('tr.show')}}</a>
 
                                   <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
@@ -222,7 +222,13 @@
                       </table>
                   </div>
                 </div>
-              </modal>
+    </modal>
+    <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
+      <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
+        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+        <totalTable />
+      </div>
+    </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -355,9 +361,9 @@
             aria-labelledby="dropdownMenuLink"
           >
               
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label" >{{trans('tr.start_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
                   <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
@@ -404,8 +410,7 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              
-
+    
               <button
                 v-if="isPermission"
                 type="button" 
@@ -6476,7 +6481,7 @@
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </paginate>
-            <div>
+            <div class="pagination-div">
                     <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
@@ -6679,7 +6684,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
@@ -6774,7 +6778,6 @@ tr:nth-child(even) td {
   color: black;
 }
 .input_edit_modal {
-
   color: black;
   font-size: 12px;
   height: 31px;
@@ -6793,7 +6796,6 @@ tr:nth-child(even) td {
   border: none;
   margin-left: 11px;
 }
-
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -6897,8 +6899,16 @@ table::-webkit-scrollbar-corner {
   font-size: 12px;
   height: 31px;
 }
+.input-date-label {
+  margin-left: 8px;
+  color:#fff;
+}
 .modal_table {
   height: 240px !important;
+}
+.total-modal-header {
+  color: #fff;
+  font-size: 16px;
 }
 
     .table-outer{

@@ -93,20 +93,20 @@ class PlanGIS extends TableForm
 
         $childCodesByMonths = [];
         while ($date < $dateTo) {
-            $mergeColumns['date_' . $date->format('n_Y')] = [
-                'code' => 'date_' . $date->format('n_Y'),
+            $mergeColumns['date_' . $date->format('d.m.Y')] = [
+                'code' => 'date_' . $date->format('d.m.Y'),
                 'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
             ];
 
             $childCodes = [];
             foreach ($children as $child) {
-                $code = "date_{$date->format('n_Y')}_" . $child->id;
+                $code = "date_{$date->format('d.m.Y')}_" . $child->id;
                 $childCodes[] = $code;
                 $childCodesByMonths[$child->id][] = $code;
                 $columns[] = [
                     'code' => $code,
                     'title' => $child->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
+                    'parent_column' => 'date_' . $date->format('d.m.Y'),
                     'type' => 'integer',
                     'is_editable' => $org->name_short_ru === 'ММГ' ? false : true
                 ];
@@ -215,7 +215,14 @@ class PlanGIS extends TableForm
                 ->where('plan_gis_type', $gisTypeId)
                 ->first();
 
-            $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
+            $row["date_{$date->format('d.m.Y')}_" . $child->id] = [
+                'value' => $plan ? $plan->count : 0,
+                'params' => [
+                    'plan_gis_type' => $gisTypeId,
+                    'date' => $date->format('d.m.Y'),
+                    'org_id' => $child->id
+                ]
+            ];
         }
 
         $plan = $plans->where('month', $date->format('n'))
@@ -224,40 +231,52 @@ class PlanGIS extends TableForm
             ->where('plan_gis_type', $gisTypeId)
             ->first();
 
-        $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
+        $row["date_{$date->format('d.m.Y')}_" . $org->id] = [
+            'value' => $plan ? $plan->count : 0,
+            'params' => [
+                'plan_gis_type' => $gisTypeId,
+                'date' => $date->format('d.m.Y'),
+                'org_id' => $org->id
+            ]
+        ];
         return $row;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        list($date, $month, $year, $org) = explode('_', $params['field']);
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                $date = Carbon::parse($field['params']['date'], 'Asia/Almaty');
+                $plan = DB::connection('tbd')
+                    ->table('prod.plan_gis')
+                    ->where('org', $field['params']['org_id'])
+                    ->where('plan_gis_type', $field['params']['plan_gis_type'])
+                    ->where('month', $date->format('n'))
+                    ->where('year', $date->year)
+                    ->first();
 
-        $plan = DB::connection('tbd')
-            ->table('prod.plan_gis')
-            ->where('org', $org)
-            ->where('plan_gis_type', $params['wellId'])
-            ->where('month', $month)
-            ->where('year', $year)
-            ->first();
-
-        if ($plan) {
-            DB::connection('tbd')
-                ->table('prod.plan_gis')
-                ->where('id', $plan->id)
-                ->update(['count' => $params['value']]);
-        } else {
-            DB::connection('tbd')
-                ->table('prod.plan_gis')
-                ->insert(
-                    [
-                        'org' => $org,
-                        'plan_gis_type' => $params['wellId'],
-                        'month' => $month,
-                        'year' => $year,
-                        'count' => $params['value']
-                    ]
-                );
+                if ($plan) {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gis')
+                        ->where('id', $plan->id)
+                        ->update(['count' => $field['value']]);
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gis')
+                        ->insert(
+                            [
+                                'org' => $field['params']['org_id'],
+                                'plan_gis_type' => $field['params']['plan_gis_type'],
+                                'month' => $date->format('n'),
+                                'year' => $date->year,
+                                'count' => $field['value']
+                            ]
+                        );
+                }
+            }
         }
+
+        return [];
     }
 
 }

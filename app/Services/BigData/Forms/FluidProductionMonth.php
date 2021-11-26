@@ -257,7 +257,9 @@ class FluidProductionMonth extends MeasLogByMonth
                 $monthDay = $date->startOfMonth();
                 while ($monthDay <= $date) {
                     $liquidValue = $this->getLiquidValueForDay($well->id, $monthDay->format('j'));
-                    $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
+                    $row[$monthDay->format('d.m.Y')] = [
+                        'value' => $liquidValue['note'] ?? null
+                    ];
                     $monthDay = $monthDay->addDay();
                 }
                 break;
@@ -266,6 +268,10 @@ class FluidProductionMonth extends MeasLogByMonth
                 while ($monthDay <= $date) {
                     $liquidValue = $this->getLiquidValueForDay($well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = [
+                        'params' => [
+                            'well_id' => $well->id,
+                            'indicator' => 'reason_decline',
+                        ],
                         'value' => $liquidValue['reason_decline'] ?? null,
                         'is_editable' => true,
                         'type' => 'dict',
@@ -306,6 +312,10 @@ class FluidProductionMonth extends MeasLogByMonth
             }
 
             $row[$monthDay->format('d.m.Y')] = [
+                'params' => [
+                    'well_id' => $well->id,
+                    'indicator' => 'liquid',
+                ],
                 'is_editable' => true,
                 'value' => $liquidValue['liquid'] ?? null
             ];
@@ -331,6 +341,10 @@ class FluidProductionMonth extends MeasLogByMonth
             $wellBsw = $this->bsw->get($well->id);
             $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
             $row[$monthDay->format('d.m.Y')] = [
+                'params' => [
+                    'well_id' => $well->id,
+                    'indicator' => 'bsw',
+                ],
                 'is_editable' => true,
                 'value' => $bswValue ?? null
             ];
@@ -375,6 +389,10 @@ class FluidProductionMonth extends MeasLogByMonth
             }
 
             $row[$day] = [
+                'params' => [
+                    'well_id' => $well->id,
+                    'indicator' => 'oil',
+                ],
                 'is_editable' => false,
                 'value' => round($oil, 2)
             ];
@@ -406,6 +424,10 @@ class FluidProductionMonth extends MeasLogByMonth
             $wellGas = $this->gas->get($well->id);
             $gasValue = $wellGas ? $wellGas->get($monthDay->format('j')) : null;
             $row[$monthDay->format('d.m.Y')] = [
+                'params' => [
+                    'well_id' => $well->id,
+                    'indicator' => 'gas',
+                ],
                 'is_editable' => true,
                 'value' => $gasValue ?? null
             ];
@@ -890,51 +912,56 @@ class FluidProductionMonth extends MeasLogByMonth
         return $columns;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        list($wellId, $field) = explode('|', $params['wellId']);
-        $date = Carbon::parse($params['field'])->timezone('Asia/Almaty')->toImmutable();
-        switch ($field) {
-            case 'liquid':
-                $this->saveField('prod.meas_liq', 'liquid', $wellId, $date, $params['value']);
-                break;
-            case 'bsw':
-                $this->saveField('prod.meas_water_cut', 'water_cut', $wellId, $date, $params['value']);
-                break;
-            case 'reason_decline':
-                $this->saveField('prod.meas_liq', 'reason_decline', $wellId, $date, $params['value']);
-                break;
-            case 'gas':
-                $row = DB::connection('tbd')
-                    ->table('prod.meas_gas_prod')
-                    ->where('well', $wellId)
-                    ->where('dbeg', '>=', $date->startOfDay())
-                    ->where('dbeg', '<=', $date->endOfDay())
-                    ->first();
+        foreach ($rows as $row) {
+            foreach ($row as $date => $field) {
+                $date = Carbon::parse($date)->timezone('Asia/Almaty')->toImmutable();
+                $wellId = $field['params']['well_id'];
+                switch ($field['params']['indicator']) {
+                    case 'liquid':
+                        $this->saveField('prod.meas_liq', 'liquid', $wellId, $date, $field['value']);
+                        break;
+                    case 'bsw':
+                        $this->saveField('prod.meas_water_cut', 'water_cut', $wellId, $date, $field['value']);
+                        break;
+                    case 'reason_decline':
+                        $this->saveField('prod.meas_liq', 'reason_decline', $wellId, $date, $field['value']);
+                        break;
+                    case 'gas':
+                        $row = DB::connection('tbd')
+                            ->table('prod.meas_gas_prod')
+                            ->where('well', $wellId)
+                            ->where('dbeg', '>=', $date->startOfDay())
+                            ->where('dbeg', '<=', $date->endOfDay())
+                            ->first();
 
-                if (empty($row)) {
-                    DB::connection('tbd')
-                        ->table('prod.meas_gas_prod')
-                        ->insert(
-                            [
-                                'well' => $wellId,
-                                'gas_prod_val' => $params['value'],
-                                'dbeg' => $date->startOfDay(),
-                                'dend' => $date->endOfDay()
-                            ]
-                        );
-                } else {
-                    DB::connection('tbd')
-                        ->table('prod.meas_gas_prod')
-                        ->where('id', $row->id)
-                        ->update(
-                            [
-                                'gas_prod_val' => $params['value'],
-                            ]
-                        );
+                        if (empty($row)) {
+                            DB::connection('tbd')
+                                ->table('prod.meas_gas_prod')
+                                ->insert(
+                                    [
+                                        'well' => $wellId,
+                                        'gas_prod_val' => $field['value'],
+                                        'dbeg' => $date->startOfDay(),
+                                        'dend' => $date->endOfDay()
+                                    ]
+                                );
+                        } else {
+                            DB::connection('tbd')
+                                ->table('prod.meas_gas_prod')
+                                ->where('id', $row->id)
+                                ->update(
+                                    [
+                                        'gas_prod_val' => $field['value'],
+                                    ]
+                                );
+                        }
+                        break;
                 }
-                break;
+            }
         }
+        return [];
     }
 
     private function saveField(string $table, string $field, $wellId, CarbonImmutable $date, $value)

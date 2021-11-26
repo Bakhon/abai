@@ -28,9 +28,9 @@
             <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
-                    <img class="hws-tab-img"
+                    <a href="tkrsMain"><img class="hws-tab-img"
                     src="/img/tkrs/back.svg"
-                    />
+                    /></a>
                     
                     <a class="hws-header-info-name back-icon"><img class="hws-tab-img"
                     src="/img/tkrs/brigada_table.svg"
@@ -54,14 +54,21 @@
                       <a class="dropdown-item" href="#">{{trans('tkrs.sensors')}}</a>
                     </div>
                   </div>
-                  <button class="calendar-form">{{trans('tkrs.analyze_pv_npv')}}</button>
+                  <button class="calendar-form"><a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}</a></button>
                   
                 </div>
-                <!-- <div class="plotly-graph-custom"> -->
-                <Plotly :data="areaChartData" :displaylogo="false" 
-                :layout="layoutData" :display-mode-bar="true" 
-                :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart" class="plotly-graph-custom"></Plotly>
-                <!-- </div> -->
+                <div class="plotly-graph">
+                </div>
+                <div class="plotly-graph-custom">
+                  <Plotly 
+                    :data="areaChartData" 
+                    :displaylogo="false" 
+                    :layout="layoutData" 
+                    :display-mode-bar="true" 
+                    :mode-bar-buttons-to-remove="buttonsToRemove" 
+                    v-if="isChart">
+                  </Plotly>
+                </div>
                 <div>
                     <div class="nav nav-tabs all-tabs">
                       <div style="display:flex">
@@ -96,7 +103,7 @@
                     </div>
 
                   <div v-if="currentTab == 1">
-                      <event></event>
+                      <event :table_work="table_work"></event>
                   </div>
 
                   <div v-if="currentTab == 2">
@@ -147,31 +154,32 @@ export default {
         modebar: {
           bgcolor: "rgba(0,0,0,0)"
         },
-        width: 1580,
-        height: 600,
         margin: {
           l: 50,
-          r: 5,
-          b: 70,
-          t: 30,
+          r: 15,
+          b: 50,
+          t: 20,
           pad: 4
         },
-        paper_bgcolor: "rgba(0,0,0,0)",
-        plot_bgcolor: "rgba(0,0,0,0)",
+        paper_bgcolor: "#1A214A",
+        plot_bgcolor: "#2B2E5E",
+        
         xaxis: {
           color: "#FFFFFF",
+          dtick: 1167567,
           title: 'Время',
           range: [this.minimum, this.maximum],
           type: 'date',
           rangeslider: true,
-          showgrid: false
+          gridcolor: "#3C4270",
         
         },
         yaxis: {
-          title: 'W (TC)',
           color: "#FFFFFF",
+          dtick: 1,
+          title: 'W (TC)',
+          gridcolor: "#3C4270",
           linecolor: "#EF5350",
-          showgrid: false
         },    
       };
     },
@@ -198,6 +206,9 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
+      table_work: [],
+      postApiUrl: process.env.MIX_TKRS_POST_API_URL,
+      linkWorkTable: "dayliWork1/",
       
     }
   },
@@ -225,6 +236,7 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
       });
       this.getListWell();
+      
     },
   
   methods: {
@@ -279,8 +291,8 @@ export default {
                 `http://172.20.103.203:8090/chooseDate/${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
-              
                 let data = response.data;
+                
                 if (data) {
                     this.wellFile = data;
                     this.areaChartData = data.data;
@@ -291,35 +303,35 @@ export default {
                     console.log("No data");
                 }
             });
+      this.getTableWork();
     },
     cancelChat() {
-        this.isChart = false;
+      this.isChart = false;
     },
     returnChat() {
       this.isChart = true;
     },
     
     selectTab(selectedTab) {
-            this.currentTab = selectedTab
+      this.currentTab = selectedTab
     },
-    chooseDate() {
-      const { calendarDate} = this;
-      var Date1 = new Date(calendarDate)
-      this.Date1 = Date1.toLocaleDateString();
+    getTableWork() {
       this.axios
-        .get(
-            'http://127.0.0.1:7580/db/' + Date1.toLocaleDateString("en-GB") + '/'
+          .get(
+              this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
+              
           )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.areaChartData = data.data;
-          } else {
-            console.log("No data");
-          }
-        })
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.table_work = data
+
+              } else {
+                  console.log("No data");
+              }
+          });
     },
+
   },
 };
 </script>
@@ -349,11 +361,9 @@ export default {
   align-items: center;
   background-color: #323370;
 }
-
 .left-block-collapse-holder > div > img {
   margin: 0 8px 0 10px;
 }
-
 .collapse-left__sidebar {
   display: flex;
   align-items: center;
@@ -365,7 +375,6 @@ export default {
   border: none;
   border-left: 5px solid #272953;
 }
-
 .dropdown-holder {
   background-color: rgba(255, 255, 255, 0.04);
   width: 100%;
@@ -406,7 +415,6 @@ table, th, td {
 .nav-link.active {
   background: #2E50E9;
 }
-
 .js-plotly-plot .plotly .modebar {
     position: absolute;
     top: 22px;
@@ -472,17 +480,14 @@ table, th, td {
 }
 
 .plotly-graph-custom {
-  background-color: #2B2E5E !important;
-  background-image: linear-gradient(#545580 1px, transparent 1px), 
-  linear-gradient(90deg, #545580 1px, transparent 1px);
-  background-size: 20px 20px, 20px 20px;
-  height: calc(100% - 287px);
+  width: 100%;
+  border: 6px solid #20274F;
 }
 .sidebar_graph {
   height: calc(100% - 36px);
 }
 .tkrs-content-down {
-      height: 100%;
+  height: 100%;
 }
 .custom-dropdown-block {
   background: #1F2142;
@@ -499,4 +504,14 @@ table, th, td {
   color: #fff;
   font-size: 16px;
 }
+.a-link {
+  color: #fff;
+}
+.a-link:hover {
+  color: #fff;
+}
+.plotly-graph {
+  height: 8px;
+}
+
 </style>

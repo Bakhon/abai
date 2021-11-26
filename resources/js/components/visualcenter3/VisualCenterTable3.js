@@ -125,7 +125,7 @@ export default {
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
             chartReasons: [],
-            opecEndDate: moment('01.09.2021', 'DD.MM.YYYY')
+            opecEndDate: moment('01.08.2021', 'DD.MM.YYYY')
         };
     },
     methods: {

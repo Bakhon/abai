@@ -15,35 +15,43 @@ class DailyReportsPrs extends TableForm
     protected $configurationFileName = 'daily_reports_prs';
     protected $repairType = 'WLO';
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $workoverId = $params['wellId'];
+        foreach ($rows as $workoverId => $row) {
+            $report = DB::connection('tbd')
+                ->table('prod.report_org_daily_repair')
+                ->where('workover', $workoverId)
+                ->first();
 
-        $report = DB::connection('tbd')
-            ->table('prod.report_org_daily_repair')
-            ->where('workover', $workoverId)
-            ->first();
+            $fields = [];
+            foreach ($row as $fieldCode => $field) {
+                $fields[$fieldCode] = $field['value'];
+            }
 
-        if (empty($report)) {
+            if (empty($report)) {
+                DB::connection('tbd')
+                    ->table('prod.report_org_daily_repair')
+                    ->insert(
+                        array_merge(
+                            [
+                                'workover' => $workoverId
+                            ],
+                            $fields
+                        )
+                    );
+                continue;
+            }
+
             DB::connection('tbd')
                 ->table('prod.report_org_daily_repair')
-                ->insert(
-                    [
-                        'workover' => $workoverId,
-                        $params['field'] => $params['value']
-                    ]
-                );
-            return;
+                ->where('id', $report->id)
+                ->update($fields);
         }
+        return [];
+    }
 
-        DB::connection('tbd')
-            ->table('prod.report_org_daily_repair')
-            ->where('id', $report->id)
-            ->update(
-                [
-                    $params['field'] => $params['value']
-                ]
-            );
+    protected function saveSingleFieldInDB(array $params): void
+    {
     }
 
     public function getResults(): array

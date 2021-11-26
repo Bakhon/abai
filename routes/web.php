@@ -76,7 +76,10 @@ Route::group(
                 Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
                 Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
 
-                Route::post('map-constructor/import', 'MapConstructor@importFile');
+                Route::post('map-constructor/import', 'MapConstructorController@importFile');
+                Route::post('map-constructor/get_data_from_excel', 'MapConstructorController@getDataFromExcel');
+                Route::post('map-constructor/structure', 'MapConstructorController@getStructure');
+                Route::post('map-constructor/wells', 'MapConstructorController@getWells');
                 Route::get('/ceo-module-state', 'ModuleStateController@ceoModuleState');
                 Route::get('/get-module-state', 'ModuleStateController@getStates');
                 Route::get('/get-module-header', 'ModuleStateController@getHeader');

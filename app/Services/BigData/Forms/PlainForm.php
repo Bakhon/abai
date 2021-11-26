@@ -118,6 +118,7 @@ abstract class PlainForm extends BaseForm
         }
 
         $this->submitInnerTable($id);
+        $this->afterSubmit($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
@@ -282,12 +283,16 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function submitInnerTable(int $parentParentId)
+    protected function submitInnerTable(int $parentId)
     {
-        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        $insertedTableFields = $this->innerTableService->submitTables($parentId, $this->tableFields);
         if (!empty($insertedTableFields)) {
             $this->submittedData['table_fields'] = $insertedTableFields;
         }
+    }
+
+    protected function afterSubmit(int $id)
+    {
     }
 
     protected function formatRows(Collection $rows): Collection

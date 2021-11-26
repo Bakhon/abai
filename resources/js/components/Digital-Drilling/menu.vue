@@ -98,5 +98,7 @@
 </script>
 
 <style scoped>
-
+.controlBlock *{
+    color: #ffffff;
+}
 </style>

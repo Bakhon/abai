@@ -19,7 +19,8 @@
     "koll-koll": [229, 58, 254],
     "st-koll": [58, 233, 254],
     "spt-koll": [40, 171, 187],
-    "zu-zu_coll": [50, 255, 50]
+    "zu-zu_coll": [50, 255, 50],
+    "water_pipe": [46, 80, 233]
   },
   "speedFlow": {
     "danger": [255, 0, 0],
