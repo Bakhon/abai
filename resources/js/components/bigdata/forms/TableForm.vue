@@ -128,7 +128,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a :href="row[column.code].href" target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
@@ -215,6 +215,7 @@
                           <template v-if="isCellEdited(row, column)">
                             <div class="input-wrap">
                               <input
+                                  v-if="row[column.code]"
                                   v-model="row[column.code].value"
                                   class="form-control"
                                   type="text">
@@ -264,7 +265,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a :href="row[column.code].href" target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
