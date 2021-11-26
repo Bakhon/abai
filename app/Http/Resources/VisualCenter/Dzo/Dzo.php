@@ -276,8 +276,27 @@ class Dzo {
             $summary = $dzo->getChartData($daySummary,$planRecord,$date,$item,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->consolidatedFieldsMapping[$type]['condensatePlan'],$this->consolidatedFieldsMapping[$type]['condensateOpek'],$isSummary);
             $chartData = array_merge($chartData,$summary);
         }
+        $chartData = $this->getUpdateByConsolidatedCompanies($chartData);
 
         return $chartData;
+    }
+
+    protected function getUpdateByConsolidatedCompanies($chartData)
+    {
+        $chartWithKpi = array();
+        $pkiDzo = array('КГМКМГ','ТП','ПККР');
+        foreach($chartData as $day) {
+            $dayUpdatedByCompanies = $day;
+            $date = Carbon::createFromFormat('d/m/Y',$day['date']);
+            if ($day['name'] === 'ПКИ') {
+                $filteredByPki = array_filter($chartData, function ($daySummary) use($pkiDzo,$date) {
+                    return in_array($daySummary['name'],$pkiDzo) && Carbon::createFromFormat('d/m/Y',$daySummary['date']) == $date;
+                });
+                $dayUpdatedByCompanies['fact'] = array_sum(array_column($filteredByPki,'fact'));
+            }
+            array_push($chartWithKpi,$dayUpdatedByCompanies);
+        }
+        return $chartWithKpi;
     }
 
     protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
