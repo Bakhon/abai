@@ -396,28 +396,192 @@ class EconomicOptimizationController extends Controller
         ];
     }
 
-    public function getEconomicData()
+    public function getScenariosData(): array
     {
         $oilPrice = 30;
+
         $dollarRate = 400;
 
+        $fixedNoPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
+
+        $costWrPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
+
+        $time = microtime(true);
+
+        $scenarios = $this->getOptimizedScenarios(
+            $oilPrice,
+            $dollarRate,
+            $fixedNoPayrolls,
+            $costWrPayrolls
+        );
+
+        dd(microtime(true) - $time, $scenarios);
+
+        return $scenarios;
+    }
+
+    private function getOptimizedScenarios(
+        int $oilPrice,
+        int $dollarRate,
+        array $fixedNoPayrolls,
+        array $costWrPayrolls
+    )
+    {
+        $wells = $this->getWellsForScenarios($oilPrice, $dollarRate);
+
+        $wellKeys = [
+            "Revenue_total",
+            "Revenue_local",
+            "Revenue_export",
+            "oil",
+            "liquid",
+            "prs",
+            "days_worked",
+            "production_export",
+            "production_local",
+            "Fixed_noWRpayroll_expenditures",
+            "Operating_profit",
+            "Overall_expenditures",
+            "Overall_expenditures_full",
+            "Fixed_nopayroll_expenditures",
+            "Fixed_payroll_expenditures",
+        ];
+
+        $wellProfitability = [
+            "profitable",
+            "profitless_cat_1",
+            "profitless_cat_2"
+        ];
+
+        $scenario = [
+            "coef_Fixed_nopayroll" => 0,
+            "coef_cost_WR_payroll" => 0,
+            "percent_stop_cat_1" => 0,
+            "percent_stop_cat_2" => 0,
+            "stopped_wells" => [],
+            "stopped_uwis" => [],
+        ];
+
+        foreach ($wellKeys as $wellKey) {
+            $scenario[$wellKey] = 0;
+
+            foreach ($wellProfitability as $profitability) {
+                $scenario[$wellKey . "_" . $profitability] = 0;
+            }
+        }
+
+        $wellsByProfitability = [];
+
+        foreach ($wellsByProfitability as $profitability) {
+            $wellsByProfitability[$profitability] = [];
+        }
+
+        foreach ($wells as $well) {
+            $well = (array)$well;
+
+            $wellsByProfitability[$well["profitability"]][] = $well;
+
+            foreach ($wellKeys as $wellKey) {
+                $scenario[$wellKey] += $well[$wellKey];
+
+                $scenario[$wellKey . "_" . $well["profitability"]] += $well[$wellKey];
+            }
+        }
+
+        foreach ($wellKeys as $wellKey) {
+            $scenario[$wellKey . "_optimize"] = $scenario[$wellKey];
+
+            $scenario[$wellKey . "_scenario"] = $scenario[$wellKey];
+
+            foreach ($wellProfitability as $profitability) {
+                $value = $scenario[$wellKey . "_" . $profitability];
+
+                $scenario[$wellKey . "_" . $profitability . "_optimize"] = $value;
+
+                $scenario[$wellKey . "_scenario_" . $profitability] = $value;
+            }
+        }
+
+        $scenario["oil_price"] = $oilPrice;
+        $scenario["dollar_rate"] = $dollarRate;
+
+        $scenario["uwi_count"] = count($wells);
+        $scenario["uwi_count_optimize"] = $scenario["uwi_count"];
+
+        foreach ($wellProfitability as $profitability) {
+            $scenario["uwi_count_$profitability"] = count($wellsByProfitability[$profitability]);
+
+            $scenario["uwi_count_$profitability" . "_optimize"] = $scenario["uwi_count_$profitability"];
+        }
+
+        $scenarios = [$scenario];
+
+        $stoppedOffset = 0;
+
+        for ($stoppedPercent = 20; $stoppedPercent <= 100; $stoppedPercent += 20) {
+            list($scenario, $stoppedOffset) = $this->calcOptimizedScenarios(
+                $scenario,
+                $stoppedPercent,
+                $stoppedOffset,
+                "profitless_cat_1",
+                "percent_stop_cat_1",
+                $wellsByProfitability["profitless_cat_1"],
+                $wellKeys
+            );
+
+            $scenarios[] = $scenario;
+        }
+
+        $stoppedOffset = 0;
+
+        for ($stoppedPercent = 10; $stoppedPercent <= 100; $stoppedPercent += 10) {
+            list($scenario, $stoppedOffset) = $this->calcOptimizedScenarios(
+                $scenario,
+                $stoppedPercent,
+                $stoppedOffset,
+                "profitless_cat_2",
+                "percent_stop_cat_2",
+                $wellsByProfitability["profitless_cat_2"],
+                $wellKeys
+            );
+
+            $scenarios[] = $scenario;
+        }
+
+        $optimizedScenarios = [];
+
+        foreach ($scenarios as $scenario) {
+            foreach ($fixedNoPayrolls as $fixedNoPayroll) {
+                foreach ($costWrPayrolls as $costWrPayroll) {
+                    $optimizedScenario = $this->calcScenarioOverallExpenditures(
+                        $scenario,
+                        $fixedNoPayroll,
+                        $costWrPayroll
+                    );
+
+                    unset($optimizedScenario["stopped_wells"]);
+
+                    $optimizedScenarios[] = $optimizedScenario;
+                }
+            }
+        }
+
+        return $optimizedScenarios;
+    }
+
+    private function getWellsForScenarios(int $oilPrice, int $dollarRate): array
+    {
         $technicalData = $this->getTechnicalQuery()->toSql();
         $economicData = $this->getEconomicQuery()->toSql();
 
-        $productionLocalRoutes = $this->sqlRoutesProduction(false, false);
         $productionLocal = $this->sqlRoutesProduction(false, true);
-        $productionExportRoutes = $this->sqlRoutesProduction(true, false);
         $productionExport = $this->sqlRoutesProduction(true, true);
 
-        $revenueLocalRoutes = $this->sqlRoutesRevenue(false);
         $revenueLocal = $this->sqlRoutesRevenue(false, true);
-        $revenueExportRoutes = $this->sqlRoutesRevenue(true, false, $dollarRate, $oilPrice);
         $revenueExport = $this->sqlRoutesRevenue(true, true, $dollarRate, $oilPrice);
         $revenueTotal = "($revenueLocal + $revenueExport)";
 
-        $metPaymentsLocalRoutes = $this->sqlRoutesMetPayments(false);
         $metPaymentsLocal = $this->sqlRoutesMetPayments(false, true);
-        $metPaymentsExportRoutes = $this->sqlRoutesMetPayments(true, false, $dollarRate, $oilPrice);
         $metPaymentsExport = $this->sqlRoutesMetPayments(true, true, $dollarRate, $oilPrice);
         $metPayments = "($metPaymentsLocal + $metPaymentsExport)";
 
@@ -429,7 +593,6 @@ class EconomicOptimizationController extends Controller
             ->firstOrFail()
             ->rate;
 
-        $ertPaymentsRoutes = $this->sqlRoutesErtPayments(false, $ert, $dollarRate, $oilPrice);
         $ertPayments = $this->sqlRoutesErtPayments(true, $ert, $dollarRate, $oilPrice);
 
         $ecd = EcoRefsAvgMarketPrice::query()
@@ -440,12 +603,9 @@ class EconomicOptimizationController extends Controller
             ->firstOrFail()
             ->exp_cust_duty_rate;
 
-        $ecdPaymentsRoutes = $this->sqlRoutesEcdPayments(false, $ecd, $dollarRate);
         $ecdPayments = $this->sqlRoutesEcdPayments(true, $ecd, $dollarRate);
 
-        $transExpendituresLocalRoutes = $this->sqlRoutesTransExpenditures(false, false);
         $transExpendituresLocal = $this->sqlRoutesTransExpenditures(false, true);
-        $transExpendituresExportRoutes = $this->sqlRoutesTransExpenditures(true, false);
         $transExpendituresExport = $this->sqlRoutesTransExpenditures(true, true);
         $transExpenditures = "($transExpendituresLocal + $transExpendituresExport)";
 
@@ -463,7 +623,6 @@ class EconomicOptimizationController extends Controller
         $fixedNoPayrollExpenditures = $this->sqlFixedNoPayrollExpenditures();
         $fixedExpenditures = "($fixedNoPayrollExpenditures + $fixedNoWrPayrollExpenditures)";
 
-        $prsNoPayrollExpenditures = $this->sqlPrsNoPayrollExpenditures();
         $prsExpenditures = $this->sqlPrsExpenditures();
 
         $productionExpenditures = "($fixedExpenditures + $variableExpenditures + $prsExpenditures)";
@@ -473,86 +632,34 @@ class EconomicOptimizationController extends Controller
 
         $operatingProfit = "$netBack - ($overallExpenditures)";
         $operatingProfitVariable = "$netBack - ($variableExpenditures)";
-        $operatingProfitVariablePrsNoPayroll = "$operatingProfitVariable - ($prsNoPayrollExpenditures)";
         $operatingProfitVariablePrs = "$operatingProfitVariable - $prsExpenditures";
 
-        $wells = DB::table(DB::raw("($technicalData) as technical"))
-            ->selectRaw(DB::raw("
-                technical.uwi,
-                technical.oil,
-                technical.liquid,
-                technical.days_worked,
-                technical.days_worked_by_date,
-                technical.wells_count_by_company_date,
-                technical.prs,
-                technical.company_name,
-                technical.field_id,
-                technical.field_name,
-                technical.ngdu_id,
-                technical.ngdu_name,
-                technical.cdng_id,
-                technical.cdng_name,
-                technical.gu_id,
-                technical.gu_name,
-                economic.*,
-                $ecd AS ecd,
-                $ert AS ert,
-                $barrelRatioExportScenario AS Barrel_ratio_export_scenario,
-                oil * cost_amort AS amort,
-                $productionLocalRoutes,
-                $productionLocal AS production_local,
-                $productionExportRoutes,
-                $productionExport AS production_export,
-                $revenueLocalRoutes,
-                $revenueLocal AS Revenue_local,
-                $revenueExportRoutes,
-                $revenueExport AS Revenue_export,
-                $revenueTotal AS Revenue_total, 
-                $metPaymentsLocalRoutes,
-                $metPaymentsLocal AS MET_payments_local,
-                $metPaymentsExportRoutes,
-                $metPaymentsExport AS MET_payments_export,
-                $metPayments AS MET_payments,
-                $ertPaymentsRoutes,
-                $ertPayments AS ERT_payments,
-                $ecdPaymentsRoutes,
-                $ecdPayments AS ECD_payments,
-                $transExpendituresLocalRoutes,
-                $transExpendituresLocal AS Trans_expenditures_local,
-                $transExpendituresExportRoutes,
-                $transExpendituresExport AS Trans_expenditures_export,
-                $transExpenditures AS Trans_expenditures,
-                $netBack AS NetBack_bf_pr_exp,
-                $variableExpenditures AS Variable_expenditures,
-                $fixedPayrollExpenditures AS Fixed_payroll_expenditures,
-                $fixedNoWrPayrollExpenditures AS Fixed_noWRpayroll_expenditures,
-                $fixedNoPayrollExpenditures AS Fixed_nopayroll_expenditures,
-                $fixedExpenditures AS Fixed_expenditures,
-                $prsNoPayrollExpenditures AS PRS_nopayroll_expenditures,
-                $prsExpenditures AS PRS_expenditures,
-                $productionExpenditures AS Production_expenditures,
-                $gaOverheadExpenditures AS Gaoverheads_expenditures,
-                $overallExpenditures AS Overall_expenditures,
-                $overallExpendituresFull AS Overall_expenditures_full,
-                $operatingProfit AS Operating_profit,
-                $operatingProfitVariablePrsNoPayroll AS Operating_profit_variable_prs_nopayrall,
-                $operatingProfitVariablePrs AS Operating_profit_variable_prs
-            "))
-            ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
-                $join
-                    ->on(DB::raw("technical.company_tbd_id"), '=', DB::raw("economic.company_tbd_id"))
-                    ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
-                    ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
-            })
-            ->toSql();
+        $profitability = $this->sqlProfitability(
+            "SUM($operatingProfit)",
+            "SUM($operatingProfitVariablePrs)"
+        );
 
-        $wellsSum = DB::table(DB::raw("($technicalData) as technical"))
+        return DB::table(DB::raw("($technicalData) as technical"))
             ->selectRaw(DB::raw("
                 uwi,
-                SUM($fixedNoPayrollExpenditures) as Fixed_nopayroll_expenditures_sum, 
-                SUM($fixedPayrollExpenditures) as Fixed_payroll_expenditures_sum, 
-                SUM($operatingProfit) AS Operating_profit_sum,
-                SUM($operatingProfitVariablePrs) AS Operating_profit_variable_prs_sum,
+                $barrelRatioExportScenario as Barrel_ratio_export_scenario,
+                $profitability as profitability,
+                SUM($revenueTotal) AS Revenue_total,
+                SUM($revenueLocal) AS Revenue_local,
+                SUM($revenueExport) AS Revenue_export,
+                SUM(oil) AS oil,
+                SUM(liquid) AS liquid,
+                SUM(prs) as prs,
+                SUM(days_worked) AS days_worked,
+                SUM($productionExport) AS production_export,
+                SUM($productionLocal) AS production_local,
+                SUM($fixedNoWrPayrollExpenditures) AS Fixed_noWRpayroll_expenditures, 
+                SUM($fixedNoPayrollExpenditures) AS Fixed_nopayroll_expenditures, 
+                SUM($fixedPayrollExpenditures) AS Fixed_payroll_expenditures, 
+                SUM($operatingProfit) AS Operating_profit,
+                SUM($operatingProfitVariablePrs) AS Operating_profit_variable_prs,
+                SUM($overallExpenditures) AS Overall_expenditures,
+                SUM($overallExpendituresFull) AS Overall_expenditures_full,
                 COUNT(*) as date_count
             "))
             ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
@@ -561,30 +668,80 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
                     ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
             })
-            ->groupByRaw(DB::raw("uwi"))
-            ->toSql();
+            ->groupByRaw(DB::raw("uwi, Barrel_ratio_export_scenario"))
+            ->oldest("Operating_profit")
+            ->get()
+            ->toArray();
+    }
 
-        $profitability = "
-            CASE WHEN Operating_profit_sum > 0
-                 THEN 'profitable'
-                 WHEN Operating_profit_variable_prs_sum < 0 
-                 THEN 'profitless_cat_1'
-                 ELSE 'profitless_cat_2'
-            END   
-        ";
+    private function calcOptimizedScenarios(
+        array $scenario,
+        int $stoppedPercent,
+        int $stoppedOffset,
+        string $profitability,
+        string $profitabilityPercentKey,
+        array $wells,
+        array $wellKeys
+    ): array
+    {
+        $percent = $stoppedPercent / 100;
 
-        $wells = DB::table(DB::raw("($wells) as wells"))
-            ->selectRaw(DB::raw("
-                wells.*,
-                wells_sum.*,
-                $profitability AS profitability
-            "))
-            ->leftJoin(DB::raw("($wellsSum) as wells_sum"), function ($join) {
-                $join->on(DB::raw("wells.uwi"), '=', DB::raw("wells_sum.uwi"));
-            })
-            ->get();
+        $stoppedWellsCount = ceil($scenario["uwi_count_$profitability"] * $percent);
 
-        dd($wells);
+        $stoppedWells = array_slice($wells, $stoppedOffset, $stoppedWellsCount - $stoppedOffset);
+
+        $stoppedOffset = $stoppedWellsCount;
+
+        $scenario[$profitabilityPercentKey] = $percent;
+
+        foreach ($stoppedWells as $well) {
+            $scenario["stopped_wells"][] = $well;
+            $scenario["stopped_uwis"][] = $well["uwi"];
+
+            foreach ($wellKeys as $wellKey) {
+                $scenario[$wellKey . "_optimize"] -= $well[$wellKey];
+
+                $scenario[$wellKey . "_$profitability" . "_optimize"] -= $well[$wellKey];
+            }
+        }
+
+        return [$scenario, $stoppedOffset];
+    }
+
+    private function calcScenarioOverallExpenditures(
+        array $scenario,
+        float $fixedNoPayroll,
+        float $costWrPayroll
+    ): array
+    {
+        $scenario["coef_Fixed_nopayroll"] = $fixedNoPayroll;
+
+        $scenario["coef_cost_WR_payroll"] = $fixedNoPayroll;
+
+        foreach ($scenario['stopped_wells'] as $well) {
+            $profitability = $well["profitability"];
+
+            $fixedExpenditures =
+                $fixedNoPayroll * $well["Fixed_nopayroll_expenditures"] +
+                $costWrPayroll * $well["Fixed_payroll_expenditures"];
+
+            $operatingProfit = $well["Operating_profit"] + $fixedExpenditures;
+
+            $scenario["Operating_profit_scenario"] -= $operatingProfit;
+            $scenario["Operating_profit_scenario_$profitability"] -= $operatingProfit;
+
+            $expenditures = $well["Overall_expenditures"] + $fixedExpenditures;
+
+            $scenario["Overall_expenditures_scenario"] += $expenditures;
+            $scenario["Overall_expenditures_scenario_$profitability"] += $expenditures;
+
+            $expendituresFull = $well["Overall_expenditures_full"] + $fixedExpenditures;
+
+            $scenario["Overall_expenditures_full_scenario"] += $expendituresFull;
+            $scenario["Overall_expenditures_full_scenario_$profitability"] += $expendituresFull;
+        }
+
+        return $scenario;
     }
 
     public function getEconomicQuery(): Builder
@@ -1176,14 +1333,18 @@ class EconomicOptimizationController extends Controller
         return "cost_Gaoverheads / wells_count_by_company_date";
     }
 
-    private function getSqlSelectColumnsFromString(string $string)
+    private function sqlProfitability(
+        string $operatingProfit = 'Operating_profit',
+        string $operatingProfitVariablePrs = 'Operating_profit_variable_prs'
+    ): string
     {
-        $offset = strpos($string, 'select') + strlen('select');
-
-        return substr(
-            $string,
-            $offset,
-            strpos($string, 'from') - $offset
-        );
+        return "
+            CASE WHEN $operatingProfit > 0
+                 THEN 'profitable'
+                 WHEN $operatingProfitVariablePrs < 0 
+                 THEN 'profitless_cat_1'
+                 ELSE 'profitless_cat_2'
+            END   
+        ";
     }
 }
