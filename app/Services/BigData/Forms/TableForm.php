@@ -138,7 +138,7 @@ abstract class TableForm extends BaseForm
                 $result = [
                     'id' => $item->id,
                     'name' => $item->uwi,
-                    'href' => '#'
+                    'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
                 ];
             } elseif (isset($field['table'])) {
                 $result = $this->getFieldByDates(
