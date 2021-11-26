@@ -8,7 +8,7 @@
               <div class="block-header pb-0 pl-2 pt-2 pb-2">
                 {{ trans('paegtm.accumulatedOilProdTitle') }}
               </div>
-              <div class="p-1 pl-2 mh-370">
+              <div class="chart-wrapper p-1 pl-2 mh-370">
                 <apexchart
                     v-if="loaded"
                     type="line"

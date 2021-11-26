@@ -241,18 +241,14 @@ class AegtmController extends Controller
             ->select(
                 'date',
                 DB::raw('sum(gtm_prod_plan_chart) as gtm_prod_plan_chart'),
-                DB::raw('sum(gtm_prod_fact_chart) as gtm_prod_fact_chart')
+                DB::raw('sum(vns_prod_plan_chart) as vns_prod_plan_chart')
             )
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
-        $accumOilProdPlanData = $accumOilProdData->pluck('gtm_prod_plan_chart')->map(function ($row) {
-            return round($row, 2);
-        })->toArray();
-
-        $accumOilProdFactData = $accumOilProdData->pluck('gtm_prod_fact_chart')->map(function ($row) {
-            return round($row, 2);
+        $accumOilProdPlanData = $accumOilProdData->map(function ($row) {
+            return round($row['gtm_prod_plan_chart'] + $row['vns_prod_plan_chart'], 2);
         })->toArray();
 
         $result['series'][] = [
@@ -261,13 +257,6 @@ class AegtmController extends Controller
             'data' => $accumOilProdPlanData
         ];
 
-        $result['series'][] = [
-            'name' => trans('paegtm.accum_additional_oil_prod_fact'),
-            'type' => 'line',
-            'data' => $accumOilProdFactData
-        ];
-
-        /*
         $techEfficiencyQuery = TechEfficiency::query();
 
         $techEfficiencyQuery->when($request->filled('dzoName'), function ($q) use ($request) {
@@ -275,11 +264,11 @@ class AegtmController extends Controller
         });
 
         $techEfficiencyQuery->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
-            return $q->whereBetween('month', [
+            return $q->whereBetween('date_start_after_gtm', [
                 $request->input('dateStart'),
                 $request->input('dateEnd'),
             ])
-                ->whereBetween('date_start_after_gtm', [
+                ->whereBetween('month', [
                     $request->input('dateStart'),
                     $request->input('dateEnd'),
                 ]);
@@ -314,7 +303,6 @@ class AegtmController extends Controller
             'type' => 'line',
             'data' => array_values($teResult)
         ];
-        */
 
         return response()->json($result);
     }

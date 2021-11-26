@@ -16,8 +16,8 @@
                 </div>
                 <div class="percent d-flex justify-content-between m-0 mt-1">
                     <div class="d-inline-block m-0 text-white dr-fw-700 ">
-                        <div class="triangle-indicator" :class="item.progressPercents - 100 > 0 ? 'growth' : 'fall'"></div>
-                        {{ new Intl.NumberFormat("ru-RU").format(Math.abs((item.progressPercents - 100).toFixed(1))) }}%
+                        <div class="triangle-indicator" :class="{ growth : item.progressPercents - 100 > 0, fall : item.progressPercents - 100 < 0 }"></div>
+                        {{ new Intl.NumberFormat("ru-RU").format(Math.abs((item.progressPercents - 100).toFixed(2))) }}%
                     </div>
                     <div class="progressMax d-inline-block m-0">{{ new Intl.NumberFormat("ru-RU").format(item.progressMax.toFixed(1)) }}</div>
                 </div>

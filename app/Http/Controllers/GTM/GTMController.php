@@ -204,21 +204,21 @@ class GTMController extends Controller
             $result[$key] = [
                 'name_ru' => $key,
 
-                'vns_additional_oil_prod_plan' => $vnsAdditionalOilProdPlan,
-                'vns_additional_oil_prod_fact' => $vnsAdditionalOilProdFact,
-                'vns_additional_oil_prod_difference' => $vnsAdditionalOilProdFact - $vnsAdditionalOilProdPlan,
+                'vns_additional_oil_prod_plan' => round($vnsAdditionalOilProdPlan, 1),
+                'vns_additional_oil_prod_fact' => round($vnsAdditionalOilProdFact, 1),
+                'vns_additional_oil_prod_difference' => round($vnsAdditionalOilProdFact - $vnsAdditionalOilProdPlan, 1),
 
-                'gtm_additional_oil_prod_plan' => $gtmAdditionalOilProdPlan,
-                'gtm_additional_oil_prod_fact' => $gtmAdditionalOilProdFact,
-                'gtm_additional_oil_prod_difference' => $gtmAdditionalOilProdFact - $gtmAdditionalOilProdPlan,
+                'gtm_additional_oil_prod_plan' => round($gtmAdditionalOilProdPlan, 2),
+                'gtm_additional_oil_prod_fact' => round($gtmAdditionalOilProdFact, 2),
+                'gtm_additional_oil_prod_difference' => round($gtmAdditionalOilProdFact - $gtmAdditionalOilProdPlan, 2),
 
-                'base_oil_prod_plan' => $baseOilProdPlan,
-                'base_oil_prod_fact' => $baseOilProdFact,
-                'base_oil_prod_difference' => $baseOilProdFact - $baseOilProdPlan,
+                'base_oil_prod_plan' => round($baseOilProdPlan, 2),
+                'base_oil_prod_fact' => round($baseOilProdFact, 2),
+                'base_oil_prod_difference' => round($baseOilProdFact - $baseOilProdPlan, 2),
 
-                'oil_prod_plan' => $oilProdPlan,
-                'oil_prod_fact' => $oilProdFact,
-                'oil_prod_difference' => $oilProdFact - $oilProdPlan,
+                'oil_prod_plan' => round($oilProdPlan, 2),
+                'oil_prod_fact' => round($oilProdFact, 2),
+                'oil_prod_difference' => round($oilProdFact - $oilProdPlan, 2),
 
                 'org_name_short' => $orgNameShort,
                 'selected' => $request->selectedDdzoName == $orgNameShort ? true : false,
@@ -318,7 +318,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.number_of_gtm_and_vns'),
             'progressValue' => $gtmAndVnsCountFact,
             'progressMax' => $gtmAndVnsCountPlan,
-            'progressPercents' => $gtmAndVnsCountPlan ? $gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100 : 0,
+            'progressPercents' => $gtmAndVnsCountPlan ? round($gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -327,7 +327,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_vns'),
             'progressValue' => $vnsAdditionalOilProdFact,
             'progressMax' => $vnsAdditionalOilProdPlan,
-            'progressPercents' => $vnsAdditionalOilProdPlan ? $vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100 : 0,
+            'progressPercents' => $vnsAdditionalOilProdPlan ? round($vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -336,7 +336,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_gtm'),
             'progressValue' => $gtmAdditionalOilProdFact,
             'progressMax' => $gtmAdditionalOilProdPlan,
-            'progressPercents' => $gtmAdditionalOilProdPlan ? $gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100 : 0,
+            'progressPercents' => $gtmAdditionalOilProdPlan ? round($gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -345,7 +345,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.basic_oil_production'),
             'progressValue' => $baseOilProdFact,
             'progressMax' => $baseOilProdPlan,
-            'progressPercents' => $baseOilProdPlan ? $baseOilProdFact / $baseOilProdPlan * 100 : 0,
+            'progressPercents' => $baseOilProdPlan ? round($baseOilProdFact / $baseOilProdPlan * 100, 1) : 0,
         ];
 
         return response()->json($result);
