@@ -17,7 +17,7 @@
             :key="`remote_${index}`"
             :header="header"
             :form="form"
-            class="flex-grow-1 ml-2"
+            class="flex-grow-1 ml-2 px-3 py-2"
             style="min-height: 135px"/>
       </div>
     </div>

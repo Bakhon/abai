@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <strong>{{ __('forecast.source_data') }}:</strong>
                                     <select class="form-control" name="source_id">
-                                        @foreach ($source as $item)
+                                        @foreach ($sources as $item)
                                             <option value="{{ $item->id }}"
                                                     {{$item->id === $model->source_id ? 'selected' : ''}}>
                                                 {{ $item->name }}
@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <strong>{{ __('forecast.gu') }}:</strong>
                                     <select class="form-control" name="gu_id">
-                                        @foreach ($gu as $item)
+                                        @foreach ($gus as $item)
                                             <option value="{{ $item->id }}"
                                                     {{$item->id === $model->gu_id ? 'selected' : ''}}>
                                                 {{ $item->name }}
