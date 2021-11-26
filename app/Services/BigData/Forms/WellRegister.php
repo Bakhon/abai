@@ -15,35 +15,60 @@ class WellRegister extends PlainForm
 
     protected function submitForm(): array
     {
-        $data = $this->request->except(
-            [
-                'well',
-                'org',
-                'geo',
-                'category',
-                'coord_system',
-                'whc.coord_point.x',
-                'whc.coord_point.y',
-                'bottom_coord.coord_point.x',
-                'bottom_coord.coord_point.y',
-            ]
-        );
-        if (!empty($this->params()['default_values'])) {
-            $data = array_merge($this->params()['default_values'], $data);
-        }
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
 
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-        $wellId = $dbQuery->insertGetId($data);
 
-        $this->submittedData['fields'] = $data;
-        $this->submittedData['id'] = $wellId;
+        $this->tableFields
+            ->pluck('code')
+            ->each(function ($code) {
+                $values = $this->request->get($code);
 
-        $this->insertWellRelation($wellId, 'org');
-        $this->insertWellRelation($wellId, 'category');
-        $this->insertGeoFields($wellId);
+                if (empty($values)) {
+                    return;
+                }
 
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
+                foreach ($values as $value) {
+                    if (is_array($value)) {
+                        continue;
+                    }
+                    $data = $this->request->except(
+                                [
+                                    'well',
+                                    'org',
+                                    'geo',
+                                    'category',
+                                    'coord_system',
+                                    'whc.coord_point.x',
+                                    'whc.coord_point.y',
+                                    'bottom_coord.coord_point.x',
+                                    'bottom_coord.coord_point.y',
+                                ]
+                            );
+                            if (!empty($this->params()['default_values'])) {
+                                $data = array_merge($this->params()['default_values'], $data);
+                            }
+                    
+                            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+                            $wellId = $dbQuery->insertGetId($data);
+                    
+                            $this->submittedData['fields'] = $data;
+                            $this->submittedData['id'] = $wellId;
+                    
+                            $this->insertWellRelation($wellId, 'org');
+                            $this->insertWellRelation($wellId, 'category');
+                            $this->insertGeoFields($wellId);
+                    
+                }
+            });
+
+        return [];
     }
+
 
     public function getResults(): array
     {
@@ -75,7 +100,6 @@ class WellRegister extends PlainForm
     protected function getRows(): Collection
     {
         $wellId = (int)$this->request->get('well_id');
-
         
         $rows = DB::connection('tbd')
         ->table('dict.well as w')
@@ -98,16 +122,14 @@ class WellRegister extends PlainForm
             'w.gas_factor_avg'
         )
         ->distinct()
-        ->leftJoin('prod.well_geo as g', 'w.id', 'g.well')
-        ->leftJoin('prod.well_org as o', 'w.id', 'o.well')
-        ->leftJoin('prod.well_category as c', 'w.id', 'c.well')
+        ->join('prod.well_geo as g', 'w.id', 'g.well')
+        ->join('prod.well_org as o', 'w.id', 'o.well')
+        ->join('prod.well_category as c', 'w.id', 'c.well')
         ->where('w.id', $wellId)
         ->get();       
 
         return $rows;
     }
-
-
    
 
     protected function getColumns(): Collection
@@ -257,43 +279,5 @@ class WellRegister extends PlainForm
             );
         return $bottomCoordId;
     }
-
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = DB::connection('tbd')
-            ->table($column['table'])
-            ->where('well', $params['wellId'])
-            ->first();
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
-        }
-    }
-
 
 }
