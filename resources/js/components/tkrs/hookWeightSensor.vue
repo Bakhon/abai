@@ -28,7 +28,7 @@
             <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
-                    <a href="tkrsMain"><img class="hws-tab-img"
+                    <a href="tkrsMain" class="back-a"><img class="hws-tab-img"
                     src="/img/tkrs/back.svg"
                     /></a>
                     
@@ -43,7 +43,7 @@
                     src="/img/tkrs/comparison-charts.svg"
                     />
                   </div>
-                  <div class="dropdown">
+                  <div class="dropdown analyze-div">
                     <button class="btn btn-secondary dropdown-toggle input-form-dropdown calendar-form"  
                     type="button" id="dropdownMenuButton" data-toggle="dropdown" 
                     aria-haspopup="true" aria-expanded="false">{{trans('tkrs.sensors')}}
@@ -54,7 +54,12 @@
                       <a class="dropdown-item" href="#">{{trans('tkrs.sensors')}}</a>
                     </div>
                   </div>
-                  <button class="calendar-form"><a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}</a></button>
+                  <div class="analyze-div">
+                    <button class="calendar-form">
+                      <a class="a-link" href="hookWeightSensorAnalyse">{{trans('tkrs.analyze_pv_npv')}}
+                      </a>
+                    </button>
+                  </div>
                   
                 </div>
                 <div class="plotly-graph">
@@ -285,14 +290,14 @@ export default {
             });
     },
     postSelectedtWellFile() {
-      this.$store.commit("globalloading/SET_LOADING", false);
+      this.$store.commit("globalloading/SET_LOADING", true);
         this.axios
             .get(
                 `http://172.20.103.203:8090/chooseDate/${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
+                this.$store.commit("globalloading/SET_LOADING", false);
                 let data = response.data;
-                
                 if (data) {
                     this.wellFile = data;
                     this.areaChartData = data.data;
@@ -316,6 +321,7 @@ export default {
       this.currentTab = selectedTab
     },
     getTableWork() {
+      
       this.axios
           .get(
               this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
@@ -513,5 +519,11 @@ table, th, td {
 .plotly-graph {
   height: 8px;
 }
-
+.analyze-div {
+  margin-right: 15px;
+  margin-top: 2px; 
+}
+.back-a {
+  margin-left: 10px
+}
 </style>
