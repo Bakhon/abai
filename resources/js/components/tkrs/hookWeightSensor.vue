@@ -56,7 +56,7 @@
                   </div>
                   <div class="analyze-div">
                     <button class="calendar-form">
-                      <a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}
+                      <a class="a-link" href="hookWeightSensorAnalyse">{{trans('tkrs.analyze_pv_npv')}}
                       </a>
                     </button>
                   </div>
