@@ -6,12 +6,14 @@
         <p class="bd-main-block__header-title">{{ params.title }}</p>
       </div>
     </div>
-    <BigdataPlainForm v-if="isFormShowed" :params="params" :values="formValues" :well-id="wellId"></BigdataPlainForm>
+    <BigdataPlainForm v-if="isFormShowed" :params="params" :type="type" :values="formValues"
+                      :well-id="wellId"></BigdataPlainForm>
     <BigdataPlainFormResults
         v-else
         :params="params"
         :code="params.code"
         :well-id="wellId"
+        :type="type"
         @edit="openEditForm"
     >
     </BigdataPlainFormResults>
@@ -31,6 +33,10 @@ export default {
   props: {
     params: {
       type: Object,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     wellId: {

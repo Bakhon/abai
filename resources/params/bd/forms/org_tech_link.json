@@ -1,0 +1,37 @@
+{
+  "type": "plain",
+  "table": "prod.org_tech",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "tech",
+                "type": "dict_tree",
+                "dict": "techs",
+                "title": "tech",
+                "validation": "exists:tbd.dict.tech,id"  
+              },
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "dbeg",
+                "validation": ""
+              },
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "dend",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
