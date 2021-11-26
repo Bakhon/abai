@@ -154,8 +154,8 @@
                       <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
                       <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
-                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
                       <td class="input-form-auto header_name">{{wall_thickness}}</td>
+                      <td class="input-form-auto header_name">{{descent_depth}}</td>
                       <td class="input-form-auto header_name">17,76</td>
                     </tr>
                     <tr>
