@@ -207,6 +207,8 @@ export default {
       minimum: null,
       chartData: null,
       table_work: [],
+      postApiUrl: process.env.MIX_TKRS_POST_API_URL,
+      linkWorkTable: "dayliWork1/",
       
     }
   },
@@ -316,7 +318,8 @@ export default {
     getTableWork() {
       this.axios
           .get(
-              `http://172.20.103.203:8090/dayliWork1/${this.wellNumber}/${this.wellFile}/`,
+              this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
+              
           )
           .then((response) => {
               let data = response.data;
