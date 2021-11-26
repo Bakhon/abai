@@ -77,6 +77,12 @@ class FormsController extends Controller
         $form->validateSingleTableField($parent, $field);
     }
 
+    public function uploadField(string $formName, string $field): void
+    {
+        $form = $this->getForm($formName);
+        $form->uploadSingleField($field);
+    }
+
     public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
