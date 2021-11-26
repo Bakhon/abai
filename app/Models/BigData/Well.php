@@ -145,6 +145,11 @@ class Well extends TBDModel
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
     }
 
+    public function dailyInjectionOil()
+    {
+        return $this->hasMany(DailyInjectionOil::class, 'well', 'id');
+    }
+
         public function pzabWell()
     {
         return $this->hasMany(PzabTechMode::class, 'well', 'id');
