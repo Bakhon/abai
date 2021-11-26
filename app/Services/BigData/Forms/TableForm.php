@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Exceptions\JsonException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
@@ -464,7 +465,6 @@ abstract class TableForm extends BaseForm
 
     private function addAdditionalFilters($query, array $field)
     {
-
         if (!empty($field['additional_filter'])) {
             foreach ($field['additional_filter'] as $key => $value) {
                 if (is_array($value)) {
