@@ -320,7 +320,7 @@ abstract class PlainForm extends BaseForm
 
     protected function getRows(): Collection
     {
-        if ($this->request->get('type') !== 'well') {
+        if ($this->request->get('type') && $this->request->get('type') !== 'well') {
             throw new \Exception(trans('bd.select_well'));
         }
 
