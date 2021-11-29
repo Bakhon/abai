@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Services\BigData\DictionaryService;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -149,15 +148,43 @@ class PlanGDIS extends TableForm
 
     private function getExplTree()
     {
-        $dictionaryService = app()->make(DictionaryService::class);
-        $explTypes = $dictionaryService->get('expl_type_plan_gdis');
-        $procedTypes = DB::connection('tbd')
+        $researchMethods = DB::connection('tbd')
             ->table('dict.expl_type_proced_type_plan_gdis as e')
-            ->join('dict.proced_type_plan_gdis as p', 'p.id', 'e.proced_type_plan_gdis')
-            ->select('expl_type_plan_gdis', 'proced_type_plan_gdis', 'p.name', 'e.id')
+            ->join('dict.proced_type_plan_gdis as p', 'e.proced_type_plan_gdis', 'p.id')
+            ->join('dict.research_method as rm', 'p.research_method', 'rm.id')
+            ->select('rm.*', 'e.id as ep_id')
             ->get()
             ->groupBy('expl_type_plan_gdis');
-        $explTypes = $this->generateExplTree($explTypes, $procedTypes);
+
+        $sections = [
+            [
+                'name' => 'flowing_wells'
+            ],
+            [
+                'name' => 'depthpump_wells',
+                [
+                    'children' => [
+                        [
+                            'name' => 'pumpjack'
+                        ],
+                        [
+                            'name' => 'evn_ecn'
+                        ]
+                    ]
+                ],
+            ],
+            [
+                'name' => 'inj_wells'
+            ],
+            [
+                'name' => 'obs_wells'
+            ],
+            [
+                'name' => 'water_wells'
+            ],
+        ];
+
+        $explTypes = $this->generateExplTree($sections, $researchMethods);
         return $explTypes;
     }
 
