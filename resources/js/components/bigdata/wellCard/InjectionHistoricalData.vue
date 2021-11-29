@@ -149,8 +149,8 @@
                         isChecked = true;
                     }
                     summary.isChecked = isChecked;
-                    calculated.push(summary);                  
-                    calculated = calculated.concat(sorted);                  
+                    calculated.push(summary); 
+                    calculated = calculated.concat(sorted);
                 });
                 return calculated;
             },
@@ -164,16 +164,15 @@
                 summary['waterInjection'] = _.sumBy(filtered, 'waterInjection');               
                 summary['dailyWaterInjection'] = dailyWaterInjection;
                 summary['accumulateWaterInjection'] = 0;
-                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');              
+                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');         
                 return summary;
             },
             getTotalWaterInjection(){
               let sum = 0;                   
               _.forEach(this.dates, (item) => {                  
                  sum += item.waterInjection;                 
-              });                           
-              sum = sum / 2; 
-              return sum;
+              });                                        
+              return sum/2;
             },                     
             formatNumber(num) {
                 return new Intl.NumberFormat("ru-RU").format(num);
