@@ -50,10 +50,10 @@ class WellsController extends Controller
     {
     
         $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
-        if (Cache::has('well_' . $well->id)) {
+   /*     if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-         
+     */    
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
@@ -124,7 +124,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
       
-        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+    //    Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
     
@@ -883,6 +883,62 @@ class WellsController extends Controller
         Cache::put('well_' . $wellId . '_history_chart_' . $request->type, $result, now()->addDay());
 
         return  response()->json($result);
+    }
+
+    public function getActivityByWell(Request $request, $wellId)
+    {
+        $activity = [];
+        $wellWorkover = WellWorkover::query()
+            ->select(['dbeg', 'well', 'repair_type', 'work_plan', 'well_status'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dbeg', $request->year)
+            ->where('well', $wellId)
+            ->with('repairType')
+            ->get();
+        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkover,'dbeg'));
+        $wellWorkoverEnd = WellWorkover::query()
+            ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
+            ->whereIn('repair_type', [1, 3])
+            ->whereYear('dend', $request->year)
+            ->where('well', $wellId)
+            ->with('repairType')
+            ->get();
+        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkoverEnd,'dend'));
+        $gtms = Gtm::query()
+            ->select(['param_result', 'gtm_type', 'dbeg'])
+            ->where('well', $wellId)
+            ->whereYear('dbeg', $request->year)
+            ->with('GtmType')
+            ->get();
+        foreach ($gtms as $gtm) {
+            array_push($activity,
+                array(
+                    'dbeg' => $gtm->dbeg,
+                    'repair_type' => $gtm->GtmType[0]->name_ru,
+                    'work_plan' => null,
+                    'well_status' => null,
+                    'work_list' => null
+                )
+            );
+        }
+        return $activity;
+    }
+
+    private function getFormattedWorkover($workovers,$dateField)
+    {
+        $result = [];
+        foreach ($workovers as $workover) {
+            array_push($result,
+                array(
+                    $dateField => $workover->$dateField,
+                    'work_plan' => $workover->work_plan,
+                    'well_status' => $workover->well_status,
+                    'repair_type' => $workover->repairType->name_ru,
+                    'work_list' => $workover->work_list
+                )
+            );
+        }
+        return $result;
     }
 
     public function getProductionTechModeOil(Request $request, $wellId)
