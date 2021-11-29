@@ -12,6 +12,7 @@ const plastFluidsLocal = {
     downloadFileData: {},
     tableFields: [],
     tableRows: [],
+    templates: [],
     currentTemplate: {},
     tableState: "default",
     loading: false,
@@ -50,6 +51,9 @@ const plastFluidsLocal = {
     },
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
+    },
+    SET_TEMPLATES(state, payload) {
+      state.templates = payload;
     },
     SET_CURRENT_TEMPLATE(state, payload) {
       state.currentTemplate = payload;
@@ -149,32 +153,30 @@ const plastFluidsLocal = {
       });
       commit("SET_FILE_LOG", entries);
     },
-    async getTableData({}, obj) {
+    async getTableData({}, postData) {
       const payload = new FormData();
-      for (let key in obj.mutatedData) {
-        payload.append(key, obj.mutatedData[key]);
+      for (let key in postData) {
+        payload.append(key, postData[key]);
       }
-      const data = await getTemplateData(payload, obj.url);
+      const data = await getTemplateData(payload);
       return data;
     },
     async handleTableData({ commit, state, dispatch }, incomeData) {
       try {
+        const { template, ...rest } = incomeData;
         commit("SET_LOADING", true);
         const postDataMock = {
           horizons: "None",
           blocks: "None",
           row_on_page: 30,
           page_number: 1,
+          report_id: 1,
         };
-        let merged = { ...postDataMock, ...incomeData };
-        const url = state.currentTemplate.api_url ?? undefined;
-        const data = await dispatch("getTableData", {
-          mutatedData: merged,
-          url,
-        });
-        commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
-        commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
-        commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
+        let merged = { ...postDataMock, ...rest };
+        const data = await dispatch("getTableData", merged);
+        template ? commit("SET_CURRENT_TEMPLATE", template) : "";
+        commit("SET_TABLE_FIELDS", data.header[0]);
+        commit("SET_TABLE_ROWS", data.table.rows);
       } catch (error) {
         alert(error);
       } finally {

@@ -1,6 +1,6 @@
 @extends('layouts.pf')
 @section('content')
-    <div>
-        <pf-download-monitoring></pf-download-monitoring>
-    </div>
+<div>
+    <pf-download-monitoring :user="{{json_encode(auth()->user())}}"></pf-download-monitoring>
+</div>
 @endsection

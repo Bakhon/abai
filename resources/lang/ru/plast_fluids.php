@@ -154,4 +154,5 @@ return array (
   'structural_map' => 'Структурная карта',
   'fault_scheme' => 'Схема разломов',
   'contact_scheme' => 'Схема контактов',
+  'no_report_content' => 'Нет данных для этого шаблона',
 );
