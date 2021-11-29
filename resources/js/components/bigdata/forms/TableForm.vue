@@ -20,13 +20,13 @@
       </div>
     </template>
     <div class="bd-main-block__body">
-      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%" @submit.prevent="">
+      <form ref="form" class="bd-main-block__form" @submit.prevent="">
         <div class="table-page">
           <template v-if="formParams">
             <p v-if="formError" class="table__message">
               {{ formError }}
             </p>
-            <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
+            <p v-else-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
               {{ trans('bd.select_ngdu') }}
             </p>
             <p v-else-if="!id" class="table__message">
@@ -1022,9 +1022,8 @@ body.fixed {
     background: #363B68;
     display: flex;
     justify-content: space-between;
-    //height: calc(100vh - 430px);
-    min-height: 500px;
-    padding: 10px;
+    min-height: calc(100vh - 186px);
+    padding: 5px;
 
     &-history {
       width: 100%;
@@ -1053,7 +1052,6 @@ body.fixed {
 
   &__form {
     background: #272953;
-    overflow-y: auto;
     width: 100%;
   }
 
@@ -1063,8 +1061,7 @@ body.fixed {
     padding: 0;
 
     .tables {
-      height: 100%;
-      margin: 0 0 10px;
+      height: calc(100vh - 196px);
       overflow-x: auto;
       overflow-y: auto;
       width: 100%;
@@ -1098,6 +1095,7 @@ body.fixed {
 
     border-collapse: separate;
     border-spacing: 0;
+    margin-bottom: 0;
 
     &__message {
       align-items: center;
