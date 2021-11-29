@@ -153,13 +153,13 @@
                 "code": "cnl_new",
                 "type": "numeric",
                 "title": "nkt_new",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "cnl_used",
                 "type": "numeric",
                 "title": "nkt_used",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "td",
