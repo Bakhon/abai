@@ -89,7 +89,7 @@
             <h5>Техническая поддержка</h5>
             </a>
 
-            <a href="{{url('/')}}/ru/faq" type="button" style="
+            <a href="{{route('faq')}}" type="button" style="
     color: #e8f0fe;
     padding-right: 20px;
 ">
