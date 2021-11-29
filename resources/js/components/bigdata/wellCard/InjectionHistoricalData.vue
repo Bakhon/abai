@@ -30,7 +30,7 @@
                     </tr>
                     <tr>
                         <td rowspan="2">Итого</td>
-                        <td>{{ formatNumber(this.getTotal().toFixed(1)) }}</td>
+                        <td>{{ formatNumber(this.getTotalWaterInjection().toFixed(1)) }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -167,13 +167,13 @@
                 summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');              
                 return summary;
             },
-            getTotal(){
-              let sum_dailyWaterInjection = 0;     
+            getTotalWaterInjection(){
+              let sum = 0;     
               _.forEach(this.dates, (item) => {
-                 sum_dailyWaterInjection += item.dailyWaterInjection;
+                 sum += item.dailyWaterInjection;
               });                            
-              return sum_dailyWaterInjection;
-            }, 
+              return sum;
+            },                     
             formatNumber(num) {
                 return new Intl.NumberFormat("ru-RU").format(num);
             },

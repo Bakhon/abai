@@ -39,8 +39,8 @@
                         </tr>
                         <tr>
                             <td colspan="2">Итого</td>
-                            <td>{{ formatNumber(this.getTotal().toFixed(1)) }}</td>
-                            <td></td>
+                            <td>{{ formatNumber(this.getTotalWater().toFixed(1)) }}</td>
+                            <td>{{ formatNumber(this.getTotalLiquid().toFixed(1)) }}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -220,13 +220,19 @@ export default {
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
-        getTotal(){
-         let summary = [];
+        getTotalWater(){         
          let sum = 0;
          let totalcnt = _.forEach(this.productionHistoricalData, (item) => {
              sum += item.water;
          })
          return sum;
+        },
+        getTotalLiquid(){
+         let sum = 0;
+         let totalcnt = _.forEach(this.productionHistoricalData, (item) => {
+            sum += item.oil;
+         })
+        return sum;
         },
         formatNumber(num) {
             return new Intl.NumberFormat("ru-RU").format(num);
