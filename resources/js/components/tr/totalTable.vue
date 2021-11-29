@@ -15,9 +15,9 @@
             
                 <tr v-for="(row, row_index) in all_summary_total" :key="row_index">
                 <td>{{ row.field }}</td>
+                <td>{{ row.planned_monthly_oil }}</td>
                 <td>{{ row.planned_monthly_gas }}</td>
                 <td>{{ row.planned_monthly_liq }}</td>
-                <td>{{ row.planned_monthly_oil }}</td>
                 </tr>
 
             </tbody>

@@ -391,7 +391,7 @@ export default {
                 } else {
                     this.dt = "01" + "." + month + "." + year;
                 }
-                this.isPermission = this.params.includes(this.permissionName);
+                this.isPermission = true;
             });
         this.pageInfo(this.pageNumberLink);
         this.getFilter();
@@ -908,7 +908,7 @@ export default {
     summaryTotalModal() {
       this.axios
       .get(
-          this.postApiUrl + "techmode/pivot_table/2021/11/"
+          this.postApiUrl + "techmode/pivot_table/2021/12/"
       )
       .then((response) => {
           let data = response.data;
