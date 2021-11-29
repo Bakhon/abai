@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Imports\WaterWellsImport;
-use App\Models\ComplicationMonitoring\WaterWell;
+use App\Imports\WaterKmbWellsImport;
+use App\Models\ComplicationMonitoring\KmbWell;
 use Illuminate\Console\Command;
 
-class ImportWaterWells extends Command
+class importKmbWells extends Command
 {
     use ExcelImport;
 
@@ -15,14 +15,14 @@ class ImportWaterWells extends Command
      *
      * @var string
      */
-    protected $signature = 'import:water_wells';
+    protected $signature = 'import:kmb_wells';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import water wells';
+    protected $description = 'Import KMB water wells';
 
     /**
      * Create a new command instance.
@@ -41,7 +41,7 @@ class ImportWaterWells extends Command
      */
     public function handle(): void
     {
-        WaterWell::truncate();
-        $this->importExcel(new WaterWellsImport($this), public_path('imports/water_wells.xlsx'));
+        KmbWell::truncate();
+        $this->importExcel(new WaterKmbWellsImport($this), public_path('imports/kmb_wells.xlsx'));
     }
 }

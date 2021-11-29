@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Imports\WaterWellsImport;
-use App\Models\ComplicationMonitoring\WaterWell;
+use App\Imports\BGsImport;
+use App\Models\ComplicationMonitoring\BG;
 use Illuminate\Console\Command;
 
-class ImportWaterWells extends Command
+class ImportBGs extends Command
 {
     use ExcelImport;
 
@@ -15,14 +15,14 @@ class ImportWaterWells extends Command
      *
      * @var string
      */
-    protected $signature = 'import:water_wells';
+    protected $signature = 'import:bgs_points';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import water wells';
+    protected $description = "Import BG's points";
 
     /**
      * Create a new command instance.
@@ -41,7 +41,7 @@ class ImportWaterWells extends Command
      */
     public function handle(): void
     {
-        WaterWell::truncate();
-        $this->importExcel(new WaterWellsImport($this), public_path('imports/water_wells.xlsx'));
+        BG::truncate();
+        $this->importExcel(new BGsImport($this), public_path('imports/bgs.xlsx'));
     }
 }
