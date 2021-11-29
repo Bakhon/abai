@@ -28,7 +28,7 @@
             <div class="tkrs-content-down">
                 <div class="hws-header">
                   <div class="hws-header-info">
-                    <a href="tkrsMain"><img class="hws-tab-img"
+                    <a href="tkrsMain" class="back-a"><img class="hws-tab-img"
                     src="/img/tkrs/back.svg"
                     /></a>
                     
@@ -43,7 +43,7 @@
                     src="/img/tkrs/comparison-charts.svg"
                     />
                   </div>
-                  <div class="dropdown">
+                  <div class="dropdown analyze-div">
                     <button class="btn btn-secondary dropdown-toggle input-form-dropdown calendar-form"  
                     type="button" id="dropdownMenuButton" data-toggle="dropdown" 
                     aria-haspopup="true" aria-expanded="false">{{trans('tkrs.sensors')}}
@@ -54,7 +54,12 @@
                       <a class="dropdown-item" href="#">{{trans('tkrs.sensors')}}</a>
                     </div>
                   </div>
-                  <button class="calendar-form"><a class="a-link" href="tkrsMain">{{trans('tkrs.analyze_pv_npv')}}</a></button>
+                  <div class="analyze-div">
+                    <button class="calendar-form">
+                      <a class="a-link" href="hookWeightSensorAnalyse">{{trans('tkrs.analyze_pv_npv')}}
+                      </a>
+                    </button>
+                  </div>
                   
                 </div>
                 <div class="plotly-graph">
@@ -103,7 +108,7 @@
                     </div>
 
                   <div v-if="currentTab == 1">
-                      <event></event>
+                      <event :table_work="table_work"></event>
                   </div>
 
                   <div v-if="currentTab == 2">
@@ -154,11 +159,9 @@ export default {
         modebar: {
           bgcolor: "rgba(0,0,0,0)"
         },
-        width: 1587,
-        height: 617,
         margin: {
           l: 50,
-          r: 5,
+          r: 15,
           b: 50,
           t: 20,
           pad: 4
@@ -208,6 +211,9 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
+      table_work: [],
+      postApiUrl: process.env.MIX_TKRS_POST_API_URL,
+      linkWorkTable: "dayliWork1/",
       
     }
   },
@@ -235,6 +241,7 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
       });
       this.getListWell();
+      
     },
   
   methods: {
@@ -283,13 +290,13 @@ export default {
             });
     },
     postSelectedtWellFile() {
-      this.$store.commit("globalloading/SET_LOADING", false);
+      this.$store.commit("globalloading/SET_LOADING", true);
         this.axios
             .get(
                 `http://172.20.103.203:8090/chooseDate/${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
-              
+                this.$store.commit("globalloading/SET_LOADING", false);
                 let data = response.data;
                 if (data) {
                     this.wellFile = data;
@@ -301,35 +308,36 @@ export default {
                     console.log("No data");
                 }
             });
+      this.getTableWork();
     },
     cancelChat() {
-        this.isChart = false;
+      this.isChart = false;
     },
     returnChat() {
       this.isChart = true;
     },
     
     selectTab(selectedTab) {
-            this.currentTab = selectedTab
+      this.currentTab = selectedTab
     },
-    chooseDate() {
-      const { calendarDate} = this;
-      var Date1 = new Date(calendarDate)
-      this.Date1 = Date1.toLocaleDateString();
+    getTableWork() {
+      
       this.axios
-        .get(
-            'http://127.0.0.1:7580/db/' + Date1.toLocaleDateString("en-GB") + '/'
+          .get(
+              this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
+              
           )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.areaChartData = data.data;
-          } else {
-            console.log("No data");
-          }
-        })
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.table_work = data
+
+              } else {
+                  console.log("No data");
+              }
+          });
     },
+
   },
 };
 </script>
@@ -359,11 +367,9 @@ export default {
   align-items: center;
   background-color: #323370;
 }
-
 .left-block-collapse-holder > div > img {
   margin: 0 8px 0 10px;
 }
-
 .collapse-left__sidebar {
   display: flex;
   align-items: center;
@@ -375,7 +381,6 @@ export default {
   border: none;
   border-left: 5px solid #272953;
 }
-
 .dropdown-holder {
   background-color: rgba(255, 255, 255, 0.04);
   width: 100%;
@@ -416,7 +421,6 @@ table, th, td {
 .nav-link.active {
   background: #2E50E9;
 }
-
 .js-plotly-plot .plotly .modebar {
     position: absolute;
     top: 22px;
@@ -482,7 +486,6 @@ table, th, td {
 }
 
 .plotly-graph-custom {
-  height: calc(100% - 287px);
   width: 100%;
   border: 6px solid #20274F;
 }
@@ -516,5 +519,11 @@ table, th, td {
 .plotly-graph {
   height: 8px;
 }
-
+.analyze-div {
+  margin-right: 15px;
+  margin-top: 2px; 
+}
+.back-a {
+  margin-left: 10px
+}
 </style>

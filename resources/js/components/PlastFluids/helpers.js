@@ -14,11 +14,9 @@ export const convertTemplateData = (dataset, lang) => {
   return dataTree;
 };
 
-export const handleSearch = (arrayForSearch, query, type) => {
-  let name = "owner_name";
-  if (type === "field") name = "field_name";
+export const handleSearch = (arrayForSearch, query, key) => {
   const filtered = arrayForSearch.filter((item) =>
-    item[name].toLowerCase().includes(query?.toLowerCase()) ? item : ""
+    item[key].toLowerCase().includes(query?.toLowerCase()) ? item : ""
   );
   return filtered;
 };
