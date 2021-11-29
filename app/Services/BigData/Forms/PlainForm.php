@@ -75,6 +75,9 @@ abstract class PlainForm extends BaseForm
         try {
             $result = $this->submitForm();
             DB::connection('tbd')->commit();
+            if (isset($result['well'])) {
+                Cache::forget("well_{$result['well']}");
+            }
             return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
