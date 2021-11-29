@@ -13,6 +13,7 @@ use App\Models\EcoRefsNdoRates;
 use App\Models\EcoRefsRentTax;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsGtm;
+use App\Models\Refs\EcoRefsGtmValue;
 use App\Models\Refs\EcoRefsScFa;
 use App\Models\Refs\Org;
 use App\Models\Refs\TechnicalDataForecast;
@@ -27,10 +28,12 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
+use SplFixedArray;
 
 class EconomicOptimizationController extends Controller
 {
@@ -124,6 +127,8 @@ class EconomicOptimizationController extends Controller
     const COMPANY_MANGISTAU = 7;
     const COMPANY_KARAZANBAS = 8;
     const COMPANY_KAZ_GER = 9;
+
+    const GTM_DENOMINATOR = 10000000;
 
     const ROUTES_LOCAL = [
         4 => 'local_ANPZ',
@@ -398,22 +403,48 @@ class EconomicOptimizationController extends Controller
 
     public function getScenariosData(): array
     {
+        $scenarioName = "MMG_Scenario_Test";
+
+        $gtmLogId = 61;
+
         $oilPrice = 30;
 
         $dollarRate = 400;
 
-        $fixedNoPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
+        $fixedNoPayrolls = [0.5];
 
-        $costWrPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
-
+        $costWrPayrolls = [0.5];
         $time = microtime(true);
 
+        $wellByDates = collect($this->getWellsForScenarios(
+            $scenarioName,
+            $oilPrice,
+            $dollarRate,
+            true
+        ));
+
         $scenarios = $this->getOptimizedScenarios(
+            $scenarioName,
             $oilPrice,
             $dollarRate,
             $fixedNoPayrolls,
             $costWrPayrolls
         );
+
+        $gtms = $this->getGtms($gtmLogId);
+
+        if ($gtms) {
+            $wellByDates = collect($this->getWellsForScenarios(
+                $scenarioName,
+                $oilPrice,
+                $dollarRate,
+                true
+            ));
+
+            foreach ($scenarios as $scenario) {
+                $this->addGtmsToScenario($scenario, $gtms, $wellByDates);
+            }
+        }
 
         dd(microtime(true) - $time, $scenarios);
 
@@ -421,13 +452,14 @@ class EconomicOptimizationController extends Controller
     }
 
     private function getOptimizedScenarios(
+        string $scenarioName,
         int $oilPrice,
         int $dollarRate,
         array $fixedNoPayrolls,
         array $costWrPayrolls
     )
     {
-        $wells = $this->getWellsForScenarios($oilPrice, $dollarRate);
+        $wells = $this->getWellsForScenarios($scenarioName, $oilPrice, $dollarRate);
 
         $wellKeys = [
             "Revenue_total",
@@ -440,11 +472,11 @@ class EconomicOptimizationController extends Controller
             "production_export",
             "production_local",
             "Fixed_noWRpayroll_expenditures",
-            "Operating_profit",
-            "Overall_expenditures",
-            "Overall_expenditures_full",
             "Fixed_nopayroll_expenditures",
             "Fixed_payroll_expenditures",
+            "Overall_expenditures",
+            "Overall_expenditures_full",
+            "Operating_profit",
         ];
 
         $wellProfitability = [
@@ -491,14 +523,10 @@ class EconomicOptimizationController extends Controller
         foreach ($wellKeys as $wellKey) {
             $scenario[$wellKey . "_optimize"] = $scenario[$wellKey];
 
-            $scenario[$wellKey . "_scenario"] = $scenario[$wellKey];
-
             foreach ($wellProfitability as $profitability) {
                 $value = $scenario[$wellKey . "_" . $profitability];
 
                 $scenario[$wellKey . "_" . $profitability . "_optimize"] = $value;
-
-                $scenario[$wellKey . "_scenario_" . $profitability] = $value;
             }
         }
 
@@ -553,7 +581,7 @@ class EconomicOptimizationController extends Controller
         foreach ($scenarios as $scenario) {
             foreach ($fixedNoPayrolls as $fixedNoPayroll) {
                 foreach ($costWrPayrolls as $costWrPayroll) {
-                    $optimizedScenario = $this->calcScenarioOverallExpenditures(
+                    $optimizedScenario = $this->addFixedExpendituresToScenario(
                         $scenario,
                         $fixedNoPayroll,
                         $costWrPayroll
@@ -569,10 +597,15 @@ class EconomicOptimizationController extends Controller
         return $optimizedScenarios;
     }
 
-    private function getWellsForScenarios(int $oilPrice, int $dollarRate): array
+    private function getWellsForScenarios(
+        string $scenarioName,
+        int $oilPrice,
+        int $dollarRate,
+        array $wellByDates = null
+    ): array
     {
-        $technicalData = $this->getTechnicalQuery()->toSql();
-        $economicData = $this->getEconomicQuery()->toSql();
+        $technicalData = $this->getTechnicalQuery($scenarioName, $wellByDates)->toSql();
+        $economicData = $this->getEconomicQuery($scenarioName)->toSql();
 
         $productionLocal = $this->sqlRoutesProduction(false, true);
         $productionExport = $this->sqlRoutesProduction(true, true);
@@ -618,15 +651,15 @@ class EconomicOptimizationController extends Controller
 
         $variableExpenditures = $this->sqlVariableExpenditures();
 
-        $fixedPayrollExpenditures = $this->sqlFixedPayrollExpenditures();
-        $fixedNoWrPayrollExpenditures = $this->sqlFixedNoWrPayrollExpenditures();
-        $fixedNoPayrollExpenditures = $this->sqlFixedNoPayrollExpenditures();
+        $fixedPayrollExpenditures = $wellByDates ? 0 : $this->sqlFixedPayrollExpenditures();
+        $fixedNoWrPayrollExpenditures = $wellByDates ? 0 : $this->sqlFixedNoWrPayrollExpenditures();
+        $fixedNoPayrollExpenditures = $wellByDates ? 0 : $this->sqlFixedNoPayrollExpenditures();
         $fixedExpenditures = "($fixedNoPayrollExpenditures + $fixedNoWrPayrollExpenditures)";
 
-        $prsExpenditures = $this->sqlPrsExpenditures();
+        $prsExpenditures = $wellByDates ? 0 : $this->sqlPrsExpenditures();
 
         $productionExpenditures = "($fixedExpenditures + $variableExpenditures + $prsExpenditures)";
-        $gaOverheadExpenditures = $this->sqlGaOverheadExpenditures();
+        $gaOverheadExpenditures = $wellByDates ? 0 : $this->sqlGaOverheadExpenditures();
         $overallExpenditures = "$gaOverheadExpenditures + $productionExpenditures";
         $overallExpendituresFull = "$overallExpenditures + $metPayments + $ecdPayments + $ertPayments + $transExpenditures";
 
@@ -642,6 +675,8 @@ class EconomicOptimizationController extends Controller
         return DB::table(DB::raw("($technicalData) as technical"))
             ->selectRaw(DB::raw("
                 uwi,
+                technical.company_id,
+                technical.company_tbd_id,
                 $barrelRatioExportScenario as Barrel_ratio_export_scenario,
                 $profitability as profitability,
                 SUM($revenueTotal) AS Revenue_total,
@@ -660,7 +695,7 @@ class EconomicOptimizationController extends Controller
                 SUM($operatingProfitVariablePrs) AS Operating_profit_variable_prs,
                 SUM($overallExpenditures) AS Overall_expenditures,
                 SUM($overallExpendituresFull) AS Overall_expenditures_full,
-                COUNT(*) as date_count
+                COUNT(*) AS date_count
             "))
             ->leftJoin(DB::raw("($economicData) as economic"), function ($join) {
                 $join
@@ -668,7 +703,12 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("technical.date"), '=', DB::raw("economic.date"))
                     ->on(DB::raw("technical.pes_id"), '=', DB::raw("economic.pes_id"));
             })
-            ->groupByRaw(DB::raw("uwi, Barrel_ratio_export_scenario"))
+            ->groupByRaw(DB::raw("
+                uwi, 
+                Barrel_ratio_export_scenario, 
+                company_id, 
+                company_tbd_id
+            "))
             ->oldest("Operating_profit")
             ->get()
             ->toArray();
@@ -708,7 +748,7 @@ class EconomicOptimizationController extends Controller
         return [$scenario, $stoppedOffset];
     }
 
-    private function calcScenarioOverallExpenditures(
+    private function addFixedExpendituresToScenario(
         array $scenario,
         float $fixedNoPayroll,
         float $costWrPayroll
@@ -718,36 +758,198 @@ class EconomicOptimizationController extends Controller
 
         $scenario["coef_cost_WR_payroll"] = $fixedNoPayroll;
 
-        foreach ($scenario['stopped_wells'] as $well) {
+        foreach ($scenario["stopped_wells"] as $well) {
             $profitability = $well["profitability"];
 
             $fixedExpenditures =
                 $fixedNoPayroll * $well["Fixed_nopayroll_expenditures"] +
                 $costWrPayroll * $well["Fixed_payroll_expenditures"];
 
-            $operatingProfit = $well["Operating_profit"] + $fixedExpenditures;
+            $scenario["Operating_profit_optimize"] -= $fixedExpenditures;
+            $scenario["Operating_profit_" . "$profitability" . "_optimize"] -= $fixedExpenditures;
 
-            $scenario["Operating_profit_scenario"] -= $operatingProfit;
-            $scenario["Operating_profit_scenario_$profitability"] -= $operatingProfit;
+            $scenario["Overall_expenditures_optimize"] += $fixedExpenditures;
+            $scenario["Overall_expenditures_" . "$profitability" . "_optimize"] += $fixedExpenditures;
 
-            $expenditures = $well["Overall_expenditures"] + $fixedExpenditures;
-
-            $scenario["Overall_expenditures_scenario"] += $expenditures;
-            $scenario["Overall_expenditures_scenario_$profitability"] += $expenditures;
-
-            $expendituresFull = $well["Overall_expenditures_full"] + $fixedExpenditures;
-
-            $scenario["Overall_expenditures_full_scenario"] += $expendituresFull;
-            $scenario["Overall_expenditures_full_scenario_$profitability"] += $expendituresFull;
+            $scenario["Overall_expenditures_full_optimize"] += $fixedExpenditures;
+            $scenario["Overall_expenditures_full_" . "$profitability" . "_optimize"] += $fixedExpenditures;
         }
 
         return $scenario;
     }
 
-    public function getEconomicQuery(): Builder
+    private function addGtmsToScenario(
+        array $scenario,
+        array $gtms,
+        Collection $wellByDates
+    )
+    {
+        $scenario["gtm_oil"] = 0;
+
+        $scenario["gtm_liquid"] = 0;
+
+        $scenario["gtm_cost"] = 0;
+
+        $scenario["gtm_operating_profit"] = 0;
+
+        $scenario["gtms"] = [];
+
+        $operatingDelta = $scenario["Operating_profit_optimize"] - $scenario["Operating_profit"];
+
+        if ($operatingDelta <= 0) return;
+
+        $gtmGrowth = 0;
+
+        $date = Carbon::parse($gtms[0]->date);
+
+        for ($month = 1; $month <= 12; $month++) {
+            $date = $date
+                ->setMonth($month)
+                ->setDay(1);
+
+            $well = (array)$wellByDates->firstWhere("date", $date->copy()->format("Y-m-d"));
+
+            $well["days_worked"] = $date->daysInMonth;
+
+            $well["oil"] = 0;
+
+            $well["prs"] = 0;
+
+            $well["liquid"] = 0;
+
+            $gtmsByMonth = array_filter($gtms, function ($gtm) use ($month, $operatingDelta) {
+                return Carbon::parse($gtm->date)->month === $month && $gtm->price <= $operatingDelta;
+            });
+
+            if (!$gtmsByMonth) continue;
+
+            $gtmsByMonth = $this->getGtmsForCostLimitWithMaxGrowth($gtmsByMonth, $operatingDelta);
+
+            $gtmGrowth += $gtms["growth"];
+
+            $gtmOil = $gtmGrowth * $well["days_worked"];
+
+            $well["oil"] = $gtmOil;
+
+            $well["liquid"] = $gtmOil * 10;
+
+            $scenario["gtms"] = $gtmsByMonth;
+
+            $scenario["gtm_oil"] += $well["oil"];
+
+            $scenario["gtm_liquid"] += $well["liquid"];
+
+            $scenario["gtm_cost"] += $gtms["cost"];
+
+            $scenario["gtm_operating_profit"] -= $gtms["cost"];
+
+            $operatingDelta -= $gtms["cost"];
+        }
+
+        if ($operatingDelta > 0) {
+            $scenario["gtm_operating_profit"] += $operatingDelta;
+        }
+    }
+
+    private function getGtms(int $logId): array
+    {
+        $tableGtms = (new EcoRefsGtm())->getTable();
+
+        $tableGtmValues = (new EcoRefsGtmValue())->getTable();
+
+        return DB::table(DB::raw("$tableGtms as gtms"))
+            ->leftJoin(DB::raw("$tableGtmValues as gtm_values"), function ($join) {
+                $join
+                    ->on(DB::raw("gtms.id"), '=', DB::raw("gtm_values.gtm_id"))
+                    ->on(DB::raw("gtms.log_id"), '=', DB::raw("gtm_values.log_id"));
+            })
+            ->whereRaw(DB::raw("gtms.log_id = $logId"))
+            ->get()
+            ->toArray();
+    }
+
+    private function getGtmsForCostLimitWithMaxGrowth(
+        array $gtms,
+        float $costLimit
+    ): array
+    {
+        $costLimit = (int)floor(abs($costLimit) / self::GTM_DENOMINATOR);
+
+        $gtmsWithDuplicates = [];
+
+        foreach ($gtms as $gtm) {
+            $gtm = (array)$gtm;
+
+            $gtm["weight"] = (int)floor($gtm["growth"]);
+
+            $gtm["cost"] = (int)floor($gtm["price"] / self::GTM_DENOMINATOR);
+
+            $gtm["amount_original"] = $gtm["amount"];
+
+            if ($gtm["amount_original"] > 1) {
+                $gtm["amount"] = 1;
+
+                $gtmsWithDuplicates = array_merge(
+                    $gtmsWithDuplicates,
+                    array_fill(0, $gtm["amount_original"], $gtm)
+                );
+            } else {
+                $gtmsWithDuplicates[] = $gtm;
+            }
+        }
+
+        $selectedGtms = [
+            "gtms" => [],
+            "growth" => 0,
+            "cost" => 0
+        ];
+
+        $gtmsCount = count($gtmsWithDuplicates);
+
+        $table = new SplFixedArray($gtmsCount + 1);
+
+        for ($j = 0; $j < $gtmsCount + 1; $j++) {
+            $table[$j] = new SplFixedArray($costLimit + 1);
+        }
+
+        for ($j = 1; $j <= $gtmsCount; $j += 1) {
+            $gtm = $gtmsWithDuplicates[$j - 1];
+
+            for ($w = 1; $w <= $costLimit; $w += 1) {
+                $table[$j][$w] = $gtm["cost"] > $w
+                    ? $table[$j - 1][$w]
+                    : max(
+                        $table[$j - 1][$w],
+                        $table[$j - 1][$w - $gtm["cost"]] + $gtm["weight"]
+                    );
+            }
+        }
+
+        $j = $gtmsCount;
+
+        while ($j > 0) {
+            if ($table[$j][$costLimit] !== $table[$j - 1][$costLimit]) {
+                $gtm = $gtmsWithDuplicates[$j - 1];
+
+                $selectedGtms["gtms"][] = $gtm;
+
+                $selectedGtms["growth"] += $gtm["growth"];
+
+                $selectedGtms["cost"] += $gtm["price"];
+
+                $costLimit -= $gtm["cost"];
+            }
+
+            $j -= 1;
+        }
+
+        return $selectedGtms;
+    }
+
+    public function getEconomicQuery(string $scenarioName): Builder
     {
         $economicScFa = EcoRefsScFa::query()
-            ->whereId(51)
+            ->whereName($scenarioName)
             ->firstOrFail()
             ->id;
 
@@ -856,15 +1058,10 @@ class EconomicOptimizationController extends Controller
                 costs.fix_payroll AS cost_fix_payroll,
                 costs.fix_nopayroll AS cost_fix_nopayroll,
                 costs.pes_id,
-                costs.fix,
                 costs.gaoverheads AS cost_Gaoverheads,
                 costs.wr_nopayroll AS cost_WR_nopayroll,
-                costs.wr_payroll AS cost_WR_payroll,
                 costs.wr_nopayroll + wr_payroll as cost_WR,
-                costs.wo AS cost_WO,
-                costs.amort AS cost_amort,
                 ndo_rates.ndo_rates,
-                macros.barrel_world_price AS price_export_world,
                 macros.ex_rate_dol AS currency_ratio,
                 $saleSharesColumns,
                 $discountColumns,
@@ -897,21 +1094,20 @@ class EconomicOptimizationController extends Controller
             });
     }
 
-    public function getTechnicalQuery(): Builder
+    public function getTechnicalQuery(
+        string $scenarioName,
+        array $wellByDates = null
+    ): Builder
     {
         $technicalSource = TechnicalStructureSource::query()
-            ->whereName('MMG_Scenario_Test')
+            ->whereName($scenarioName)
             ->firstOrFail()
             ->id;
 
         $tableCompanies = (new TechnicalStructureCompany())->getTable();
-
         $tableFields = (new TechnicalStructureField())->getTable();
-
         $tableNgdus = (new TechnicalStructureNgdu())->getTable();
-
         $tableCdngs = (new TechnicalStructureCdng())->getTable();
-
         $tableGus = (new TechnicalStructureGu())->getTable();
 
         $companies = DB::table(DB::raw("$tableCompanies as companies"))
@@ -956,18 +1152,25 @@ class EconomicOptimizationController extends Controller
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
-        $wells = DB::table($tableForecasts)
+        $oil = $this->sqlWellParam("oil", $wellByDates);
+        $liquid = $this->sqlWellParam("liquid", $wellByDates);
+        $daysWorked = $this->sqlWellParam("days_worked", $wellByDates);
+        $prs = $this->sqlWellParam("prs", $wellByDates);
+
+        $wellsQuery = DB::table($tableForecasts)
             ->selectRaw(DB::raw("
-                well_id as uwi,
+                well_id AS uwi,
                 gu_id,
                 company_id,
                 pes_id,
                 date,
-                oil * 1000 as oil,
-                liquid * 1000 as liquid,
-                days_worked,
-                IFNULL(prs, 0) as prs
-            "))
+                $oil * 1000 AS oil,
+                $liquid * 1000 AS liquid,
+                $daysWorked AS days_worked,
+                IFNULL($prs, 0) AS prs
+            "));
+
+        $wells = $wellsQuery
             ->whereRaw(DB::raw("source_id = $technicalSource"))
             ->toSql();
 
@@ -1346,5 +1549,22 @@ class EconomicOptimizationController extends Controller
                  ELSE 'profitless_cat_2'
             END   
         ";
+    }
+
+    private function sqlWellParam(string $wellKey, array $wellByDates = null): string
+    {
+        if (!$wellByDates) {
+            return $wellKey;
+        }
+
+        $query = "";
+
+        foreach ($wellByDates as $date => $well) {
+            $value = $well[$wellKey];
+
+            $query .= "WHEN date = '$date' THEN $value";
+        }
+
+        return "CASE $query END";
     }
 }
