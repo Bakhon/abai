@@ -80,4 +80,5 @@
   'production_plan' => '\\App\\Services\\BigData\\Forms\\ProductionPlan',
   'meas_current_gdis' => '\\App\\Services\\BigData\\Forms\\MeasCurrentGdis',
   'well_treatment' => '\\App\\Services\\BigData\\Forms\\WellTreatment',
+  'org_tech_link' => '\\App\\Services\\BigData\\Forms\\OrgTechLink',
 );

@@ -271,6 +271,7 @@ export default {
               fields: [...fields],
           },
       ],
+      all_summary_total: [],
       rowExpMeth: null,
       dt: null,
       editedWells: [],
@@ -904,6 +905,22 @@ export default {
                 this.reRender();
             })
     },
+    summaryTotalModal() {
+      this.axios
+      .get(
+          this.postApiUrl + "techmode/pivot_table/2021/11/"
+      )
+      .then((response) => {
+          let data = response.data;
+          if (data) {
+              this.all_summary_total = data.data;
+              console.log(this.all_summary_total);
+          } else {
+              console.log("No data");
+          }
+
+      });
+  },
     searchWell() {
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("globalloading/SET_LOADING", true);
