@@ -1,0 +1,168 @@
+{
+  "type": "plain",
+  "table": "dict.well",
+  "available_actions": [
+    "update"
+  ],
+  "table_fields": [
+    "uwi",
+    "project_date"
+  ],
+  "sort": [
+    {
+      "field": "drill_start_date",
+      "order": "desc"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "title",
+            "items": [
+              {
+                "code": "uwi",
+                "type": "text",
+                "title": "numb",
+                "validation": "required|max:255",
+                "prefix": ""
+              },
+              {
+                "code": "project_date",
+                "type": "date",
+                "title": "data",
+                "validation": "date"
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "title": "sv_well",
+            "items": [
+              {
+                "code": "whc_alt",
+                "type": "numeric",
+                "title": "alt",
+                "validation": "nullable|numeric|gte:-150"
+              },
+              {
+                "code": "whc_h",
+                "type": "numeric",
+                "title": "alt_h",
+                "validation": "nullable|numeric|gt:0|lte:20"
+              },
+              {
+                "code": "coord_system",
+                "type": "dict",
+                "title": "coord",
+                "dict": "coord_systems",
+                "validation": "nullable|exists:tbd.dict.coord_system,id"
+              },
+              {
+                "code": "whc.coord_point.x",
+                "type": "numeric",
+                "title": "coord_x",
+                "validation": "nullable|exists:tbd.dict.coord_system,id",
+                "default_values": {
+                  "spatial_object.spatial_object_type": 1
+                }
+              },
+              {
+                "code": "whc.coord_point.y",
+                "type": "numeric",
+                "title": "coord_y",
+                "validation": "nullable|exists:tbd.dict.coord_system,id",
+                "default_values": {
+                  "spatial_object.spatial_object_type": 1
+                }
+              },
+              {
+                "code": "well_type",
+                "type": "dict",
+                "title": "well_t",
+                "dict": "well_types",
+                "validation": "nullable|exists:tbd.dict.well_type,id"
+              },
+              {
+                "code": "bottom_coord.coord_point.x",
+                "type": "numeric",
+                "title": "coord_x_p",
+                "validation": "nullable|numeric|exists:tbd.dict.coord_system,id",
+                "default_values": {
+                  "spatial_object.spatial_object_type": 1
+                }
+              },
+              {
+                "code": "bottom_coord.coord_point.y",
+                "type": "numeric",
+                "title": "coord_y_p",
+                "validation": "nullable|numeric",
+                "default_values": {
+                  "spatial_object.spatial_object_type": 1
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "title2",
+      "blocks": [
+        [
+          {
+            "title": "title",
+            "items": [
+              {
+                "code": "drill_start_date",
+                "type": "date",
+                "title": "str_date",
+                "validation": ""
+              },
+              {
+                "code": "drill_end_date",
+                "type": "date",
+                "title": "end_date",
+                "validation": "nullable|date|before_or_equal:today|after:drill_start_date"
+              },
+              {
+                "code": "drill_contractor",
+                "type": "dict",
+                "title": "podr",
+                "dict": "companies",
+                "validation": "nullable|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "drill_contract_num",
+                "type": "numeric",
+                "title": "nom_dog",
+                "validation": "numeric"
+              },
+              {
+                "code": "drill_contract_date",
+                "type": "date",
+                "title": "data_dog",
+                "validation": "nullable|date|before:drill_start_date"
+              },
+              {
+                "code": "project_depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "nullable|numeric|lte:10000"
+              },
+              {
+                "code": "gas_factor_avg",
+                "type": "numeric",
+                "title": "gas_f",
+                "validation": "nullable|numeric|gt:0"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
