@@ -17,7 +17,15 @@
             </div>
         </div>
         <div class="map__content">
-            <div id="distance" class="distance-container"></div>
+            <div class="distance__row">
+                <div id="distance" class="distance-container"></div>
+                <div class="distance__cancel" v-if="geojson.features.length>1">
+                    <button @click="clearDistance" class="clear">
+                        <img src="/img/digital-drilling/map-distance-cancel.svg" alt="">
+                        <span>Сбросить</span>
+                    </button>
+                </div>
+            </div>
             <div class="map-filter">
                 <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
                 <dropdown title="Месторождение" :options="fields" class="dropdown__area"
@@ -26,9 +34,6 @@
                           @updateList="updateField"
                 />
                 <dropdown title="Статус" :options="wellStatus" class="dropdown__area" @updateList="filterMap"/>
-                <div class="dropdown__area" v-if="geojson.features.length>0">
-                    <button @click="clearDistance" class="clear">Clear</button>
-                </div>
             </div>
             <MglMap
                     :accessToken="accessToken"
@@ -192,6 +197,7 @@
                     value.style.fontWeight = 'bold'
                     value.style.paddingLeft = '10px'
                     value.style.paddingRight = '10px'
+                    value.style.marginBottom = '0'
                     const distance = turf.length(this.linestring);
                     value.textContent = `Общее расстояние: ${distance.toLocaleString()}km`;
                     this.distanceContainer.appendChild(value);
@@ -343,12 +349,45 @@
     .mapboxgl-marker:hover{
         z-index: 2000;
     }
-    .distance-container{
+    .distance__row{
         position: absolute;
-        top: 0;
-        left: 40%;
-        color: #ffffff;
+        right: 15px;
+        top: 15px;
+        display: flex;
+        align-items: center;
         z-index: 5000000;
-        background-color: #0c2e5a;
+    }
+    .distance-container{
+        color: #ffffff;
+        padding: 4px 0;
+
+        background: #323370;
+        border: 0.2px solid #545580;
+        box-sizing: border-box;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+    }
+    .distance__cancel{
+        margin-left: 10px;
+        background: #293688;
+        border: 0.2px solid #3366FF;
+        box-sizing: border-box;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        padding: 4px 15px;
+        color: #FFFFFF;
+
+    }
+    .distance__cancel button{
+        display: flex;
+        align-items: center;
+        border: 0;
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+        color: #FFFFFF;
+    }
+    .distance__cancel button img{
+        margin-right: 9px;
     }
 </style>
