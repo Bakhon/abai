@@ -128,20 +128,30 @@
                 ],
                 chartOptions: {
                     chart: {
+                        zoom: {
+                            enabled: true,
+                            type: 'xy',
+                            autoScaleYaxis: false,
+                            zoomedArea: {
+                                fill: {
+                                    color: '#90CAF9',
+                                    opacity: 0.4
+                                },
+                                stroke: {
+                                    color: '#0D47A1',
+                                    opacity: 0.4,
+                                    width: 1
+                                }
+                            }
+                        },
                         animations: {
                             enabled: false,
                         },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
-
-                        zoom: {
-                            enabled: false,
-                            type: 'x',
-                            autoScaleYaxis: true,
-                        },
                         toolbar: {
-                            show: false
+                            show: true
                         }
                     },
                     dataLabels: {
@@ -230,110 +240,7 @@
 
                     },
                 },
-                chartOptionsAbove: {
-                    chart: {
-                        animations: {
-                            enabled: false,
-                        },
-                        height: 500,
-                        type: 'line',
-                        zoom: {
-                            enabled: true,
-                            type: 'y',
-                            autoScaleYaxis: true,
-                        },
-                        toolbar: {
-                            show: false,
-                        },
-                        background: '#2B2E5E',
-
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    colors: ['#2E50E9', '#E3000F'],
-                    stroke: {
-                        curve: 'smooth',
-                    },
-                    legend:{
-                        labels: {
-                            colors: ['#FFFFFF']
-                        },
-                        show: false,
-                    },
-                    tooltip: {
-                        fillSeriesColor: true,
-                    },
-                    grid: {
-                        show: true,
-                        borderColor: '#454D7D',
-                        strokeDashArray: 0,
-                        position: 'back',
-                        xaxis: {
-                            lines: {
-                                show: true
-                            }
-                        },
-                        yaxis: {
-                            lines: {
-                                show: true
-                            },
-                        },
-                        row: {
-                            colors: ['transparent'],
-                            opacity: 0.5
-                        },
-                        column: {
-                            colors: ['transparent'],
-                            opacity: 0.5
-                        },
-                        padding: {
-                            top: 0,
-                            right: 0,
-                            bottom: 0,
-                            left: 0
-                        },
-                    },
-                    xaxis: {
-                        labels: {
-                            style: {
-                                colors: '#FFFFFF'
-                            },
-                        },
-                        tickAmount: 9,
-                        position: 'bottom',
-                    },
-                    yaxis: [
-                        {
-                            max: 50,
-                            labels: {
-                                style: {
-                                    colors: '#FFFFFF'
-                                },
-                                formatter: function(val) {
-                                    if (val == null)
-                                        return 0;
-                                    return val.toFixed(0);
-                                },
-                            }
-                        },
-                        {
-                            opposite: true,
-                            max: 50,
-                            labels: {
-                                style: {
-                                    colors: '#FFFFFF'
-                                },
-                                formatter: function(val) {
-                                    if (val == null)
-                                        return 0;
-                                    return val.toFixed(0);
-                                },
-                            }
-                        },
-
-                    ],
-                },
+                chartOptionsAbove: {}
             }
         },
         computed:{
@@ -460,18 +367,17 @@
                         }],
                     },
                     chart: {
+                        zoom:{
+                            enabled: false,
+                        },
                         animations: {
                             enabled: false,
                         },
                         height: 500,
-                            type: 'line',
-                            zoom: {
-                                enabled: false,
-                                type: 'y',
-                                autoScaleYaxis: true,
-                        },
+                        type: 'line',
+
                         toolbar: {
-                            show: false,
+                            show: true,
                         },
                         background: '#2B2E5E',
 
