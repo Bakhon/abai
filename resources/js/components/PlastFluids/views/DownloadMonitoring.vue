@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import Header from "../components/Header.vue";
 import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
 import MonitoringDownloadTable from "../components/MonitoringDownloadTable.vue";
@@ -28,21 +28,31 @@ export default {
     MonitoringDownloadTable,
     SmallCatLoader,
   },
+  props: {
+    user: Object,
+  },
+  provide() {
+    return {
+      userID: this.user.id,
+    };
+  },
   data() {
     return {
       templates: [],
-      currentPage: 1,
-      perPage: 15,
-      pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     };
   },
   computed: {
     ...mapState("plastFluidsLocal", ["loading"]),
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_TEMPLATE"]),
     async getTemplates() {
-      const data = await getUploadTemplates();
+      const payload = new FormData();
+      payload.append("user_id", this.user.id);
+      const data = await getUploadTemplates(payload);
       this.templates = convertTemplateData(data, this.currentLang);
+      const initTemplate = data.find((template) => template.id === 1);
+      this.SET_CURRENT_TEMPLATE(initTemplate);
     },
   },
   mounted() {
@@ -52,21 +62,6 @@ export default {
 </script>
 
 <style scoped>
-:root {
-  box-sizing: border-box;
-}
-
-*,
-::before,
-::after {
-  box-sizing: inherit;
-}
-
-a {
-  text-decoration: none;
-  color: #fff;
-}
-
 .top-wrapper {
   width: 100%;
 }

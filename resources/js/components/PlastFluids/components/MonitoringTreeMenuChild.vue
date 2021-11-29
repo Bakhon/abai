@@ -36,6 +36,9 @@ export default {
     type: {
       default: "",
     },
+    userID: {
+      default: "",
+    },
   },
   computed: {
     ...mapState("plastFluids", ["currentSubsoilField"]),
@@ -62,8 +65,13 @@ export default {
       link.click();
     },
     setTableData() {
-      this.SET_CURRENT_TEMPLATE(this.treeChild);
-      this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
+      if (this.currentSubsoilField[0])
+        this.handleTableData({
+          field_id: this.currentSubsoilField[0].field_id,
+          report_id: this.treeChild.id,
+          user_id: this.userID,
+          template: this.treeChild,
+        });
     },
   },
 };
