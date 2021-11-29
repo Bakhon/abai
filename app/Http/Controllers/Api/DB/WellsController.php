@@ -16,6 +16,7 @@ use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\MeasWell;
 use App\Models\BigData\PzabTechMode;
 use App\Models\BigData\DmartDailyProd;
+use App\Models\BigData\DailyInjectionOil;
 use App\Models\BigData\WellDailyDrill;
 use App\Models\BigData\Well; 
 use App\Models\BigData\WellEquipParam;
@@ -52,7 +53,7 @@ class WellsController extends Controller
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-              
+         
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
@@ -77,8 +78,8 @@ class WellsController extends Controller
         {
             $show_param = [             
                 'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),                
-                'tech_mode_inj' => $this->techModeInj($well),
-                'meas_water_inj' => $this->measLiqInjection($well),
+                'tech_mode_inj' => $this->techModeInj($well),          
+                'dailyInjectionOil' => $this->dailyInjectionOil($well),
             ];  
         }   
                 
@@ -188,11 +189,29 @@ class WellsController extends Controller
 
     private function tubeNom(Well $well)
     {
-        return $well->tubeNom()
-            ->wherePivot('project_drill', '=', 'false')
-            ->wherePivot('casing_type', '=', '8', 'or')
-            ->WherePivot('casing_type', '=', '9')
-            ->get(['prod.well_constr.od']);
+        $wellConstr = $well->tubeNom()
+                    ->wherePivot('project_drill', '=', 'false')
+                    ->wherePivot('casing_type', '=', '8', 'or')
+                    ->WherePivot('casing_type', '=', '9')
+                    ->get(['prod.well_constr.od'])
+                    ->toArray();
+
+        if($wellConstr){
+            return $wellConstr[0];
+        }
+        if(!$wellConstr){
+            $wellConstrOd = DB::connection('tbd')
+                            ->table('prod.well_constr')
+                            ->where('well', '=', $well->id)
+                            ->where('od', '!=', null)                        
+                            ->orderBy('id', 'desc')
+                            ->get('od')
+                            ->toArray();   
+        if($wellConstrOd){
+            return $wellConstrOd[0];
+        }
+            return "";
+        }                                     
     }
 
     private function date_expl(Well $well)
@@ -421,6 +440,20 @@ class WellsController extends Controller
         return "";
     }
 
+    private function dailyInjectionOil(Well $well)
+    {
+       $dailyInjectionOil = $well->dailyInjectionOil()
+            ->where('well', '=', $well->id)
+            ->orderBy('date', 'desc')
+            ->get(['water_inj_val', 'pressure_inj', 'pump_stroke', 'choke', 'water_vol'])                        
+            ->toArray();
+
+        if($dailyInjectionOil){
+            return $dailyInjectionOil[0]; 
+        }     
+        return "";                          
+    }
+
     private function pzabWell(Well $well)
     {
         $pzabWell = $well->pzabWell()
@@ -475,7 +508,8 @@ class WellsController extends Controller
     private function techModeInj(Well $well)
     {
         $techModeInj = $well->techModeInj()
-            ->get(['inj_pressure', 'agent_vol'])
+            ->orderBy('dbeg', 'desc')
+            ->get(['inj_pressure', 'agent_vol'])            
             ->toArray();
 
         if($techModeInj){
@@ -853,38 +887,58 @@ class WellsController extends Controller
 
     public function getActivityByWell(Request $request, $wellId)
     {
+        $activity = [];
         $wellWorkover = WellWorkover::query()
             ->select(['dbeg', 'well', 'repair_type', 'work_plan', 'well_status'])
             ->whereIn('repair_type', [1, 3])
             ->whereYear('dbeg', $request->year)
-            ->whereMonth('dbeg', $request->month)
             ->where('well', $wellId)
+            ->with('repairType')
             ->get();
+        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkover,'dbeg'));
         $wellWorkoverEnd = WellWorkover::query()
             ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
             ->whereIn('repair_type', [1, 3])
             ->whereYear('dend', $request->year)
-            ->whereMonth('dend', $request->month)
             ->where('well', $wellId)
+            ->with('repairType')
             ->get();
-        foreach ($wellWorkoverEnd as $workEnd) {
-            $wellWorkover->push($workEnd);
-        }
+        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkoverEnd,'dend'));
         $gtms = Gtm::query()
             ->select(['param_result', 'gtm_type', 'dbeg'])
             ->where('well', $wellId)
             ->whereYear('dbeg', $request->year)
-            ->whereMonth('dbeg', $request->month)
+            ->with('GtmType')
             ->get();
         foreach ($gtms as $gtm) {
-            $wellWorkover->push(
+            array_push($activity,
                 array(
                     'dbeg' => $gtm->dbeg,
-                    'repair_type' => $gtm->gtm_type->name_ru
+                    'repair_type' => $gtm->GtmType[0]->name_ru,
+                    'work_plan' => null,
+                    'well_status' => null,
+                    'work_list' => null
                 )
             );
         }
-        return $wellWorkover;
+        return $activity;
+    }
+
+    private function getFormattedWorkover($workovers,$dateField)
+    {
+        $result = [];
+        foreach ($workovers as $workover) {
+            array_push($result,
+                array(
+                    $dateField => $workover->$dateField,
+                    'work_plan' => $workover->work_plan,
+                    'well_status' => $workover->well_status,
+                    'repair_type' => $workover->repairType->name_ru,
+                    'work_list' => $workover->work_list
+                )
+            );
+        }
+        return $result;
     }
 
     public function getProductionTechModeOil(Request $request, $wellId)

@@ -36,6 +36,7 @@
         <SmallCatLoader :loading="loading" v-else />
       </div>
       <DataAnalysisDataTable
+        imagePath="/img/PlastFluids/tableIcon.svg"
         tableTitle="sampling_quality_table"
         :items="tableRows"
         :fields="tableFields"
@@ -114,21 +115,25 @@ export default {
         Object.keys(this.graphData).length &&
         !Object.keys(this.graphData).some(
           (key) => !this.graphData[key].data.length
-        ) && !this.loading
+        ) &&
+        !this.loading
       );
     },
   },
   watch: {
     currentSubsoilField: {
       handler(value) {
-        this.handleTableGraphData({ field_id: value[0].field_id });
+        this.handleAnalysisTableData({
+          field_id: value[0].field_id,
+          postUrl: "analytics/pvt-data-analysis",
+        });
       },
       deep: true,
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", [
-      "handleTableGraphData",
+      "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
     setConfig() {},
@@ -140,8 +145,9 @@ export default {
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {
-      await this.handleTableGraphData({
+      await this.handleAnalysisTableData({
         field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
       });
       this.handleBlocksFilter(this.currentSubsoilHorizon);
     }

@@ -409,7 +409,7 @@
                         <template v-if="sheetType in sheetConfigurations">
                           <tr v-for="(row, uniqueId) in statisticsOfSheet" v-if="isContainsData(row)">
                             <td class="table-body" v-for="column in statisticsColumns[sheetType]['generic']">
-                              <div class="centered">
+                              <div class="centered" v-if="row[column]">
                                 {{ formatCell(row[column]) }}
                               </div>
                             </td>
@@ -425,7 +425,7 @@
                         <template v-else>
                           <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
                             <td class="table-body" v-for="column in statisticsColumns[sheetType]['generic']">
-                              <div class="centered">
+                              <div class="centered" v-if="row[column]">
                                 {{ formatCell(row[column]) }}
                               </div>
                             </td>

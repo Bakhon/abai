@@ -80,7 +80,11 @@ class FluidProductionMonth extends MeasLogByMonth
         $rows = [];
         foreach ($this->wells as $well) {
             $firstRow = [
-                'uwi' => ['value' => $well->uwi],
+                'uwi' => [
+                    'id' => $well->id,
+                    'name' => $well->uwi,
+                    'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+                ],
                 'other_uwi' => $otherUwis[$well->id],
                 'tap' => ['value' => $well->tech ? $well->tech->name_ru : null],
             ];

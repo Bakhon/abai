@@ -2,7 +2,6 @@
   <div class="data-analysis-header">
     <MultiLevelDropdown
       v-for="heading in headerMenu"
-      :class="{ activeLink: heading.activeKey === headingKey }"
       :key="heading.name"
       :item="heading"
       :hover="hover"

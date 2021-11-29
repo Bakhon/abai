@@ -37,9 +37,8 @@
                 "code": "repair_work_type",
                 "type": "dict",
                 "title": "type_rep_work",
-                "validation": "required|exists:tbd.dict.repair_work_type",
-                "dict": "repair_type_prs_ktm",
-                "filter_by_well_orgs": true
+                "validation": "required|exists:tbd.dict.repair_work_type,id",
+                "dict": "repair_type_prs_ktm"
               },
               {
                 "code": "work_plan",

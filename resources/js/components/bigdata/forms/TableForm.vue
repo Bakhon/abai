@@ -128,7 +128,8 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a v-if="row[column.code]" :href="row[column.code].href"
+                             target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
@@ -170,8 +171,6 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]"
-                                  class="error">{{ showError(errors[row.id][column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
                       <span class="value">
@@ -215,13 +214,11 @@
                           <template v-if="isCellEdited(row, column)">
                             <div class="input-wrap">
                               <input
+                                  v-if="row[column.code]"
                                   v-model="row[column.code].value"
                                   class="form-control"
                                   type="text">
                             </div>
-                            <span v-if="errors && errors[row.id] && errors[row.id][column.code]" class="error">
-                              {{ showError(errors[row.id][column.code]) }}
-                            </span>
                           </template>
                           <template v-else-if="row[column.code]">
                       <span class="value">{{
@@ -243,6 +240,12 @@
                             </div>
                           </b-popover>
                         </template>
+                        <span
+                            v-if="isCellEdited(row, column) && errors && errors[row.id] && errors[row.id][column.code]"
+                            class="error"
+                        >
+                          {{ showError(errors[row.id][column.code]) }}
+                        </span>
                       </td>
                     </tr>
                   </template>
@@ -264,7 +267,8 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a v-if="row[column.code]" :href="row[column.code].href"
+                             target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
