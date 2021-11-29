@@ -885,42 +885,6 @@ class WellsController extends Controller
         return  response()->json($result);
     }
 
-    public function getActivityByWell(Request $request, $wellId)
-    {
-        $wellWorkover = WellWorkover::query()
-            ->select(['dbeg', 'well', 'repair_type', 'work_plan', 'well_status'])
-            ->whereIn('repair_type', [1, 3])
-            ->whereYear('dbeg', $request->year)
-            ->whereMonth('dbeg', $request->month)
-            ->where('well', $wellId)
-            ->get();
-        $wellWorkoverEnd = WellWorkover::query()
-            ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
-            ->whereIn('repair_type', [1, 3])
-            ->whereYear('dend', $request->year)
-            ->whereMonth('dend', $request->month)
-            ->where('well', $wellId)
-            ->get();
-        foreach ($wellWorkoverEnd as $workEnd) {
-            $wellWorkover->push($workEnd);
-        }
-        $gtms = Gtm::query()
-            ->select(['param_result', 'gtm_type', 'dbeg'])
-            ->where('well', $wellId)
-            ->whereYear('dbeg', $request->year)
-            ->whereMonth('dbeg', $request->month)
-            ->get();
-        foreach ($gtms as $gtm) {
-            $wellWorkover->push(
-                array(
-                    'dbeg' => $gtm->dbeg,
-                    'repair_type' => $gtm->gtm_type->name_ru
-                )
-            );
-        }
-        return $wellWorkover;
-    }
-
     public function getProductionTechModeOil(Request $request, $wellId)
     {
         $minYear = min($request->year);
