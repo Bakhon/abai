@@ -28,7 +28,7 @@
             </div>
             <div
                 v-else
-                class="bd-main-block__filter-input"
+                class="bd-main-block__filter-input bd-main-block__filter-input_select"
             >
               <bigdata-form-field
                   v-model="filter[filterItem.code]"
@@ -215,6 +215,8 @@ body.fixed {
 </style>
 <style lang="scss">
 .bd-main-block {
+  height: calc(100vh - 122px);
+  overflow: hidden;
 
   &__filter {
     align-items: center;
@@ -229,6 +231,10 @@ body.fixed {
     &-input {
       margin-right: 15px;
       position: relative;
+
+      &_select {
+        margin-right: 40px;
+      }
 
       &_date {
         &:after {
