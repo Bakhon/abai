@@ -75,9 +75,11 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {
-      if (!this.structureTypes.includes('well')) return
+      if (!this.structureTypes.includes('well')) {
+        child.isLoading = false
+        return
+      }
 
-      child.isLoading = true;
 
       let node = child.node
       this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {

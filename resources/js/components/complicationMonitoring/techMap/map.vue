@@ -50,6 +50,8 @@
 
     <map-legend :variant="mapColorsMode" :referentValue="+referentValue"/>
 
+    <map-params :mapParams="mapParams" @mapRedraw="mapRedraw" />
+
     <div id="map"></div>
 
     <map-context-menu
@@ -171,6 +173,7 @@ import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 import mapLegend from "./mapLegend";
+import mapParams from "./mapParams";
 import objectForm from "./objectForm";
 import mapPipeForm from "./mapPipeForm";
 import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
@@ -204,7 +207,8 @@ export default {
     wellOmgNgduForm,
     guOmgNgduForm,
     zuOmgNgduForm,
-    calcForm
+    calcForm,
+    mapParams
   },
   data() {
     return {
@@ -241,6 +245,8 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
+      waterPipes: [],
+      waterWellPoints: [],
       mapColorsMode: 'speedFlow',
       selectedDate: null,
       activeFilter: 'speedFlow',
@@ -260,6 +266,13 @@ export default {
         },
       ],
       referentValue: 10,
+      mapParams: {
+        show_ppd: {
+          value: true,
+          title: 'Показать ППД',
+          name: 'show_ppd'
+        }
+      },
       objectHovered: null,
       pipeHovered: null,
       pipeHoveredParameter: null,
@@ -336,7 +349,9 @@ export default {
       this.SET_LOADING(true);
       let data = await this.getMapData(this.gu);
       this.pipes = data.pipes;
+      this.waterPipes = data.water_pipes;
       this.selectedDate = data.date;
+      this.waterWellPoints = data.water_wells;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -456,7 +471,7 @@ export default {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
       let guPointsLayer = this.createIconLayer('icon-layer-gu', this.guPoints, 'gu');
       let zuPointsLayer = this.createIconLayer('icon-layer-zu', this.zuPoints, 'zu');
-      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well')
+      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well');
 
       this.layersIds = [
         'path-layer',
@@ -469,8 +484,17 @@ export default {
         pipesLayer,
         guPointsLayer,
         zuPointsLayer,
-        wellPointsLayer,
+        wellPointsLayer
       ];
+
+      if (this.mapParams.show_ppd.value) {
+        let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
+        let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
+        this.layersIds.push('icon-layer-water-well');
+        this.layersIds.push('water-pipes-layer');
+        this.layers.push(waterWellPointsLayer);
+        this.layers.push(waterPipesLayer);
+      }
     },
     async mapClickHandle(e) {
       let elevation = await this.getElevationByCoords({
@@ -548,6 +572,9 @@ export default {
         case "well":
           iconAtlas = '/img/icons/map/well_black.png';
           break;
+        case "water-well":
+          iconAtlas = '/img/icons/map/well_normal.png';
+          break;
       }
 
       let name = this.getObjectName(type);
@@ -604,6 +631,10 @@ export default {
       });
     },
     getPipeColor(pipe) {
+      if (pipe.water_pipe) {
+        return pipeColors.default.water_pipe;
+      }
+
       if (this.activeFilter) {
         switch (this.activeFilter) {
           case "speedFlow":
@@ -770,7 +801,7 @@ export default {
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
-    clearSelected(){
+    clearSelected() {
       this.selectedGu = null;
       this.selectedWell = null;
       this.selectedZu = null;
@@ -1127,12 +1158,18 @@ export default {
             return response.data;
           });
     },
-    layerRedraw(layerId, type, data) {
+    deleteLayer(layerId){
       let layerIndex = this.layers.findIndex((layer) => {
         return layer.id == layerId;
       });
 
-      this.layers.splice(layerIndex, 1);
+      if (layerIndex !== -1){
+        this.layers.splice(layerIndex, 1);
+      }
+    },
+    layerRedraw(layerId, type, data) {
+      this.deleteLayer(layerId);
+
       this.updateLayers();
 
       if (type != 'pipe') {
@@ -1267,6 +1304,10 @@ export default {
           return this.trans('monitoring.pipe.pipe')
           break;
 
+        case 'water-well':
+          return this.trans('monitoring.water-well')
+          break;
+
         default:
           return ""
           break;
@@ -1321,6 +1362,14 @@ export default {
       }, 500)()
     },
     mapRedraw() {
+      this.deleteLayer('water-pipes-layer');
+      this.deleteLayer('icon-layer-water-well');
+
+      if (this.mapParams.show_ppd.value) {
+        this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
+        this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
+      }
+
       this.layerRedraw('path-layer', 'pipe', this.pipes);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);

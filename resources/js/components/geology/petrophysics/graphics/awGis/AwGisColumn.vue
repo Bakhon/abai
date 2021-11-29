@@ -98,6 +98,7 @@ export default {
 
     &_info {
       font-size: 0.7em;
+      color: #212529;
     }
   }
 }

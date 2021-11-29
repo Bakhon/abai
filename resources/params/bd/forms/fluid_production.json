@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "table_type": "wells",
   "columns": [
     {

@@ -40,25 +40,39 @@
                 </div>
             </div>
             <div class="content-block-scrollable">
-                <ProductionWellsScheduleItem
-                    v-for="(well, index) in wells"
-                    :well="well"
-                    :key="index"
-                    :isShowEvents="isShowEvents"
-                />
+                <div  v-for="well in wells">
+                    <ProductionWellsScheduleItem
+                        v-if="well.category && well.category.name_ru === productionCategory && well.scheduleData"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                        :scheduleData="well.scheduleData"
+                    />
+                    <InjectionWellsScheduleItem
+                        v-else-if="well.category && well.category.name_ru === injectionCategory && well.scheduleData"
+                        :well="well"
+                        :key="well.id"
+                        :isShowEvents="isShowEvents"
+                        :scheduleData="well.scheduleData"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
 import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
+import InjectionWellsScheduleItem from "./InjectionWellsScheduleItem";
 import vSelect from 'vue-select'
 import axios from "axios";
+import {globalloadingMutations} from '@store/helpers';
+import moment from "moment";
 
 export default {
     components: {
         vSelect,
-        ProductionWellsScheduleItem
+        ProductionWellsScheduleItem,
+        InjectionWellsScheduleItem
     },
     props: {
         mainWell: {}
@@ -67,10 +81,16 @@ export default {
         return {
             wells: [],
             options: [],
-            isShowEvents: true
+            isShowEvents: true,
+            productionCategory: 'Нефтяная',
+            injectionCategory: 'Нагнетательная',
+            initialPeriod: 90
         }
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         toggleShowEvents() {
             this.isShowEvents = !this.isShowEvents;
         },
@@ -95,9 +115,51 @@ export default {
             },
             350
         ),
-        selectWell(well) {
+        async selectWell(well) {
+            this.SET_LOADING(true);
+            if (Object.keys(well).length > 0) {
+                const response = await axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`));
+                well['category'] = response.data.category;
+            }
             this.options = [];
-            this.wells.push(well)
+            this.wells.unshift(well);
+            for (let i in this.wells) {
+                let well = this.wells[i];
+                this.wells[i]['scheduleData'] = await this.getScheduleData(well.id,well.category.name_ru);
+            }
+            this.SET_LOADING(false);
+        },
+        async getScheduleData(id,type) {
+            let queryOptions = {
+                'wellId': id,
+                'period': this.initialPeriod,
+                'type': type
+            };
+            const response = await axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'),{params:queryOptions});
+            if (type === this.injectionCategory) {
+                return {
+                    'data': [
+                        response.data.ndin,
+                        response.data.liquidInjection,
+                        response.data.liquidPressure,
+                        response.data.events
+                    ],
+                    'labels': response.data.labels
+                };
+            } else {
+                return {
+                    'data': [
+                        response.data.ndin,
+                        response.data.measLiq,
+                        response.data.oil,
+                        response.data.measWaterCut,
+                        response.data.events
+                    ],
+                    'labels': response.data.labels
+                };
+            }
+
+            return {};
         },
         removeWellSchedule(well) {
             this.wells.splice(
@@ -105,8 +167,11 @@ export default {
             );
         }
     },
-    mounted() {
+    async mounted() {
+        this.SET_LOADING(true);
+        this.mainWell['scheduleData'] = await this.getScheduleData(this.mainWell.id,this.mainWell.category.name_ru);
         this.wells.push(this.mainWell);
+        this.SET_LOADING(false);
     }
 }
 </script>

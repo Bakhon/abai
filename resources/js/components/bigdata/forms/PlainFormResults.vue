@@ -153,6 +153,10 @@ export default {
       type: String,
       required: true
     },
+    type: {
+      type: String,
+      required: true
+    },
     wellId: {
       type: Number,
       required: true
@@ -226,7 +230,7 @@ export default {
 
       this.axios.get(
           this.localeUrl(`/api/bigdata/forms/${this.code}/results`),
-          {params: {well_id: this.wellId}}
+          {params: {well_id: this.wellId, type: this.type}}
       ).then(({data}) => {
         this.rows = data.rows
         this.columns = data.columns
@@ -300,6 +304,7 @@ export default {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
         if (column.multiple) {
+          if (!row[column.code]) return '';
           return row[column.code].map(itemId => {
             let value = dict.find(dictItem => dictItem.id === itemId)
             return value.name || value.label

@@ -1,12 +1,13 @@
 {
   "type": "table",
+  "new": true,
   "show_history": false,
   "update_after_edit": false,
   "columns": [
     {
       "title": "well",
       "code": "uwi",
-      "type": "text",
+      "type": "link",
       "is_editable": false
     },
     {
