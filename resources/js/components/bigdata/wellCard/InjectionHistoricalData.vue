@@ -31,9 +31,9 @@
                     <tr>
                         <td rowspan="2">Итого</td>
                         <td>{{ formatNumber(this.getTotalWaterInjection().toFixed(1)) }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
                     </tr>
                 </tbody>
             </table>
@@ -160,18 +160,19 @@
                 let dailyWaterInjection =  _.meanBy(filtered, 'dailyWaterInjection');
                 if (isNaN(dailyWaterInjection)) {
                     dailyWaterInjection = 0;
-                }
-                summary['waterInjection'] = _.sumBy(filtered, 'dailyWaterInjection');
+                }               
+                summary['waterInjection'] = _.sumBy(filtered, 'waterInjection');               
                 summary['dailyWaterInjection'] = dailyWaterInjection;
                 summary['accumulateWaterInjection'] = 0;
                 summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');              
                 return summary;
             },
             getTotalWaterInjection(){
-              let sum = 0;     
-              _.forEach(this.dates, (item) => {
-                 sum += item.dailyWaterInjection;
-              });                            
+              let sum = 0;                   
+              _.forEach(this.dates, (item) => {                  
+                 sum += item.waterInjection;                 
+              });                           
+              sum = sum / 2; 
               return sum;
             },                     
             formatNumber(num) {

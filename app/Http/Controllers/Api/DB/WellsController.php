@@ -50,10 +50,10 @@ class WellsController extends Controller
     {
     
         $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date', 'whc_alt', 'whc_h')->find($well);
-   /*     if (Cache::has('well_' . $well->id)) {
+        if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }     
-     */    
+         
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
                    ->join('dict.well_category_type', 'prod.well_category.category', '=', 'dict.well_category_type.id')
@@ -124,7 +124,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
       
-    //    Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
     

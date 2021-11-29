@@ -38,14 +38,13 @@
                             <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
                         <tr>
-                            <td colspan="2">Итого</td>
+                            <td rowspan="2">Итого</td>
                             <td>{{ formatNumber(this.getTotalWater().toFixed(1)) }}</td>
                             <td>{{ formatNumber(this.getTotalLiquid().toFixed(1)) }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>                                                 
                         </tr>
                     </tbody>
                 </table>
