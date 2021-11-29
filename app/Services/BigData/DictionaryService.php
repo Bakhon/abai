@@ -100,7 +100,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
+            'name_field' => 'description'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -387,7 +387,7 @@ class DictionaryService
         $cacheKey = 'bd_dict_' . $dict;
 
         if ($this->cache->has($cacheKey)) {
-            return $this->cache->get($cacheKey);
+//            return $this->cache->get($cacheKey);
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
