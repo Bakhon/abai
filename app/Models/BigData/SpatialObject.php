@@ -7,4 +7,5 @@ use App\Models\TBDModel;
 class SpatialObject extends TBDModel
 {
     protected $table = 'geo.spatial_object';
+    protected $guarded = ['id'];
 }
