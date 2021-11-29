@@ -197,7 +197,7 @@
                     }
                 }).then(({data}) => {
                     this.chartSeries = [
-                        data.ndin,
+                  //      data.ndin,
                         data.liquidInjection,
                         data.liquidPressure,
                         data.events
@@ -209,7 +209,7 @@
             },
         },
         mounted() {
-            this.chartSeries = this.scheduleData.data;
+            this.chartSeries = this.scheduleData.data;            
             this.labels = this.scheduleData.labels;
             this.title = this.well.name;
         },

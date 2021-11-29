@@ -37,6 +37,16 @@
                             <td>{{formatNumber(date.oilDebit.toFixed(1))}}</td>
                             <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
+                        <tr>
+                            <td colspan="2">Итого</td>
+                            <td>{{ formatNumber(this.getTotal().toFixed(1)) }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -209,6 +219,14 @@ export default {
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
+        },
+        getTotal(){
+         let summary = [];
+         let sum = 0;
+         let totalcnt = _.forEach(this.productionHistoricalData, (item) => {
+             sum += item.water;
+         })
+         return sum;
         },
         formatNumber(num) {
             return new Intl.NumberFormat("ru-RU").format(num);

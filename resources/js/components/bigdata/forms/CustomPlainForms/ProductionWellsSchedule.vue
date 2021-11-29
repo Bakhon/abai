@@ -139,7 +139,7 @@ export default {
             if (type === this.injectionCategory) {
                 return {
                     'data': [
-                        response.data.ndin,
+                     //   response.data.ndin,
                         response.data.liquidInjection,
                         response.data.liquidPressure,
                         response.data.events
