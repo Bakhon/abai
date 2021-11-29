@@ -72,6 +72,7 @@ export default {
 }
 
 .subsoil-input-label-holder > label {
+  color: #fff;
   margin-left: 10px;
 }
 
