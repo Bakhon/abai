@@ -142,6 +142,7 @@
 <script>
 import { downloadUserReport } from "../services/templateService";
 import { mapMutations } from "vuex";
+import { downloadExcelFile } from "../helpers";
 
 export default {
   name: "BaseTable",
@@ -186,20 +187,26 @@ export default {
         const postData = new FormData();
         postData.append("file_id", item.file_id);
         const report = await downloadUserReport(postData);
-        let link = document.createElement("a");
-
-        link.download = item.file_name;
-        const blob = new Blob([report.data], {
-          type: "application/vnd.ms-excel",
-        });
-
-        link.href = URL.createObjectURL(blob);
-        link.click();
+        downloadExcelFile(item.file_name, report.data);
       } catch (error) {
         console.log(error);
       } finally {
         this.SET_LOADING(false);
       }
+    },
+    isPaintRow(row, index) {
+      let condition = false;
+      switch (this.currentRoute) {
+        case "graphs-and-tables":
+          condition = this.currentSelectedRow?.includes(index);
+          break;
+        case "maps-and-tables":
+          condition =
+            this.currentSelectedRow.id === row.key &&
+            this.currentSelectedRow.index === index;
+          break;
+      }
+      return condition;
     },
   },
   computed: {
@@ -214,22 +221,6 @@ export default {
     },
     isObjectArray() {
       return this.fields.some((field) => typeof field === "object");
-    },
-  },
-  methods: {
-    isPaintRow(row, index) {
-      let condition = false;
-      switch (this.currentRoute) {
-        case "graphs-and-tables":
-          condition = this.currentSelectedRow?.includes(index);
-          break;
-        case "maps-and-tables":
-          condition =
-            this.currentSelectedRow.id === row.key &&
-            this.currentSelectedRow.index === index;
-          break;
-      }
-      return condition;
     },
   },
 };

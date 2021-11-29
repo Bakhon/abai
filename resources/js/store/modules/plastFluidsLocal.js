@@ -161,7 +161,7 @@ const plastFluidsLocal = {
       const data = await getTemplateData(payload);
       return data;
     },
-    async handleTableData({ commit, state, dispatch }, incomeData) {
+    async handleTableData({ commit, dispatch }, incomeData) {
       try {
         const { template, ...rest } = incomeData;
         commit("SET_LOADING", true);
