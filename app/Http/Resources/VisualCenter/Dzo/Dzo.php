@@ -88,6 +88,7 @@ class Dzo {
     protected $dzoName;
     protected $measuringFactColumn = 'oil_production_fact_corrected';
     protected $condensateFactColumn = 'condensate_production_fact_corrected';
+    protected $dzoListByPki = array('КГМКМГ','ТП','ПККР');
 
     public function getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$dzoId,$periodEnd)
     {
@@ -284,7 +285,7 @@ class Dzo {
     protected function getUpdateByConsolidatedCompanies($chartData)
     {
         $chartWithKpi = array();
-        $pkiDzo = array('КГМКМГ','ТП','ПККР');
+        $pkiDzo = $this->dzoListByPki;
         foreach($chartData as $day) {
             $dayUpdatedByCompanies = $day;
             $date = Carbon::createFromFormat('d/m/Y',$day['date']);
