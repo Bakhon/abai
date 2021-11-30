@@ -912,7 +912,8 @@ export default {
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["dob_oil"],         
+          type: ["dob_oil"],
+          codes: ["KTM"],                  
         },
         {
           name: this.trans("well.org_struct"),
