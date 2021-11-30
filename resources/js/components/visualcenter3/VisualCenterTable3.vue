@@ -139,7 +139,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.gasProductionFact) }}
+                              {{ getFormattedNumber(summaryGasProductionFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -157,30 +157,30 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    v-if="summary.gasProductionFact"
-                                    :style="{width: getProgress(summary.gasProductionFact,summary.gasProductionPlan) + '%'}"
-                                    :aria-valuenow="summary.gasProductionFact"
+                                    v-if="summaryGasProductionFact"
+                                    :style="{width: getProgress(summaryGasProductionFact,summaryGasPlan) + '%'}"
+                                    :aria-valuenow="summaryGasProductionFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.gasProductionPlan"
+                                    :aria-valuemax="summaryGasPlan"
                             ></div>
 
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="summary.gasProductionFact">
-                              {{ getDiffProcentLastBigN(summary.gasProductionFact,summary.gasProductionPlan)}}%
+                            <div class="percent-header col-5 col-md-6" v-if="summaryGasProductionFact">
+                              {{ getDiffProcentLastBigN(summaryGasProductionFact,summaryGasPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.gasProductionPlan">
-                              {{ formatDigitToThousand(summary.gasProductionPlan) }}
+                            <div class="plan-header col-6" v-if="summaryGasPlan">
+                              {{ formatDigitToThousand(summaryGasPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.gasProductionFact,historicalSummaryFact.gasProductionFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryGasProductionFact,summaryGasHistoricalFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.gasProductionFact,summary.gasProductionFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryGasHistoricalFact,summaryGasProductionFact))}}%
                             </div>
                             <div class="txt3">
                               vs

@@ -429,11 +429,32 @@ export default {
             }
             return this.getSummaryByCategorySelected(this.productionParams.tableData.current.oilCondensateDelivery,'plan');
         },
-        summaryGasProduction() {
+        summaryGasProductionFact() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
             if (this.selectedCategory.toLowerCase().includes('gas')) {
                 return this.getSummaryFact(this.productionParams.tableData.current[this.selectedCategory],'fact');
             }
             return this.getSummaryFact(this.productionParams.tableData.current.gasProduction,'fact');
+        },
+        summaryGasPlan() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
+            if (this.selectedCategory.toLowerCase().includes('gas')) {
+                return this.getSummaryFact(this.productionParams.tableData.current[this.selectedCategory],'plan');
+            }
+            return this.getSummaryFact(this.productionParams.tableData.current.gasProduction,'plan');
+        },
+        summaryGasHistoricalFact() {
+            if (!this.productionParams.tableData.historical) {
+                return 0;
+            }
+            if (this.selectedCategory.toLowerCase().includes('gas')) {
+                return this.getSummaryFact(this.productionParams.tableData.historical[this.selectedCategory],'fact');
+            }
+            return this.getSummaryFact(this.productionParams.tableData.historical.gasProduction,'fact');
         },
     },
 }
