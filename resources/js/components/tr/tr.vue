@@ -228,7 +228,7 @@
         <div class="header-total-div">
           <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
           <div class="exit-div">
-            <button type="button" class="modal-bign-button">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
               {{ trans('pgno.zakrit') }}
             </button>
           </div>

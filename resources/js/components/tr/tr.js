@@ -848,6 +848,9 @@ export default {
         this.loadPage();
         this.reRender();
     },
+    closeTotalModal(modalName) {
+      this.$modal.hide(modalName)
+  },
     addpush() {
         this.$modal.show('add_well')
     },
