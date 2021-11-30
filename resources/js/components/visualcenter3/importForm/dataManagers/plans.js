@@ -65,7 +65,7 @@ export default {
                 },
                 {
                     ticker: 'ОМГ',
-                    name: 'АО "ОзенМунайГаз"'
+                    name: 'АО "Озенмунайгаз"'
                 },
                 {
                     ticker: 'УО',

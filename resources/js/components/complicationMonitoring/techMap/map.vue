@@ -115,7 +115,7 @@
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -136,7 +136,7 @@
         modal-class="long-modal"
         :title="omgNgduFormModalTitle"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <wellOmgNgduForm v-if="selectedWell" :well="selectedWell"/>
       <guOmgNgduForm v-if="selectedGu" :gu="selectedGu"/>
@@ -153,7 +153,7 @@
         id="calc-form"
         :title="trans('monitoring.map.calculate-hydro')"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
     </b-modal>
@@ -339,15 +339,6 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
-    resetSelectedObjects() {
-      this.selectedPipe = null;
-      this.selectedWell = null;
-      this.selectedGu = null;
-      this.selectedZu = null;
-      this.objectHovered = null;
-      this.pipeHovered = null;
-      this.pipeHoveredParameter = null;
-    },
     async initMap() {
       this.SET_LOADING(true);
       let data = await this.getMapData(this.gu);
@@ -828,10 +819,13 @@ export default {
       this.$bvModal.show('omg-ngdu-form');
     },
     clearSelected() {
-      this.selectedGu = null;
-      this.selectedWell = null;
-      this.selectedZu = null;
       this.selectedPipe = null;
+      this.selectedWell = null;
+      this.selectedGu = null;
+      this.selectedZu = null;
+      this.objectHovered = null;
+      this.pipeHovered = null;
+      this.pipeHoveredParameter = null;
     },
     optionClicked(option) {
       this.editMode = option.editMode;
