@@ -268,14 +268,23 @@ export default {
             return this.getMonthlyPlansInYear(summary);
         },
         getSummaryByCategorySelected(data,field) {
-            return this.getSummaryFact(data,field);
+            return this.getSummaryByFieldForCompany(data,field);
         },
         getSummaryByCondensateSelected(data,field,type) {
             let condensate = _.filter(data, (item) => {
                 return Object.keys(this.condensateCompanies).includes(item.name);
             });
-            return this.getSummaryByField(condensate,field);
-        }
+            return this.getSummaryByFieldForCompany(condensate,field);
+        },
+        getSummaryByFieldForCompany(data,fieldName) {
+            let summary = 0;
+            _.forEach(data, (item) => {
+                if (!this.exceptionDzo.includes(item.name) && this.selectedDzoCompanies.includes(item.name)) {
+                    summary += item[fieldName];
+                }
+            });
+            return summary;
+        },
     },
     computed: {
         summaryYearlyPlan() {
