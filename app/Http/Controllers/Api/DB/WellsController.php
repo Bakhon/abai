@@ -61,13 +61,15 @@ class WellsController extends Controller
 
         if ($category[0]->code == 'OIL') {
             $show_param = [
-                'pump_code' => $this->wellEquipParam($well, 'NAS'),
-                'type_sk' => $this->wellEquipParam($well, 'TSK'),
+                'pump_code' => $this->wellEquipParametr($well, 'NAS'),
+                'type_sk' => $this->wellEquipParametr($well, 'TSK'),
                 'well_equip_param' => $this->wellEquipParam($well, 'PSD'),
                 'techModeProdOil' => $this->techModeProdOil($well),
                 'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
                 'meas_well' => $this->measWell($well),
-                'lab_research_value' => $this->labResearchValue($well),
+                'lab_research_value' => $this->labResearchValue($well), 
+                'diameter_pump' => $this->wellEquipParametr($well, 'DIAN'),   
+                'depthLow' => $this->pumpDepthLowing($well, [6,20,49,36,75])            
             ];
         }
         if ($category[0]->code == 'INJ') {
@@ -113,8 +115,7 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well, 'PVOP', $mainOrg),
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),
-            'diametr_pump' => $this->wellEquipParam($well, 'DIAN'),
+            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),           
         ];
 
         $wellInfo = array_merge($wellInfo, $show_param);
@@ -228,11 +229,9 @@ class WellsController extends Controller
 
     private function category(Well $well)
     {
-        $category = $well->category()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->wherePivot('dbeg', '<=', $this->getToday())
+        $category = $well->category()           
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')
+            ->orderBy('pivot_dend')
             ->select(['name_ru'])
             ->get()
             ->toArray();
@@ -285,6 +284,40 @@ class WellsController extends Controller
             return $wellEquipParam[0];
         }
 
+        return "";
+    }
+
+    private function wellEquipParametr(Well $well, $code)
+    {
+       $wellEquipParametr = DB::connection('tbd')
+                            ->table('prod.well_equip')
+                            ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
+                            ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
+                            ->where('dict.metric.code', '=', $code)
+                            ->where('prod.well_equip.well', '=', $well->id)
+                            ->orderBy('prod.well_equip.dbeg', 'desc')
+                            ->get()                           
+                            ->toArray();
+       if($wellEquipParametr){
+           return $wellEquipParametr[0];
+       }            
+       return "";
+    }
+
+    private function pumpDepthLowing(Well $well, $param)
+    {
+       $pumpDepth = DB::connection('tbd')
+                    ->table('prod.well_equip_param')
+                    ->join('prod.well_equip', 'prod.well_equip_param.well_equip', '=', 'prod.well_equip.id')                                        
+                    ->whereIn('prod.well_equip_param.equip_param', $param)
+                    ->where('prod.well_equip.well', '=', $well->id)
+                    ->orderBy('prod.well_equip_param.dbeg', 'desc')
+                    ->get()
+                    ->toArray();
+
+        if($pumpDepth){
+            return $pumpDepth[0];
+        }
         return "";
     }
 
@@ -770,7 +803,7 @@ class WellsController extends Controller
 
     private function gis(Well $well)
     {
-        $gis = $well->gis()
+        $gis = $well->gis()        
             ->where('gis_type', '=', '1')
             ->orderBy('gis_date', 'desc')
             ->get(['gis_date'])
