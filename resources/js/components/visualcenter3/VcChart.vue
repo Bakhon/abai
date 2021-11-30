@@ -222,9 +222,6 @@
                 if (item && this.isDecreaseReasonActive) {
                     let tickDate = moment(this.labels[item._index],'DD / MMM / YYYY');
                     this.reasons = await this.getDecreaseReasons(tickDate.format('DD.MM.YYYY'),this.selectedCompanies);
-                    if (tickDate < this.opecEndDate) {
-                        this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
-                    }
                     this.$emit('chartReasons', this.reasons);
                 }
             },

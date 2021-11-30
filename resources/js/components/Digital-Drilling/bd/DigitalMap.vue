@@ -17,6 +17,15 @@
             </div>
         </div>
         <div class="map__content">
+            <div class="distance__row">
+                <div id="distance" class="distance-container"></div>
+                <div class="distance__cancel" v-if="geojson.features.length>1">
+                    <button @click="clearDistance" class="clear">
+                        <img src="/img/digital-drilling/map-distance-cancel.svg" alt="">
+                        <span>Сбросить</span>
+                    </button>
+                </div>
+            </div>
             <div class="map-filter">
                 <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
                 <dropdown title="Месторождение" :options="fields" class="dropdown__area"
@@ -31,6 +40,8 @@
                     :mapStyle="mapStyle"
                     :center="center"
                     :zoom="zoom"
+                    @load="loadMap"
+                    @click="mapClick"
             >
 
                 <MglMarker
@@ -61,7 +72,7 @@
 <script>
     import {globalloadingMutations} from '@store/helpers';
     import Dropdown from '../components/dropdownMapFilter'
-
+    import * as turf from '@turf/turf'
     import {
         MglMap,
         MglMarker,
@@ -96,13 +107,132 @@
                         id: "not_drilling",
                         name: 'Пробуренные'
                     }
-                ]
+                ],
+                map: null,
+                geojson: {
+                    'type': 'FeatureCollection',
+                    'features': []
+                },
+                linestring: {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': []
+                    }
+                },
             }
         },
         mounted(){
             this.getDZO()
         },
         methods:{
+            loadMap(event){
+                let map = event.map
+                map.addSource('geojson', {
+                    'type': 'geojson',
+                    'data': this.geojson
+                });
+                map.addLayer({
+                    id: 'measure-points',
+                    type: 'circle',
+                    source: 'geojson',
+                    paint: {
+                        'circle-radius': 5,
+                        'circle-color': '#000'
+                    },
+                    filter: ['in', '$type', 'Point']
+                });
+                map.addLayer({
+                    id: 'measure-lines',
+                    type: 'line',
+                    source: 'geojson',
+                    layout: {
+                        'line-cap': 'round',
+                        'line-join': 'round'
+                    },
+                    paint: {
+                        'line-color': '#000',
+                        'line-width': 2.5
+                    },
+                    filter: ['in', '$type', 'LineString']
+                });
+
+                this.map = map
+            },
+            mapClick(e){
+                this.distanceContainer = document.getElementById('distance')
+                let map = e.map
+                const features = map.queryRenderedFeatures(e.mapboxEvent.point, {
+                    layers: ['measure-points']
+                });
+                if (this.geojson.features.length > 1) this.geojson.features.pop();
+                this.distanceContainer.innerHTML = '';
+                if (features.length) {
+                    const id = features[0].properties.id;
+                    this.geojson.features = this.geojson.features.filter(
+                        (point) => point.properties.id !== id
+                    );
+                } else {
+                    const point = {
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [e.mapboxEvent.lngLat.lng, e.mapboxEvent.lngLat.lat]
+                        },
+                        'properties': {
+                            'id': String(new Date().getTime())
+                        }
+                    };
+
+                    this.geojson.features.push(point);
+                }
+                if (this.geojson.features.length > 1) {
+                    this.linestring.geometry.coordinates = this.geojson.features.map(
+                        (point) => point.geometry.coordinates
+                    );
+
+                    this.geojson.features.push(this.linestring);
+                    const value = document.createElement('pre');
+                    value.style.color = '#FFFFFF'
+                    value.style.fontWeight = 'bold'
+                    value.style.paddingLeft = '10px'
+                    value.style.paddingRight = '10px'
+                    value.style.marginBottom = '0'
+                    const distance = turf.length(this.linestring);
+                    value.textContent = `Общее расстояние: ${distance.toLocaleString()}km`;
+                    this.distanceContainer.appendChild(value);
+                }
+
+                map.getSource('geojson').setData(this.geojson);
+            },
+            clearDistance(){
+                this.distanceContainer = document.getElementById('distance')
+                this.distanceContainer.removeChild(this.distanceContainer.firstChild);
+                this.geojson - null
+                this.linestring = null
+                this.geojson = {
+                    'type': 'FeatureCollection',
+                        'features': []
+                },
+                this.linestring = {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'LineString',
+                        'coordinates': []
+                    }
+                }
+                this.map.getSource('geojson').setData(this.geojson);
+
+            },
+            mousemoveMap(event){
+                let map = event.map
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: ['measure-points']
+                });
+                map.getCanvas().style.cursor = features.length
+                    ? 'pointer'
+                    : 'crosshair';
+            },
             cardFullPage(){
                 this.$emit('cardFullPage')
             },
@@ -218,5 +348,46 @@
     }
     .mapboxgl-marker:hover{
         z-index: 2000;
+    }
+    .distance__row{
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+        z-index: 5000000;
+    }
+    .distance-container{
+        color: #ffffff;
+        padding: 4px 0;
+
+        background: #323370;
+        border: 0.2px solid #545580;
+        box-sizing: border-box;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+    }
+    .distance__cancel{
+        margin-left: 10px;
+        background: #293688;
+        border: 0.2px solid #3366FF;
+        box-sizing: border-box;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        padding: 4px 15px;
+        color: #FFFFFF;
+
+    }
+    .distance__cancel button{
+        display: flex;
+        align-items: center;
+        border: 0;
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+        color: #FFFFFF;
+    }
+    .distance__cancel button img{
+        margin-right: 9px;
     }
 </style>

@@ -138,8 +138,7 @@ export default {
             const response = await axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'),{params:queryOptions});
             if (type === this.injectionCategory) {
                 return {
-                    'data': [
-                        response.data.ndin,
+                    'data': [                     
                         response.data.liquidInjection,
                         response.data.liquidPressure,
                         response.data.events

@@ -5,9 +5,12 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
 use App\Jobs\ManualCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\BG;
+use App\Models\ComplicationMonitoring\BknsWell;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\KmbWell;
 use App\Models\ComplicationMonitoring\ManualGu;
 use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
@@ -149,6 +152,9 @@ class TechMapController extends Controller
             ->where('water_pipe', true)
             ->get();
         $water_wells = WaterWell::all();
+        $bgs = BG::all();
+        $kmb_wells = KmbWell::all();
+        $bkns_wells = BknsWell::all();
 
         return [
             'pipes' => $pipes,
@@ -161,7 +167,10 @@ class TechMapController extends Controller
             'pipeTypes' => $pipeTypes,
             'date' => $date,
             'water_pipes' => $water_pipes,
-            'water_wells' => $water_wells
+            'water_wells' => $water_wells,
+            'bgs' => $bgs,
+            'kmb_wells' => $kmb_wells,
+            'bkns_wells' => $bkns_wells
         ];
     }
 
