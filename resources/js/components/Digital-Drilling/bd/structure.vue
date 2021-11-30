@@ -1,7 +1,7 @@
 <template>
-    <div class="digitalDrillingWindow">
-       <div class="row">
-           <div class="col-sm-6">
+    <div class="digitalDrillingWindow defaultScroll">
+       <div class="row-structure">
+           <div class="structure">
                <div class="table">
                    <table class="table defaultTable">
                        <tbody>
@@ -20,9 +20,9 @@
                    </table>
                </div>
            </div>
-           <div class="col-sm-6">
+           <div class="structure">
                <div class="structure-graph">
-                   <img src="/img/digital-drilling/structure.png" alt="" class="structure-img">
+                  <structure-type :data="structure9" type="type9"/>
                </div>
            </div>
        </div>
@@ -31,9 +31,10 @@
 
 <script>
     import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
-
+    import StructureType from '../components/StructureType'
     export default {
         name: "structure",
+        components: {StructureType},
         data(){
             return{
                 structures: [],
@@ -58,7 +59,16 @@
                     'Погонный_вес',
                     'Высота_цемента',
                     'Боковой_ствол',
-                ]
+                ],
+                structure1: [323.9, 397, 200, 244.5, 295.3, 700],
+                structure2: [323.9, 397, 200, 244.5, 295.3, 700, 200, 244.5, 295.3],
+                structure3: [323.9, 397, 200, 244.5, 295.3, 700, 200, 323.9, 397, 200, 244.5, 295.3, 700, 200,],
+                structure4: [323000, 397, 200, 244.5, 295.3, 700, 200.5, 323.9, 397, 200, 244.5, 295555],
+                structure5: [32.5, 397, 200, 244.5, 295.3, 700, 200.5, 323.9, 397, 200, 244.5, 295.5],
+                structure6: [323.9, 397, 200, 244.5, 295.3, 700],
+                structure7: [323.9, 397, 200, 244.5, 295.3, 700, 244.5, 295.3, 700],
+                structure8: [323.9, 397, 200, 244.5, 295.3, 700, 244.5, 323.9, 397, 200, 244.5, 295.3, 700, 244.5],
+                structure9: [323.9, 397, 200, 244.5, 295.3, 700, 244.5, 323.9, 397, 200, 244.5, 295.3],
             }
         },
         computed: {
@@ -104,9 +114,23 @@
 </script>
 
 <style scoped>
-    .row{
+    .digitalDrillingWindow{
+        overflow-x: scroll;
+    }
+    .row-structure{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         background-color: #34365D;
         min-height: 100%;
+        min-width: 1500px;
+    }
+    .structure:first-child{
+        flex: 0 0 calc(100% - 717px);
+    }
+    .structure:last-child{
+        flex: 0 0 667px;
+        height: 665px;
     }
     .structure-graph{
         width: 100%;
@@ -114,7 +138,5 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 50px 0;
-
     }
 </style>
