@@ -77,12 +77,12 @@ class Well extends TBDModel
 
     public function spatialObject()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
+        return $this->belongsTo(SpatialObject::class, 'whc');
     }
 
     public function spatialObjectBottom()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsTo(SpatialObject::class, 'bottom_coord');
     }
 
     public function bottomHole()

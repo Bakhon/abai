@@ -912,7 +912,8 @@ export default {
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["dob_oil"],         
+          type: ["dob_oil"],
+          codes: ["KTM"],                  
         },
         {
           name: this.trans("well.org_struct"),
@@ -1288,7 +1289,8 @@ export default {
                  this.wellSaptialObjectBottomY  = ' '; 
                  this.wellGeoFields = ' ';   
                  this.gas_production = ' ';    
-                 this.dmart_daily_prod_oil = ' ';                                                            
+                 this.dmart_daily_prod_oil = ' ';  
+                 this.wellGeo.name_ru = '';                                                          
               }
               
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
