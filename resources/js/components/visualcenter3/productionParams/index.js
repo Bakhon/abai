@@ -13,19 +13,6 @@ export default {
                 'chartData': [],
             },
             selectedCategory: 'oilCondensateProduction',
-            summary: {
-                'oilProductionFact': 0,
-                'oilProductionPlan': 0,
-                'oilDeliveryFact': 0,
-                'oilDeliveryPlan': 0,
-                'gasProductionFact': 0,
-                'gasProductionPlan': 0,
-            },
-            historicalSummaryFact: {
-                'oilProductionFact': 0,
-                'oilDeliveryFact': 0,
-                'gasProductionFact': 0
-            },
             selectedView: 'day',
             productionTableData: [],
             productionChartData: [],
@@ -114,17 +101,6 @@ export default {
             }
             return response.data;
         },
-        updateSummaryFact(productionName,deliveryName) {
-            this.summary.oilProductionFact = this.getSummaryFact(this.productionParams.tableData.current[productionName],'fact');
-            this.summary.oilProductionPlan = _.sumBy(this.productionParams.tableData.current[productionName],'plan');
-            this.summary.oilDeliveryFact = this.getSummaryFact(this.productionParams.tableData.current[deliveryName],'fact');
-            this.summary.oilDeliveryPlan = _.sumBy(this.productionParams.tableData.current[deliveryName],'plan');
-            this.summary.gasProductionFact = _.sumBy(this.productionParams.tableData.current['gasProduction'],'fact');
-            this.summary.gasProductionPlan = _.sumBy(this.productionParams.tableData.current['gasProduction'],'plan');
-            this.historicalSummaryFact.oilProductionFact = _.sumBy(this.productionParams.tableData.historical[productionName],'fact');
-            this.historicalSummaryFact.oilDeliveryFact = _.sumBy(this.productionParams.tableData.historical[deliveryName],'fact');
-            this.historicalSummaryFact.gasProductionFact = _.sumBy(this.productionParams.tableData.historical['gasProduction'],'fact');
-        },
         getProgress(fact,plan) {
             return (fact / plan) * 100;
         },
@@ -207,9 +183,7 @@ export default {
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
             this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
-            let isWithoutKmg = this.doubleFilter.includes(category);
             let isFilterChanged = category === this.selectedCategory;
-            let shouldRecalculateSummary = false;
             for (let item in this.mainMenu) {
                 if (item === category) {
                     continue;
@@ -220,9 +194,6 @@ export default {
             this.mainMenu[category] = !this.mainMenu[category];
             this.mainMenu[parent] = true;
 
-            if (isWithoutKmg && this.mainMenu[category]) {
-                shouldRecalculateSummary = true;
-            }
             if (isFilterChanged) {
                 this.selectedCategory = this.previousCategory;
             } else {
@@ -258,11 +229,6 @@ export default {
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
                 return;
-            }
-            if (shouldRecalculateSummary) {
-                this.updateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
-            } else {
-                this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
             }
         },
         getFilteredByDzo(data,dzoList) {
