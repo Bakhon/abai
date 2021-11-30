@@ -40,9 +40,18 @@ class EmergencySituations extends Command
     private function verificationOfCompletedCompanies()
     {
         $todayCompanies = $this->getCompletedCompanies();
+        $dzoKey = array_search('КГМ', array_column($todayCompanies, 'dzo_name'));
+        if ($dzoKey) {
+            $isFilledCorrectly = $this->isDzoFilledCorrectly($todayCompanies[$dzoKey]['dzo_name']);
+            if ($isFilledCorrectly) {
+                unset($todayCompanies[$dzoKey]);
+            }
+        }
+
         if (count($todayCompanies) !== 15) {
             $this->createIncidents($todayCompanies);
         }
+
     }
     private function getCompletedCompanies()
     {
@@ -92,6 +101,18 @@ class EmergencySituations extends Command
             'description' => $company
         );
         EmergencyHistory::create($incident);
+    }
+    private function isDzoFilledCorrectly($dzo)
+    {
+        $startDay = Carbon::yesterday()->startOfDay();
+        $endDay = $startDay->copy()->endOfDay();
+        $record = DzoImportData::query()
+            ->select('oil_production_fact')
+            ->where('dzo_name',$dzo)
+            ->whereDate('date', '>=', $startDay)
+            ->whereDate('date', '<=', $endDay)
+            ->first();
+        return !is_null($record) && $record->oil_production_fact > 0;
     }
 
     /**
