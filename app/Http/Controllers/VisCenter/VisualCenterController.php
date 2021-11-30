@@ -461,6 +461,7 @@ class VisualCenterController extends Controller
             ->whereNull('is_corrected')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->orderBy('date')
             ->get()
             ->toArray();
     }

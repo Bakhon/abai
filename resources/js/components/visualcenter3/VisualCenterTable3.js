@@ -304,7 +304,6 @@ export default {
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
         }
         this.productionParams = await this.getProductionParamsByCategory();
-        this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
         this.chartReasons = this.getReasonExplanations();
         this.productionData = _.cloneDeep(this.productionTableData);
