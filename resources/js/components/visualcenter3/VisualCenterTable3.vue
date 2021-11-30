@@ -58,9 +58,13 @@
                             <div class="txt2-2">
                               {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilFact,summaryOilFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} -  {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -125,9 +129,13 @@
                             <div class="txt2-2">
                               {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilDeliveryFact,summaryOilDeliveryFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -182,9 +190,13 @@
                             <div class="txt2-2">
                               {{ Math.abs(getDifferencePercentBetweenLastValues(summaryGasHistoricalFact,summaryGasProductionFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
