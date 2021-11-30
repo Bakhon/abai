@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(block, index) in filteredBlocks" :key="index" :block="block">
+    <div v-for="(block, index) in filteredBlocks" :key="index">
       <div class="faq-page-module-block col-12">
         <div class="faq-question row" @click="getId(block.id)">
           <div class="col-11">
@@ -25,12 +25,11 @@
 <script>
 export default {
   name: "MainPageModuleBlock",
-  props: ["query"],
+  props: ["query", "faqData"],
   data() {
     return {
       clickedId: 0,
-      blocks: [],
-      block: this.getQuestionsAndAnswers(),
+      blocks: this.faqData,
     };
   },
   computed: {
@@ -53,14 +52,6 @@ export default {
       } else {
         this.clickedId = id;
       }
-    },
-    getQuestionsAndAnswers() {
-      axios.get("/ru/get-questions-and-answers").then((response) => {
-        this.blocks = response.data;
-      });
-    },
-    created() {
-      this.getQuestionsAndAnswers();
     },
   },
 };

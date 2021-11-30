@@ -25,8 +25,7 @@ Route::get("/ecoeco", "ComplicationMonitoring\OilGasController@ecoData");
 Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
-        Route::get('/faq', 'faqController@index')->name('faq');
-        Route::get('/get-questions-and-answers', 'faqController@getQuestionsAndAnswers');
+        Route::get('/faq', 'faqController@index');
         Route::group(
             ['middleware' => 'auth'],
             function () {

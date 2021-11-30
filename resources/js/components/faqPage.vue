@@ -2,13 +2,17 @@
   <div class="faq-page">
     <div class="faq-page__inner">
       <div class="faq-page__search">
-        <input :placeholder="trans('faq.describeTheProblem')" type="text" v-model="query" />
+        <input
+          :placeholder="trans('faq.describeTheProblem')"
+          type="text"
+          v-model="query"
+        />
         <button>
           <div class="faq-page__search__img"></div>
         </button>
       </div>
       <div class="faq-blocks-holder">
-        <faqPageModuleBlock :query="query" />
+        <faqPageModuleBlock :query="query" :faqData="faqData" />
       </div>
     </div>
   </div>
@@ -22,6 +26,7 @@ export default {
   components: {
     faqPageModuleBlock,
   },
+  props: ["faqData"],
   data() {
     return {
       query: "",

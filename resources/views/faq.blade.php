@@ -17,7 +17,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 faq-header_img">
                     <div class="faq-header_name">{{ __('faq.header') }}</div>
-                    <faq-page></faq-page>
+                    <faq-page  :faq-Data="{{ $faqData }}"></faq-page>
                 </div>
             </div>
         </div>
