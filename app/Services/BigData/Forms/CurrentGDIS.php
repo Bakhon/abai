@@ -291,6 +291,9 @@ class CurrentGDIS extends TableForm
 
         $rows = [];
         foreach ($this->metricCodes as $code) {
+            if (!isset($metricNames[$code])) {
+                continue;
+            }
             $row = [
                 'id' => implode('_', [$this->request->get('id'), 'metric', $code]),
                 'code' => $code,
