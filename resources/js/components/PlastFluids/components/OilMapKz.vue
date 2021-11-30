@@ -53,6 +53,7 @@ export default {
         zoomControl: false,
         center: [47.78333, 67.76667],
         zoom: 5,
+        attributionControl: false,
       },
       tooltipOptions: {
         permanent: true,

@@ -213,7 +213,7 @@
               "code": "cnl_new",
               "type": "numeric",
               "title": "new_run_down_nkt",
-              "validation": "nullable|numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:500|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -221,7 +221,7 @@
               "code": "cnl_used",
               "type": "numeric",
               "title": "used_run_down_nkt",
-              "validation": "nullable|numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:500|gte:0",
               "prefix": "",
               "is_editable": true
             },

@@ -100,7 +100,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
+            'name_field' => 'description'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -387,7 +387,7 @@ class DictionaryService
         $cacheKey = 'bd_dict_' . $dict;
 
         if ($this->cache->has($cacheKey)) {
-            return $this->cache->get($cacheKey);
+//            return $this->cache->get($cacheKey);
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
@@ -829,7 +829,7 @@ class DictionaryService
     private function getRepairTypeDict(string $type){
         $items = DB::connection('tbd')
             ->table('dict.repair_work_type as dr')
-            ->select('dr.id','dr.name_ru as name')
+            ->selectRaw('dr.id, CONCAT_WS(\' \', dr.code, dr.name_ru) as name')
             ->where('dw.code', $type)
             ->distinct()
             ->orderBy('name', 'asc')
@@ -919,7 +919,7 @@ class DictionaryService
     private function getRepairTypeDictKrsPrs($type){
         $items = DB::connection('tbd')
             ->table('dict.repair_work_type as dr')
-            ->select('dr.id','dr.name_ru as name', 'pr.org as org')
+            ->selectRaw('dr.id, CONCAT_WS(\' \', dr.code, dr.name_ru) as name, pr.org as org')
             ->where('dw.code', $type)          
             ->leftJoin('prod.well_workover as p', 'p.repair_work_type', 'dr.id')  
             ->leftJoin('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')   

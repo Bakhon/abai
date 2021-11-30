@@ -143,7 +143,9 @@ class MeasCurrentGdis extends TableForm
 
                         if ($column['code'] === 'uwi') {
                             $result[$column['code']] = [
-                                'value' => $well->uwi
+                                'id' => $well->id,
+                                'name' => $well->uwi,
+                                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
                             ];
                             continue;
                         }

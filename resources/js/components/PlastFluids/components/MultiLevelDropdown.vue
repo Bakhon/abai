@@ -118,7 +118,7 @@ export default {
   display: flex;
   flex-flow: column;
   width: 100%;
-  z-index: 2;
+  z-index: 1000;
 }
 
 .top {

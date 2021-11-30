@@ -90,6 +90,12 @@
         },
         mounted(){
             this.getDZO()
+            this.currentDZO.id = this.currentWell.dzo_id
+            this.currentDZO.name = this.currentWell.dzo_name
+            this.currentField.id = this.currentWell.field_id
+            this.currentField.name = this.currentWell.field_name
+            this.query = parseInt(this.currentWell.well_num)
+
         },
         computed:{
             ...digitalDrillingState([
@@ -145,7 +151,6 @@
                     let data = response.data;
                     if (data) {
                         this.dzo = data;
-                        this.currentDZO = data[0];
                         this.getField('')
                     } else {
                         console.log('No data');
@@ -187,10 +192,17 @@
                 this.filterWell()
             },
             changeCurrentWell(item){
+                this.currentField = {
+                    id: item.field_id,
+                    name: item.field_name
+                }
                 this.query = item.well_num
                 this.filter = false
                 this.currentWellItem = item
-                this.changeCurrentWellValue(item)
+                let currentItem = item
+                currentItem.dzo_id = this.currentDZO.id
+                currentItem.dzo_name = this.currentDZO.name
+                this.changeCurrentWellValue(currentItem)
             },
             ...digitalDrillingActions([
                 'changeCurrentWellValue'

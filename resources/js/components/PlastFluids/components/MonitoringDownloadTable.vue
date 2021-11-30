@@ -1,16 +1,12 @@
 <template>
   <div
     class="monitoring-table-div"
-    :class="{ center: isEmpty(currentSubsoilField[0]) }"
+    :class="{ center: !currentSubsoilField[0] }"
   >
     <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
       <div class="table-title-holder">
         <p class="monitoring-table-title">
-          {{
-            isEmpty(currentTemplate)
-              ? trans("plast_fluids.research_exploration")
-              : currentTemplate["name_" + currentLang]
-          }}
+          {{ currentTemplate ? currentTemplate["name_" + currentLang] : "" }}
         </p>
         <button @click="isOpenModal = true">
           <img src="/img/PlastFluids/settings.svg" alt="customize table" />
@@ -29,9 +25,7 @@
       v-if="isOpenModal"
       @close-modal="isOpenModal = false"
       :templateName="
-        isEmpty(currentTemplate)
-          ? trans('plast_fluids.research_exploration')
-          : currentTemplate['name_' + currentLang]
+        currentTemplate ? currentTemplate['name_' + currentLang] : ''
       "
       :fields="tableFields"
     />
@@ -42,7 +36,6 @@
 import { mapState, mapActions } from "vuex";
 import BaseTable from "./BaseTable.vue";
 import Modal from "./MonitoringDownloadTableModal.vue";
-import _ from "lodash";
 
 export default {
   name: "MonitoringDownloadTable",
@@ -50,6 +43,11 @@ export default {
     return {
       isOpenModal: false,
     };
+  },
+  inject: {
+    userID: {
+      default: "",
+    },
   },
   components: {
     BaseTable,
@@ -66,24 +64,28 @@ export default {
   watch: {
     currentSubsoilField: {
       handler(value) {
-        this.handleTableData({ field_id: value[0].field_id });
+        this.handleTableData({
+          field_id: value[0].field_id,
+          user_id: this.userID,
+        });
       },
       deep: true,
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableData"]),
-    isEmpty(obj) {
-      return _.isEmpty(obj);
-    },
   },
   mounted() {
     if (
-      this.currentSubsoilField[0].field_id &&
+      this.currentSubsoilField[0]?.field_id &&
       !this.tableRows.length &&
       !this.tableFields.length
-    )
-      this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
+    ) {
+      this.handleTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        user_id: this.userID,
+      });
+    }
   },
 };
 </script>

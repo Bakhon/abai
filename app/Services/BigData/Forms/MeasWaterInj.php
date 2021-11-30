@@ -76,7 +76,11 @@ class MeasWaterInj extends MeasLogByMonth
     ) {
         $pressureRow = [
             'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
+            'uwi' => [
+                'id' => $well->id,
+                'name' => $well->uwi,
+                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+            ],
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure')],
             'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->inj_pressure : 0]
         ];

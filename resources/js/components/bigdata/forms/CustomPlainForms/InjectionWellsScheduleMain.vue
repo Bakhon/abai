@@ -126,7 +126,7 @@
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">Мероприятия</td>
-                                            <td>-</td>
+                                            <td>{{periodItem.params.activity.length}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -347,17 +347,31 @@
             },
             async nahdleMeasurementSchedule() {
                 this.historicalData = this.injectionMeasurementSchedule;
+                if (this.historicalData.length === 0) {
+                    return;
+                }
                 this.SET_LOADING(true);
+                let activity = [];
+                let yearList = _.uniq(_.map(this.historicalData, 'year'));
+                for (let i in yearList) {
+                    activity = activity.concat(await this.getActivityByWell(yearList[i]));
+                }
                 for (let i in this.historicalData) {
-                    this.historicalData[i].params['activity'] = [];
+                    let monthlyActivity = _.filter(activity, (item) => {
+                        let date = moment(item.dbeg,'YYYY-MM-DD HH:mm:ss');
+                        if (item.dend) {
+                            date = moment(item.dend,'YYYY-MM-DD HH:mm:ss');
+                        }
+                        return date.format('MMM') == this.historicalData[i]['month'] && date.format('YYYY') === this.historicalData[i]['year'];
+                    });
+                    this.historicalData[i].params['activity'] = monthlyActivity;
                 }
                 this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
                 this.SET_LOADING(false);
                 this.isMeasurementScheduleActive = true;
             },
-            async getActivityByWell(month,year) {
+            async getActivityByWell(year) {
                 let queryOptions = {
-                    'month': moment(month,'MMM').month() + 1,
                     'year': year
                 };
                 const response = await axios.get(this.localeUrl(`/api/bigdata/wells/get-activity/${this.well.id}`),{params:queryOptions});

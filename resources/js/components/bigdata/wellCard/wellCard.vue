@@ -4,9 +4,8 @@
       <div
               v-for="(well,index) in wellsHistory"
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
-              @click="handleSelectHistoryWell(well)"
       >
-          {{well.wellUwi}}
+          <div @click="handleSelectHistoryWell(well)">{{well.wellUwi}}</div>
           <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
       </div>
     </div>
@@ -515,10 +514,10 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
-        diametr_stuzer: {prm: null, value_double: null},        
+        diametr_stuzer: {prm: null, value_double: null}, 
+        dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},       
       },
-      wellParent: null,
-      tubeNomOd: null,
+      wellParent: null,     
       wellTechs: null,
       wellTechsName: null,
       wellTechsTap: null,
@@ -544,7 +543,7 @@ export default {
         dmart_daily_prod_oil: "dmart_daily_prod_oil",
         org: "org",
         geo: "geo",
-        tubeNom: "tube_nom",
+        tubeNom: "tubeNom",
         dinzamer: "dinzamer",
         date_expl: "date_expl",
         measLiq: "measLiq",
@@ -586,7 +585,8 @@ export default {
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
         techmode: "techmode",
-        diametr_stuzer: "diametr_stuzer"
+        diametr_stuzer: "diametr_stuzer",
+        dailyInjectionOil: "dailyInjectionOil"
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -635,6 +635,12 @@ export default {
           this.dzoSelectOptions = data.organizations;
         }
       });
+      let urlParams = new URLSearchParams(window.location.search);
+      let wellId = urlParams.get('wellId');
+      let wellUwi = urlParams.get('wellName');
+      if (wellId !== null && wellUwi !== null) {
+        this.selectWell({'id':wellId,'name':wellUwi})
+      }
   },
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
@@ -737,8 +743,7 @@ export default {
         ? this.getFormatedDate(this.well.date_expl.dbeg)
         : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
-      let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
-      let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
+      let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";     
       let actualBottomHole = this.well.actualBottomHole
         ? this.well.actualBottomHole.depth +
           " / (" +
@@ -827,10 +832,10 @@ export default {
         ? this.well.rzatrStat.value_double
         : "";
       let injPressure = this.getInjPressure(well);
-      let agentVol = (this.well.tech_mode_inj || this.well.meas_water_inj) && this.well.meas_water_inj.water_inj_val
+      let agentVol = (this.well.tech_mode_inj || this.well.dailyInjectionOil) && this.well.dailyInjectionOil.water_inj_val
         ? this.well.tech_mode_inj.agent_vol +
         " / " +
-        this.well.meas_water_inj.water_inj_val.toFixed(1)
+        this.well.dailyInjectionOil.water_inj_val.toFixed(1)
         : "";
       let perfActualDate = this.well.perfActual
         ? this.getFormatedDate(this.well.perfActual.perf_date)
@@ -853,8 +858,9 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.diametr_stuzer.value_double ? this.well.diametr_stuzer.value_double : "";      
+      let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
+      let tubeNomOd = this.well.tubeNom.od ? this.well.tubeNom.od + ' / ' + this.well.tubeNom.od : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -877,6 +883,12 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.block"),
+          data: '',
+          type: ["all"],                   
+          codes: ["KGM"]
+        },
+        {
           name: this.trans("well.horizont"),
           data: horizont,
           type: ["nag"],
@@ -895,12 +907,12 @@ export default {
           name: this.trans("well.otvod"),
           data: tap,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["dob_oil"],
+          type: ["dob_oil"],         
         },
         {
           name: this.trans("well.org_struct"),
@@ -911,19 +923,19 @@ export default {
           name: this.trans("well.zone_well"),
           data: well_zone,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.reactive_wells"),
           data: wellReactReacting,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.influence_well"),
           data: wellReactInfl,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.coord_x_outfall"),
@@ -979,18 +991,18 @@ export default {
           name: this.trans("well.uo_bolt"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr"),
           data: tubeNomOd,
-          type: ["all"],
+          type: ["all"],          
         },
         {
           name: this.trans("well.type_gol"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.type_pump"),
@@ -999,13 +1011,20 @@ export default {
         },
         {
           name: this.trans("well.diametr_stuzer"),
-          data: '',
+          data: diametr_stuzer,
           type: ["nag"],
         },
         {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.pump_capacity"),
+          data: '',
+          type: ["dob_oil"],
+          temp: 2,        
+          codes: ["KGM"],
         },
         {
           name: this.trans("well.pump_depth"),
@@ -1020,7 +1039,7 @@ export default {
         {
           name: this.trans("well.sk"),
           data: type_sk,
-          type: ["dob_oil"],
+          type: ["all"],
           exp: 1, // шгн
         },
         {
@@ -1038,8 +1057,9 @@ export default {
         {
           name: this.trans("well.fact_zaboi"),
           data: actualBottomHole,
-          type: ["all"],
+          type: ["dob_oil"],
           codes: ["KGM"],
+          exp: 0,
         },
         {
           name: this.trans("well.synthetic_zaboi"),
@@ -1050,7 +1070,7 @@ export default {
           name: this.trans("well.broken_zaboi"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.depth_down"),
@@ -1061,7 +1081,7 @@ export default {
           name: this.trans("well.kshd"),
           data: "",
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.progress_interval_perforation"),
@@ -1101,7 +1121,7 @@ export default {
         {
           name: this.trans("well.gas_production"),
           data: gas_production,
-          type: ["all"],
+          type: ["dob_oil"],         
         },
         {
           name: this.trans("well.gaz_factor"),
@@ -1117,19 +1137,19 @@ export default {
           name: this.trans("well.date_pfp"),
           data: treatmentDate,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_krp"),
           data: well_gtm,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_sko"),
           data: treatmentSko,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_kpd"),
@@ -1150,19 +1170,19 @@ export default {
           name: this.trans("well.result_gdm"),
           data: gdisConclusion,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.length_hod_gdm"),
           data: gdisCurrentValue,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.count_swing"),
           data: gdisCurrentValuePmpr,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.dynamic_level"),
@@ -1179,7 +1199,7 @@ export default {
           name: this.trans("well.rpl_date"),
           data: gdisCurrentValueRp,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.rpl_sl_gdis"),
@@ -1200,27 +1220,28 @@ export default {
           name: this.trans("well.rzatr_stat"),
           data: rzatrStat,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.note"),
           data: gdisCurrent_note,
           type: ["all"],
         },
-      ];
+      ];       
       this.well_passport = this.rebuildRightSidebar(
         this.well_passport,
         category_id,
         well_expl_name,
         main_org_code
-      );
+      );           
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-      data.forEach(function (item) {
+      data.forEach(function (item) {       
         let type = item.type;
         let exp = item.exp;
         let codes = item.codes;
+        let temp = item.temp;       
         let types = { 13: "dob_oil", 9: "nabl", 5: "nag" };
         if (
           type.indexOf(types[category_id]) != -1 ||
@@ -1228,12 +1249,16 @@ export default {
         ) {
           if (exp == 1 && well_expl_name != "УШГН") {
             return;
+          }    
+          
+          if(temp == 2 && well_expl_name != 'УЭЦН'){
+            return;
           }
-
+                   
           if (codes && codes.indexOf(main_org_code) != -1) {
             return;
           }
-          well_passport_data.push(item);
+          well_passport_data.push(item);       
         }
       });
       return well_passport_data;
@@ -1278,7 +1303,7 @@ export default {
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }               
+              }                                                
               if (data.spatial_object.coord_point != null) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
@@ -1306,18 +1331,17 @@ export default {
               this.wellOrgName = this.getMultipleValues(
                 data.org.reverse(),
                 "name_ru"
-              );
-              this.tubeNomOd = this.getMultipleValues(data.tube_nom, "od");
+              );              
             } catch (e) {
-              this.SET_LOADING(false);
+              this.SET_LOADING(false);              
             }
-            this.setWellPassport();
+            this.setWellPassport();           
             let historyRecord = _.find(this.wellsHistory, {wellUwi:this.wellUwi});
             if (!historyRecord) {
               this.storeWellToHistory();
             } else {
               this.switchFormByCode(historyRecord.lastFormInfo);
-            }
+            }            
             this.SET_LOADING(false);
           });
       }
@@ -1384,27 +1408,27 @@ export default {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
         if (this.well.dmart_daily_prod_oil.liquid) {
-          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1);
+          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }
       return "";  
     },
     getInjPressure(well) {
-      if (this.well.tech_mode_inj && this.well.meas_water_inj) {
+      if (this.well.tech_mode_inj && this.well.dailyInjectionOil) {
         if (
           this.well.tech_mode_inj.inj_pressure != null &&
-          this.well.meas_water_inj.pressure_inj != null
+          this.well.dailyInjectionOil.pressure_inj != null
         ) {
           return (
             this.well.tech_mode_inj.inj_pressure +
             " / " +
-            this.well.meas_water_inj.pressure_inj
+            this.well.dailyInjectionOil.pressure_inj
           );
         }
         if (this.well.tech_mode_inj.inj_pressure === null) {
-          return "-" + " / " + this.well.meas_water_inj.pressure_inj;
+          return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;
         }
-        if (this.well.meas_water_inj.pressure_inj === null) {
+        if (this.well.dailyInjectionOil.pressure_inj === null) {
           return this.well.tech_mode_inj.inj_pressure + " / " + "-";
         }
         return "";
@@ -1432,18 +1456,21 @@ export default {
         }
       } catch (e) {}
     },
-    switchFormByCode(data) {      
+    switchFormByCode(data) {  
+      if(data){        
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.activeForm = data;
       let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
         return e.wellUwi == this.wellUwi;
       }, 0);
-      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;    
+      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
+      this.activeFormComponentName = '';    
       this.activeFormComponentName = data.component_name;
       this.activeFormComponentName
         ? this.activeFormComponentName
-        : "ProductionWellsScheduleMain";
+        : "ProductionWellsScheduleMain"; 
+    }     
       if (this.activeFormComponentName === 'ProductionWellsScheduleMain') {
         this.SET_VISIBLE_PRODUCTION(true);
         this.changeColumnsVisible(false);
@@ -1490,6 +1517,17 @@ export default {
     },
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
+      if (this.wellsHistory.length === 0) {
+        this.activeForm = null;
+        this.activeFormComponentName = null;
+        this.isBothColumnFolded = false;
+        this.isLeftColumnFolded = false;
+        this.isRightColumnFolded = false;
+        this.wellUwi = null;
+      } else {
+        let lastWell = this.wellsHistory.at(-1);
+        this.selectWell({'id':lastWell.id,'name':lastWell.wellUwi})
+      }
     },
     handleSelectHistoryWell(well) {            
       this.activeForm = null;

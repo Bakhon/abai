@@ -30,22 +30,23 @@
             <p class="user-profile__tab-block-title">{{ trans('profile.main_info') }}</p>
             <div class="user-profile__tab-field-row">
               <profile-field :field="fields.name" :value="user.name"></profile-field>
-              <profile-field :field="fields.birthday" :value="user.profile.birthday"></profile-field>
+              <profile-field :field="fields.id" :value="user.id"></profile-field>
             </div>
             <div class="user-profile__tab-field-row">
               <profile-field :field="fields.gender" :value="user.profile.gender"></profile-field>
-              <profile-field :field="fields.city" :value="user.profile.city"></profile-field>
+              <profile-field :field="fields.birthday" :value="user.profile.birthday"></profile-field>
             </div>
             <div class="user-profile__tab-field-row">
               <profile-field :field="fields.position" :value="user.profile.position"></profile-field>
-              <profile-field :field="fields.org" :value="user.profile.org"></profile-field>
+              <profile-field :field="fields.city" :value="user.profile.city"></profile-field>
             </div>
             <div class="user-profile__tab-field-row">
               <profile-field :field="fields.department" :value="user.profile.department"></profile-field>
-              <profile-field :field="fields.sector" :value="user.profile.sector"></profile-field>
+              <profile-field :field="fields.org" :value="user.profile.org"></profile-field>
             </div>
             <div class="user-profile__tab-field-row">
               <profile-field :field="fields.boss" :value="user.profile.boss"></profile-field>
+              <profile-field :field="fields.sector" :value="user.profile.sector"></profile-field>
             </div>
           </div>
               </div>

@@ -188,9 +188,6 @@ export default {
 
         getReasonExplanations() {
             let reasons = {};
-            if (this.periodEnd < this.opecEndDate) {
-                this.productionTableData = this.getProductionDataByOpekRestriction();
-            }
             _.forEach(this.productionTableData, (item) => {
                 if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
                     reasons[item.name] = item.decreaseReasonExplanations;

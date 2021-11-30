@@ -1214,7 +1214,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'injectionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1375,7 +1375,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'productionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1545,7 +1545,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'drilling')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1789,7 +1789,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'wellsWorkover')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1943,7 +1943,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'chemistry')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
