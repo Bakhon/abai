@@ -84,7 +84,14 @@ export default {
             },
             companiesWithData: [],
             exceptionDzo: ['КГМКМГ','ТП','ПККР'],
-            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY')
+            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY'),
+            summaryMapping: {
+                'oilProduction': ['oilCondensateProductionWithoutKMG','oilCondensateProduction'],
+                'condensateProduction': ['oilCondensateProductionCondensateOnly'],
+                'oilDelivery': ['oilCondensateDeliveryWithoutKMG','oilCondensateDelivery','oilCondensateDeliveryOilResidue'],
+                'condensateDelivery': ['oilCondensateDeliveryCondensateOnly'],
+            },
+            parentCategory: 'oilCondensateProduction'
         }
     },
     methods: {
@@ -162,6 +169,10 @@ export default {
             this.switchSelectedButton(view);
             this.productionParams = await this.getProductionParamsByCategory();
             this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
+            if (['oilCondensateProductionCondensateOnly','oilCondensateDeliveryCondensateOnly'].includes(this.selectedCategory) && !this.productionTableData) {
+                this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[this.parentCategory]);
+                this.productionTableData = this.getFilteredByDzo(this.productionTableData,this.condensateCompanies);
+            }
             if (this.periodRange > 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
@@ -191,6 +202,7 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.parentCategory = parent;
             this.isDecreaseReasonActive = false;
             this.selectedChartCategory.head = this.chartNameMapping[category].head;
             this.selectedChartCategory.name = this.chartNameMapping[category].name;
@@ -289,6 +301,15 @@ export default {
             }
             return this.getMonthlyPlansInYear(summary);
         },
+        getSummaryByCategorySelected(data,field) {
+            return this.getSummaryFact(data,field);
+        },
+        getSummaryByCondensateSelected(data,field,type) {
+            let condensate = _.filter(data, (item) => {
+                return Object.keys(this.condensateCompanies).includes(item.name);
+            });
+            return this.getSummaryByField(condensate,field);
+        }
     },
     computed: {
         summaryYearlyPlan() {
@@ -335,6 +356,84 @@ export default {
         },
         summaryTargetPlan() {
             return _.sumBy(this.productionData, 'yearlyPlan') - _.sumBy(this.productionData, 'plan');
-        }
+        },
+        summaryOilFact() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
+            if (this.summaryMapping.oilProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.current[this.selectedCategory],'fact');
+            }
+            if (this.summaryMapping.condensateProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.current.oilCondensateProduction,'fact','current');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.current.oilCondensateProduction,'fact');
+        },
+        summaryHistoricalOilFact() {
+            if (!this.productionParams.tableData.historical) {
+                return 0;
+            }
+            if (this.summaryMapping.oilProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.historical[this.selectedCategory],'fact');
+            }
+            if (this.summaryMapping.condensateProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.historical.oilCondensateProduction,'fact','historical');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.historical.oilCondensateProduction,'fact');
+        },
+        summaryOilPlan() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
+            if (this.summaryMapping.oilProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.current[this.selectedCategory],'plan');
+            }
+            if (this.summaryMapping.condensateProduction.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.current.oilCondensateProduction,'plan','plan production');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.current.oilCondensateProduction,'plan');
+        },
+        summaryOilDeliveryFact() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
+            if (this.summaryMapping.oilDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.current[this.selectedCategory],'fact');
+            }
+            if (this.summaryMapping.condensateDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.current.oilCondensateDelivery,'fact');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.current.oilCondensateDelivery,'fact');
+        },
+        summaryHistoricalOilDeliveryFact() {
+            if (!this.productionParams.tableData.historical) {
+                return 0;
+            }
+            if (this.summaryMapping.oilDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.historical[this.selectedCategory],'fact');
+            }
+            if (this.summaryMapping.condensateDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.historical.oilCondensateDelivery,'fact');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.historical.oilCondensateDelivery,'fact');
+        },
+        summaryOilDeliveryPlan() {
+            if (!this.productionParams.tableData.current) {
+                return 0;
+            }
+            if (this.summaryMapping.oilDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCategorySelected(this.productionParams.tableData.current[this.selectedCategory],'plan');
+            }
+            if (this.summaryMapping.condensateDelivery.includes(this.selectedCategory)) {
+                return this.getSummaryByCondensateSelected(this.productionParams.tableData.current.oilCondensateDelivery,'plan','plan delivery');
+            }
+            return this.getSummaryByCategorySelected(this.productionParams.tableData.current.oilCondensateDelivery,'plan');
+        },
+        summaryGasProduction() {
+            if (this.selectedCategory.toLowerCase().includes('gas')) {
+                return this.getSummaryFact(this.productionParams.tableData.current[this.selectedCategory],'fact');
+            }
+            return this.getSummaryFact(this.productionParams.tableData.current.gasProduction,'fact');
+        },
     },
 }
