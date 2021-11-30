@@ -43,7 +43,7 @@ class EmergencySituations extends Command
         $dzoKey = array_search('КГМ', array_column($todayCompanies, 'dzo_name'));
         if ($dzoKey) {
             $isFilledCorrectly = $this->isDzoFilledCorrectly($todayCompanies[$dzoKey]['dzo_name']);
-            if ($isFilledCorrectly) {
+            if (!$isFilledCorrectly) {
                 unset($todayCompanies[$dzoKey]);
             }
         }
