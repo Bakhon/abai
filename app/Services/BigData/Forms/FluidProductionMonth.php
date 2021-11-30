@@ -973,38 +973,17 @@ class FluidProductionMonth extends MeasLogByMonth
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();
 
-        $row = DB::connection('tbd')
-            ->table($table)
-            ->where('activity', $activity->id)
-            ->where('value_type', $valueType->id)
-            ->where('well', $wellId)
-            ->where('dbeg', '>=', $date->startOfDay())
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->first();
-
-        if (empty($row)) {
-            DB::connection('tbd')
-                ->table($table)
-                ->insert(
-                    [
-                        'activity' => $activity->id,
-                        'value_type' => $valueType->id,
-                        'well' => $wellId,
-                        $field => $value,
-                        'dbeg' => $date->startOfDay(),
-                        'dend' => $date->endOfDay()
-                    ]
-                );
-        } else {
-            DB::connection('tbd')
-                ->table($table)
-                ->where('id', $row->id)
-                ->update(
-                    [
-                        $field => $value
-                    ]
-                );
-        }
+        $this->insertValueInCell(
+            $table,
+            $field,
+            [
+                'activity' => $activity->id,
+                'value_type' => $valueType->id,
+            ],
+            $wellId,
+            $date,
+            $value
+        );
     }
 
 }
