@@ -8,7 +8,7 @@
           </div>
           <div class="col-1">
             <div
-              v-if="block.id == clickedId"
+              v-if="block.id != clickedId"
               class="faq-question_down mt-2"
             ></div>
             <div v-else class="faq-question_up mt-2"></div>

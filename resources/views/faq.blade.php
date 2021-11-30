@@ -57,7 +57,7 @@
     }
 
     .faq-header_img {
-        background: url(/img/faq/faq.png) no-repeat;
+        background: url(/img/faq/faq.png) 18px no-repeat;
         height: 324px;
     }
 
