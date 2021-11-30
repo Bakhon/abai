@@ -2477,6 +2477,9 @@
         &:nth-child(1) {
           width: 350px;
         }
+        &:nth-child(3) {
+          width: 13%;
+        }
       }
     }
 
