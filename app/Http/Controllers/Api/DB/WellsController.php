@@ -118,13 +118,8 @@ class WellsController extends Controller
         ];
 
         $wellInfo = array_merge($wellInfo, $show_param);
-<<<<<<< HEAD
-      
-    //    Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
-=======
 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
->>>>>>> 7b6dc96c636a789c6ea0ba632be139c6e9b1f734
         return $wellInfo;
     }
 
