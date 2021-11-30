@@ -242,7 +242,7 @@
                       <p>
                         {{ this.trans("well.category_well") }}:
                         <span v-if="well.category">
-                          {{ well.category.name_ru }}
+                          {{ well.category_last.name_ru }}
                         </span>
                       </p>
                       <div class="title">{{ this.trans("well.binding") }}</div>
@@ -440,6 +440,7 @@ export default {
       wellUwi: null,
       well: {
         id: null,
+        depthLow: {value_double: null},
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
@@ -530,6 +531,7 @@ export default {
       wellSaptialObjectBottomY: null,
       wellTransform: {
         name: "wellInfo.uwi",
+        depthLow: "depthLow",
         wellInfo: "wellInfo",
         whc_alt: "whc_alt",
         measWaterCut: "meas_water_cut",
@@ -804,11 +806,11 @@ export default {
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
         ? this.well.gdisCurrentValuePmpr.value_double
         : "";
-      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin
-        ? this.well.dmart_daily_prod_oil.hdin
+      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin && this.well.dmart_daily_prod_oil.date
+        ? this.well.dmart_daily_prod_oil.hdin + " / " + this.getFormatedDate(this.well.dmart_daily_prod_oil.date)
         : "";
-      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
-        ? this.well.gdisCurrentValueStatic.value_double
+      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double + this.well.gdisCurrentValueStatic.meas_date 
+        ? this.well.gdisCurrentValueStatic.value_double + this.getFormatedDate(this.well.gdisCurrentValueStatic.meas_date)
         : "";
       let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double
         ? this.well.gdisCurrentValueRp.value_double +
@@ -850,6 +852,7 @@ export default {
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
         : "";
+      let depthLow = this.well.depthLow ? this.well.depthLow.value_double : "";
       let pump_code = this.well.pump_code
         ? this.well.pump_code.value_text
         : "";
@@ -1032,7 +1035,7 @@ export default {
         },
         {
           name: this.trans("well.pump_depth"),
-          data: well_equip_param,
+          data: depthLow,
           type: ["dob_oil"],
         },
         {
