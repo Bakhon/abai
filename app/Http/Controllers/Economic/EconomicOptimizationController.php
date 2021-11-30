@@ -28,7 +28,6 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
@@ -403,6 +402,8 @@ class EconomicOptimizationController extends Controller
 
     public function getScenariosData(): array
     {
+        $time = microtime(true);
+
         $scenarioName = "MMG_Scenario_Test";
 
         $gtmLogId = 61;
@@ -411,17 +412,9 @@ class EconomicOptimizationController extends Controller
 
         $dollarRate = 400;
 
-        $fixedNoPayrolls = [0.5];
+        $fixedNoPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
 
-        $costWrPayrolls = [0.5];
-        $time = microtime(true);
-
-        $wellByDates = collect($this->getWellsForScenarios(
-            $scenarioName,
-            $oilPrice,
-            $dollarRate,
-            true
-        ));
+        $costWrPayrolls = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
 
         $scenarios = $this->getOptimizedScenarios(
             $scenarioName,
@@ -434,19 +427,12 @@ class EconomicOptimizationController extends Controller
         $gtms = $this->getGtms($gtmLogId);
 
         if ($gtms) {
-            $wellByDates = collect($this->getWellsForScenarios(
-                $scenarioName,
-                $oilPrice,
-                $dollarRate,
-                true
-            ));
-
-            foreach ($scenarios as $scenario) {
-                $this->addGtmsToScenario($scenario, $gtms, $wellByDates);
+            foreach ($scenarios as &$scenario) {
+                $this->addGtmsToScenario($scenarioName, $scenario, $gtms);
             }
         }
 
-        dd(microtime(true) - $time, $scenarios);
+        dd($scenarios, microtime(true) - $time);
 
         return $scenarios;
     }
@@ -605,6 +591,7 @@ class EconomicOptimizationController extends Controller
     ): array
     {
         $technicalData = $this->getTechnicalQuery($scenarioName, $wellByDates)->toSql();
+
         $economicData = $this->getEconomicQuery($scenarioName)->toSql();
 
         $productionLocal = $this->sqlRoutesProduction(false, true);
@@ -646,7 +633,7 @@ class EconomicOptimizationController extends Controller
 
         $barrelRatioExportScenario = $this->sqlAvgRoutesSum(
             self::ROUTES_EXPORT,
-            'Barrel_ratio_'
+            self::PREFIX_BARREL_RATIO
         );
 
         $variableExpenditures = $this->sqlVariableExpenditures();
@@ -779,9 +766,9 @@ class EconomicOptimizationController extends Controller
     }
 
     private function addGtmsToScenario(
-        array $scenario,
-        array $gtms,
-        Collection $wellByDates
+        string $scenarioName,
+        array &$scenario,
+        array $gtms
     )
     {
         $scenario["gtm_oil"] = 0;
@@ -802,20 +789,22 @@ class EconomicOptimizationController extends Controller
 
         $date = Carbon::parse($gtms[0]->date);
 
+        $wellByMonths = [];
+
         for ($month = 1; $month <= 12; $month++) {
             $date = $date
                 ->setMonth($month)
                 ->setDay(1);
 
-            $well = (array)$wellByDates->firstWhere("date", $date->copy()->format("Y-m-d"));
+            $formattedDate = $date->copy()->format("Y-m-d");
 
-            $well["days_worked"] = $date->daysInMonth;
-
-            $well["oil"] = 0;
-
-            $well["prs"] = 0;
-
-            $well["liquid"] = 0;
+            $wellByMonths[$formattedDate] = [
+                "date" => $formattedDate,
+                "days_worked" => $date->daysInMonth,
+                "oil" => 0,
+                "prs" => 0,
+                "liquid" => 0,
+            ];
 
             $gtmsByMonth = array_filter($gtms, function ($gtm) use ($month, $operatingDelta) {
                 return Carbon::parse($gtm->date)->month === $month && $gtm->price <= $operatingDelta;
@@ -825,30 +814,40 @@ class EconomicOptimizationController extends Controller
 
             $gtmsByMonth = $this->getGtmsForCostLimitWithMaxGrowth($gtmsByMonth, $operatingDelta);
 
-            $gtmGrowth += $gtms["growth"];
+            $gtmGrowth += $gtmsByMonth["growth"];
 
-            $gtmOil = $gtmGrowth * $well["days_worked"];
+            $gtmOil = $gtmGrowth * $wellByMonths[$formattedDate]["days_worked"];
 
-            $well["oil"] = $gtmOil;
+            $wellByMonths[$formattedDate]["oil"] = $gtmOil;
 
-            $well["liquid"] = $gtmOil * 10;
+            $wellByMonths[$formattedDate]["liquid"] = $gtmOil * 10;
 
             $scenario["gtms"] = $gtmsByMonth;
 
-            $scenario["gtm_oil"] += $well["oil"];
+            $scenario["gtm_oil"] += $wellByMonths[$formattedDate]["oil"];
 
-            $scenario["gtm_liquid"] += $well["liquid"];
+            $scenario["gtm_liquid"] += $wellByMonths[$formattedDate]["liquid"];
 
-            $scenario["gtm_cost"] += $gtms["cost"];
+            $scenario["gtm_cost"] += $gtmsByMonth["cost"];
 
-            $scenario["gtm_operating_profit"] -= $gtms["cost"];
+            $scenario["gtm_operating_profit"] -= $gtmsByMonth["cost"];
 
-            $operatingDelta -= $gtms["cost"];
+            $operatingDelta -= $gtmsByMonth["cost"];
         }
+
 
         if ($operatingDelta > 0) {
             $scenario["gtm_operating_profit"] += $operatingDelta;
         }
+
+        $well = (array)$this->getWellsForScenarios(
+            $scenarioName,
+            $scenario["oil_price"],
+            $scenario["dollar_rate"],
+            $wellByMonths
+        )[0];
+
+        $scenario["gtm_operating_profit"] += $well["Operating_profit"];
     }
 
     private function getGtms(int $logId): array
@@ -948,14 +947,20 @@ class EconomicOptimizationController extends Controller
 
     public function getEconomicQuery(string $scenarioName): Builder
     {
-        $economicScFa = EcoRefsScFa::query()
+        $scFaId = EcoRefsScFa::query()
             ->whereName($scenarioName)
             ->firstOrFail()
             ->id;
 
-        $tableNdoRates = (new EcoRefsNdoRates())->getTable();
+        $ndoRates = EcoRefsNdoRates::query()
+            ->selectRaw(DB::raw("company_id, ndo_rates"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
+            ->toSql();
 
-        $tableMacros = (new EcoRefsMacro())->getTable();
+        $macros = EcoRefsMacro::query()
+            ->selectRaw(DB::raw("date, ex_rate_dol"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
+            ->toSql();
 
         $saleShares = EcoRefsEmpPer::query()
             ->selectRaw(DB::raw("
@@ -963,7 +968,7 @@ class EconomicOptimizationController extends Controller
                 date,
                 {$this->sqlSumByRoute('emp_per', self::PREFIX_SALE_SHARE)}
             "))
-            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
@@ -982,7 +987,7 @@ class EconomicOptimizationController extends Controller
                 {$this->sqlSumByRoute('macro', self::PREFIX_PRICE)},
                 {$this->sqlSumByRoute('barr_coef', self::PREFIX_BARREL_RATIO)}
             "))
-            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
@@ -1013,7 +1018,7 @@ class EconomicOptimizationController extends Controller
                 date,
                 {$this->sqlSumByRoute('tn_rate', 'trans_exp_')}
             "))
-            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
@@ -1044,7 +1049,7 @@ class EconomicOptimizationController extends Controller
                 wo,
                 amort
             "))
-            ->whereRaw(DB::raw("sc_fa = $economicScFa"))
+            ->whereRaw(DB::raw("sc_fa = $scFaId"))
             ->toSql();
 
         return DB::table(DB::raw("($costs) as costs"))
@@ -1067,15 +1072,11 @@ class EconomicOptimizationController extends Controller
                 $discountColumns,
                 $transExpColumns
             "))
-            ->leftJoin("$tableNdoRates as ndo_rates", function ($join) use ($economicScFa) {
-                $join
-                    ->on(DB::raw("costs.company_id"), '=', DB::raw("ndo_rates.company_id"))
-                    ->whereRaw(DB::raw("ndo_rates.sc_fa = $economicScFa"));
+            ->leftJoin(DB::raw("($ndoRates) as ndo_rates"), function ($join) use ($scFaId) {
+                $join->on(DB::raw("costs.company_id"), '=', DB::raw("ndo_rates.company_id"));
             })
-            ->leftJoin("$tableMacros as macros", function ($join) use ($economicScFa) {
-                $join
-                    ->on(DB::raw("costs.date"), '=', DB::raw("macros.date"))
-                    ->whereRaw(DB::raw("macros.sc_fa = $economicScFa"));
+            ->leftJoin(DB::raw("($macros) as macros"), function ($join) use ($scFaId) {
+                $join->on(DB::raw("costs.date"), '=', DB::raw("macros.date"));
             })
             ->leftJoin(DB::raw("($saleShares) as sale_shares"), function ($join) {
                 $join
@@ -1087,7 +1088,7 @@ class EconomicOptimizationController extends Controller
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("discounts.company_id"))
                     ->on(DB::raw("costs.date"), '=', DB::raw("discounts.date"));
             })
-            ->leftJoin(DB::raw("($transExp) as trans_exp"), function ($join) use ($economicScFa) {
+            ->leftJoin(DB::raw("($transExp) as trans_exp"), function ($join) use ($scFaId) {
                 $join
                     ->on(DB::raw("costs.company_id"), '=', DB::raw("trans_exp.company_id"))
                     ->on(DB::raw("costs.date"), '=', DB::raw("trans_exp.date"));
@@ -1099,7 +1100,7 @@ class EconomicOptimizationController extends Controller
         array $wellByDates = null
     ): Builder
     {
-        $technicalSource = TechnicalStructureSource::query()
+        $sourceId = TechnicalStructureSource::query()
             ->whereName($scenarioName)
             ->firstOrFail()
             ->id;
@@ -1142,13 +1143,13 @@ class EconomicOptimizationController extends Controller
 
         $daysWorkedByDate = DB::table($tableForecasts)
             ->selectRaw(DB::raw("date, SUM(days_worked) as days_worked_by_date"))
-            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->whereRaw(DB::raw("source_id = $sourceId"))
             ->groupByRaw(DB::raw("date"))
             ->toSql();
 
         $wellsCountByDate = DB::table($tableForecasts)
             ->selectRaw(DB::raw("company_id, date, COUNT(*) as wells_count_by_company_date"))
-            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->whereRaw(DB::raw("source_id = $sourceId"))
             ->groupByRaw(DB::raw("company_id, date"))
             ->toSql();
 
@@ -1156,6 +1157,13 @@ class EconomicOptimizationController extends Controller
         $liquid = $this->sqlWellParam("liquid", $wellByDates);
         $daysWorked = $this->sqlWellParam("days_worked", $wellByDates);
         $prs = $this->sqlWellParam("prs", $wellByDates);
+
+        $wellId = $wellByDates
+            ? TechnicalDataForecast::query()
+                ->whereSourceId($sourceId)
+                ->firstOrFail()
+                ->well_id
+            : null;
 
         $wellsQuery = DB::table($tableForecasts)
             ->selectRaw(DB::raw("
@@ -1170,8 +1178,12 @@ class EconomicOptimizationController extends Controller
                 IFNULL($prs, 0) AS prs
             "));
 
+        if ($wellId) {
+            $wellsQuery->whereRaw(DB::raw("well_id = '$wellId'"));
+        }
+
         $wells = $wellsQuery
-            ->whereRaw(DB::raw("source_id = $technicalSource"))
+            ->whereRaw(DB::raw("source_id = $sourceId"))
             ->toSql();
 
         return DB::table(DB::raw("($wells) as wells"))
@@ -1562,7 +1574,7 @@ class EconomicOptimizationController extends Controller
         foreach ($wellByDates as $date => $well) {
             $value = $well[$wellKey];
 
-            $query .= "WHEN date = '$date' THEN $value";
+            $query .= " WHEN date = '$date' THEN $value ";
         }
 
         return "CASE $query END";
