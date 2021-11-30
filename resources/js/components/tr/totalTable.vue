@@ -14,10 +14,10 @@
             <tbody>
             
                 <tr v-for="(row, row_index) in all_summary_total" :key="row_index">
-                <td>{{ row.field }}</td>
-                <td>{{ row.planned_monthly_oil }}</td>
-                <td>{{ row.planned_monthly_gas }}</td>
-                <td>{{ row.planned_monthly_liq }}</td>
+                <td :class="{'summary_total': isSummaryTotalClass(row)}">{{ row.field }}</td>
+                <td :class="{'summary_total': isSummaryTotalClass(row)}">{{ row.planned_monthly_oil }}</td>
+                <td :class="{'summary_total': isSummaryTotalClass(row)}">{{ row.planned_monthly_gas }}</td>
+                <td :class="{'summary_total': isSummaryTotalClass(row)}">{{ row.planned_monthly_liq }}</td>
                 </tr>
 
             </tbody>
@@ -46,6 +46,15 @@ export default {
     return {
     };
   },
+  methods: {
+    isSummaryTotalClass(row) {
+      if (row.is_total_row) {
+          return true
+      } else {
+          return false
+      }
+    },
+  }
 };
 </script>
 
