@@ -1118,7 +1118,7 @@
                     </td>
                     <td
                             v-if="isFilterTargetPlanActive && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="periodRange === 0 ? getLighterClass(index) : getDarkerClass(index)"
+                            :class="periodRange === 0 ? getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div class="font">
                         {{getFormattedNumber(summaryTargetPlan)}}
