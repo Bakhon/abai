@@ -108,7 +108,7 @@ export default {
         getSummaryFact(data,fieldName) {
             let summary = 0;
             _.forEach(data, (item) => {
-                if (!this.exceptionDzo.includes(item.name)) {
+                if (!this.exceptionDzo.includes(item.name) && item[fieldName]) {
                     summary += item[fieldName];
                 }
             });
