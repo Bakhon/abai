@@ -59,6 +59,10 @@ class receiveNonOperatingAssets extends Command
         'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
     );
     private $date = null;
+    private $dzoByReport = array (
+        'nonOperating' => 'АГ',
+        'gdu' => 'ПКК'
+    );
 
     /**
      * The console command description.
@@ -86,6 +90,9 @@ class receiveNonOperatingAssets extends Command
             return;
         }
         $this->markAsRead();
+        if ($this->isAlreadyUploaded($this->dzoByReport['nonOperating'])) {
+            return;
+        }
         $this->processMessages();
         $this->scrapDocument('nonOperating');
     }
@@ -96,8 +103,19 @@ class receiveNonOperatingAssets extends Command
             return;
         }
         $this->markAsRead();
+        if ($this->isAlreadyUploaded($this->dzoByReport['gdu'])) {
+            return;
+        }
         $this->processMessages();
         $this->scrapDocument('gdu');
+    }
+    private function isAlreadyUploaded($dzo)
+    {
+        $dzoRecord = DzoImportData::query()
+            ->whereDate('date',$this->date)
+            ->where('dzo_name',$dzo)
+            ->first();
+        return !is_null($dzoRecord);
     }
 
     public function assignMessageOptions($email,$password)
