@@ -252,7 +252,6 @@ export default {
         getDzoMonthlyPlan(date,monthlyFact) {
             if (monthlyFact > 0) {
                 let monthsLeftInYear = 12 - date.month();
-                this.dzoYearlyData.differenceOnEachMonth = Math.round((this.summaryPlan - this.summaryFact) / monthsLeftInYear);
                 this.dzoYearlyData.differenceOnEachMonth = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / monthsLeftInYear);
                 this.setTotalFact(monthlyFact);
             }
