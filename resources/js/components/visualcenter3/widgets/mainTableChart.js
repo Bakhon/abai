@@ -140,7 +140,8 @@ export default {
                 'name': this.trans('visualcenter.oilCondensateProduction'),
                 'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
             },
-            isDecreaseReasonActive: false
+            isDecreaseReasonActive: false,
+            previousMonthDifference: 0
         };
     },
     methods: {
@@ -180,7 +181,6 @@ export default {
             let currentYear = moment().year();
             var currentPeriodDate = moment().startOf('year');
             var monthlyPlansInYear = [];
-
             while (currentPeriodDate.year() === currentYear) {
                 monthlyPlansInYear.push(this.getInitialSummaryForMonth(currentPeriodDate,summaryForChart,dzoGroupedMonthlyPlans,dzoName));
                 currentPeriodDate = currentPeriodDate.add(1, 'M');
@@ -212,26 +212,32 @@ export default {
         },
 
         getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans,dzoName) {
-            let monthlyPlan = dzoGroupedMonthlyPlans[date.month()]['monthlyPlan'];
-            let monthlyFact = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
-            let monthlyOpecPlan = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
             let initialSummary = _.cloneDeep(this.initialYearlySummary);
             initialSummary.time = date.valueOf();
-            initialSummary.productionPlanForChart = monthlyPlan;
-            if (monthlyFact > 0 && date.month() < moment().month()) {
-                initialSummary.productionFactForChart = monthlyFact;
+            initialSummary.productionPlanForChart = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart');
+            initialSummary.productionFactForChart = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
+            initialSummary.productionPlanForChart2 = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
+
+            if (date.month() === 0) {
+                initialSummary.monthlyPlan = initialSummary.productionPlanForChart;
+            } else if (date.month() >= moment().month() && initialSummary.productionFactForChart === 0) {
+                initialSummary.monthlyPlan = this.previousMonthDifference;
+                initialSummary.productionPlanForChart = null;
+                initialSummary.productionFactForChart = null;
+                initialSummary.productionPlanForChart2 = null;
+            } else {
+                let previousDifference = this.getPreviousDifference(date,summaryForChart);
+                initialSummary.monthlyPlan = initialSummary.productionPlanForChart + previousDifference;
+                this.previousMonthDifference = initialSummary.monthlyPlan;
             }
-            if (date.month() === moment().month() && dzoName) {
-                let initialMonthlyPlan = monthlyPlan / this.getDaysCountInMonth(date.format("YYYY-MM"));
-                let currentDatePlan = initialMonthlyPlan *= moment().date();
-                initialSummary.monthlyPlan = (currentDatePlan - monthlyFact);
-                return initialSummary;
-            }
-            if (monthlyOpecPlan > 0 && date.month() < moment().month()) {
-                initialSummary.productionPlanForChart2 = monthlyOpecPlan;
-            }
-            initialSummary.monthlyPlan = this.getDzoMonthlyPlan(date,monthlyFact);
+
             return initialSummary;
+        },
+
+        getPreviousDifference(date,summary) {
+            let plan = this.getMonthlyFact(date,summary,'productionPlanForChart');
+            let fact = this.getMonthlyFact(date,summary,'productionFactForChart');
+            return plan - fact;
         },
 
         getMonthlyFact(date,summaryForChart,fieldName) {
@@ -246,6 +252,7 @@ export default {
         getDzoMonthlyPlan(date,monthlyFact) {
             if (monthlyFact > 0) {
                 let monthsLeftInYear = 12 - date.month();
+                this.dzoYearlyData.differenceOnEachMonth = Math.round((this.summaryPlan - this.summaryFact) / monthsLeftInYear);
                 this.dzoYearlyData.differenceOnEachMonth = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / monthsLeftInYear);
                 this.setTotalFact(monthlyFact);
             }

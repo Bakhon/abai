@@ -46,7 +46,7 @@
                               {{ getDiffProcentLastBigN(summaryOilFact,summaryOilPlan)}}%
                             </div>
                             <div class="plan-header col-6" v-if="summaryOilPlan">
-                              {{ formatDigitToThousand(summaryOilPlan) }}
+                              {{ getFormattedNumber(summaryOilPlan) }}
                             </div>
                             <br />
                           </div>
@@ -114,7 +114,7 @@
                               0%
                             </div>
                             <div class="plan-header col-6" v-if="summaryOilDeliveryPlan">
-                              {{ formatDigitToThousand(summaryOilDeliveryPlan) }}
+                              {{ getFormattedNumber(summaryOilDeliveryPlan) }}
                             </div>
                             <div class="plan-header col-6" v-else>
                               0
@@ -178,7 +178,7 @@
                               {{ getDiffProcentLastBigN(summaryGasProductionFact,summaryGasPlan)}}%
                             </div>
                             <div class="plan-header col-6" v-if="summaryGasPlan">
-                              {{ formatDigitToThousand(summaryGasPlan) }}
+                              {{ getFormattedNumber(summaryGasPlan) }}
                             </div>
                           </div>
                           <br />
