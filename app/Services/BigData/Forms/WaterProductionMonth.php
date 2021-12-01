@@ -85,7 +85,11 @@ class WaterProductionMonth extends MeasLogByMonth
     ) {
         $waterRow = [
             'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
+            'uwi' => [
+                'id' => $well->id,
+                'name' => $well->uwi,
+                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+            ],
             'indicator' => ['value' => trans('bd.forms.water_production_month.water_prod_val')]
         ];
         $workTimeRow = [

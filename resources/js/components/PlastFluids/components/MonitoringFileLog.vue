@@ -22,7 +22,9 @@
           <p>{{ sheetlog[0] }}</p>
           <div class="row-log">
             <p v-for="(rowlog, index) in sheetlog[1]" :key="index">
-              {{ rowlog[Object.keys(rowlog)[0]] }}
+              {{
+                Object.keys(rowlog)[0] + " " + rowlog[Object.keys(rowlog)[0]]
+              }}
             </p>
           </div>
         </div>

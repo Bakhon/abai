@@ -1,140 +1,106 @@
 <template>
     <div class="CapitalInvestments">
-       <div class="row">
-           <div class="col-sm-6 pr-0">
-               <table class="table defaultTable">
-                   <tbody>
-                   <tr>
-                       <th colspan="6">
-                           Fact
-                       </th>
-                   </tr>
-                   <tr>
-                       <th rowspan="4" >БКП / Account</th>
-                       <th rowspan="4" >Проект / Project</th>
-                       <th rowspan="2" colspan="2">Отчет / Reporting</th>
-                       <th rowspan="2">
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th></th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th rowspan="2">Оценка / Expected</th>
-                       <th rowspan="2">Утв. План / Appr. Рlan</th>
-                   </tr>
-                   <tr>
-                       <th>Факт / Actual</th>
-                       <th>Факт / Actual</th>
-                   </tr>
-                   <tr v-for="i in 15">
-                       <td v-for="i in 6"></td>
-                   </tr>
-                   </tbody>
-               </table>
-           </div>
-           <div class="col-sm-6 pl-0">
-               <table class="table defaultTable">
-                   <tbody>
-                   <tr>
-                       <th colspan="6">
-                           Project
-                       </th>
-                   </tr>
-                   <tr>
-                       <th rowspan="4" >БКП / Account</th>
-                       <th rowspan="4" >Проект / Project</th>
-                       <th rowspan="2" colspan="2">Отчет / Reporting</th>
-                       <th rowspan="2">
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th></th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                   </tr>
-                   <tr>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th>
-                           <select name="" id="">
-                               <option value="" v-for="year in years">
-                                   {{year.year}}
-                               </option>
-                           </select>
-                       </th>
-                       <th rowspan="2">Оценка / Expected</th>
-                       <th rowspan="2">Утв. План / Appr. Рlan</th>
-                   </tr>
-                   <tr>
-                       <th>Факт / Actual</th>
-                       <th>Факт / Actual</th>
-                   </tr>
-                   <tr v-for="i in 15">
-                       <td v-for="i in 6"></td>
-                   </tr>
-                   </tbody>
-               </table>
-           </div>
-       </div>
+        <table class="table defaultTable">
+            <tbody>
+            <tr>
+                <th rowspan="2" >БКП / Account</th>
+                <th rowspan="2" >Проект / Project</th>
+                <th>Факт / Actual</th>
+                <th>Факт / Actual</th>
+                <th>Оценка / Expected</th>
+                <th>Утв. План / Appr. Рlan</th>
+            </tr>
+            <tr>
+                <th>
+                    <select name="" id="" v-model="factFirst" @change="filterSap">
+                        <option :value="year.year" v-for="year in years">
+                            {{year.year}} г.
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="" v-model="factLast" @change="filterSap">
+                        <option :value="year.year" v-for="year in years">
+                            {{year.year}} г.
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="" v-model="planFirst" @change="filterSap">
+                        <option :value="year.year" v-for="year in years">
+                            {{year.year}} г.
+                        </option>
+                    </select>
+                </th>
+                <th>
+                    <select name="" id="" v-model="planLast" @change="filterSap">
+                        <option :value="year.year" v-for="year in years">
+                            {{year.year}} г.
+                        </option>
+                    </select>
+                </th>
+            </tr>
+            <tr v-for="investment in investments">
+                <td></td>
+                <td>{{investment.name_ru}}</td>
+                <td>{{investment.value_fact1}}</td>
+                <td>{{investment.value_fact2}}</td>
+                <td>{{investment.value_plan1}}</td>
+                <td>{{investment.value_plan2}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
 <script>
+    import {globalloadingMutations} from '@store/helpers';
     export default {
         name: "CapitalInvestments",
         data(){
             return{
+                factFirst: 2016,
+                factLast: 2018,
+                planFirst: 2016,
+                planLast: 2018,
+                investments: [],
                 years: [
-                    { year: '2015 г.'},
-                    { year: '2016 г.'},
-                    { year: '2017 г.'},
-                    { year: '2018 г.'},
-                    { year: '2019 г.'},
-                    { year: '2020 г.'},
+                    { year: 2016},
+                    { year: 2017},
+                    { year: 2018},
+                    { year: 2019},
+                    { year: 2020},
+                    { year: 2021},
                 ],
             }
+        },
+        created(){
+            this.filterSap()
+        },
+        methods:{
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
+            async filterSap(){
+                this.SET_LOADING(true);
+                let query = "?fact1=" + this.factFirst + "&fact2=" + this.factLast
+                    + "&plan1=" + this.planFirst + "&plan2=" + this.planLast
+                try{
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/capital_investment/'+query).then((response) => {
+                        let data = response.data;
+                        if (data) {
+                            this.investments = data;
+                        } else {
+                            console.log('No data');
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log(e)
+                    this.investments = []
+                }
+                this.SET_LOADING(false);
+            },
         },
     }
 </script>

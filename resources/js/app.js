@@ -216,6 +216,7 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
+Vue.component('faq-page', require('./components/faqPage.vue').default);
 
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 

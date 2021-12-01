@@ -17,7 +17,7 @@
         :items="subsoils"
         :placeholder="trans('plast_fluids.subsurface_user')"
         :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
-        dropKey="owner_name"
+        :dropKey="['owner_name']"
         @dropdown-select="updateCurrentSubsoil"
       />
       <Dropdown
@@ -26,7 +26,7 @@
         :selectedValue="
           currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
         "
-        dropKey="field_name"
+        :dropKey="['field_name']"
         :parentShortName="
           currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
         "
@@ -81,8 +81,9 @@ export default {
       async set(value) {
         this.SET_CURRENT_SUBSOIL_HORIZON(value);
         await this.handleBlocksFilter(value);
-        this.handleTableGraphData({
+        this.handleAnalysisTableData({
           field_id: this.currentSubsoilField[0].field_id,
+          postUrl: this.getTablePostUrl(),
         });
       },
     },
@@ -92,8 +93,9 @@ export default {
       },
       set(value) {
         this.SET_CURRENT_BLOCKS(value);
-        this.handleTableGraphData({
+        this.handleAnalysisTableData({
           field_id: this.currentSubsoilField[0].field_id,
+          postUrl: this.getTablePostUrl(),
         });
       },
     },
@@ -104,7 +106,7 @@ export default {
       "UPDATE_CURRENT_SUBSOIL_FIELD",
     ]),
     ...mapActions("plastFluidsLocal", [
-      "handleTableGraphData",
+      "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
@@ -116,6 +118,18 @@ export default {
     async updateCurrentField(value) {
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
       this.handleBlocksFilter([]);
+    },
+    getTablePostUrl() {
+      let url;
+      switch (this.reservoilOilInfo[1]) {
+        case "maps-and-tables":
+          url = "map/isogyps-wells-table";
+          break;
+        case "graphs-and-tables":
+          url = "analytics/pvt-data-analysis";
+          break;
+      }
+      return url;
     },
   },
 };

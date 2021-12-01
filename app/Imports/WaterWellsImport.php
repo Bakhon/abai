@@ -18,10 +18,12 @@ class WaterWellsImport implements ToCollection, WithColumnLimit, WithStartRow, W
     const COLUMNS = [
         'lon' => 0,
         'lat' => 1,
-        'object_id' => 2,
-        'length' => 3,
-        'point_x' => 4,
-        'point_y' => 5
+        'name' => 2,
+        'type' => 3,
+        'status' => 4,
+        'well_number' => 5,
+        'well_type' => 6,
+        'drilling_date' => 7
     ];
 
     public function __construct(ImportWaterWells $command)
@@ -33,37 +35,33 @@ class WaterWellsImport implements ToCollection, WithColumnLimit, WithStartRow, W
     public function collection(Collection $collection)
     {
         $this->importWaterWells($collection);
+        $this->command->info('Import Finished');
     }
 
     public function endColumn(): string
     {
-        return 'G';
+        return 'I';
     }
 
     private function importWaterWells(Collection $collection)
     {
         $collection = $collection->skip(1);
 
+
         foreach ($collection as $row) {
             foreach (self::COLUMNS as $COLUMN) {
                 $row[$COLUMN] = str_replace(',', '.', $row[$COLUMN]);
             }
 
-            $this->createNewWaterWell($row);
+            $water_well = new WaterWell();
+
+            foreach (self::COLUMNS as $key => $column) {
+                $water_well->$key = $row[$column];
+            }
+            $water_well->save();
+
+            $this->command->info($water_well->name.' Imported');
         }
-
-        $this->command->info('Import Finished');
-    }
-
-    public function createNewWaterWell($row)
-    {
-        $this->command->info('import water well ' . $row[self::COLUMNS['object_id']]);
-
-        $ww = new WaterWell();
-        foreach (self::COLUMNS as $param => $column){
-            $ww->$param = $row[$column];
-        }
-        $ww->save();
     }
 
     public function startRow(): int

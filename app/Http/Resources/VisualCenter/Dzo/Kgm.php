@@ -66,9 +66,9 @@ class Kgm extends Dzo {
         $condensateSummary = $daySummary;
         $condensateSummary['id'] = '';
         $condensateSummary['name'] = 'КГМКМГ';
-        $condensateSummary['fact'] *= $this->oilCondensateMultiplier;
-        $condensateSummary['plan'] *= $this->oilCondensateMultiplier;
-        $condensateSummary['opek'] *= $this->oilCondensateMultiplier;
+        $condensateSummary['fact'] *= $this->condensateMultiplier;
+        $condensateSummary['plan'] *= $this->condensateMultiplier;
+        $condensateSummary['opek'] *= $this->condensateMultiplier;
         return $condensateSummary;
     }
 
@@ -76,9 +76,9 @@ class Kgm extends Dzo {
     {
        $chartSummary = $daySummary;
        if ($isSummary) {
-           $chartSummary['fact'] *= $this->condensateMultiplier;
-           $chartSummary['plan'] *= $this->condensateMultiplier;
-           $chartSummary['opek'] *= $this->condensateMultiplier;
+           $chartSummary['fact'] *= $this->oilCondensateMultiplier;
+           $chartSummary['plan'] *= $this->oilCondensateMultiplier;
+           $chartSummary['opek'] *= $this->oilCondensateMultiplier;
        }
        $condensateSummary = $this->getCondensateForChart($daySummary);
        $summary = array();

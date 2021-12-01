@@ -14,11 +14,11 @@
           </div>
           <div class="dropdown-holder">
       
-            <b-form-select  @change="onChangeWell" :options="wellList.data" ></b-form-select>
-            
+            <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList.data" ></b-form-select>
+            <div class="line-block"></div>
 
-            <b-form-select   :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
-            
+            <b-form-select  class="custom-dropdown-block" :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
+            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
           </div>
           
@@ -493,6 +493,14 @@ table, th, td {
   height: calc(100% - 36px);
 }
 .tkrs-content-down {
-      height: 100%;
+  height: 100%;
+}
+.custom-dropdown-block {
+  background: #1F2142;
+  border: none;
+  color: #fff;
+}
+.online-block {
+  width: 100%;
 }
 </style>

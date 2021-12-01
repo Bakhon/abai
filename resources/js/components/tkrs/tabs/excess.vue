@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="excess-table">
       <div class="table-div">
             <div>
               <table>
@@ -58,5 +58,8 @@ export default {
 }
 .tech_limit {
   background: #752747 !important;
+}
+.excess-table {
+  height: calc(100% - 525px);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div v-if="form">
-    <BigDataPlainFormWrapper v-if="form.type === 'plain' && type === 'well' && id" :params="form"
-                             :well-id="id"></BigDataPlainFormWrapper>
+    <BigDataPlainFormWrapper v-if="form.type === 'plain' && id" :params="form"
+                             :type="type" :well-id="id"></BigDataPlainFormWrapper>
     <BigDataTableFormWrapper v-else-if="form.type === 'table'"
                              :id="id" :params="form" :type="type"></BigDataTableFormWrapper>
   </div>

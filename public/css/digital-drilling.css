@@ -21,6 +21,9 @@ sup{
 .newWell *{
     color: #ffffff;
 }
+.dropdown-header{
+    color: #ffffff;
+}
 .digital_drilling *{
     box-sizing: border-box;
     font-family: Harmonia Sans Pro Cyr;
@@ -746,6 +749,14 @@ input.rangeInput {
 }
 .map__content .dropdown__area{
     margin-bottom: 15px;
+}
+.map__content .dropdown__area button.clear{
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #FFFFFF;
 }
 .map-filter{
     position: absolute;

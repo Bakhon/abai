@@ -50,19 +50,21 @@
                 <div class="inc__right_functions">
                     <div class="inc__2d"
                         :class="{not_active: !d2_Show}"
+                         @click="d2Show"
                     >
-                        <div class="inc__2d-title" @click="d2Show">2D</div>
-                        <div class="inc__2d-name" @click="d2Show">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d2_Show" @click="d2_Close">
+                        <div class="inc__2d-title" >2D</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d2_Show" @click.stop="d2_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
                     <div class="inc__2d"
                          :class="{not_active: !d3_Show}"
+                         @click="d3Show"
                     >
-                        <div class="inc__2d-title" @click="d3Show">3D</div>
-                        <div class="inc__2d-name" @click="d3Show">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d3_Show" @click="d3_Close">
+                        <div class="inc__2d-title" >3D</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d3_Show" @click.stop="d3_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
@@ -84,7 +86,7 @@
                     </div>
                     <div class="inc__charts-right" v-if="d3_Show">
                         <div class="inc__charts-name">{{trans("digital_drilling.default.3D_view")}}</div>
-                        <apexchart height="700" :options="chartOptions" :series="series"></apexchart>
+                        <Inclinometry3D :data="inclino"/>
                     </div>
                 </div>
             </template>
@@ -96,11 +98,13 @@
     import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import VueApexCharts from "vue-apexcharts";
     import MainContent from '../components/MainContent'
+    import Inclinometry3D from '../components/Inclinometry3D'
     export default {
         name: "inclino",
         components: {
             MainContent,
-            "apexchart": VueApexCharts
+            "apexchart": VueApexCharts,
+            Inclinometry3D
         },
 
         data(){
@@ -120,26 +124,36 @@
                 ],
                 seriesAbove: [
                     {
-                        name: "Отход от вертикаля",
+                        name: "Глубина по вертикали",
                         data: []
                     },
                 ],
                 chartOptions: {
                     chart: {
+                        zoom: {
+                            enabled: true,
+                            type: 'xy',
+                            autoScaleYaxis: false,
+                            zoomedArea: {
+                                fill: {
+                                    color: '#90CAF9',
+                                    opacity: 0.4
+                                },
+                                stroke: {
+                                    color: '#0D47A1',
+                                    opacity: 0.4,
+                                    width: 1
+                                }
+                            }
+                        },
                         animations: {
                             enabled: false,
                         },
                         height: 500,
                         type: 'line',
                         background: '#2B2E5E',
-
-                        zoom: {
-                            enabled: false,
-                            type: 'x',
-                            autoScaleYaxis: true,
-                        },
                         toolbar: {
-                            show: false
+                            show: true
                         }
                     },
                     dataLabels: {
@@ -189,7 +203,7 @@
                     },
                     xaxis: {
                         title: {
-                            text: 'Отход от вертикаля', style: {
+                                text: 'Отход от вертикали, м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -202,12 +216,12 @@
                             },
                         },
                         tickAmount: 9,
-                        position: 'top',
+                        position: 'bottom',
                     },
                     yaxis:{
                         reversed: true,
                         title: {
-                            text: 'Глубина по вертикали', style: {
+                            text: 'Глубина по вертикали, м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -228,110 +242,7 @@
 
                     },
                 },
-                chartOptionsAbove: {
-                    chart: {
-                        animations: {
-                            enabled: false,
-                        },
-                        height: 500,
-                        type: 'line',
-                        zoom: {
-                            enabled: true,
-                            type: 'y',
-                            autoScaleYaxis: true,
-                        },
-                        toolbar: {
-                            show: false,
-                        },
-                        background: '#2B2E5E',
-
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    colors: ['#2E50E9', '#E3000F'],
-                    stroke: {
-                        curve: 'smooth',
-                    },
-                    legend:{
-                        labels: {
-                            colors: ['#FFFFFF']
-                        },
-                        show: false,
-                    },
-                    tooltip: {
-                        fillSeriesColor: true,
-                    },
-                    grid: {
-                        show: true,
-                        borderColor: '#454D7D',
-                        strokeDashArray: 0,
-                        position: 'back',
-                        xaxis: {
-                            lines: {
-                                show: true
-                            }
-                        },
-                        yaxis: {
-                            lines: {
-                                show: true
-                            },
-                        },
-                        row: {
-                            colors: ['transparent'],
-                            opacity: 0.5
-                        },
-                        column: {
-                            colors: ['transparent'],
-                            opacity: 0.5
-                        },
-                        padding: {
-                            top: 0,
-                            right: 0,
-                            bottom: 0,
-                            left: 0
-                        },
-                    },
-                    xaxis: {
-                        labels: {
-                            style: {
-                                colors: '#FFFFFF'
-                            },
-                        },
-                        tickAmount: 9,
-                        position: 'bottom',
-                    },
-                    yaxis: [
-                        {
-                            max: 50,
-                            labels: {
-                                style: {
-                                    colors: '#FFFFFF'
-                                },
-                                formatter: function(val) {
-                                    if (val == null)
-                                        return 0;
-                                    return val.toFixed(0);
-                                },
-                            }
-                        },
-                        {
-                            opposite: true,
-                            max: 50,
-                            labels: {
-                                style: {
-                                    colors: '#FFFFFF'
-                                },
-                                formatter: function(val) {
-                                    if (val == null)
-                                        return 0;
-                                    return val.toFixed(0);
-                                },
-                            }
-                        },
-
-                    ],
-                },
+                chartOptionsAbove: {}
             }
         },
         computed:{
@@ -426,7 +337,7 @@
                     this.maxValue = last
                 }
                 this.seriesAbove = [{
-                    name: "Отход от вертикаля",
+                    name: "Север / Юг , м.",
                         data: coordinates
                 }]
                 this.chartOptionsAbove = {
@@ -458,18 +369,17 @@
                         }],
                     },
                     chart: {
+                        zoom:{
+                            enabled: false,
+                        },
                         animations: {
                             enabled: false,
                         },
                         height: 500,
-                            type: 'line',
-                            zoom: {
-                                enabled: false,
-                                type: 'y',
-                                autoScaleYaxis: true,
-                        },
+                        type: 'line',
+
                         toolbar: {
-                            show: false,
+                            show: true,
                         },
                         background: '#2B2E5E',
 
@@ -524,7 +434,7 @@
                         max: 2* this.maxValue,
                         min: -2 * this.maxValue,
                         title: {
-                            text: 'Отход от вертикаля', style: {
+                            text: 'Восток / Запад , м.', style: {
                                 color: '#FFFFFF',
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -548,7 +458,7 @@
                             axisTicks: {show: true},
                             axisBorder: {show: true,},
                             title: {
-                                text: 'Глубина по вертикали', style: {
+                                text: 'Север / Юг , м.', style: {
                                     color: '#FFFFFF',
                                     fontSize: '15px',
                                     fontFamily: 'Helvetica, Arial, sans-serif',
@@ -638,13 +548,16 @@
         display: flex;
         align-items: center;
         background: #2E50E9;
-        padding: 6px 10px;
+        padding: 6px 35px 6px 10px;
         border-radius: 6px;
         margin-right: 5px;
         cursor: pointer;
+        position: relative;
+        box-sizing: content-box;
     }
     .inc__2d.not_active{
         opacity: 0.5;
+
     }
     .inc__2d-title{
         padding: 3px 5px;
@@ -653,9 +566,22 @@
         background-color: #FFFFFF;
         margin-right: 7px;
         color: blue;
+        height: 100%;
+    }
+    .inc__2d-name{
+        height: 100%;
     }
     .inc__2d-close{
         margin-left: 10px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+    .inc__2d-close:hover{
+        border-radius: 50%;
+        background-color: lightgrey;
+        padding: 2px 4px;
     }
     .inc__charts-name{
         background: #323370;

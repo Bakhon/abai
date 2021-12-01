@@ -56,7 +56,7 @@
                 <tbody>
                     <tr>
                       <td class="header_name">Дата отчета</td>
-                      <td class="input-form-auto header_name">29.05.2020 г.</td>
+                      <td class="input-form-auto header_name">{{wellFile}}</td>
                       <td class="input-form-auto header_name_red">{{well_name}}</td>
                       <td class="input-form-auto header_name_red">{{field_name}}</td>
                       <td class="header_name">Начало бурения:</td>
@@ -87,9 +87,9 @@
                     </tr>
                     <tr>
                       <td class="header_name">Трубное давление:</td>
-                      <td class="input-form-auto header_name_red"> 0 атм</td>
+                      <td class="input-form-auto header_name_red">{{pipe_pressure}}</td>
                       <td class="header_name">Затрубное давление:</td>
-                      <td class="input-form-auto header_name_red">0 атм</td>
+                      <td class="input-form-auto header_name_red">{{annular_pressure}}</td>
                       <td class="header_name">Межколонное давление:</td>
                       <td class="input-form-auto header_name_red">0 атм</td>
                     </tr>
@@ -153,9 +153,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[1]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
-                      <td class="input-form-auto header_name">168,3</td>
-                      <td class="input-form-auto header_name">8,94</td>
-                      <td class="input-form-auto header_name">0-1869м</td>
+                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
+                      <td class="input-form-auto header_name">{{wall_thickness}}</td>
+                      <td class="input-form-auto header_name">{{descent_depth}}</td>
                       <td class="input-form-auto header_name">17,76</td>
                     </tr>
                     <tr>
@@ -171,9 +171,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[3]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[3]}}</td>
                       <td colspan="2" class="header_name">Искусственный забой, м</td>
-                      <td class="input-form-auto header_name">1856</td>
+                      <td class="input-form-auto header_name">{{artificial_slaughter}}</td>
                       <td colspan="2" class="header_name">Текущий забой, м</td>
-                      <td class="input-form-auto header_name">1851м</td>
+                      <td class="input-form-auto header_name">{{current_bottomhole}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">обеденный перерыв</td>
@@ -316,6 +316,13 @@ export default {
       linkWell: "drWellName/",
       linkWellDate: "drWellDates/",
       linkWellReport: "drHeaderWorkReport/",
+      annular_pressure: null,
+      descent_depth: null,
+      pipe_pressure: null,
+      artificial_slaughter: null,
+      current_bottomhole: null,
+      prod_casing_outer_d: null,
+      wall_thickness: null,
       
     }
   },
@@ -398,17 +405,14 @@ export default {
                 this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
             )
             .then((response) => {
-              
                 let data = response.data;
                 if (data) {
-                    this.wellFile = data;
                     this.areaChartData = data.data;
                     this.contractor_name = data.data.header.contractor_name;
                     this.report_number = data.data.header.report_number;
                     this.machine_type = data.data.header.machine_type;
                     this.field_name = data.data.header.field_name;
                     this.well_type = data.data.header.well_type;
-
                     this.well_name = data.data.header.well_name;
                     this.programmes_target_name = data.data.header.programmes_target_name;
                     this.chief = data.data.works_report.chief;
@@ -418,11 +422,18 @@ export default {
                     this.master_night_shift_number = data.data.works_report.master_night_shift_number;
                     this.works_report_range = data.data.works_report_range;
                     this.start_drill = data.data.header.start_drill;
-                    this.end_drill = data.data.header.start_drill;
+                    this.end_drill = data.data.header.end_drill;
                     this.all_works = data.data.works_report_range.all_works;
                     this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
                     this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
                     this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
+                    this.annular_pressure = data.data.parameters.annular_pressure;
+                    this.descent_depth = data.data.parameters.descent_depth;
+                    this.pipe_pressure = data.data.parameters.pipe_pressure;
+                    this.artificial_slaughter = data.data.parameters.artificial_slaughter;
+                    this.current_bottomhole = data.data.parameters.current_bottomhole;
+                    this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
+                    this.wall_thickness = data.data.parameters.wall_thickness;
                 } else {
                     console.log("No data");
                 }

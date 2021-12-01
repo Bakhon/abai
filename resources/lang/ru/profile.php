@@ -8,6 +8,7 @@ return array (
   'fields' => 
   array (
     'name' => 'ФИО',
+    'id' => 'Ваш ID',
     'birthday' => 'Дата рождения',
     'gender' => 'Пол',
     'city' => 'Город',

@@ -225,7 +225,6 @@
                     this.labels = data.labels;
                 }).finally(() => {
                     this.SET_LOADING(false);
-                    this.$refs.chart.toggleSeries('Мероприятия');
                 });
             },
         },
@@ -317,7 +316,6 @@
         },
         watch: {
             isShowEvents: function (value) {
-                console.log('toogle watch')
                 this.$refs.chart.toggleSeries('Мероприятия');
             },
             chartSeries: function () {

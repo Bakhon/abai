@@ -1,20 +1,24 @@
 <template>
   <div
     class="monitoring-table-div"
-    :class="{ center: isEmpty(currentSubsoilField[0]) }"
+    :class="{ center: !currentSubsoilField[0] }"
   >
     <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
       <div class="table-title-holder">
         <p class="monitoring-table-title">
-          {{
-            isEmpty(currentTemplate)
-              ? trans("plast_fluids.research_exploration")
-              : currentTemplate["name_" + currentLang]
-          }}
+          {{ currentTemplate ? currentTemplate["name_" + currentLang] : "" }}
         </p>
-        <button @click="isOpenModal = true">
-          <img src="/img/PlastFluids/settings.svg" alt="customize table" />
-        </button>
+        <div class="buttons-holder">
+          <button @click="handleTemplateDownload">
+            <img
+              src="/img/PlastFluids/data_upload.svg"
+              alt="download template"
+            />
+          </button>
+          <button @click="isOpenModal = true">
+            <img src="/img/PlastFluids/settings.svg" alt="customize table" />
+          </button>
+        </div>
       </div>
       <BaseTable
         :fields="tableFields"
@@ -29,9 +33,7 @@
       v-if="isOpenModal"
       @close-modal="isOpenModal = false"
       :templateName="
-        isEmpty(currentTemplate)
-          ? trans('plast_fluids.research_exploration')
-          : currentTemplate['name_' + currentLang]
+        currentTemplate ? currentTemplate['name_' + currentLang] : ''
       "
       :fields="tableFields"
     />
@@ -42,7 +44,8 @@
 import { mapState, mapActions } from "vuex";
 import BaseTable from "./BaseTable.vue";
 import Modal from "./MonitoringDownloadTableModal.vue";
-import _ from "lodash";
+import { downloadExcelFile, convertToFormData } from "../helpers";
+import { getTemplateFile } from "../services/templateService";
 
 export default {
   name: "MonitoringDownloadTable",
@@ -50,6 +53,11 @@ export default {
     return {
       isOpenModal: false,
     };
+  },
+  inject: {
+    userID: {
+      default: "",
+    },
   },
   components: {
     BaseTable,
@@ -66,24 +74,39 @@ export default {
   watch: {
     currentSubsoilField: {
       handler(value) {
-        this.handleTableData({ field_id: value[0].field_id });
+        this.handleTableData({
+          field_id: value[0].field_id,
+          user_id: this.userID,
+        });
       },
       deep: true,
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableData"]),
-    isEmpty(obj) {
-      return _.isEmpty(obj);
+    async handleTemplateDownload() {
+      const postData = convertToFormData({
+        user_id: this.userID,
+        field_id: this.currentSubsoilField[0].field_id,
+        report_id: this.currentTemplate.id,
+        horizons: "None",
+        blocks: "None",
+      });
+      const file = await getTemplateFile(postData);
+      downloadExcelFile(this.currentTemplate["name_" + this.currentLang], file);
     },
   },
   mounted() {
     if (
-      this.currentSubsoilField[0].field_id &&
+      this.currentSubsoilField[0]?.field_id &&
       !this.tableRows.length &&
       !this.tableFields.length
-    )
-      this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
+    ) {
+      this.handleTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        user_id: this.userID,
+      });
+    }
   },
 };
 </script>
@@ -112,9 +135,25 @@ export default {
   margin-bottom: 17px;
 }
 
-.table-title-holder > button {
+.buttons-holder {
+  display: flex;
+  align-items: center;
+}
+
+.buttons-holder > button {
   border: none;
   background-color: unset;
+  width: 18px;
+  height: 18px;
+}
+
+.buttons-holder > button:nth-of-type(1) {
+  margin-right: 10px;
+}
+
+.buttons-holder > button > img {
+  width: 100%;
+  height: 100%;
 }
 
 .monitoring-table-title {
