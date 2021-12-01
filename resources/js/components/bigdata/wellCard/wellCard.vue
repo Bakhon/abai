@@ -1298,21 +1298,23 @@ export default {
                  this.dmart_daily_prod_oil = ' ';  
                  this.wellGeo.name_ru = '';                                                          
               }
-              
+             
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
                 this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
               }
               if (data.geo[0] != null) {
                 this.wellGeo = data.geo[0];
-              }                                                         
+              }       
+                                                                
               for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {               
                 this.setWellObjectData(
                   Object.keys(this.wellTransform)[i],
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }                                                
-              if (data.spatial_object.coord_point != null) {
+              }         
+                                               
+              if (data.spatial_object && data.spatial_object.coord_point) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
                   .replace("(", "")
@@ -1321,7 +1323,7 @@ export default {
                 this.wellSaptialObjectX = spatialObject[0];
                 this.wellSaptialObjectY = spatialObject[1];
               }
-              if (data.spatial_object_bottom.coord_point != null) {
+              if (data.spatial_object_bottom && data.spatial_object_bottom.coord_point) {
                 let spatialObjectBottom;
                 spatialObjectBottom = data.spatial_object_bottom.coord_point
                   .replace("(", "")
@@ -1329,17 +1331,17 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }  
-            
+              }
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
               );
+             
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
               this.wellOrgName = this.getMultipleValues(
                 data.org.reverse(),
                 "name_ru"
-              );              
+              );        
             } catch (e) {
               this.SET_LOADING(false);              
             }
