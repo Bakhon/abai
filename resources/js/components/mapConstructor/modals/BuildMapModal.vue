@@ -12,7 +12,7 @@
             <div id="data" class="tab-pane fade show active">
                 <div class="input-group mt-4 pl-2">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupFile01">Выбор данных:</span>
+                        <span class="input-group-text">Выбор данных:</span>
                     </div>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="inputGroupFile01" ref="bubblesFile"

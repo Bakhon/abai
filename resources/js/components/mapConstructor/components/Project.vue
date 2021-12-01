@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:id="'mcMap_' + projectIndex" class="col" style="min-width: 50%"></div>
+    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%"></div>
 </template>
 
 <script>
@@ -23,12 +23,11 @@ import jspdf from "jspdf";
 export default {
     props: {
         data: Object,
-        projectIndex: 0,
-    },
-    components: {
+        projectKey: 0,
     },
     data() {
         return {
+            base64Data: null,
             map: null,
             gridMapsValues: [],
             x1: 0,
@@ -44,6 +43,7 @@ export default {
         importData(data, type) {
             this.initMap(data, type).then(() => {
                 if (this.isGridMap(type)) {
+                    this.base64Data = data;
                     this.addPolygons(data);
                 } else {
                     this.drawLines(data);
@@ -68,7 +68,7 @@ export default {
                         });
                         const mapExtent = projection.getExtent();
                         this.map = new Map({
-                            target: 'mcMap_' + this.projectIndex,
+                            target: this.projectKey,
                             layers: this.data.layerGroups,
                             view: new View({
                                 projection: projection,
@@ -105,7 +105,9 @@ export default {
                     color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
+            const isolinesShow = typeof data.show !== "undefined" ? data.show : true;;
             let layerGroup = new LayerGroup();
+            layerGroup.type = 'polygon';
             let redColor = 255;
             let greenColor = 255;
             data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
@@ -119,10 +121,17 @@ export default {
                 this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
                     'internal': internalStyle,
                     'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
-                        parseInt(polygonsPerLevel.lower_bound).toString()),
+                        parseInt(polygonsPerLevel.lower_bound).toString(), isolinesShow),
                 });
             });
-            layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.name = 'Грид карта  ' + this.data.layerGroups.length;
+            layerGroup.selectedFilterType = typeof data.selectedFilterType !== "undefined"
+                ? data.selectedFilterType : 0;
+            layerGroup.selectedFilterValue = typeof data.selectedFilterValue !== "undefined"
+                ? data.selectedFilterValue : layerGroup.selectedFilterType === 0 ? 10 : 0;
+            layerGroup.step = typeof data.step !== "undefined" ? data.step : 0;
+            layerGroup.bounds = typeof data.bounds !== "undefined" ? data.bounds : [0, 0];
+            layerGroup.show = isolinesShow;
             this.addLayerGroupToMap(layerGroup);
             if (typeof data.grid !== "undefined") {
                 this.addGrid(data);
@@ -155,10 +164,11 @@ export default {
                         width: 3,
                     }),
                 }),
-                zIndex: this.data.layerGroups.length + 1
+                zIndex: this.data.layerGroups.length + 1,
             });
             let layerGroup = new LayerGroup();
             layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.type = 'border';
             layerGroup.getLayers().push(newLayer);
             this.addLayerGroupToMap(layerGroup);
             this.SET_LOADING(false);
@@ -189,23 +199,29 @@ export default {
             layerGroup.getLayers().push(externalVectorLayer);
             layerGroup.getLayers().push(internalVectorLayer);
         },
-        getExternalLayerStyle(color, text) {
-            return new Style({
-                stroke: new Stroke({
-                    color: color,
+        getExternalLayerStyle(color, text, show = true) {
+            let stroke = null;
+            let textStyle = null;
+            if (show) {
+                stroke = new Stroke({
+                    color: '#000',
                     width: 1,
-                }),
-                fill: new Fill({
-                    color: color,
-                }),
-                text: new Text({
+                });
+                textStyle = new Text({
                     font: '14px bold Calibri,sans-serif',
                     fill: new Fill({
-                        color: 'white',
+                        color: '#000',
                     }),
                     text: text,
                     placement: 'line',
+                });
+            }
+            return new Style({
+                stroke: stroke,
+                fill: new Fill({
+                    color: color,
                 }),
+                text: textStyle,
             });
         },
         addLayerGroupToMap(layerGroup) {
@@ -426,25 +442,11 @@ export default {
                 })
                 layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Слой ' + this.data.layerGroups.length;
                 layerGroup.key = 'bubbles' + data.date;
+                layerGroup.type = 'bubbles';
                 this.addLayerGroupToMap(layerGroup);
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
-        },
-        removeAllLayers() {
-            return new Promise((resolve, reject) => {
-                try {
-                    this.data.layerGroups = [];
-                    if (this.map !== null) {
-                        this.map.getLayers().forEach(layer => {
-                            this.map.removeLayer(layer);
-                        });
-                    }
-                } catch (e) {
-                    reject();
-                }
-                resolve();
-            })
         },
         updateMapSize() {
             if (this.map !== null) {
@@ -465,17 +467,18 @@ export default {
                     wrapX: true,
                     crossOrigin:"anonymous",
                 }),
+                visible: true,
             });
             let defaultMapLayer = new TileLayer({
                 source: new OSM(),
-                opacity: 0,
+                visible: false,
             });
             this.map = new Map({
                 controls: defaultControls().extend([
                     new ToggleMapStyle(),
                     new ExportMap(),
                 ]),
-                target: 'mcMap_' + this.projectIndex,
+                target: this.projectKey,
                 view: new View({
                     projection: 'EPSG:4326',
                     zoom: 0,
@@ -484,7 +487,7 @@ export default {
             });
             let layerGroup = new LayerGroup();
             layerGroup.name = 'Географическая карта';
-            layerGroup.groupType = 'tileLayers';
+            layerGroup.type = 'map';
             layerGroup.getLayers().push(defaultMapLayer);
             layerGroup.getLayers().push(satelliteMapLayer);
             this.addLayerGroupToMap(layerGroup);
@@ -518,13 +521,10 @@ class ToggleMapStyle extends Control {
         }
         let mapLayers = this.getMap().getLayers();
         mapLayers.forEach(item => {
-            if (item.groupType === 'tileLayers') {
+            if (item.type === 'map') {
                 item.getLayers().forEach(tileLayer => {
-                    if (tileLayer.getOpacity() === 1) {
-                        tileLayer.setOpacity(0);
-                    } else {
-                        tileLayer.setOpacity(1);
-                    }
+                    tileLayer.setOpacity(tileLayer.values_.visible ? 0 : 1);
+                    tileLayer.values_.visible = !tileLayer.values_.visible;
                 })
             }
         })
