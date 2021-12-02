@@ -1,7 +1,6 @@
 {
   "type": "table",
   "new": true,
-  "update_after_edit": false,
   "filter": [
     {
       "code": "research_type",
@@ -37,7 +36,7 @@
       },
       "type": "float",
       "title": "oil",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -62,7 +61,7 @@
       },
       "type": "float",
       "title": "water",
-      "validation": "gte:0|lte:100000",
+      "validation": "nullable|gte:0|lte:100000",
       "depends_on": [
         {
           "field": "research_type",
@@ -87,7 +86,7 @@
       },
       "type": "float",
       "title": "volume",
-      "validation": "gte:0.9|lte:10",
+      "validation": "nullable|gte:0.9|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -112,7 +111,7 @@
       },
       "type": "float",
       "title": "r_oil",
-      "validation": "gte:0.7|lte:1.05",
+      "validation": "nullable|gte:0.7|lte:1.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -137,7 +136,7 @@
       },
       "type": "float",
       "title": "r_water",
-      "validation": "gte:0.7|lte:2",
+      "validation": "nullable|gte:0.7|lte:2",
       "depends_on": [
         {
           "field": "research_type",
@@ -162,7 +161,7 @@
       },
       "type": "float",
       "title": "pnac",
-      "validation": "gte:0|lte:1500",
+      "validation": "nullable|gte:0|lte:1500",
       "depends_on": [
         {
           "field": "research_type",
@@ -187,7 +186,7 @@
       },
       "type": "float",
       "title": "gf",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -212,7 +211,7 @@
       },
       "type": "float",
       "title": "tpl",
-      "validation": "gte:0|lte:250",
+      "validation": "nullable|gte:0|lte:250",
       "depends_on": [
         {
           "field": "research_type",
@@ -237,7 +236,7 @@
       },
       "type": "float",
       "title": "pres_plast",
-      "validation": "gte:0|lte: 200",
+      "validation": "nullable|gte:0|lte: 200",
       "depends_on": [
         {
           "field": "research_type",
@@ -262,7 +261,7 @@
       },
       "type": "float",
       "title": "temp_plast",
-      "validation": "gte:0|lte: 250",
+      "validation": "nullable|gte:0|lte: 250",
       "depends_on": [
         {
           "field": "research_type",
@@ -287,7 +286,7 @@
       },
       "type": "float",
       "title": "pres_gas",
-      "validation": "gte:0|lte:150",
+      "validation": "nullable|gte:0|lte:150",
       "depends_on": [
         {
           "field": "research_type",
@@ -312,7 +311,7 @@
       },
       "type": "float",
       "title": "gas_t",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -337,7 +336,7 @@
       },
       "type": "float",
       "title": "gas_m3",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -362,7 +361,7 @@
       },
       "type": "float",
       "title": "koeff",
-      "validation": "gte:0.9|lte:10",
+      "validation": "nullable|gte:0.9|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -387,7 +386,7 @@
       },
       "type": "float",
       "title": "usadka",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -412,7 +411,7 @@
       },
       "type": "float",
       "title": "k_gasoil",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -437,7 +436,7 @@
       },
       "type": "float",
       "title": "k_plastoil",
-      "validation": "gte:0.0001|lte:0.05",
+      "validation": "nullable|gte:0.0001|lte:0.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -462,7 +461,7 @@
       },
       "type": "float",
       "title": "plast_oil",
-      "validation": "gte:0.7|lte: 1000000",
+      "validation": "nullable|gte:0.7|lte: 1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -487,7 +486,7 @@
       },
       "type": "float",
       "title": "density_oil",
-      "validation": "gte:0.7|lte:1.05",
+      "validation": "nullable|gte:0.7|lte:1.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -512,7 +511,7 @@
       },
       "type": "float",
       "title": "density_20",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -537,7 +536,7 @@
       },
       "type": "float",
       "title": "density_gas_20",
-      "validation": "gte:0.0001|lte:0.01",
+      "validation": "nullable|gte:0.0001|lte:0.01",
       "depends_on": [
         {
           "field": "research_type",
@@ -562,7 +561,7 @@
       },
       "type": "float",
       "title": "water_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -587,7 +586,7 @@
       },
       "type": "float",
       "title": "dehyd_water_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -612,7 +611,7 @@
       },
       "type": "float",
       "title": "density20c",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -637,7 +636,7 @@
       },
       "type": "float",
       "title": "cinem_visc_40c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -662,7 +661,7 @@
       },
       "type": "float",
       "title": "cinem_visc_50c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -687,7 +686,7 @@
       },
       "type": "float",
       "title": "cinem_visc_60c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -712,7 +711,7 @@
       },
       "type": "float",
       "title": "solid_temp",
-      "validation": "gte:-100|lte:100",
+      "validation": "nullable|gte:-100|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -737,7 +736,7 @@
       },
       "type": "float",
       "title": "molecular_weight",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -762,7 +761,7 @@
       },
       "type": "float",
       "title": "sulf_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -787,7 +786,7 @@
       },
       "type": "float",
       "title": "pres_plast",
-      "validation": "gte:0|lte:200",
+      "validation": "nullable|gte:0|lte:200",
       "depends_on": [
         {
           "field": "research_type",
@@ -812,7 +811,7 @@
       },
       "type": "float",
       "title": "temp_plast",
-      "validation": "gte:0|lte:250",
+      "validation": "nullable|gte:0|lte:250",
       "depends_on": [
         {
           "field": "research_type",
@@ -837,7 +836,7 @@
       },
       "type": "float",
       "title": "pres_gas",
-      "validation": "gte:0|lte:150",
+      "validation": "nullable|gte:0|lte:150",
       "depends_on": [
         {
           "field": "research_type",
@@ -862,7 +861,7 @@
       },
       "type": "float",
       "title": "gas_t",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -887,7 +886,7 @@
       },
       "type": "float",
       "title": "gas_m3",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -912,7 +911,7 @@
       },
       "type": "float",
       "title": "koeff",
-      "validation": "gte:0.9|lte:10",
+      "validation": "nullable|gte:0.9|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -937,7 +936,7 @@
       },
       "type": "float",
       "title": "usadka",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -962,7 +961,7 @@
       },
       "type": "float",
       "title": "k_gasoil",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -987,7 +986,7 @@
       },
       "type": "float",
       "title": "k_plastoil",
-      "validation": "gte:0.0001|lte:0.05",
+      "validation": "nullable|gte:0.0001|lte:0.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -1012,7 +1011,7 @@
       },
       "type": "float",
       "title": "plast_oil",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1037,7 +1036,7 @@
       },
       "type": "float",
       "title": "density_oil",
-      "validation": "gte:0.7|lte:1.05",
+      "validation": "nullable|gte:0.7|lte:1.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -1062,7 +1061,7 @@
       },
       "type": "float",
       "title": "density_20",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -1086,7 +1085,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0.0001|lte:0.01",
+      "validation": "nullable|gte:0.0001|lte:0.01",
       "title": "density_gas_20",
       "depends_on": [
         {
@@ -1112,7 +1111,7 @@
       },
       "type": "float",
       "title": "water_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1137,7 +1136,7 @@
       },
       "type": "float",
       "title": "dehyd_water_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1162,7 +1161,7 @@
       },
       "type": "float",
       "title": "density20c",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -1187,7 +1186,7 @@
       },
       "type": "float",
       "title": "cinem_visc_40c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1212,7 +1211,7 @@
       },
       "type": "float",
       "title": "cinem_visc_50c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1237,7 +1236,7 @@
       },
       "type": "float",
       "title": "cinem_visc_60c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1262,7 +1261,7 @@
       },
       "type": "float",
       "title": "solid_temp",
-      "validation": "gte:-100|lte:100",
+      "validation": "nullable|gte:-100|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1286,7 +1285,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "title": "molecular_weight",
       "depends_on": [
         {
@@ -1312,7 +1311,7 @@
       },
       "type": "float",
       "title": "sulf_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1337,7 +1336,7 @@
       },
       "type": "float",
       "title": "water_sh",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1386,7 +1385,7 @@
       },
       "type": "float",
       "title": "ca_share",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1411,7 +1410,7 @@
       },
       "type": "float",
       "title": "cl_share",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1436,7 +1435,7 @@
       },
       "type": "float",
       "title": "mg_share",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1508,7 +1507,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "title": "sea_water_share",
       "depends_on": [
         {
@@ -1533,7 +1532,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "title": "alb_water_share",
       "depends_on": [
         {
@@ -1558,7 +1557,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "title": "res_water_share",
       "depends_on": [
         {
@@ -1584,7 +1583,7 @@
       },
       "type": "float",
       "title": "mech_mixtures",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -1609,7 +1608,7 @@
       },
       "type": "float",
       "title": "sat_pressure",
-      "validation": "gte:0|lte:150",
+      "validation": "nullable|gte:0|lte:150",
       "depends_on": [
         {
           "field": "research_type",
@@ -1634,7 +1633,7 @@
       },
       "type": "float",
       "title": "comp_coef",
-      "validation": "gte:0.0001|lte:0.05",
+      "validation": "nullable|gte:0.0001|lte:0.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -1659,7 +1658,7 @@
       },
       "type": "float",
       "title": "stand_sep_gas_share",
-      "validation": "gte:0|lte:10000000",
+      "validation": "nullable|gte:0|lte:10000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1684,7 +1683,7 @@
       },
       "type": "float",
       "title": "stand_sep_volume_coef",
-      "validation": "gte:0.9|lte:10",
+      "validation": "nullable|gte:0.9|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -1709,7 +1708,7 @@
       },
       "type": "float",
       "title": "stand_sep_res_oil_density",
-      "validation": "gte:0.7|lte:1.05",
+      "validation": "nullable|gte:0.7|lte:1.05",
       "depends_on": [
         {
           "field": "research_type",
@@ -1734,7 +1733,7 @@
       },
       "type": "float",
       "title": "stand_sep_sep_oil_density",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -1759,7 +1758,7 @@
       },
       "type": "float",
       "title": "stand_sep_sep_gas_density",
-      "validation": "gte:0.0001|lte:0.01",
+      "validation": "nullable|gte:0.0001|lte:0.01",
       "depends_on": [
         {
           "field": "research_type",
@@ -1784,7 +1783,7 @@
       },
       "type": "float",
       "title": "step_sep_gas_factor",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1809,7 +1808,7 @@
       },
       "type": "float",
       "title": "step_sep_volume_coef",
-      "validation": "gte:0.9|lte:10",
+      "validation": "nullable|gte:0.9|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -1834,7 +1833,7 @@
       },
       "type": "float",
       "title": "step_sep_sep_oil_density",
-      "validation": "gte:0.5|lte:1.1",
+      "validation": "nullable|gte:0.5|lte:1.1",
       "depends_on": [
         {
           "field": "research_type",
@@ -1859,7 +1858,7 @@
       },
       "type": "float",
       "title": "res_oil_viscosity",
-      "validation": "gte:0|lte:10000000",
+      "validation": "nullable|gte:0|lte:10000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1884,7 +1883,7 @@
       },
       "type": "float",
       "title": "paraf_sat_temp",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1933,7 +1932,7 @@
       },
       "type": "float",
       "title": "depth",
-      "validation": "lte:10000",
+      "validation": "nullable|lte:10000",
       "depends_on": [
         {
           "field": "research_type",
@@ -1958,7 +1957,7 @@
       },
       "type": "float",
       "title": "viscosity_20c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -1983,7 +1982,7 @@
       },
       "type": "float",
       "title": "viscosity_50c",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2008,7 +2007,7 @@
       },
       "type": "float",
       "title": "solid_temp",
-      "validation": "gte:-100|lte:100",
+      "validation": "nullable|gte:-100|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2033,7 +2032,7 @@
       },
       "type": "float",
       "title": "paraf_sat_temp",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2057,7 +2056,7 @@
         }
       },
       "type": "float",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "title": "sulf_weight",
       "depends_on": [
         {
@@ -2083,7 +2082,7 @@
       },
       "type": "float",
       "title": "sulf_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2108,7 +2107,7 @@
       },
       "type": "float",
       "title": "selik_smol_weight",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2133,7 +2132,7 @@
       },
       "type": "float",
       "title": "selik_smol_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2158,7 +2157,7 @@
       },
       "type": "float",
       "title": "asphalten_weight",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2183,7 +2182,7 @@
       },
       "type": "float",
       "title": "asphalten_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2208,7 +2207,7 @@
       },
       "type": "float",
       "title": "paraf_weight",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2233,7 +2232,7 @@
       },
       "type": "float",
       "title": "paraf_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2258,7 +2257,7 @@
       },
       "type": "float",
       "title": "fractions_100c",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2283,7 +2282,7 @@
       },
       "type": "float",
       "title": "fractions_150c",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2308,7 +2307,7 @@
       },
       "type": "float",
       "title": "fractions_200c",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2333,7 +2332,7 @@
       },
       "type": "float",
       "title": "fractions_300c",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2358,7 +2357,7 @@
       },
       "type": "float",
       "title": "cond_begin_pressure",
-      "validation": "gte:0|lte:150",
+      "validation": "nullable|gte:0|lte:150",
       "depends_on": [
         {
           "field": "research_type",
@@ -2383,7 +2382,7 @@
       },
       "type": "float",
       "title": "density",
-      "validation": "gte:0|lte:1",
+      "validation": "nullable|gte:0|lte:1",
       "depends_on": [
         {
           "field": "research_type",
@@ -2408,7 +2407,7 @@
       },
       "type": "float",
       "title": "sep_volume_coef",
-      "validation": "gte:0|lte:500",
+      "validation": "nullable|gte:0|lte:500",
       "depends_on": [
         {
           "field": "research_type",
@@ -2433,7 +2432,7 @@
       },
       "type": "float",
       "title": "viscosity",
-      "validation": "gte:0|lte:10",
+      "validation": "nullable|gte:0|lte:10",
       "depends_on": [
         {
           "field": "research_type",
@@ -2458,7 +2457,7 @@
       },
       "type": "float",
       "title": "stable_cond_share",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2483,7 +2482,7 @@
       },
       "type": "float",
       "title": "cond_sep_factor",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2508,7 +2507,7 @@
       },
       "type": "float",
       "title": "sulf_hydro_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2533,7 +2532,7 @@
       },
       "type": "float",
       "title": "sulf_hydro_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2558,7 +2557,7 @@
       },
       "type": "float",
       "title": "co2_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2583,7 +2582,7 @@
       },
       "type": "float",
       "title": "co2_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2608,7 +2607,7 @@
       },
       "type": "float",
       "title": "nitro_rare_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2633,7 +2632,7 @@
       },
       "type": "float",
       "title": "nitro_rare_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2658,7 +2657,7 @@
       },
       "type": "float",
       "title": "metan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2683,7 +2682,7 @@
       },
       "type": "float",
       "title": "metan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2708,7 +2707,7 @@
       },
       "type": "float",
       "title": "etan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2733,7 +2732,7 @@
       },
       "type": "float",
       "title": "etan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2758,7 +2757,7 @@
       },
       "type": "float",
       "title": "propan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2783,7 +2782,7 @@
       },
       "type": "float",
       "title": "propan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2808,7 +2807,7 @@
       },
       "type": "float",
       "title": "isobutan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2833,7 +2832,7 @@
       },
       "type": "float",
       "title": "isobutan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2858,7 +2857,7 @@
       },
       "type": "float",
       "title": "h_butan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2883,7 +2882,7 @@
       },
       "type": "float",
       "title": "h_butan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2908,7 +2907,7 @@
       },
       "type": "float",
       "title": "heksan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2933,7 +2932,7 @@
       },
       "type": "float",
       "title": "heksan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -2958,7 +2957,7 @@
       },
       "type": "float",
       "title": "heptan_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -2983,7 +2982,7 @@
       },
       "type": "float",
       "title": "heptan_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -3008,7 +3007,7 @@
       },
       "type": "float",
       "title": "resid_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -3033,7 +3032,7 @@
       },
       "type": "float",
       "title": "resid_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -3058,7 +3057,7 @@
       },
       "type": "float",
       "title": "molar_mol",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -3083,7 +3082,7 @@
       },
       "type": "float",
       "title": "molar_share",
-      "validation": "gte:0|lte:100",
+      "validation": "nullable|gte:0|lte:100",
       "depends_on": [
         {
           "field": "research_type",
@@ -3108,7 +3107,7 @@
       },
       "type": "float",
       "title": "stand_density",
-      "validation": "gte:0.0001|lte:0.01",
+      "validation": "nullable|gte:0.0001|lte:0.01",
       "depends_on": [
         {
           "field": "research_type",
@@ -3133,7 +3132,7 @@
       },
       "type": "float",
       "title": "stand_density_resid",
-      "validation": "gte:0.0001|lte: 0.01",
+      "validation": "nullable|gte:0.0001|lte: 0.01",
       "depends_on": [
         {
           "field": "research_type",
@@ -3158,7 +3157,7 @@
       },
       "type": "float",
       "title": "sat_pressure",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -3183,7 +3182,7 @@
       },
       "type": "float",
       "title": "sulf_hydro",
-      "validation": "gte:0",
+      "validation": "nullable|gte:0",
       "depends_on": [
         {
           "field": "research_type",
@@ -3208,7 +3207,7 @@
       },
       "type": "float",
       "title": "volume_coef",
-      "validation": "gte:0.98|lte: 1.07",
+      "validation": "nullable|gte:0.98|lte: 1.07",
       "depends_on": [
         {
           "field": "research_type",
@@ -3233,7 +3232,7 @@
       },
       "type": "float",
       "title": "viscosity",
-      "validation": "gte:0|lte:100000",
+      "validation": "nullable|gte:0|lte:100000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3258,7 +3257,7 @@
       },
       "type": "float",
       "title": "total_mineralization",
-      "validation": "gte:0|lte: 1000",
+      "validation": "nullable|gte:0|lte: 1000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3283,7 +3282,7 @@
       },
       "type": "float",
       "title": "density",
-      "validation": "gte:0.9|lte:2",
+      "validation": "nullable|gte:0.9|lte:2",
       "depends_on": [
         {
           "field": "research_type",
@@ -3308,7 +3307,7 @@
       },
       "type": "float",
       "title": "cl_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3333,7 +3332,7 @@
       },
       "type": "float",
       "title": "so4_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3358,7 +3357,7 @@
       },
       "type": "float",
       "title": "hso3_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3383,7 +3382,7 @@
       },
       "type": "float",
       "title": "ca_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3408,7 +3407,7 @@
       },
       "type": "float",
       "title": "mg_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
@@ -3433,7 +3432,7 @@
       },
       "type": "float",
       "title": "nak_ion",
-      "validation": "gte:0|lte:1000000",
+      "validation": "nullable|gte:0|lte:1000000",
       "depends_on": [
         {
           "field": "research_type",
