@@ -6,6 +6,7 @@ use App\Exports\PipeLineCalcExport;
 use App\Imports\HydroCalcResultImport;
 use App\Models\ComplicationMonitoring\HydroCalcLong;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\PipeCoord;
@@ -133,12 +134,15 @@ class CalculateHydroDynamics implements ShouldQueue
      */
     public function handle()
     {
+        $ngdu_id = Ngdu::where('name', 'НГДУ-4')->first()->id;
+
         $pipes = OilPipe::with(
             'pipeType',
             'firstCoords',
             'lastCoords',
             'gu'
         )
+            ->where('ngdu_id', $ngdu_id)
             ->where('trunkline', true)
             ->get();
 

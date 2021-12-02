@@ -130,8 +130,8 @@
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td class="drop_down_link">
-                                                    <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Показать поля</a>
-                                                    <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Скрыть поля</a>
+                                                    <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Доп. информация / открыть</a>
+                                                    <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Доп. информация / скрыть</a>
                                                 </td>
                                                 <td>-</td>
                                             </tr>
@@ -142,7 +142,7 @@
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                             <td class="background__light">Мероприятия</td>
-                                            <td>-</td>
+                                            <td>{{periodItem.params.activity.length}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -164,8 +164,8 @@
                                                 >
                                                     {{dayNumber}}
                                                 </th>
-                                                <th>Средние <br>(по методике)</th>
-                                                <th>Суммарные <br>(по методике)</th>
+                                                <th>Средние</th>
+                                                <th>Суммарные</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -270,7 +270,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td v-else>
-
+                                                    &nbsp;
                                                 </td>
                                                 <td>-</td>
                                                 <td>-</td>
@@ -510,10 +510,9 @@
                                         :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                 >
                                     <td>{{index+1}}</td>
-                                    <td v-if="activity.dbeg">{{getFormatedDate(activity.dbeg)}}</td>
-                                    <td v-else>{{getFormatedDate(activity.dend)}}</td>
-                                    <td>{{repairType[activity.repair_type]}}</td>
-                                    <td v-if="activity.dbeg">{{activity.work_plan}}</td>
+                                    <td >{{getFormatedDate(activity.dbeg)}}</td>
+                                    <td>{{activity.repair_type}}</td>
+                                    <td v-if="activity.work_list === null">{{activity.work_plan}}</td>
                                     <td v-else>{{activity.work_list}}</td>
                                     <td>{{activity.well_status}}</td>
                                     <td>{{well.category.name_ru}}</td>
@@ -547,12 +546,8 @@ export default {
             isActivityShown: false,
             isFreeInfoShown: false,
             historicalInfo: [],
-            repairType: {
-                1: 'КРС',
-                3: 'ПРС',
-            },
             isRowsHide: true,
-            summaryDisabledByDzo: ["KGM"],
+            summaryDisabledByDzo: ["KGM", "KTM"],
             techMode: [],
             techModeMapping: {
                 'liquid': 0,
@@ -569,17 +564,32 @@ export default {
         },
         async nahdleMeasurementSchedule() {
             this.historicalData = this.productionMeasurementSchedule;
+            if (this.historicalData.length === 0) {
+                return;
+            }
             this.SET_LOADING(true);
+            let activity = [];
+            let yearList = _.uniq(_.map(this.historicalData, 'year'));
+            for (let i in yearList) {
+                activity = activity.concat(await this.getActivityByWell(yearList[i]));
+            }
             for (let i in this.historicalData) {
-                this.historicalData[i].params['activity'] = [];
+                let monthlyActivity = _.filter(activity, (item) => {
+                    let date = moment(item.dbeg,'YYYY-MM-DD HH:mm:ss');
+                    if (item.dend) {
+                        date = moment(item.dend,'YYYY-MM-DD HH:mm:ss');
+                    }
+                    return date.format('MMM') == this.historicalData[i]['month'] && date.format('YYYY') === this.historicalData[i]['year'];
+                });
+                this.historicalData[i].params['activity'] = monthlyActivity;
             }
             this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
             this.SET_LOADING(false);
             this.isMeasurementScheduleActive = true;
         },
-        async getActivityByWell(month,year) {
+
+        async getActivityByWell(year) {
             let queryOptions = {
-                'month': moment(month,'MMM').month() + 1,
                 'year': year
             };
             const response = await axios.get(this.localeUrl(`/api/bigdata/wells/get-activity/${this.well.id}`),{params:queryOptions});
@@ -641,19 +651,19 @@ export default {
                                     'label': 'Обв. с учетом доли ост. св. воды, %',
                                     'value': '-',
                                     'isHide': !this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Нефть. с учетом доли ост. св. воды, %',
                                     'value': '-',
                                     'isHide': !this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Обв. не конд.пробы, %',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Ндин, м',
@@ -665,13 +675,13 @@ export default {
                                     'label': 'Закючение ГДИС.',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Причина простоя',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Отработанное время, час',
@@ -683,37 +693,37 @@ export default {
                                     'label': 'Жидкость м3/сут(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Обводненность, %(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Нефть, т/сут(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Газ.м3/сут(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Газовый фактор, м3/т(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Температура жидкости,%(телеметрия)',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': ["KGM"]
+                                    'disabledForDzo': ["KGM", "KTM"]
                                 },
                                 {
                                     'label': 'Дебит газа, тыс. м3/сут',
@@ -744,43 +754,43 @@ export default {
                                     'label': 'Линейное давление, атм',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Температура на устье, С',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Сила тока ПЭД, А',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Частота ПЭД/СК, Гц',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Производительность насоса, %',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Температура ПЭД по ТМС, С',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Давление на приеме, атм',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
-                                    'disabledForDzo': []
+                                    'disabledForDzo': ["KTM"]
                                 },
                                 {
                                     'label': 'Длина хода, м / число качания, об/мин',

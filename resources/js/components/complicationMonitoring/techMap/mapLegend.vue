@@ -1,6 +1,6 @@
 <template>
   <div class="legend">
-    <b-button v-b-toggle.legend variant="main2">Легенда</b-button>
+    <b-button v-b-toggle.legend variant="main2">{{trans('monitoring.legend')}}</b-button>
     <b-collapse id="legend" class="mt-2">
       <b-card class="bg-main1 text-light">
         <div class="legend-item" v-for="(legend, index) in getMapLegends(variant)" :key="index">

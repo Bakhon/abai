@@ -45,38 +45,7 @@
                 },
                 chartSeries: [],
                 labels: [],
-                yaxis: [
-                    {
-                        seriesName: this.trans('app.ndin'),
-                        opposite: true,
-                        min: 0,
-                        max: 0,
-                        reversed: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                if (value !== null) {
-                                    return value.toFixed(1);
-                                }
-                                return value;
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.ndin'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    },
+                yaxis: [                 
                     {
                         seriesName: this.trans('prototype_bd.liquidInjection'),
                         opposite: true,
@@ -196,8 +165,7 @@
                         type: 'Нагнетательная'
                     }
                 }).then(({data}) => {
-                    this.chartSeries = [
-                        data.ndin,
+                    this.chartSeries = [                  
                         data.liquidInjection,
                         data.liquidPressure,
                         data.events
@@ -209,7 +177,7 @@
             },
         },
         mounted() {
-            this.chartSeries = this.scheduleData.data;
+            this.chartSeries = this.scheduleData.data;            
             this.labels = this.scheduleData.labels;
             this.title = this.well.name;
         },

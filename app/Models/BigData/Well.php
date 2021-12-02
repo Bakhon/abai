@@ -77,12 +77,12 @@ class Well extends TBDModel
 
     public function spatialObject()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
+        return $this->belongsTo(SpatialObject::class, 'whc');
     }
 
     public function spatialObjectBottom()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsTo(SpatialObject::class, 'bottom_coord');
     }
 
     public function bottomHole()
@@ -103,6 +103,11 @@ class Well extends TBDModel
     public function wellPerf()
     {
         return $this->hasMany(WellPerf::class, 'well', 'id');
+    }
+
+    public function wellBlock()
+    {
+        return $this->hasMany(WellBlock::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -143,6 +148,11 @@ class Well extends TBDModel
     public function dmartDailyProd()
     {
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+    public function dailyInjectionOil()
+    {
+        return $this->hasMany(DailyInjectionOil::class, 'well', 'id');
     }
 
         public function pzabWell()

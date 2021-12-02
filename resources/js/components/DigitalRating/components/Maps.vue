@@ -1,8 +1,5 @@
 <template>
   <div class="maps-development">
-    <div class="maps-development__title">
-      {{ objectTitle }}
-    </div>
     <div class="maps-development__wrapper">
       <div
         class="maps-development__item cursor-pointer"
@@ -48,7 +45,7 @@ export default {
   data() {
     return {
       objectTitle: 'Объект 1',
-      maps: ['map1', 'map2', 'map3', 'map4'],
+      maps: ['map1', 'map2'],
       mapFull: ''
     }
   },
@@ -80,7 +77,6 @@ export default {
 .maps-development__wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 .maps-development__item {
   background-image: url('/img/digital-rating/bgLine.svg');
@@ -93,6 +89,7 @@ export default {
   justify-content: space-evenly;
   padding: 20px;
   position: relative;
+  margin-right: 10px;
 
   &-img {
     width: 100%;

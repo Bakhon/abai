@@ -87,6 +87,10 @@ export default {
       type: Number,
       required: true
     },
+    type: {
+      type: String,
+      required: true
+    },
     values: {
       type: Object,
       required: false
@@ -227,6 +231,7 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
+            type: this.type,
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {

@@ -92,10 +92,8 @@
                                 <table class="table text-center text-white  historical-table">
                                     <thead>
                                     <tr>
-                                        <th v-if="periodItem.isHorizontalExpanded">Год /<br>Месяц</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">По</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">L</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">Ø<br>штуцера</th>
+                                        <th v-if="periodItem.isHorizontalExpanded">Длина НКТ, м</th>
+                                        <th v-if="periodItem.isHorizontalExpanded">Ø<br>штуцера, мм</th>
                                         <th v-if="periodItem.isHorizontalExpanded">Вид<br>агента</th>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
@@ -110,8 +108,6 @@
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">
                                                 {{techModeItem.label}}
                                             </td>
@@ -123,10 +119,8 @@
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">Мероприятия</td>
-                                            <td>-</td>
+                                            <td>{{periodItem.params.activity.length}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -148,8 +142,8 @@
                                         >
                                             {{dayNumber}}
                                         </th>
-                                        <th>Средние <br>(по методике)</th>
-                                        <th>Суммарные <br>(по методике)</th>
+                                        <th>Средние</th>
+                                        <th>Суммарные</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -189,19 +183,6 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                 v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                        >
-                                            &nbsp;
-                                        </td>
-                                        <td v-else>
-                                            &nbsp;
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                 :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                         >
                                             {{periodItem.params.monthlyData[dayNumber-1].workHours}}
@@ -211,37 +192,6 @@
                                         </td>
                                         <td>{{getMiddle(periodItem.params.monthlyData,'workHours')}}</td>
                                         <td>{{getSummary(periodItem.params.monthlyData,'workHours')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].gtm,
-                                                            periodItem.params.techMode[0],
-                                                            dayNumber,periodItem.params.activity)"
-                                        >
-                                            {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gtm.toFixed(1))}}
-                                        </td>
-                                        <td v-else>
-                                            &nbsp;
-                                        </td>
-                                        <td>{{getMiddle(periodItem.params.monthlyData,'gtm')}}</td>
-                                        <td>{{getSummary(periodItem.params.monthlyData,'gtm')}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                        >
-                                            &nbsp;
-                                        </td>
-                                        <td v-else>
-
-                                        </td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td
@@ -347,17 +297,31 @@
             },
             async nahdleMeasurementSchedule() {
                 this.historicalData = this.injectionMeasurementSchedule;
+                if (this.historicalData.length === 0) {
+                    return;
+                }
                 this.SET_LOADING(true);
+                let activity = [];
+                let yearList = _.uniq(_.map(this.historicalData, 'year'));
+                for (let i in yearList) {
+                    activity = activity.concat(await this.getActivityByWell(yearList[i]));
+                }
                 for (let i in this.historicalData) {
-                    this.historicalData[i].params['activity'] = [];
+                    let monthlyActivity = _.filter(activity, (item) => {
+                        let date = moment(item.dbeg,'YYYY-MM-DD HH:mm:ss');
+                        if (item.dend) {
+                            date = moment(item.dend,'YYYY-MM-DD HH:mm:ss');
+                        }
+                        return date.format('MMM') == this.historicalData[i]['month'] && date.format('YYYY') === this.historicalData[i]['year'];
+                    });
+                    this.historicalData[i].params['activity'] = monthlyActivity;
                 }
                 this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
                 this.SET_LOADING(false);
                 this.isMeasurementScheduleActive = true;
             },
-            async getActivityByWell(month,year) {
+            async getActivityByWell(year) {
                 let queryOptions = {
-                    'month': moment(month,'MMM').month() + 1,
                     'year': year
                 };
                 const response = await axios.get(this.localeUrl(`/api/bigdata/wells/get-activity/${this.well.id}`),{params:queryOptions});
@@ -390,25 +354,17 @@
                             'params': {
                                 'techMode': [
                                     {
-                                        'label': 'Приемистость',
+                                        'label': 'Приемистость, м³/сут',
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Давление закачки',
+                                        'label': 'Давление закачки, атм',
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Состояние скважины',
+                                        'label': 'Обработанное время, ч',
                                         'value': '-',
                                     },
-                                    {
-                                        'label': 'Обработанное время',
-                                        'value': '-',
-                                    },
-                                    {
-                                        'label': 'ГТМ',
-                                        'value': '-',
-                                    }
                                 ],
                                 'monthlyData': month
                             }

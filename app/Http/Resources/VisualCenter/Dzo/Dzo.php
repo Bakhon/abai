@@ -88,6 +88,7 @@ class Dzo {
     protected $dzoName;
     protected $measuringFactColumn = 'oil_production_fact_corrected';
     protected $condensateFactColumn = 'condensate_production_fact_corrected';
+    protected $dzoListByPki = array('КГМКМГ','ТП','ПККР');
 
     public function getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$dzoId,$periodEnd)
     {
@@ -120,10 +121,12 @@ class Dzo {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
-        if ($periodType === 'period' && count($filteredPlan) > 1) {
+
+        if ($periodType === 'period') {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
+
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
         $companySummary = $dzo->getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd);
@@ -276,8 +279,27 @@ class Dzo {
             $summary = $dzo->getChartData($daySummary,$planRecord,$date,$item,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->consolidatedFieldsMapping[$type]['condensatePlan'],$this->consolidatedFieldsMapping[$type]['condensateOpek'],$isSummary);
             $chartData = array_merge($chartData,$summary);
         }
+        $chartData = $this->getUpdateByConsolidatedCompanies($chartData);
 
         return $chartData;
+    }
+
+    protected function getUpdateByConsolidatedCompanies($chartData)
+    {
+        $chartWithKpi = array();
+        $pkiDzo = $this->dzoListByPki;
+        foreach($chartData as $day) {
+            $dayUpdatedByCompanies = $day;
+            $date = Carbon::createFromFormat('d/m/Y',$day['date']);
+            if ($day['name'] === 'ПКИ') {
+                $filteredByPki = array_filter($chartData, function ($daySummary) use($pkiDzo,$date) {
+                    return in_array($daySummary['name'],$pkiDzo) && Carbon::createFromFormat('d/m/Y',$daySummary['date']) == $date;
+                });
+                $dayUpdatedByCompanies['fact'] = array_sum(array_column($filteredByPki,'fact'));
+            }
+            array_push($chartWithKpi,$dayUpdatedByCompanies);
+        }
+        return $chartWithKpi;
     }
 
     protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)

@@ -19,7 +19,7 @@
                         {{ report.document_name}}
                     </td>
                     <td>
-                        <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.id +'/?file_id='+ report.file_id)">
+                        <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.well_id +'/?file_id='+ report.file_id)">
                             Скачать
                         </button>
                     </td>

@@ -60,7 +60,8 @@ class WellCategory extends PlainForm
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($data['id'])) {
-            $id = $dbQuery->where('id', $data['id'])->update($data);
+            $dbQuery->where('id', $data['id'])->update($data);
+            $id = $data['id'];
         } else {
             $id = $dbQuery->insertGetId($data);
         }

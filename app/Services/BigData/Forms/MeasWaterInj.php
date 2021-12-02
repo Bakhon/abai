@@ -75,17 +75,21 @@ class MeasWaterInj extends MeasLogByMonth
         array $workTimes
     ) {
         $pressureRow = [
-            'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
+            'id' => $well->id . '_pressure',
+            'uwi' => [
+                'id' => $well->id,
+                'name' => $well->uwi,
+                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+            ],
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure')],
             'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->inj_pressure : 0]
         ];
         $workTimeRow = [
-            'id' => $well->id,
+            'id' => $well->id . '_worktime',
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.worktime')]
         ];
         $waterInjRow = [
-            'id' => $well->id,
+            'id' => $well->id . '_water_inj',
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')],
             'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->agent_vol : 0]
         ];
@@ -144,36 +148,16 @@ class MeasWaterInj extends MeasLogByMonth
     {
         foreach ($rows as $row) {
             foreach ($row as $date => $field) {
-                $date = Carbon::parse($date, 'Asia/Almaty')->toImmutable();
+                $date = Carbon::parse($date, 'Asia/Almaty')->startOfDay()->toImmutable();
                 if (in_array($field['params']['field'], ['pressure_inj', 'water_inj_val'])) {
-                    $pressure = DB::connection('tbd')
-                        ->table('prod.meas_water_inj')
-                        ->where('well', $field['params']['well_id'])
-                        ->where('dbeg', $date->startOfDay())
-                        ->first();
-
-                    if (empty($pressure)) {
-                        DB::connection('tbd')
-                            ->table('prod.meas_water_inj')
-                            ->insert(
-                                [
-                                    'dbeg' => $date->startOfDay(),
-                                    'dend' => $date->endOfDay(),
-                                    'well' => $field['params']['well_id'],
-                                    $field['params']['field'] => $field['value']
-                                ]
-                            );
-                        continue;
-                    }
-
-                    DB::connection('tbd')
-                        ->table('prod.meas_water_inj')
-                        ->where('id', $pressure->id)
-                        ->update(
-                            [
-                                $field['params']['field'] => $field['value']
-                            ]
-                        );
+                    $this->insertValueInCell(
+                        'prod.meas_water_inj',
+                        $field['params']['field'],
+                        null,
+                        $field['params']['well_id'],
+                        $date,
+                        $field['value']
+                    );
                 }
             }
         }

@@ -1974,6 +1974,7 @@
                 })
                     .catch((error) => {
                         console.log(error)
+                        this.showToast('', 'No result', 'danger');
                     })
                 this.reportDate = moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
 

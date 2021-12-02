@@ -36,7 +36,6 @@
       "well_category",
       "well_zone",
       "well_tech",
-      "tech_state",
       "distribution_substation",
       "joint_wells",
       "well_block"
@@ -89,7 +88,8 @@
       "well_mark",
       "gdis",
       "current_g_d_i_s",
-      "gis_type"
+      "gis_type",
+      "tech_state"
     ]
   },
   {

@@ -184,39 +184,17 @@ abstract class MeasurementLogForm extends TableForm
                             ]
                         );
                 } else {
-                    $data = [
-                        'well' => $wellId,
-                        $column['column'] => $field['value'],
-                        'dbeg' => $filter['date'],
-                        'dend' => $filter['date'],
-                    ];
-                    if (!empty($column['additional_filter'])) {
-                        $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
-                    }
-                    DB::connection('tbd')
-                        ->table($column['table'])
-                        ->insert($data);
+                    $this->insertValueInCell(
+                        $column['table'],
+                        $column['column'],
+                        $column['additional_filter'] ?? null,
+                        $wellId,
+                        $filter['date'],
+                        $field['value']
+                    );
                 }
             }
         }
         return [];
-    }
-
-    private function addDefaultData($source)
-    {
-        $data = [];
-        foreach ($source as $key => $value) {
-            if (is_array($value)) {
-                $query = DB::connection('tbd')->table($value['table']);
-                foreach ($value['fields'] as $fieldName => $fieldValue) {
-                    $query->where($fieldName, $fieldValue);
-                }
-                $entity = $query->first();
-                if (!empty($entity)) {
-                    $data[$key] = $entity->id;
-                }
-            }
-        }
-        return $data;
     }
 }
