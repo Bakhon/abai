@@ -406,7 +406,6 @@ export default {
       font-weight: normal;
       padding: 5px 13px;
       vertical-align: middle;
-      text-align: left;
 
       p {
         margin: 0;
@@ -472,7 +471,7 @@ export default {
       padding: 9px 13px;
 
       p {
-        float: left;
+        float: right;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;
