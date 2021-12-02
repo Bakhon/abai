@@ -97,7 +97,8 @@
                     this.layout['scene']['yaxis']['range'][1] = maxY * -1.5
                 }
 
-                this.chart = [{
+                this.chart = [
+                    {
                     type: 'scatter3d',
                     mode: 'lines',
                     x: this.xChart,
@@ -112,7 +113,34 @@
                         colorscale: [[0, '#2E50E9'], [1, '#2E50E9']],
                         type: 'heatmap'
                     },
-                }]
+                },
+                    {
+                        type: 'scatter3d',
+                        mode: 'markers',
+                        name: 'Устье',
+                        hovertemplate:  "Устье<br>" + "MD = %{z} м<br>" + "EW = %{x} м<br>" + "NS = %{y} м<br>" + "<extra></extra>",
+                        x: [this.data[0].E_W],
+                        y: [this.data[0].N_S],
+                        z: [this.data[0].Measured_Depth * -1],
+                        marker: {
+                            size: 5,
+                            color: 'green',
+                        }
+                    },
+                    {
+                        type: 'scatter3d',
+                        mode: 'markers',
+                        name: 'Забой',
+                        hovertemplate:  "Забой<br>" + "MD = %{z} м<br>" + "EW = %{x} м<br>" + "NS = %{y} м<br>" + "<extra></extra>",
+                        x: [this.data[this.data.length-1].E_W],
+                        y: [this.data[this.data.length-1].N_S],
+                        z: [this.data[this.data.length-1].Measured_Depth * -1],
+                        marker: {
+                            size: 5,
+                            color: 'red',
+                        }
+                    }
+                ]
             },
         },
         created(){

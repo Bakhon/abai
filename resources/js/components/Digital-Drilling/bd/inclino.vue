@@ -50,19 +50,21 @@
                 <div class="inc__right_functions">
                     <div class="inc__2d"
                         :class="{not_active: !d2_Show}"
+                         @click="d2Show"
                     >
-                        <div class="inc__2d-title" @click="d2Show">2D</div>
-                        <div class="inc__2d-name" @click="d2Show">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d2_Show" @click="d2_Close">
+                        <div class="inc__2d-title" >2D</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d2_Show" @click.stop="d2_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
                     <div class="inc__2d"
                          :class="{not_active: !d3_Show}"
+                         @click="d3Show"
                     >
-                        <div class="inc__2d-title" @click="d3Show">3D</div>
-                        <div class="inc__2d-name" @click="d3Show">{{trans("digital_drilling.default.window")}}</div>
-                        <div class="inc__2d-close" v-if="d3_Show" @click="d3_Close">
+                        <div class="inc__2d-title" >3D</div>
+                        <div class="inc__2d-name">{{trans("digital_drilling.default.window")}}</div>
+                        <div class="inc__2d-close" v-if="d3_Show" @click.stop="d3_Close">
                             <img src="/img/digital-drilling/inc-graph-close.png" alt="">
                         </div>
                     </div>
@@ -546,13 +548,16 @@
         display: flex;
         align-items: center;
         background: #2E50E9;
-        padding: 6px 10px;
+        padding: 6px 35px 6px 10px;
         border-radius: 6px;
         margin-right: 5px;
         cursor: pointer;
+        position: relative;
+        box-sizing: content-box;
     }
     .inc__2d.not_active{
         opacity: 0.5;
+
     }
     .inc__2d-title{
         padding: 3px 5px;
@@ -561,9 +566,22 @@
         background-color: #FFFFFF;
         margin-right: 7px;
         color: blue;
+        height: 100%;
+    }
+    .inc__2d-name{
+        height: 100%;
     }
     .inc__2d-close{
         margin-left: 10px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+    .inc__2d-close:hover{
+        border-radius: 50%;
+        background-color: lightgrey;
+        padding: 2px 4px;
     }
     .inc__charts-name{
         background: #323370;
