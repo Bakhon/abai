@@ -13,6 +13,7 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\TechModeOil;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
+use App\Models\BigData\WellBlock;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -49,7 +50,7 @@ class WellsController extends Controller
         )->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        } 
+        }
 
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
@@ -63,18 +64,18 @@ class WellsController extends Controller
             $show_param = [
                 'pump_code' => $this->wellEquipParametr($well, 'NAS'),
                 'type_sk' => $this->wellEquipParametr($well, 'TSK'),
-                'well_equip_param' => $this->wellEquipParam($well, 'PSD'),
                 'techModeProdOil' => $this->techModeProdOil($well),
                 'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
                 'meas_well' => $this->measWell($well),
                 'lab_research_value' => $this->labResearchValue($well), 
                 'diameter_pump' => $this->wellEquipParametr($well, 'DIAN'),   
-                'depthLow' => $this->pumpDepthLowing($well, [6,20,49,36,75])            
+                'depthLow' => $this->pumpDepthLowing($well, [6,20,49,36,75]),
+                'pump_capacity' => $this->wellEquipParams($well, '33'),   
             ];
         }
         if ($category[0]->code == 'INJ') {
             $show_param = [
-                'depth_nkt' => $this->wellEquipParam($well, 'PAKR'),
+                'depth_nkt' => $this->wellEquipParams($well, '31'),
                 'tech_mode_inj' => $this->techModeInj($well),
                 'dailyInjectionOil' => $this->dailyInjectionOil($well),
             ];
@@ -112,10 +113,11 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'gdisCurrent' => $this->gdisCurrent($well),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gdis_complex' => $this->gdisComplex($well, 'PVOP', $mainOrg),
+            'gdis_complex' => $this->gdisComplex($well, 'RP', $mainOrg),
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),           
+            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),    
+            'well_block' => $this->wellBlock($well),       
         ];
 
         $wellInfo = array_merge($wellInfo, $show_param);
@@ -287,6 +289,21 @@ class WellsController extends Controller
         return "";
     }
 
+    private function wellEquipParams(Well $well, $method){
+        $wellEquipParams = DB::connection('tbd')
+                            ->table('prod.well_equip_param as we')
+                            ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
+                            ->where('w.well', '=', $well->id)
+                            ->where('we.equip_param', '=', $method)
+                            ->orderBy('we.dbeg', 'desc')
+                            ->get(['we.value_double'])
+                            ->toArray();
+        if($wellEquipParams){
+            return $wellEquipParams[0];
+        }                    
+        return "";
+    }
+
     private function wellEquipParametr(Well $well, $code)
     {
        $wellEquipParametr = DB::connection('tbd')
@@ -336,6 +353,19 @@ class WellsController extends Controller
 
         return "";
 
+    }
+
+    private function wellBlock(Well $well)
+    {
+        $wellBlock = $well->wellBlock()
+                     ->join('dict.block', 'prod.well_block.block', '=', 'dict.block.id')
+                     ->orderBy('prod.well_block.dbeg')
+                     ->get()
+                     ->toArray();
+        if($wellBlock){
+            return $wellBlock[0];
+        }             
+        return "";
     }
 
     private function techs(Well $well)
