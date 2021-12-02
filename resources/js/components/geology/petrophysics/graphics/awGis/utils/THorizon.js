@@ -78,7 +78,7 @@ export default class THorizon {
 
     getElementPath(elementName) {
         let d = [];
-        for (let [wellName, wellsElements] of this.#maps) {
+        for (let wellName of this.#maps.keys()) {
             let elData = this.#elements.get(elementName);
             let wellData = this.#wellsBlockData.get(wellName);
             if (elData.wells.includes(wellName)) {
@@ -103,7 +103,7 @@ export default class THorizon {
             let filteredElements = elements.filter((el) => Array.from(this.#maps.values()).find((wElements) => wElements.includes(el)));
             this.clearSvg();
             for (let element of filteredElements) {
-                const elementData = this.#elements.get(element);
+                const elementData = this.getElement(element);
                 const path = document.createElementNS(this.#svgns, 'path');
                 const text = document.createElementNS(this.#svgns, 'text');
                 const circle = document.createElementNS(this.#svgns, 'circle');
@@ -111,8 +111,8 @@ export default class THorizon {
                 let circleRadius = 5;
                 let strokeWidth = 2;
                 let fillAndStroke = `${elementData.fill}`;
-                let firstWellMD = Object.entries(elementData.toWells).find(([well])=>Array.from(this.#maps.keys())[0] === well)[1].md;
 
+                let firstWellMD = Object.entries(elementData.toWells).sort(([a])=> (Array.from(this.#maps.keys())[0] === a)?-1:1)[0][1].md;
                 circle.setAttribute('r', circleRadius.toString());
                 circle.setAttribute('stroke', fillAndStroke);
                 circle.setAttribute('fill', "none");
@@ -155,13 +155,13 @@ export default class THorizon {
 
     editDataElement(elementName, data, force) {
         if (this.hasElement(elementName)) {
-            let dataElement = this.#elements.get(elementName);
+            let dataElement = this.getElement(elementName);
             this.#elements.set(elementName, force ? {...data} : {...dataElement, ...data});
         }
     }
 
     editPropertyElementData(elementName, path, value, force = false) {
-        let data = this.#elements.get(elementName);
+        let data = this.getElement(elementName);
         if (typeof data === "object" && !Array.isArray(data)) {
             data = JSON.parse(JSON.stringify(data));
             letMeProperty(data, path, value);

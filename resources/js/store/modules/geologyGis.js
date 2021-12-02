@@ -123,14 +123,12 @@ const geologyGis = {
                     return acc
                 }, []);
 
-                return stratigraphyArray.reduce((acc, [wellName, stratigraphy]) => {
-                    return acc;
-                }, [{
+                return [{
                     name: "Stratigraphy",
                     iconType: "zoneStatic",
                     value: [].join('/'),
                     children: [...stratigraphyElements]
-                }]);
+                }];
             }
         },
 
@@ -247,11 +245,10 @@ const geologyGis = {
                                 show: false,
                                 fill: `#${fillColor}`,
                                 toWells: {},
-                                wells: []
+                                wells: [],
                             }
                         );
                     }
-
                     state.tHorizon.editPropertyElementData(el.name, "toWells", (prop) => ({...prop, [wellName]: el}));
                     state.tHorizon.editPropertyElementData(el.name, "wells", (prop) => (!prop.includes(wellName) && prop.push(wellName), prop));
                 }
