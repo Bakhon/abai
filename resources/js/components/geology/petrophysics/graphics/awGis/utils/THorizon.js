@@ -1,4 +1,4 @@
-import {letMeProperty} from "./utils";
+import {letMeProperty} from "../../../../js/utils";
 
 export default class THorizon {
     #graphSettings = {
@@ -107,28 +107,31 @@ export default class THorizon {
                 const path = document.createElementNS(this.#svgns, 'path');
                 const text = document.createElementNS(this.#svgns, 'text');
                 const circle = document.createElementNS(this.#svgns, 'circle');
+
                 let circleRadius = 5;
                 let strokeWidth = 2;
                 let fillAndStroke = `${elementData.fill}`;
+                let firstWellMD = Object.entries(elementData.toWells).find(([well])=>Array.from(this.#maps.keys())[0] === well)[1].md;
+
                 circle.setAttribute('r', circleRadius.toString());
                 circle.setAttribute('stroke', fillAndStroke);
                 circle.setAttribute('fill', "none");
                 circle.setAttribute('stroke-width', `${strokeWidth}`);
                 circle.setAttribute('cx', `${this.#graphSettings.offsetColumnsLeft / 2 - (circleRadius/2)-strokeWidth}`);
-                circle.setAttribute('cy', `${(Array.from(Object.values(elementData.toWells))[0].md + (circleRadius/2)-strokeWidth) - this.#graphSettings.scrollY * 10}`);
+                circle.setAttribute('cy', `${(firstWellMD + (circleRadius/2)-strokeWidth) - this.#graphSettings.scrollY * 10}`);
 
                 text.textContent = elementData.name;
                 text.setAttribute('text-anchor', "start");
                 text.setAttribute('fill', fillAndStroke);
                 text.setAttribute('x', (this.#graphSettings.offsetColumnsLeft / 2 + 5).toString());
-                text.setAttribute('y', ((Array.from(Object.values(elementData.toWells))[0].md-5) - this.#graphSettings.scrollY * 10).toString());
+                text.setAttribute('y', ((firstWellMD-5) - this.#graphSettings.scrollY * 10).toString());
 
                 path.setAttribute('fill', "none");
                 path.setAttribute('stroke', fillAndStroke);
                 path.setAttribute('stroke-linecap', 'round');
                 path.setAttribute('stroke-linejoin', 'round');
                 path.setAttribute('stroke-width', '2');
-                path.setAttribute('d', [`M${this.#graphSettings.offsetColumnsLeft / 2} ${Array.from(Object.values(elementData.toWells))[0].md - this.#graphSettings.scrollY * 10}`, ...this.getElementPath(element)].join(' '));
+                path.setAttribute('d', [`M${this.#graphSettings.offsetColumnsLeft / 2} ${firstWellMD - this.#graphSettings.scrollY * 10}`, ...this.getElementPath(element)].join(' '));
 
                 this.#svg.appendChild(path);
                 this.#svg.appendChild(text);

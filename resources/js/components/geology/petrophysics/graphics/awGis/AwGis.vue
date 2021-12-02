@@ -11,7 +11,7 @@
 <script>
 import AwGisBlock from "./AwGisBlock";
 import {GET_GIS_GROUPS} from "../../../../../store/modules/geologyGis.const";
-import {MD5} from "./utils/utils";
+import {MD5} from "../../../js/MD5";
 
 export default {
   name: "awGis",

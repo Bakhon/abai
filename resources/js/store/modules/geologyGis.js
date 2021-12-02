@@ -31,7 +31,7 @@ import {
     GET_TREE_STRATIGRAPHY
 } from "./geologyGis.const";
 
-import {isFloat, uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
+import {isFloat, uuidv4} from "../../components/geology/js/utils";
 import AwGisClass from "../../components/geology/petrophysics/graphics/awGis/utils/AwGisClass";
 import {
     Fetch_Curves,

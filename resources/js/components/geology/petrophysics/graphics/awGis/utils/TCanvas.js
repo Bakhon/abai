@@ -1,5 +1,4 @@
 import TCoords from "./TCoords";
-import {isFloat} from "./utils";
 
 export default class TCanvas {
     #__canvas = null;
@@ -24,7 +23,7 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
-        
+
         let colorPalette = [
             {name: "Clay", color: 'gray'},
             {name: "Sand", color: 'yellow'},
