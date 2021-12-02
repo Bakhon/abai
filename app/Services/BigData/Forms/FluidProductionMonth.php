@@ -29,7 +29,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
 
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
 
         $params['filter']['well_category'] = ['OIL'];
         $this->wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
@@ -920,7 +920,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         foreach ($rows as $row) {
             foreach ($row as $date => $field) {
-                $date = Carbon::parse($date)->timezone('Asia/Almaty')->toImmutable();
+                $date = Carbon::parse($date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
                 $wellId = $field['params']['well_id'];
                 switch ($field['params']['indicator']) {
                     case 'liquid':
