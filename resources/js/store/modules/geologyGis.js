@@ -127,6 +127,7 @@ const geologyGis = {
                     name: "Stratigraphy",
                     iconType: "zoneStatic",
                     value: [].join('/'),
+                    isOpen: true,
                     children: [...stratigraphyElements]
                 }];
             }
