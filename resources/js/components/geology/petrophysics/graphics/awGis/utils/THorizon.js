@@ -178,6 +178,5 @@ export default class THorizon {
             }
             this.#maps.set(well, e);
         }
-        // console.log(this.#elements, this.#wells, this.#wellsRefs);
     }
 }
