@@ -155,4 +155,5 @@ return array (
   'fault_scheme' => 'Схема разломов',
   'contact_scheme' => 'Схема контактов',
   'no_report_content' => 'Нет данных для этого шаблона',
+  'unexpected_error' => 'Произошла непредвиденная ошибка, попробуйте позже',
 );
