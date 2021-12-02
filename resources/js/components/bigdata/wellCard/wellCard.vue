@@ -1233,6 +1233,7 @@ export default {
           name: this.trans("well.note"),
           data: gdisCurrent_note,
           type: ["all"],
+          codes: ["KGM", "KTM"],
         },
       ];       
       this.well_passport = this.rebuildRightSidebar(
