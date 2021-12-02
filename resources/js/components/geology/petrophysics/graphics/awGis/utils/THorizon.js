@@ -104,6 +104,7 @@ export default class THorizon {
             this.clearSvg();
             for (let element of filteredElements) {
                 const elementData = this.getElement(element);
+                const g = document.createElementNS(this.#svgns, 'g');
                 const path = document.createElementNS(this.#svgns, 'path');
                 const text = document.createElementNS(this.#svgns, 'text');
                 const circle = document.createElementNS(this.#svgns, 'circle');
@@ -133,9 +134,10 @@ export default class THorizon {
                 path.setAttribute('stroke-width', '2');
                 path.setAttribute('d', [`M${this.#graphSettings.offsetColumnsLeft / 2} ${firstWellMD - this.#graphSettings.scrollY * 10}`, ...this.getElementPath(element)].join(' '));
 
-                this.#svg.appendChild(path);
-                this.#svg.appendChild(text);
-                this.#svg.appendChild(circle);
+                g.appendChild(path);
+                g.appendChild(text);
+                g.appendChild(circle);
+                this.#svg.appendChild(g);
             }
         }
     }
