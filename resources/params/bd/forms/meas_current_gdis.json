@@ -11,38 +11,6 @@
       "is_editable": false
     },
     {
-      "title": "pzat",
-      "code": "pzat",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "OTP"
-          }
-        }
-      },
-      "table":"prod.gdis_current_value",
-      "type": "float",
-      "is_editable": true
-    },
-    {
-      "title": "ptr",
-      "code": "ptr",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "TBP"
-          }
-        }
-      },
-      "table":"prod.gdis_current_value",
-      "type": "float",
-      "is_editable": true
-    },
-    {
       "title": "hdin",
       "code": "hdin",
       "table": "prod.gdis_current_value",
