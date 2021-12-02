@@ -6,12 +6,12 @@
                     <i class="far fa-file mr-2"></i>
                     <span>{{ trans('map_constructor.file') }}</span>
                 </template>
-                <b-dropdown-item @click="addProjectModal">
-                  {{ trans('map_constructor.new') }}
+                <b-dropdown-item @click="buildNameModal">
+                  {{ trans('map_constructor.new_project') }}
                 </b-dropdown-item>
                 <label for="file-upload" class="dropdown-item">
                   {{ trans('map_constructor.open') }}
-                  <input type="file" name="myfile" id="file-upload"/>
+                  <input class="d-none" type="file" name="myfile" id="file-upload"/>
                 </label>
 
                 <b-dropdown-item href="#">
@@ -19,7 +19,7 @@
                 </b-dropdown-item>
                 <label for="import" class="dropdown-item">
                   {{ trans('map_constructor.import') }}
-                  <input type="file" @change="importFile" ref="importFile" id="import"/>
+                  <input class="d-none" type="file" @change="importFile" ref="importFile" id="import"/>
                 </label>
                 <b-dropdown-item data-toggle="modal" data-target="#exportModal">
                   {{ trans('map_constructor.export') }}
@@ -65,7 +65,7 @@
 <script>
     export default {
         props: {
-            addProjectModal: Function,
+            buildNameModal: Function,
             buildMapModal: Function,
             buildMapSpecificModal: Function,
         },
