@@ -24,6 +24,7 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
+        
         let colorPalette = [
             {name: "Clay", color: 'gray'},
             {name: "Sand", color: 'yellow'},
@@ -55,6 +56,7 @@ export default class TCanvas {
                     ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
                     ctx.restore();
                 }
+
                 lastLithology = lithology
                 startPolygonPosition = y
             }

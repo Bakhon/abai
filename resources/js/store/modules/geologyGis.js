@@ -4,6 +4,7 @@ import {
     FETCH_FIELDS,
     FETCH_WELLS,
     FETCH_WELLS_MNEMONICS,
+    FETCH_WELLS_HORIZONS,
 
     SET_WELLS_MNEMONICS,
     SET_FIELDS,
@@ -19,6 +20,7 @@ import {
     SET_CURVES,
     SET_GIS_DATA_FOR_GRAPH,
     SET_CURVE_OPTIONS,
+    SET_WELLS_HORIZONS,
 
     GET_CURVES,
     GET_WELLS_OPTIONS,
@@ -26,6 +28,7 @@ import {
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
     GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
+    GET_TREE_STRATIGRAPHY
 } from "./geologyGis.const";
 
 import {isFloat, uuidv4} from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
@@ -37,6 +40,8 @@ import {
     Fetch_Wells,
     Fetch_WellsMnemonics
 } from "../../components/geology/api/petrophysics.api";
+import {Fetch_Horizons} from "../../components/geology/api/horizons.api";
+import THorizon from '../../components/geology/petrophysics/graphics/awGis/utils/THorizon'
 
 const geologyGis = {
     state: {
@@ -45,9 +50,16 @@ const geologyGis = {
         gisData: [],
         gisGroups: [],
         curveName: null,
+
         selectedGisCurvesOld: [],
         selectedGisCurves: [],
+
+        selectedHorizonOld: [],
+        selectedHorizon: [],
+
+        tHorizon: new THorizon(),
         awGis: new AwGisClass(),
+
         awGisElementsCount: 0,
         gisWells: [],
         blocksScrollY: 0,
@@ -70,7 +82,8 @@ const geologyGis = {
         WELLS: [],
         WELLS_MNEMONICS: [],
         WELLS_MNEMONICS_FOR_TREE: [],
-        CURVES_OF_SELECTED_WELLS: {}
+        CURVES_OF_SELECTED_WELLS: {},
+        WELLS_HORIZONS: {}
     },
     getters: {
         [GET_WELLS_OPTIONS](state) {
@@ -90,6 +103,35 @@ const geologyGis = {
                 acc[gr] = state.awGis.getGroupElementsWithData(gr);
                 return acc;
             }, {});
+        },
+        [GET_TREE_STRATIGRAPHY](state) {
+            let stratigraphyArray = Object.entries(state.WELLS_HORIZONS);
+            if (stratigraphyArray.length) {
+                let stratigraphyElements = state.tHorizon.elements.reduce((acc, el) => {
+                    acc.push({
+                        name: el.name,
+                        iconType: "u1",
+                        value: el.name,
+                        iconFill: el.fill,
+                    })
+
+                    acc.push({
+                        name: `Zone ${el.name}_top`,
+                        iconType: "zone",
+                        iconFill: el.fill,
+                    })
+                    return acc
+                }, []);
+
+                return stratigraphyArray.reduce((acc, [wellName, stratigraphy]) => {
+                    return acc;
+                }, [{
+                    name: "Stratigraphy",
+                    iconType: "zoneStatic",
+                    value: [].join('/'),
+                    children: [...stratigraphyElements]
+                }]);
+            }
         },
 
         [GET_TREE_CURVES](state) {
@@ -186,12 +228,37 @@ const geologyGis = {
         [SET_WELLS_BLOCKS](state, blockIds) {
             state.gisWells = blockIds.map(({sort}) => {
                 return state.WELLS[sort];
-            })
+            });
+            state.tHorizon.selectedWells = blockIds.map((w) => w.value);
+
         },
 
         [SET_WELLS_MNEMONICS](state, mnemonics) {
             state.WELLS_MNEMONICS = mnemonics;
         },
+
+        [SET_WELLS_HORIZONS](state, horizons) {
+            for (const [wellName, horizonsElement] of Object.entries(horizons)) {
+                for (const el of horizonsElement) {
+                    if (!state.tHorizon.hasElement(el.name)) {
+                        let fillColor = Math.floor(Math.random() * 16777215).toString(16);
+                        state.tHorizon.addElement(el.name, {
+                                name: el.name,
+                                show: false,
+                                fill: `#${fillColor}`,
+                                toWells: {},
+                                wells: []
+                            }
+                        );
+                    }
+
+                    state.tHorizon.editPropertyElementData(el.name, "toWells", (prop) => ({...prop, [wellName]: el}));
+                    state.tHorizon.editPropertyElementData(el.name, "wells", (prop) => (!prop.includes(wellName) && prop.push(wellName), prop));
+                }
+            }
+            state.WELLS_HORIZONS = horizons;
+        },
+
         [SET_GIS_DATA](state) {
             state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS, state]);
             state.gisGroups = state.awGis.getGroupList
@@ -215,7 +282,7 @@ const geologyGis = {
                             curveOptions.min[key] = Math.min(...curveWithoutNull);
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
-                            curveOptions.isLithology[key] = !curveWithoutNull.some((n)=>isFloat(n))
+                            curveOptions.isLithology[key] = !curveWithoutNull.some((n) => isFloat(n))
                             if (curve) acc[key] = curve;
                             return acc
                         }, {})
@@ -259,6 +326,10 @@ const geologyGis = {
 
         async [FETCH_WELLS_CURVES]({commit, state}, payload) {
             if (payload.length) return commit(SET_CURVES, await Fetch_Curves(payload));
+        },
+
+        async [FETCH_WELLS_HORIZONS]({commit, state}, payload) {
+            if (payload.length) return commit(SET_WELLS_HORIZONS, await Fetch_Horizons(payload));
         },
     }
 }
