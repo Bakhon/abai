@@ -1,5 +1,6 @@
 import moment from "moment";
 import Vue from "vue";
+import {globalloadingMutations} from '@store/helpers';
 
 Vue.component('kpd-modal-documents', require('./modalDocuments.vue').default);
 Vue.component('kpd-modal-catalog', require('./modalCatalog.vue').default);
@@ -7,6 +8,8 @@ Vue.component('kpd-modal-map', require('./modalMap.vue').default);
 Vue.component('kpd-modal-monitoring', require('./modalMonitoring.vue').default);
 Vue.component('kpd-modal-kpd-passport', require('./modalKpdPassport.vue').default);
 Vue.component('kpd-modal-kpd-edit', require('./modalEditKpd.vue').default);
+Vue.component('modal-settings', require('./modalSettings.vue').default);
+Vue.component('modal-corporate-manager', require('./modalCorporateManager.vue').default);
 
 export default {
     data: function () {
@@ -338,10 +341,20 @@ export default {
             kpdDecompositionB: [],
             kpdType: {
                 'ceo2Decomposition': 3
-            }
+            },
+
+            corporateManager: {}
         };
     },
     methods: {
+        async getCorporateManager() {
+            let uri = this.localeUrl("/get-kpd-corporate-manager");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
         async getAllKpd() {
             let uri = this.localeUrl("/kpd-tree-catalog");
             const response = await axios.get(uri);
@@ -349,7 +362,6 @@ export default {
                 return [];
             }
             return response.data;
-
         },
         getProgressBarFillingColor(progress) {
             if (progress <= 70) {
@@ -396,8 +408,12 @@ export default {
                 $(parent).removeClass('hover');
             });
         },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async created() {
+        this.corporateManager = await this.getCorporateManager();
         this.selectedManager = this.kpdDecompositionA;
         _.forEach(this.kpdCeoDecompositionB, (master) => {
             _.forEach(master.kpd, (kpd) => {
