@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Collection;
 class DigitalRatingCompareDrilling extends Controller
 {
 
-   const WELL_CATEGORY_TYPE_ID = [1,2,4,6,7];
+   const WELL_CATEGORY_TYPE_ID = [1];
+   const WELL_STATUS_TYPE_ID = [3,4];
 
    public function get_compaer_data(Request $request):JsonResponse 
    {  
@@ -43,7 +44,6 @@ class DigitalRatingCompareDrilling extends Controller
       }
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
-   
    }
    
 
@@ -79,19 +79,23 @@ class DigitalRatingCompareDrilling extends Controller
     $date_to = $year.'-01-01 00:00:00+06';
     $date_end = $year.'-12-31 00:00:00+06';
     $block= $request->input('block');
-
-    $actual_wells_count =   DB::connection('tbd')->table('tbdi.well')
-        ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
-        ->whereDate('tbdi.well.dt', '<',$date_end)
-        ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
-        ->where('tbdi.geo.name',   $horizon)  
-        ->join('tbdi.well_block', 'tbdi.well_block.well_id', '=', 'tbdi.well.id')
-        ->join('tbdi.block', 'tbdi.block.id', '=', 'tbdi.well_block.block_id')
-        ->where('tbdi.block.name',   $block)  
-        ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-        ->where('tbdi.well_category.well_category_type_id', 1)
-        ->get();
-
+    $filed= 'UZN';
+   $actual_wells =   DB::connection('tbd')->table('tbdi.well')
+      ->where('tbdi.well.uwi', 'like', '%'.$filed.'%')
+      ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
+      ->whereYear('tbdi.well.dt', '=',  $year)
+      ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
+      ->where('tbdi.geo.name',   $horizon)  
+      ->join('tbdi.well_block', 'tbdi.well_block.well_id', '=', 'tbdi.well.id')
+      ->join('tbdi.block', 'tbdi.block.id', '=', 'tbdi.well_block.block_id')
+      ->where('tbdi.block.name',   $block)  
+      ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
+      ->whereIn('tbdi.well_category.well_category_type_id',self::WELL_CATEGORY_TYPE_ID)
+      ->select('tbdi.well.uwi')
+      ->groupBy('tbdi.well.uwi')
+      ->get();
+      
+      
 
     $project_wells_count =   DB::connection('tbd')->table('digital_rating.project_points')
         ->where('digital_rating.project_points.horizon',   $horizon)  
