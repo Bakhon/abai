@@ -12,79 +12,6 @@ use Carbon\CarbonImmutable;
 class MeasCurrentGdis extends TableForm
 {
     protected $configurationFileName = 'meas_current_gdis';
-    protected $metricCodes = [
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RPL',
-        'RZAB',
-        'PMAX',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'PRIV',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR'
-    ];
-
-    protected $fieldsOrder = [
-        'target',
-        'device',
-        'conclusion',
-        'transcript_dynamogram',
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RZAB',
-        'RPL',
-        'PRIV',
-        'PMAX',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR',
-        'note',
-        'conclusion_text',
-        'file_dynamogram'
-    ];
-
 
     public function getResults(array $params = []): array
     {
@@ -242,10 +169,10 @@ class MeasCurrentGdis extends TableForm
                             ]
                         );
                     }
-                    if (!isset($field['params'])) {
-                        dd($field, $column);
-                    }
                     $metric = Metric::where('code', $field['params']['code'])->first();
+                    if (!$metric) {
+                        continue;
+                    }
                     $measurementValue = $measurement->values->where('metric', $metric->id)->first();
                     if (!$measurementValue) {
                         $measurementValue = $measurement->values()->create(
