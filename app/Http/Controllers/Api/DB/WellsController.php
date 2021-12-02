@@ -75,9 +75,10 @@ class WellsController extends Controller
         }
         if ($category[0]->code == 'INJ') {
             $show_param = [
-                'depth_nkt' => $this->wellEquipParams($well, '31'),
+                'depth_paker' => $this->wellEquipParams($well, '31'),
                 'tech_mode_inj' => $this->techModeInj($well),
                 'dailyInjectionOil' => $this->dailyInjectionOil($well),
+                'depth_nkt' => $this->depthNkt($well),
             ];
         }
 
@@ -271,22 +272,24 @@ class WellsController extends Controller
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
-    private function wellEquipParam(Well $well, $method)
+    private function depthNkt(Well $well)
     {
-        $wellEquipParam = $well->wellEquipParam()
-            ->join('dict.equip_param', 'prod.well_equip_param.equip_param', '=', 'dict.equip_param.id')
-            ->join('dict.metric', 'dict.equip_param.metric', '=', 'dict.metric.id')
-            ->withPivot('dbeg')
-            ->where('metric.code', '=', $method)
-            ->orderBy('pivot_dbeg', 'desc')
-            ->get(['value_double', 'value_string', 'equip_param'])
-            ->toArray();
-
-        if ($wellEquipParam) {
-            return $wellEquipParam[0];
-        }
-
-        return "";
+       $depthNkt = DB::connection('tbd')
+                    ->table('prod.well_equip_param as we')
+                    ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
+                    ->join('dict.equip_param as p', 'we.equip_param', '=', 'p.id')
+                    ->join('dict.equip_type as t', 'p.equip_type', '=', 't.id')
+                    ->join('dict.metric as m', 'p.metric', '=', 'm.id')
+                    ->where('t.code', '=', 'NKT')
+                    ->where('m.code', '=', 'PAKR')
+                    ->where('w.well', '=', $well->id)
+                    ->orderBy('we.dbeg', 'desc')
+                    ->get('we.value_double')
+                    ->toArray();
+       if($depthNkt){
+           return $depthNkt[0];
+       }             
+       return "";             
     }
 
     private function wellEquipParams(Well $well, $method){

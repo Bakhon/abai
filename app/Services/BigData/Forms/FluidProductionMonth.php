@@ -29,7 +29,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
 
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
 
         $params['filter']['well_category'] = ['OIL'];
         $this->wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
@@ -145,7 +145,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'ml.value_type', 'vt.id')
             ->whereIn('ml.well', $wellIds)
             ->where('ml.dbeg', '>=', $date->startOfMonth())
-            ->where('ml.dend', '<=', $date->endOfDay())
+            ->where('ml.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -173,7 +173,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wellIds)
             ->where('mwc.dbeg', '>=', $date->startOfMonth())
-            ->where('mwc.dend', '<=', $date->endOfDay())
+            ->where('mwc.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -920,7 +920,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         foreach ($rows as $row) {
             foreach ($row as $date => $field) {
-                $date = Carbon::parse($date)->timezone('Asia/Almaty')->toImmutable();
+                $date = Carbon::parse($date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
                 $wellId = $field['params']['well_id'];
                 switch ($field['params']['indicator']) {
                     case 'liquid':
