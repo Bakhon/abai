@@ -1,7 +1,7 @@
 <template>
-    <div class="row ml-10">
-        <div class="col-sm-10 leftBlock pl-0 pr-0">
-            <div class="resultsBlock">
+    <div class="row ml-10 h-100">
+        <div class="col-sm-12 leftBlock pl-0 pr-0">
+            <div class="resultsBlock" v-if="!cardFull">
                 <ul>
                     <li>
                         <div class="block">
@@ -45,74 +45,22 @@
                             <p class="percent"><img src="/img/digital-drilling/triangle.svg" alt="" class="mr-1"><span>1,4%</span> vs 23.03.2021</p>
                         </div>
                     </li>
+                    <li>
+                        <div class="analyticsBlock">
+                            <p class="num"><span>1230</span>{{ trans('digital_drilling.default.meters') }}</p>
+                            <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="analyticsBlock">
+                            <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
+                            <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
+                        </div>
+                    </li>
                 </ul>
             </div>
-
-            <div class="contentBlock">
-                <digital-map />
-            </div>
-        </div>
-        <div class="col-sm-2 rightBlock pr-0">
-            <div class="analyticsBlock">
-                <p class="num"><span>1230</span>{{ trans('digital_drilling.default.meters') }}</p>
-                <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
-            </div>
-            <div class="analyticsBlock">
-                <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
-                <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
-            </div>
-            <div class="operatingCosts">
-                <div class="operatingCosts-title">
-                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
-                </div>
-                <div class="operatingCosts-statistics">
-                    <div class="operatingCosts-single" v-for="costs in operatingCosts">
-                        <div class="operatingCosts-single-title">
-                            {{costs.year}}
-                        </div>
-                        <div class="operatingCosts-single-content">
-                            <progress max="20000000" :value="costs.item">
-                                {{costs.item}}
-                            </progress>
-                            <div class="value">
-                                {{costs.item}},00
-                            </div>
-                        </div>
-                        <div class="operatingCosts-single-tg">
-                            {{ trans('digital_drilling.default.thousands_tenge') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="analyticsBlock">
-                <div class="techNumsBlock">
-                    <p class="name">{{ trans('digital_drilling.default.technical_and_economic') }}</p>
-                    <label>{{ trans('digital_drilling.default.mechanical_speed') }}</label>
-                    <div class="lineBlock">
-                        <p>21 {{ trans('digital_drilling.default.m_h') }}</p>
-                        <input type="range" max="40" min="0" value="21" class="rangeInput" disabled>
-                    </div>
-                    <label>{{ trans('digital_drilling.default.cruising_speed') }}</label>
-                    <div class="lineBlock">
-                        <p>15 {{ trans('digital_drilling.default.m_h') }}</p>
-                        <input type="range" max="40" min="0" value="15" class="rangeInput" disabled>
-                    </div>
-                    <label>{{ trans('digital_drilling.default.technical_speed') }}</label>
-                    <div class="lineBlock">
-                        <p>2200 {{ trans('digital_drilling.default.m_st_month') }}</p>
-                        <input type="range" max="3000" min="0" value="2200" class="rangeInput" disabled>
-                    </div>
-                    <label>{{ trans('digital_drilling.default.commercial_speed') }}</label>
-                    <div class="lineBlock">
-                        <p>1500 {{ trans('digital_drilling.default.m_st_month') }}</p>
-                        <input type="range" max="3000" min="0" value="1500" class="rangeInput" disabled>
-                    </div>
-                    <label>{{ trans('digital_drilling.default.cycle_speed') }}</label>
-                    <div class="lineBlock">
-                        <p>1700 {{ trans('digital_drilling.default.m_st_month') }}</p>
-                        <input type="range" max="3000" min="0" value="1700" class="rangeInput" disabled>
-                    </div>
-                </div>
+            <div class="contentBlock" :class="{fullPage: cardFull}">
+                <digital-map @cardFullPage="cardFull=!cardFull"/>
             </div>
         </div>
     </div>
@@ -125,32 +73,7 @@
         components: {DigitalMap},
         data(){
             return{
-                operatingCosts: [
-                    {
-                        year: '2016 г.',
-                        item: 8228564
-                    },
-                    {
-                        year: '2017 г.',
-                        item: 8785866
-                    },
-                    {
-                        year: '2018 г.',
-                        item: 7947803
-                    },
-                    {
-                        year: '2019 г.',
-                        item: 14397692
-                    },
-                    {
-                        year: '2020 г.',
-                        item: 15093826
-                    },
-                    {
-                        year: '2021 г.',
-                        item: 10325881
-                    },
-                ]
+                cardFull: false,
             }
         },
     }

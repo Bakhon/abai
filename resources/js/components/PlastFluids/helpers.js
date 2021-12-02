@@ -14,11 +14,9 @@ export const convertTemplateData = (dataset, lang) => {
   return dataTree;
 };
 
-export const handleSearch = (arrayForSearch, query, type) => {
-  let name = "owner_name";
-  if (type === "field") name = "field_name";
+export const handleSearch = (arrayForSearch, query, key) => {
   const filtered = arrayForSearch.filter((item) =>
-    item[name].toLowerCase().includes(query?.toLowerCase()) ? item : ""
+    item[key].toLowerCase().includes(query?.toLowerCase()) ? item : ""
   );
   return filtered;
 };
@@ -37,4 +35,16 @@ export const convertToFormData = (convertObject) => {
     }
   }
   return postData;
+};
+
+export const downloadExcelFile = (fileName, fileContent) => {
+  let link = document.createElement("a");
+
+  link.download = fileName;
+  const blob = new Blob([fileContent], {
+    type: "application/vnd.ms-excel",
+  });
+
+  link.href = URL.createObjectURL(blob);
+  link.click();
 };

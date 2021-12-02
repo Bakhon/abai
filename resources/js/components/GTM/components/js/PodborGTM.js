@@ -77,8 +77,6 @@ export default {
                     enabled: false
                 },
                 stroke: {
-                    // lineCap: 'butt',
-                    // width: [5, 7, 5],
                     curve: 'straight',
                     dashArray: [0, 0, 2]
                 },
@@ -159,12 +157,14 @@ export default {
             horizontsForFilter: [],
             objectsForFilter: [],
             showShadow: false,
+            activeItem: 0
         };
     },
     computed: {
         ...paegtmMapState([
             'clickable',
             'treeDate',
+            'treeStore',
             'clickableTable'
         ]),
     },
@@ -175,8 +175,8 @@ export default {
         ]),
         ...paegtmMapActions([
             'changeTreeDate',
-            'getTreeDataStore',
-            'onGetTableByClickableValue'
+            'onGetTableByClickableValue',
+            'changeTreeStore'
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -190,7 +190,8 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onClickWell(v) {
+        onClickWell(v, idx) {
+            this.activeItem = idx
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
             let params = {action_type: 'well_name_clicked', main_data: v, distance: 500}
@@ -222,31 +223,31 @@ export default {
                         data: [
                             {
                                 x: res.fa_plot.labels.pbeg_oil_prod,
-                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.pbeg_oil_prod.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWC,
-                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceWC.color,
                             }, {
                                 x: res.fa_plot.labels.influencePres,
-                                y: res.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influencePres.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influencePres.color,
                             }, {
                                 x: res.fa_plot.labels.influenceLiquidPI,
-                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceLiquidPI.color,
                             }, {
                                 x: res.fa_plot.labels.influenceBHP,
-                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceBHP.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWorkDay,
-                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.influenceWorkDay.color,
                             }, {
                                 x: res.fa_plot.labels.pend_oil_prod,
-                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(Math.floor(a * 100) / 100).toFixed(1)),
                                 fillColor: res.fa_plot.pend_oil_prod.color,
                             }
                         ]
@@ -266,7 +267,7 @@ export default {
             this.SET_LOADING(true);
             await getTreeData(body).then((res) => {
                 this.dataRangeInfo = res.date_range_model;
-                this.treeData = res.finder_model.children;
+                this.changeTreeStore(res.finder_model.children)
                 this.fieldName = res.org_struct;
             }).finally(() => {
                 this.SET_LOADING(false);
@@ -280,6 +281,7 @@ export default {
             this.isHidden = !this.isHidden
         },
         async onPostTreeData(v) {
+            this.changeTreeStore(v)
             this.dataRangeInfo = _.clone(this.treeDate)
             this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
             this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()

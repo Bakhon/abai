@@ -1,6 +1,10 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+sup{
+    color: #ffffff;
+    font-size: 12px;
+}
 .main__title-drilling{
     color: #ffffff;
 }
@@ -8,14 +12,27 @@
     color: #ffffff;
 }
 .digital_drilling{
-    width: 97vw;
+    width: 96.5vw;
+    color: #ffffff!important;
+}
+.table{
+    color: #ffffff!important;
+}
+.newWell *{
+    color: #ffffff;
+}
+.dropdown-header{
+    color: #ffffff;
 }
 .digital_drilling *{
     box-sizing: border-box;
-    color: #FFFFFF;
     font-family: Harmonia Sans Pro Cyr;
     font-style: normal;
     font-weight: normal;
+}
+
+.inc__charts{
+    color: #0d092a;
 }
 .digital_drilling .col-sm-12.centerBlock {
     padding: 0 10px;
@@ -274,7 +291,8 @@
 }
 
 .digital_drilling .col-sm-10.leftBlock {
-    max-width: 79.5%;
+    height: 100%;
+    max-width: 80%;
 }
 
 .digital_drilling .col-sm-2.rightBlock {
@@ -299,8 +317,10 @@
 
 .digital_drilling .resultsBlock {
     width: 100%;
-    display: table;
-    background: #20274F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
     border-radius: 3px;
 }
 
@@ -308,11 +328,15 @@
     display: table;
     width: 100%;
     margin: 0;
+    background-color: #20274F;
+    height: 100%;
+    align-items: stretch;
+    padding: 10px 0;
 }
 
 .digital_drilling .resultsBlock ul li {
     display: inline-table;
-    width: 25%;
+    width: 16.6%;
     margin: 0;
     padding: 0;
     border-right: 0.5669px solid #454D7D;
@@ -322,7 +346,7 @@
     display: table;
     margin: 0 auto;
     width: 85%;
-    padding: 24px 0 17px;
+    padding: 0;
 }
 
 .digital_drilling .resultsBlock ul li .block p.num {
@@ -339,7 +363,7 @@
 .digital_drilling .resultsBlock ul li .block p.num span.big {
     margin: 0;
     color: #fff;
-    font-size: 58px;
+    font-size: 35px;
     line-height: 0.9;
     font-weight: 600;
 }
@@ -348,9 +372,9 @@
 
 .digital_drilling .resultsBlock ul li .block p.title {
     display: table;
-    margin: 15px 0 0;
+    margin: 10px 0 0;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     border-bottom: 3px solid transparent;
     padding-bottom: 3px;
 }
@@ -386,11 +410,8 @@
 }
 
 .digital_drilling .analyticsBlock {
-    background: #272953;
-    border-radius: 3px;
-    display: table;
     width: 100%;
-    margin: 0 0 10px;
+    margin: 0;
 }
 .digital_drilling .analyticsBlock:first-child{
 }
@@ -442,17 +463,17 @@
     display: table;
     margin: 0 0 20px;
     width: 100%;
-    padding: 16px 18px 0;
+    padding: 0 18px 0;
     color: #82BAFF;
     font-size: 16px;
 }
 
 .digital_drilling .analyticsBlock p.num span {
-    display: table;
     color: #fff;
-    font-size: 64px;
+    font-size: 35px;
     font-weight: 600;
     line-height: 1;
+    margin-right: 10px;
 }
 
 .digital_drilling .analyticsBlock p.name {
@@ -475,6 +496,7 @@
     display: inline-table;
     vertical-align: middle;
     margin: 0 12px 0 0;
+    width: 20px;
 }
 
 .digital_drilling button.alarm {
@@ -557,7 +579,12 @@ input.rangeInput {
     padding: 20px;
 }
 .contentBlock{
-    height: calc(100% - 184px);
+    min-height: 500px;
+    height: calc(100% - 140px);
+}
+.contentBlock.fullPage{
+    height: 100%;
+    margin: 0;
 }
 .contentBlock__map{
     width: 100%;
@@ -591,15 +618,46 @@ input.rangeInput {
     display: flex;
     align-items: center;
 }
+.contentBlock__filter{
+    display: flex;
+    align-items: center;
+}
 .all-graph{
     cursor: pointer;
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.filter-btn{
+    background: #293688;
+    border: 0.2px solid #3366FF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    height: 30px;
+    min-width: 100px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter-btn img{
+    margin-right: 6px;
 }
 .all-graph span{
     margin-left: 10px;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    text-decoration-line: underline;
     color: #FFFFFF;
 }
 .all-graph-modal{
@@ -691,6 +749,14 @@ input.rangeInput {
 }
 .map__content .dropdown__area{
     margin-bottom: 15px;
+}
+.map__content .dropdown__area button.clear{
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #FFFFFF;
 }
 .map-filter{
     position: absolute;
@@ -891,10 +957,12 @@ input.rangeInput {
 .well_body-form-input{
     margin-bottom: 14px;
     position: relative;
+    display: flex;
+    align-items: center;
 
 }
-.well_body-form-input select, .well_body-form-input input{
-    background: #334296;
+.well_body-form-input .select, .well_body-form-input select{
+    background: #334296!important;
     border: 0.5px solid #454FA1;
     box-sizing: border-box;
     border-radius: 4px;
@@ -903,15 +971,55 @@ input.rangeInput {
     margin-left: 10px;
     max-width: 200px;
 }
+/* Firefox */
+.range  input[type=number] {
+    -moz-appearance: textfield;
+}
 .well_body-form-input input{
     background: #1F2142;
     padding: 5px 14px;
 }
+.well_body-form-input input.new{
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 224px;
+    height: 28px;
+    margin-left: 10px;
+    max-width: 200px
+}
 .well_body-form-input input::placeholder{
     color: rgba(255, 255, 255, 0.5);
 }
-.well_body-form-input select:focus{
+.well_body-form-input .select:focus{
     outline: none;
+}
+.range{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    margin-left: 10px;
+}
+.range .from, .range .to{
+    display: flex;
+    align-items: center;
+}
+.range input{
+    width: 70px;
+    margin-left: 10px;
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    padding: 5px!important;
+    font-size: 16px;
+    height: 25px;
+
+}
+.range input::-webkit-outer-spin-button,
+.range  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 .input-size{
     position: absolute;
@@ -1103,13 +1211,18 @@ input.rangeInput {
     width: 300px;
     background-color: #323370;
     padding: 8px 0;
-    display: flex;
-    flex-direction: column;
+    height: 85px;
     align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .daily_raport_block-header-input{
     display: flex;
     align-items: center;
+}
+.date-report{
+    width: 196px;
 }
 .daily_raport_block-header-input label{
     font-weight: bold;
@@ -1126,18 +1239,23 @@ input.rangeInput {
     outline: none;
 }
 .daily_raport_block-header-save{
-    height: 98px;
+    height: 85px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 200px;
     background-color: #323370;
 }
+.daily_raport_block-header-save .save{
+    padding: 6px!important;
+    margin-bottom: 10px;
+}
 .daily_raport_block-header-center{
     background-color: #323370;
     color: #FFFFFF;
     font-weight: bold;
-    height: 98px;
+    height: 85px;
     width: calc(100% - 500px);
     display: flex;
     align-items: center;
@@ -1223,10 +1341,16 @@ input.rangeInput {
 .w-25{
     width: 25% !important;
 }
-.h-31{
+.h-31, .h-31 td{
     height: 31px!important;
 }
-
+.pushElement{
+    cursor: pointer;
+}
+.pushElement:hover{
+    background-color: #1b67ca;
+    padding: 7px;
+}
 .w-5{
     width: 5%!important;
 }
@@ -1260,6 +1384,8 @@ td.border-right-none{
     background: #272953;
     margin-bottom: 10px;
     padding: 10px;
+    min-height: 380px!important;
+    height: calc(100% - 250px);
 }
 .operatingCosts-title{
     font-family: Harmonia Sans Pro Cyr;
@@ -1269,7 +1395,7 @@ td.border-right-none{
     line-height: 18px;
 
     color: #FFFFFF;
-    margin-bottom: 7px;
+    margin-bottom: 15px;
 }
 .operatingCosts-single{
     font-style: normal;
@@ -1282,7 +1408,7 @@ td.border-right-none{
     align-items: center;
 
     color: #FFFFFF;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 .operatingCosts-single:last-child{
     margin-bottom: 0;
@@ -1321,7 +1447,20 @@ progress::-webkit-progress-value {
 .operatingCosts-single-tg{
     margin-left: 6px;
 }
+.tech-info-header{
+    background-color: #323370;
+    border: 1px solid #454D7D;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
+}
 
+@media (max-width: 1670px) {
+    .nozzle-row{
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;

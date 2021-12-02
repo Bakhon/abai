@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
+use App\Exceptions\JsonException;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
@@ -22,8 +24,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
-
-    abstract protected function saveSingleFieldInDB(array $params): void;
+    protected $additionalEntities = [];
 
     public function __construct(Request $request)
     {
@@ -137,7 +138,7 @@ abstract class TableForm extends BaseForm
                 $result = [
                     'id' => $item->id,
                     'name' => $item->uwi,
-                    'href' => '#'
+                    'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
                 ];
             } elseif (isset($field['table'])) {
                 $result = $this->getFieldByDates(
@@ -175,7 +176,7 @@ abstract class TableForm extends BaseForm
 
         $row = $collection->get($item->id);
         if (!empty($fieldParams['additional_filter'])) {
-            $row = $this->addAdditionalFilters($row, $fieldParams);
+            $row = $this->addAdditionalFilters($row, $fieldParams['additional_filter']);
         }
         $row = $row->first();
 
@@ -197,12 +198,12 @@ abstract class TableForm extends BaseForm
         }
 
         $result = [
-            'id' => $row->id,
             'value' => null,
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
         if ($this->isCurrentDay($row->{$dateField})) {
+            $result['id'] = $row->id;
             $result['value'] = $value;
         } else {
             $result['old_value'] = $value;
@@ -456,30 +457,173 @@ abstract class TableForm extends BaseForm
             );
 
         if (!empty($column['additional_filter'])) {
-            $query = $this->addAdditionalFilters($query, $column);
+            $query = $this->addAdditionalFilters($query, $column['additional_filter']);
         }
 
         return $query->first();
     }
 
-    private function addAdditionalFilters($query, array $field)
+    protected function addAdditionalFilters($query, array $additionalFilter)
     {
-        if (!empty($field['additional_filter'])) {
-            foreach ($field['additional_filter'] as $key => $value) {
-                if (is_array($value)) {
+        foreach ($additionalFilter as $key => $value) {
+            if (is_array($value)) {
+                $entityKey = md5($value['table']) . json_encode($value['fields']);
+                if (isset($this->additionalEntities[$entityKey])) {
+                    $entity = $this->additionalEntities[$entityKey];
+                } else {
                     $entityQuery = DB::connection('tbd')->table($value['table']);
                     foreach ($value['fields'] as $fieldName => $fieldValue) {
                         $entityQuery->where($fieldName, $fieldValue);
                     }
                     $entity = $entityQuery->first();
-                    if (!empty($entity)) {
-                        $query = $query->where($key, $entity->id);
-                    }
-                    continue;
+                    $this->additionalEntities[$entityKey] = $entity;
                 }
-                $query = $query->where($key, $value);
+                if (!empty($entity)) {
+                    $query = $query->where($key, $entity->id);
+                }
+                continue;
+            }
+            $query = $query->where($key, $value);
+        }
+
+        return $query;
+    }
+
+    protected function validate()
+    {
+        $errors = [];
+
+        $customErrors = $this->getCustomValidationErrors();
+        $rules = $this->getValidationRules();
+        $errorNames = $this->getValidationAttributeNames();
+
+        foreach ($this->request->get('fields') as $id => $values) {
+            $values = array_map(function ($field) {
+                return $field['value'];
+            }, $values);
+            $rowErrors = $this->validator->getValidationErrors($values, $rules, $errorNames, $customErrors);
+            if (!empty($rowErrors)) {
+                $errors[$id] = $rowErrors;
             }
         }
-        return $query;
+        if (!empty($errors)) {
+            throw new JsonException('The given data was invalid.', $errors);
+        }
+    }
+
+    public function submit(): array
+    {
+        DB::connection('tbd')->beginTransaction();
+
+        try {
+            $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
+            DB::connection('tbd')->commit();
+            return $result;
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
+        }
+    }
+
+    public function submitForm(array $fields, array $filter = []): array
+    {
+        return [];
+    }
+
+    protected function insertValueInCell(
+        string $table,
+        string $column,
+        array $additionalFilter = null,
+        int $wellId,
+        $date,
+        $value
+    ): void {
+        $rowQuery = DB::connection('tbd')
+            ->table($table)
+            ->where('well', $wellId)
+            ->where('dbeg', '=', $date);
+
+        if (!empty($additionalFilter)) {
+            $rowQuery = $this->addAdditionalFilters($rowQuery, $additionalFilter);
+        }
+        $row = $rowQuery->first();
+
+        if ($row) {
+            DB::connection('tbd')
+                ->table($table)
+                ->where('id', $row->id)
+                ->update(
+                    [
+                        $column => $value,
+                    ]
+                );
+            return;
+        }
+
+        $prevRowQuery = DB::connection('tbd')
+            ->table($table)
+            ->where('well', $wellId)
+            ->where('dbeg', '<', $date)
+            ->orderBy('dbeg', 'desc');
+        if (!empty($additionalFilter)) {
+            $prevRowQuery = $this->addAdditionalFilters($prevRowQuery, $additionalFilter);
+        }
+        $prevRow = $prevRowQuery->first();
+
+        if (!empty($prevRow)) {
+            DB::connection('tbd')
+                ->table($table)
+                ->where('id', $prevRow->id)
+                ->update(
+                    [
+                        'dend' => $date
+                    ]
+                );
+        }
+
+        $nextRowQuery = DB::connection('tbd')
+            ->table($table)
+            ->where('well', $wellId)
+            ->where('dbeg', '>', $date)
+            ->orderBy('dbeg');
+        if (!empty($additionalFilter)) {
+            $nextRowQuery = $this->addAdditionalFilters($nextRowQuery, $additionalFilter);
+        }
+        $nextRow = $nextRowQuery->first();
+        $dend = $nextRow ? $nextRow->dbeg : Well::DEFAULT_END_DATE;
+
+        $data = [
+            'well' => $wellId,
+            $column => $value,
+            'dbeg' => $date,
+            'dend' => $dend,
+        ];
+        if (!empty($additionalFilter)) {
+            $data = array_merge($this->addDefaultData($additionalFilter), $data);
+        }
+
+        DB::connection('tbd')
+            ->table($table)
+            ->insert($data);
+    }
+
+    private function addDefaultData($source)
+    {
+        $data = [];
+        foreach ($source as $key => $value) {
+            if (is_array($value)) {
+                $query = DB::connection('tbd')->table($value['table']);
+                foreach ($value['fields'] as $fieldName => $fieldValue) {
+                    $query->where($fieldName, $fieldValue);
+                }
+                $entity = $query->first();
+                if (!empty($entity)) {
+                    $data[$key] = $entity->id;
+                }
+            } else {
+                $data[$key] = $value;
+            }
+        }
+        return $data;
     }
 }

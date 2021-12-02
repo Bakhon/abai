@@ -146,7 +146,7 @@ export default {
                     rows: initialRowsTSHO,
                     format: formatMappingTSHO,
                     cells: cellsMappingTSHO,
-                    id: 9999,
+                    id: 259,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
@@ -156,7 +156,7 @@ export default {
                     rows: initialRowsNKO,
                     format: formatMappingNKO,
                     cells: cellsMappingNKO,
-                    id: 9999,
+                    id: 262,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
@@ -166,7 +166,7 @@ export default {
                     rows: initialRowsKPO,
                     format: formatMappingKPO,
                     cells: cellsMappingKPO,
-                    id: 9999,
+                    id: 260,
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
@@ -196,7 +196,7 @@ export default {
                 },
                 {
                     ticker: 'ОМГ',
-                    name: 'АО "ОзенМунайГаз"'
+                    name: 'АО "Озенмунайгаз"'
                 },
                 {
                     ticker: 'УО',
@@ -259,17 +259,6 @@ export default {
                     'fields': ['agent_upload_waste_water_injection_fact'],
                     'formula': (totalWaterFact,albsenomanianWaterFact) => totalWaterFact - albsenomanianWaterFact
                 },
-                'ОМГ': {
-                    'fields': [
-                        'natural_gas_production_fact',
-                        'natural_gas_delivery_fact',
-                        'associated_gas_production_fact',
-                        'associated_gas_delivery_fact',
-                        'agent_upload_total_water_injection_fact',
-                        'agent_upload_seawater_injection_fact',
-                        'agent_upload_waste_water_injection_fact'],
-                    'formula': (value) => value * 1000
-                }
             },
             dzoUsers: [],
             requiredRows: 0,

@@ -40,7 +40,7 @@ export default {
                 legend: {
                     show: false,
                 },
-                colors: ['#999DC0','#2E50E9'],
+                colors: ['#2E50E9','#999DC0'],
                 dataLabels: {
                     enabled: true,
                     formatter: function(num) {

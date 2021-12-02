@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
+use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\EmergencyHistory;
 
 class FinalizeEmergencySituation extends Command
@@ -22,6 +24,10 @@ class FinalizeEmergencySituation extends Command
      * @var string
      */
     protected $description = 'Finalize an emergency situations';
+    protected $types = array(
+        2 => 'DzoImportChemistry',
+        3 => 'DzoImportOtm'
+    );
 
     /**
      * Create a new command instance.
@@ -37,14 +43,18 @@ class FinalizeEmergencySituation extends Command
     {
         $emergencySituations = $this->getSituations();
         foreach($emergencySituations as $situation) {
-            $status = $this->processSituation($situation);
+            if (array_key_exists($situation->type,$this->types)) {
+                $this->processChemistryWorkoverSituation($situation,$this->types[$situation->type]);
+            } else {
+                $this->processSituation($situation);
+            }
         }
     }
 
     private function getSituations()
     {
         return EmergencyHistory::query()
-                  ->select('description','date','id')
+                  ->select('description','date','id','type')
                   ->whereNull('approved')
                   ->get();
     }
@@ -62,13 +72,28 @@ class FinalizeEmergencySituation extends Command
         }
     }
 
+    private function processChemistryWorkoverSituation($situation,$type)
+    {
+        $model = '\App\Models\VisCenter\ExcelForm\\' . $type;
+        $dzoRecord = $model::query()
+            ->select('date','dzo_name')
+            ->where('dzo_name',$situation->description)
+            ->whereMonth('date', Carbon::now()->month-1)
+            ->whereYear('date', Carbon::now()->year)
+            ->first();
+
+        if (!is_null($dzoRecord)) {
+            $this->resolveSituation($dzoRecord->date,$situation->id);
+        }
+    }
+
     private function resolveSituation($resolveDate,$situationId)
     {
         EmergencyHistory::query()
             ->where('id', $situationId)
             ->update(
                 [
-                    'approve_date' => $resolveDate,
+                    'approve_date' => Carbon::parse($resolveDate)->addMonth(),
                     'approved' => true
                 ]
             );

@@ -166,22 +166,22 @@
                 </span>
 
                 <div class="right-block-details" v-show="mainSettings.activeRightTabName === 'devices'">
-                  <div class="devices-data no-gutter col-7">
-                    {{ trans('pgno.stanok_kachalka') }}
-                  </div>
-                  <div v-if="!mainSettings.isEditing"
-                       class="devices-data left-border-line right-block-data no-gutter col-5">
-                    {{ skType }}
-                  </div>
-                  <select v-if="mainSettings.isEditing"
-                          class="devices-data left-border-line right-block-data no-gutter col-5 select-edit"
-                          v-model="skType" @change="mainSettings.isSkError = false">
-                    <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
-                      {{ sk.sk_name }}
-                    </option>
-                  </select>
 
                   <div class="hide-block" v-show="well.expMeth == 'ШГН'">
+                    <div class="devices-data no-gutter col-7">
+                      {{ trans('pgno.stanok_kachalka') }}
+                    </div>
+                    <div v-if="!mainSettings.isEditing"
+                       class="devices-data left-border-line right-block-data no-gutter col-5">
+                    {{ skType }}
+                    </div>
+                    <select v-if="mainSettings.isEditing"
+                          class="devices-data left-border-line right-block-data no-gutter col-5 select-edit"
+                          v-model="skType" @change="mainSettings.isSkError = false">
+                      <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
+                      {{ sk.sk_name }}
+                      </option>
+                    </select>
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.dlina_hoda') }}
                     </div>
@@ -205,7 +205,6 @@
                     <input v-if="mainSettings.isEditing" v-model="well.spm"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
-
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpTypeShgn') }}
                     </div>
@@ -220,26 +219,23 @@
 
                   <div v-if="well.expMeth == 'ЭЦН'">
                     <div class="devices-data top-border-line no-gutter col-7">
-                      {{ trans('pgno.pumpTypeEcn') }}
+                      {{ trans('pgno.pumpRateEcn') }}
                     </div>
                     <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
-                      {{ devBlockRatedFeed }} {{ trans('measurements.gc') }}
+                      {{ well.freq }} {{ trans('measurements.gc') }}
                     </div>
-                    <input v-if="mainSettings.isEditing" v-model="spmDev"
+                    <input v-if="mainSettings.isEditing" v-model="well.freq"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
 
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpTypeEcn') }}
                     </div>
-                    <div v-if="!mainSettings.isEditing"
-                         class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
-                      {{ devBlockFrequency }} {{ trans('measurements.m3/day') }}
+                    <div class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
+                      {{ ecnPump }} {{ trans('measurements.m3/day') }}
                     </div>
-                    <input v-if="mainSettings.isEditing" v-model="well.pumpType"
-                           class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
-                           type="text"/>
+
                   </div>
 
                   <div class="devices-data top-border-line no-gutter col-7">
@@ -487,7 +483,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs @onPushParams="closeTabsModal()" :calcKpodTrigger="calcKpodTrigger"></tabs>
+                    <tabs @onPushParams="closeTabsModal()" :calcKpodTrigger="calcKpodTrigger" :expMeth="curveSettings.expChoosen"></tabs>
                   </div>
                 </div>
               </modal>
@@ -1186,7 +1182,7 @@
                           <div class="col-2">
                             <label class="pt-10px">{{ trans('pgno.h_spuska') }}</label>
                           </div>
-                      <div class="gear-icon" @click="!isDisabledForKgm && openTabsModal()">
+                      <div class="gear-icon" @click="openTabsModal()">
                         <img class="gear-icon-svg" src="/img/gno/gear-icon.svg" alt="">
                       </div>
                     </div>

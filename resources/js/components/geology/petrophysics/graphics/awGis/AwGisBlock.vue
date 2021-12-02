@@ -60,18 +60,19 @@
 		padding-top: 30px;
 		border: 1px solid black;
 
-		&__name {
-			min-height: 30px;
-			background: #e3e3e3;
-			font-size: 0.8em;
-			padding: 5px 10px;
-			text-align: center;
-			position: absolute;
-			width: 100%;
-			top: 0;
-			left: 0;
-			overflow: hidden;
-			white-space: nowrap;
-		}
-	}
+  &__name {
+    min-height: 30px;
+    background: #e3e3e3;
+    font-size: 0.8em;
+    padding: 5px 10px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #212529;
+  }
+}
 </style>

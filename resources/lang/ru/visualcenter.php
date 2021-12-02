@@ -199,7 +199,7 @@ return array (
   'dzoRestrictions' => 'Ограничения КТО',
   'dzoOthers' => 'Прочие',
   'dzoAllCompany' => 'Все компании',
-  'summaryAssets' => 'Итого по всем активам:',
+  'summaryAssets' => 'Итого по всем компаниям:',
   'summaryOperatingAssets' => 'Итого по операционным активам:',
   'summaryNonOperatingAssets' => 'Итого по неоперационным активам:',
   'otmMetricSystem' => 'м.',
@@ -485,5 +485,7 @@ return array (
   'correctedOpec' => 'Скорр. план ОПЕК+',
   'losses' => 'Потери',
   'opekEnabled' => 'Действуют ограничения',
-  'oldFact' => 'Данные обновляются'
+  'oldFact' => 'Данные обновляются',
+  'withCorrectedFact' => 'Переключить на откорректированные показатели',
+  'withoutCorrectedFact' => 'Переключить на замерные показатели',
 );

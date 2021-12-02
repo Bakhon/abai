@@ -148,66 +148,53 @@ abstract class MeasurementLogForm extends TableForm
             return Cache::get('bd_geo_breadcrumb_' . $geo->id);
         }
 
-        $ancestors = $geo->ancestors()
-            ->reverse()
-            ->pluck('name_ru')
-            ->toArray();
+        $path = [];
+        $isFieldFound = false;
+        $ancestors = $geo->ancestors()->reverse();
+        foreach ($ancestors as $ancestor) {
+            if ($ancestor->type->code === 'FLD') {
+                $isFieldFound = true;
+            }
+            if (!$isFieldFound) {
+                continue;
+            }
+            $path[] = $ancestor->name_ru;
+        }
 
-        $ancestors[] = $geo->name;
-        $breadcrumbs = implode(' / ', $ancestors);
+        $path[] = $geo->name_ru;
+
+        $breadcrumbs = implode(' / ', $path);
         Cache::put('bd_geo_breadcrumb_' . $geo->id, $breadcrumbs, now()->addMonth());
 
         return $breadcrumbs;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $fields, array $filter = []): array
     {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString(),
-                'dend' => $params['date']->toDateTimeString(),
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
-        }
-    }
-
-    private function addDefaultData($source)
-    {
-        $data = [];
-        foreach ($source as $key => $value) {
-            if (is_array($value)) {
-                $query = DB::connection('tbd')->table($value['table']);
-                foreach ($value['fields'] as $fieldName => $fieldValue) {
-                    $query->where($fieldName, $fieldValue);
-                }
-                $entity = $query->first();
-                if (!empty($entity)) {
-                    $data[$key] = $entity->id;
+        foreach ($fields as $wellId => $wellFields) {
+            foreach ($wellFields as $columnCode => $field) {
+                $column = $this->getFieldByCode($columnCode);
+                if (isset($field['id'])) {
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->where('id', $field['id'])
+                        ->update(
+                            [
+                                $column['column'] => $field['value']
+                            ]
+                        );
+                } else {
+                    $this->insertValueInCell(
+                        $column['table'],
+                        $column['column'],
+                        $column['additional_filter'] ?? null,
+                        $wellId,
+                        $filter['date'],
+                        $field['value']
+                    );
                 }
             }
         }
-        return $data;
+        return [];
     }
 }

@@ -62,6 +62,7 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            isLeftSectionHided: false,
             wellSheetTypes: {
                 'well_production': 'Добывающие скважины',
                 'well_pump': 'Нагнетательные скважины'
@@ -367,7 +368,9 @@ export default {
                     });
             }
 
-            return selectedObjects;
+            return selectedObjects.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+            });
         },
         async updateChildrenOfNode(node, level) {
             if (!node?.children) return;
@@ -415,7 +418,7 @@ export default {
             if (this.endDate) {
                 dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
             } else {
-                dates.push(null)
+                dates.push(formatDate.getTodayDateFormatted());
             }
             return dates
         },
@@ -499,7 +502,29 @@ export default {
             return sheetByDays
         },
         setActiveTab(wellTypeSelectedAtRequest) {
-            this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
+            if (this.isStatisticsOfTabExists(wellTypeSelectedAtRequest)) {
+                this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
+                return
+            }
+            for (let tabId = 0; tabId < this.sheetTypes.length; tabId++) {
+                let tabName = this.sheetTypes[tabId]
+                if (tabName in this.wellSheetTypes) {
+                    continue
+                }
+                if (this.isStatisticsOfTabExists(tabName)) {
+                    this.activeTab = tabId
+                    return
+                }
+            }
+        },
+        isStatisticsOfTabExists(tabName) {
+            if (!(tabName in this.statistics)) {
+                return false
+            }
+            if (Array.isArray(this.statistics[tabName]) && this.statistics[tabName].length > 0) {
+                return true
+            }
+            return !Array.isArray(this.statistics[tabName]) && Object.keys(this.statistics[tabName]).length > 0;
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
@@ -886,6 +911,11 @@ export default {
                 return (sheet && Object.keys(sheet).length > 0)
             }
             return (sheet && sheet.length > 0)
+        },
+        onSectionHidingEvent(method) {
+            if(method == 'left'){
+                this.isLeftSectionHided = !this.isLeftSectionHided
+            }
         },
     }
 }

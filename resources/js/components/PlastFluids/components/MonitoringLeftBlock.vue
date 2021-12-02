@@ -9,7 +9,7 @@
           :items="subsoils"
           :placeholder="trans('plast_fluids.subsurface_user')"
           :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
-          dropKey="owner_name"
+          :dropKey="['owner_name']"
           @dropdown-select="UPDATE_CURRENT_SUBSOIL"
         />
         <Dropdown
@@ -23,7 +23,7 @@
           :selectedValue="
             currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
           "
-          dropKey="field_name"
+          :dropKey="['field_name']"
           :parentShortName="
             currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
           "

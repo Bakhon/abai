@@ -23,5 +23,8 @@ export const formatDate = {
     },
     getMaxOfDayFormatted: function (date, formatType='reportFormat') {
         return moment.parseZone(date).endOf('day').format(dateFormats[formatType]);
-    }
+    },
+    getTodayDateFormatted: function (formatType='reportFormat') {
+        return moment.parseZone().endOf('day').format(dateFormats[formatType]);
+    },
 }

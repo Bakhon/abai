@@ -142,13 +142,13 @@ export default {
       "subsoilFieldCounters",
     ]),
     filteredSubsoilUsers() {
-      return handleSearch(this.subsoils, this.subsoilUserSearch);
+      return handleSearch(this.subsoils, this.subsoilUserSearch, "owner_name");
     },
     filteredSubsoilChildren() {
       return handleSearch(
         this.subsoilFields,
         this.subsoilChildrenSearch,
-        "field"
+        "field_name"
       );
     },
   },

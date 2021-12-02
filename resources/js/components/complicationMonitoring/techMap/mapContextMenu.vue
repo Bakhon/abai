@@ -177,8 +177,11 @@ export default {
       this.showContextMenu = false;
     },
     onClickOutside() {
-      this.hideContextMenu()
-      this.$emit('click-outside')
+      this.hideContextMenu();
+
+      if (this.showContextMenu) {
+        this.$emit('click-outside')
+      }
     },
     optionClicked(option) {
       this.hideContextMenu();

@@ -297,7 +297,8 @@
                         :columns="columns"
                         :rowSize="30"
                         @beforeRangeEdit="beforeRangeEdit"
-                        @beforeEdit="beforeRangeEdit"
+                        @beforeEdit="beforeEdit"
+                        @beforeCellFocus="beforeFocus"
                         :frameSize="72"
                 ></v-grid>
                 <v-grid

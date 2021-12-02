@@ -234,9 +234,6 @@
                       <td><img class="cursor-pointer" src="/img/tkrs/video.svg" alt=""></td>
                       <td><img class="cursor-pointer" src="/img/tkrs/force_sensor.svg" alt=""></td>
                     </tr>
-                    
-                  
-                  
                 </tbody>
               </table>
             </div>
@@ -244,7 +241,14 @@
     </div>
     <modal name="brigada_modal" :width="552" :height="757"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
-                    <a class="header-text-modal">Информация о бригаде</a>
+                    <div class="modal-header">
+                      <a class="header-text-modal">{{trans('tkrs.info_brigada')}}</a>
+                      <div class="exit-div">
+                        <button type="button" class="modal-bign-button" @click="closeModal('brigada_modal')">
+                          {{ trans('pgno.zakrit') }}
+                        </button>
+                      </div>
+                    </div>
                     <div>
                       <b-container fluid>
                         <b-row class="my-1">
@@ -253,14 +257,16 @@
                           </b-col>
                           <b-col style="display:flex">
                             <b-form-input id="input-small" size="sm" style="width: 20%; height: 24px; background: #1A1D46;"></b-form-input>
-                            <img class="cursor-pointer" src="/img/tkrs/calendar.svg" 
+                            <img class="cursor-pointer calendar-modal" src="/img/tkrs/calendar.svg" 
                             alt="">
                           </b-col>
                         </b-row>
 
                       </b-container>
                     </div>
-                    <a style="color: white; padding-left: 13px;">Название станка: УП-60</a>
+                    <a class="machine-name">Название станка: УП-60</a>
+                    <a class="tech-nkt"><img class="cursor-pointer calendar-modal" src="/img/tkrs/tech_nkt.svg" 
+                            alt="">{{trans('tkrs.tech_nkt')}}</a>
                     <div style="text-align: center; color: white;">Смена 1</div>
                     <div class="table-div">
                           <div>
@@ -451,8 +457,11 @@ export default {
         this.$modal.show('add_well')
     },
     selectTab(selectedTab) {
-            this.currentTab = selectedTab
-        },
+        this.currentTab = selectedTab
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName);
+    },
   },
   data(){
     return {
@@ -484,8 +493,11 @@ table, th, td {
   padding-right: 8px;
 }
 .header-text-modal{
-  font-size: 16px;
   font-family: Harmonia Sans Pro Cyr;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
   color: white;
   padding-left: 13px;
 }
@@ -503,24 +515,24 @@ tr:hover {
   background: #2E50E9;
 }
 .nav-link {
-    color: white;
-    outline: none !important;
+  color: white;
+  outline: none !important;
 }
 
 .tab__content {
-    color: white;
+  color: white;
 }
 
 .nav-link.active {
-    color: white;
-    background-color: transparent;
-    border-color: #dee2e6 #dee2e6 white;
+  color: white;
+  background-color: transparent;
+  border-color: #dee2e6 #dee2e6 white;
 }
 .header-well-modal {
-    color: white;
-    font-size: 16px;
-    padding-left: 37%;
-    background: #323370;
+  color: white;
+  font-size: 16px;
+  padding-left: 37%;
+  background: #323370;
 }
 .header-well-modal-down {
   height: 9px;
@@ -534,5 +546,22 @@ tr:hover {
 }
 .a-link:hover {
   color: #fff;
+}
+.calendar-modal {
+  padding-bottom: 5px;
+}
+.machine-name {
+  color: white; 
+  padding-left: 13px;
+}
+.tech-nkt {
+  text-decoration-line: underline;
+  color: #D6D6E2;
+  font-family: Harmonia Sans Pro Cyr;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  padding-left: 34%;
 }
 </style>

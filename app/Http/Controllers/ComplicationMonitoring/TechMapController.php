@@ -5,9 +5,12 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
 use App\Jobs\ManualCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\BG;
+use App\Models\ComplicationMonitoring\BknsWell;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\KmbWell;
 use App\Models\ComplicationMonitoring\ManualGu;
 use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
@@ -21,6 +24,7 @@ use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\OmgNGDUZu;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\ComplicationMonitoring\WaterWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
 use App\Services\DruidService;
@@ -74,6 +78,7 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 }
             ])
+            ->where('water_pipe', false)
             ->get();
 
         $manualPipes = ManualOilPipe::with('coords', 'pipeType')
@@ -143,6 +148,19 @@ class TechMapController extends Controller
         $pipeTypes = PipeType::all();
         $ngdus = Ngdu::all();
         $cdngs = Cdng::all();
+        $water_pipes = OilPipe::with('coords', 'pipeType')
+            ->where('water_pipe', true)
+            ->get();
+
+        $water_pipes->map(function ($pipe) {
+            $pipe->name = 'Pipe ID: '.$pipe->id;
+            return $pipe;
+        });
+        
+        $water_wells = WaterWell::all();
+        $bgs = BG::all();
+        $kmb_wells = KmbWell::all();
+        $bkns_wells = BknsWell::all();
 
         return [
             'pipes' => $pipes,
@@ -153,7 +171,12 @@ class TechMapController extends Controller
             'guPoints' => $guPoints,
             'center' => $center,
             'pipeTypes' => $pipeTypes,
-            'date' => $date
+            'date' => $date,
+            'water_pipes' => $water_pipes,
+            'water_wells' => $water_wells,
+            'bgs' => $bgs,
+            'kmb_wells' => $kmb_wells,
+            'bkns_wells' => $bkns_wells
         ];
     }
 
