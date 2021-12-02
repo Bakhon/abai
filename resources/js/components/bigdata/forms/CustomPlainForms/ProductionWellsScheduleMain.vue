@@ -130,8 +130,8 @@
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
                                                 <td class="drop_down_link">
-                                                    <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Показать поля</a>
-                                                    <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Скрыть поля</a>
+                                                    <a href="#" class="link-secondary" v-show="periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Доп. информация / открыть</a>
+                                                    <a href="#" class="link-secondary" v-show="!periodItem.params.techMode[5].isHide" @click="toggleRowVisibility(periodItem.params.techMode)">Доп. информация / скрыть</a>
                                                 </td>
                                                 <td>-</td>
                                             </tr>
@@ -164,8 +164,8 @@
                                                 >
                                                     {{dayNumber}}
                                                 </th>
-                                                <th>Средние <br>(по методике)</th>
-                                                <th>Суммарные <br>(по методике)</th>
+                                                <th>Средние</th>
+                                                <th>Суммарные</th>
                                             </tr>
                                         </thead>
                                         <tbody>
