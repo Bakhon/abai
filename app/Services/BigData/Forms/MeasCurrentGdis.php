@@ -166,6 +166,10 @@ class MeasCurrentGdis extends TableForm
                                     'code',
                                     $column['additional_filter']['metric']['fields']['code']
                                 );
+                                if (!$metric) {
+                                    continue;
+                                }
+
                                 $measurementValue = $wellMeasurement->values->where('metric', $metric->id)->first();
                                 if (!empty($measurementValue)) {
                                     $value = $measurementValue->value_string ?? $measurementValue->value_double;
