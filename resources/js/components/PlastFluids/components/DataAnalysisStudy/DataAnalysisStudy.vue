@@ -1,12 +1,17 @@
 <template>
   <div class="data-analysis-study">
-    <div class="study-title">
-      <div class="icon-title">
-        <img src="/img/PlastFluids/tableIcon.png" alt=""/>
+    <div class="study-table-title-holder">
+      <div class="study-table-title">
+        <img
+          src="/img/PlastFluids/tableIcon.png"
+          alt="detailed research statistics"
+        />
+        <p>{{ trans("plast_fluids.analysis_study_table_title") }}</p>
       </div>
-      <span>Детальная статистика изученности по видам исследований</span>
     </div>
-    <BaseTable :items="items" :fields="fields" />
+    <div class="study-table-holder">
+      <BaseTable tableType="analysis" :fields="fields" :items="items" />
+    </div>
   </div>
 </template>
 
@@ -71,30 +76,45 @@ export default {
 
 <style scoped>
 .data-analysis-study {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
   height: 100%;
 }
 
-.icon-title {
-  margin-right: 8px;
+.study-table-title-holder {
+  border: 6px solid #272953;
+  border-bottom: none;
+  width: 100%;
+  height: 37px;
 }
 
-.icon-title > img {
-  width: 18px;
-  height: 14px;
-}
-
-.study-title {
+.study-table-title {
+  width: 100%;
+  height: 100%;
+  background: #323370;
+  border: 1px solid #545580;
+  padding: 8px 11px;
   display: flex;
   align-items: center;
-  color: #fff;
-  width: 100%;
-  background-color: #323370;
-  border: 1px solid #545580;
-  height: 47px;
-  padding: 4px;
 }
 
-.study-table {
-  height: calc(100% - 30px);
+.study-table-title > img {
+  width: 18px;
+  height: 14px;
+  margin-right: 9px;
+}
+
+.study-table-title > p {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.study-table-holder {
+  border: 6px solid #272953;
+  padding: 4px;
+  width: 100%;
+  height: calc(100% - 37px);
 }
 </style>

@@ -1,28 +1,37 @@
 <template>
   <div class="data-analysis-panel">
-    <div class="main-content-holder">
-      <div class="data-analysis-panel__title">
-        <i><img src="/img/PlastFluids/tableSettings.svg" alt=""/></i>
-        <span>Настройка таблицы</span>
+    <div class="content-holder">
+      <div class="content-heading">
+        <img
+          src="/img/PlastFluids/tableCustomization.svg"
+          alt="table settings"
+        />
+        <p>{{ trans("plast_fluids.table_settings") }}</p>
       </div>
-      <div class="data-analysis-panel__area">
-        <div class="data-analysis-panel__area-setting">
-          <input type="radio" />
-          <span>Отбор Проб</span>
+      <div class="content">
+        <div class="settings-input-holder">
+          <input
+            v-model="currentTable"
+            :value="2"
+            type="radio"
+            id="experiments-study"
+          />
+          <label for="experiments-study">{{
+            trans("plast_fluids.research_study")
+          }}</label>
         </div>
-        <div class="data-analysis-panel__area-setting">
-          <input type="radio" />
-          <span>PVT эксперименты</span>
+        <div class="settings-input-holder">
+          <input
+            v-model="currentTable"
+            :value="1"
+            type="radio"
+            id="sample-study"
+          />
+          <label for="sample-study">{{
+            trans("plast_fluids.sample_study")
+          }}</label>
         </div>
       </div>
-    </div>
-    <div
-      class="d-flex justify-content-around pb-10px data-analysis-panel__btns"
-    >
-      <button type="button" class="btn-button btn-button--thm-dark-blue">
-        <i class="fas fa-download pr-5px" />
-        <span>Выгрузить данные</span>
-      </button>
     </div>
   </div>
 </template>
@@ -30,10 +39,18 @@
 <script>
 export default {
   name: "DataAnalysisStudyPanel",
+  data() {
+    return {
+      currentTable: 2,
+    };
+  },
+  methods: {
+    getTableData() {},
+  },
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .data-analysis-panel {
   display: flex;
   flex-flow: column;
@@ -43,84 +60,58 @@ export default {
   height: 100%;
 }
 
-.data-analysis-panel__title {
-  font-size: 16px;
-  padding: 7px 15px;
-  background: #323370;
-  i {
-    color: #868bb2;
-    margin-right: 8px;
-  }
-  .fa-sliders-h {
-    transform: rotate(90deg);
-  }
+.content-holder {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.data-analysis-panel__area {
-  padding: 4px 8px;
+.content-heading {
+  width: 100%;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  background-color: #323370;
 }
 
-.data-analysis-panel__area-setting {
+.content-heading > img {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.content-heading > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.content {
+  padding: 6px;
+  width: 100%;
+}
+
+.settings-input-holder {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
   background: #363b68;
-  padding: 8px;
+  border: 1px solid #545580;
 }
 
-input[type="checkbox"] {
-  transform: scale(1.4);
+.settings-input-holder:nth-of-type(1) {
+  border-bottom: none;
+}
+
+.settings-input-holder:nth-of-type(2) {
+  border-top: none;
+}
+
+.settings-input-holder > input {
+  margin-right: 10px;
   cursor: pointer;
 }
 
-.list {
-  margin-bottom: 0;
-  li {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    line-height: 2;
-    label {
-      margin-bottom: 0;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-  }
-}
-
-.data-analysis__input {
-  background: rgba(31, 33, 66, 0.4);
-  border: 0.5px solid #454fa1;
-  border-radius: 2px;
-  outline: none;
-  min-width: 186px;
-  padding: 4px 8px;
-  color: #fff;
-}
-
-.data-analysis-panel__btns {
-  width: 100%;
-  padding: 0 6px;
-}
-
-.data-analysis-panel__btns > button {
-  font-size: 14px;
-  padding: 10px 7px;
-  width: 100%;
-}
-
-.data-analysis-dropdown__body {
-  padding: 0 !important;
-}
-
-.pressure__dropdown ul li:hover {
-  background-color: #3366ff;
-}
-
-.data-analysis__input {
-  background: rgba(31, 33, 66, 0.4);
-  border: 0.5px solid #454fa1;
-  border-radius: 2px;
-  outline: none;
-  min-width: 186px;
-  padding: 4px 8px;
-  color: #fff;
+.settings-input-holder > label {
+  margin: 0;
+  font-size: 12px;
 }
 </style>
