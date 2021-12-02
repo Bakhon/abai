@@ -287,6 +287,7 @@ const geologyGis = {
                             return acc
                         }, {})
                     })
+
                     state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify(curveOptions)));
                 }
             }
@@ -295,9 +296,7 @@ const geologyGis = {
 
         [SET_CURVE_OPTIONS](state, [propName, props]) {
             if (state.awGis.hasElement(state.curveName)) {
-                let {options: {customParams = {}}} = state.awGis.getElement(state.curveName);
-                customParams = Object.assign({...customParams}, {[propName]: {...customParams[propName], ...props}})
-                state.awGis.editElementOptions(state.curveName, {customParams});
+                state.awGis.editPropertyElementData(state.curveName, 'options', `customParams.${propName}`, (p) => ({...p, ...props}));
             }
         }
     },
@@ -369,10 +368,16 @@ function mnemonicsSort(data, state) {
             }
 
             if (this.hasElement(name)) {
-                let {data: {curve_id: cId, wellID: wId}} = this.getElement(name);
-                if (!wId.includes(wellID)) wId = [...wId, wellID]
-                if (!cId[wellID.toString()]) cId[wellID.toString()] = curve_id
-                this.editElementData(name, {wellID: wId, curve_id: cId})
+                state.awGis.editPropertyElementData(name, 'data', 'curve_id', (elCurveIDS) => {
+                    if (!elCurveIDS[wellID.toString()]) elCurveIDS[wellID.toString()] = curve_id;
+                    return elCurveIDS;
+                });
+
+                state.awGis.editPropertyElementData(name, 'data', 'wellID', (wellIDS) => {
+                    if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
+                    return wellIDS;
+                });
+
             } else {
                 this.addElement(name, {
                     name: name,
