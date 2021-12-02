@@ -128,7 +128,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -267,7 +267,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -968,7 +968,9 @@ export default {
 body.fixed {
   overflow: hidden;
 }
-
+.well_link_color{
+  color: #fff;
+}
 .bd-main-block {
 
   &__tabs {

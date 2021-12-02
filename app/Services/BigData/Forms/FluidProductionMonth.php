@@ -193,6 +193,8 @@ class FluidProductionMonth extends MeasLogByMonth
         return DB::connection('tbd')
             ->table('prod.meas_gas_prod')
             ->whereIn('well', $wellIds)
+            ->where('dbeg', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date->endOfDay())
             ->get()
             ->groupBy('well')
             ->map(function ($items) {

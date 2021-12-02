@@ -45,6 +45,14 @@ class MapConstructorController extends Controller
         return $this->polygonsService->getPolygons($file, $numberOfLevels, $type);
     }
 
+    public function getGridByBase64(Request $request): array {
+        $base64Data = $request->get('base64Data');
+        $selectedFilterType = $request->get('selectedFilterType');
+        $selectedFilterValue = $request->get('selectedFilterValue');
+
+        return $this->polygonsService->getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue);
+    }
+
     public function getDataFromExcel(Request $request): array {
         $file = $request->file('file');
 
