@@ -214,15 +214,14 @@ class CalculateHydroDynamics implements ShouldQueue
 
             $data = json_decode($request->getBody()->getContents());
             $short = $data->short->data;
-            $long = $data->long;
+            $long = $data->long->data;
 
             if ($short) {
                 $this->storeShortResult($short);
             }
 
             if ($long) {
-                array_unshift($long->data, $long->columns);
-                $this->storeLongResult($long->data);
+                $this->storeLongResult($long);
             }
         }
 
@@ -293,7 +292,6 @@ class CalculateHydroDynamics implements ShouldQueue
     protected function storeLongResult(array $data): void
     {
         $pipe = null;
-
         foreach ($data as $row) {
             if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
                 $pipe = null;
