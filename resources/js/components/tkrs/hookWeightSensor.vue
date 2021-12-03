@@ -5,20 +5,38 @@
         <div class="data-analysis-left-block">
           <div class="left-block-collapse-holder">
             <div>
-              <img
-                src="/img/PlastFluids/chooseParameters.svg"
-                alt="choose parameters icon"
-              />
-              <span>Параметры</span>
+
+              <div class="nav nav-tabs all-tabs">
+                <div style="display:flex">
+                  <li class="nav-item">
+                      <a class="nav-link active tab-lblock-header" 
+                      @click="selectTab(1)" href="#">
+                      <a>{{trans('tkrs.current_work')}}</a></a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link tab-lblock-header" 
+                      @click="selectTab(2)" href="#">
+                      <a>{{trans('tkrs.archive')}}</a></a>
+                  </li>
+                </div>
+              </div>
+             
             </div>
           </div>
           <div class="dropdown-holder">
       
-            <b-form-select class="custom-dropdown-block" @change="onChangeWell" :options="wellList.data" ></b-form-select>
+            <!-- <b-form-select class="custom-dropdown-block" @change="onChangeWell" :options="wellList.data" ></b-form-select>
             <div class="line-block"></div>
 
             <b-form-select  class="custom-dropdown-block" :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
-            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
+            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button> -->
+            <div v-if="currentTab == 1">
+                  <currentWorkHook></currentWorkHook>
+              </div>
+
+              <div v-if="currentTab == 2">
+                  <archive></archive>
+              </div>
             
           </div>
           
@@ -137,6 +155,8 @@ import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
 import event from './tabs/event.vue';
 import excess from './tabs/excess.vue';
+import currentWorkHook from './tabs/currentWorkHook.vue';
+import archive from './tabs/archive.vue';
 import { Plotly } from 'vue-plotly'
 
 
@@ -151,6 +171,8 @@ export default {
     baseBlock,
     event,
     excess,
+    currentWorkHook,
+    archive,
     Plotly,
   },
   computed: {
@@ -414,6 +436,10 @@ table, th, td {
 }
 .tab-header {
   color: white !important;
+}
+.tab-lblock-header {
+  color: white !important;
+  background: #181837 !important;
 }
 .active {
   background: #2E50E9;

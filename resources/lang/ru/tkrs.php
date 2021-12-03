@@ -27,4 +27,6 @@ return array (
   'chart2' => 'График 2:',
   'tech_nkt' => 'Технологические НКТ',
   'info_brigada' => 'Информация о бригаде',
+  'archive' => 'Архив',
+  'current_work' => 'Текущие работы',
 );
