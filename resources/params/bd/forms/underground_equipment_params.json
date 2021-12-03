@@ -20,6 +20,7 @@
                 "type": "dict",
                 "dict": "underground_equip_type",
                 "title": "equip_type",
+                "editable": false,
                 "callbacks": {
                   "updateFieldList": ""
                 }

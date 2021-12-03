@@ -20,6 +20,7 @@
                 "type": "dict",
                 "dict": "underground_equip_type",
                 "title": "equip_type",
+                "editable": false,
                 "callbacks": {
                   "updateFieldList": ""
                 }
@@ -27,8 +28,21 @@
             ]
           },
           {
-            "title": "installation_parameters",
-            "items": []
+            "title": "",
+            "items": [
+              {
+                "code": "work_info",
+                "type": "text",
+                "title": "work_info",
+                "validation": "required"
+              },
+              {
+                "code": "repair_date",
+                "type": "datetime",
+                "title": "repair_date",
+                "validation": "required|date"
+              }
+            ]
           }
         ]
       ]

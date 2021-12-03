@@ -27,21 +27,26 @@
       </textarea>
     </template>
     <template v-else-if="item.type === 'list'">
-      <v-select
-          :value="value"
-          :options="item.values"
-          :name="item.code"
-          v-on:input="updateValue($event)"
-          label="name"
-      >
-        <template #open-indicator="{ attributes }">
-          <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                  stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </template>
-      </v-select>
-      <a v-if="formatedValue.value" class="clear-value" href="#" @click="updateValue(null)">x</a>
+      <template v-if="!editable">
+        <span>{{ formatedValue.value ? formatedValue.value.name : '' }}</span>
+      </template>
+      <template v-else>
+        <v-select
+            :name="item.code"
+            :options="item.values"
+            :value="value"
+            label="name"
+            v-on:input="updateValue($event)"
+        >
+          <template #open-indicator="{ attributes }">
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </template>
+        </v-select>
+        <a v-if="formatedValue.value" class="clear-value" href="#" @click="updateValue(null)">x</a>
+      </template>
     </template>
     <template v-else-if="item.type === 'radio'">
       <div class="radio-wrap" v-for="value in item.values">
