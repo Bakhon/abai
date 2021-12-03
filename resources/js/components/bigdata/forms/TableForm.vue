@@ -149,7 +149,8 @@
                       <span v-if="row[column.code]" class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
+                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                  class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                           </a>
