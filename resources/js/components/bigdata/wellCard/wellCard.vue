@@ -190,9 +190,10 @@
                 class="col table-wrapper"
               >
                 <BigDataPlainFormResult
-                  v-if="activeForm.type === 'plain'"
-                  :code="activeForm.code"
-                  :well-id="this.well.id"
+                    v-if="activeForm.type === 'plain'"
+                    :code="activeForm.code"
+                    :well-id="this.well.id"
+                    type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
                   v-else-if="activeForm.type === 'table'"
@@ -386,11 +387,7 @@ import moment from "moment";
 import WellCardTree from "./WellCardTree";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
-import {
-  bigdatahistoricalVisibleState,
-  globalloadingMutations,
-  bigdatahistoricalVisibleMutations
-} from "@store/helpers";
+import {bigdatahistoricalVisibleMutations, bigdatahistoricalVisibleState, globalloadingMutations} from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
