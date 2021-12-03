@@ -4,7 +4,7 @@
 <div class="faq-background">
     <div class="faq-header container-fuild">
         <div class="col-4">
-            <a class="row faq__link" href="{{route('mainpage')}}">
+            <a class="row faq__link" href="{{ url()->previous() }}">
                 <div class="faq-header_logo col-2">
                 </div>
                 <div class="col-2 row">
@@ -57,7 +57,7 @@
     }
 
     .faq-header_img {
-        background: url(/img/faq/faq.png) 18px no-repeat;
+        background: url(/img/faq/faq.png) center 30px no-repeat;
         height: 324px;
     }
 
