@@ -59,6 +59,7 @@
 		position: relative;
 		padding-top: 30px;
 		border: 1px solid black;
+    transition: 300ms all ease-in-out;
 
   &__name {
     min-height: 30px;
