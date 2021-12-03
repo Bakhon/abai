@@ -75,7 +75,9 @@ export default class THorizon {
             this.#wellsBlockData.set(wellData.props.wellName, wellData)
         }
     }
+    calcStartPoint(elementData){
 
+    }
     getElementPath(elementName) {
         let d = [];
         for (let wellName of this.#maps.keys()) {
@@ -94,6 +96,7 @@ export default class THorizon {
     clearSvg(){
         this.#svg.innerHTML = "";
     }
+
     redrawLastElements(){
         this.drawSelectedPath(this.#lastSelectElements)
     }

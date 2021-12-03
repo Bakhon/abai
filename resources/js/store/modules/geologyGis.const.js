@@ -45,6 +45,31 @@ export const CANVAS_DASH_LINES_TYPES = {
     'Dash 5': [20, 3, 3, 3, 3, 3, 3, 3]
 }
 
+export const COLOR_PALETTE = {
+    "litho": [
+        {name: "Глина", color: 'rgb(192,192,192)'},
+        {name: "Песчаник", color: "rgb(255,255,0)"},
+        {name: "Известняк", color: "rgb(0,0,255)"},
+        {name: "Уголь", color: "rgb(0,0,0)", textColor: "white"},
+    ],
+    "fluid": [
+        {name: "", color: 'rgba(0,0,0, 0)'},
+        {name: "Вода", color: "rgb(0,255,255)"},
+        {name: "Нефть", color: "rgb(0,190,0)"},
+        {name: "Газ", color: "rgb(255,0,0)"},
+    ],
+    "curves": {
+        "gr": [255,0,0],
+        "lld": [0,0,255],
+        "cali": [50, 205, 0],
+        "rhob": [0, 0, 0],
+        "nphi": [0, 0, 255],
+        "dtco": [0, 190, 0],
+        "sp": [255, 0, 255],
+        "ngld": [0, 0, 255]
+    }
+}
+
 export const CURVE_ELEMENT_OPTIONS = {
     customParams: {
         min: {use: false, value: ''},

@@ -28,7 +28,7 @@ import {
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
     GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
-    GET_TREE_STRATIGRAPHY
+    GET_TREE_STRATIGRAPHY, COLOR_PALETTE
 } from "./geologyGis.const";
 
 import {isFloat, uuidv4} from "../../components/geology/js/utils";
@@ -288,7 +288,9 @@ const geologyGis = {
             for (const curveName of state.selectedGisCurves) {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
-                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT:{}, name: {}};
+                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT: {}, name: {},colorPalette:{}};
+                    let isLithology = curveName.toLowerCase().trim() === "litho";
+                    let isFluid = curveName.toLowerCase().trim() === "fluid";
                     state.awGis.editElementData(curveName, {
                         curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
                             let curve = state.CURVES_OF_SELECTED_WELLS[id];
@@ -298,14 +300,16 @@ const geologyGis = {
                             curveOptions.min[key] = Math.min(...curveWithoutNull);
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
-                            curveOptions.isLithology[key] = curveName.toLowerCase().trim() === "litho";
-                            curveOptions.isCSAT[key] = curveName.toLowerCase().trim() === "fluid";
+                            curveOptions.isLithology[key] = isLithology;
+                            curveOptions.isCSAT[key] = isFluid;
                             if (curve) acc[key] = curve;
-                            return acc
+                            return acc;
                         }, {})
                     })
-
-                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify(curveOptions)));
+                    if (isLithology || isFluid) {
+                        curveOptions.colorPalette = COLOR_PALETTE[curveName.toLowerCase()];
+                    }
+                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify({...curveOptions})));
                 }
             }
             state.changeGisData = Date.now();
@@ -396,6 +400,21 @@ function mnemonicsSort(data, state) {
                 });
 
             } else {
+                let curveColor = COLOR_PALETTE.curves, hex;
+
+                if (curveColor.hasOwnProperty(name.toLowerCase())) {
+                    let [r, g, b] = curveColor[name.toLowerCase()];
+                    hex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+
+                    CURVE_ELEMENT_OPTIONS.customParams = {
+                        ...CURVE_ELEMENT_OPTIONS.customParams,
+                        curveColor: COLOR_PALETTE.curves.hasOwnProperty(name.toLowerCase()) ? {
+                            use: true,
+                            value: hex
+                        } : {use: false, value: "#000000"}
+                    }
+                }
+                console.log(CURVE_ELEMENT_OPTIONS)
                 this.addElement(name, {
                     name: name,
                     value: name,
@@ -412,6 +431,11 @@ function mnemonicsSort(data, state) {
         }
     }
     return this.getGroupsWithData;
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
 }
 
 export default geologyGis;
