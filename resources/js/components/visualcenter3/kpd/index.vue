@@ -25,19 +25,17 @@
             <div class="mt-3 col-12 row m-0 ceo-table">
                 <div class="col-2 d-flex">
                     <div class="col-12 table-header kpd-main">
-                        КПД CEO
+                        Стратегические КПД
                     </div>
                 </div>
                 <div class="col-4 d-flex">
                     <div class="col-12 table-header p-1">
-                        КПД СЕО-1<br />
-                        (заместитель председателя Правления)
+                        Корпоративные КПД
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="col-12 table-header p-1">
-                        КПД СЕО-2<br />
-                        (директора департаментов)
+                        КПД руководящих работников (членов Правления)
                     </div>
                 </div>
                 <div class="col-2 row m-0">
@@ -74,8 +72,8 @@
                 </div>
                 <div class="col-4 row m-0">
                     <div class="col-12 kpd-main d-flex p-4 kpd-ceo_list chairmaster" @click="switchManager(kpdDecompositionA)">
-                        <img class="filter-icon" :src="kpdDecompositionA.img"></img>
-                        <div class="ml-2 text-left"><b>{{kpdDecompositionA.manager}}</b> <br> {{kpdDecompositionA.title}}</div>
+                        <img class="filter-icon" :src="'/img/kpd-tree/managers/' + corporateManager.avatar"></img>
+                        <div class="ml-2 text-left"><b>{{corporateManager.name}}</b> <br> {{corporateManager.title}}</div>
                     </div>
                     <div class="col-12 p-2 kpd-column">
                         <div
@@ -104,32 +102,32 @@
                 </div>
                 <div class="col-6 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="(master,masterIndex) in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
+                        <div v-for="manager in managers" class="col-12 kpd-main row p-0 m-0">
                             <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
-                                <img :src="master.img" class="filter-icon"></img>
-                                <div class="ml-2 text-left"><b>{{master.manager}}</b><br>{{master.title}}</div>
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" class="filter-icon"></img>
+                                <div class="ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                             </div>
-                            <div
-                                    v-for="(kpd,index) in master.kpd"
-                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"
-                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"
-                            >
-                                <div class="item-list_vector m-2"></div>
-                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>
-                                <div class="progress progress_template mt-2 p-0 progress-ceo_b">
-                                    <div
-                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                            :style="{width: kpd.progress + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="kpd.progress"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                    ></div>
-                                </div>
-                                <div class="col-1 text-right">
-                                    {{kpd.progress}}%
-                                </div>
-                            </div>
+<!--                            <div-->
+<!--                                    v-for="(kpd,index) in master.kpd"-->
+<!--                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"-->
+<!--                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"-->
+<!--                            >-->
+<!--                                <div class="item-list_vector m-2"></div>-->
+<!--                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>-->
+<!--                                <div class="progress progress_template mt-2 p-0 progress-ceo_b">-->
+<!--                                    <div-->
+<!--                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"-->
+<!--                                            :style="{width: kpd.progress + '%',}"-->
+<!--                                            role="progressbar"-->
+<!--                                            :aria-valuenow="kpd.progress"-->
+<!--                                            aria-valuemin="0"-->
+<!--                                            aria-valuemax="100"-->
+<!--                                    ></div>-->
+<!--                                </div>-->
+<!--                                <div class="col-1 text-right">-->
+<!--                                    {{kpd.progress}}%-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>

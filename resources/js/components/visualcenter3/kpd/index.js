@@ -344,14 +344,23 @@ export default {
             kpdType: {
                 'ceo2Decomposition': 3
             },
-
-            corporateManager: {}
+            corporateManager: {},
+            managers: [],
+            deputy: []
         };
     },
     methods: {
         async getCorporateManager() {
             let uri = this.localeUrl("/get-kpd-corporate-manager");
             const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
+        async getAllManagers(type) {
+            let uri = this.localeUrl("/get-kpd-managers");
+            const response = await axios.get(uri,{params:{'type':type}});
             if (response.status !== 200) {
                 return [];
             }
@@ -416,6 +425,8 @@ export default {
     },
     async created() {
         this.corporateManager = await this.getCorporateManager();
+        this.managers = await this.getAllManagers('manager');
+        this.deputy = await this.getAllManagers('deputy');
         this.selectedManager = this.kpdDecompositionA;
         _.forEach(this.kpdCeoDecompositionB, (master) => {
             _.forEach(master.kpd, (kpd) => {
