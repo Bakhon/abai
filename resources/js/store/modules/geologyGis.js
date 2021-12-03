@@ -414,7 +414,7 @@ function mnemonicsSort(data, state) {
                         } : {use: false, value: "#000000"}
                     }
                 }
-                console.log(CURVE_ELEMENT_OPTIONS)
+
                 this.addElement(name, {
                     name: name,
                     value: name,
