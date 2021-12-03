@@ -167,6 +167,12 @@ export default {
 
       if (this.values) {
         this.formValues = Object.assign({}, this.values)
+        for (let i in this.formValues) {
+          let value = this.formValues[i]
+          if (value && typeof value === 'object' && value.value) {
+            this.formValues[i] = value.value
+          }
+        }
       }
 
       this.updateForm(this.params.code)
