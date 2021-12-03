@@ -79,6 +79,7 @@ class WellsController extends Controller
                 'tech_mode_inj' => $this->techModeInj($well),
                 'dailyInjectionOil' => $this->dailyInjectionOil($well),
                 'depth_nkt' => $this->depthNkt($well),
+                'diametr_stuzer' => $this->diametrStuzer($well),
             ];
         }
 
@@ -95,7 +96,8 @@ class WellsController extends Controller
             'well_expl_right' => $this->wellExplOnRight($well),
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
-            'tubeNom' => $this->tubeNom($well),
+            'tubeNom' => $this->tubeNom($well, 'BECS'),
+            'tubeNomDop' => $this->tubeNom($well, 'AECS'),
             'well_type' => $this->wellType($well),
             'org' => $this->structureOrg($orgs),
             'main_org_code' => $this->orgCode($orgs),
@@ -186,30 +188,20 @@ class WellsController extends Controller
         return "";
     }
 
-    private function tubeNom(Well $well)
+    private function tubeNom(Well $well, $code)
     {
-        $wellConstr = $well->tubeNom()
-                    ->wherePivot('project_drill', '=', 'false')
-                    ->wherePivot('casing_type', '=', '8', 'or')
-                    ->WherePivot('casing_type', '=', '9')
-                    ->get(['prod.well_constr.od'])
-                    ->toArray();
+        $wellConstr = DB::connection('tbd')
+                        ->table('prod.well_constr as wc')
+                        ->join('dict.equip_type as d', 'wc.casing_type', '=', 'd.id')
+                        ->join('dict.tube_nom as dt', 'wc.casing_nom', '=', 'dt.id')
+                        ->where('wc.well', '=', $well->id)
+                        ->where('d.code', '=', $code)
+                        ->where('wc.project_drill', '=', 'false')
+                        ->get('dt.od')
+                        ->toArray();
 
         if($wellConstr){
             return $wellConstr[0];
-        }
-        if(!$wellConstr){
-            $wellConstrOd = DB::connection('tbd')
-                ->table('prod.well_constr')
-                ->where('well', '=', $well->id)
-                ->where('od', '!=', null)
-                ->orderBy('id', 'desc')
-                ->get('od')
-                ->toArray();
-        if($wellConstrOd){
-            return $wellConstrOd[0];
-        }
-            return "";
         }
     }
 
@@ -322,6 +314,25 @@ class WellsController extends Controller
            return $wellEquipParametr[0];
        }            
        return "";
+    }
+
+    private function diametrStuzer(Well $well)
+    {
+        $diametrstuzer = DB::connection('tbd')
+                ->table('prod.well_equip as wq')
+                ->join('dict.equip_factory_param as efp', 'wq.equip', '=', 'efp.equip')
+                ->join('dict.equip as eq', 'efp.equip', '=', 'eq.id')
+                ->join('dict.equip_type as e', 'eq.equip_type', '=', 'e.id')
+                ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
+                ->where('m.code', '=', 'BND')
+                ->where('e.code', '=', 'CHK')
+                ->get('efp.value_double')
+                ->toArray();
+
+        if($diametrstuzer){
+            return $diametrstuzer[0];
+        }
+        return "";
     }
 
     private function pumpDepthLowing(Well $well, $param)

@@ -455,7 +455,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: null,
+        tubeNom: {od: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -519,6 +519,7 @@ export default {
         pump_capacity: {
           value_double: null,
         },
+        tubeNomDop: {od: null},
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
@@ -602,6 +603,7 @@ export default {
         diameter_pump: "diameter_pump",
         well_block: "well_block",
         depth_nkt: "depth_nkt",
+        tubeNomDop: "tubeNomDop",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -874,9 +876,9 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
-      let tubeNomOd = this.well.tubeNom.od ? this.well.tubeNom.od + ' / ' + this.well.tubeNom.od : "";
+      let tubeNomOd = this.getTubeNom(well); 
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1376,6 +1378,18 @@ export default {
         }
       }
       return value;
+    },
+    getTubeNom(well){
+      if(this.well.tubeNom.od && this.well.tubeNomDop.od){
+        return this.well.tubeNomOd + ' / ' + this.well.tubeNomDop.od;
+      }
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od + ' / ' + '-';
+      }
+      if(this.well.tubeNomDop.od){
+        return '-' + ' / ' + this.well.tubeNomDop.od;
+      }
+      return "";
     },
     getTechmodeOil(well) {
       if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
