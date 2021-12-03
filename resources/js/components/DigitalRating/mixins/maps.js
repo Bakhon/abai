@@ -39,7 +39,6 @@ export default {
     },
 
     onMapZoom(event) {
-      console.log('event', event);
       if (this.circle?.length) this.onZoomCircle(event);
       if (this.triangle?.length)this.onZoomTriangle(event);
     },

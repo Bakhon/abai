@@ -64,7 +64,7 @@ export default {
 
         async fetchMaps(horizonId) {
             try {
-                const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/${horizonId}`);
+                const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/${horizonId}`);
                 this.SET_LOADING(false);
                 return res.data;
             } catch (error) {
@@ -103,12 +103,12 @@ export default {
 
         async initCurrentProdOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/current-prod/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/current-prod/${horizonNumber}`);
         },
 
         async initCumulativeProdOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/cumulative-prod/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/cumulative-prod/${horizonNumber}`);
             const cum_prod = res?.data?.cum_prod;
             if (cum_prod?.length) {
                 function fakeData() {
@@ -141,7 +141,7 @@ export default {
 
         async initDrilledOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/drilled-fond/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/drilled-fond/${horizonNumber}`);
             if (!res.data?.length) return;
 
             for (let i = 0; i < res.data.length; i++) {
@@ -218,7 +218,7 @@ export default {
 
         async getLegends() {
             try {
-                const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/legend`);
+                const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/legend`);
                 this.legends = res.data;
             } catch (error) {}
         }

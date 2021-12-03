@@ -103,7 +103,7 @@ export default {
 
     async fetchMapData() {
      const res = await axios.get(
-         `${process.env.MIX_TEST_MICROSERVICE}/maps/near/${this.horizonNumber}/${this.sectorNumber}`
+         `${process.env.MIX_DIGITAL_RATING_MAPS}/maps/near/${this.horizonNumber}/${this.sectorNumber}`
       );
      if (!res.error) {
        this.mapList = res.data?.map;

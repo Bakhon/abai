@@ -40,7 +40,7 @@ export default {
     async fetchData() {
       this.SET_LOADING(true);
 
-      const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/sector-forecast/${this.sectorNumber}`);
+      const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/sector-forecast/${this.sectorNumber}`);
       if (!res.error) {
         this.overviewData = res?.data;
       }
