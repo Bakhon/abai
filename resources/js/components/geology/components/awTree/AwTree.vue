@@ -1,7 +1,7 @@
 <template>
 	<div :class="getAwTreeClasses">
 		<ul v-if="typeof items === 'object'" :class="getAwTreeRootListClasses">
-			<component :is="variant" :settings="settings" :item="items" />
+			<component :is="variant" :selected="selected" :settings="settings" :item="items" />
 		</ul>
 	</div>
 </template>

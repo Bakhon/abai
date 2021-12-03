@@ -41,6 +41,7 @@
                         :error="errors[item.code]"
                         :form="params"
                         :item="item"
+                        :editable="item.hasOwnProperty('editable') ? item.editable : true"
                         v-on:change="validateField($event, item)"
                         v-on:input="callback($event, item)"
                     >

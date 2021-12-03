@@ -1,19 +1,12 @@
 <template>
-  <div class="block" :style="{marginRight: `${blocksMargin}px`}">
+  <div class="block" :style="{ marginRight: `${blocksMargin}px` }">
     <div class="block__name">
       {{ blockName }}
     </div>
     <div class="block__content d-flex">
       <AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
-      <AwGisColumn
-          v-for="(group, key) in getGroups"
-          :key="key"
-          v-bind="$attrs"
-          :elements="group"
-          :wellName="blockName"
-          :offset-y="offsetY"
-          :ref="`column_${key}`"
-      />
+      <AwGisColumn v-for="(group, key) in getGroups" :key="key" v-bind="$attrs" :elements="group" :wellName="blockName"
+                   :offset-y="offsetY" :ref="`column_${key}`" />
     </div>
   </div>
 </template>
@@ -29,11 +22,11 @@ export default {
     blockId: String | Number,
     blocksMargin: Number,
     groups: Array | Object,
-    blocksScrollY: Number
+    blocksScrollY: Number,
   },
   components: {
     AwGisDepthColumn,
-    AwGisColumn
+    AwGisColumn,
   },
   data() {
     return {
@@ -42,7 +35,7 @@ export default {
       min: 1,
       max: 1,
       offsetX: 0,
-    }
+    };
   },
 
   computed: {
@@ -50,14 +43,16 @@ export default {
       return this.$store.state.geologyGis.selectedGisCurves;
     },
     getGroups() {
-      return Object.values(this.groups).map((a) => {
-        return a.filter((b) => {
-          return b.data.wellID.includes(this.blockId)&&this.getElements.includes(b.data.name)
-        })
-      }).filter((a) => a?.length);
+      return Object.values(this.groups)
+          .map((a) => {
+            return a.filter((b) => {
+              return b.data.wellID.includes(this.blockId) && this.getElements.includes(b.data.name);
+            });
+          })
+          .filter((a) => a?.length);
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -65,6 +60,7 @@ export default {
   position: relative;
   padding-top: 30px;
   border: 1px solid black;
+  transition: 300ms all ease-in-out;
 
   &__name {
     min-height: 30px;

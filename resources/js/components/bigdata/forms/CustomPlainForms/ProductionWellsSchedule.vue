@@ -119,7 +119,7 @@ export default {
             this.SET_LOADING(true);
             if (Object.keys(well).length > 0) {
                 const response = await axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`));
-                well['category'] = response.data.category;
+                well['category'] = response.data.category_last;
             }
             this.options = [];
             this.wells.unshift(well);
