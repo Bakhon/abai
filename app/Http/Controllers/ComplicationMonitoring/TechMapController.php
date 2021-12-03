@@ -153,10 +153,10 @@ class TechMapController extends Controller
             ->get();
 
         $water_pipes->map(function ($pipe) {
-            $pipe->name = 'Pipe ID: '.$pipe->id;
+            $pipe->name = 'Pipe ID: ' . $pipe->id;
             return $pipe;
         });
-        
+
         $water_wells = WaterWell::all();
         $bgs = BG::all();
         $kmb_wells = KmbWell::all();
@@ -182,7 +182,10 @@ class TechMapController extends Controller
 
     private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        $oilPipes = OilPipe::with('coords', 'pipeType')->get();
+        $oilPipes = OilPipe::with('coords', 'pipeType')
+            ->where('water_pipe', false)
+            ->get();
+
         $coords = [];
 
         $oilPipes->map(
@@ -328,6 +331,7 @@ class TechMapController extends Controller
         $pipe_input = $request->input('pipe');
         $pipe = new ManualOilPipe;
         $pipe->fill($pipe_input);
+        $pipe->user_id = auth()->user()->id;
         $pipe->save();
 
         foreach ($pipe_input['coords'] as $coord) {
@@ -609,20 +613,21 @@ class TechMapController extends Controller
         $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
 
         if ($id >= 100000) {
-            ManualHydroCalcResult::whereIn('oil_pipe_id', function($query) use ($pipe){
+            ManualHydroCalcResult::whereIn('oil_pipe_id', function ($query) use ($pipe) {
                 $query->select('id')
                     ->from(with(new ManualOilPipe)->getTable())
                     ->where('gu_id', $pipe->gu_id);
             })->delete();
 
-            ManualHydroCalcLong::whereIn('oil_pipe_id', function($query) use ($pipe){
+            ManualHydroCalcLong::whereIn('oil_pipe_id', function ($query) use ($pipe) {
                 $query->select('id')
                     ->from(with(new ManualOilPipe)->getTable())
                     ->where('gu_id', $pipe->gu_id);
             })->delete();
         }
 
-        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+        $pipe->user_id = auth()->user()->id;
+        $pipe->save();
         $pipe->delete();
 
         return response()->json(
@@ -650,7 +655,8 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 },
             ]
-        )->get();
+        )->where('water_pipe', false)
+            ->get();
 
         $manualPipes = ManualOilPipe::with(
             [
@@ -685,7 +691,7 @@ class TechMapController extends Controller
         }
     }
 
-    public function calculate (IndexTableRequest $request)
+    public function calculate(IndexTableRequest $request)
     {
         $job = new ManualCalculateHydroDynamics($request->validated());
         $this->dispatch($job);

@@ -954,14 +954,21 @@ class FluidProductionMonth extends MeasLogByMonth
                                     ]
                                 );
                         } else {
-                            DB::connection('tbd')
-                                ->table('prod.meas_gas_prod')
-                                ->where('id', $row->id)
-                                ->update(
-                                    [
-                                        'gas_prod_val' => $field['value'],
-                                    ]
-                                );
+                            if (empty($field['value'])) {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->delete();
+                            } else {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->update(
+                                        [
+                                            'gas_prod_val' => $field['value'],
+                                        ]
+                                    );
+                            }
                         }
                         break;
                 }
