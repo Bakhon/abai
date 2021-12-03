@@ -35,7 +35,9 @@ class FieldLimitsService
             ->where('dbeg', '>=', $startDate)
             ->where('dbeg', '<=', $date);
 
-        $query = $this->addAdditionalFilters($query, $field);
+        if (isset($field['additional_filter'])) {
+            $query = $this->addAdditionalFilters($query, $field['additional_filter']);
+        }
 
         $result = $query->get()
             ->groupBy('well')
@@ -98,24 +100,23 @@ class FieldLimitsService
         ];
     }
 
-    private function addAdditionalFilters(Builder $query, array $field)
+    private function addAdditionalFilters(Builder $query, array $additionalFilter)
     {
-        if (!empty($field['additional_filter'])) {
-            foreach ($field['additional_filter'] as $key => $value) {
-                if (is_array($value)) {
-                    $entityQuery = DB::connection('tbd')->table($value['table']);
-                    foreach ($value['fields'] as $fieldName => $fieldValue) {
-                        $entityQuery->where($fieldName, $fieldValue);
-                    }
-                    $entity = $entityQuery->first();
-                    if (!empty($entity)) {
-                        $query->where($key, $entity->id);
-                    }
-                    continue;
+        foreach ($additionalFilter as $key => $value) {
+            if (is_array($value)) {
+                $entityQuery = DB::connection('tbd')->table($value['table']);
+                foreach ($value['fields'] as $fieldName => $fieldValue) {
+                    $entityQuery->where($fieldName, $fieldValue);
                 }
-                $query->where($key, $value);
+                $entity = $entityQuery->first();
+                if (!empty($entity)) {
+                    $query->where($key, $entity->id);
+                }
+                continue;
             }
+            $query->where($key, $value);
         }
+
         return $query;
     }
 }

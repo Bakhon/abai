@@ -116,6 +116,7 @@
                 :params="formParams"
                 :values="formValues"
                 :well-id="wellId"
+                :type="type"
                 @change="updateResults"
                 @close="isFormOpened = false"
             >

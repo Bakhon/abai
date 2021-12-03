@@ -225,7 +225,14 @@
     </modal>
     <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
       <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
-        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+        <div class="header-total-div">
+          <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+          <div class="exit-div">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
+              {{ trans('pgno.zakrit') }}
+            </button>
+          </div>
+        </div>
         <totalTable :all_summary_total= all_summary_total />
       </div>
     </modal>
@@ -6936,6 +6943,15 @@ table::-webkit-scrollbar-corner {
 .total-modal-header {
   color: #fff;
   font-size: 16px;
+  padding-left: 10px;
+
+}
+.header-total-div {
+  display: flex;
+  padding-top: 9px;
+}
+.exit-div {
+  padding-left: calc(100% - 378px);
 }
 
     .table-outer{

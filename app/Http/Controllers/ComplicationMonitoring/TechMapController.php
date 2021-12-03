@@ -151,6 +151,12 @@ class TechMapController extends Controller
         $water_pipes = OilPipe::with('coords', 'pipeType')
             ->where('water_pipe', true)
             ->get();
+
+        $water_pipes->map(function ($pipe) {
+            $pipe->name = 'Pipe ID: '.$pipe->id;
+            return $pipe;
+        });
+        
         $water_wells = WaterWell::all();
         $bgs = BG::all();
         $kmb_wells = KmbWell::all();

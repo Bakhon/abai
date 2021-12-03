@@ -95,25 +95,25 @@ class CurrentGDIS extends TableForm
         'WCUT'
     ];
 
-    protected $fieldsOrder = [
-        'conclusion',
+    protected $fieldsOrder = [       
+        'target',        
         'FLVL',
         'STLV',
+        'OTP',
+        'BP',
         'BHP',
         'RP',
-        'TBP',
-        'OTP',
-        'GASR',
-        'target',
+        'TBP',      
+        'GASR',        
         'INJR',
         'FLRT',
         'FLRD',
         'WCUT',
-        'MLP',
+        'MLP',  
+        'conclusion',     
         'ADMCF',
         'PDCF',
         'RRP',
-        'BP',
         'STP',
         'RSVT',
         'device',
@@ -291,6 +291,9 @@ class CurrentGDIS extends TableForm
 
         $rows = [];
         foreach ($this->metricCodes as $code) {
+            if (!isset($metricNames[$code])) {
+                continue;
+            }
             $row = [
                 'id' => implode('_', [$this->request->get('id'), 'metric', $code]),
                 'code' => $code,

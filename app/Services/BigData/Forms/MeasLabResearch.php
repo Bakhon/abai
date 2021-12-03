@@ -70,7 +70,7 @@ class MeasLabResearch extends TableForm
                                 $cellValue = ['value' => $value];
                             } else {
                                 $cellValue = [
-                                    'date' => $cellData ? $research->research_date : null,
+                                    'date' => $value ? $research->research_date : null,
                                     'old_value' => $value
                                 ];
                             }
@@ -107,7 +107,7 @@ class MeasLabResearch extends TableForm
             })->values();
     }
 
-    public function submitForm(array $fields, array $filter = [])
+    public function submitForm(array $fields, array $filter = []): array
     {
         $researchIds = $this->getResearchIds(array_keys($fields), $filter);
         $columns = $this->getColumns($filter['research_type']);

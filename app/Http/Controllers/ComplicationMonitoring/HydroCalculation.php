@@ -10,6 +10,7 @@ use App\Http\Resources\HydroCalcPrepareListResource;
 use App\Http\Resources\HydroCalculatedListResource;
 use App\Jobs\CalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use Illuminate\Database\Eloquent\Collection;
@@ -193,19 +194,21 @@ class HydroCalculation extends Controller
 
     public function getPrepairedData(array $input): array
     {
+        $ngdu_id = Ngdu::where('name', 'НГДУ-4')->first()->id;
         $query = OilPipe::query()
             ->with(
                 'pipeType',
                 'firstCoords',
                 'lastCoords',
                 'gu'
-            );
+            )
+            ->where('ngdu_id', $ngdu_id)
+            ->where('trunkline', true);
 
         $pipes = $this
             ->getFilteredQuery($input, $query)
-            ->where('trunkline', true)
             ->get();
-
+        
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {

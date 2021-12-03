@@ -36,3 +36,17 @@ export const convertToFormData = (convertObject) => {
   }
   return postData;
 };
+
+export const downloadExcelFile = (fileName, fileContent) => {
+  let link = document.createElement("a");
+
+  link.download = `${fileName}.xlsx`;
+  const blob = new Blob([fileContent], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  link.href = URL.createObjectURL(blob);
+  link.click();
+};
+
+export const compareNumbers = (a, b) => a - b;

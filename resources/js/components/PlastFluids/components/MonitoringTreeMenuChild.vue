@@ -21,6 +21,7 @@
 <script>
 import { downloadTemplate } from "../services/templateService";
 import { mapState, mapMutations, mapActions } from "vuex";
+import { downloadExcelFile } from "../helpers";
 
 export default {
   name: "MonitoringTreeMenuChild",
@@ -54,15 +55,10 @@ export default {
       const data = new FormData();
       data.append("template_id", this.treeChild.id);
       const template = await downloadTemplate(data);
-      let link = document.createElement("a");
-
-      link.download = this.treeChild["name_" + this.currentLang];
-      const blob = new Blob([template.data], {
-        type: "application/vnd.ms-excel",
-      });
-
-      link.href = URL.createObjectURL(blob);
-      link.click();
+      downloadExcelFile(
+        this.treeChild["name_" + this.currentLang],
+        template.data
+      );
     },
     setTableData() {
       if (this.currentSubsoilField[0])
