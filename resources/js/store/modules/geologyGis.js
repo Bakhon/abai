@@ -176,7 +176,24 @@ const geologyGis = {
         },
 
         [SET_WELLS](state, data) {
-            state.WELLS = data.filter((item) => ['UZN_1428', 'UZN_0144', 'UZN_1027', 'UZN_9093'].includes(item.name));
+            state.WELLS = data.filter((item) => [
+                'UZN_1428',
+                'UZN_0144',
+                'UZN_1027',
+                'UZN_9093',
+                "UZN_1291",
+                "UZN_3313",
+                "UZN_3314",
+                "UZN_3505",
+                "UZN_4140",
+                "UZN_4439",
+                "UZN_7272",
+                "UZN_7296",
+                "UZN_7934",
+                "UZN_9133",
+                "UZN_4439",
+                "UZN_5617",
+            ].includes(item.name));
         },
 
         [SET_SCROLL_BLOCK_Y](state, y) {
@@ -271,16 +288,18 @@ const geologyGis = {
             for (const curveName of state.selectedGisCurves) {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
-                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}};
+                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT:{}, name: {}};
                     state.awGis.editElementData(curveName, {
                         curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
                             let curve = state.CURVES_OF_SELECTED_WELLS[id];
                             let curveWithoutNull = [...curve.filter((x) => +x)]
+                            curveOptions.name[key] = curveName;
                             curveOptions.startX[key] = curveWithoutNull[0];
                             curveOptions.min[key] = Math.min(...curveWithoutNull);
                             curveOptions.max[key] = Math.max(...curveWithoutNull);
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
-                            curveOptions.isLithology[key] = !curveWithoutNull.some((n) => isFloat(n))
+                            curveOptions.isLithology[key] = curveName.toLowerCase().trim() === "litho";
+                            curveOptions.isCSAT[key] = curveName.toLowerCase().trim() === "fluid";
                             if (curve) acc[key] = curve;
                             return acc
                         }, {})

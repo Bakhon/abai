@@ -23,18 +23,25 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
-
-        let colorPalette = [
-            {name: "Clay", color: 'gray'},
-            {name: "Sand", color: 'yellow'},
-            {name: "Other", color: '#986321'}
-        ];
+        let colorPalette = {
+            "litho":[
+                {name: "Глина", color: 'rgb(192,192,192)'},
+                {name: "Песчаник", color: "rgb(255,255,0)"},
+                {name: "Известняк", color: "rgb(0,0,255)"},
+                {name: "Уголь", color: "rgb(0,0,0)", textColor: "white"},
+            ],
+            "fluid":[
+                {name: "", color: 'rgba(0,0,0, 0)'},
+                {name: "Вода", color: "rgb(0,255,255)"},
+                {name: "Нефть", color: "rgb(0,190,0)"},
+                {name: "Газ", color: "rgb(255,0,0)"},
+            ]
+        }[options.name[wellID].toLowerCase()];
 
         for (const lithology of lithologyData) {
             if (lithology !== lastLithology) {
                 if (lithology !== null) {
                     let difference = Math.abs(y - startPolygonPosition);
-
                     ctx.save();
                     ctx.fillStyle = colorPalette[lithology].color;
                     ctx.globalCompositeOperation = "destination-over";
@@ -52,7 +59,9 @@ export default class TCanvas {
                     ctx.font = "13px Harmonia-sans";
                     ctx.textBaseline = "middle";
                     ctx.textAlign = "center";
-                    ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
+                    ctx.fillStyle = colorPalette[lithology].textColor&&"black";
+                    //TODO сделать скрытие надписей в зависимости от размера плитки
+                    // ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
                     ctx.restore();
                 }
 
