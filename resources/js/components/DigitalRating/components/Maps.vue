@@ -1,62 +1,76 @@
 <template>
   <div class="maps-development">
     <div class="maps-development__wrapper">
-      <div
-        class="maps-development__item cursor-pointer"
-        v-for="map in maps" :key="map"
-        @click="handleClickMap(map)"
-      >
-        <img
-          class="maps-development__item-img"
-          :src="`/img/digital-rating/${map}.svg`" alt=""
-        />
-      </div>
+      <div id="mapLeft"></div>
     </div>
-    <b-modal
-      size="xl"
-      header-bg-variant="main1"
-      body-bg-variant="main1"
-      header-text-variant="light"
-      footer-bg-variant="main1"
-      centered
-      id="mapModal"
-      hide-footer
-    >
-      <template #modal-header="{close}">
-        <div class="d-flex justify-content-end w-100">
-          <button type="button" class="modal-bign-button" @click="close">
-            {{ trans('pgno.zakrit') }}
-          </button>
-        </div>
-      </template>
-      <div class="maps-development__item maps-development__item-full">
-        <img
-          class="maps-development__item-img"
-          :src="`/img/digital-rating/${mapFull}.svg`" alt=""
-        />
-      </div>
-    </b-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { digitalRatingState, globalloadingMutations} from '@store/helpers';
+import maps from '../mixins/maps.js';
+
 export default {
   name: "Maps",
+
+  mixins: [maps],
+
   data() {
     return {
-      objectTitle: 'Объект 1',
-      maps: ['map1', 'map2'],
-      mapFull: ''
+      map: null,
+      rectangle: null,
     }
   },
+
+  async mounted() {
+    this.SET_LOADING(true);
+    await this.initMap('mapLeft');
+    await this.initSectorOnMap();
+    this.SET_LOADING(false);
+  },
+
+  computed: {
+    ...digitalRatingState([
+      'sectorNumber',
+      'horizonNumber'
+    ]),
+  },
+
   methods: {
-    handleClickMap(map) {
-      this.$bvModal.show('mapModal');
-      this.mapFull = map;
+    async initSectorOnMap() {
+      const maps = await this.fetchMapData();
+      if(maps?.length === 0) return;
+
+      for (let i = 0; i < maps.length; i++) {
+        this.rectangle = L.rectangle(this.getBounds(maps[i]), {
+          renderer: this.renderer,
+          color: '#fff',
+          fillColor: '#fff',
+          weight: 1,
+        }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
+
+        this.rectangle.on('mouseover', function (e) {
+          this.openPopup();
+        });
+        this.rectangle.on('mouseout', function (e) {
+          this.closePopup();
+        });
+      }
     },
-    close() {
-      this.$bvModal.hide('mapModal');
-    }
+
+    async fetchMapData() {
+     const res = await axios.get(
+         `${process.env.MIX_TEST_MICROSERVICE}/maps/near/${this.horizonNumber}/${this.sectorNumber}`
+      );
+     if (!res.error) {
+       return res.data.map;
+     }
+    },
+
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
   }
 }
 </script>
@@ -77,33 +91,19 @@ export default {
 .maps-development__wrapper {
   display: flex;
   align-items: center;
-}
-.maps-development__item {
+  justify-content: center;
+  height: calc(100vh - 400px);
   background-image: url('/img/digital-rating/bgLine.svg');
   background-repeat: no-repeat;
-  width: calc(25% - 10px);
-  height: 100%;
+  width: calc(45% - 10px);
+  background-size: cover;
   background-color: #2B2E5E;
   border: 1px solid #545580;
-  display: flex;
-  justify-content: space-evenly;
-  padding: 20px;
-  position: relative;
-  margin-right: 10px;
+}
 
-  &-img {
-    width: 100%;
-  }
-
-  &-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-  }
-
-  &-full {
-    width: 100%;
-    height: calc(100% - 40px);
-  }
+#mapLeft {
+  width: 50%;
+  height: 50%;
+  background: transparent;
 }
 </style>
