@@ -1454,7 +1454,9 @@ progress::-webkit-progress-value {
     padding: 15px 0;
     font-weight: bold;
 }
-
+button.download{
+    color: #ffffff;
+}
 @media (max-width: 1670px) {
     .nozzle-row{
         flex: 0 0 100%;
