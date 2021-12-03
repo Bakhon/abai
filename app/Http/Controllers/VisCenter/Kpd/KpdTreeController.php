@@ -24,14 +24,24 @@ class KpdTreeController extends Controller
 
     public function storeCorporateManager(Request $request)
     {
-        $imageName = time().'.'.$request->avatar->getClientOriginalExtension();
-        $request->avatar->move(public_path('/img/kpd-tree/corporate-manager'), $imageName);
-        KpdCorporateManager::create([
-            'name' => $request->name,
-            'title' => $request->title,
-            'avatar' => $imageName,
-            'year' => Carbon::now()->year
-        ]);
+        if (!is_string($request->avatar)) {
+            $imageName = time().'.'.$request->avatar->getClientOriginalExtension();
+            $request->avatar->move(public_path('/img/kpd-tree/corporate-manager'), $imageName);
+        } else {
+            $imageName = $request->avatar;
+        }
+
+        KpdCorporateManager::updateOrCreate(
+            [
+                'year' => Carbon::now()->year
+            ],
+            [
+                'name' => $request->name,
+                'title' => $request->title,
+                'avatar' => $imageName,
+                'year' => Carbon::now()->year
+            ]
+        );
     }
 
     public function getAll()

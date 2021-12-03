@@ -22,6 +22,7 @@
                     <div class="p-1 col-12 d-flex">
                         <div class="col-4 text-left pt-2">Аватар</div>
                         <img ref="avatar" width="40px" class="col-1" v-if="manager.avatar" :src="'/img/kpd-tree/corporate-manager/' + manager.avatar">
+                        <img ref="avatarEmpty" width="40px" class="col-1" v-else src="">
                         <input type="file" class="form-control-file col-7" @change="selectFile">
                     </div>
                     <div class="p-1 col-12 d-flex">
@@ -62,7 +63,11 @@ export default {
             this.manager.img = event.target.files[0];
             let reader = new FileReader();
             reader.onload = (event) => {
-                this.$refs.avatar.src = event.target.result;
+                if (this.$refs.avatar) {
+                    this.$refs.avatar.src = event.target.result;
+                } else {
+                    this.$refs.avatarEmpty.src = event.target.result;
+                }
             };
             reader.readAsDataURL(event.target.files[0]);
         },
@@ -70,7 +75,11 @@ export default {
             this.SET_LOADING(true);
             let uri = this.localeUrl("/store-kpd-corporate-manager");
             let formData = new FormData();
-            formData.append("avatar", this.manager.img);
+            if (!this.manager.img) {
+                formData.append("avatar", this.manager.avatar);
+            } else {
+                formData.append("avatar", this.manager.img);
+            }
             formData.append('name', this.manager.name);
             formData.append('title', this.manager.title);
             await this.axios.post(uri, formData, {
