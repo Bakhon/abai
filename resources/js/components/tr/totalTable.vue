@@ -5,10 +5,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>{{trans('tr.field')}}</th>
-                    <th>{{trans('tr.oil_ton')}}</th>
-                    <th>{{trans('tr.gas_m3')}}</th>
-                    <th>{{trans('tr.liquid_m3')}}</th>
+                    <th class="total-thead-tr">{{trans('tr.field')}}</th>
+                    <th class="total-thead-tr">{{trans('tr.oil_ton')}}</th>
+                    <th class="total-thead-tr">{{trans('tr.gas_m3')}}</th>
+                    <th class="total-thead-tr">{{trans('tr.liquid_m3')}}</th>
                 </tr>
             </thead>
             <tbody>

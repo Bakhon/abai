@@ -1,7 +1,7 @@
 <template>
-    <div class="digitalDrillingWindow">
-       <div class="row">
-           <div class="col-sm-6">
+    <div class="digitalDrillingWindow defaultScroll">
+       <div class="row-structure">
+           <div class="structure ">
                <div class="table">
                    <table class="table defaultTable">
                        <tbody>
@@ -20,9 +20,9 @@
                    </table>
                </div>
            </div>
-           <div class="col-sm-6">
+           <div class="structure">
                <div class="structure-graph">
-                   <img src="/img/digital-drilling/structure.png" alt="" class="structure-img">
+                  <structure-type :data="currentStructure.structure" :type="currentStructure.type" :unit="currentStructure.unit"/>
                </div>
            </div>
        </div>
@@ -31,12 +31,19 @@
 
 <script>
     import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
-
+    import StructureType from '../components/StructureType'
     export default {
         name: "structure",
+        components: {StructureType},
         data(){
             return{
+                currentStructure: {
+                    structure: [],
+                    unit: [],
+                    type: 'type0'
+                },
                 structures: [],
+                newStructures: [],
                 structuresHead: ['digital_drilling.structure.column_view',
                 'digital_drilling.default.nominal_diameter',
                 'digital_drilling.structure.column_running_depth',
@@ -58,7 +65,7 @@
                     'Погонный_вес',
                     'Высота_цемента',
                     'Боковой_ствол',
-                ]
+                ],
             }
         },
         computed: {
@@ -81,6 +88,7 @@
                         let data = response.data;
                         if (data) {
                             this.structures =  data
+                            this.changeStructureType()
                         } else {
                             console.log('No data');
                         }
@@ -93,8 +101,114 @@
             },
             roundToTwo(num) {
                     return +(Math.round(num + "e+2")  + "e-2");
-            }
+            },
+            pushToArray(startIndex, lastIndex){
+                let newP = this.structures.slice(startIndex, lastIndex)
+                let descentDepth = 0
+                for (let i = 0; i < newP.length; i++ ){
+                    descentDepth += newP[i].Глубина_спуска
+                }
+                this.newStructures.push({
+                    type: newP[0].Вид_колонны,
+                    diameter: newP[0].Номинальный_диаметр,
+                    diameterUnit: "мм.",
+                    descentDepth: this.roundToTwo(descentDepth),
+                    descentDepthUnit: 'м.'
+                })
+            },
+            changeStructureType(){
+                let typeOfPillar = this.structures[0].Вид_колонны
+                let nominalDiameter = this.structures[0].Номинальный_диаметр
+                let startIndex = 0
+                for (let i=1; i<this.structures.length; i++){
+                    if (this.structures[i].Номинальный_диаметр != nominalDiameter){
+                            this.pushToArray(startIndex, i)
+                            startIndex = i
+                            typeOfPillar = this.structures[i].Вид_колонны
+                            nominalDiameter = this.structures[i].Номинальный_диаметр
+                    }
+                    else if (this.structures[i].Вид_колонны != typeOfPillar) {
+                        this.pushToArray(startIndex, i)
+                        startIndex = i
+                        typeOfPillar = this.structures[i].Вид_колонны
+                        nominalDiameter = this.structures[i].Номинальный_диаметр
+                    }
+                }
+                this.pushToArray(startIndex, this.structures.length)
+                let directionPosition = -1
+                for (let i=0; i<this.newStructures.length; i++){
+                    if (this.newStructures[i].type == "Направление") {
+                        directionPosition  = i
+                    }
+                }
+                if (directionPosition!=-1 && directionPosition != 0){
+                    for (let i=this.newStructures.length; i>0; i--){
+                        if (i<=directionPosition){
+                            this.array_move(i, i-1)
+                        }
+                    }
+                }
+                directionPosition=-1
+                for (let i=0; i<this.newStructures.length; i++){
+                    if (this.newStructures[i].type == "Хвостовик") {
+                        directionPosition  = i
+                    }
+                }
+                if (directionPosition!=-1 && directionPosition !=this.newStructures.length-1){
+                    for (let i=0; i<this.newStructures.length -1; i++){
+                        if (i>=directionPosition){
+                            this.array_move(i, i+1)
+                        }
+                    }
+                }
+                let found = this.newStructures.some(el => el.type === "Хвостовик");
+
+                let diameterCount = this.newStructures.length
+
+                if (found){
+                    diameterCount--
+                }
+                let currentType = 0
+                for (let i=0; i<diameterCount; i++){
+                    this.currentStructure.structure.push(this.newStructures[i].diameter)
+                    this.currentStructure.structure.push(this.newStructures[i].descentDepth)
+                    this.currentStructure.unit.push(this.newStructures[i].diameterUnit)
+                    this.currentStructure.unit.push(this.newStructures[i].descentDepthUnit)
+                }
+
+                switch (diameterCount) {
+                    case 2:
+                        currentType = 1
+                        break;
+                    case 3:
+                        currentType = 2
+                        break;
+                    case 4:
+                        currentType = 4
+                        break;
+                    case 5:
+                        currentType = 3
+                        break;
+                }
+
+                if (found){
+                    currentType += 5
+                }
+                this.currentStructure.type = "type" + currentType
+            },
+            array_move(old_index, new_index) {
+                let arr = this.newStructures
+                if (new_index >= arr.length) {
+                    var k = new_index - arr.length + 1;
+                    while (k--) {
+                        arr.push(undefined);
+                    }
+                }
+                arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+                return arr;
+            },
         },
+
         watch: {
             currentWell: function (val) {
                 this.getStructureByWell()
@@ -104,9 +218,24 @@
 </script>
 
 <style scoped>
-    .row{
+    .digitalDrillingWindow{
+        overflow-x: scroll;
+    }
+    .row-structure{
+        display: flex;
         background-color: #34365D;
         min-height: 100%;
+        min-width: max-content;
+    }
+    .structure:first-child{
+        max-width: calc(100% - 667px);
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+    .structure:last-child{
+        flex: 0 0 667px;
+        height: 665px;
+        margin: 15px;
     }
     .structure-graph{
         width: 100%;
@@ -114,7 +243,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 50px 0;
-
+    }
+    .table{
+        max-width: 800px;
+        height: 100% ;
+    }
+    .table td{
+        padding: 10px 5px;
     }
 </style>

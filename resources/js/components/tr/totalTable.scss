@@ -85,4 +85,10 @@ td {
 .summary_total {
   font-size: 13px;
   font-weight: bold;
+  border-bottom: 2px solid rgb(145, 145, 145);
+  border-top: 2px solid rgb(145, 145, 145);
+}
+.total-thead-tr {
+  position: sticky;
+  top: -6px;
 }
