@@ -53,6 +53,7 @@
 
 <script>
 import { setDynamicComponentContent } from "../mixins";
+import { convertToFormData } from "../helpers";
 import { mapState, mapMutations, mapActions } from "vuex";
 import Dropdown from "./Dropdown.vue";
 import CheckboxDropdown from "./CheckboxDropdown.vue";
@@ -138,8 +139,7 @@ export default {
     async setBlocks(horizons) {
       if (horizons.length) {
         const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
-        const payload = new FormData();
-        payload.append("horizons", horizonIDs);
+        const payload = convertToFormData({ horizons: horizonIDs });
         const blocks = await getHorizonBlocks(payload);
         this.SET_BLOCKS(blocks);
       } else {

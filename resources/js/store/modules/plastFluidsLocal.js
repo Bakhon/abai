@@ -160,10 +160,7 @@ const plastFluidsLocal = {
       commit("SET_FILE_LOG", entries);
     },
     async getTableData({}, postData) {
-      const payload = new FormData();
-      for (let key in postData) {
-        payload.append(key, postData[key]);
-      }
+      const payload = convertToFormData(postData);
       const data = await getTemplateData(payload);
       return data;
     },
