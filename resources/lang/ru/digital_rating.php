@@ -75,5 +75,6 @@ return array (
   'deviation' => 'Отклонение',
   'searchRadius' => 'Радиус поиска',
   'factorAnalysis' => 'Факторный анализ',
-  'oilProductionLossDistribution' => 'Распределение потери добычи нефти'
+  'oilProductionLossDistribution' => 'Распределение потери добычи нефти',
+  'rating' => 'Рейтинг'
 );
