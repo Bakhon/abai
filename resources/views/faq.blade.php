@@ -35,7 +35,7 @@
     }
 
     .faq-header_logo {
-        background: url(/img/faq/smal-logo-abai.png) no-repeat;
+        background: url(/img/faq/smal-logo-abai.svg) no-repeat;
         height: 25px;
         margin-left: 10px;
     }
@@ -46,7 +46,7 @@
     }
 
     .faq__link__img {
-        background: url(/img/faq/back.png) no-repeat;
+        background: url(/img/faq/back.svg) no-repeat;
         height: 25px;
         margin-top: 5px;
     }
@@ -57,7 +57,7 @@
     }
 
     .faq-header_img {
-        background: url(/img/faq/faq.png) center 30px no-repeat;
+        background: url(/img/faq/faq.svg) center 30px no-repeat;
         height: 324px;
     }
 
@@ -90,18 +90,18 @@
     }
 
     .faq-page__search__img {
-        background: url(/img/faq/search.png) no-repeat;
+        background: url(/img/faq/enter.svg) no-repeat;
         width: 68px;
         height: 22px;
         margin: 17px 127px;
     }
 
     .faq-page__search input {
-        background: #393d75 url(/img/icons/search.svg) 19px 50% no-repeat;
+        background: #393d75 url(/img/faq/search.svg) 19px 50% no-repeat;
         border-radius: 5px 0 0 5px;
         border: none;
         color: #fff;
-        font-size: 16px;
+        font-size: 15px;
         outline: none;
         padding: 0 80px;
         width: calc(100% - 176px);
@@ -124,13 +124,13 @@
     }
 
     .faq-question_up {
-        background: #393d75 url(/img/faq/up.png) no-repeat;
+        background: #393d75 url(/img/faq/up.svg) no-repeat;
         width: 13px;
         height: 8px;
     }
 
     .faq-question_down {
-        background: #393d75 url(/img/faq/down.png) no-repeat;
+        background: #393d75 url(/img/faq/down.svg) no-repeat;
         width: 13px;
         height: 8px;
     }
