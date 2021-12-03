@@ -391,7 +391,7 @@ export default {
                 } else {
                     this.dt = "01" + "." + month + "." + year;
                 }
-                this.isPermission = true
+                this.isPermission = this.params.includes(this.permissionName);
             });
         this.pageInfo(this.pageNumberLink);
         this.getFilter();
