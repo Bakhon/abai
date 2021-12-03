@@ -24,25 +24,25 @@
             </div>
             <div class="mt-3 col-12 row m-0 ceo-table">
                 <div class="col-2 d-flex">
-                    <div class="col-12 table-header kpd-main">
-                        Стратегические КПД
+                    <div class="col-12 table-header">
+                        <span>Стратегические КПД</span>
                     </div>
                 </div>
-                <div class="col-4 d-flex">
-                    <div class="col-12 table-header p-1">
-                        Корпоративные КПД
+                <div class="col-3 d-flex">
+                    <div class="col-12 table-header">
+                        <span>Корпоративные КПД</span>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="col-12 table-header p-1">
-                        КПД руководящих работников (членов Правления)
+                <div class="col-7">
+                    <div class="col-12 table-header">
+                        <span>КПД руководящих работников (членов Правления)</span>
                     </div>
                 </div>
                 <div class="col-2 row m-0">
                     <div class="col-12 p-0">
-                        <div class="col-12 kpd-main d-flex p-4 kpd-ceo_list">
+                        <div class="col-12 d-flex p-2 table-sub-header">
                             <div class="img-goals"></div>
-                            <div class="ml-2">Цели и задачи <br>&emsp;блока UPSTREAM</div>
+                            <div>Цели и задачи <br>&emsp;блока UPSTREAM</div>
                         </div>
                         <div class="col-12 p-2 kpd-column">
                             <div
@@ -70,9 +70,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4 row m-0">
-                    <div class="col-12 kpd-main d-flex p-4 kpd-ceo_list chairmaster" @click="switchManager(kpdDecompositionA)">
-                        <img class="filter-icon" :src="'/img/kpd-tree/managers/' + corporateManager.avatar"></img>
+                <div class="col-3 row m-0">
+                    <div class="col-12 d-flex p-2 table-sub-header chairmaster" @click="switchManager(kpdDecompositionA)">
+                        <img width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
                         <div class="ml-2 text-left"><b>{{corporateManager.name}}</b> <br> {{corporateManager.title}}</div>
                     </div>
                     <div class="col-12 p-2 kpd-column">
@@ -100,11 +100,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 row m-0">
+                <div class="col-7 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="manager in managers" class="col-12 kpd-main row p-0 m-0">
+                        <div v-for="manager in managers" class="col-12 table-manager-kpd row p-0 m-0">
                             <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
-                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" class="filter-icon"></img>
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" width="50px" height="50px" class="rounded-circle"></img>
                                 <div class="ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                             </div>
 <!--                            <div-->
@@ -179,14 +179,29 @@
     width: 25px;
 }
 .table-header {
-    background: #2A3A85;
+    background: #213181;
+    height: 60px;
+    position: relative;
+    span {
+        margin: 0;
+        position: relative;
+        top: 30%;
+        transform: translateX(-50%);
+    }
+}
+.table-sub-header {
+    height: 60px;
+    border: 2px solid #2A3A85;
+    border-bottom: 2px solid #656A8A;
+    background: #272953;
 }
 .table-header.kpd-main {
     padding-top: 5%;
 }
 .img-goals {
     background: url(/img/kpd-tree/goals.png) no-repeat;
-    width: 45px;
+    width: 50px;
+    height: 50px;
 }
 .kpd-column {
     border: 1px solid #2A3A85;
@@ -259,12 +274,12 @@
 .main-buttons:hover, .kpd-name_b:hover {
     background: #3A4280;
 }
-.filter-icon {
-    width: 45px;
-}
 .hover {
     background: #3C4280;
     border-radius: 5px;
     border: 2px solid #272953;
+}
+.table-manager-kpd {
+    height: 110px;
 }
 </style>

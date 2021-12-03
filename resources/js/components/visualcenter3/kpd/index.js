@@ -424,6 +424,7 @@ export default {
         ]),
     },
     async created() {
+        this.SET_LOADING(true);
         this.corporateManager = await this.getCorporateManager();
         this.managers = await this.getAllManagers('manager');
         this.deputy = await this.getAllManagers('deputy');
@@ -436,5 +437,6 @@ export default {
         this.selectedKpd = this.kpdCeoDecompositionB[0].kpd[0];
         this.kpdList = await this.getAllKpd();
         this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === this.kpdType.ceo2Decomposition);
+        this.SET_LOADING(false);
     },
 }
