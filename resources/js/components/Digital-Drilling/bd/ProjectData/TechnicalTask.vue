@@ -23,11 +23,6 @@
                     </button>
                 </td>
             </tr>
-            <!--<tr v-if="reports.length==0">-->
-                <!--<td colspan="3">-->
-                    <!--no result-->
-                <!--</td>-->
-            <!--</tr>-->
             </tbody>
         </table>
     </div>
@@ -49,14 +44,7 @@
                 'currentWell'
             ]),
         },
-        // mounted() {
-        //     this.getReportsByWell()
-        // },
-        // watch: {
-        //     currentWell: function (val) {
-        //         this.getReportsByWell()
-        //     }
-        // },
+
         methods:{
             downloadFile(link){
                 window.location.href = link;
