@@ -157,12 +157,10 @@ class TechMapController extends Controller
             return $pipe;
         });
 
-        if (false) {
-            $water_wells = WaterWell::all();
-            $bgs = BG::all();
-            $kmb_wells = KmbWell::all();
-            $bkns_wells = BknsWell::all();
-        }
+        $water_wells = WaterWell::all();
+        $bgs = BG::all();
+        $kmb_wells = KmbWell::all();
+        $bkns_wells = BknsWell::all();
 
         return [
             'pipes' => $pipes,
@@ -174,11 +172,11 @@ class TechMapController extends Controller
             'center' => $center,
             'pipeTypes' => $pipeTypes,
             'date' => $date,
-            'water_pipes' => [],
-            'water_wells' => [],
-            'bgs' => [],
-            'kmb_wells' => [],
-            'bkns_wells' => []
+            'water_pipes' => $water_pipes,
+            'water_wells' => $water_wells,
+            'bgs' => $bgs,
+            'kmb_wells' => $kmb_wells,
+            'bkns_wells' => $bkns_wells
         ];
     }
 
