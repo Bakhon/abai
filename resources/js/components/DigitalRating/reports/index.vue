@@ -115,7 +115,7 @@ export default {
     },
 
     async fetchData() {
-      const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/indicator/top?limit=50`);
+      const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/indicator/top?limit=50`);
 
       if (!res.error) {
         this.reports = res.data;
