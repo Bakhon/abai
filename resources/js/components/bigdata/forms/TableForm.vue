@@ -128,7 +128,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -149,7 +149,8 @@
                       <span v-if="row[column.code]" class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
+                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                  class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                           </a>
@@ -224,7 +225,8 @@
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
+                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                  class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                           </template>
@@ -267,7 +269,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -536,7 +538,10 @@ export default {
           this.updateTableData()
         })
 
-    window.addEventListener('resize', this.setTableHeight);
+    window.addEventListener('resize', this.setTableHeight, true);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.setTableHeight, true);
   },
   methods: {
     ...bdFormActions([
@@ -723,8 +728,12 @@ export default {
             this.$emit('sent')
           })
           .catch(error => {
-            this.errors = error.response.data.errors
             this.setLoading(false)
+            if (error.response.status === 500) {
+              this.$notifyError(error.response.data.message)
+              return
+            }
+            this.errors = error.response.data.errors
           })
     },
     async saveCell(row, column) {
@@ -968,7 +977,9 @@ export default {
 body.fixed {
   overflow: hidden;
 }
-
+.well_link_color{
+  color: #fff;
+}
 .bd-main-block {
 
   &__tabs {

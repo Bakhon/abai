@@ -23,7 +23,7 @@ trait WithDocumentsUpload
 
         if ($this->tableFields && $this->tableFields->isNotEmpty()) {
             foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
+                if ($this->request->get($field['code']) !== null) {
                     if ($field['code'] === 'documents') {
                         $this->submitFiles($parentId, $field);
                         return;
