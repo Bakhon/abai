@@ -79,15 +79,21 @@ export default class THorizon {
 
     }
     getElementPath(elementName) {
-        let d = [];
+        let d = [], moveTo = false;
         for (let wellName of this.#maps.keys()) {
             let elData = this.#elements.get(elementName);
-            let wellData = this.#wellsBlockData.get(wellName);
             if (elData.wells.includes(wellName)) {
-                let y = elData.toWells[wellName].md;
+                let wellData = this.#wellsBlockData.get(wellName);
                 let {left, right} = wellData.props;
-                let offsetY = y - this.#graphSettings.scrollY * 10;
+                let y = elData.toWells[wellName].md;
+                let offsetY = y - this.#graphSettings.scrollY * 10
+                if(moveTo) {
+                    d.push(`M${left} ${offsetY}`);
+                    moveTo = false;
+                }
                 d.push(`L${left} ${offsetY}  L${right} ${offsetY}`);
+            }else{
+                moveTo = true;
             }
         }
         return d;
