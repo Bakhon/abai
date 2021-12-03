@@ -225,7 +225,8 @@
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
+                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                  class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                           </template>
@@ -537,7 +538,10 @@ export default {
           this.updateTableData()
         })
 
-    window.addEventListener('resize', this.setTableHeight);
+    window.addEventListener('resize', this.setTableHeight, true);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.setTableHeight, true);
   },
   methods: {
     ...bdFormActions([
@@ -724,8 +728,12 @@ export default {
             this.$emit('sent')
           })
           .catch(error => {
-            this.errors = error.response.data.errors
             this.setLoading(false)
+            if (error.response.status === 500) {
+              this.$notifyError(error.response.data.message)
+              return
+            }
+            this.errors = error.response.data.errors
           })
     },
     async saveCell(row, column) {
