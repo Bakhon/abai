@@ -20,6 +20,10 @@
                         <div class="img-export"></div>
                         <div class="ml-1">Экспорт</div>
                     </div>
+                    <div class="main-buttons p-2 d-flex ml-4 visibility-settings">
+                        <div class="img-export"></div>
+                        <div class="ml-1">Экспорт</div>
+                    </div>
                 </div>
             </div>
             <div class="mt-3 col-12 row m-0 ceo-table">
@@ -281,5 +285,8 @@
 }
 .table-manager-kpd {
     height: 110px;
+}
+.visibility-settings {
+    background: #474F91;
 }
 </style>
