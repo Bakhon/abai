@@ -7,28 +7,56 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody v-if="overviewData && overviewData.length">
       <tr v-for="(item, index) in overviewData" :key="index">
         <td v-for="(col, colIdx) in cols" :key="colIdx">
           <span>{{ item[col.name] }}</span>
         </td>
       </tr>
     </tbody>
+    <div v-else class="warning-empty">
+      <p>{{ trans('app.thereIsNoData') }}</p>
+    </div>
   </table>
 </template>
 
 <script>
-import { overviews } from '../json/data';
+import { digitalRatingState, globalloadingMutations} from '@store/helpers';
+
 export default {
   name: "Overview",
 
   data() {
     return {
-      overviewData: overviews
+      overviewData: []
     }
   },
 
+  async mounted() {
+    await this.fetchData();
+  },
+
+  methods: {
+    async fetchData() {
+      this.SET_LOADING(true);
+
+      const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/sector-forecast/${this.sectorNumber}`);
+      if (!res.error) {
+        this.overviewData = res?.data;
+      }
+      this.SET_LOADING(false);
+    },
+
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+  },
+
   computed: {
+    ...digitalRatingState([
+      'sectorNumber',
+    ]),
+
     cols() {
       return [
         {
@@ -41,19 +69,19 @@ export default {
         },
         {
           title: `${this.trans('digital_rating.liquidFlowRate')}, ${this.trans('digital_rating.cubeDay')}`,
-          name: 'liquid'
+          name: 'liquid_rate'
         },
         {
           title: `${this.trans('digital_rating.waterCut')}, %`,
-          name: 'water'
+          name: 'wc'
         },
         {
           title: `${this.trans('digital_rating.oilFlowRate')}, ${this.trans('digital_rating.tonDay')}`,
-          name: 'oil'
+          name: 'oil_rate'
         },
         {
           title: this.trans('digital_rating.note'),
-          name: 'note'
+          name: 'comment'
         }
       ]
     }
