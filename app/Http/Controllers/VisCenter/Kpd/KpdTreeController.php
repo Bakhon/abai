@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VisCenter\Kpd\KpdTreeCatalog;
 use App\Models\VisCenter\Kpd\KpdCorporateManager;
+use App\Models\VisCenter\Kpd\KpdManagers;
 use Carbon\Carbon;
 
 class KpdTreeController extends Controller
@@ -26,7 +27,7 @@ class KpdTreeController extends Controller
     {
         if (!is_string($request->avatar)) {
             $imageName = time().'.'.$request->avatar->getClientOriginalExtension();
-            $request->avatar->move(public_path('/img/kpd-tree/corporate-manager'), $imageName);
+            $request->avatar->move(public_path('/img/kpd-tree/managers'), $imageName);
         } else {
             $imageName = $request->avatar;
         }
@@ -39,6 +40,37 @@ class KpdTreeController extends Controller
                 'name' => $request->name,
                 'title' => $request->title,
                 'avatar' => $imageName,
+                'year' => Carbon::now()->year
+            ]
+        );
+    }
+
+    public function getManagers(Request $request)
+    {
+        return KpdManagers::query()
+           ->where('year',Carbon::now()->year)
+           ->where('type',$request->type)
+           ->get();
+    }
+
+    public function storeManager(Request $request)
+    {
+        if (!is_string($request->avatar)) {
+            $imageName = time().'.'.$request->avatar->getClientOriginalExtension();
+            $request->avatar->move(public_path('/img/kpd-tree/managers'), $imageName);
+        } else {
+            $imageName = $request->avatar;
+        }
+
+        KpdManagers::updateOrCreate(
+            [
+                'id' => $request->id,
+            ],
+            [
+                'name' => $request->name,
+                'title' => $request->title,
+                'avatar' => $imageName,
+                'type' => $request->type,
                 'year' => Carbon::now()->year
             ]
         );

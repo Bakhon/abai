@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-12 row p-2 pl-5">
                         <div class="col-3">Раздел "Члены Правления"</div>
-                        <button type="button" class="modal-button_add col-2 button__disabled" @click="$modal.show('modalKpdEdit')">
+                        <button type="button" class="modal-button_add col-2" @click="$modal.show('modalManagers')">
                             Управление
                         </button>
                     </div>

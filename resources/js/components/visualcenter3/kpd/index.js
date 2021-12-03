@@ -10,6 +10,8 @@ Vue.component('kpd-modal-kpd-passport', require('./modalKpdPassport.vue').defaul
 Vue.component('kpd-modal-kpd-edit', require('./modalEditKpd.vue').default);
 Vue.component('modal-settings', require('./modalSettings.vue').default);
 Vue.component('modal-corporate-manager', require('./modalCorporateManager.vue').default);
+Vue.component('modal-managers', require('./modalManagers.vue').default);
+Vue.component('modal-manager', require('./modalManager.vue').default);
 
 export default {
     data: function () {

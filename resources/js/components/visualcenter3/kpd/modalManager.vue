@@ -2,18 +2,18 @@
     <div>
         <modal
                 class="modal-bign-wrapper"
-                name="modalCorporateManager"
+                name="modalManager"
                 draggable=".modal-bign-header"
                 :width="700"
-                :height="260"
+                :height="320"
                 style="background: transparent;"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
-                    <div class="modal-bign-title modal_header">Генеральный директор</div>
+                    <div class="modal-bign-title modal_header">Карточка Директора</div>
                     <div class="btn-toolbar">
-                        <button type="button" class="modal-bign-button" @click="$modal.hide('modalCorporateManager')">
+                        <button type="button" class="modal-bign-button" @click="$modal.hide('modalManager')">
                             {{trans('pgno.zakrit')}}
                         </button>
                     </div>
@@ -32,6 +32,12 @@
                     <div class="p-1 col-12 d-flex">
                         <div class="col-4 text-left pt-2">Должность</div>
                         <input class="input_kpd p-2 col-7" type="text" v-model="manager.title">
+                    </div>
+                    <div class="p-1 col-12 d-flex">
+                        <div class="col-4 text-left pt-2">Тип</div>
+                        <select class="form-select p-2 col-7" @change="switchManagerType($event)">
+                            <option v-for="type in managerTypes" :value="type.alias">{{type.name}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
@@ -53,9 +59,21 @@ export default {
             manager: {
                 'name': '',
                 'title': '',
+                'type': 'manager',
                 'avatar': null,
-                'img': ''
-            }
+                'img': '',
+                'id': null
+            },
+            managerTypes: [
+                {
+                    'name': 'Член Правления',
+                    'alias': 'manager'
+                },
+                {
+                    'name': 'Заместитель',
+                    'alias': 'deputy'
+                }
+            ]
         };
     },
     methods: {
@@ -73,7 +91,7 @@ export default {
         },
         async store() {
             this.SET_LOADING(true);
-            let uri = this.localeUrl("/store-kpd-corporate-manager");
+            let uri = this.localeUrl("/store-kpd-manager");
             let formData = new FormData();
             if (!this.manager.img) {
                 formData.append("avatar", this.manager.avatar);
@@ -82,6 +100,8 @@ export default {
             }
             formData.append('name', this.manager.name);
             formData.append('title', this.manager.title);
+            formData.append('type', this.manager.type);
+            formData.append('id', this.manager.id);
             await this.axios.post(uri, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -95,18 +115,21 @@ export default {
                 this.SET_LOADING(false);
             });
         },
+        switchManagerType(e) {
+            this.manager.type = e.target.value;
+        },
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
     },
     watch: {
-        corporateManager: function () {
+        managerInfo: function () {
             _.forEach(Object.keys(this.manager), (key) => {
-                this.manager[key] = this.corporateManager[key];
+                this.manager[key] = this.managerInfo[key];
             });
         },
     },
-    props: ['corporateManager'],
+    props: ['managerInfo'],
 }
 
 

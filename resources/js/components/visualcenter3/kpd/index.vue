@@ -141,6 +141,7 @@
             <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
             <modal-settings :corporate-manager="corporateManager"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager"></modal-corporate-manager>
+            <modal-managers></modal-managers>
         </div>
     </div>
 </template>

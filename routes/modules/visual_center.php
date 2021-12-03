@@ -105,6 +105,8 @@ Route::group(
 
                 Route::post('/store-kpd-corporate-manager', 'VisCenter\Kpd\KpdTreeController@storeCorporateManager');
                 Route::get('/get-kpd-corporate-manager', 'VisCenter\Kpd\KpdTreeController@getCorporateManager');
+                Route::post('/store-kpd-manager', 'VisCenter\Kpd\KpdTreeController@storeManager');
+                Route::get('/get-kpd-managers', 'VisCenter\Kpd\KpdTreeController@getManagers');
             }
         );
     }
