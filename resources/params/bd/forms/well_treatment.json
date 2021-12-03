@@ -35,7 +35,7 @@
                 "validation": "gte:0"                
               },
               {
-                "title": "pretreat_pressure",
+                "title": "posttreat_pressure",
                 "code": "pressure_after",
                 "type": "numeric",
                 "validation": "gte:0"                
