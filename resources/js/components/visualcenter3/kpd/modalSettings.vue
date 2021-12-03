@@ -4,8 +4,8 @@
                 class="modal-bign-wrapper"
                 name="modalSettings"
                 draggable=".modal-bign-header"
-                :width="1500"
-                :height="800"
+                :width="700"
+                :height="400"
                 style="background: transparent;"
                 :adaptive="true"
         >
@@ -20,14 +20,14 @@
                 </div>
                 <div class="row text-left">
                     <div class="col-12 row p-2 pl-5">
-                        <div class="col-3">Раздел "Генеральный директор"</div>
-                        <button type="button" class="modal-button_add col-2" @click="$modal.show('modalCorporateManager')">
+                        <div class="col-6">Раздел "Генеральный директор"</div>
+                        <button type="button" class="modal-button_add col-3" @click="$modal.show('modalCorporateManager')">
                             Управление
                         </button>
                     </div>
                     <div class="col-12 row p-2 pl-5">
-                        <div class="col-3">Раздел "Члены Правления"</div>
-                        <button type="button" class="modal-button_add col-2" @click="$modal.show('modalManagers')">
+                        <div class="col-6">Раздел "Члены Правления"</div>
+                        <button type="button" class="modal-button_add col-3" @click="$modal.show('modalManagers')">
                             Управление
                         </button>
                     </div>

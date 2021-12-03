@@ -61,10 +61,14 @@ class KpdTreeController extends Controller
         } else {
             $imageName = $request->avatar;
         }
+        $managerId = $request->id;
+        if ($managerId === "undefined") {
+            $managerId = null;
+        }
 
         KpdManagers::updateOrCreate(
             [
-                'id' => $request->id,
+                'id' => $managerId,
             ],
             [
                 'name' => $request->name,

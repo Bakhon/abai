@@ -13,7 +13,21 @@
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">Список Директоров</div>
                     <div class="btn-toolbar">
-                        <button type="button" class="modal-bign-button mr-2" @click="$modal.show('modalManager')">
+                        <button
+                                type="button"
+                                :class="[selectedType === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType('manager')"
+                        >
+                            Члены Правления
+                        </button>
+                        <button
+                                type="button"
+                                :class="[selectedType === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType('deputy')"
+                        >
+                            Заместители
+                        </button>
+                        <button type="button" class="modal-bign-button mr-2" @click="[selectedManager = {},$modal.show('modalManager')]">
                             Добавить
                         </button>
                         <button type="button" class="modal-bign-button" @click="$modal.hide('modalManagers')">
@@ -40,7 +54,8 @@ export default {
     data: function () {
         return {
             managers: [],
-            selectedManager: {}
+            selectedManager: {},
+            selectedType: 'manager'
         };
     },
     methods: {
@@ -54,11 +69,14 @@ export default {
         },
         selectManager(manager) {
             this.selectedManager = manager;
+        },
+        async switchManagerType(type) {
+            this.selectedType = type;
+            this.managers = await this.getManagers(type);
         }
     },
     async mounted() {
         this.managers = await this.getManagers('manager');
-
     }
 }
 
@@ -77,5 +95,11 @@ export default {
 .button__disabled {
     pointer-events: none;
     opacity: 0.4;
+}
+.button__selected {
+    background: #009900;
+}
+.button-width__150 {
+    width: 150px;
 }
 </style>
