@@ -1,65 +1,66 @@
 <template>
-	<div class="block" :style="{ marginRight: `${blocksMargin}px` }">
-		<div class="block__name">
-			{{ blockName }}
-		</div>
-		<div class="block__content d-flex">
-			<AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
-			<AwGisColumn v-for="(group, key) in getGroups" :key="key" v-bind="$attrs" :elements="group" :wellName="blockName" :offset-y="offsetY" :ref="`column_${key}`" />
-		</div>
-	</div>
+  <div class="block" :style="{ marginRight: `${blocksMargin}px` }">
+    <div class="block__name">
+      {{ blockName }}
+    </div>
+    <div class="block__content d-flex">
+      <AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
+      <AwGisColumn v-for="(group, key) in getGroups" :key="key" v-bind="$attrs" :elements="group" :wellName="blockName"
+                   :offset-y="offsetY" :ref="`column_${key}`" />
+    </div>
+  </div>
 </template>
 
 <script>
-	import AwGisColumn from "./AwGisColumn";
-	import AwGisDepthColumn from "./AwGisDepthColumn";
+import AwGisColumn from "./AwGisColumn";
+import AwGisDepthColumn from "./AwGisDepthColumn";
 
-	export default {
-		name: "AwGisBlock",
-		props: {
-			blockName: String,
-			blockId: String | Number,
-			blocksMargin: Number,
-			groups: Array | Object,
-			blocksScrollY: Number,
-		},
-		components: {
-			AwGisDepthColumn,
-			AwGisColumn,
-		},
-		data() {
-			return {
-				context: [],
-				offsetY: 0,
-				min: 1,
-				max: 1,
-				offsetX: 0,
-			};
-		},
+export default {
+  name: "AwGisBlock",
+  props: {
+    blockName: String,
+    blockId: String | Number,
+    blocksMargin: Number,
+    groups: Array | Object,
+    blocksScrollY: Number,
+  },
+  components: {
+    AwGisDepthColumn,
+    AwGisColumn,
+  },
+  data() {
+    return {
+      context: [],
+      offsetY: 0,
+      min: 1,
+      max: 1,
+      offsetX: 0,
+    };
+  },
 
-		computed: {
-			getElements() {
-				return this.$store.state.geologyGis.selectedGisCurves;
-			},
-			getGroups() {
-				return Object.values(this.groups)
-					.map((a) => {
-						return a.filter((b) => {
-							return b.data.wellID.includes(this.blockId) && this.getElements.includes(b.data.name);
-						});
-					})
-					.filter((a) => a?.length);
-			},
-		},
-	};
+  computed: {
+    getElements() {
+      return this.$store.state.geologyGis.selectedGisCurves;
+    },
+    getGroups() {
+      return Object.values(this.groups)
+          .map((a) => {
+            return a.filter((b) => {
+              return b.data.wellID.includes(this.blockId) && this.getElements.includes(b.data.name);
+            });
+          })
+          .filter((a) => a?.length);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-	.block {
-		position: relative;
-		padding-top: 30px;
-		border: 1px solid black;
-    transition: 300ms all ease-in-out;
+.block {
+  position: relative;
+  padding-top: 30px;
+  border: 1px solid black;
+  transition: 300ms all ease-in-out;
 
   &__name {
     min-height: 30px;
