@@ -1,5 +1,4 @@
 import TCoords from "./TCoords";
-import {isFloat} from "./utils";
 
 export default class TCanvas {
     #__canvas = null;
@@ -24,17 +23,12 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
-        let colorPalette = [
-            {name: "Clay", color: 'gray'},
-            {name: "Sand", color: 'yellow'},
-            {name: "Other", color: '#986321'}
-        ];
-
+        console.log(options)
+        let colorPalette = options.colorPalette;
         for (const lithology of lithologyData) {
             if (lithology !== lastLithology) {
                 if (lithology !== null) {
                     let difference = Math.abs(y - startPolygonPosition);
-
                     ctx.save();
                     ctx.fillStyle = colorPalette[lithology].color;
                     ctx.globalCompositeOperation = "destination-over";
@@ -52,9 +46,13 @@ export default class TCanvas {
                     ctx.font = "13px Harmonia-sans";
                     ctx.textBaseline = "middle";
                     ctx.textAlign = "center";
-                    ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
+                    ctx.fillStyle = colorPalette[lithology].textColor&&"black";
+                    if(difference>25){
+                        ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
+                    }
                     ctx.restore();
                 }
+
                 lastLithology = lithology
                 startPolygonPosition = y
             }
