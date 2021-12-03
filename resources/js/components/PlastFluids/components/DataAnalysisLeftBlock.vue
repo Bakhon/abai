@@ -56,6 +56,7 @@ import { setDynamicComponentContent } from "../mixins";
 import { mapState, mapMutations, mapActions } from "vuex";
 import Dropdown from "./Dropdown.vue";
 import CheckboxDropdown from "./CheckboxDropdown.vue";
+import { getHorizonBlocks } from "../services/templateService";
 
 export default {
   name: "DataAnalysisLeftBlock",
@@ -64,6 +65,14 @@ export default {
     CheckboxDropdown,
   },
   mixins: [setDynamicComponentContent],
+  watch: {
+    currentSubsoilHorizon: {
+      handler(value) {
+        if (value.length && !this.getTablePostUrl()[1]) this.setBlocks(value);
+      },
+      immediate: true,
+    },
+  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
@@ -78,13 +87,18 @@ export default {
       get() {
         return this.currentSubsoilHorizon;
       },
-      async set(value) {
+      set(value) {
+        const currentPageData = this.getTablePostUrl();
         this.SET_CURRENT_SUBSOIL_HORIZON(value);
-        await this.handleBlocksFilter(value);
-        this.handleAnalysisTableData({
-          field_id: this.currentSubsoilField[0].field_id,
-          postUrl: this.getTablePostUrl(),
-        });
+        if (currentPageData[1]) {
+          this.handleBlocksFilter(value);
+          this.handleAnalysisTableData({
+            field_id: this.currentSubsoilField[0].field_id,
+            postUrl: currentPageData[0],
+          });
+        } else {
+          this.setBlocks(value);
+        }
       },
     },
     selectedBlocks: {
@@ -93,10 +107,12 @@ export default {
       },
       set(value) {
         this.SET_CURRENT_BLOCKS(value);
-        this.handleAnalysisTableData({
-          field_id: this.currentSubsoilField[0].field_id,
-          postUrl: this.getTablePostUrl(),
-        });
+        const currentPageData = this.getTablePostUrl();
+        if (currentPageData[1])
+          this.handleAnalysisTableData({
+            field_id: this.currentSubsoilField[0].field_id,
+            postUrl: currentPageData[0],
+          });
       },
     },
   },
@@ -110,7 +126,7 @@ export default {
       "handleBlocksFilter",
     ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
-    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_BLOCKS"]),
+    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS", "SET_CURRENT_BLOCKS"]),
     async updateCurrentSubsoil(value) {
       await this.UPDATE_CURRENT_SUBSOIL(value);
       this.handleBlocksFilter([]);
@@ -119,17 +135,31 @@ export default {
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
       this.handleBlocksFilter([]);
     },
+    async setBlocks(horizons) {
+      if (horizons.length) {
+        const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
+        const payload = new FormData();
+        payload.append("horizons", horizonIDs);
+        const blocks = await getHorizonBlocks(payload);
+        this.SET_BLOCKS(blocks);
+      } else {
+        this.SET_BLOCKS([]);
+      }
+    },
     getTablePostUrl() {
       let url;
+      let isHandleAnalysisData = false;
       switch (this.reservoilOilInfo[1]) {
         case "maps-and-tables":
           url = "map/isogyps-wells-table";
+          isHandleAnalysisData = true;
           break;
         case "graphs-and-tables":
           url = "analytics/pvt-data-analysis";
+          isHandleAnalysisData = true;
           break;
       }
-      return url;
+      return [url, isHandleAnalysisData];
     },
   },
 };

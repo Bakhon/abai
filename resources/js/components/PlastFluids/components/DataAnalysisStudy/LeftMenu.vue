@@ -37,15 +37,52 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { getUploadTemplates } from "../../services/templateService";
+
 export default {
   name: "DataAnalysisStudyPanel",
   data() {
     return {
       currentTable: 2,
+      templates: [],
     };
   },
+  inject: {
+    userID: {
+      default: "",
+    },
+  },
+  watch: {
+    currentTable(value) {
+      this.handleTableData({
+        user_id: this.userID,
+        report_id: value,
+        type: "analysis",
+        template: this.findTemplate(value),
+      });
+    },
+  },
   methods: {
-    getTableData() {},
+    ...mapActions("plastFluidsLocal", ["handleTableData"]),
+    async getTemplates() {
+      const postData = new FormData();
+      postData.append("user_id", this.userID);
+      this.templates = await getUploadTemplates(postData);
+    },
+    findTemplate(id) {
+      const found = this.templates.find((template) => template.id === id);
+      return found;
+    },
+  },
+  async mounted() {
+    await this.getTemplates();
+    this.handleTableData({
+      user_id: this.userID,
+      report_id: 2,
+      type: "analysis",
+      template: this.findTemplate(2),
+    });
   },
 };
 </script>
