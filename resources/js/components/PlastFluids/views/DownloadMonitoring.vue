@@ -12,13 +12,11 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import Header from "../components/Header.vue";
 import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
 import MonitoringDownloadTable from "../components/MonitoringDownloadTable.vue";
 import SmallCatLoader from "../components/SmallCatLoader.vue";
-import { getUploadTemplates } from "../services/templateService";
-import { convertTemplateData } from "../helpers";
 
 export default {
   name: "DownloadMonitoring",
@@ -34,29 +32,22 @@ export default {
   provide() {
     return {
       userID: this.user.id,
-    };
-  },
-  data() {
-    return {
-      templates: [],
+      userName: this.user.name,
     };
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading"]),
+    ...mapState("plastFluidsLocal", ["loading", "templates"]),
   },
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_CURRENT_TEMPLATE"]),
-    async getTemplates() {
-      const payload = new FormData();
-      payload.append("user_id", this.user.id);
-      const data = await getUploadTemplates(payload);
-      this.templates = convertTemplateData(data, this.currentLang);
-      const initTemplate = data.find((template) => template.id === 1);
-      this.SET_CURRENT_TEMPLATE(initTemplate);
-    },
+    ...mapActions("plastFluidsLocal", ["getTemplates"]),
   },
   mounted() {
-    this.getTemplates();
+    this.getTemplates({
+      userID: this.user.id,
+      lang: this.currentLang,
+      templateID: 1,
+    });
   },
 };
 </script>

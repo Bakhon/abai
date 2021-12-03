@@ -121,10 +121,12 @@ class Dzo {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
-        if ($periodType === 'period' && count($filteredPlan) > 1) {
+
+        if ($periodType === 'period') {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
+
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
         $companySummary = $dzo->getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd);

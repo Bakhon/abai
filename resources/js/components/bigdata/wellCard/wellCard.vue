@@ -242,7 +242,7 @@
                       <p>
                         {{ this.trans("well.category_well") }}:
                         <span v-if="well.category">
-                          {{ well.category.name_ru }}
+                          {{ well.category_last.name_ru }}
                         </span>
                       </p>
                       <div class="title">{{ this.trans("well.binding") }}</div>
@@ -440,6 +440,7 @@ export default {
       wellUwi: null,
       well: {
         id: null,
+        depthLow: {value_double: null},
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
@@ -500,6 +501,7 @@ export default {
           value_double: null,
           value_string: null,
           equip_param: null,
+          value_text: null,
         },
         diametr_pump: {
           value_double: null,
@@ -511,11 +513,16 @@ export default {
           value_string: null,
           equip_param: null,
         },
-        type_sk: { value_double: null, value_string: null, equip_param: null },
+        pump_capacity: {
+          value_double: null,
+        },
+        type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
         diametr_stuzer: {prm: null, value_double: null}, 
-        dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},       
+        dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},   
+        diameter_pump: {value_double: null},   
+        well_block: {name_ru: null} 
       },
       wellParent: null,     
       wellTechs: null,
@@ -528,6 +535,7 @@ export default {
       wellSaptialObjectBottomY: null,
       wellTransform: {
         name: "wellInfo.uwi",
+        depthLow: "depthLow",
         wellInfo: "wellInfo",
         whc_alt: "whc_alt",
         measWaterCut: "meas_water_cut",
@@ -547,6 +555,7 @@ export default {
         dinzamer: "dinzamer",
         date_expl: "date_expl",
         measLiq: "measLiq",
+        pump_capacity: "pump_capacity",
         meas_water_inj: "meas_water_inj",
         tech_mode_inj: "tech_mode_inj",
         techModeProdOil: "techModeProdOil",
@@ -586,7 +595,9 @@ export default {
         meas_well: "meas_well",
         techmode: "techmode",
         diametr_stuzer: "diametr_stuzer",
-        dailyInjectionOil: "dailyInjectionOil"
+        dailyInjectionOil: "dailyInjectionOil",
+        diameter_pump: "diameter_pump",
+        well_block: "well_block",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -684,7 +695,7 @@ export default {
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : "";
       let neighbors =
         this.wellGeo.name_ru && this.well.labResearchValue.value_double
-          ? this.wellGeo.name_ru + "/" + this.well.labResearchValue.value_double
+          ? this.wellGeo.name_ru + "/ " + (this.well.labResearchValue.value_double * 9.869).toFixed(1)
           : this.wellGeo
           ? this.wellGeo.name_ru + " / " + "-"
           : this.well.labResearchValue
@@ -727,14 +738,14 @@ export default {
       let categoryLast = this.well.category_last
         ? this.well.category_last.name_ru
         : "";
-      let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
-          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
+      let period_bur = this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
             " - " +
-            this.getFormatedDate(this.well.wellDailyDrill.dend)
-          : this.well.wellDailyDrill.dbeg
-          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg)
-          : this.well.wellDailyDrill.dend
-          ? this.getFormatedDate(this.well.wellDailyDrill.dend)
+            this.getFormatedDate(this.well.wellInfo.drill_end_date)
+          : this.well.wellInfo.drill_start_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
+          : this.well.wellInfo.drill_end_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
           : "";         
       let wellExpl = this.well.expl
         ? this.getFormatedDate(this.well.expl.dbeg)
@@ -789,8 +800,8 @@ export default {
       let well_gis = this.well.gis.gis_date
         ? this.getFormatedDate(this.well.gis.gis_date)
         : "";
-      let well_gdisCurrent2 = this.well.gdisCurrent.meas_date
-        ? this.getFormatedDate(this.well.gdisCurrent.meas_date)
+      let well_gdisCurrent2 = this.well.gis.gis_date
+        ? this.getFormatedDate(this.well.gis.gis_date)
         : "";
       let gdisConclusion = this.well.gdisConclusion.name_ru
         ? this.well.gdisConclusion.name_ru
@@ -801,11 +812,11 @@ export default {
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
         ? this.well.gdisCurrentValuePmpr.value_double
         : "";
-      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin
-        ? this.well.dmart_daily_prod_oil.hdin
+      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin && this.well.dmart_daily_prod_oil.date
+        ? this.well.dmart_daily_prod_oil.hdin + " / " + this.getFormatedDate(this.well.dmart_daily_prod_oil.date)
         : "";
-      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
-        ? this.well.gdisCurrentValueStatic.value_double
+      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double + this.well.gdisCurrentValueStatic.meas_date 
+        ? this.well.gdisCurrentValueStatic.value_double + this.getFormatedDate(this.well.gdisCurrentValueStatic.meas_date)
         : "";
       let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double
         ? this.well.gdisCurrentValueRp.value_double +
@@ -847,20 +858,23 @@ export default {
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
         : "";
+      let depthLow = this.well.depthLow ? this.well.depthLow.value_double : "";
       let pump_code = this.well.pump_code
-        ? this.well.pump_code.value_string
+        ? this.well.pump_code.value_text
         : "";
       let diameter_pump = this.well.diametr_pump
-        ? this.well.diametr_pump.value_string
+        ? this.well.diametr_pump.value_double
         : "";
       let depth_nkt = this.well.depth_nkt
         ? this.well.depth_nkt.value_string
         : "";
-      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
       let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.well.tubeNom.od ? this.well.tubeNom.od + ' / ' + this.well.tubeNom.od : "";
+      let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
+      let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -884,7 +898,7 @@ export default {
         },
         {
           name: this.trans("well.block"),
-          data: '',
+          data: well_block,
           type: ["all"],                   
           codes: ["KGM"]
         },
@@ -912,7 +926,8 @@ export default {
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["dob_oil"],         
+          type: ["dob_oil"],
+          codes: ["KTM"],                  
         },
         {
           name: this.trans("well.org_struct"),
@@ -1021,14 +1036,14 @@ export default {
         },
         {
           name: this.trans("well.pump_capacity"),
-          data: '',
+          data: pump_capacity,
           type: ["dob_oil"],
           temp: 2,        
           codes: ["KGM"],
         },
         {
           name: this.trans("well.pump_depth"),
-          data: well_equip_param,
+          data: depthLow,
           type: ["dob_oil"],
         },
         {
@@ -1226,6 +1241,7 @@ export default {
           name: this.trans("well.note"),
           data: gdisCurrent_note,
           type: ["all"],
+          codes: ["KGM", "KTM"],
         },
       ];       
       this.well_passport = this.rebuildRightSidebar(
@@ -1288,23 +1304,23 @@ export default {
                  this.wellSaptialObjectBottomY  = ' '; 
                  this.wellGeoFields = ' ';   
                  this.gas_production = ' ';    
-                 this.dmart_daily_prod_oil = ' ';                                                            
+                 this.dmart_daily_prod_oil = ' ';  
+                 this.wellGeo.name_ru = '';                                                          
               }
-              
               if (data.geo[Object.keys(data.geo).length - 1] != null) {
                 this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
               }
               if (data.geo[0] != null) {
                 this.wellGeo = data.geo[0];
-              }                                                         
+              }                                            
               for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {               
                 this.setWellObjectData(
                   Object.keys(this.wellTransform)[i],
                   Object.values(this.wellTransform)[i],
                   data
                 );
-              }                                                
-              if (data.spatial_object.coord_point != null) {
+              }                          
+              if (data.spatial_object && data.spatial_object.coord_point) {
                 let spatialObject;
                 spatialObject = data.spatial_object.coord_point
                   .replace("(", "")
@@ -1313,7 +1329,7 @@ export default {
                 this.wellSaptialObjectX = spatialObject[0];
                 this.wellSaptialObjectY = spatialObject[1];
               }
-              if (data.spatial_object_bottom.coord_point != null) {
+              if (data.spatial_object_bottom && data.spatial_object_bottom.coord_point) {
                 let spatialObjectBottom;
                 spatialObjectBottom = data.spatial_object_bottom.coord_point
                   .replace("(", "")
@@ -1321,8 +1337,7 @@ export default {
                 spatialObjectBottom = spatialObjectBottom.split(",");
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
-              }  
-            
+              }
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
@@ -1331,7 +1346,7 @@ export default {
               this.wellOrgName = this.getMultipleValues(
                 data.org.reverse(),
                 "name_ru"
-              );              
+              );        
             } catch (e) {
               this.SET_LOADING(false);              
             }

@@ -74,5 +74,6 @@ return array (
   'fact' => 'Факт',
   'deviation' => 'Отклонение',
   'searchRadius' => 'Радиус поиска',
-  'factorAnalysis' => 'Факторный анализ'
+  'factorAnalysis' => 'Факторный анализ',
+  'oilProductionLossDistribution' => 'Распределение потери добычи нефти'
 );

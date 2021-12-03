@@ -79,14 +79,53 @@ export const getUploadTemplates = async (postData) => {
   }
 };
 
-export const getTemplateData = async (payload) => {
+export const getTemplateData = async (postData) => {
   try {
     const response = await axios.post(
       `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/table-report`,
-      payload
+      postData
     );
     if (response.status === 204)
       throw translation.translate("plast_fluids.no_report_content");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTemplateFile = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/file-report`,
+      postData,
+      {
+        responseType: "blob",
+      }
+    );
+    return response.data;
+  } catch (error) {
+    alert(error);
+  }
+};
+
+export const saveCustomTemplate = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/custom-template-save`,
+      postData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCustomTemplate = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/custom-template-delete`,
+      postData
+    );
     return response.data;
   } catch (error) {
     throw error;

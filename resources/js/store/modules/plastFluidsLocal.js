@@ -1,7 +1,13 @@
 import translation from "../../VueTranslation/Translation";
-import { getTemplateData } from "../../components/PlastFluids/services/templateService";
+import {
+  getTemplateData,
+  getUploadTemplates,
+} from "../../components/PlastFluids/services/templateService";
 import { getTableData } from "../../components/PlastFluids/services/mapService";
-import { convertToFormData } from "../../components/PlastFluids/helpers";
+import {
+  convertToFormData,
+  convertTemplateData,
+} from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -161,7 +167,17 @@ const plastFluidsLocal = {
       const data = await getTemplateData(payload);
       return data;
     },
-    async handleTableData({ commit, state, dispatch }, incomeData) {
+    async getTemplates({ state, commit }, payload) {
+      const postData = new FormData();
+      postData.append("user_id", payload.userID);
+      const data = await getUploadTemplates(postData);
+      commit("SET_TEMPLATES", convertTemplateData(data, payload.lang));
+      const template = data.find(
+        (template) => template.id === payload.templateID
+      );
+      commit("SET_CURRENT_TEMPLATE", template);
+    },
+    async handleTableData({ commit, dispatch }, incomeData) {
       try {
         const { template, ...rest } = incomeData;
         commit("SET_LOADING", true);

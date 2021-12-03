@@ -19,7 +19,7 @@
         </div>
       </div>
     </template>
-    <div class="bd-main-block__body">
+    <div ref="container" class="bd-main-block__body">
       <form ref="form" class="bd-main-block__form" @submit.prevent="">
         <div class="table-page">
           <template v-if="formParams">
@@ -33,7 +33,7 @@
               {{ trans('bd.select_dzo') }}
             </p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
+            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
               <div v-for="custom_column in formParams.custom_columns">
                 <div :is="custom_column.component_name"
                      :allColumns="formParams.columns"
@@ -128,7 +128,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -267,7 +267,7 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a v-if="row[column.code]" :href="row[column.code].href"
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
                              target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
@@ -535,6 +535,8 @@ export default {
           this.$emit('initialized', data)
           this.updateTableData()
         })
+
+    window.addEventListener('resize', this.setTableHeight);
   },
   methods: {
     ...bdFormActions([
@@ -581,6 +583,7 @@ export default {
           })
           .finally(() => {
             this.setLoading(false)
+            this.setTableHeight()
           })
 
     },
@@ -950,6 +953,13 @@ export default {
         'min-width': column.width + 'px',
         'width': column.width + 'px'
       }
+    },
+    setTableHeight() {
+      this.$nextTick(() => {
+        let height = window.innerHeight - this.$refs.container.getBoundingClientRect().top - 5;
+        this.$refs.container.style.height = height + 'px'
+        this.$refs.table_wrap.style.height = (height - 10) + 'px'
+      })
     }
   },
 };
@@ -958,7 +968,9 @@ export default {
 body.fixed {
   overflow: hidden;
 }
-
+.well_link_color{
+  color: #fff;
+}
 .bd-main-block {
 
   &__tabs {
@@ -1022,7 +1034,6 @@ body.fixed {
     background: #363B68;
     display: flex;
     justify-content: space-between;
-    min-height: calc(100vh - 186px);
     padding: 5px;
 
     &-history {
@@ -1061,7 +1072,6 @@ body.fixed {
     padding: 0;
 
     .tables {
-      height: calc(100vh - 196px);
       overflow-x: auto;
       overflow-y: auto;
       width: 100%;

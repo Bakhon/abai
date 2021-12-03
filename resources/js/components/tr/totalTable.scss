@@ -35,7 +35,7 @@ tr:nth-child(odd) {
   width: 100%;
   height: calc(100% - 30px);
   overflow: auto;
-  padding-top: 5px;
+  padding: 5px 10px 0px 10px;
 }
 
 .table-div > div {
@@ -69,7 +69,6 @@ td {
   flex-flow: column;
   justify-content: space-between;
 }
-
 .table-header-cell > div > img:last-child {
   transform: rotate(180deg);
 }
@@ -77,11 +76,13 @@ td {
   height: 4px;
   width: 4px;
 }
-
 ::-webkit-scrollbar-track {
   background: #272953;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #656a8a;
+}
+.summary_total {
+  font-size: 13px;
+  font-weight: bold;
 }
