@@ -17,7 +17,7 @@
 <script>
 import chart from "vue-apexcharts";
 
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 const ru = require("apexcharts/dist/locales/ru.json");
 

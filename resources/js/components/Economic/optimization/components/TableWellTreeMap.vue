@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import {treemapMixin} from "../mixins/treemapMixin";
-import {waterCutMixin} from "../mixins/wellMixin";
+import {treemapMixin} from "../../mixins/treemapMixin";
+import {waterCutMixin} from "../../mixins/wellMixin";
 
 export default {
   name: "TableWellTreeMap",

@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
-import {paletteMixin} from "../mixins/paletteMixin";
+import {paletteMixin} from "../../mixins/paletteMixin";
 
 const ROMANS = {
   M: 1000,

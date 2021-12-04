@@ -58,7 +58,7 @@ const fileDownload = require("js-file-download");
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
-import {formatValueMixin} from "./mixins/formatMixin";
+import {formatValueMixin} from "../mixins/formatMixin";
 
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";

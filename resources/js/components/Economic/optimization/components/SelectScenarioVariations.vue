@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import SelectOrganization from "./SelectOrganization";
+import SelectOrganization from "../../components/SelectOrganization";
 import SelectScenario from "./SelectScenario";
 
 export default {

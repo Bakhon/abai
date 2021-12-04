@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 export default {
   name: "TableOilPriceOptions",

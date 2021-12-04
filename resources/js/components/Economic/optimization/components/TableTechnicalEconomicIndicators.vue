@@ -100,9 +100,9 @@
 </template>
 
 <script>
-import {formatValueMixin} from "../mixins/formatMixin";
+import {formatValueMixin} from "../../mixins/formatMixin";
 
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 export default {
   name: "TableTechnicalEconomicIndicators",

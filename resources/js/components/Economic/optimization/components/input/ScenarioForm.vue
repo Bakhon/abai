@@ -95,17 +95,16 @@
 
 <script>
 
-import SelectScFa from "./SelectScFa";
-import AddButton from "./AddButton";
-import DeleteButton from "./DeleteButton";
-import SaveButton from "./SaveButton";
+import SelectScFa from "../../../components/SelectScFa";
+import AddButton from "../../../components/AddButton";
+import DeleteButton from "../../../components/DeleteButton";
+import SaveButton from "../../../components/SaveButton";
 
-import {EcoRefsScenarioModel} from "../models/EcoRefsScenarioModel";
+import {EcoRefsScenarioModel} from "../../../models/EcoRefsScenarioModel";
 
 export default {
   name: "ScenarioForm",
   components: {
-
     SelectScFa,
     AddButton,
     DeleteButton,
@@ -113,7 +112,6 @@ export default {
   },
   data: () => ({
     EcoRefsScenarioModel,
-    loading: false,
     form: new EcoRefsScenarioModel().form
   }),
   methods: {

@@ -25,14 +25,14 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectAuthor from "./SelectAuthor";
-import SelectLog from "./SelectLog";
-import DeleteButton from "./DeleteButton";
+import SelectAuthor from "../SelectAuthor";
+import SelectLog from "../../../components/SelectLog";
+import DeleteButton from "../../../components/DeleteButton";
 
-import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
+import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel";
 
 export default {
-  name: "GtmTable",
+  name: "TableGtm",
   components: {
     SelectAuthor,
     SelectLog,

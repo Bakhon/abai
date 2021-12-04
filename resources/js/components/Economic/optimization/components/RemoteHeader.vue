@@ -41,9 +41,9 @@
 </template>
 
 <script>
-import EconomicTitle from "./EconomicTitle";
-import Subtitle from "./Subtitle";
-import PercentBadgeIcon from "./PercentBadgeIcon";
+import EconomicTitle from "../../nrs/components/EconomicTitle";
+import Subtitle from "../../components/Subtitle";
+import PercentBadgeIcon from "../../components/PercentBadgeIcon";
 
 export default {
   name: "RemoteHeader",

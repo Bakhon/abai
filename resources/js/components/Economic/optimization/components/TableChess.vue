@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import {paletteMixin} from "../mixins/paletteMixin";
+import {paletteMixin} from "../../mixins/paletteMixin";
 
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 import TableChessRow from "./TableChessRow";
 
 export default {

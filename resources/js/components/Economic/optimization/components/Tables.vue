@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import ChartButton from "./ChartButton";
+import ChartButton from "../../components/ChartButton";
 import TableSpecificIndicators from "./TableSpecificIndicators";
 import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators";
 import TableOilPriceOptions from "./TableOilPriceOptions";

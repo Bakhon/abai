@@ -48,7 +48,7 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 const WELL_KEYS = [
   'Revenue_total_12m',

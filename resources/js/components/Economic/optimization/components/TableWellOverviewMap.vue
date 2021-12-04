@@ -15,7 +15,7 @@
 <script>
 import mapboxgl from "mapbox-gl";
 
-import Subtitle from "./Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 export default {
   name: "TableWellOverviewMap",

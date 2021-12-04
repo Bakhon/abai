@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import EconomicTitle from "./EconomicTitle";
-import Subtitle from "./Subtitle";
-import PercentProgress from "./PercentProgress";
-import PercentBadge from "./PercentBadge";
+import EconomicTitle from "../../nrs/components/EconomicTitle";
+import Subtitle from "../../components/Subtitle";
+import PercentProgress from "../../components/PercentProgress";
+import PercentBadge from "../../components/PercentBadge";
 
 export default {
   name: "CalculatedHeader",
