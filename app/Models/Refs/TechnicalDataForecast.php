@@ -49,11 +49,6 @@ class TechnicalDataForecast extends Model
         return $this->belongsTo(TechnicalStructureGu::class, 'gu_id');
     }
 
-    public function log()
-    {
-        return $this->belongsTo(TechnicalDataLog::class, 'log_id');
-    }
-
     public function pes()
     {
         return $this->belongsTo(TechnicalStructurePes::class, 'pes_id');

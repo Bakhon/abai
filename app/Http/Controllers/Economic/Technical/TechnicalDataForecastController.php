@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Economic\Technical;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\TechnicalDataForecastImportExcelRequest;
 use App\Http\Requests\Economic\Technical\TechnicalDataForecastRequest;
-use App\Http\Requests\Economic\Technical\TechnicalDataForecastUpdateRequest;
 use App\Imports\Economic\Technical\TechnicalDataForecastImport;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureCdng;
-use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureNgdu;
-use App\Models\Refs\TechnicalStructurePes;
-use App\Models\Refs\TechnicalStructureSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -22,69 +18,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TechnicalDataForecastController extends Controller
 {
-    const INDEX_ROUTE = "economic.technical.forecast.index";
-
-    public function index(): View
-    {
-        return view('economic.technical.forecast.index');
-    }
-
-    public function edit(int $id): View
-    {
-        $model = TechnicalDataForecast::findOrFail($id);
-
-        $fieldIds = TechnicalStructureField::query()
-            ->whereCompanyId($model->company_id)
-            ->pluck('id');
-
-        $ngduIds = TechnicalStructureNgdu::query()
-            ->whereIn('field_id', $fieldIds)
-            ->pluck('id');
-
-        $cdngIds = TechnicalStructureCdng::query()
-            ->whereIn('ngdu_id', $ngduIds)
-            ->pluck('id');
-
-        $gus = TechnicalStructureGu::query()
-            ->whereIn('cdng_id', $cdngIds)
-            ->get();
-
-        $sources = TechnicalStructureSource::all();
-
-        $pes = TechnicalStructurePes::all();
-
-        return view(
-            'economic.technical.forecast.edit',
-            compact('model', 'gus', 'sources', 'pes')
-        );
-    }
-
-    public function update(TechnicalDataForecastUpdateRequest $request, int $id): RedirectResponse
-    {
-        $technicalDataForecast = TechnicalDataForecast::findOrFail($id);
-
-        $params = $request->validated();
-
-        $params['editor_id'] = auth()->user()->id;
-
-        $technicalDataForecast->update($params);
-
-        return redirect()
-            ->route(self::INDEX_ROUTE)
-            ->with('success', __('app.updated'));
-    }
-
-    public function destroy(int $id): RedirectResponse
-    {
-        TechnicalDataForecast::query()
-            ->whereId($id)
-            ->delete();
-
-        return redirect()
-            ->route(self::INDEX_ROUTE)
-            ->with('success', __('app.deleted'));
-    }
-
     public function getData(TechnicalDataForecastRequest $request): array
     {
         $query = TechnicalDataForecast::query();
@@ -123,7 +56,7 @@ class TechnicalDataForecastController extends Controller
         }
 
         return $query
-            ->with(['source', 'gu', 'author', 'editor', 'pes'])
+            ->with(['source', 'gu', 'author', 'pes'])
             ->get()
             ->toArray();
     }
