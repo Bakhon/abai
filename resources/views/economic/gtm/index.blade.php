@@ -8,5 +8,5 @@
         </a>
     </div>
 
-    <economic-data-gtm-component></economic-data-gtm-component>
+    <economic-gtm></economic-gtm>
 @endsection

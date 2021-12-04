@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import GtmTable from "../components/GtmTable";
-import GtmValueTable from "../components/GtmValueTable";
+import GtmTable from "./optimization/components/input/TableGtm";
+import GtmValueTable from "./optimization/components/input/TableGtmValue";
 
 export default {
   name: "economic-data-gtm-component",

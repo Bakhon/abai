@@ -30,8 +30,8 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
-import Subtitle from "../components/Subtitle";
-import SelectScFa from "../components/SelectScFa";
+import Subtitle from "./components/Subtitle";
+import SelectScFa from "./components/SelectScFa";
 
 export default {
   name: "economic-data-cost-component",
