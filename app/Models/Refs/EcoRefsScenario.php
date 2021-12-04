@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Refs;
 
-use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EcoRefsScenario extends Model
 {
@@ -20,5 +20,13 @@ class EcoRefsScenario extends Model
     public function scFa()
     {
         return $this->belongsTo(EcoRefsScFa::class, 'sc_fa_id');
+    }
+
+    /**
+     * @return HasMany|EcoRefsScenarioResult
+     */
+    public function results()
+    {
+        return $this->hasMany(EcoRefsScenarioResult::class, 'scenario_id');
     }
 }
