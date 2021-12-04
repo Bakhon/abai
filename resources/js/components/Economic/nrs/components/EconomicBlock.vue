@@ -23,7 +23,7 @@
 
       <div class="d-flex font-size-12px line-height-14px mb-2">
         <div class="flex-grow-1 text-blue">
-          {{ (100 + +subBlock.percent) }} %
+          {{ (100 + +subBlock.percent).toFixed(2) }} %
         </div>
 
         <div>{{ formatValue(subBlock.value.prev).value.toFixed(2) }}</div>
@@ -40,9 +40,9 @@
 <script>
 import {formatValueMixin} from "../../mixins/formatMixin";
 
-import Divider from "../Divider";
-import PercentProgress from "../PercentProgress";
-import PercentBadge from "../PercentBadge";
+import Divider from "../../components/Divider";
+import PercentProgress from "../../components/PercentProgress";
+import PercentBadge from "../../components/PercentBadge";
 
 export default {
   name: "EconomicBlock",

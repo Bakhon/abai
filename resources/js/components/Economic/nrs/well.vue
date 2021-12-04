@@ -58,7 +58,7 @@ import chart from "vue-apexcharts";
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
-import {formatValueMixin} from "./mixins/formatMixin";
+import {formatValueMixin} from "../mixins/formatMixin";
 
 import SelectInterval from "./components/SelectInterval";
 

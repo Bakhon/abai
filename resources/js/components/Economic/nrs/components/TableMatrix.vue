@@ -219,8 +219,8 @@ import {globalloadingMutations} from '@store/helpers';
 
 import ChartMatrixWell from "./ChartMatrixWell";
 import ChartMatrixTotal from "./ChartMatrixTotal";
-import SelectChartType from "../SelectChartType";
-import SelectOperatingProfit from "../SelectOperatingProfit";
+import SelectChartType from "./SelectChartType";
+import SelectOperatingProfit from "./SelectOperatingProfit";
 
 export default {
   name: "TableMatrix",

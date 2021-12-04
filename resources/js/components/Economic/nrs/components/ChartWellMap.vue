@@ -57,7 +57,7 @@ import mapboxgl from "mapbox-gl";
 
 import {globalloadingMutations} from '@store/helpers';
 
-import Subtitle from "../Subtitle";
+import Subtitle from "../../components/Subtitle";
 
 export default {
   name: "ChartWellMap",

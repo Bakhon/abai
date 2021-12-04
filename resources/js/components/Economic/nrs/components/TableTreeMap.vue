@@ -45,8 +45,8 @@ import {globalloadingMutations, globalloadingState} from '@store/helpers';
 import {treemapMixin} from "../../mixins/treemapMixin";
 import {waterCutMixin} from "../../mixins/wellMixin";
 
-import SelectTechStructure from "../SelectTechStructure";
-import SelectOperatingProfit from "../SelectOperatingProfit";
+import SelectTechStructure from "./SelectTechStructure";
+import SelectOperatingProfit from "./SelectOperatingProfit";
 
 export default {
   name: "TableTreeMap",

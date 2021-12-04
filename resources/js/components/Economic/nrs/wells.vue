@@ -54,13 +54,13 @@
 <script>
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
-import ChartButton from "./components/ChartButton";
+import ChartButton from "../components/ChartButton";
 import SelectInterval from "./components/SelectInterval";
-import SelectOrganization from "./components/SelectOrganization";
+import SelectOrganization from "../components/SelectOrganization";
 import SelectField from "./components/SelectField";
-import SelectGranularity from "./components/SelectGranularity";
-import TableMatrix from "./components/nrs/TableMatrix";
-import TableTreeMap from "./components/nrs/TableTreeMap";
+import SelectGranularity from "../components/SelectGranularity";
+import TableMatrix from "./components/TableMatrix";
+import TableTreeMap from "./components/TableTreeMap";
 
 export default {
   name: "economic-nrs-wells",

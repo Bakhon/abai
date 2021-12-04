@@ -161,22 +161,22 @@ const fileDownload = require("js-file-download");
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
-import {formatValueMixin} from "./mixins/formatMixin";
+import {formatValueMixin} from "../mixins/formatMixin";
 
-import Divider from "./components/Divider";
+import Divider from "../components/Divider";
 import EconomicCol from "./components/EconomicCol";
-import Charts from "./components/nrs/Charts";
+import Charts from "./components/Charts";
 import EconomicTitle from "./components/EconomicTitle";
-import Subtitle from "./components/Subtitle";
-import PercentBadge from "./components/PercentBadge";
-import PercentProgress from "./components/PercentProgress";
+import Subtitle from "../components/Subtitle";
+import PercentBadge from "../components/PercentBadge";
+import PercentProgress from "../components/PercentProgress";
 import SelectInterval from "./components/SelectInterval";
-import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity";
-import SelectOrganization from "./components/SelectOrganization";
+import SelectGranularity, {GRANULARITY_DAY} from "../components/SelectGranularity";
+import SelectOrganization from "../components/SelectOrganization";
 import SelectField from "./components/SelectField";
 import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
-import InputExcludeUwis from "./components/nrs/InputExcludeUwis";
-import EconomicBlock from "./components/nrs/EconomicBlock";
+import InputExcludeUwis from "./components/InputExcludeUwis";
+import EconomicBlock from "./components/EconomicBlock";
 
 const economicRes = {
   lastYear: {
