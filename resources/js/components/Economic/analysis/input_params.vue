@@ -79,19 +79,16 @@
 </template>
 
 <script>
-import VueTableDynamic from 'vue-table-dynamic';
-
 import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
-import TableAnalysisParam from "../analysis/components/TableAnalysisParam";
-import TableTechnicalWellForecast from "../analysis/components/TableTechnicalWellForecast";
-import TableTechnicalWellForecastKit from "../analysis/components/TableTechnicalWellForecastKit";
-import TechnicalWellForecastKitForm from "../analysis/components/TechnicalWellForecastKitForm";
+import TableAnalysisParam from "./components/input/TableAnalysisParam";
+import TableTechnicalWellForecast from "./components/input/TableTechnicalWellForecast";
+import TableTechnicalWellForecastKit from "./components/input/TableTechnicalWellForecastKit";
+import TechnicalWellForecastKitForm from "./components/input/TechnicalWellForecastKitForm";
 
 export default {
-  name: "economic-data-analysis-component",
+  name: "economic-analysis-input-params",
   components: {
-    VueTableDynamic,
     TableAnalysisParam,
     TableTechnicalWellForecast,
     TableTechnicalWellForecastKit,

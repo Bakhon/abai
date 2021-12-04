@@ -45,11 +45,11 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectLog from "../../components/SelectLog";
-import SaveButton from "../../components/SaveButton";
+import SelectLog from "../../../components/SelectLog";
+import SaveButton from "../../../components/SaveButton";
 
-import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
-import {TechnicalWellForecastKitModel} from "../../models/TechnicalWellForecastKitModel";
+import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel";
+import {TechnicalWellForecastKitModel} from "../../../models/TechnicalWellForecastKitModel";
 
 export default {
   name: "TechnicalWellForecastForm",

@@ -81,7 +81,7 @@ import {globalloadingMutations} from '@store/helpers';
 
 import SelectGranularity from "../components/SelectGranularity";
 import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
-import SelectTechnicalWellForecastKit from "../components/SelectTechnicalWellForecastKit";
+import SelectTechnicalWellForecastKit from "./components/SelectTechnicalWellForecastKit";
 
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-select/dist/js/bootstrap-select.min';

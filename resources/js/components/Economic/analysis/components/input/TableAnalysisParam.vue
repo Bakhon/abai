@@ -17,9 +17,9 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 import {globalloadingMutations} from '@store/helpers';
 
-import SelectLog from "../../components/SelectLog";
+import SelectLog from "../../../components/SelectLog";
 
-import {EconomicDataLogTypeModel} from "../../models/EconomicDataLogTypeModel";
+import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel";
 
 export default {
   name: "TableAnalysisParam",

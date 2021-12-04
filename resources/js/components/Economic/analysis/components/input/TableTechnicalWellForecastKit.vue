@@ -12,7 +12,7 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import DeleteButton from "../../components/DeleteButton";
+import DeleteButton from "../../../components/DeleteButton";
 
 export default {
   name: "TableTechnicalWellForecastKit",
