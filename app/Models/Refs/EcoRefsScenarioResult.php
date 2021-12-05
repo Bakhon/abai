@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsScenarioResult extends Model
 {
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'variants' => 'array',
+    ];
 }

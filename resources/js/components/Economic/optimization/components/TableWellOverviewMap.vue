@@ -80,7 +80,7 @@ export default {
     },
 
     getColor({uwi, profitability_12m}) {
-      if (this.scenario.uwi_stop.includes(uwi)) {
+      if (this.scenario.stopped_uwis.includes(uwi)) {
         return '#8125B0'
       }
 

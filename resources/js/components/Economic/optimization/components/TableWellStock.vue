@@ -68,9 +68,9 @@ export default {
           title: this.trans('economic_reference.total'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitable.original_value +
-                  +scenario.uwi_count_profitless_cat_1.original_value +
-                  +scenario.uwi_count_profitless_cat_2.original_value
+              value: +scenario.uwi_count_profitable +
+                  +scenario.uwi_count_profitless_cat_1 +
+                  +scenario.uwi_count_profitless_cat_2
             }
           })
         },
@@ -78,7 +78,7 @@ export default {
           title: this.trans('economic_reference.profitable'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitable.original_value
+              value: +scenario.uwi_count_profitable
             }
           })
         },
@@ -86,8 +86,8 @@ export default {
           title: this.trans('economic_reference.profitless_all'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_1.original_value +
-                  +scenario.uwi_count_profitless_cat_2.original_value
+              value: +scenario.uwi_count_profitless_cat_1 +
+                  +scenario.uwi_count_profitless_cat_2
             }
           })
         },
@@ -95,7 +95,7 @@ export default {
           title: this.trans('economic_reference.profitless_cat_1'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_1.original_value
+              value: +scenario.uwi_count_profitless_cat_1
             }
           })
         },
@@ -103,7 +103,7 @@ export default {
           title: this.trans('economic_reference.profitless_cat_2'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_2.original_value
+              value: +scenario.uwi_count_profitless_cat_2
             }
           })
         },
@@ -116,9 +116,9 @@ export default {
           title: this.trans('economic_reference.total'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitable.original_value_optimized +
-                  +scenario.uwi_count_profitless_cat_1.original_value_optimized +
-                  +scenario.uwi_count_profitless_cat_2.original_value_optimized
+              value: +scenario.uwi_count_profitable_optimize +
+                  +scenario.uwi_count_profitless_cat_1_optimize +
+                  +scenario.uwi_count_profitless_cat_2_optimize
             }
           })
         },
@@ -126,7 +126,7 @@ export default {
           title: this.trans('economic_reference.profitable'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitable.original_value_optimized
+              value: +scenario.uwi_count_profitable_optimize
             }
           })
         },
@@ -134,8 +134,8 @@ export default {
           title: this.trans('economic_reference.profitless_all'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_1.original_value_optimized +
-                  +scenario.uwi_count_profitless_cat_2.original_value_optimized
+              value: +scenario.uwi_count_profitless_cat_1_optimize +
+                  +scenario.uwi_count_profitless_cat_2_optimize
             }
           })
         },
@@ -143,7 +143,7 @@ export default {
           title: this.trans('economic_reference.profitless_cat_1'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_1.original_value_optimized
+              value: +scenario.uwi_count_profitless_cat_1_optimize
             }
           })
         },
@@ -151,7 +151,7 @@ export default {
           title: this.trans('economic_reference.profitless_cat_2'),
           columns: this.scenariosByOilPrice.map(scenario => {
             return {
-              value: +scenario.uwi_count_profitless_cat_2.original_value_optimized
+              value: +scenario.uwi_count_profitless_cat_2_optimize
             }
           })
         },

@@ -4,6 +4,17 @@
       :params="params"
       class="height-fit-content height-unset">
     <div slot="column-10" slot-scope="{ props }" class="mx-auto">
+      <launch-button
+          v-if="props.cellData.total_variants === null"
+          @click.native="launchScenario(props.cellData.id)"/>
+
+      <div v-else>
+        {{ props.cellData.calculated_variants }} /
+        {{ props.cellData.total_variants }}
+      </div>
+    </div>
+
+    <div slot="column-11" slot-scope="{ props }" class="mx-auto">
       <delete-button @click.native="deleteScenario(props.rowData[0].data)"/>
     </div>
   </vue-table-dynamic>
@@ -12,11 +23,13 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
+import LaunchButton from "../../../components/LaunchButton";
 import DeleteButton from "../../../components/DeleteButton";
 
 export default {
   name: "TableScenario",
   components: {
+    LaunchButton,
     DeleteButton
   },
   data: () => ({
@@ -35,29 +48,33 @@ export default {
 
       const {data} = await this.axios.get(`${this.url}/get-data`)
 
-      data.forEach(item => {
+      data.forEach(scenario => {
         let row = []
 
         this.headers.forEach(header => {
           if (header.isUser) {
-            return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
+            return row.push(scenario[header.key] ? `${scenario.created_at} ${scenario[header.key].name}` : '')
           }
 
           if (header.isRelationName) {
-            return row.push(item[header.key] ? item[header.key].name : '')
+            return row.push(scenario[header.key] ? scenario[header.key].name : '')
           }
 
           if (header.isParams) {
             let value = ''
 
-            item.params[header.key].forEach((param, paramIndex) => {
+            scenario.params[header.key].forEach((param, paramIndex) => {
               value += paramIndex ? `, ${param.value}` : param.value
             })
 
             return row.push(value)
           }
 
-          row.push(item[header.key])
+          if (header.isProgress) {
+            return row.push(scenario)
+          }
+
+          row.push(scenario[header.key])
         })
 
         this.data.push(row)
@@ -83,6 +100,24 @@ export default {
 
       this.SET_LOADING(false)
     },
+
+    async launchScenario(id) {
+      this.SET_LOADING(true)
+
+      try {
+        let {data} = await this.axios.put(`${this.url}/${id}`)
+
+        let index = this.data.findIndex(x => x[0] === id)
+
+        this.data[index][10].calculated_variants = data.calculated_variants
+
+        this.data[index][10].total_variants = data.total_variants
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.SET_LOADING(false)
+    }
   },
   computed: {
     url() {
@@ -101,6 +136,10 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
+        columnWidth: this.headers.map((header, index) => ({
+          column: index,
+          width: header.width || 180
+        }))
       }
     },
 
@@ -109,6 +148,7 @@ export default {
         {
           label: 'id',
           key: 'id',
+          width: 50
         },
         {
           label: this.trans('economic_reference.name'),
@@ -130,11 +170,6 @@ export default {
           isRelationName: true
         },
         {
-          label: this.trans('economic_reference.added_date_author'),
-          key: 'user',
-          isUser: true
-        },
-        {
           label: this.trans('economic_reference.oil_prices'),
           key: 'oil_prices',
           isParams: true
@@ -153,6 +188,16 @@ export default {
           label: 'cost_wr_payrolls',
           key: 'cost_wr_payrolls',
           isParams: true
+        },
+        {
+          label: this.trans('economic_reference.added_date_author'),
+          key: 'user',
+          isUser: true
+        },
+        {
+          label: this.trans('economic_reference.progress'),
+          key: 'progress',
+          isProgress: true
         },
         {
           label: '',

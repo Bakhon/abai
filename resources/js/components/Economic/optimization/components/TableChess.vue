@@ -52,7 +52,7 @@ export default {
           pp2020: '',
           columns: this.reverseOilPrices.map((price, index) => {
             return {
-              value: (this.scenariosByOilPrice[index].oil.original_value_optimized / 1000).toFixed(2),
+              value: (this.scenariosByOilPrice[index].oil / 1000).toFixed(2),
               color: ''
             }
           })

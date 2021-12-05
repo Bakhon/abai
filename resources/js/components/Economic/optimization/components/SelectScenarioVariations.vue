@@ -19,13 +19,13 @@
 
     <select-organization
         :form="form"
-        class="flex-grow-1 ml-2"
-        @change="$emit('changeOrg')"/>
+        class="flex-grow-1 ml-2"/>
 
     <select-scenario
         :form="form"
+        :fetch-params="{is_processed: 1}"
         class="flex-grow-1 ml-2"
-        @change="selectScenario()"/>
+        @change="changeScenario"/>
 
     <div v-if="form.scenario_id" class="flex-grow-1 flex-shrink-0 ml-2">
       <label for="oil_price">
@@ -144,18 +144,8 @@ export default {
     },
   },
   methods: {
-    selectScenario() {
-      this.scenarioVariation.dollar_rate = this.scenarioVariations.dollar_rates[0]
-
-      this.scenarioVariation.oil_price = this.scenarioVariations.oil_prices[0]
-
-      this.scenarioVariation.salary_percent = this.scenarioVariations.salary_percents[0].value
-
-      this.scenarioVariation.retention_percent = this.scenarioVariations.retention_percents[0].value
-
-      this.scenarioVariation.optimization_percent.cat_1 = this.scenarioVariations.optimization_percents[0].value.cat_1
-
-      this.scenarioVariation.optimization_percent.cat_2 = this.scenarioVariations.optimization_percents[0].value.cat_2
+    changeScenario(scenario) {
+      this.$emit('changeScenario')
     },
   }
 }

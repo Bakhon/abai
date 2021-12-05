@@ -25,7 +25,7 @@
       <table-technical-economic-indicators
           v-else-if="activeTab === 'technical_economic_indicators'"
           :org="res.org"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
@@ -33,7 +33,7 @@
       <table-oil-price-options
           v-else-if="activeTab === 'oil_price_options'"
           :org="res.org"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           class="text-white"/>
 
@@ -46,28 +46,28 @@
 
       <table-economic-efficiency
           v-else-if="activeTab === 'economic_efficiency'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-porcupine
           v-else-if="activeTab === 'porcupine'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           class="text-white"/>
 
       <table-technological-indicators
           v-else-if="activeTab === 'technological_indicators'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-chess
           v-else-if="activeTab === 'chess'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :wells="res.wells"
@@ -75,7 +75,7 @@
 
       <table-palette
           v-else-if="activeTab === 'palette'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :wells="res.wells"
@@ -95,7 +95,7 @@
 
       <table-well-stock
           v-else-if="activeTab === 'well_stock'"
-          :scenarios="res.scenarios"
+          :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :wells="res.wells"/>

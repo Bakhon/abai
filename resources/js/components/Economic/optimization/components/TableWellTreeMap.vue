@@ -43,7 +43,7 @@ export default {
     },
 
     selectedWells() {
-      return this.scenario.uwi_stop
+      return this.scenario.stopped_uwis
     },
 
     profitabilityKey() {

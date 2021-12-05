@@ -23,16 +23,28 @@ export const paletteMixin = {
         },
 
         scenariosByOilPrice() {
-            let scenarios = this.scenarios.filter(scenario =>
-                scenario.dollar_rate === this.scenario.dollar_rate &&
-                scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
-                scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
+            let scenariosByDollarRate = this.scenarios.filter(scenario =>
+                +scenario.dollar_rate === +this.scenario.dollar_rate
             )
 
             return this.reverseOilPrices.map(oilPrice => {
-                return scenarios
-                    .filter(scenario => scenario.oil_price === oilPrice)
-                    .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
+                let variants = []
+
+                scenariosByDollarRate.forEach(scenario => {
+                    if (+scenario.oil_price !== +oilPrice) return
+
+                    scenario.variants.forEach(variant => {
+                        if (+variant.coef_cost_WR_payroll !== +this.scenario.coef_cost_WR_payroll) return
+
+                        if (+variant.coef_Fixed_nopayroll !== +this.scenario.coef_Fixed_nopayroll) return
+
+                        variants.push(variant)
+                    })
+                })
+
+                return variants.reduce((prev, current) =>
+                    (+prev.Operating_profit_optimize > +current.Operating_profit_optimize) ? prev : current
+                )
             })
         },
 
@@ -44,7 +56,7 @@ export const paletteMixin = {
 
         revenueTotalByOilPrice() {
             return this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-                let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
+                let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].stopped_uwis
 
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
@@ -70,7 +82,7 @@ export const paletteMixin = {
 
         overallExpendituresByOilPrice() {
             return this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-                let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
+                let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].stopped_uwis
 
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,

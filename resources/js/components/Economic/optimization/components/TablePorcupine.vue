@@ -72,10 +72,17 @@ export default {
   },
   computed: {
     filteredScenarios() {
-      return this.scenarios.filter(scenario =>
-          scenario.dollar_rate === this.scenario.dollar_rate &&
-          scenario.oil_price === this.scenario.oil_price
-      )
+      let scenarios = []
+
+      this.scenarios.forEach(scenario => {
+        if (+scenario.oil_price !== +this.scenario.oil_price) return
+
+        if (+scenario.dollar_rate !== +this.scenario.dollar_rate) return
+
+        scenarios.push(...scenario.variants)
+      })
+
+      return scenarios
     },
 
     filteredData() {
@@ -83,12 +90,12 @@ export default {
 
       this.scenarioVariations.salary_percents.forEach(salary_percent => {
         let salaryScenarios = this.filteredScenarios.filter(scenario =>
-            scenario.coef_cost_WR_payroll === salary_percent.value
+            +scenario.coef_cost_WR_payroll === +salary_percent.value
         )
 
         this.scenarioVariations.retention_percents.forEach(retention_percent => {
           let retentionScenarios = salaryScenarios.filter(scenario =>
-              scenario.coef_Fixed_nopayroll === retention_percent.value
+              +scenario.coef_Fixed_nopayroll === +retention_percent.value
           ).reverse()
 
           let series = []
@@ -96,7 +103,7 @@ export default {
           let seriesGtm = []
 
           retentionScenarios.forEach(scenario => {
-            let operating_profit = +scenario.Operating_profit_scenario
+            let operatingProfit = +scenario.Operating_profit_optimize
 
             let dimension = 1000000000
 
@@ -104,8 +111,8 @@ export default {
               uwi_count: scenario.uwi_count_optimize,
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
-              oil: +scenario.oil.original_value_optimized,
-              operating_profit: (operating_profit / dimension).toFixed(2),
+              oil: +scenario.oil_optimize,
+              operating_profit: (operatingProfit / dimension).toFixed(2),
             })
 
             if (scenario.gtms) {
@@ -113,8 +120,8 @@ export default {
                 uwi_count: scenario.uwi_count_optimize,
                 cat_1: scenario.percent_stop_cat_1,
                 cat_2: scenario.percent_stop_cat_2,
-                oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
-                operating_profit: ((operating_profit + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
+                oil: +scenario.oil_optimize + +scenario.gtm_oil,
+                operating_profit: ((operatingProfit + +scenario.gtm_operating_profit_12m) / dimension).toFixed(2),
               })
             }
           })
@@ -249,11 +256,4 @@ export default {
 </script>
 
 <style scoped>
-.border-grey {
-  border: 1px solid #454D7D
-}
-
-.bg-header {
-  background: #333975;
-}
 </style>

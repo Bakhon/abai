@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="customScroll"
+      <div class="customScroll d-flex flex-column"
            style="overflow-y: scroll; height: 450px">
         <div class="d-flex bg-blue">
           <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
@@ -62,8 +62,8 @@
         <div v-for="(item, index) in sumData"
              :key="index"
              :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
-             class="d-flex white-space-normal">
-          <div class="flex-50 px-3 py-2">
+             class="flex-grow-1 d-flex white-space-normal">
+          <div class="flex-50 px-3 py-2 d-flex align-items-center justify-content-center">
             {{ item.label }}
           </div>
 
@@ -72,12 +72,12 @@
             {{ item.dimension }}
           </div>
 
-          <div class="flex-25 px-3 py-2">
+          <div class="flex-25 px-3 py-2 d-flex align-items-center justify-content-center">
             {{ (+item.value.toFixed(2)).toLocaleString() }}
           </div>
         </div>
 
-        <div class="d-flex white-space-normal">
+        <div v-if="gtms.length" class="d-flex white-space-normal">
           <div class="flex-50 border-grey d-flex flex-column">
             <div v-for="(gtm, index) in gtms"
                  :key="gtm.id"

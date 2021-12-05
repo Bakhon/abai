@@ -20,7 +20,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('', 'EconomicOptimizationController@index')
                 ->name('economic.optimization');
             Route::get('get-data', 'EconomicOptimizationController@getData');
-            Route::get('get-scenarios-data', 'EconomicOptimizationController@getScenariosData');
         });
 
         Route::group([], function () {
@@ -67,10 +66,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('scenario/get-data', 'EconomicScenarioController@getData');
 
             Route::resource('scenario', 'EconomicScenarioController')
-                ->only(['index', 'store', 'destroy'])
+                ->only(['index', 'store', 'update', 'destroy'])
                 ->names([
                     'index' => 'economic.scenario.index',
                     'store' => 'economic.scenario.store',
+                    'update' => 'economic.scenario.update',
                     'destroy' => 'economic.scenario.destroy',
                 ]);
         });

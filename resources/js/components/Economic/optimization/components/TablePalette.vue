@@ -134,7 +134,7 @@ export default {
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
-                value: +(+item.oil.original_value_optimized / 1000).toFixed(2)
+                value: +(+item.oil / 1000).toFixed(2)
               }
             })
           },
@@ -142,9 +142,9 @@ export default {
             title: this.trans('economic_reference.stop_nrs'),
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
-              let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
+              let cat1 = +item.uwi_count_profitless_cat_1
 
-              let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
+              let cat2 = +item.uwi_count_profitless_cat_2
 
               return {
                 value: cat1 + cat2
@@ -156,7 +156,7 @@ export default {
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
-                value: +(+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
+                value: +(+item.Fixed_noWRpayroll_expenditures / 1000000).toFixed(2)
               }
             })
           },

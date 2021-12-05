@@ -151,14 +151,14 @@ export default {
       let sumKeys = Object.keys(sumValues)
 
       if (well.isShutdown) {
-        this.scenario.uwi_stop.push(uwi)
+        this.scenario.stopped_uwis.push(uwi)
 
         sumKeys.forEach(key => sumValues[key] = -sumValues[key])
       } else {
-        let index = this.scenario.uwi_stop.findIndex(well => well === uwi)
+        let index = this.scenario.stopped_uwis.findIndex(well => well === uwi)
 
         if (index !== -1) {
-          this.scenario.uwi_stop.splice(index, 1)
+          this.scenario.stopped_uwis.splice(index, 1)
         }
       }
 
@@ -179,7 +179,7 @@ export default {
             cat1: 0,
             cat2: 0,
             profitable: 0,
-            isShutdown: this.scenario.uwi_stop.includes(well.uwi)
+            isShutdown: this.scenario.stopped_uwis.includes(well.uwi)
           }
         }
 
@@ -250,7 +250,7 @@ export default {
             this.setWells()
           } else {
             Object.keys(this.wells).forEach(uwi => {
-              this.wells[uwi].isShutdown = scenario.uwi_stop.includes(uwi)
+              this.wells[uwi].isShutdown = scenario.stopped_uwis.includes(uwi)
             })
           }
 

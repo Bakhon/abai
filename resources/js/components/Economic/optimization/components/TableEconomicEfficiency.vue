@@ -43,49 +43,80 @@ export default {
   },
   computed: {
     data() {
-      return this.oilPrices.map(oilPrice =>
-          this.scenarios
-              .filter(
-                  scenario => scenario.oil_price === oilPrice &&
-                      scenario.dollar_rate === this.scenario.dollar_rate &&
-                      scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
-                      scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
-              )
-              .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
+      let scenariosByDollarRate = this.scenarios.filter(scenario =>
+          +scenario.dollar_rate === +this.scenario.dollar_rate
       )
+
+      return this.oilPrices.map(oilPrice => {
+        let variants = []
+
+        scenariosByDollarRate.forEach(scenario => {
+          if (+scenario.oil_price !== +oilPrice) return
+
+          scenario.variants.forEach(variant => {
+            if (+variant.coef_cost_WR_payroll !== +this.scenario.coef_cost_WR_payroll) return
+
+            if (+variant.coef_Fixed_nopayroll !== +this.scenario.coef_Fixed_nopayroll) return
+
+            variants.push(variant)
+          })
+        })
+
+        return variants.reduce((prev, current) =>
+            (+prev.Operating_profit_optimize > +current.Operating_profit_optimize) ? prev : current
+        )
+      })
     },
 
     chartSeries() {
       return [
         {
-          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.before_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.gross_income')}
+            ${this.trans('economic_reference.before_optimization')}
+          `,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Revenue_total.original_value : null)
+          data: this.chartData.map(x => x ? +x.Revenue_total : null)
         },
         {
-          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.after_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.gross_income')}
+            ${this.trans('economic_reference.after_optimization')}
+          `,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Revenue_total.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Revenue_total_optimize : null)
         },
         {
-          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.before_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.costs')}
+            ${this.trans('economic_reference.before_optimization')}
+          `,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures : null)
         },
         {
-          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.after_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.costs')}
+            ${this.trans('economic_reference.after_optimization')}
+          `,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures_optimize : null)
         },
         {
-          name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.before_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.operating_profit_loss')}
+            ${this.trans('economic_reference.before_optimization')}
+          `,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.Operating_profit.original_value : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit : null)
         },
         {
-          name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.after_optimization')}`,
+          name: `
+            ${this.trans('economic_reference.operating_profit_loss')}
+            ${this.trans('economic_reference.after_optimization')}
+          `,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.Operating_profit.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit_optimize : null)
         },
       ]
     },
@@ -133,7 +164,10 @@ export default {
             }
           },
           title: {
-            text: `${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}`,
+            text: `
+              ${this.trans('economic_reference.billion')}
+              ${this.trans('economic_reference.tenge')}
+            `,
           },
         },
       }
@@ -148,13 +182,7 @@ export default {
     },
 
     chartData() {
-      let data = this.data
-
-      data.unshift(null)
-
-      data.push(null)
-
-      return data
+      return [null, ...this.data, null]
     },
   }
 }

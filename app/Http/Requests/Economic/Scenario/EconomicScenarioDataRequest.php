@@ -12,6 +12,7 @@ class EconomicScenarioDataRequest extends FormRequest
             'sc_fa_id' => 'nullable|integer|min:1',
             'source_id' => 'nullable|integer|min:1',
             'gtm_kit_id' => 'nullable|integer|min:1',
+            'is_processed' => 'nullable|boolean'
         ];
     }
 }

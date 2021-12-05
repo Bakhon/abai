@@ -148,7 +148,7 @@ return array (
   'unit_of_measurement' => 'Единица измерения',
   'cat_1_trips' => 'Отключения категории 1',
   'cat_2_trips' => 'категории 2',
-  'avg_oil_price_brent' => 'Средняя цена на нефть при BRENT',
+  'avg_oil_price_brent' => 'Средняя цена на нефть марки BRENT',
   'nominally_variable_costs' => 'Условно-переменные расходы (сырье, материалы, энергия, за искл. расходов на ПРС)',
   'personnel_costs' => 'Затраты на персонал',
   'conditional_fixed_costs' => 'Условно-постоянные расходы',
@@ -450,4 +450,6 @@ return array (
   'create_scenario' => 'Создать сценарий',
   'params' => 'Параметры',
   'gtm_kit' => 'Набор ГТМ',
+  'input_params_for_opt' => 'Входные параметры для ОПТ',
+  'launch' => 'Запустить расчет',
 );

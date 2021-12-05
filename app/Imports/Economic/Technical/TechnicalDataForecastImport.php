@@ -58,10 +58,10 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::create([
-            'type_id' => EconomicDataLogType::DATA_FORECAST,
+        $this->logId = EconomicDataLog::firstOrCreate([
             'name' => $fileName,
-            'author_id' => $userId,
+            'type_id' => EconomicDataLogType::DATA_FORECAST,
+            'author_id' => $userId
         ])->id;
 
         $this->sourceId = TechnicalStructureSource::firstOrCreate([

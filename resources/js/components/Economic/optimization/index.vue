@@ -27,12 +27,12 @@
           :form="form"
           :scenario-variation="scenarioVariation"
           :scenario-variations="scenarioVariations"
-          @changeOrg="getData()"/>
+          @changeScenario="getData()"/>
     </div>
 
     <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
       <tables
-          v-if="res.scenarios.length > 1"
+          v-if="res.scenario.id"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :res="res"
@@ -54,8 +54,6 @@
 </template>
 
 <script>
-const fileDownload = require("js-file-download");
-
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import {formatValueMixin} from "../mixins/formatMixin";
@@ -66,7 +64,7 @@ import EconomicBlock from "./components/EconomicBlock";
 import CalculatedHeader from "./components/CalculatedHeader";
 import RemoteHeader from "./components/RemoteHeader";
 
-const optimizedColumns = [
+const optimizeColumns = [
   'Revenue_total',
   'Revenue_local',
   'Revenue_export',
@@ -81,29 +79,37 @@ const optimizedColumns = [
   'Overall_expenditures',
   'Overall_expenditures_full',
   'Operating_profit',
-];
-
-const optimizedScenarioColumns = [
   'Overall_expenditures',
   'Overall_expenditures_full',
-  'Operating_profit',
 ];
 
 const jsonColumns = [
-  'uwi_stop',
+  'stopped_uwis',
 ]
 
-let economicRes = {
-  scenarios: [{
-    scenario_id: null,
-    percent_stop_cat_1: 0,
-    percent_stop_cat_2: 0,
-    coef_Fixed_nopayroll: 0,
-    coef_cost_WR_payroll: 0,
-    dollar_rate: 0,
-    oil_price: 0,
-    uwi_stop: [],
-  }],
+let defaultRes = {
+  scenario: {
+    id: null,
+    name: '',
+    params: {
+      oil_prices: [],
+      dollar_rates: [],
+      fixed_nopayrolls: [],
+      cost_wr_payrolls: [],
+    },
+    results: [{
+      scenario_id: null,
+      dollar_rate: null,
+      oil_price: null,
+      variants: [{
+        coef_Fixed_nopayroll: null,
+        coef_cost_WR_payroll: null,
+        percent_stop_cat_1: 0,
+        percent_stop_cat_2: 0,
+        stopped_uwis: []
+      }],
+    }]
+  },
   dollarRate: {
     value: 0,
     url: ''
@@ -120,63 +126,31 @@ let economicRes = {
 }
 
 let columnPairs = (column) => {
-  if (optimizedScenarioColumns.includes(column)) {
-    return [
-      {
-        original: column,
-        optimized: `${column}_scenario`
-      },
-      {
-        original: `${column}_profitable`,
-        optimized: `${column}_scenario_profitable`
-      },
-      {
-        original: `${column}_profitless_cat_1`,
-        optimized: `${column}_scenario_profitless_cat_1`
-      },
-      {
-        original: `${column}_profitless_cat_2`,
-        optimized: `${column}_scenario_profitless_cat_2`
-      },
-    ]
-  }
-
   return [
     {
       original: column,
-      optimized: `${column}_optimized`
+      optimize: `${column}_optimize`
     },
     {
       original: `${column}_profitable`,
-      optimized: `${column}_profitable_optimized`
+      optimize: `${column}_profitable_optimize`
     },
     {
       original: `${column}_profitless_cat_1`,
-      optimized: `${column}_profitless_cat_1_optimized`
+      optimize: `${column}_profitless_cat_1_optimize`
     },
     {
       original: `${column}_profitless_cat_2`,
-      optimized: `${column}_profitless_cat_2_optimized`
+      optimize: `${column}_profitless_cat_2_optimize`
     },
   ]
 }
 
-let columnVariations = (column) => {
-  let pairs = columnPairs(column)
-
-  let variations = []
-
-  pairs.forEach(pair => variations.push(pair.original, pair.optimized))
-
-  return variations
-}
-
-optimizedColumns.forEach(column => {
+optimizeColumns.forEach(column => {
   columnPairs(column).forEach(pair => {
-    economicRes.scenarios[0][pair.original] = {
-      original_value: 0,
-      original_value_optimized: 0,
-    }
+    defaultRes.scenario.results[0].variants[0][pair.original] = 0
+
+    defaultRes.scenario.results[0].variants[0][pair.optimize] = 0
   })
 })
 
@@ -206,11 +180,15 @@ export default {
       },
       isFullScreen: false
     },
-    res: economicRes,
+    res: defaultRes,
     isVisibleWellChanges: false
   }),
   computed: {
     ...globalloadingState(['loading']),
+
+    url() {
+      return this.localeUrl('/economic/optimization/get-data')
+    },
 
     calculatedHeaders() {
       let headers = [
@@ -229,16 +207,18 @@ export default {
       ]
 
       return headers.map(header => {
-        let scenarioValue = this.scenario[header.key]
+        let value = this.scenario[header.key]
 
-        let formattedValue = this.formatValue(scenarioValue[this.scenarioValueKey])
+        let optimizedValue = this.scenario[`${header.key}_optimize`]
+
+        let formattedOptimizedValue = this.formatValue(optimizedValue)
 
         return {
           name: header.name,
-          baseValue: this.formatValue(scenarioValue.original_value).value,
-          value: formattedValue.value,
-          dimension: formattedValue.dimension,
-          percent: this.calcPercent(scenarioValue[this.scenarioValueKey], scenarioValue.original_value)
+          baseValue: this.formatValue(value).value,
+          value: formattedOptimizedValue.value,
+          dimension: formattedOptimizedValue.dimension,
+          percent: this.calcPercent(optimizedValue, value)
         }
       })
     },
@@ -268,8 +248,8 @@ export default {
           {
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
-            value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value.toFixed(2),
-            dimension: this.formatValue(this.scenario.oil[this.scenarioValueKey]).dimension,
+            value: this.formatValue(this.scenario.oil_optimize).value.toFixed(2),
+            dimension: this.formatValue(this.scenario.oil_optimize).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
             percent: +(this.formatValue(this.oilPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.oilPercent).dimension,
@@ -279,7 +259,7 @@ export default {
           {
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
-            value: +this.scenario.prs[this.scenarioValueKey],
+            value: +this.scenario.prs_optimize,
             dimension: this.trans('economic_reference.units'),
             percent: this.prsPercent,
             reversePercent: true
@@ -289,8 +269,8 @@ export default {
           {
             title: this.trans('economic_reference.liquid_production'),
             icon: 'oil_production.svg',
-            value: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).value.toFixed(2),
-            dimension: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).dimension,
+            value: this.formatValue(this.scenario.liquid_optimize).value.toFixed(2),
+            dimension: this.formatValue(this.scenario.liquid_optimize).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
             percent: +(this.formatValue(this.liquidPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.liquidPercent).dimension,
@@ -347,14 +327,26 @@ export default {
     },
 
     scenario() {
-      let scenario = this.res.scenarios.find(item =>
-          item.oil_price === this.scenarioVariation.oil_price &&
-          item.dollar_rate === this.scenarioVariation.dollar_rate &&
-          item.coef_cost_WR_payroll === this.scenarioVariation.salary_percent &&
-          item.coef_Fixed_nopayroll === this.scenarioVariation.retention_percent &&
-          item.percent_stop_cat_1 === this.scenarioVariation.optimization_percent.cat_1 &&
-          item.percent_stop_cat_2 === this.scenarioVariation.optimization_percent.cat_2
-      ) || this.res.scenarios[0]
+      let percentStopCat1 = +this.scenarioVariation.optimization_percent.cat_1
+
+      let percentStopCat2 = +this.scenarioVariation.optimization_percent.cat_2
+
+      let scenario = this.res.scenario.results
+          .find(result =>
+              +result.oil_price === +this.scenarioVariation.oil_price &&
+              +result.dollar_rate === +this.scenarioVariation.dollar_rate
+          )
+          .variants
+          .find(variant =>
+              +variant.coef_cost_WR_payroll === +this.scenarioVariation.salary_percent &&
+              +variant.coef_Fixed_nopayroll === +this.scenarioVariation.retention_percent &&
+              +variant.percent_stop_cat_1 === percentStopCat1 &&
+              +variant.percent_stop_cat_2 === percentStopCat2
+          )
+
+      if (!scenario) {
+        return this.res.scenario.results[0].variants[0]
+      }
 
       jsonColumns.forEach(column => {
         if (typeof scenario[column] === 'string') {
@@ -367,73 +359,62 @@ export default {
 
     scenarioVariations() {
       let variations = {
-        oil_prices: {},
-        dollar_rates: {},
-        salary_percents: {},
-        retention_percents: {},
-        optimization_percents: {},
+        oil_prices: this.res.scenario.params.oil_prices.map(item => item.value),
+        dollar_rates: this.res.scenario.params.dollar_rates.map(item => item.value),
+        salary_percents: this.res.scenario.params.cost_wr_payrolls.map(item => {
+          return {
+            label: `${item.value * 100}%`,
+            value: item.value,
+          }
+        }),
+        retention_percents: this.res.scenario.params.fixed_nopayrolls.map(item => {
+          return {
+            label: `${item.value * 100}%`,
+            value: item.value,
+          }
+        }),
+        optimization_percents: [],
       }
 
-      this.res.scenarios.forEach(item => {
-        variations.oil_prices[item.oil_price] = 1
-
-        variations.dollar_rates[item.dollar_rate] = 1
-
-        variations.salary_percents[item.coef_cost_WR_payroll] = 1
-
-        variations.retention_percents[item.coef_Fixed_nopayroll] = 1
-
-        variations.optimization_percents[`${item.percent_stop_cat_1}-${item.percent_stop_cat_2}`] = 1
-      })
-
-      variations.oil_prices = Object.keys(variations.oil_prices)
-
-      variations.dollar_rates = Object.keys(variations.dollar_rates)
-
-      variations.salary_percents = Object.keys(variations.salary_percents).map(value => ({
-        label: `${value * 100}%`,
-        value: value,
-      }))
-
-      variations.retention_percents = Object.keys(variations.retention_percents).map(value => ({
-        label: `${value * 100}%`,
-        value: value,
-      }))
-
-      variations.optimization_percents = Object.keys(variations.optimization_percents).map((value) => {
-        let values = value.split('-')
-
-        let cat1 = values[0]
-
-        let cat2 = values[1]
-
-        return {
-          label: `${this.trans('economic_reference.cat_1_trips')}: ${cat1 * 100}%, ` +
-              `${this.trans('economic_reference.cat_2_trips')}: ${cat2 * 100}%`,
+      for (let percentStopCat1 = 0; percentStopCat1 <= 100; percentStopCat1 += 20) {
+        variations.optimization_percents.push({
+          label: `
+            ${this.trans('economic_reference.cat_1_trips')}: ${percentStopCat1}%,
+            ${this.trans('economic_reference.cat_2_trips')}: 0%
+          `,
           value: {
-            cat_1: cat1,
-            cat_2: cat2
+            cat_1: percentStopCat1 / 100,
+            cat_2: 0
           }
-        }
-      })
+        })
+      }
+
+      for (let percentStopCat2 = 10; percentStopCat2 <= 100; percentStopCat2 += 10) {
+        variations.optimization_percents.push({
+          label: `
+            ${this.trans('economic_reference.cat_1_trips')}: 100%,
+            ${this.trans('economic_reference.cat_2_trips')}: ${percentStopCat2}%
+          `,
+          value: {
+            cat_1: 1,
+            cat_2: percentStopCat2 / 100
+          }
+        })
+      }
 
       return variations
     },
 
-    scenarioValueKey() {
-      return this.form.scenario_id ? 'original_value_optimized' : 'original_value'
-    },
-
     oilPercent() {
-      return +this.scenario.oil.original_value - +this.scenario.oil.original_value_optimized
+      return +this.scenario.oil - +this.scenario.oil_optimize
     },
 
     liquidPercent() {
-      return +this.scenario.liquid.original_value - +this.scenario.liquid.original_value_optimized
+      return +this.scenario.liquid - +this.scenario.liquid_optimize
     },
 
     prsPercent() {
-      return +this.scenario.prs.original_value_optimized - +this.scenario.prs.original_value
+      return +this.scenario.prs_optimize - +this.scenario.prs
     },
 
     avgOilPercent() {
@@ -460,19 +441,31 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.url, {params: this.form})
+
+        this.scenarioVariation.dollar_rate = data.scenario.params.dollar_rates[0].value
+
+        this.scenarioVariation.oil_price = data.scenario.params.oil_prices[0].value
+
+        this.scenarioVariation.salary_percent = data.scenario.params.cost_wr_payrolls[0].value
+
+        this.scenarioVariation.retention_percent = data.scenario.params.fixed_nopayrolls[0].value
+
+        this.scenarioVariation.optimization_percent.cat_1 = 0
+
+        this.scenarioVariation.optimization_percent.cat_2 = 0
 
         this.res = data
       } catch (e) {
-        this.res = economicRes
+        this.res = defaultRes
 
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
 
     updateTab(tab) {
@@ -493,36 +486,36 @@ export default {
           : (last - prev) * 100 / prev
     },
 
-    mrpValue(optimized = true) {
+    mrpValue(isOptimize = true) {
       if (!this.form.scenario_id) {
-        optimized = false
+        isOptimize = false
       }
 
-      let workedDays = optimized
-          ? +this.scenario.days_worked.original_value_optimized
-          : +this.scenario.days_worked.original_value
+      let workedDays = isOptimize
+          ? +this.scenario.days_worked_optimize
+          : +this.scenario.days_worked
 
-      let prs = optimized
-          ? +this.scenario.prs.original_value_optimized
-          : +this.scenario.prs.original_value
+      let prs = isOptimize
+          ? +this.scenario.prs_optimize
+          : +this.scenario.prs
 
       return prs
           ? (workedDays / prs).toFixed(2)
           : 0
     },
 
-    waterCutValue(optimized = true) {
+    waterCutValue(isOptimize = true) {
       if (!this.form.scenario_id) {
-        optimized = false
+        isOptimize = false
       }
 
-      let liquid = optimized
-          ? +this.scenario.liquid.original_value_optimized
-          : +this.scenario.liquid.original_value
+      let liquid = isOptimize
+          ? +this.scenario.liquid_optimize
+          : +this.scenario.liquid
 
-      let oil = optimized
-          ? +this.scenario.oil.original_value_optimized
-          : +this.scenario.oil.original_value
+      let oil = isOptimize
+          ? +this.scenario.oil_optimize
+          : +this.scenario.oil
 
       // TODO: посмотреть более точную формулу
       return liquid
@@ -530,54 +523,54 @@ export default {
           : 0
     },
 
-    avgOilValue(optimized = true) {
+    avgOilValue(isOptimize = true) {
       if (!this.form.scenario_id) {
-        optimized = false
+        isOptimize = false
       }
 
-      let days_worked = optimized
-          ? +this.scenario.days_worked.original_value_optimized
-          : +this.scenario.days_worked.original_value
+      let days_worked = isOptimize
+          ? +this.scenario.days_worked_optimize
+          : +this.scenario.days_worked
 
-      let oil = optimized
-          ? +this.scenario.oil.original_value_optimized
-          : +this.scenario.oil.original_value
+      let oil = isOptimize
+          ? +this.scenario.oil_optimize
+          : +this.scenario.oil
 
       return days_worked
           ? (oil / days_worked).toFixed(2)
           : 0
     },
 
-    avgLiquidValue(optimized = true, fractionDigits = 2) {
+    avgLiquidValue(isOptimize = true, fractionDigits = 2) {
       if (!this.form.scenario_id) {
-        optimized = false
+        isOptimize = false
       }
 
-      let days_worked = optimized
-          ? +this.scenario.days_worked.original_value_optimized
-          : +this.scenario.days_worked.original_value
+      let days_worked = isOptimize
+          ? +this.scenario.days_worked_optimize
+          : +this.scenario.days_worked
 
-      let liquid = optimized
-          ? +this.scenario.liquid.original_value_optimized
-          : +this.scenario.liquid.original_value
+      let liquid = isOptimize
+          ? +this.scenario.liquid_optimize
+          : +this.scenario.liquid
 
       return days_worked
           ? (liquid / days_worked).toFixed(fractionDigits)
           : 0
     },
 
-    avgPrsValue(optimized = true, fractionDigits = 2) {
+    avgPrsValue(isOptimize = true, fractionDigits = 2) {
       if (!this.form.scenario_id) {
-        optimized = false
+        isOptimize = false
       }
 
-      let uwi_count = optimized
-          ? +this.scenario.uwi_count.original_value_optimized
-          : +this.scenario.uwi_count.original_value
+      let uwi_count = isOptimize
+          ? +this.scenario.uwi_count_optimize
+          : +this.scenario.uwi_count
 
-      let prs = optimized
-          ? +this.scenario.prs.original_value_optimized
-          : +this.scenario.prs.original_value
+      let prs = isOptimize
+          ? +this.scenario.prs_optimize
+          : +this.scenario.prs
 
       return uwi_count
           ? (prs / uwi_count).toFixed(fractionDigits)
@@ -587,14 +580,6 @@ export default {
 };
 </script>
 <style scoped>
-.font-size-12px {
-  font-size: 12px;
-}
-
-.text-grey {
-  color: #656A8A
-}
-
 .mb-10px {
   margin-bottom: 10px;
 }

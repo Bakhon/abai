@@ -8,38 +8,65 @@
         v-model="form.scenario_id"
         id="scenario"
         class="form-control text-white border-0 bg-dark-blue"
-        @change="$emit('change')">
+        @change="toggleScenario()">
+      <option :value="null" disabled selected>
+        {{ trans('economic_reference.select_item') }}
+      </option>
+
       <option
-          v-for="item in scenarios"
-          :key="item.value"
-          :value="item.value">
-        {{ item.label }}
+          v-for="scenario in scenarios"
+          :key="scenario.id"
+          :value="scenario.id">
+        {{ scenario.name }}
       </option>
     </select>
   </div>
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 export default {
   name: "SelectScenario",
   props: {
     form: {
       required: true,
       type: Object
+    },
+    fetchParams: {
+      required: false,
+      type: Object
+    }
+  },
+  data: () => ({
+    scenarios: []
+  }),
+  created() {
+    this.getScenarios()
+  },
+  methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
+    async getScenarios() {
+      this.SET_LOADING(true)
+
+      const {data} = await this.axios.get(this.url, {params: this.fetchParams})
+
+      this.scenarios = data
+
+      this.SET_LOADING(false)
+    },
+
+    toggleScenario() {
+      this.$emit(
+          'change',
+          this.scenarios.find(scenario => scenario.id === this.form.scenario_id)
+      )
     }
   },
   computed: {
-    scenarios() {
-      return [
-        {
-          label: this.trans('economic_reference.basic_variant'),
-          value: null,
-        },
-        {
-          label: this.trans('economic_reference.test_scenario'),
-          value: 6,
-        }
-      ]
+    url() {
+      return this.localeUrl('/economic/scenario/get-data')
     },
   }
 }
