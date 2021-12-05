@@ -136,10 +136,10 @@ class EconomicScenarioJob implements ShouldQueue
                 ->firstOrFail()
                 ->well_id;
 
-            foreach ($variants as &$scenario) {
-                $scenario["gtm_well_id"] = $wellId;
+            foreach ($variants as &$variant) {
+                $variant["gtm_well_id"] = $wellId;
 
-                $scenario = $this->addGtmsToScenario($scenario, $gtms);
+                $variant = $this->addGtmsToScenario($variant, $gtms);
             }
         }
 
