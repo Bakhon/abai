@@ -31,25 +31,27 @@ export default {
     async getData() {
       this.SET_LOADING(true)
 
-      this.data = [this.headers]
+      this.data = [this.headers.map(header => header.label)]
 
-      try {
-        const {data} = await this.axios.get(`${this.url}/get-data`)
+      const {data} = await this.axios.get(`${this.url}/get-data`)
 
-        data.forEach(kit => {
-          this.data.push([
-            kit.id,
-            kit.name,
-            kit.economic_log ? kit.economic_log.name : '',
-            kit.technical_log ? kit.technical_log.name : '',
-            kit.user ? `${kit.created_at} ${kit.user.name}` : '',
-            ''
-          ])
+      data.forEach(item => {
+        let row = []
+
+        this.headers.forEach(header => {
+          if (header.isUser) {
+            return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
+          }
+
+          if (header.isRelationName) {
+            return row.push(item[header.key] ? item[header.key].name : '')
+          }
+
+          row.push(item[header.key])
         })
 
-      } catch (e) {
-        console.log(e)
-      }
+        this.data.push(row)
+      })
 
       this.SET_LOADING(false)
     },
@@ -94,12 +96,33 @@ export default {
 
     headers() {
       return [
-        'id',
-        this.trans('economic_reference.name'),
-        this.trans('economic_reference.economic_data'),
-        this.trans('economic_reference.technical_data'),
-        this.trans('economic_reference.added_date_author'),
-        '',
+        {
+          label: 'id',
+          key: 'id',
+        },
+        {
+          label: this.trans('economic_reference.name'),
+          key: 'name',
+        },
+        {
+          label: this.trans('economic_reference.economic_data'),
+          key: 'economic_log',
+          isRelationName: true
+        },
+        {
+          label: this.trans('economic_reference.technical_data'),
+          key: 'technical_log',
+          isRelationName: true
+        },
+        {
+          label: this.trans('economic_reference.added_date_author'),
+          key: 'user',
+          isUser: true
+        },
+        {
+          label: '',
+          key: 'deleted_btn',
+        },
       ]
     },
   }

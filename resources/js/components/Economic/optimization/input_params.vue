@@ -23,7 +23,7 @@
 
       <table-costs
           v-if="isVisibleEconomicTable"
-          class="mt-2"/>
+          class="mt-3"/>
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
@@ -49,7 +49,7 @@
 
       <table-technical-data-forecast
           v-if="isVisibleTechTable"
-          class="mt-2"/>
+          class="mt-3"/>
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
@@ -70,7 +70,7 @@
 
       <table-scenario
           v-if="isVisibleScenarioTable"
-          ref="kits"
+          ref="scenarios"
           class="mt-3"/>
     </div>
 
@@ -82,7 +82,8 @@
 
       <scenario-form
           v-if="isVisibleScenarioForm"
-          class="mt-3"/>
+          class="mt-3"
+          @created="updateScenarios()"/>
     </div>
   </div>
 </template>
@@ -92,6 +93,7 @@ import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
 import TableCosts from "./components/input/TableCosts";
 import TableTechnicalDataForecast from "./components/input/TableTechnicalDataForecast";
+import TableScenario from "./components/input/TableScenario";
 import ScenarioForm from "./components/input/ScenarioForm";
 
 export default {
@@ -99,6 +101,7 @@ export default {
   components: {
     TableCosts,
     TableTechnicalDataForecast,
+    TableScenario,
     ScenarioForm,
   },
   data: () => ({
@@ -108,6 +111,17 @@ export default {
     isVisibleScenarioTable: false,
     isVisibleScenarioForm: false,
   }),
+  methods: {
+    updateScenarios() {
+      this.isVisibleScenarioForm = false
+
+      if (!this.isVisibleScenarioTable) {
+        return this.isVisibleScenarioTable = true
+      }
+
+      this.$refs['scenarios'].getData()
+    }
+  }
 };
 </script>
 <style scoped>

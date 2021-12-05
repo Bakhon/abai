@@ -47,7 +47,7 @@ export default {
             return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
           }
 
-          if (header.isObjectName) {
+          if (header.isRelationName) {
             return row.push(item[header.key] ? item[header.key].name : '')
           }
 
@@ -91,7 +91,7 @@ export default {
         {
           label:this.trans('forecast.gu'),
           key: 'gu',
-          isObjectName: true
+          isRelationName: true
         },
         {
           label:this.trans('forecast.well'),
@@ -100,7 +100,7 @@ export default {
         {
           label:this.trans('forecast.pes'),
           key: 'pes',
-          isObjectName: true
+          isRelationName: true
         },
         {
           label:this.trans('forecast.date'),

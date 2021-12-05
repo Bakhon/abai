@@ -23,7 +23,7 @@
 
       <table-analysis-param
           v-if="isVisibleEconomicTable"
-          class="mt-2"/>
+          class="mt-3"/>
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
@@ -49,7 +49,7 @@
 
       <table-technical-well-forecast
           v-if="isVisibleTechTable"
-          class="mt-2"/>
+          class="mt-3"/>
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
@@ -103,6 +103,8 @@ export default {
   }),
   methods: {
     updateKits() {
+      this.isVisibleKitForm = false
+
       if (!this.isVisibleKitTable) {
         return this.isVisibleKitTable = true
       }

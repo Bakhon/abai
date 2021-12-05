@@ -51,7 +51,7 @@ export default {
             return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
           }
 
-          if (header.isObjectName) {
+          if (header.isRelationName) {
             return row.push(item[header.key] ? item[header.key].name : '')
           }
 
@@ -95,12 +95,12 @@ export default {
         {
           label: this.trans(`economic_reference.company`),
           key: 'company',
-          isObjectName: true
+          isRelationName: true
         },
         {
           label: this.trans(`economic_reference.pes`),
           key: 'pes',
-          isObjectName: true
+          isRelationName: true
         },
         {
           label: this.trans(`economic_reference.date`),

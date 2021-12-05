@@ -3,7 +3,6 @@
     <select-log
         :form="form"
         :fetch-params="{type_id: EconomicDataLogTypeModel.ANALYSIS_PARAM}"
-        class="mt-3"
         @change="getData()"/>
 
     <vue-table-dynamic

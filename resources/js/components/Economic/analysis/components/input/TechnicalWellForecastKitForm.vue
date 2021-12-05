@@ -35,7 +35,7 @@
           form-key="technical_log_id"/>
     </div>
 
-    <div v-if="form.name && form.economic_log_id && form.technical_log_id"
+    <div v-show="form.technical_log_id"
          class="text-center mt-3">
       <save-button @click.native="saveForm"/>
     </div>
@@ -52,7 +52,7 @@ import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel
 import {TechnicalWellForecastKitModel} from "../../../models/TechnicalWellForecastKitModel";
 
 export default {
-  name: "TechnicalWellForecastForm",
+  name: "TechnicalWellForecastKitForm",
   components: {
     SelectLog,
     SaveButton
