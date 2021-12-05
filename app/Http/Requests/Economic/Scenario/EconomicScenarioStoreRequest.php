@@ -12,12 +12,12 @@ class EconomicScenarioStoreRequest extends FormRequest
             'name' => 'required|string',
             'sc_fa_id' => 'required|integer|min:1',
             'source_id' => 'required|integer|min:1',
-            'gtm_log_id' => 'required|integer|min:1',
+            'gtm_kit_id' => 'nullable|integer|min:1',
 
             'params' => 'required|array',
 
-            'params.fixed_payroll' => 'required|array',
-            'params.fixed_payroll.*.value' => 'required|numeric|min:0|max:1',
+            'params.cost_wr_payrolls' => 'required|array',
+            'params.cost_wr_payrolls.*.value' => 'required|numeric|min:0|max:1',
 
             'params.fixed_nopayrolls' => 'required|array',
             'params.fixed_nopayrolls.*.value' => 'required|numeric|min:0|max:1',

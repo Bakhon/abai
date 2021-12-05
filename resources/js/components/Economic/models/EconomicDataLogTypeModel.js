@@ -8,4 +8,6 @@ export class EconomicDataLogTypeModel {
     static ANALYSIS_PARAM = 4;
 
     static DATA_FORECAST = 5;
+
+    static GTM_VALUE = 6;
 }

@@ -5,37 +5,66 @@ namespace App\Http\Controllers\Economic;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\Scenario\EconomicScenarioDataRequest;
 use App\Http\Requests\Economic\Scenario\EconomicScenarioStoreRequest;
-use App\Http\Resources\EcoRefsScenarioResource;
 use App\Models\Refs\EcoRefsScenario;
+use App\Models\Refs\EcoRefsScFa;
+use Illuminate\Support\Facades\DB;
 
 class EconomicScenarioController extends Controller
 {
-    public function store(EconomicScenarioStoreRequest $request): EcoRefsScenarioResource
+    public function store(EconomicScenarioStoreRequest $request): EcoRefsScenario
     {
-        $scenario = EcoRefsScenario::create($request->validated());
+        EcoRefsScFa::query()
+            ->where([
+                'id' => $request->sc_fa_id,
+                'is_forecast' => true
+            ])
+            ->firstOrFail();
 
-        $scenario->load('scFa');
+        $scenario = new EcoRefsScenario($request->validated());
 
-        return EcoRefsScenarioResource::make($scenario);
+        $scenario->user_id = auth()->id();
+
+        $scenario->save();
+
+        return $scenario;
     }
 
     public function destroy(int $id): int
     {
-        return (int)EcoRefsScenario::query()
-            ->whereId($id)
-            ->delete();
+        return DB::transaction(function () use ($id) {
+            $scenario = EcoRefsScenario::query()
+                ->whereId($id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $scenario->results()->delete();
+
+            return (int)$scenario->delete();
+        });
     }
 
-    public function getData(): array
+    public function getData(EconomicScenarioDataRequest $request): array
     {
-        $data = EcoRefsScenario::query()
-            ->with('scFa')
-            ->oldest('id')
-            ->get();
+        $query = EcoRefsScenario::query();
 
-        return [
-            'data' => EcoRefsScenarioResource::collection($data)
-        ];
+        if ($request->sc_fa_id) {
+            $query->whereScFaId($request->sc_fa_id);
+        }
+
+        if ($request->source_id) {
+            $query->whereSourceId($request->source_id);
+        }
+
+        if ($request->gtm_kit_id) {
+            $query->whereGtmKitId($request->gtm_kit_id);
+        }
+
+        return EcoRefsScenario::query()
+            ->with(['scFa', 'source', 'gtmKit', 'user'])
+            ->latest('id')
+            ->get()
+            ->toArray();
     }
 }

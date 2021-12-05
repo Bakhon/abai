@@ -30,6 +30,14 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 Route::get('upload-excel', 'EconomicGtmController@uploadExcel');
                 Route::post('import-excel', 'EconomicGtmController@importExcel')
                     ->name('economic.gtm.import');
+
+                Route::group(['prefix' => 'kit'], function () {
+                    Route::post('', 'EconomicGtmKitController@store');
+
+                    Route::delete('{kit_id}', 'EconomicGtmKitController@destroy');
+
+                    Route::get('get-data', 'EconomicGtmKitController@getData');
+                });
             });
 
             Route::resource('gtm', 'EconomicGtmController')

@@ -448,4 +448,6 @@ return array (
   'thousand_t' => 'тыс. т',
   'input_params' => 'Входные параметры',
   'create_scenario' => 'Создать сценарий',
+  'params' => 'Параметры',
+  'gtm_kit' => 'Набор ГТМ',
 );

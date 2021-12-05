@@ -11,91 +11,67 @@
           class="form-control">
     </div>
 
-    <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.select_scenario_data') }}
-    </h5>
-
-    <select-sc-fa :form="form" is-forecast/>
-
-    <div v-if="form.sc_fa_id">
+    <div v-show="form.name">
       <h5 class="text-secondary mt-3">
-        {{ trans('economic_reference.oil_prices') }}
+        {{ trans('economic_reference.economic_data') }}
       </h5>
 
-      <div v-for="(price, index) in form.params.oil_prices"
-           :key="`oil_${index}`"
-           class="form-group d-flex">
-        <input v-model="price.value"
-               type="numeric"
-               min="0"
-               max="1"
-               class="form-control">
+      <select-sc-fa :form="form" is-forecast/>
+    </div>
 
-        <delete-button
-            class="ml-2"
-            @click.native="deleteRelation(index, 'oil_prices')"/>
-      </div>
-
-      <add-button @click.native="addOilPrice"/>
-
+    <div v-show="form.sc_fa_id">
       <h5 class="text-secondary mt-3">
-        {{ trans('economic_reference.course_prices') }}
+        {{ trans('economic_reference.technical_data') }}
       </h5>
 
-      <div v-for="(price, index) in form.params.course_prices"
-           :key="`course_${index}`"
-           class="form-group d-flex">
-        <input v-model="price.value"
-               type="numeric"
-               min="0"
-               max="1"
-               class="form-control">
+      <select-source :form="form"/>
+    </div>
 
-        <delete-button
-            class="ml-2"
-            @click.native="deleteRelation(index, 'course_prices')"/>
-      </div>
-
-      <add-button @click.native="addCoursePrice"/>
-
+    <div v-show="form.source_id">
       <h5 class="text-secondary mt-3">
-        {{ trans('economic_reference.optimization_percents') }}
+        {{ trans('economic_reference.gtm_kit') }}
       </h5>
 
-      <div v-for="(optimization, index) in form.params.optimizations"
-           :key="`optimization_${index}`"
-           class="form-group d-flex align-items-end">
-        <div v-for="optimizationKey in EcoRefsScenarioModel.optimizationKeys"
-             :key="optimizationKey"
-             class="flex-grow-1 mr-2">
-          <label :for="`optimization_${index}_${optimizationKey}`"
-                 class="text-secondary">
-            {{ optimizationKey }}
-          </label>
-          <input v-model="optimization[optimizationKey]"
-                 :id="`optimization_${index}_${optimizationKey}`"
+      <select-gtm-kit :form="form"/>
+    </div>
+
+    <div v-show="form.source_id" class="text-center">
+      <div v-for="relation in scenarioRelations"
+           :key="relation.singleKey"
+           class="text-left">
+        <h5 class="text-secondary mt-3">
+          {{ relation.title }}
+        </h5>
+
+        <div v-for="(item, itemIndex) in form.params[relation.multipleKey]"
+             :key="`${relation.singleKey}_${itemIndex}`"
+             class="form-group d-flex">
+          <input v-model="item.value"
+                 :min="relation.minValue"
+                 :max="relation.maxValue"
+                 :stel="relation.step"
                  type="numeric"
-                 min="0"
-                 max="1"
                  class="form-control">
+
+          <delete-button
+              class="ml-2"
+              @click.native="deleteRelation(itemIndex, relation.multipleKey)"/>
         </div>
 
-        <delete-button
-            @click.native="deleteRelation(index, 'optimizations')"/>
+        <add-button @click.native="addRelation(relation)"/>
       </div>
 
-      <add-button @click.native="addOptimization"/>
-
-      <div class="text-center">
-        <save-button @click.native="saveForm"/>
-      </div>
+      <save-button @click.native="saveForm"/>
     </div>
   </div>
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
 
 import SelectScFa from "../../../components/SelectScFa";
+import SelectSource from "../../../components/SelectSource";
+import SelectGtmKit from "../SelectGtmKit";
 import AddButton from "../../../components/AddButton";
 import DeleteButton from "../../../components/DeleteButton";
 import SaveButton from "../../../components/SaveButton";
@@ -106,6 +82,8 @@ export default {
   name: "ScenarioForm",
   components: {
     SelectScFa,
+    SelectSource,
+    SelectGtmKit,
     AddButton,
     DeleteButton,
     SaveButton
@@ -115,16 +93,10 @@ export default {
     form: new EcoRefsScenarioModel().form
   }),
   methods: {
-    addOilPrice() {
-      this.form.params.oil_prices.push(new EcoRefsScenarioModel().oil_price)
-    },
+    ...globalloadingMutations(['SET_LOADING']),
 
-    addCoursePrice() {
-      this.form.params.course_prices.push(new EcoRefsScenarioModel().course_price)
-    },
-
-    addOptimization() {
-      this.form.params.optimizations.push(new EcoRefsScenarioModel().optimization)
+    addRelation({multipleKey, singleKey}) {
+      this.form.params[multipleKey].push(new EcoRefsScenarioModel()[singleKey])
     },
 
     deleteRelation(index, key) {
@@ -134,8 +106,7 @@ export default {
     },
 
     async saveForm() {
-
-      this.loading = true
+      this.SET_LOADING(true)
 
       try {
         const {data} = await this.axios.post(this.localeUrl('/economic/scenario'), this.form)
@@ -147,12 +118,45 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false)
+    }
+  },
+  computed: {
+    scenarioRelations() {
+      return [
+        {
+          title: this.trans('economic_reference.oil_prices'),
+          singleKey: 'oil_price',
+          multipleKey: 'oil_prices',
+          minValue: 0
+        },
+        {
+          title: this.trans('economic_reference.course_prices'),
+          singleKey: 'dollar_rate',
+          multipleKey: 'dollar_rates',
+          minValue: 0
+        },
+        {
+          title: 'fixed_nopayrolls',
+          singleKey: 'fixed_nopayroll',
+          multipleKey: 'fixed_nopayrolls',
+          minValue: 0,
+          maxValue: 1,
+          step: 0.01
+        },
+        {
+          title: 'cost_wr_payrolls',
+          singleKey: 'cost_wr_payroll',
+          multipleKey: 'cost_wr_payrolls',
+          minValue: 0,
+          maxValue: 1,
+          step: 0.01
+        }
+      ]
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

@@ -48,8 +48,6 @@ class EconomicDataLogController extends Controller
                 case EconomicDataLogType::GTM:
                     EcoRefsGtm::query()->whereLogId($log->id)->delete();
 
-                    EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
-
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
                     TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->delete();
@@ -65,6 +63,10 @@ class EconomicDataLogController extends Controller
                     break;
                 case EconomicDataLogType::DATA_FORECAST:
                     TechnicalDataForecast::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::GTM_VALUE:
+                    EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
 
                     break;
             }

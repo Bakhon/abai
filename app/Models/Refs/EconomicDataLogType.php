@@ -16,6 +16,9 @@ class EconomicDataLogType extends Model
 
     const DATA_FORECAST = 5;
 
+    const GTM_VALUE = 6;
+
+
     public static function ids(): array
     {
         return [
@@ -24,6 +27,7 @@ class EconomicDataLogType extends Model
             self::WELL_FORECAST,
             self::ANALYSIS_PARAM,
             self::DATA_FORECAST,
+            self::GTM_VALUE,
         ];
     }
 
