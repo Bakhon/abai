@@ -213,12 +213,12 @@ export default {
             let summary = template;
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
-            summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
+            summary['waterDebit'] = _.meanBy(filtered, 'waterDebit');
             summary['waterCut'] = _.meanBy(filtered, 'waterCut');
             if (!summary['waterCut']) {
                 summary['waterCut'] = 0;
             }
-            summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
+            summary['oilDebit'] = _.meanBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
