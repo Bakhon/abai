@@ -43,7 +43,7 @@
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit></kpd-modal-kpd-edit>
+        <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager"></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -69,7 +69,7 @@ export default {
             },
         };
     },
-    props: ['kpdList'],
+    props: ['kpdList','managers','corporateManager'],
 }
 
 

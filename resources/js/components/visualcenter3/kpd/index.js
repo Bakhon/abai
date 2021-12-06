@@ -344,9 +344,15 @@ export default {
             kpdType: {
                 'ceo2Decomposition': 3
             },
-            corporateManager: {},
+            corporateManager: {
+                'name': null,
+                'title': null,
+                'avatar': null,
+                'year': moment().year()
+            },
             managers: [],
-            deputy: []
+            deputy: [],
+            strategicKpdList: []
         };
     },
     methods: {
@@ -373,6 +379,21 @@ export default {
                 return [];
             }
             return response.data;
+        },
+        getKpdByType(type,id) {
+            let kpdList = [];
+            if (!id) {
+                return _.filter(this.kpdList, (item) => {
+                    return JSON.parse(item.type).alias === type;
+                });
+            }
+            _.forEach(this.kpdList, (kpd) => {
+                let parsedType = JSON.parse(kpd.type);
+                if (parsedType.alias === type && parsedType.id === id) {
+                    kpdList.push(kpd);
+                }
+            });
+            return kpdList;
         },
         getProgressBarFillingColor(progress) {
             if (progress <= 70) {
@@ -425,9 +446,17 @@ export default {
     },
     async created() {
         this.SET_LOADING(true);
-        this.corporateManager = await this.getCorporateManager();
-        this.managers = await this.getAllManagers('manager');
-        this.deputy = await this.getAllManagers('deputy');
+        let corporateManager = await this.getCorporateManager();
+        if (Object.keys(corporateManager).length > 0) {
+            this.corporateManager = corporateManager;
+        }
+
+        this.corporateManager['type'] = {'alias': 'corporateManager', 'id': this.corporateManager['id']};
+        this.managers = await this.getAllManagers({'alias':'manager','id': null});
+        _.forEach(this.managers, (manager) => {
+            manager['type'] = {'alias': 'manager', 'id': manager.id};
+        });
+        this.deputy = await this.getAllManagers({'alias':'deputy','id': null});
         this.selectedManager = this.kpdDecompositionA;
         _.forEach(this.kpdCeoDecompositionB, (master) => {
             _.forEach(master.kpd, (kpd) => {
@@ -438,5 +467,6 @@ export default {
         this.kpdList = await this.getAllKpd();
         this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === this.kpdType.ceo2Decomposition);
         this.SET_LOADING(false);
+        this.strategicKpdList = this.getKpdByType('strategic');
     },
 }

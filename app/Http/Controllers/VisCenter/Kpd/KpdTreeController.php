@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\VisCenter\Kpd\KpdTreeCatalog;
 use App\Models\VisCenter\Kpd\KpdCorporateManager;
 use App\Models\VisCenter\Kpd\KpdManagers;
+use App\Models\VisCenter\Kpd\KpdElements;
 use Carbon\Carbon;
 
 class KpdTreeController extends Controller
@@ -89,6 +90,30 @@ class KpdTreeController extends Controller
 
     public function storeKpd(Request $request)
     {
-        KpdTreeCatalog::create($request->request->all());
+        $elements = $request->elements;
+        $allParams = $request->request->all();
+        $parentId = null;
+
+        if (isset($allParams['id'])) {
+            $parentId = $allParams['id'];
+            unset($allParams['id']);
+        }
+        unset($allParams['elements']);
+
+        $kpd = KpdTreeCatalog::updateOrCreate(
+            [
+                'id' => $parentId,
+            ],
+            $allParams
+        );
+
+        foreach ($elements as $element) {
+            $kpdElements = new KpdElements;
+            $kpdElements->kpdCatalog()->associate($kpd);
+            foreach($element as $key => $value) {
+                $kpdElements->$key = $element[$key];
+            }
+            $el = $kpdElements->save();
+        }
     }
 }

@@ -62,7 +62,7 @@ export default {
                 'type': 'manager',
                 'avatar': null,
                 'img': '',
-                'id': null
+                'id': undefined
             },
             managerTypes: [
                 {
@@ -92,6 +92,8 @@ export default {
         async store() {
             this.SET_LOADING(true);
             let uri = this.localeUrl("/store-kpd-manager");
+            console.log(this.manager.type)
+            this.manager.type = {'alias':this.manager.type,'id':null};
             let formData = new FormData();
             if (!this.manager.img) {
                 formData.append("avatar", this.manager.avatar);
@@ -100,7 +102,7 @@ export default {
             }
             formData.append('name', this.manager.name);
             formData.append('title', this.manager.title);
-            formData.append('type', this.manager.type);
+            formData.append('type', JSON.stringify(this.manager.type));
             formData.append('id', this.manager.id);
             await this.axios.post(uri, formData, {
                 headers: {
@@ -125,7 +127,9 @@ export default {
     watch: {
         managerInfo: function () {
             _.forEach(Object.keys(this.manager), (key) => {
-                this.manager[key] = this.managerInfo[key];
+                if (this.managerInfo[key]) {
+                    this.manager[key] = this.managerInfo[key];
+                }
             });
         },
     },

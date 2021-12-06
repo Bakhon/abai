@@ -50,19 +50,19 @@
                         </div>
                         <div class="col-12 p-2 kpd-column">
                             <div
-                                    v-for="(kpd, index) in kpdCeo"
-                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"
-                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"
+                                    v-for="(kpd, index) in strategicKpdList"
                             >
+<!--                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"-->
+<!--                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"-->
                                 <div class="text-right">
-                                    {{kpd.progress}}%
+                                    0%
                                 </div>
                                 <div class="progress progress_template">
                                     <div
                                             :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                            :style="{width: kpd.progress + '%',}"
+                                            :style="{width: 0 + '%',}"
                                             role="progressbar"
-                                            :aria-valuenow="kpd.progress"
+                                            :aria-valuenow="0"
                                             aria-valuemin="0"
                                             aria-valuemax="100"
                                     ></div>
@@ -76,24 +76,24 @@
                 </div>
                 <div class="col-3 row m-0">
                     <div class="col-12 d-flex p-2 table-sub-header chairmaster" @click="switchManager(kpdDecompositionA)">
-                        <img width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
+                        <img v-if="corporateManager.avatar" width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
                         <div class="ml-2 text-left"><b>{{corporateManager.name}}</b> <br> {{corporateManager.title}}</div>
                     </div>
                     <div class="col-12 p-2 kpd-column">
                         <div
-                                v-for="(kpd, index) in kpdCeoDecompositionA"
-                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"
-                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"
+                                v-for="(kpd, index) in getKpdByType('corporateManager',corporateManager.id)"
                         >
+<!--                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"-->
+<!--                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"-->
                             <div class="text-right">
-                                {{kpd.progress}}%
+                                0%
                             </div>
                             <div class="progress progress_template">
                                 <div
                                         :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                        :style="{width: kpd.progress + '%',}"
+                                        :style="{width: 0 + '%',}"
                                         role="progressbar"
-                                        :aria-valuenow="kpd.progress"
+                                        :aria-valuenow="0"
                                         aria-valuemin="0"
                                         aria-valuemax="100"
                                 ></div>
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog :kpd-list="kpdDecompositionB"></kpd-modal-catalog>
+            <kpd-modal-catalog :kpd-list="kpdDecompositionB" :managers="managers" :corporate-manager="corporateManager"></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
             <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
