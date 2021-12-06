@@ -5,6 +5,7 @@ import ReportModal from './modals/ReportModal'
 import ExportModal from './modals/ExportModal'
 import './MyFilter'
 import 'ol/ol.css';
+import 'ol-ext/dist/ol-ext.css'
 import {globalloadingMutations} from '@store/helpers';
 import Project from './components/Project';
 import VModal from 'vue-js-modal/dist/index.nocss.js'
@@ -463,8 +464,7 @@ export default {
             let data = null;
             this.bubblesData.forEach(item => {
                 if (!this.selectedMonth) {
-                    const newDate = new Date();
-                    this.selectedMonth = `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDay()}`;
+                    this.selectedMonth = moment(new Date()).format('YYYY-MM-DD');
                 }
                 const selectedDate = new Date(this.selectedMonth);
                 const excelDate = new Date(item.date);
