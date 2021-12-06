@@ -79,16 +79,16 @@ export default {
       })
     },
 
-    getColor({uwi, profitability_12m}) {
+    getColor({uwi, profitability}) {
       if (this.scenario.stopped_uwis.includes(uwi)) {
         return '#8125B0'
       }
 
-      if (profitability_12m === 'profitable') {
+      if (profitability === 'profitable') {
         return '#387249'
       }
 
-      return profitability_12m === 'profitless_cat_1'
+      return profitability === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
     },

@@ -121,7 +121,7 @@ export default {
                 cat_1: scenario.percent_stop_cat_1,
                 cat_2: scenario.percent_stop_cat_2,
                 oil: +scenario.oil_optimize + +scenario.gtm_oil,
-                operating_profit: ((operatingProfit + +scenario.gtm_operating_profit_12m) / dimension).toFixed(2),
+                operating_profit: ((operatingProfit + +scenario.gtm_operating_profit) / dimension).toFixed(2),
               })
             }
           })
