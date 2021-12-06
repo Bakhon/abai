@@ -35,6 +35,10 @@
         <span v-for="(structure, i) in data" :style="structureType9[i]" class="numbers" :key="i">{{structure}} {{unit[i]}}</span>
         <img src="/img/digital-drilling/constructor-9.svg" alt="" class="structure-img">
     </div>
+    <div class="graph-img" v-else-if="type=='type10'">
+        <span v-for="(structure, i) in data" :style="structureType10[i]" class="numbers" :key="i">{{structure}} {{unit[i]}}</span>
+        <img src="/img/digital-drilling/constructor-10.svg" alt="" class="structure-img">
+    </div>
 </template>
 
 <script>
@@ -92,6 +96,12 @@
                     'top:64px;left:135px;',  'top:115px;left:510px;',
                     'top:221px;left:155px;',  'top:336px;left:512px;',
                     'bottom:307px;left:185px;',  'bottom:171px;left:512px;',
+                ],
+                structureType10: [
+                    'top:0px;left:102px;', 'top:34px;left:551px;',
+                    'top:80px;left:100px;',  'top:144px;left:525px;',
+                    'top:266px;left:124px;',  'top:330px;left:532px;',
+                    'bottom:159px;left:148px;',  'bottom:12px;left:530px;',
                 ],
             }
         },

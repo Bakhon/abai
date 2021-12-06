@@ -136,13 +136,32 @@
                 }
                 this.pushToArray(startIndex, this.structures.length)
                 let directionPosition = -1
+                let dynamic_anchor = false
                 for (let i=0; i<this.newStructures.length; i++){
-                    if (this.newStructures[i].type == "Направление") {
+                    if (this.newStructures[i].type == "Анкер динамический") {
+                        dynamic_anchor = true
                         directionPosition  = i
                     }
                 }
                 if (directionPosition!=-1 && directionPosition != 0){
                     for (let i=this.newStructures.length; i>0; i--){
+                        if (i<=directionPosition){
+                            this.array_move(i, i-1)
+                        }
+                    }
+                }
+                directionPosition=-1
+                for (let i=0; i<this.newStructures.length; i++){
+                    if (this.newStructures[i].type == "Направление") {
+                        directionPosition  = i
+                    }
+                }
+                let directionAnchor = 0
+                if (dynamic_anchor) {
+                    directionAnchor = 1
+                }
+                if (directionPosition!=-1 && directionPosition != directionAnchor){
+                    for (let i=this.newStructures.length; i>directionAnchor; i--){
                         if (i<=directionPosition){
                             this.array_move(i, i-1)
                         }
@@ -165,9 +184,6 @@
 
                 let diameterCount = this.newStructures.length
 
-                if (found){
-                    diameterCount--
-                }
                 let currentType = 0
                 for (let i=0; i<diameterCount; i++){
                     this.currentStructure.structure.push(this.newStructures[i].diameter)
@@ -175,24 +191,23 @@
                     this.currentStructure.unit.push(this.newStructures[i].diameterUnit)
                     this.currentStructure.unit.push(this.newStructures[i].descentDepthUnit)
                 }
-
-                switch (diameterCount) {
-                    case 2:
-                        currentType = 1
-                        break;
-                    case 3:
-                        currentType = 2
-                        break;
-                    case 4:
-                        currentType = 4
-                        break;
-                    case 5:
-                        currentType = 3
-                        break;
-                }
-
                 if (found){
-                    currentType += 5
+                    currentType = 5
+                }else{
+                    switch (diameterCount) {
+                        case 2:
+                            currentType = 1
+                            break;
+                        case 3:
+                            currentType = 2
+                            break;
+                        case 4:
+                            currentType = 10
+                            break;
+                        case 5:
+                            currentType = 3
+                            break;
+                    }
                 }
                 this.currentStructure.type = "type" + currentType
             },
