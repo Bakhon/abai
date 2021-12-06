@@ -432,7 +432,7 @@
 
               </button>
               <button
-                v-if="isPermission"
+                v-if="isPermission && isEditable"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 

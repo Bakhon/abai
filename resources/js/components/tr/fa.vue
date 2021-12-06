@@ -1028,7 +1028,7 @@ export default {
     changeSecondMonthCalendarDate() {
       const { firstMonthlyCalendarDate} = this;
       var dynamicLastBegginingMonthDate = new Date(firstMonthlyCalendarDate)
-      this.dynamicLastBegginingMonthDate = dynamicLastBegginingMonthDate.setDate(dynamicLastBegginingMonthDate.getDate()-30);
+      this.dynamicLastBegginingMonthDate = dynamicLastBegginingMonthDate.setMonth(dynamicLastBegginingMonthDate.getMonth()-1);
       this.secondMonthlyCalendarDate = dynamicLastBegginingMonthDate.toLocaleDateString("en-CA");
       return this.secondMonthlyCalendarDate;
     },
