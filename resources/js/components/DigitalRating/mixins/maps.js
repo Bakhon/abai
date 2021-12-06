@@ -13,7 +13,7 @@ export default {
       center: [85000, 52000],
       zoom: -6,
       minZoom: -6,
-      maxZoom: -1,
+      maxZoom: 10,
       renderer: L.canvas({ padding: 0.5 }),
     }
   },

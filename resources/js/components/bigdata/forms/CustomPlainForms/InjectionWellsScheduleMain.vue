@@ -1,7 +1,7 @@
 <template>
     <ProductionWellsSchedule
             v-if="isScheduleVisible"
-            :mainWell="{id: well.id, name: well.wellInfo.uwi,category: well.category}"
+            :mainWell="{id: well.id, name: well.wellInfo.uwi,category: well.category_last}"
             @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
     ></ProductionWellsSchedule>
     <div v-else class="main-block w-100 px-2 py-3">

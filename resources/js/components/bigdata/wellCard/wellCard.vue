@@ -6,7 +6,7 @@
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
           <div @click="handleSelectHistoryWell(well)">{{well.wellUwi}}</div>
-          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)" v-if="wellsHistory.length > 1"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -190,9 +190,10 @@
                 class="col table-wrapper"
               >
                 <BigDataPlainFormResult
-                  v-if="activeForm.type === 'plain'"
-                  :code="activeForm.code"
-                  :well-id="this.well.id"
+                    v-if="activeForm.type === 'plain'"
+                    :code="activeForm.code"
+                    :well-id="this.well.id"
+                    type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
                   v-else-if="activeForm.type === 'table'"
@@ -367,10 +368,12 @@
       <InjectionHistoricalData
         v-if="isInjectionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
         v-if="isProductionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></ProductionHistoricalData>
     </div>
   </div>
@@ -386,11 +389,7 @@ import moment from "moment";
 import WellCardTree from "./WellCardTree";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
-import {
-  bigdatahistoricalVisibleState,
-  globalloadingMutations,
-  bigdatahistoricalVisibleMutations
-} from "@store/helpers";
+import {bigdatahistoricalVisibleMutations, bigdatahistoricalVisibleState, globalloadingMutations} from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
@@ -455,7 +454,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: null,
+        tubeNom: {od: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -513,9 +512,13 @@ export default {
           value_string: null,
           equip_param: null,
         },
+        depth_paker: {
+          value_double: null,
+        },
         pump_capacity: {
           value_double: null,
         },
+        tubeNomDop: {od: null},
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
@@ -589,7 +592,7 @@ export default {
         well_equip_param: "well_equip_param",
         pump_code: "pump_code",
         diametr_pump: "diametr_pump",
-        depth_nkt: "depth_nkt",
+        depth_paker: "depth_paker",
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
         meas_well: "meas_well",
@@ -598,6 +601,8 @@ export default {
         dailyInjectionOil: "dailyInjectionOil",
         diameter_pump: "diameter_pump",
         well_block: "well_block",
+        depth_nkt: "depth_nkt",
+        tubeNomDop: "tubeNomDop",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -862,19 +867,20 @@ export default {
       let pump_code = this.well.pump_code
         ? this.well.pump_code.value_text
         : "";
-      let diameter_pump = this.well.diametr_pump
-        ? this.well.diametr_pump.value_double
+      let diameter_pump = this.well.diameter_pump
+        ? this.well.diameter_pump.value_double
         : "";
-      let depth_nkt = this.well.depth_nkt
-        ? this.well.depth_nkt.value_string
+      let depth_paker = this.well.depth_paker
+        ? this.well.depth_paker.value_double
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
-      let tubeNomOd = this.well.tubeNom.od ? this.well.tubeNom.od + ' / ' + this.well.tubeNom.od : "";
+      let tubeNomOd = this.getTubeNom(well); 
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
+      let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -1048,7 +1054,7 @@ export default {
         },
         {
           name: this.trans("well.packer_running_depth"),
-          data: "",
+          data: depth_paker,
           type: ["nag"],
         },
         {
@@ -1371,6 +1377,18 @@ export default {
         }
       }
       return value;
+    },
+    getTubeNom(well){
+      if(this.well.tubeNom.od && this.well.tubeNomDop.od){
+        return this.well.tubeNomOd + ' / ' + this.well.tubeNomDop.od;
+      }
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od + ' / ' + '-';
+      }
+      if(this.well.tubeNomDop.od){
+        return '-' + ' / ' + this.well.tubeNomDop.od;
+      }
+      return "";
     },
     getTechmodeOil(well) {
       if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
