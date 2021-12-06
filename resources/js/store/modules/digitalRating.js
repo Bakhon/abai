@@ -61,7 +61,7 @@ const digitalRating = {
       const { sectorNumber, horizonNumber } = {...state};
       try {
         commit('globalloading/SET_LOADING', true, { root: true });
-        await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/graphs/${horizonNumber}/${sectorNumber}`)
+        await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/graphs/${horizonNumber}/${sectorNumber}`)
           .then(res => {
             commit('SET_INDICATORS', res.data);
             commit('SET_INJ_DIAGRAM', res.data?.inj_graph?.injection);
