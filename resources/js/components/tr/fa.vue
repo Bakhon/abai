@@ -1511,8 +1511,8 @@ export default {
         } else {
           console.log("No data");
         }
-        this.firstCalendarDate, this.firstMonthlyCalendarDate = firstWeek;
-        this.secondCalendarDate, this.secondMonthlyCalendarDate = lastWeek;
+        this.firstCalendarDate = firstWeek;
+        this.firstMonthlyCalendarDate = firstWeek;
         this.faTableHeader = this.trans('tr.period_of_act_data') + this.lastBeginningWeekDate + '-' + this.lastEndingWeekDate;
         this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.startBeginningWeekDate + '-' + this.startEndingWeekDate;
         this.faHeader = this.trans('tr.fa') + ' ' + this.startBeginningWeekDate + '-' + this.lastEndingWeekDate;
