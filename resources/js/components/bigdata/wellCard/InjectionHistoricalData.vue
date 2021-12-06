@@ -68,8 +68,7 @@
                     11: 'Ноябрь',
                     12: 'Декабрь'
                 },
-                isDownloadCompleted: false,
-                wellExplDate: '2008'
+                isDownloadCompleted: false
             };
         },
         methods: {

@@ -6,7 +6,7 @@
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
           <div @click="handleSelectHistoryWell(well)">{{well.wellUwi}}</div>
-          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)" v-if="wellsHistory.length > 1"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
