@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Economic\Scenario;
 
+use App\Models\BigData\Well;
 use App\Models\EcoRefsAvgMarketPrice;
 use App\Models\EcoRefsCost;
 use App\Models\EcoRefsDiscontCoefBar;
@@ -52,6 +53,18 @@ class EconomicScenarioJob implements ShouldQueue
     const COMPANY_KARAZANBAS = 8;
     const COMPANY_KAZ_GER = 9;
 
+    const PREFIX_PRICE = 'price_';
+    const PREFIX_BARREL_RATIO = 'Barrel_ratio_';
+    const PREFIX_SALE_SHARE = 'sale_share_';
+    const PREFIX_DISCOUNT = 'discount_';
+    const PREFIX_TRANS_EXP = 'trans_exp_';
+    const PREFIX_PRODUCTION = 'production_';
+    const PREFIX_REVENUE = 'Revenue_';
+    const PREFIX_MET_PAYMENTS = 'MET_payments_';
+    const PREFIX_ERT_PAYMENTS = 'ERT_payments_';
+    const PREFIX_ECD_PAYMENTS = 'ECD_payments_';
+    const PREFIX_TRANS_EXPENDITURES = 'Trans_expenditures_';
+
     const ROUTES_LOCAL = [
         4 => 'local_ANPZ',
         5 => 'local_PNHZ',
@@ -68,17 +81,30 @@ class EconomicScenarioJob implements ShouldQueue
         10 => 'export_other',
     ];
 
-    const PREFIX_PRICE = 'price_';
-    const PREFIX_BARREL_RATIO = 'Barrel_ratio_';
-    const PREFIX_SALE_SHARE = 'sale_share_';
-    const PREFIX_DISCOUNT = 'discount_';
-    const PREFIX_TRANS_EXP = 'trans_exp_';
-    const PREFIX_PRODUCTION = 'production_';
-    const PREFIX_REVENUE = 'Revenue_';
-    const PREFIX_MET_PAYMENTS = 'MET_payments_';
-    const PREFIX_ERT_PAYMENTS = 'ERT_payments_';
-    const PREFIX_ECD_PAYMENTS = 'ECD_payments_';
-    const PREFIX_TRANS_EXPENDITURES = 'Trans_expenditures_';
+    const PROFITABILITY = [
+        'profitable',
+        'profitless_cat_1',
+        'profitless_cat_2'
+    ];
+
+    const WELL_KEYS = [
+        'Revenue_total',
+        'Revenue_local',
+        'Revenue_export',
+        'oil',
+        'liquid',
+        'prs',
+        'days_worked',
+        'production_export',
+        'production_local',
+        'Fixed_noWRpayroll_expenditures',
+        'Fixed_nopayroll_expenditures',
+        'Fixed_payroll_expenditures',
+        'Overall_expenditures',
+        'Overall_expenditures_full',
+        'Operating_profit',
+    ];
+
 
     public function __construct(
         int $scenarioId,
@@ -99,6 +125,8 @@ class EconomicScenarioJob implements ShouldQueue
 
         if (!$scenario) return;
 
+        $scenario->gtm_kit_id = 3;
+
         $gtmKit = $scenario->gtm_kit_id
             ? $scenario->gtmKit()->firstOrFail()
             : null;
@@ -109,17 +137,17 @@ class EconomicScenarioJob implements ShouldQueue
 
         $fixedNoPayrolls = [];
 
-        foreach ($scenario->params['fixed_nopayrolls'] as $fixedNoPayroll) {
-            $fixedNoPayrolls[] = $fixedNoPayroll['value'];
+        foreach ($scenario->params["fixed_nopayrolls"] as $fixedNoPayroll) {
+            $fixedNoPayrolls[] = $fixedNoPayroll["value"];
         }
 
         $costWrPayrolls = [];
 
-        foreach ($scenario->params['cost_wr_payrolls'] as $costWrPayroll) {
-            $costWrPayrolls[] = $costWrPayroll['value'];
+        foreach ($scenario->params["cost_wr_payrolls"] as $costWrPayroll) {
+            $costWrPayrolls[] = $costWrPayroll["value"];
         }
 
-        $variants = $this->getOptimizedScenarios(
+        list($wells, $variants) = $this->calculateScenarioVariants(
             $scenarioEconomicId,
             $scenarioTechnicalId,
             $this->oilPrice,
@@ -127,6 +155,8 @@ class EconomicScenarioJob implements ShouldQueue
             $fixedNoPayrolls,
             $costWrPayrolls
         );
+
+        $wells = $this->getWellsWithCoordinates($wells);
 
         $gtms = $gtmKit ? $this->getGtms($gtmKit) : null;
 
@@ -143,28 +173,29 @@ class EconomicScenarioJob implements ShouldQueue
             }
         }
 
-        DB::transaction(function () use ($scenario, $variants, $fixedNoPayrolls, $costWrPayrolls) {
+        DB::transaction(function () use ($scenario, $wells, $variants, $fixedNoPayrolls, $costWrPayrolls) {
             $scenario->results()->create([
-                'oil_price' => $this->oilPrice,
-                'dollar_rate' => $this->dollarRate,
-                'variants' => $variants
+                "oil_price" => $this->oilPrice,
+                "dollar_rate" => $this->dollarRate,
+                "wells" => $wells,
+                "variants" => $variants
             ]);
 
             $scenario->increment(
-                'calculated_variants',
+                "calculated_variants",
                 self::VARIANTS_COUNT * count($fixedNoPayrolls) * count($costWrPayrolls)
             );
         });
     }
 
-    private function getOptimizedScenarios(
+    private function calculateScenarioVariants(
         string $scenarioEconomicId,
         string $scenarioTechnicalId,
         int $oilPrice,
         int $dollarRate,
         array $fixedNoPayrolls,
         array $costWrPayrolls
-    )
+    ): array
     {
         $wells = $this->getWellsForScenarios(
             $scenarioEconomicId,
@@ -172,30 +203,6 @@ class EconomicScenarioJob implements ShouldQueue
             $oilPrice,
             $dollarRate
         );
-
-        $wellKeys = [
-            "Revenue_total",
-            "Revenue_local",
-            "Revenue_export",
-            "oil",
-            "liquid",
-            "prs",
-            "days_worked",
-            "production_export",
-            "production_local",
-            "Fixed_noWRpayroll_expenditures",
-            "Fixed_nopayroll_expenditures",
-            "Fixed_payroll_expenditures",
-            "Overall_expenditures",
-            "Overall_expenditures_full",
-            "Operating_profit",
-        ];
-
-        $wellProfitability = [
-            "profitable",
-            "profitless_cat_1",
-            "profitless_cat_2"
-        ];
 
         $scenario = [
             "economic_id" => $scenarioEconomicId,
@@ -209,10 +216,10 @@ class EconomicScenarioJob implements ShouldQueue
             "stopped_uwis" => [],
         ];
 
-        foreach ($wellKeys as $wellKey) {
+        foreach (self::WELL_KEYS as $wellKey) {
             $scenario[$wellKey] = 0;
 
-            foreach ($wellProfitability as $profitability) {
+            foreach (self::PROFITABILITY as $profitability) {
                 $scenario["${wellKey}_${profitability}"] = 0;
             }
         }
@@ -228,17 +235,17 @@ class EconomicScenarioJob implements ShouldQueue
 
             $wellsByProfitability[$well["profitability"]][] = $well;
 
-            foreach ($wellKeys as $wellKey) {
+            foreach (self::WELL_KEYS as $wellKey) {
                 $scenario[$wellKey] += $well[$wellKey];
 
                 $scenario[$wellKey . "_" . $well["profitability"]] += $well[$wellKey];
             }
         }
 
-        foreach ($wellKeys as $wellKey) {
+        foreach (self::WELL_KEYS as $wellKey) {
             $scenario["${wellKey}_optimize"] = $scenario[$wellKey];
 
-            foreach ($wellProfitability as $profitability) {
+            foreach (self::PROFITABILITY as $profitability) {
                 $value = $scenario["${wellKey}_${profitability}"];
 
                 $scenario["${wellKey}_${profitability}_optimize"] = $value;
@@ -251,7 +258,7 @@ class EconomicScenarioJob implements ShouldQueue
         $scenario["uwi_count"] = count($wells);
         $scenario["uwi_count_optimize"] = $scenario["uwi_count"];
 
-        foreach ($wellProfitability as $profitability) {
+        foreach (self::PROFITABILITY as $profitability) {
             $scenario["uwi_count_$profitability"] = count($wellsByProfitability[$profitability]);
 
             $scenario["uwi_count_${profitability}_optimize"] = $scenario["uwi_count_$profitability"];
@@ -268,8 +275,7 @@ class EconomicScenarioJob implements ShouldQueue
                 $stoppedOffset,
                 "profitless_cat_1",
                 "percent_stop_cat_1",
-                $wellsByProfitability["profitless_cat_1"],
-                $wellKeys
+                $wellsByProfitability["profitless_cat_1"]
             );
 
             $scenarios[] = $scenario;
@@ -284,8 +290,7 @@ class EconomicScenarioJob implements ShouldQueue
                 $stoppedOffset,
                 "profitless_cat_2",
                 "percent_stop_cat_2",
-                $wellsByProfitability["profitless_cat_2"],
-                $wellKeys
+                $wellsByProfitability["profitless_cat_2"]
             );
 
             $scenarios[] = $scenario;
@@ -309,7 +314,31 @@ class EconomicScenarioJob implements ShouldQueue
             }
         }
 
-        return $optimizedScenarios;
+        return [$wells, $optimizedScenarios];
+    }
+
+    private function getWellsWithCoordinates(array $wells): array
+    {
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $well = (array)$well;
+
+            $uwis[] = $well["uwi"];
+        }
+
+        $wellCoordinates = Well::query()
+            ->whereIn("uwi", $uwis)
+            ->whereNotNull("whc")
+            ->with("spatialObject")
+            ->get()
+            ->groupBy("uwi");
+
+        foreach ($wells as &$well) {
+            $well["coordinates"] = $wellCoordinates->get($well["uwi"])[0]["spatialObject"][0]["coord_point"] ?? null;
+        }
+
+        return $wells;
     }
 
     private function getWellsForScenarios(
@@ -442,8 +471,7 @@ class EconomicScenarioJob implements ShouldQueue
         int $stoppedOffset,
         string $profitability,
         string $profitabilityPercentKey,
-        array $wells,
-        array $wellKeys
+        array $wells
     ): array
     {
         $percent = $stoppedPercent / 100;
@@ -463,7 +491,7 @@ class EconomicScenarioJob implements ShouldQueue
             $scenario["stopped_wells"][] = $well;
             $scenario["stopped_uwis"][] = $well["uwi"];
 
-            foreach ($wellKeys as $wellKey) {
+            foreach (self::WELL_KEYS as $wellKey) {
                 $scenario["${wellKey}_optimize"] -= $well[$wellKey];
 
                 $scenario["${wellKey}_${profitability}_optimize"] -= $well[$wellKey];
@@ -561,7 +589,19 @@ class EconomicScenarioJob implements ShouldQueue
 
             $wellByMonths[$formattedDate]["liquid"] = $gtmOil * 10;
 
-            $scenario["gtms"][] = $gtmsByMonth;
+            foreach (collect($gtmsByMonth["gtms"])->groupBy("id") as $gtmId => $gtmsGroup) {
+                $gtm = $gtmsGroup->first();
+
+                $scenario["gtms"][$formattedDate][] = [
+                    "id" => $gtmId,
+                    "name" => $gtm["name"],
+                    "price" => $gtm["price"],
+                    "growth" => $gtm["growth"],
+                    "amount" => count($gtmsGroup),
+                    "oil_month" => $gtm["growth"] * $date->daysInMonth,
+                    "oil_total" => $gtm["growth"] * (1 + $date->copy()->setMonth(12)->setDay(31)->diffInDays($date)),
+                ];
+            }
 
             $scenario["gtm_oil"] += $wellByMonths[$formattedDate]["oil"];
 

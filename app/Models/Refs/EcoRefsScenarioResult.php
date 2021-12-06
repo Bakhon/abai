@@ -10,5 +10,6 @@ class EcoRefsScenarioResult extends Model
 
     protected $casts = [
         'variants' => 'array',
+        'wells' => 'array',
     ];
 }
