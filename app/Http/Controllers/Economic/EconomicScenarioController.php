@@ -43,7 +43,7 @@ class EconomicScenarioController extends Controller
 
             $scenario->calculated_variants = 0;
 
-            $scenario->total_variants = EconomicScenarioJob::VARIANTS_COUNT *
+            $scenario->total_variants = EconomicScenarioJob::NUMBER_OF_STOPS *
                 count($scenario->params['oil_prices']) *
                 count($scenario->params['dollar_rates']) *
                 count($scenario->params['cost_wr_payrolls']) *

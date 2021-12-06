@@ -43,7 +43,7 @@ class EconomicScenarioJob implements ShouldQueue
 
     public $dollarRate;
 
-    const VARIANTS_COUNT = 16;
+    const NUMBER_OF_STOPS = 16;
 
     const GTM_DENOMINATOR = 10000000;
 
@@ -183,7 +183,7 @@ class EconomicScenarioJob implements ShouldQueue
 
             $scenario->increment(
                 "calculated_variants",
-                self::VARIANTS_COUNT * count($fixedNoPayrolls) * count($costWrPayrolls)
+                self::NUMBER_OF_STOPS * count($fixedNoPayrolls) * count($costWrPayrolls)
             );
         });
     }
