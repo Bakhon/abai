@@ -32,26 +32,26 @@
         </div>
       </div>
 
-      <div class="customScroll"
-           style="overflow-y: scroll; height: 415px">
+      <div class="customScroll d-flex flex-column"
+           style="overflow-y: scroll; height: 395px">
         <div v-for="(row, index) in tableData"
              :key="index"
              :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
              :style="row.color ? `color: ${row.color}` : ''"
-             class="d-flex">
+             class="flex-grow-1 d-flex">
           <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-               class="px-3 py-2 border-grey text-center flex-350px">
+               class="px-3 py-2 border-grey text-center flex-350px d-flex align-items-center justify-content-center">
             {{ row.title }}
           </div>
 
-          <div class="px-3 py-2 border-grey text-center flex-150px">
+          <div class="px-3 py-2 border-grey text-center flex-150px d-flex align-items-center justify-content-center">
             {{ row.pp2020 }}
           </div>
 
           <div v-for="(column, columnIndex) in row.columns"
                :key="`${index}_${columnIndex}`"
                :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
-               class="px-3 py-2 border-grey text-center flex-grow-1">
+               class="px-3 py-2 border-grey text-center flex-grow-1 d-flex align-items-center justify-content-center">
             {{ column.isString ? column.value : (+column.value).toLocaleString() }}
           </div>
         </div>
@@ -130,7 +130,10 @@ export default {
             color: '#81B9FE'
           },
           {
-            title: `${this.trans('economic_reference.production')}, ${this.trans('economic_reference.thousand_tons')}`,
+            title: `
+              ${this.trans('economic_reference.production')},
+              ${this.trans('economic_reference.thousand_tons')}
+            `,
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
@@ -152,7 +155,10 @@ export default {
             })
           },
           {
-            title: `${this.trans('economic_reference.personnel_costs_payroll')}, ${this.trans('economic_reference.million_tenge')}`,
+            title: `
+              ${this.trans('economic_reference.personnel_costs_payroll')},
+              ${this.trans('economic_reference.million_tenge')}
+            `,
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
@@ -161,7 +167,10 @@ export default {
             })
           },
           {
-            title: `${this.trans('economic_reference.kvl')}, ${this.trans('economic_reference.million_tenge')}`,
+            title: `
+              ${this.trans('economic_reference.kvl')},
+              ${this.trans('economic_reference.million_tenge')}
+            `,
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {

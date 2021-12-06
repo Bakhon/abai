@@ -27,7 +27,7 @@ export default {
       required: true,
       type: Object
     },
-    wells: {
+    scenarios: {
       required: true,
       type: Array
     },
@@ -99,24 +99,33 @@ export default {
   },
   computed: {
     wellPoints() {
-      return this.wells
-          .filter(well =>
-              +well.dollar_rate === +this.scenario.dollar_rate &&
-              +well.oil_price === +this.scenario.oil_price &&
-              well.coordinates
+      let points = []
+
+      this.scenarios
+          .find(scenario =>
+              +scenario.dollar_rate === +this.scenario.dollar_rate &&
+              +scenario.oil_price === +this.scenario.oil_price
           )
-          .map(well => {
+          .wells
+          .forEach(well => {
+            if (!!!well.coordinates) return
+
             let point = well.coordinates.split(',')
 
-            return {
+            let lat = +point[0].replace('(', '')
+
+            let lon = +point[1].replace(')', '')
+
+            if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return
+
+            points.push({
               uwi: well.uwi,
               color: this.getColor(well),
-              coordinates: {
-                lat: +point[0].replace('(', ''),
-                lon: +point[1].replace(')', ''),
-              }
-            }
+              coordinates: {lat: lat, lon: lon}
+            })
           })
+
+      return points
     },
   },
   watch: {

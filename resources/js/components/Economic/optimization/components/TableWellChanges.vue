@@ -4,7 +4,9 @@
       {{ trans('economic_reference.table_well_changes') }}
     </subtitle>
 
-    <div v-if="wells" id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
+    <div v-if="wells"
+         id="table-well-changes"
+         class="mt-2 overflow-auto customScroll d-flex">
       <div v-for="(chunk, chunkIndex) in chunks"
            :key="chunkIndex">
         <div :style="`width: ${columnWidth}px`"
@@ -22,13 +24,15 @@
           <div class="text-center border-grey flex-30px"></div>
         </div>
 
-        <div v-for="(uwi, uwiIndex) in chunk" :key="uwi" class="d-flex">
+        <div v-for="(uwi, uwiIndex) in chunk"
+             :key="uwi"
+             class="d-flex">
           <div class="text-center border-grey flex-150px text-truncate">
-            {{ `${chunkIndex*chunkStep+uwiIndex+1}. ${uwi}` }}
+            {{ `${chunkIndex * chunkStep + uwiIndex + 1}. ${uwi}` }}
           </div>
 
           <div v-for="price in oilPrices"
-               :key="`${uwi}_${price}_profitability_12m`"
+               :key="`${uwi}_${price}_profitability`"
                :style="`background: ${getColor(wells[uwi].oilPrices[+price])}`"
                class="border-grey flex-30px">
           </div>
@@ -50,35 +54,11 @@ import {globalloadingMutations} from '@store/helpers';
 
 import Subtitle from "../../components/Subtitle";
 
-const WELL_KEYS = [
-  'Revenue_total_12m',
-  'Revenue_local_12m',
-  'Revenue_export_12m',
-  'oil_12m',
-  'liquid_12m',
-  'prs_12m',
-  'days_worked_12m',
-  'production_export_12m',
-  'production_local_12m',
-  'Fixed_noWRpayroll_expenditures_12m',
-  'Operating_profit_12m',
-  'Overall_expenditures_12m',
-  'Overall_expenditures_full_12m',
-  'Fixed_nopayroll_expenditures_12m',
-  'Fixed_payroll_expenditures_12m',
-  'profitability_12m'
-]
-
 const WELL_SUM_KEYS = [
   'oil',
   'liquid',
   'Revenue_total',
   'prs'
-]
-
-const WELL_VALUE_KEYS = [
-  'original_value',
-  'original_value_optimized'
 ]
 
 export default {
@@ -91,13 +71,13 @@ export default {
       required: true,
       type: Object
     },
+    scenarios: {
+      required: true,
+      type: Array
+    },
     oilPrices: {
       required: true,
       type: Array,
-    },
-    data: {
-      required: true,
-      type: Array
     },
   },
   data: () => ({
@@ -119,12 +99,12 @@ export default {
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
-    getColor({profitability_12m}) {
-      if (profitability_12m === 'profitable') {
+    getColor({profitability}) {
+      if (profitability === 'profitable') {
         return '#387249'
       }
 
-      return profitability_12m === 'profitless_cat_1'
+      return profitability === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
     },
@@ -135,18 +115,18 @@ export default {
       let sumValues = {}
 
       WELL_SUM_KEYS.forEach(key => {
-        sumValues[key] = +well.oilPrices[oilPrice][`${key}_12m`]
+        sumValues[key] = +well.oilPrices[oilPrice][`${key}`]
       })
 
       let overallExpendituresScenario =
-          +this.scenario.coef_Fixed_nopayroll * +well.oilPrices[oilPrice].Fixed_nopayroll_expenditures_12m +
-          +this.scenario.coef_cost_WR_payroll * +well.oilPrices[oilPrice].Fixed_payroll_expenditures_12m
+          +this.scenario.coef_Fixed_nopayroll * +well.oilPrices[oilPrice].Fixed_nopayroll_expenditures +
+          +this.scenario.coef_cost_WR_payroll * +well.oilPrices[oilPrice].Fixed_payroll_expenditures
 
-      sumValues.Operating_profit = +well.oilPrices[oilPrice].Operating_profit_12m + overallExpendituresScenario
+      sumValues.Operating_profit = +well.oilPrices[oilPrice].Operating_profit + overallExpendituresScenario
 
-      sumValues.Overall_expenditures = +well.oilPrices[oilPrice].Overall_expenditures_12m - overallExpendituresScenario
+      sumValues.Overall_expenditures = +well.oilPrices[oilPrice].Overall_expenditures - overallExpendituresScenario
 
-      sumValues.Overall_expenditures_full = +well.oilPrices[oilPrice].Overall_expenditures_full_12m - overallExpendituresScenario
+      sumValues.Overall_expenditures_full = +well.oilPrices[oilPrice].Overall_expenditures_full - overallExpendituresScenario
 
       let sumKeys = Object.keys(sumValues)
 
@@ -162,44 +142,44 @@ export default {
         }
       }
 
-      WELL_VALUE_KEYS.forEach(valueKey => {
-        sumKeys.forEach(sumKey => {
-          this.scenario[sumKey][valueKey] = +this.scenario[sumKey][valueKey] + sumValues[sumKey]
-        })
+      sumKeys.forEach(key => {
+        this.scenario[key] = +this.scenario[key] + sumValues[key]
+
+        this.scenario[`${key}_optimize`] = +this.scenario[`${key}_optimize`] + sumValues[key]
       })
     },
 
     setWells() {
       let wells = {}
 
-      this.data.filter(x => +x.dollar_rate === this.dollarRate).forEach(well => {
-        if (!wells.hasOwnProperty(well.uwi)) {
-          wells[well.uwi] = {
-            oilPrices: {},
-            cat1: 0,
-            cat2: 0,
-            profitable: 0,
-            isShutdown: this.scenario.stopped_uwis.includes(well.uwi)
+      this.scenarios.forEach(scenario => {
+        if (+scenario.dollar_rate !== this.dollarRate) return
+
+        scenario.wells.forEach(well => {
+          if (!wells.hasOwnProperty(well.uwi)) {
+            wells[well.uwi] = {
+              oilPrices: {},
+              profitlessCat1: 0,
+              profitlessCat2: 0,
+              profitable: 0,
+              isShutdown: this.scenario.stopped_uwis.includes(well.uwi)
+            }
           }
-        }
 
-        wells[well.uwi].oilPrices[well.oil_price] = {}
+          wells[well.uwi].oilPrices[scenario.oil_price] = {...well}
 
-        WELL_KEYS.forEach(key => {
-          wells[well.uwi].oilPrices[well.oil_price][key] = well[key]
+          switch (well.profitability) {
+            case 'profitable':
+              wells[well.uwi].profitable += 1
+              break
+            case 'profitless_cat_1':
+              wells[well.uwi].profitlessCat1 += 1
+              break
+            case 'profitless_cat_2':
+              wells[well.uwi].profitlessCat2 += 1
+              break
+          }
         })
-
-        switch (well.profitability_12m) {
-          case 'profitable':
-            wells[well.uwi].profitable += 1
-            break
-          case 'profitless_cat_1':
-            wells[well.uwi].cat1 += 1
-            break
-          case 'profitless_cat_2':
-            wells[well.uwi].cat2 += 1
-            break
-        }
       })
 
       this.wells = wells
@@ -210,8 +190,8 @@ export default {
       let wells = this.wells
 
       return Object.keys(wells).sort(function (prev, next) {
-        return (wells[next].cat1 - wells[prev].cat1)
-            || (wells[next].cat2 - wells[prev].cat2)
+        return (wells[next].profitlessCat1 - wells[prev].profitlessCat1)
+            || (wells[next].profitlessCat2 - wells[prev].profitlessCat2)
             || (wells[prev].profitable - wells[next].profitable)
       })
     },

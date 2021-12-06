@@ -1,17 +1,17 @@
 <template>
   <div class="d-flex">
     <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-         class="px-3 py-1 border-grey text-center flex-350px">
+         class="px-3 py-1 border-grey text-center flex-350px d-flex align-items-center justify-content-center">
       {{ row.title }}
     </div>
 
     <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-         class="px-3 py-1 border-grey text-center flex-150px">
+         class="px-3 py-1 border-grey text-center flex-150px d-flex align-items-center justify-content-center">
       {{ row.pp2020 }}
     </div>
 
     <div v-if="row.subtitle"
-         class="px-3 py-1 border-grey bg-dark-blue text-center flex-grow-1">
+         class="px-3 py-1 border-grey bg-dark-blue text-center flex-grow-1 d-flex align-items-center justify-content-center">
       {{ row.subtitle }}
     </div>
 
@@ -19,7 +19,7 @@
          v-for="(column, columnIndex) in row.columns"
          :key="`${index}_${columnIndex}`"
          :style="`flex: 1 1 ${100 / row.columns.length}%; background: ${column.color}`"
-         class="px-3 py-1 border-grey text-center">
+         class="px-3 py-1 border-grey text-center d-flex align-items-center justify-content-center">
       {{ (+column.value).toLocaleString() }}
       {{ row.columnDimension }}
     </div>

@@ -77,7 +77,7 @@ export default {
       return [...this.oilPrices].reverse()
     },
 
-    filteredData() {
+    scenariosByOilPrice() {
       let scenariosByDollarRate = this.scenarios.filter(scenario =>
           +scenario.dollar_rate === +this.scenario.dollar_rate
       )
@@ -107,9 +107,12 @@ export default {
       let rows = [
         {
           title: this.trans('economic_reference.oil_production'),
-          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item =>
-              (+item.oil_optimize / 1000).toFixed(2)
+          dimension: `
+            ${this.trans('economic_reference.thousand_tons')}/
+            ${this.trans('economic_reference.year')}
+          `,
+          values: this.scenariosByOilPrice.map(scenario =>
+              (+scenario.oil_optimize / 1000).toFixed(2)
           )
         }
       ]
@@ -119,23 +122,29 @@ export default {
       let gtmsCount = gtms.length
 
       if (gtmsCount) {
-        let gtmsOil = gtms.map(gtmId => {
-          return {
-            title: this.gtms[gtmId].name,
-            dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-            values: this.filteredData.map(item => {
-              let oil = this.gtms[gtmId].oil_total[item.oil_price] || 0
+        let gtmsOil = gtms.map(gtmId => ({
+          title: this.gtms[gtmId].name,
+          dimension: `
+              ${this.trans('economic_reference.thousand_tons')}/
+              ${this.trans('economic_reference.year')}
+            `,
+          values: this.scenariosByOilPrice.map(scenario => {
+            let oil = this.gtms[gtmId].oil_total[scenario.oil_price] || 0
 
-              return (+oil / 1000).toFixed(2)
-            })
-          }
-        })
+            return (+oil / 1000).toFixed(2)
+          })
+        }))
 
         rows.push(
             {
               title: this.trans('economic_reference.production_from_gtm'),
-              dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-              values: this.filteredData.map(item => (+item.gtm_oil / 1000).toFixed(2))
+              dimension: `
+                ${this.trans('economic_reference.thousand_tons')}/
+                ${this.trans('economic_reference.year')}
+              `,
+              values: this.scenariosByOilPrice.map(scenario =>
+                  (+scenario.gtm_oil / 1000).toFixed(2)
+              )
             },
             ...gtmsOil
         )
@@ -144,28 +153,34 @@ export default {
       rows.push(...[
         {
           title: this.trans('economic_reference.liquid_production'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
-          values: this.filteredData.map(item =>
-              (+item.liquid_optimize / 1000).toFixed(2)
+          dimension: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.cubic_meter_per_year')}
+          `,
+          values: this.scenariosByOilPrice.map(scenario =>
+              (+scenario.liquid_optimize / 1000).toFixed(2)
           )
         },
         {
           title: this.trans('economic_reference.injection_volume'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
-          values: this.filteredData.map(item => '')
+          dimension: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.cubic_meter_per_year')}
+          `,
+          values: this.scenariosByOilPrice.map(scenario => '')
         },
         {
           title: this.trans('economic_reference.active_well_stock'),
           dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => item.uwi_count_optimize)
+          values: this.scenariosByOilPrice.map(item => item.uwi_count_optimize)
         },
         {
           title: this.trans('economic_reference.shutdown_unprofitable_wells'),
           dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => {
-            let cat1 = +item.uwi_count_profitless_cat_1_optimize
+          values: this.scenariosByOilPrice.map(scenario => {
+            let cat1 = +scenario.uwi_count_profitless_cat_1_optimize
 
-            let cat2 = +item.uwi_count_profitless_cat_2_optimize
+            let cat2 = +scenario.uwi_count_profitless_cat_2_optimize
 
             return cat1 + cat2
           })
@@ -173,28 +188,34 @@ export default {
         {
           title: this.trans('economic_reference.loss_production_due_to_shutdown'),
           dimension: this.trans('economic_reference.thousand_tons'),
-          values: this.filteredData.map(item => {
-            let cat1 = +item.oil_profitless_cat_1_optimize
+          values: this.scenariosByOilPrice.map(scenario => {
+            let cat1 = +scenario.oil_profitless_cat_1_optimize
 
-            let cat2 = +item.oil_profitless_cat_2_optimize
+            let cat2 = +scenario.oil_profitless_cat_2_optimize
 
             return ((cat1 + cat2) / 1000).toFixed(2)
           })
         },
         {
           title: this.trans('economic_reference.count_prs'),
-          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => +item.prs_optimize)
+          dimension: `
+            ${this.trans('economic_reference.rem_short')}/
+            ${this.trans('economic_reference.year')}
+          `,
+          values: this.scenariosByOilPrice.map(scenario => +scenario.prs_optimize)
         },
         {
           title: this.trans('economic_reference.number_prs_brigades'),
           dimension: '',
-          values: this.filteredData.map(item => '')
+          values: this.scenariosByOilPrice.map(scenario => '')
         },
         {
           title: this.trans('economic_reference.number_krs_brigades'),
-          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => '')
+          dimension: `
+            ${this.trans('economic_reference.rem_short')}/
+            ${this.trans('economic_reference.year')}
+          `,
+          values: this.scenariosByOilPrice.map(scenario => '')
         },
       ])
 
@@ -203,7 +224,9 @@ export default {
           return {
             title: this.gtms[gtmId].name,
             dimension: this.trans('economic_reference.wells_count_short'),
-            values: this.filteredData.map(item => this.gtms[gtmId].amount[item.oil_price] || 0)
+            values: this.scenariosByOilPrice.map(item =>
+                this.gtms[gtmId].amount[item.oil_price] || 0
+            )
           }
         })
 
@@ -211,11 +234,11 @@ export default {
             {
               title: this.trans('economic_reference.number_gtms_by_type'),
               dimension: this.trans('economic_reference.wells_count_short'),
-              values: this.filteredData.map(item => {
+              values: this.scenariosByOilPrice.map(scenario => {
                 let gtmsCount = 0
 
-                if (item.gtms) {
-                  for (const [month, gtms] of Object.entries(item.gtms)) {
+                if (scenario.gtms) {
+                  for (const [month, gtms] of Object.entries(scenario.gtms)) {
                     gtms.forEach(gtm => gtmsCount += (+gtm.amount))
                   }
                 }
@@ -232,35 +255,33 @@ export default {
     },
 
     gtms() {
-      let data = {}
+      let gtmsByOilPrice = {}
 
-      this.filteredData.forEach(item => {
-        if (!item.gtms) return
+      this.scenariosByOilPrice.forEach(scenario => {
+        if (!scenario.gtms) return
 
-        for (const [month, gtms] of Object.entries(item.gtms)) {
+        for (const [month, gtms] of Object.entries(scenario.gtms)) {
           gtms.forEach(gtm => {
-            let name = `GTM_${gtm.id}`
-
-            if (!data.hasOwnProperty(gtm.id)) {
-              data[gtm.id] = {name: name, amount: {}, oil_total: {}}
+            if (!gtmsByOilPrice.hasOwnProperty(gtm.id)) {
+              gtmsByOilPrice[gtm.id] = {name: gtm.name, amount: {}, oil_total: {}}
             }
 
-            if (!data[gtm.id].amount.hasOwnProperty(item.oil_price)) {
-              data[gtm.id].amount[item.oil_price] = 0
+            if (!gtmsByOilPrice[gtm.id].amount.hasOwnProperty(scenario.oil_price)) {
+              gtmsByOilPrice[gtm.id].amount[scenario.oil_price] = 0
             }
 
-            if (!data[gtm.id].oil_total.hasOwnProperty(item.oil_price)) {
-              data[gtm.id].oil_total[item.oil_price] = 0
+            if (!gtmsByOilPrice[gtm.id].oil_total.hasOwnProperty(scenario.oil_price)) {
+              gtmsByOilPrice[gtm.id].oil_total[scenario.oil_price] = 0
             }
 
-            data[gtm.id].amount[item.oil_price] += gtm.amount
+            gtmsByOilPrice[gtm.id].amount[scenario.oil_price] += gtm.amount
 
-            data[gtm.id].oil_total[item.oil_price] += gtm.oil_total * gtm.amount
+            gtmsByOilPrice[gtm.id].oil_total[scenario.oil_price] += gtm.oil_total * gtm.amount
           })
         }
       })
 
-      return data
+      return gtmsByOilPrice
     },
   },
 }

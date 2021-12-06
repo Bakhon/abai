@@ -104,6 +104,7 @@ let defaultRes = {
         percent_stop_cat_2: 0,
         stopped_uwis: []
       }],
+      wells: []
     }]
   },
   dollarRate: {

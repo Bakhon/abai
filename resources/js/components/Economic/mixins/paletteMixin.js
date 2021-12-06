@@ -12,10 +12,6 @@ export const paletteMixin = {
             required: true,
             type: Array,
         },
-        wells: {
-            required: true,
-            type: Array
-        },
     },
     computed: {
         reverseOilPrices() {
@@ -49,9 +45,14 @@ export const paletteMixin = {
         },
 
         wellsByOilPrice() {
-            let wells = this.wells.filter(well => +well.dollar_rate === +this.scenario.dollar_rate)
-
-            return this.reverseOilPrices.map(oilPrice => wells.filter(well => +well.oil_price === +oilPrice))
+            return this.reverseOilPrices.map(oilPrice =>
+                this.scenarios
+                    .find(scenario =>
+                        +scenario.oil_price === +oilPrice &&
+                        +scenario.dollar_rate === +this.scenario.dollar_rate
+                    )
+                    .wells
+            )
         },
 
         revenueTotalByOilPrice() {
@@ -68,7 +69,7 @@ export const paletteMixin = {
                         this.wellsByOilPrice[priceIndex].forEach(well => {
                             if (stoppedWells.includes(well.uwi)) return
 
-                            revenue += well.Revenue_total_12m
+                            revenue += well.Revenue_total
                         })
 
                         return {
@@ -93,12 +94,12 @@ export const paletteMixin = {
 
                         this.wellsByOilPrice[priceIndex].forEach(well => {
                             if (!stoppedWells.includes(well.uwi)) {
-                                return expenditures += +well.Overall_expenditures_full_12m
+                                return expenditures += +well.Overall_expenditures_full
                             }
 
                             expenditures +=
-                                +this.scenario.coef_Fixed_nopayroll * +well.Fixed_nopayroll_expenditures_12m +
-                                +this.scenario.coef_cost_WR_payroll * +well.Fixed_payroll_expenditures_12m
+                                +this.scenario.coef_Fixed_nopayroll * +well.Fixed_nopayroll_expenditures +
+                                +this.scenario.coef_cost_WR_payroll * +well.Fixed_payroll_expenditures
                         })
 
                         return {

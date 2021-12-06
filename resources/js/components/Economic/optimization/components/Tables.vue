@@ -39,9 +39,10 @@
 
       <table-well-changes
           v-else-if="activeTab === 'well_changes'"
+          :key="res.scenario.id"
           :scenario="scenario"
+          :scenarios="res.scenario.results"
           :oil-prices="scenarioVariations.oil_prices"
-          :data="res.wells"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -70,7 +71,6 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
-          :wells="res.wells"
           class="text-white"/>
 
       <table-palette
@@ -78,27 +78,26 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
-          :wells="res.wells"
           class="text-white"/>
 
       <table-well-tree-map
           v-else-if="activeTab === 'well_treemap'"
-          :scenario="scenario"
           :key="scenarioUniqueKey"
-          :data="res.wells"
+          :scenario="scenario"
+          :scenarios="res.scenario.results"
           class="text-white"/>
 
       <table-well-overview-map
           v-else-if="activeTab === 'well_overview_map'"
+          :key="res.scenario.id"
           :scenario="scenario"
-          :wells="res.wells"/>
+          :scenarios="res.scenario.results"/>
 
       <table-well-stock
           v-else-if="activeTab === 'well_stock'"
           :scenarios="res.scenario.results"
           :scenario="scenario"
-          :oil-prices="scenarioVariations.oil_prices"
-          :wells="res.wells"/>
+          :oil-prices="scenarioVariations.oil_prices"/>
     </div>
   </div>
 </template>
@@ -171,7 +170,8 @@ export default {
     },
 
     scenarioUniqueKey() {
-      return `${this.scenario.dollar_rate},
+      return `${this.res.scenario.id}
+          ${this.scenario.dollar_rate},
           ${this.scenario.oil_price},
           ${this.scenario.coef_Fixed_nopayroll},
           ${this.scenario.coef_cost_WR_payroll}

@@ -23,20 +23,21 @@ export default {
       required: true,
       type: Object
     },
-    data: {
+    scenarios: {
       required: true,
       type: Array
     },
   },
   computed: {
     wells() {
-      return this.data
-          .filter(well =>
-              +well.dollar_rate === +this.scenario.dollar_rate &&
-              +well.oil_price === +this.scenario.oil_price
+      return this.scenarios
+          .find(scenario =>
+              +scenario.oil_price === +this.scenario.oil_price &&
+              +scenario.dollar_rate === +this.scenario.dollar_rate
           )
+          .wells
           .map(well => {
-            well[this.waterCutKey] = +this.calcWaterCut(well.liquid_12m, well.oil_12m)
+            well[this.waterCutKey] = +this.calcWaterCut(well.liquid, well.oil)
 
             return well
           })
@@ -44,14 +45,6 @@ export default {
 
     selectedWells() {
       return this.scenario.stopped_uwis
-    },
-
-    profitabilityKey() {
-      return 'Operating_profit_12m'
-    },
-
-    waterCutKey() {
-      return 'water_cut_12m'
     },
 
     charts() {
@@ -73,12 +66,12 @@ export default {
         },
         {
           title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid_12m',
+          key: 'liquid',
           hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.oil_production'),
-          key: 'oil_12m',
+          key: 'oil',
           hasSubtitle: true,
         },
         {
