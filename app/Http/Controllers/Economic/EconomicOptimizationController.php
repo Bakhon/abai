@@ -58,7 +58,6 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenario' => $scenario,
             'specificIndicator' => $this->getSpecificIndicatorData($scenario->sc_fa_id),
-//            'wells' => $this->getWells(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
