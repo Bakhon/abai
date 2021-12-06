@@ -561,7 +561,7 @@ class EconomicScenarioJob implements ShouldQueue
 
             $wellByMonths[$formattedDate]["liquid"] = $gtmOil * 10;
 
-            $scenario["gtms"] = $gtmsByMonth;
+            $scenario["gtms"][] = $gtmsByMonth;
 
             $scenario["gtm_oil"] += $wellByMonths[$formattedDate]["oil"];
 

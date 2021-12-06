@@ -215,7 +215,7 @@ export default {
                 let gtmsCount = 0
 
                 if (item.gtms) {
-                  for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+                  for (const [month, gtms] of Object.entries(item.gtms)) {
                     gtms.forEach(gtm => gtmsCount += (+gtm.amount))
                   }
                 }
@@ -237,7 +237,7 @@ export default {
       this.filteredData.forEach(item => {
         if (!item.gtms) return
 
-        for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+        for (const [month, gtms] of Object.entries(item.gtms)) {
           gtms.forEach(gtm => {
             let name = `GTM_${gtm.id}`
 

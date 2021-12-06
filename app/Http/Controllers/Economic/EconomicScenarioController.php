@@ -34,7 +34,7 @@ class EconomicScenarioController extends Controller
 
     public function update(int $id): EcoRefsScenario
     {
-        return DB::transaction(function () use ($id) {
+        $scenario = DB::transaction(function () use ($id) {
             $scenario = EcoRefsScenario::query()
                 ->whereId($id)
                 ->whereNull('total_variants')
@@ -61,8 +61,10 @@ class EconomicScenarioController extends Controller
                 }
             }
 
-            return $scenario->refresh();
+            return $scenario;
         });
+
+        return $scenario->refresh();
     }
 
     public function destroy(int $id): int

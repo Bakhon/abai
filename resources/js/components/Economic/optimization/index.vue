@@ -83,10 +83,6 @@ const optimizeColumns = [
   'Overall_expenditures_full',
 ];
 
-const jsonColumns = [
-  'stopped_uwis',
-]
-
 let defaultRes = {
   scenario: {
     id: null,
@@ -331,7 +327,7 @@ export default {
 
       let percentStopCat2 = +this.scenarioVariation.optimization_percent.cat_2
 
-      let scenario = this.res.scenario.results
+      return this.res.scenario.results
           .find(result =>
               +result.oil_price === +this.scenarioVariation.oil_price &&
               +result.dollar_rate === +this.scenarioVariation.dollar_rate
@@ -342,19 +338,7 @@ export default {
               +variant.coef_Fixed_nopayroll === +this.scenarioVariation.retention_percent &&
               +variant.percent_stop_cat_1 === percentStopCat1 &&
               +variant.percent_stop_cat_2 === percentStopCat2
-          )
-
-      if (!scenario) {
-        return this.res.scenario.results[0].variants[0]
-      }
-
-      jsonColumns.forEach(column => {
-        if (typeof scenario[column] === 'string') {
-          scenario[column] = JSON.parse(scenario[column])
-        }
-      })
-
-      return scenario
+          ) || this.res.scenario.results[0].variants[0]
     },
 
     scenarioVariations() {
