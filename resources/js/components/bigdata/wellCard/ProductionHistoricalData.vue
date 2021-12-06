@@ -59,6 +59,7 @@ import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@
 export default {
     props: {
         changeColumnsVisible: Function,
+        wellExplDate: String
     },
     data() {
         return {
@@ -110,9 +111,11 @@ export default {
         },
         fillDates() {
             this.dates = [];
-            for (let i = 2008; i <= 2021; i++) {
+            let explYear = moment(this.wellExplDate, 'YYYY/MM/DD').year();
+            let currentYear = moment().year();
+            for (let i = explYear; i <= currentYear; i++) {
                 let obj = {
-                    'id': i,
+                    'id': i,    
                     'month': null,
                     'year': i,
                     'isChecked': false,

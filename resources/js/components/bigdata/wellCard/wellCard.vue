@@ -368,10 +368,12 @@
       <InjectionHistoricalData
         v-if="isInjectionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
         v-if="isProductionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></ProductionHistoricalData>
     </div>
   </div>
