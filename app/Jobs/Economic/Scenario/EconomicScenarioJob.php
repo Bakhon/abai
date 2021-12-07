@@ -125,8 +125,6 @@ class EconomicScenarioJob implements ShouldQueue
 
         if (!$scenario) return;
 
-        $scenario->gtm_kit_id = 3;
-
         $gtmKit = $scenario->gtm_kit_id
             ? $scenario->gtmKit()->firstOrFail()
             : null;
