@@ -58,6 +58,13 @@ export default {
                 colors: ['#3f51b4', '#ef5350', '#82baff', '#f0ad81'],
                 stroke: {
                     show: false,
+                },
+                dataLabels: {
+                    textAnchor: 'middle',
+                    distributed: false,
+                    style: {
+                        fontSize: '16px',
+                    },
                 }
             },
 
@@ -118,11 +125,12 @@ export default {
                 if (data) {
                     if (typeof data != 'object' || !data.length) {
                         this.setNotify(this.trans('paegtm.aegtm_factors_no_data'), this.trans('app.error'), "danger")
-                        return false;
                     }
 
                     this.mainTableData = data
                 }
+            }).catch(err => {
+                this.setNotify(this.trans('paegtm.no_gtm_factors_data'), this.trans('app.error'), "danger")
             }).finally(() => this.SET_LOADING(false));
         },
         getGtmFactorsChartData() {
@@ -131,11 +139,10 @@ export default {
                 {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd, selectedGtm: this.selectedGtm}}
             ).then((response) => {
                 let data = response.data;
-                console.log(data)
+
                 if (data) {
                     if (typeof data != 'object') {
                         this.setNotify(this.trans('paegtm.aegtm_factors_no_data'), this.trans('app.error'), "danger")
-                        return false;
                     }
 
                     this.series = data.unsuccessful_distribution_gtm_data.data;
@@ -154,6 +161,8 @@ export default {
                         this.$refs.wctDonutChart.updateOptions({ labels: data.wct_data.labels });
                     }
                 }
+            }).catch(err => {
+                    this.setNotify(this.trans('paegtm.no_gtm_factors_chart_data'), this.trans('app.error'), "danger")
             }).finally(() => this.SET_LOADING(false));
         },
         getData() {
