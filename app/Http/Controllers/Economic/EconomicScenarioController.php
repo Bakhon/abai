@@ -34,37 +34,33 @@ class EconomicScenarioController extends Controller
 
     public function update(int $id): EcoRefsScenario
     {
-        $scenario = DB::transaction(function () use ($id) {
-            $scenario = EcoRefsScenario::query()
-                ->whereId($id)
-                ->whereNull('total_variants')
-                ->lockForUpdate()
-                ->firstOrFail();
+        $scenario = EcoRefsScenario::query()
+            ->whereId($id)
+            ->whereNull('total_variants')
+            ->lockForUpdate()
+            ->firstOrFail();
 
-            $scenario->calculated_variants = 0;
+        $scenario->calculated_variants = 0;
 
-            $scenario->total_variants = EconomicScenarioJob::NUMBER_OF_STOPS *
-                count($scenario->params['oil_prices']) *
-                count($scenario->params['dollar_rates']) *
-                count($scenario->params['cost_wr_payrolls']) *
-                count($scenario->params['fixed_nopayrolls']);
+        $scenario->total_variants = EconomicScenarioJob::NUMBER_OF_STOPS *
+            count($scenario->params['oil_prices']) *
+            count($scenario->params['dollar_rates']) *
+            count($scenario->params['cost_wr_payrolls']) *
+            count($scenario->params['fixed_nopayrolls']);
 
-            $scenario->save();
+        $scenario->save();
 
-            foreach ($scenario->params['oil_prices'] as $oilPrice) {
-                foreach ($scenario->params['dollar_rates'] as $dollarRate) {
-                    dispatch(new EconomicScenarioJob(
-                        $scenario->id,
-                        $oilPrice['value'],
-                        $dollarRate['value'],
-                    ));
-                }
+        foreach ($scenario->params['oil_prices'] as $oilPrice) {
+            foreach ($scenario->params['dollar_rates'] as $dollarRate) {
+                dispatch(new EconomicScenarioJob(
+                    $scenario->id,
+                    $oilPrice['value'],
+                    $dollarRate['value'],
+                ));
             }
+        }
 
-            return $scenario;
-        });
-
-        return $scenario->refresh();
+        return $scenario;
     }
 
     public function destroy(int $id): int
