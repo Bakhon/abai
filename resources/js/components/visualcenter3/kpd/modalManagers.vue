@@ -15,15 +15,15 @@
                     <div class="btn-toolbar">
                         <button
                                 type="button"
-                                :class="[selectedType === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('manager')"
+                                :class="[selectedType.alias === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType({'alias':'manager','id': null})"
                         >
                             Члены Правления
                         </button>
                         <button
                                 type="button"
-                                :class="[selectedType === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('deputy')"
+                                :class="[selectedType.alias === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType({'alias':'deputy','id': null})"
                         >
                             Заместители
                         </button>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </modal>
-        <modal-manager :manager-info="selectedManager"></modal-manager>
+        <modal-manager ref="userCreation" :manager-info="selectedManager"></modal-manager>
     </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
         return {
             managers: [],
             selectedManager: {},
-            selectedType: 'manager'
+            selectedType: {'alias':'manager','id':null}
         };
     },
     methods: {
@@ -76,7 +76,17 @@ export default {
         }
     },
     async mounted() {
-        this.managers = await this.getManagers('manager');
+        this.managers = await this.getManagers({'alias':'manager','id': null});
+        this.$watch(
+            () => {
+                return this.$refs.userCreation.isOperationFinished
+            },
+            async (status) => {
+                if (status) {
+                    this.managers = await this.getManagers({'alias':'manager','id': null});
+                }
+            }
+        );
     }
 }
 

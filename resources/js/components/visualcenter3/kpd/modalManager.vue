@@ -73,7 +73,8 @@ export default {
                     'name': 'Заместитель',
                     'alias': 'deputy'
                 }
-            ]
+            ],
+            isOperationFinished: false
         };
     },
     methods: {
@@ -92,17 +93,22 @@ export default {
         async store() {
             this.SET_LOADING(true);
             let uri = this.localeUrl("/store-kpd-manager");
-            console.log(this.manager.type)
-            this.manager.type = {'alias':this.manager.type,'id':null};
+            if (Object.keys(this.managerInfo).length === 0) {
+                this.manager.type = {'alias':this.manager.type,'id':null};
+            }
             let formData = new FormData();
             if (!this.manager.img) {
                 formData.append("avatar", this.manager.avatar);
             } else {
                 formData.append("avatar", this.manager.img);
             }
+            let formattedType = this.manager.type;
+            if (typeof this.manager.type !== 'string') {
+                formattedType = JSON.stringify(this.manager.type);
+            }
             formData.append('name', this.manager.name);
             formData.append('title', this.manager.title);
-            formData.append('type', JSON.stringify(this.manager.type));
+            formData.append('type', formattedType);
             formData.append('id', this.manager.id);
             await this.axios.post(uri, formData, {
                 headers: {
@@ -116,6 +122,8 @@ export default {
                 this.showToast('Данные успешно сохранены/обновлены.','Успешно','success');
                 this.SET_LOADING(false);
             });
+            this.isOperationFinished = true;
+            this.$modal.hide('modalManager');
         },
         switchManagerType(e) {
             this.manager.type = e.target.value;
@@ -126,11 +134,22 @@ export default {
     },
     watch: {
         managerInfo: function () {
-            _.forEach(Object.keys(this.manager), (key) => {
-                if (this.managerInfo[key]) {
-                    this.manager[key] = this.managerInfo[key];
-                }
-            });
+            if (Object.keys(this.managerInfo).length === 0) {
+                this.manager = {
+                    'name': '',
+                    'title': '',
+                    'type': 'manager',
+                    'avatar': null,
+                    'img': '',
+                    'id': undefined
+                };
+            } else {
+                _.forEach(Object.keys(this.manager), (key) => {
+                    if (this.managerInfo[key]) {
+                        this.manager[key] = this.managerInfo[key];
+                    }
+                });
+            }
         },
     },
     props: ['managerInfo'],

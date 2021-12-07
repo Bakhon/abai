@@ -11,6 +11,6 @@ class KpdTreeCatalog extends Model
 
     public function kpdElements()
     {
-        return $this->hasOne(KpdElements::class);
+        return $this->hasMany('App\Models\VisCenter\Kpd\KpdElements', 'kpd_id', 'id');
     }
 }

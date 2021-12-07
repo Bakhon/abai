@@ -20,10 +20,6 @@
                         <div class="img-export"></div>
                         <div class="ml-1">Экспорт</div>
                     </div>
-                    <div class="main-buttons p-2 d-flex ml-4 visibility-settings">
-                        <div class="img-export"></div>
-                        <div class="ml-1">Экспорт</div>
-                    </div>
                 </div>
             </div>
             <div class="mt-3 col-12 row m-0 ceo-table">
@@ -130,14 +126,14 @@
 <!--                                </div>-->
 <!--                                <div class="col-1 text-right">-->
 <!--                                    {{kpd.progress}}%-->
-<!--                                </div>-->
+<!--                                 </div>-->
 <!--                            </div>-->
                         </div>
                     </div>
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog :kpd-list="kpdDecompositionB" :managers="managers" :corporate-manager="corporateManager"></kpd-modal-catalog>
+            <kpd-modal-catalog :managers="managers" :corporate-manager="corporateManager"></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
             <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>

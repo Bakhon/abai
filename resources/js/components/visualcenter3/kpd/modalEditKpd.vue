@@ -116,9 +116,37 @@
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Владелец</div>
-                        <select class="form-select input_kpd p-2 col-10" @change="kpd.current.type = $event.target.value">
+                        <select class="form-select input_kpd p-2 col-10" @change="handleTypeChange($event)">
                             <option v-for="owner in owners" :value="JSON.stringify(owner.type)">{{owner.name}}</option>
                         </select>
+                    </div>
+                    <div v-if="JSON.parse(kpd.current.type).alias !== 'strategic'" class="p-1 col-12 d-flex">
+                        <div class="col-2 text-left pt-2">Принадлежность</div>
+                        <select class="form-select input_kpd p-2 col-10" @change="kpd.current.parent = $event.target.value">
+                            <option v-for="kpd in kpdParents" :value="kpd.id">{{kpd.name}}</option>
+                        </select>
+                    </div>
+                    <div class="p-1 col-12 d-flex mt-2">
+                        <div class="col-6 d-flex justify-content-start pt-2">
+                            <span>Описание</span>
+                            <div class="ml-2 image-upload">
+                                <label for="description-document_upload">
+                                    <img src="/img/kpd-tree/document.png"/>
+                                </label>
+                                <input id="description-document_upload" type="file" class="form-control-file ml-2" @change="uploadFile($event,'description_document')">
+                            </div>
+                            <img v-if="kpd.current.description_document" class="ml-2" src="/img/kpd-tree/success.svg" height="30px">
+                        </div>
+                        <div class="col-6 text-left pt-2 d-flex justify-content-end">
+                            <span>Расчет</span>
+                            <div class="ml-2 image-upload">
+                                <label for="calculation-document_upload">
+                                    <img src="/img/kpd-tree/document.png"/>
+                                </label>
+                                <input id="calculation-document_upload" type="file" class="form-control-file ml-2" @change="uploadFile($event,'calculation_document')">
+                            </div>
+                            <img v-if="kpd.current.calculation_document" class="ml-2" src="/img/kpd-tree/success.svg" height="30px">
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-1">
@@ -135,6 +163,7 @@
 </template>
 
 <script>
+
 export default {
     data: function () {
         return {
@@ -149,7 +178,10 @@ export default {
                     functions: '',
                     result: '',
                     responsible: '',
-                    type: JSON.stringify({'alias': 'strategic','id':null})
+                    type: JSON.stringify({'alias': 'strategic','id':null}),
+                    parent: 'strategic',
+                    description_document: '',
+                    calculation_document: ''
                 }
             },
             owners: [
@@ -157,7 +189,8 @@ export default {
                     'name': 'Стратегические КПД',
                     'type': {'alias': 'strategic','id': null}
                 },
-            ]
+            ],
+            kpdParents: []
         };
     },
     methods: {
@@ -171,26 +204,65 @@ export default {
                     'responsible': ''
                 }
             );
+            console.log(this.currentKpd);
         },
         deleteRow() {
             this.kpd.current.elements.pop();
         },
-        setOwner(e) {
-
+        uploadFile(event,field) {
+            this.kpd.current[field] = event.target.files[0];
         },
         async store() {
             let uri = this.localeUrl("/kpd-tree-catalog-store");
-            // this.kpd.current.type = JSON.stringify(this.kpd.current.type);
-            this.axios.post(uri, this.kpd.current).then((response) => {
-                if (response.status === 200) {
-                    this.$modal.hide('modalKpdEdit')
-                } else {
-                    this.showToast('Ошибки при сохранении. Проверьте данные!','Ошибка!','danger');
+            let formData = new FormData();
+            formData.append('name', this.kpd.current.name);
+            formData.append('elements', JSON.stringify(this.kpd.current.elements));
+            formData.append('description', this.kpd.current.description);
+            formData.append('unit', this.kpd.unit);
+            formData.append('formula', this.kpd.current.formula);
+            formData.append('functions', this.kpd.current.functions);
+            formData.append('result', this.kpd.current.result);
+            formData.append('responsible', this.kpd.current.responsible);
+            formData.append('type', this.kpd.current.type);
+            formData.append('parent', this.kpd.current.parent);
+            formData.append('description_document', this.kpd.current.description_document);
+            formData.append('calculation_document', this.kpd.current.calculation_document);
+            await this.axios.post(uri, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 }
+            }).then((response) => {
+                if (response.status !== 200) {
+                    this.showToast('Проверьте вложенный файл и данные.','Ошибка!','danger');
+                    return;
+                }
+                this.showToast('Данные успешно сохранены/обновлены.','Успешно','success');
             });
-        }
+            this.isOperationFinished = true;
+            this.$modal.hide('modalKpdEdit');
+        },
+        handleTypeChange(e) {
+            this.kpd.current.type = e.target.value;
+            if (this.kpd.current.type.alias === 'strategic') {
+                this.kpdParents = [
+                    {
+                        'id': null,
+                        'alias': 'strategic'
+                    }
+                ];
+            } else {
+                let filtered = _.filter(this.kpdList, (item) => {
+                    return JSON.parse(item.type).alias === JSON.parse(this.kpd.current.type).alias;
+                });
+                this.kpdParents = filtered;
+                if (filtered.length > 0) {
+                    this.kpd.current.parent = JSON.parse(filtered[0].type).id;
+                }
+            }
+        },
     },
-    mounted() {
+    async mounted() {
+
     },
     watch: {
         managers: function () {
@@ -199,8 +271,31 @@ export default {
         corporateManager: function () {
             this.owners.push(this.corporateManager);
         },
+        kpdList: function() {
+            this.kpdParents = this.kpdList;
+        },
+        currentKpd: function() {
+            if (Object.keys(this.currentKpd).length > 0) {
+                this.kpd.current = _.cloneDeep(this.currentKpd);
+            } else {
+                this.kpd.current = {
+                    name: '',
+                    description: '',
+                    unit: '',
+                    formula: '',
+                    elements: [],
+                    functions: '',
+                    result: '',
+                    responsible: '',
+                    type: JSON.stringify({'alias': 'strategic','id':null}),
+                    parent: 'strategic',
+                    description_document: '',
+                    calculation_document: ''
+                };
+            }
+        }
     },
-    props: ['managers','corporateManager'],
+    props: ['managers','corporateManager','kpdList','currentKpd'],
 }
 
 
@@ -245,4 +340,8 @@ export default {
         border: 1px solid #656A8A !important;
     }
 }
+.image-upload>input {
+    display: none;
+}
+
 </style>
