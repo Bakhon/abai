@@ -38,13 +38,11 @@ class EconomicGtmValueImport implements ToModel, WithBatchInserts, WithChunkRead
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::query()
-            ->where([
-                'type_id' => EconomicDataLogType::GTM,
-                'name' => $fileName
-            ])
-            ->firstOrFail()
-            ->id;
+        $this->logId = EconomicDataLog::firstOrCreate([
+            'name' => $fileName,
+            'type_id' => EconomicDataLogType::GTM_VALUE,
+            'author_id' => $userId
+        ])->id;
     }
 
     public function model(array $row): ?EcoRefsGtmValue
