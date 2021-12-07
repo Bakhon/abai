@@ -643,7 +643,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 'sum' => $wellBsw->sum()
             ];
         });
-        if ($result->isEmpty()) {
+        if ($result->isEmpty() || !$result->sum('count')) {
             return 0;
         }
         return $result->sum('sum') / $result->sum('count');
