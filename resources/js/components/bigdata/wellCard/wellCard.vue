@@ -878,6 +878,7 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well); 
+      let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1016,7 +1017,7 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
-          data: "",
+          data: tube,
           type: ["all"],   
           codes: ["KGM"],       
         },
@@ -1386,7 +1387,13 @@ export default {
     },
     getTubeNom(well){
       if(this.well.tubeNom.od){
-        return this.well.tubeNomOd.od;
+        return this.well.tubeNom.od;
+      }
+      return "";
+    },
+    getTube(well){
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
       }
       return "";
     },

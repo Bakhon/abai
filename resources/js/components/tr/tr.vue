@@ -432,7 +432,7 @@
 
               </button>
               <button
-                v-if="isPermission"
+                v-if="isPermission && isEditable"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
@@ -558,7 +558,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission && isMaxDate"
+                v-if="!isEdit && isPermission && isMaxDate && isEditable"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
