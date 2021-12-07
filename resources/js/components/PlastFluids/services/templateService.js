@@ -67,6 +67,18 @@ export const getTemplateHistory = async (postData) => {
   }
 };
 
+export const getHorizonBlocks = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/horizons-blocks`,
+      postData
+    );
+    return response.data.data;
+  } catch (error) {
+    alert(error);
+  }
+};
+
 export const getUploadTemplates = async (postData) => {
   try {
     const response = await axios.post(

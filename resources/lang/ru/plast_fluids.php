@@ -26,7 +26,6 @@ return array (
   'selection_date_start' => 'Дата отбора начало',
   'selection_date_end' => 'Дата отбора конец',
   'data_type' => 'Тип данных',
-  'research_exploration' => 'Изученность пробами',
   'template_create' => 'Создание шаблона',
   'close' => 'Закрыть',
   'ready_templates' => 'Готовые шаблоны',
@@ -156,4 +155,7 @@ return array (
   'contact_scheme' => 'Схема контактов',
   'no_report_content' => 'Нет данных для этого шаблона',
   'unexpected_error' => 'Произошла непредвиденная ошибка, попробуйте позже',
+  'analysis_study_table_title' => 'Детальная статистика изученности по видам исследований',
+  'research_study' => 'Изученность экспериментами',
+  'sample_study' => 'Изученность пробами',
 );
