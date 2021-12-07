@@ -82,6 +82,7 @@
                                   type="donut" :height="280"
                                   :options="donutChart1"
                                   :series="series"
+                                  ref="unsuccessfulDistributionDonutChart"
                               ></apexchart>
                             </div>
                         </div>
@@ -97,6 +98,7 @@
                                   type="donut" :height="280"
                                   :options="donutChart2"
                                   :series="series1"
+                                  ref="liqDonutChart"
                               ></apexchart>
                             </div>
                         </div>
@@ -112,6 +114,7 @@
                                   type="donut" :height="280"
                                   :options="donutChart3"
                                   :series="series2"
+                                  ref="wctDonutChart"
                               ></apexchart>
                             </div>
                         </div>

@@ -20,18 +20,19 @@ export default {
                 {id: "pvlg", name: this.trans('paegtm.gtm_pvlg')},
                 {id: "pvr", name: this.trans('paegtm.gtm_pvr')},
                 {id: "rir", name: this.trans('paegtm.gtm_rir')},
+                {id: "vns_grp", name: this.trans('paegtm.gtm_vns_grp')},
             ],
             dzos: orgStructure,
             loaded: false,
-            series: [46, 55],
-            series1: [44, 55, 41, 17],
-            series2: [11, 34, 79, 23],
+            series: [],
+            series1: [],
+            series2: [],
             donutChart1: {
                 chart: {
                     type: 'donut',
                     foreColor: '#fff',
                 },
-                labels: ['По жидкости', 'По обводненности'],
+                labels: [],
                 colors: ['#3f51b5', '#f0ad81', '#82baff', '#ef5350'],
                 stroke: {
                     show: false,
@@ -42,7 +43,7 @@ export default {
                     type: 'donut',
                     foreColor: '#fff',
                 },
-                labels: ['Рпл', 'Skin', 'KH/mb', 'Рзаб'],
+                labels: [],
                 colors: ['#3f51b5', '#f0ad81', '#82baff', '#ef5350'],
                 stroke: {
                     show: false,
@@ -53,12 +54,7 @@ export default {
                     type: 'donut',
                     foreColor: '#fff',
                 },
-                labels: [
-                    this.trans('paegtm.development_of_reserves'),
-                    this.trans('paegtm.influence_of_ppd'),
-                    this.trans('paegtm.neck'),
-                    this.trans('paegtm.zkts'),
-                ],
+                labels: [],
                 colors: ['#3f51b4', '#ef5350', '#82baff', '#f0ad81'],
                 stroke: {
                     show: false,
@@ -129,9 +125,41 @@ export default {
                 }
             }).finally(() => this.SET_LOADING(false));
         },
+        getGtmFactorsChartData() {
+            this.axios.get(
+                this.localeUrl('/paegtm/aegtm/get-gtm-factors-chart-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd, selectedGtm: this.selectedGtm}}
+            ).then((response) => {
+                let data = response.data;
+                console.log(data)
+                if (data) {
+                    if (typeof data != 'object') {
+                        this.setNotify(this.trans('paegtm.aegtm_factors_no_data'), this.trans('app.error'), "danger")
+                        return false;
+                    }
+
+                    this.series = data.unsuccessful_distribution_gtm_data.data;
+                    this.series1 = data.liq_data.data;
+                    this.series2 = data.wct_data.data;
+
+                    if(typeof this.$refs.unsuccessfulDistributionDonutChart !== 'undefined') {
+                        this.$refs.unsuccessfulDistributionDonutChart.updateOptions({ labels: data.unsuccessful_distribution_gtm_data.labels });
+                    }
+
+                    if(typeof this.$refs.liqDonutChart !== 'undefined') {
+                        this.$refs.liqDonutChart.updateOptions({ labels: data.liq_data.labels });
+                    }
+
+                    if(typeof this.$refs.wctDonutChart !== 'undefined') {
+                        this.$refs.wctDonutChart.updateOptions({ labels: data.wct_data.labels });
+                    }
+                }
+            }).finally(() => this.SET_LOADING(false));
+        },
         getData() {
             this.SET_LOADING(true);
             this.getGtmFactorsData();
+            this.getGtmFactorsChartData();
         },
         selectGtm() {
             this.changeSelectedGtm(this.gtmTypes);

@@ -114,7 +114,7 @@ return array (
   'gtm_pvlg' => 'ПВЛГ',
   'gtm_pvr' => 'ПВР',
   'gtm_rir' => 'РИР',
-  'gtm_vns_grp' => 'ВНС ГРП',
+  'gtm_vns_grp' => 'ВНС_ГРП',
   'gtm_gs' => 'ГС',
   'gtm_zbs' => 'ЗБС',
   'gtm_zbgs' => 'ЗБГС',
@@ -184,4 +184,6 @@ return array (
   'formation_index_before_gtm' => 'Индекс пласта до ГТМ',
   'formation_index_after_gtm' => 'Индекс пласта после ГТМ',
   'percent' => '%',
+  'liquid' => 'Жидкость',
+  'watercut' => 'Обводненность',
 );
