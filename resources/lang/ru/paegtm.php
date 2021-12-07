@@ -177,4 +177,11 @@ return array (
   'aegtm_invalid_data' => 'Отсутствуют данные по плановым и фактическим показателям. Попробуйте изменить параметры фильтра.',
   'accum_additional_oil_prod_plan' => 'Доп. добыча нефти план, тыc. т',
   'accum_additional_oil_prod_fact' => 'Доп. добыча нефти факт, тыc. т',
+  'aegtm_factors_no_data' => 'Данные отсутствуют. Попробуйте изменить параметры фильтра.',
+  'dzo_short' => 'ДЗО (сокр.)',
+  'uwi' => '№ Скв',
+  'oilfield' => 'м/р',
+  'formation_index_before_gtm' => 'Индекс пласта до ГТМ',
+  'formation_index_after_gtm' => 'Индекс пласта после ГТМ',
+  'percent' => '%',
 );

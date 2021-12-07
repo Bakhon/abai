@@ -47,5 +47,8 @@ export const paegtmActions = {
     },
     changeTreeStore({commit}, value) {
         commit('CHANGE_TREE_STORE', value)
-    }
+    },
+    changeSelectedGtm({commit}, value) {
+        commit('CHANGE_SELECTED_GTM', value);
+    },
 }

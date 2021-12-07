@@ -1,6 +1,6 @@
 <?php
 
-use App\Imports\PaegtmUnsuccessfulGtmFactorsImport;
+use App\Imports\PaegtmGtmFactorAnalysisImport;
 use Illuminate\Database\Seeder;
 
 class PaegtmUnsuccessfulGtmFactorsSeeder extends Seeder
@@ -12,6 +12,6 @@ class PaegtmUnsuccessfulGtmFactorsSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new PaegtmUnsuccessfulGtmFactorsImport(), public_path('imports/paegtm_unsuccessful_gtms_factors.xlsx'));
+        Excel::import(new PaegtmGtmFactorAnalysisImport(), public_path('imports/paegtm_unsuccessful_gtms_factors.xlsx'));
     }
 }

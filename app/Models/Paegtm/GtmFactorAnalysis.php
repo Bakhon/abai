@@ -4,7 +4,7 @@ namespace App\Models\Paegtm;
 
 use App\Models\TBDModel;
 
-class UnsuccessfulGtmFactors extends TBDModel
+class GtmFactorAnalysis extends TBDModel
 {
     protected $table = 'paegtm.unsuccessful_gtm_factors';
 

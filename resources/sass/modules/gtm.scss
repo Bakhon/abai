@@ -368,6 +368,22 @@
 
 }
 
+.distribution-table {
+    th {
+        font-size: 0.8rem;
+    }
+
+    thead tr:nth-child(1) th {
+        position: sticky;
+        top: -1px;
+    }
+
+    thead tr:nth-child(2) th {
+        position: sticky;
+        top: 48px;
+    }
+}
+
 .paegtm-gtm-table {
     overflow-y: scroll;
     display: block;

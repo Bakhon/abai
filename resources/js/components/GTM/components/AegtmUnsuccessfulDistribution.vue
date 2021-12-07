@@ -10,45 +10,63 @@
                 <table class="table table-striped text-center text-white distribution-table mb-2">
                     <thead>
                     <tr>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.dzo') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.workshop') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.oil_field') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.borehole_number') }}</th>
-                        <th class="align-middle" colspan="7">{{ trans('paegtm.planned_technological_regime') }}</th>
-                        <th class="align-middle" colspan="7">{{ trans('paegtm.parameters_after_gtm') }}</th>
-                        <th class="align-middle" colspan="8">{{ trans('paegtm.deviation_of_qн') }}</th>
+                        <th class="align-middle" rowspan="2">№</th>
+                        <th class="align-middle" rowspan="2">ДЗО</th>
+                        <th class="align-middle" rowspan="2">ДЗО (сокр.)</th>
+                        <th class="align-middle" rowspan="2">№ Скв</th>
+                        <th class="align-middle" rowspan="2">м/р</th>
+                        <th class="align-middle" colspan="4">Параметры до ГТМ</th>
+                        <th class="align-middle" rowspan="2">Вид ГТМ</th>
+                        <th class="align-middle" rowspan="2">Дата проведения ГТМ</th>
+                        <th class="align-middle" colspan="3">Планируемые параметры ГТМ</th>
+                        <th class="align-middle" colspan="4">Параметры после ГТМ</th>
+                        <th class="align-middle" colspan="2">Отклонение план/факт</th>
+                        <th class="align-middle" rowspan="2">Фактор неуспешности</th>
+                        <th class="align-middle" rowspan="2">Причина недостижения</th>
                     </tr>
                     <tr>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.qh_day') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.qliq_day') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.water_cut_percent') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.p_zab_atm') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.p_plast_atm') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.jd_unit') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.kh') }}</th>
+                        <th class="align-middle" rowspan="2">Индекс пласта до ГТМ</th>
+                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
+                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
+                        <th class="align-middle" rowspan="2">обв., %</th>
 
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.qh_day') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.qliq_day') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.water_cut_percent') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.p_zab_atm') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.p_plast_atm') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.jd_unit') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.kh') }}</th>
+                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
+                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
+                        <th class="align-middle" rowspan="2">обв., %</th>
 
-                        <th class="align-middle" rowspan="2">&#916;{{ trans('paegtm.delta_qh_day') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.by_water_cut_short') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.water_cut_reason') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.q_liq_common') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.q_liq_p_plast') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.q_liq_p_zab') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.q_liq_kh_mb') }}</th>
-                        <th class="align-middle" rowspan="2">{{ trans('paegtm.q_liq_jd') }}</th>
+                        <th class="align-middle" rowspan="2">Индекс пласта после ГТМ</th>
+                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
+                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
+                        <th class="align-middle" rowspan="2">обв., %</th>
 
+                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
+                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="mainTableItem in mainTableData">
-                        <td v-for="value in mainTableItem" class="align-middle">{{ value }}</td>
+                    <tr v-for="(mainTableItem, index) in mainTableData">
+                        <td class="align-middle">{{ ++index }}</td>
+                        <td class="align-middle" width="11%">{{ mainTableItem.org_name }}</td>
+                        <td class="align-middle">{{ mainTableItem.org_name_short }}</td>
+                        <td class="align-middle">{{ mainTableItem.uwi }}</td>
+                        <td class="align-middle">{{ mainTableItem.oilfield }}</td>
+                        <td class="align-middle">{{ mainTableItem.formation_index_before_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_l_before_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_o_before_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.wct_before_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.gtm_date }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_l_plan }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_o_plan }}</td>
+                        <td class="align-middle">{{ mainTableItem.wct_plan }}</td>
+                        <td class="align-middle">{{ mainTableItem.formation_index_after_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_l_after_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.q_o_after_gtm }}</td>
+                        <td class="align-middle">{{ mainTableItem.wct_after_gtm }}</td>
+                        <td class="align-middle" :class="{growth : mainTableItem.q_l_deviation > 0,  fall : mainTableItem.q_l_deviation < 0}">{{ mainTableItem.q_l_deviation }}</td>
+                        <td class="align-middle" :class="{growth : mainTableItem.q_o_deviation > 0,  fall : mainTableItem.q_o_deviation < 0}">{{ mainTableItem.q_o_deviation }}</td>
+                        <td class="align-middle">{{ mainTableItem.failure_factor }}</td>
+                        <td class="align-middle">{{ mainTableItem.failure_reason }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -141,7 +159,7 @@
                     </v-select>
                 </div>
                 <div class="mt-2">
-                    <gtm-date-picker></gtm-date-picker>
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -155,7 +173,7 @@
                             </label>
                         </div>
                         <div v-for="gtm in gtmTypesList" class="form-check">
-                            <input class="form-check-input"  v-model="gtmTypes" type="checkbox" :value="gtm.id" :id="'gtm_filter_' + gtm.id">
+                            <input class="form-check-input"  v-model="gtmTypes" @change="selectGtm()" type="checkbox" :value="gtm.name" :id="'gtm_filter_' + gtm.id">
                             <label class="form-check-label" :for="'gtm_filter_' + gtm.id">
                                 {{ gtm.name}}
                             </label>

@@ -6,7 +6,7 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GtmKind;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Well;
-use App\Models\Paegtm\UnsuccessfulGtmFactors;
+use App\Models\Paegtm\GtmFactorAnalysis;
 use Carbon\Carbon;
 use ErrorException;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class PaegtmUnsuccessfulGtmFactorsImport implements ToModel, WithStartRow, WithBatchInserts, WithChunkReading, WithMultipleSheets
+class PaegtmGtmFactorAnalysisImport implements ToModel, WithStartRow, WithBatchInserts, WithChunkReading, WithMultipleSheets
 {
     const CHUNK = 100;
 
@@ -84,7 +84,7 @@ class PaegtmUnsuccessfulGtmFactorsImport implements ToModel, WithStartRow, WithB
         $geo = $this->_geos->where('field_code', $geoCode)->first();
         $well = $this->_wells[$uwi] ?? null;
 
-        return new UnsuccessfulGtmFactors([
+        return new GtmFactorAnalysis([
             'org_id' => $org ? $org->id : null,
             'org_name' => $row[self::COLUMNS['org_name']],
             'org_name_short' => $row[self::COLUMNS['org_name_short']],

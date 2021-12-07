@@ -18,6 +18,7 @@ export const paegtmState = {
         clickableTable: {
             header: null,
             data: null
-        }
+        },
+        selectedGtm: []
     }
 }

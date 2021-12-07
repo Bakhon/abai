@@ -1,6 +1,6 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-import unsuccessfulDistributionMmg from '../../mock-data/unsuccessful_distribution_mmg.json'
+import {paegtmMapActions, paegtmMapGetters, paegtmMapState, globalloadingMutations} from '@store/helpers';
 import orgStructure from '../../mock-data/org_structure.json'
 import VueApexCharts from "vue-apexcharts";
 import filterSelect from '../../mixin/selectFilter'
@@ -13,11 +13,7 @@ export default {
     mixins: [filterSelect],
     data: function () {
         return {
-            comparisonIndicators: [],
-            accumOilProdLabels: [],
-            accumOilProdFactData: [],
-            accumOilProdPlanData: [],
-            mainTableData: unsuccessfulDistributionMmg,
+            mainTableData: [],
             gtmTypesList: [
                 {id: "vns", name: this.trans('paegtm.gtm_vns')},
                 {id: "grp", name: this.trans('paegtm.gtm_grp')},
@@ -82,6 +78,12 @@ export default {
         };
     },
     computed: {
+        ...paegtmMapState([
+            'dateStart',
+            'dateEnd',
+            'dzoName',
+            'selectedGtm'
+        ]),
         selectAllGtms: {
             get: function () {
                 return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
@@ -91,17 +93,65 @@ export default {
 
                 if (value) {
                     this.gtmTypesList.forEach(function (gtm) {
-                        selected.push(gtm.id);
+                        selected.push(gtm.name);
                     });
                 }
 
                 this.gtmTypes = selected;
+                this.selectGtm();
             }
         }
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDateStart',
+            'changeDateEnd',
+            'changeDzoId',
+            'changeDzoName',
+            'changeSelectedGtm'
+        ]),
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+        getGtmFactorsData() {
+            this.axios.get(
+                this.localeUrl('/paegtm/aegtm/get-gtm-factors-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd, selectedGtm: this.selectedGtm}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    if (typeof data != 'object' || !data.length) {
+                        this.setNotify(this.trans('paegtm.aegtm_factors_no_data'), this.trans('app.error'), "danger")
+                        return false;
+                    }
+
+                    this.mainTableData = data
+                }
+            }).finally(() => this.SET_LOADING(false));
+        },
+        getData() {
+            this.SET_LOADING(true);
+            this.getGtmFactorsData();
+        },
+        selectGtm() {
+            this.changeSelectedGtm(this.gtmTypes);
+            this.getData();
+        },
+        setNotify(message, title, type) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: type,
+                solid: true,
+                toaster: "b-toaster-top-center",
+                autoHideDelay: 8000,
+            });
+        },
+    },
+    created() {
+        this.SET_LOADING(false);
     },
     mounted() {
         this.dzosForFilter = this.dzos;
+        this.gtmTypes = this.selectedGtm;
     },
 }
