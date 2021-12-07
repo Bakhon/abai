@@ -192,7 +192,7 @@
                     this.currentStructure.unit.push(this.newStructures[i].descentDepthUnit)
                 }
                 if (found){
-                    currentType = 5
+                    currentType = 4
                 }else{
                     switch (diameterCount) {
                         case 2:
