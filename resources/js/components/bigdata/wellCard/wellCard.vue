@@ -1016,6 +1016,12 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
+          data: "",
+          type: ["all"],   
+          codes: ["KGM"],       
+        },
+        {
+          name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],          
         },
@@ -1379,14 +1385,8 @@ export default {
       return value;
     },
     getTubeNom(well){
-      if(this.well.tubeNom.od && this.well.tubeNomDop.od){
-        return this.well.tubeNomOd + ' / ' + this.well.tubeNomDop.od;
-      }
       if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + '-';
-      }
-      if(this.well.tubeNomDop.od){
-        return '-' + ' / ' + this.well.tubeNomDop.od;
+        return this.well.tubeNomOd.od;
       }
       return "";
     },
