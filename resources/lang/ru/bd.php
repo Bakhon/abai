@@ -477,7 +477,7 @@ return [
             'oil_production' => 'Добыча нефти (т)',
             'water_injection' => 'Закачка воды (м3)',
             'water_production' => 'Добыча воды (м3)',
-            'liquid_production' => 'Добыча жидкости (м3)',
+            'liquid_production' => 'Добыча жидкости (т)',
             'oil_injection' => 'Сдача нефти (т)',
             'gas_production' => 'Добыча газа (м3)',
             'steam_injection' => 'Закачка пара (м3)',
