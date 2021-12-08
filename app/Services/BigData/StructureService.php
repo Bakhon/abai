@@ -34,8 +34,14 @@ class StructureService
                 'name' => 'GPST',
                 'children' => [
                     [
+                        'name' => 'WIDM'
+                    ],
+                    [
                         'name' => 'WDM'
-                    ]
+                    ],
+                    [
+                        'name' => 'VM'
+                    ],
                 ]
             ],
             [
@@ -48,7 +54,13 @@ class StructureService
                         'name' => 'WDM'
                     ],
                     [
+                        'name' => 'VM'
+                    ],
+                    [
                         'name' => 'GMS'
+                    ],
+                    [
+                        'name' => 'GU'
                     ]
                 ]
             ],
@@ -56,7 +68,19 @@ class StructureService
                 'name' => 'OTU',
                 'children' => [
                     [
+                        'name' => 'WIDM'
+                    ],
+                    [
+                        'name' => 'WDM'
+                    ],
+                    [
+                        'name' => 'VM'
+                    ],
+                    [
                         'name' => 'GMS'
+                    ],
+                    [
+                        'name' => 'GU'
                     ]
                 ]
             ],
@@ -218,6 +242,7 @@ class StructureService
             Tech::TYPE_OTU,
             Tech::TYPE_WIDM,
             Tech::TYPE_WDM,
+            Tech::TYPE_VM,
         ];
 
         $subTypes = $this->getSubTypes('tech', $types);
