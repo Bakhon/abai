@@ -4,7 +4,7 @@
 
     <subtitle v-if="wells.length" class="text-white text-wrap">
       {{ trans('economic_reference.total') }}
-      {{ filteredWells[currentDate].length }}
+      {{ wellsByDates[currentDate].length }}
       {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}
     </subtitle>
 
@@ -37,11 +37,11 @@
           v-for="(date, index) in formattedDates"
           :key="date"
           :class="[
-              filteredDates[index] === currentDate ? 'bg-blue' : 'bg-grey',
+              dates[index] === currentDate ? 'bg-blue' : 'bg-grey',
               index ? 'ml-2' : ''
               ]"
           class="btn text-white"
-          @click="updateDate(filteredDates[index])">
+          @click="updateDate(dates[index])">
         {{ date }}
       </button>
     </div>
@@ -89,64 +89,146 @@ export default {
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
-    getColor({profitability}) {
-      if (profitability === 'profitable') {
-        return '#387249'
-      }
-
-      return profitability === 'profitless_cat_1'
-          ? '#8D2540'
-          : '#F7BB2E'
-    },
-
-    getId({uwi}) {
-      return `well-map-circle-${uwi}`
-    },
-
     async getWells() {
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
 
       try {
         const {data} = await this.axios.get(this.url, {params: {...this.orgForm, ...this.form}})
 
         this.wells = data
 
-        this.plotMap()
+        this.currentDate = this.dates[0]
+
+        this.initMap()
       } catch (e) {
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
+    },
+
+    getColor(profitability) {
+      if (profitability === 'profitable') {
+        return '#387249'
+      }
+
+      return profitability === 'profitless_cat_2'
+          ? '#F7BB2E'
+          : '#8D2540'
+    },
+
+    getMapSource(profitability) {
+      return {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: this.wellsByProfitability[profitability].map(well => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [well.coordinates.lon, well.coordinates.lat]
+            },
+            properties: {
+              description: `<strong>${well.uwi}</strong>`
+            },
+          })),
+        }
+      }
+    },
+
+    initMap() {
+      this.map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v9',
+        zoom: 8,
+        accessToken: process.env.MIX_MAPBOX_TOKEN,
+        center: this.wellsByProfitability[this.wellsProfitability[0]][0].coordinates,
+      })
+
+      this.map.on('load', () => this.plotMap())
     },
 
     plotMap() {
-      this.currentDate = this.filteredDates[0]
-
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-        center: this.filteredWells[this.currentDate][0].coordinates,
-        zoom: 11,
-        bearing: 0,
-        pitch: 30,
-        accessToken: process.env.MIX_MAPBOX_TOKEN
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
       })
 
-      this.map.on('load', () => {
-        this.filteredWells[this.currentDate].forEach(well => {
-          let marker = document.createElement('div');
+      this.wellsProfitability.forEach(profitability => {
+        let color = this.getColor(profitability)
 
-          marker.id = this.getId(well)
+        this.map.addSource(profitability, this.getMapSource(profitability))
 
-          marker.style.backgroundColor = well.color;
+        this.map.addLayer(
+            {
+              'id': `${profitability}-heat`,
+              'type': 'heatmap',
+              'source': profitability,
+              'maxzoom': 12,
+              'paint': {
+                'heatmap-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['heatmap-density'],
+                  0, 'rgba(33,102,172,0)',
+                  0.2, color,
+                  0.4, color,
+                  0.6, color,
+                  0.8, color,
+                  1, color
+                ],
+                'heatmap-radius': {
+                  stops: [
+                    [10, 15],
+                    [15, 20]
+                  ]
+                },
+                'heatmap-opacity': {
+                  default: 1,
+                  stops: [
+                    [11, 1],
+                    [12, 0]
+                  ]
+                }
+              }
+            },
+            'waterway-label'
+        )
 
-          marker.className = 'well-map-circle';
+        this.map.addLayer({
+              'id': `${profitability}-point`,
+              'type': 'circle',
+              'source': profitability,
+              'minzoom': 11,
+              'paint': {
+                'circle-color': color,
+                'circle-radius': 6,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff'
+              }
+            },
+            'waterway-label'
+        )
 
-          new mapboxgl
-              .Marker(marker)
-              .setLngLat(well.coordinates)
-              .setPopup(new mapboxgl.Popup({closeButton: false}).setText(well.uwi))
+        this.map.on('mouseenter', `${profitability}-point`, (e) => {
+          this.map.getCanvas().style.cursor = 'pointer'
+
+          let coordinates = e.features[0].geometry.coordinates.slice()
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+          }
+
+          popup
+              .setLngLat(coordinates)
+              .setHTML(e.features[0].properties.description)
               .addTo(this.map)
+        })
+
+        this.map.on('mouseleave', profitability, () => {
+          this.map.getCanvas().style.cursor = ''
+
+          popup.remove()
         })
       })
     },
@@ -156,14 +238,10 @@ export default {
 
       this.currentDate = date
 
-      this.filteredWells[this.currentDate].forEach(well => {
-        let marker = document.getElementById(this.getId(well))
-
-        if (!marker) return
-
-        marker.style.backgroundColor = well.color;
+      this.wellsProfitability.forEach(profitability => {
+        this.map.getSource(profitability).setData(this.getMapSource(profitability).data)
       })
-    }
+    },
   },
   computed: {
     url() {
@@ -182,11 +260,11 @@ export default {
       return date.toISOString()
     },
 
-    filteredWells() {
-      let points = {}
+    wellsByDates() {
+      let wellsByDate = {}
 
       this.wells.forEach(well => {
-        if (!well.coordinates) return
+        if (!well.coordinates || !well.profitability) return
 
         let point = well.coordinates.split(',')
 
@@ -196,26 +274,37 @@ export default {
 
         if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
 
-        if (!points.hasOwnProperty(well.dt)) {
-          points[well.dt] = []
+        if (!wellsByDate.hasOwnProperty(well.dt)) {
+          wellsByDate[well.dt] = {}
         }
 
-        points[well.dt].push({
+        if (!wellsByDate[well.dt].hasOwnProperty(well.profitability)) {
+          wellsByDate[well.dt][well.profitability] = []
+        }
+
+        wellsByDate[well.dt][well.profitability].push({
           uwi: well.uwi,
-          color: this.getColor(well),
           coordinates: {lat: lat, lon: lon}
         })
       })
 
-      return points
+      return wellsByDate
     },
 
-    filteredDates() {
-      return Object.keys(this.filteredWells)
+    wellsByProfitability() {
+      return this.wellsByDates[this.currentDate] || []
+    },
+
+    wellsProfitability() {
+      return Object.keys(this.wellsByProfitability)
+    },
+
+    dates() {
+      return Object.keys(this.wellsByDates)
     },
 
     formattedDates() {
-      return this.filteredDates.map(date => {
+      return this.dates.map(date => {
         return (new Date(date)).toLocaleDateString('ru', {
           day: '2-digit',
           month: 'short',
@@ -234,10 +323,9 @@ export default {
   width: 100%;
 }
 
-.well-map >>> .well-map-circle {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
+.well-map >>> .mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
 .bg-blue {
