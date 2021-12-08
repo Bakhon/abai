@@ -1465,6 +1465,9 @@ export default {
             this.well.dailyInjectionOil.pressure_inj
           );
         }
+        if (this.well.tech_mode_inj.inj_pressure === null && this.well.dailyInjectionOil.pressure_inj === null) {
+          return "-" + " / " + "-";
+        }
         if (this.well.tech_mode_inj.inj_pressure === null) {
           return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;
         }
