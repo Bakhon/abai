@@ -124,7 +124,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
 
-        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+     //   Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
 
