@@ -1,6 +1,9 @@
 <template>
   <div
-      :class="`bd-form-field bd-form-field_${item.type}`"
+      :class="[
+        formatedValue.value && editable ? 'can-delete' : '',
+        `bd-form-field bd-form-field_${item.type}`
+      ]"
   >
     <template v-if="['text', 'numeric'].indexOf(item.type) > -1">
       <input
@@ -353,6 +356,10 @@ export default {
 .bd-form-field {
   max-width: 600px;
   position: relative;
+
+  &.can-delete {
+    margin-right: 25px;
+  }
 
   &_table {
     max-width: 100%;
