@@ -336,6 +336,8 @@ class WellsController extends Controller
                 ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
                 ->where('m.code', '=', 'BND')
                 ->where('e.code', '=', 'CHK')
+                ->where('wq.well', $well->id)
+                ->orderBy('wq.dbeg', 'desc')
                 ->get('efp.value_double')
                 ->toArray();
 

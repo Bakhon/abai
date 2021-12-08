@@ -184,7 +184,7 @@
   }
 
   &__diagram {
-    width: 35%;
+    width: 30%;
     margin-left: 6px;
 
     &--header {
