@@ -78,13 +78,9 @@ export default {
       get() {
         return this.currentSubsoilHorizon;
       },
-      async set(value) {
+      set(value) {
         this.SET_CURRENT_SUBSOIL_HORIZON(value);
-        await this.handleBlocksFilter(value);
-        this.handleAnalysisTableData({
-          field_id: this.currentSubsoilField[0].field_id,
-          postUrl: this.getTablePostUrl(),
-        });
+        if (!value.length) this.SET_CURRENT_BLOCKS([]);
       },
     },
     selectedBlocks: {
@@ -93,10 +89,6 @@ export default {
       },
       set(value) {
         this.SET_CURRENT_BLOCKS(value);
-        this.handleAnalysisTableData({
-          field_id: this.currentSubsoilField[0].field_id,
-          postUrl: this.getTablePostUrl(),
-        });
       },
     },
   },
@@ -110,7 +102,7 @@ export default {
       "handleBlocksFilter",
     ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
-    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_BLOCKS"]),
+    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS", "SET_CURRENT_BLOCKS"]),
     async updateCurrentSubsoil(value) {
       await this.UPDATE_CURRENT_SUBSOIL(value);
       this.handleBlocksFilter([]);
@@ -118,18 +110,6 @@ export default {
     async updateCurrentField(value) {
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
       this.handleBlocksFilter([]);
-    },
-    getTablePostUrl() {
-      let url;
-      switch (this.reservoilOilInfo[1]) {
-        case "maps-and-tables":
-          url = "map/isogyps-wells-table";
-          break;
-        case "graphs-and-tables":
-          url = "analytics/pvt-data-analysis";
-          break;
-      }
-      return url;
     },
   },
 };

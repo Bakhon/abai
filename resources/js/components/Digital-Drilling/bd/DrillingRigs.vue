@@ -651,5 +651,7 @@
     .contentBlock{
         height: calc(100% - 130px);
     }
-
+    button{
+        color: #FFFFFF;
+    }
 </style>

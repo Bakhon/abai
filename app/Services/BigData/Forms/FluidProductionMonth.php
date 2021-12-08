@@ -643,7 +643,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 'sum' => $wellBsw->sum()
             ];
         });
-        if ($result->isEmpty()) {
+        if ($result->isEmpty() || !$result->sum('count')) {
             return 0;
         }
         return $result->sum('sum') / $result->sum('count');
@@ -954,14 +954,21 @@ class FluidProductionMonth extends MeasLogByMonth
                                     ]
                                 );
                         } else {
-                            DB::connection('tbd')
-                                ->table('prod.meas_gas_prod')
-                                ->where('id', $row->id)
-                                ->update(
-                                    [
-                                        'gas_prod_val' => $field['value'],
-                                    ]
-                                );
+                            if (empty($field['value'])) {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->delete();
+                            } else {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->update(
+                                        [
+                                            'gas_prod_val' => $field['value'],
+                                        ]
+                                    );
+                            }
                         }
                         break;
                 }

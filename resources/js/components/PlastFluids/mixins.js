@@ -7,7 +7,7 @@ const DataAnalysisStudy = () => import("./components/DataAnalysisStudy/DataAnaly
 const DataAnalysisMapsAndTablesSideMenu = () =>
   import("./components/DataAnalysisMapsAndTables/LeftMenu.vue");
 const DataAnalysisMapsAndTables = () =>
-  import("./components/DataAnalysisMapsAndTables/DataAnalysisMapsAndTables.vue");
+  import("./components/DataAnalysisMapsAndTables/MapsAndTables.vue");
 const DataAnalysisPropertyMap = () =>
   import("./components/DataAnalysisPropertyMap/DataAnalysisPropertyMap.vue");
 const DataAnalysisGraphsAndTablesSideMenu = () =>

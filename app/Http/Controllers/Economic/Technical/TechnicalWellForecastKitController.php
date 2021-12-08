@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Economic\Technical;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\WellForecast\Kit\TechnicalWellForecastKitDataRequest;
 use App\Http\Requests\Economic\Technical\WellForecast\Kit\TechnicalWellForecastKitStoreRequest;
+use App\Models\Refs\EconomicDataLog;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecastKit;
 use Illuminate\Http\Request;
 
@@ -31,6 +33,21 @@ class TechnicalWellForecastKitController extends Controller
 
     public function store(TechnicalWellForecastKitStoreRequest $request): TechnicalWellForecastKit
     {
+        EconomicDataLog::query()
+            ->where([
+                'id' => $request->economic_log_id,
+                'type_id' => EconomicDataLogType::ANALYSIS_PARAM
+            ])
+            ->firstOrFail();
+
+        EconomicDataLog::query()
+            ->where([
+                'id' => $request->technical_log_id,
+                'type_id' => EconomicDataLogType::WELL_FORECAST,
+                'is_processed' => true
+            ])
+            ->firstOrFail();
+
         $kit = new TechnicalWellForecastKit($request->validated());
 
         $kit->user_id = auth()->id();

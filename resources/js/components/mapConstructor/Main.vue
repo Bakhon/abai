@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main">
+                <div class="map-constructor-main">
                     <div class="layers">
                         <div class="form-group has-search m-0">
                             <span class="fa fa-search form-control-feedback"></span>
