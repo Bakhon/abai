@@ -193,7 +193,7 @@ class WellsController extends Controller
                         ->wherePivot('project_drill', '=', 'false')
                         ->wherePivot('casing_type', '=', '8', 'or')
                         ->WherePivot('casing_type', '=', '9')
-                        ->get(['prod.well_constr.od'])
+                        ->get(['prod.well_constr.nd'])
                         ->toArray();
 
         if($wellConstr){
@@ -204,9 +204,9 @@ class WellsController extends Controller
         $wellConstrOd = DB::connection('tbd')
                         ->table('prod.well_constr')
                         ->where('well', '=', $well->id)
-                        ->where('od', '!=', null)                        
-                        ->orderBy('id', 'desc')
-                        ->get('od')
+                        ->where('nd', '!=', null)                        
+                        ->orderBy('id', 'asc')
+                        ->get('nd')
                         ->toArray();   
         if($wellConstrOd){
         return $wellConstrOd[0];
