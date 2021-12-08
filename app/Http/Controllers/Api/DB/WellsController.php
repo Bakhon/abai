@@ -34,7 +34,6 @@ class WellsController extends Controller
     {
         $types = array_filter(explode(',', $request->get('types')));
         return $service->getFormTree($types);
-
     }
 
     public function wellInfo($well)
