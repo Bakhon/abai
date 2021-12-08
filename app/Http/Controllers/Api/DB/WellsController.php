@@ -13,7 +13,6 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\TechModeOil;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\WellBlock;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -33,7 +32,8 @@ class WellsController extends Controller
 
     public function getStructureTree(StructureService $service, Request $request)
     {
-        return $service->getTreeWithPermissions();
+        $types = array_filter(explode(',', $request->get('types')));
+        return $service->getFormTree($types);
     }
 
     public function wellInfo($well)
