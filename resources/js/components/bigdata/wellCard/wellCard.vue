@@ -1435,8 +1435,8 @@ export default {
     getTechmodeLiqiud(well){    
      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
-          this.well.techModeProdOil.liquid &&
-          this.well.dmart_daily_prod_oil
+          this.well.techModeProdOil.liquid != null &&
+          this.well.dmart_daily_prod_oil.liquid != null
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
@@ -1444,10 +1444,10 @@ export default {
             this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
-        if (this.well.techModeProdOil.liquid) {
+        if (this.well.techModeProdOil.liquid != null) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.dmart_daily_prod_oil.liquid) {
+        if (this.well.dmart_daily_prod_oil.liquid != null) {
           return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }

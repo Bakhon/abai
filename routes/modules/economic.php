@@ -15,6 +15,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         });
 
         Route::group(['prefix' => 'optimization'], function () {
+            Route::get('input-params', 'EconomicOptimizationController@inputParams')
+                ->name('economic.optimization.input_params');
             Route::get('', 'EconomicOptimizationController@index')
                 ->name('economic.optimization');
             Route::get('get-data', 'EconomicOptimizationController@getData');
@@ -27,6 +29,14 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 Route::get('upload-excel', 'EconomicGtmController@uploadExcel');
                 Route::post('import-excel', 'EconomicGtmController@importExcel')
                     ->name('economic.gtm.import');
+
+                Route::group(['prefix' => 'kit'], function () {
+                    Route::post('', 'EconomicGtmKitController@store');
+
+                    Route::delete('{kit_id}', 'EconomicGtmKitController@destroy');
+
+                    Route::get('get-data', 'EconomicGtmKitController@getData');
+                });
             });
 
             Route::resource('gtm', 'EconomicGtmController')
@@ -56,10 +66,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('scenario/get-data', 'EconomicScenarioController@getData');
 
             Route::resource('scenario', 'EconomicScenarioController')
-                ->only(['index', 'store', 'destroy'])
+                ->only(['index', 'store', 'update', 'destroy'])
                 ->names([
                     'index' => 'economic.scenario.index',
                     'store' => 'economic.scenario.store',
+                    'update' => 'economic.scenario.update',
                     'destroy' => 'economic.scenario.destroy',
                 ]);
         });
@@ -110,23 +121,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
                     Route::post('import-excel', 'TechnicalDataForecastController@importExcel')
                         ->name('economic.technical.forecast.import');
-
-                    Route::resource('log', 'TechnicalDataForecastLogController')
-                        ->only(['index', 'destroy'])
-                        ->names([
-                            'index' => 'economic.technical.forecast.log.index',
-                            'destroy' => 'economic.technical.forecast.log.destroy',
-                        ]);
                 });
-
-                Route::resource('forecast', 'TechnicalDataForecastController')
-                    ->only(['index', 'edit', 'update', 'destroy'])
-                    ->names([
-                        'index' => 'economic.technical.forecast.index',
-                        'edit' => 'economic.technical.forecast.edit',
-                        'update' => 'economic.technical.forecast.update',
-                        'destroy' => 'economic.technical.forecast.destroy',
-                    ]);
             });
 
             Route::group(['prefix' => 'structure', 'namespace' => 'Structure'], function () {
@@ -239,7 +234,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     ->name('economic.analysis.param.import');
             });
 
-            Route::get('input', 'EconomicAnalysisController@inputParams')
+            Route::get('input-params', 'EconomicAnalysisController@inputParams')
                 ->name('economic.analysis.input_params');
 
             Route::get('', 'EconomicAnalysisController@index')
