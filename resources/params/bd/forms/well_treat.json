@@ -94,7 +94,7 @@
       "type": "dict",
       "dict": "reason_type_rtr",
       "title": "reason",
-      "validation": "required|exists:tbd.dict.reason,id",
+      "validation": "nullable|exists:tbd.dict.reason,id",
       "is_editable": true
     },
     {
@@ -103,7 +103,7 @@
       "table": "prod.well_treatment",
       "column": "scraper_income",
       "type": "float",
-      "validation": "required|gte:0",
+      "validation": "nullable|gte:0",
       "is_editable": true
     }
   ]
