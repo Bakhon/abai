@@ -2,8 +2,9 @@
 
 namespace App\Imports\Economic\Technical;
 
+use App\Models\Refs\EconomicDataLog;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalDataForecast;
-use App\Models\Refs\TechnicalDataLog;
 use App\Models\Refs\TechnicalStructureCdng;
 use App\Models\Refs\TechnicalStructureCompany;
 use App\Models\Refs\TechnicalStructureField;
@@ -57,7 +58,9 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
     {
         $this->userId = $userId;
 
-        $this->logId = TechnicalDataLog::create([
+        $this->logId = EconomicDataLog::firstOrCreate([
+            'name' => $fileName,
+            'type_id' => EconomicDataLogType::DATA_FORECAST,
             'author_id' => $userId
         ])->id;
 
@@ -77,6 +80,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
             "author_id" => $this->userId,
             "log_id" => $this->logId,
             "gu_id" => $this->getGuId($row),
+            "company_id" => $this->getCompanyId($row),
             "well_id" => $row[self::COLUMNS['well_id']],
             "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
             "oil" => round($row[self::COLUMNS['oil']], 2),

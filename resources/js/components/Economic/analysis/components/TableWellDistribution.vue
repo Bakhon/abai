@@ -38,7 +38,7 @@ import {globalloadingMutations} from '@store/helpers';
 import chart from "vue-apexcharts";
 
 import Subtitle from "../../components/Subtitle";
-import SelectTechnicalWellForecastKit from "../../components/SelectTechnicalWellForecastKit";
+import SelectTechnicalWellForecastKit from "./SelectTechnicalWellForecastKit";
 
 export default {
   name: "TableWellDistribution",

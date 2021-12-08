@@ -123,10 +123,10 @@ export default {
   },
   watch: {
     currentSubsoilField: {
-      handler(value) {
+      handler() {
         this.handleTableData({
-          field_id: value[0].field_id,
           user_id: this.userID,
+          type: "upload",
         });
       },
       deep: true,
@@ -151,9 +151,9 @@ export default {
           templateID: response.id,
         });
         this.handleTableData({
-          field_id: this.currentSubsoilField[0].field_id,
           user_id: this.userID,
           report_id: response.id,
+          type: "upload",
         });
       } catch (error) {
         alert(this.trans("plast_fluids.unexpected_error"));
@@ -172,8 +172,8 @@ export default {
           templateID: 1,
         });
         this.handleTableData({
-          field_id: this.currentSubsoilField[0].field_id,
           user_id: this.userID,
+          type: "upload",
         });
       } catch (error) {
         alert(this.trans("plast_fluids.unexpected_error"));
@@ -198,8 +198,8 @@ export default {
       !this.tableFields.length
     ) {
       this.handleTableData({
-        field_id: this.currentSubsoilField[0].field_id,
         user_id: this.userID,
+        type: "upload",
       });
     }
   },

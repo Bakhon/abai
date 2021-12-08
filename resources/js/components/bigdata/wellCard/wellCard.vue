@@ -6,7 +6,7 @@
               :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
           <div @click="handleSelectHistoryWell(well)">{{well.wellUwi}}</div>
-          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)" v-if="wellsHistory.length > 1"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -368,10 +368,12 @@
       <InjectionHistoricalData
         v-if="isInjectionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
         v-if="isProductionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></ProductionHistoricalData>
     </div>
   </div>
@@ -452,7 +454,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: null,
+        tubeNom: {nd: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -516,6 +518,7 @@ export default {
         pump_capacity: {
           value_double: null,
         },
+        tubeNomDop: {od: null},
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
@@ -599,6 +602,7 @@ export default {
         diameter_pump: "diameter_pump",
         well_block: "well_block",
         depth_nkt: "depth_nkt",
+        tubeNomDop: "tubeNomDop",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -871,9 +875,10 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.dailyInjectionOil ? this.well.dailyInjectionOil.choke : "";      
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
-      let tubeNomOd = this.well.tubeNom.od ? this.well.tubeNom.od + ' / ' + this.well.tubeNom.od : "";
+      let tubeNomOd = this.getTubeNom(well); 
+      let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1012,6 +1017,12 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
+          data: tube,
+          type: ["all"],   
+          codes: ["KGM"],       
+        },
+        {
+          name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],          
         },
@@ -1374,6 +1385,18 @@ export default {
       }
       return value;
     },
+    getTubeNom(well){
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd;
+      }
+      return "";
+    },
+    getTube(well){
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd + ' / ' + this.well.tubeNom.nd;
+      }
+      return "";
+    },
     getTechmodeOil(well) {
       if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
@@ -1412,8 +1435,8 @@ export default {
     getTechmodeLiqiud(well){    
      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
-          this.well.techModeProdOil.liquid &&
-          this.well.dmart_daily_prod_oil
+          this.well.techModeProdOil.liquid != null &&
+          this.well.dmart_daily_prod_oil.liquid != null
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
@@ -1421,10 +1444,10 @@ export default {
             this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
-        if (this.well.techModeProdOil.liquid) {
+        if (this.well.techModeProdOil.liquid != null) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.dmart_daily_prod_oil.liquid) {
+        if (this.well.dmart_daily_prod_oil.liquid != null) {
           return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }
