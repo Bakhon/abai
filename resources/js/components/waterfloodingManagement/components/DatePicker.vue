@@ -16,11 +16,15 @@
   </div>
 </template>
 <script>
-import {waterfloodingManagementMapActions} from "../../store/helpers";
+import {waterfloodingManagementMapActions} from "../../../store/helpers";
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import axios from "axios";
 import moment from 'moment'
 
 export default {
+  components: {
+    DatePicker
+  },
   data: function () {
     return {
       isDatePickerShow: false,
@@ -40,7 +44,7 @@ export default {
       'changeChooseObjectDate',
     ]),
     getDate(){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/start_date/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/start_date/'
       axios.get(url)
           .then((response) =>{
             let start_date = response.data.start_date.split('-')
