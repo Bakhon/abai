@@ -454,7 +454,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: {od: null},
+        tubeNom: {nd: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -1386,14 +1386,14 @@ export default {
       return value;
     },
     getTubeNom(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od;
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd;
       }
       return "";
     },
     getTube(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd + ' / ' + this.well.tubeNom.nd;
       }
       return "";
     },
@@ -1435,8 +1435,8 @@ export default {
     getTechmodeLiqiud(well){    
      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
-          this.well.techModeProdOil.liquid &&
-          this.well.dmart_daily_prod_oil
+          this.well.techModeProdOil.liquid != null &&
+          this.well.dmart_daily_prod_oil.liquid != null
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
@@ -1444,10 +1444,10 @@ export default {
             this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
-        if (this.well.techModeProdOil.liquid) {
+        if (this.well.techModeProdOil.liquid != null) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.dmart_daily_prod_oil.liquid) {
+        if (this.well.dmart_daily_prod_oil.liquid != null) {
           return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }
