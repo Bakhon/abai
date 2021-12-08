@@ -31,7 +31,8 @@
             <b-form-select  class="custom-dropdown-block" :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
             <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button> -->
             <div v-if="currentTab == 1">
-                  <currentWorkHook></currentWorkHook>
+                  <currentWorkHook v-for="template in wellsTree"
+            :key="template.well_name" :template="template"></currentWorkHook>
               </div>
 
               <div v-if="currentTab == 2">
@@ -236,6 +237,7 @@ export default {
       table_work: [],
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWorkTable: "dayliWork1/",
+      wellsTree: {},
       
     }
   },
@@ -263,6 +265,7 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
       });
       this.getListWell();
+      this.getDataTree();
       
     },
   
@@ -353,6 +356,26 @@ export default {
               let data = response.data;
               if (data) {
                 this.table_work = data
+
+              } else {
+                  console.log("No data");
+              }
+          });
+    },
+
+    getDataTree() {
+      
+      this.axios
+          .get(
+               `http://172.20.103.203:8090/wellNameDate1/`,
+              
+          )
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                // this.table_work = data
+                this.wellsTree = data
+                console.log(this.wellsTree)
 
               } else {
                   console.log("No data");
