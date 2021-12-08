@@ -18,15 +18,18 @@
                         :class="{active: module=='project'}"
                 >
                     <div class="btn-name">
-                        <img src="/img/digital-drilling/menu8.svg" alt="">{{ trans('digital_drilling.designing') }}
+                        <img src="/img/digital-drilling/menu8.svg" alt="">
+                        {{ trans('digital_drilling.designing') }}
                     </div>
                     <div class="settings">
                         <img src="/img/digital-drilling/settings.png" alt="" class="">
                     </div>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item"  @click="createNewWell">Создать новую скважину</a>
-                    <a class="dropdown-item" @click="openNewWell">Открыть недавно созданную скважину</a>
+                    <a class="dropdown-item"  @click="createNewWell">
+                        {{ trans('digital_drilling.default.create_new_well') }}
+                    </a>
+                    <a class="dropdown-item" @click="openNewWell">{{ trans('digital_drilling.default.open_new_well') }}</a>
                 </div>
             </div>
         </div>
@@ -95,5 +98,7 @@
 </script>
 
 <style scoped>
-
+.controlBlock *{
+    color: #ffffff;
+}
 </style>

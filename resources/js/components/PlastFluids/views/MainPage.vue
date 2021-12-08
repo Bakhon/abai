@@ -106,33 +106,49 @@ export default {
     return {
       subsoilUserSearch: "",
       subsoilChildrenSearch: "",
-      selectedField: null,
       checkedField: [],
-      fieldData: {
-        kozhasai: {
-          field: 60,
-          deep: 86,
-          recombine: 24,
-          estuarine: 86,
-        },
-      },
     };
+  },
+  watch: {
+    currentSubsoil: {
+      handler(value) {
+        if (value[0]?.owner_id) {
+          this.subsoilUserSearch = value[0].owner_name;
+        } else {
+          this.subsoilUserSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+    currentSubsoilField: {
+      handler(value) {
+        if (value[0]?.field_id) {
+          this.subsoilChildrenSearch = value[0].field_name;
+        } else {
+          this.subsoilChildrenSearch = "";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
+      "currentSubsoilField",
       "subsoils",
       "subsoilFields",
       "subsoilFieldCounters",
     ]),
     filteredSubsoilUsers() {
-      return handleSearch(this.subsoils, this.subsoilUserSearch);
+      return handleSearch(this.subsoils, this.subsoilUserSearch, "owner_name");
     },
     filteredSubsoilChildren() {
       return handleSearch(
         this.subsoilFields,
         this.subsoilChildrenSearch,
-        "field"
+        "field_name"
       );
     },
   },

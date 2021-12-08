@@ -15,6 +15,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
+
 class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
@@ -76,12 +77,12 @@ class Well extends TBDModel
 
     public function spatialObject()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
+        return $this->belongsTo(SpatialObject::class, 'whc');
     }
 
     public function spatialObjectBottom()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsTo(SpatialObject::class, 'bottom_coord');
     }
 
     public function bottomHole()
@@ -96,7 +97,17 @@ class Well extends TBDModel
 
     public function wellPerfActual()
     {
-        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+        return $this->hasMany(WellPerfActual::class, 'well', 'id');
+    }
+
+    public function wellPerf()
+    {
+        return $this->hasMany(WellPerf::class, 'well', 'id');
+    }
+
+    public function wellBlock()
+    {
+        return $this->hasMany(WellBlock::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -124,6 +135,36 @@ class Well extends TBDModel
         return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
     }
 
+    public function measWell()
+    {
+        return $this->hasMany(MeasWell::class, 'well', 'id');
+    }
+
+    public function wellEquip()
+    {
+        return $this->hasMany(WellEquip::class, 'well', 'id');
+    }
+    
+    public function dmartDailyProd()
+    {
+        return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+    public function dailyInjectionOil()
+    {
+        return $this->hasMany(DailyInjectionOil::class, 'well', 'id');
+    }
+
+        public function pzabWell()
+    {
+        return $this->hasMany(PzabTechMode::class, 'well', 'id');
+    }
+
+    public function wellDailyDrill()
+    {
+        return $this->hasMany(WellDailyDrill::class, 'well', 'id');
+    }
+    
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -159,6 +200,21 @@ class Well extends TBDModel
         return $this->hasMany(Gis::class, 'well', 'id');
     }
 
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
+
+    public function wellExplDate()
+    {
+        return $this->hasMany(WellStatusProd::class, 'well', 'id');
+    }
+
+    public function wellPerfActualNew()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
+    }
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
@@ -173,7 +229,6 @@ class Well extends TBDModel
     {
         return $this->hasMany(Gtm::class, 'well', 'id');
     }
-
 
     public function scopeActive($query, $date)
     {
@@ -242,8 +297,6 @@ class Well extends TBDModel
             'pbuf_after',
             'hdin',
             'pzab',
-            'hstat',
-            'ppl',
             'work_hours',
             'well_status',
             'well_expl',
@@ -253,9 +306,24 @@ class Well extends TBDModel
             'wcut_telemetry',
             'oil_telemetry',
             'gas_telemetry',
-            'gas_factor_telemetry',
-            'liquid_temp',
             'park_indicator'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
+    public function getWellInjectionData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'pressure_inj',
+            'water_vol',
+            'activity'
           )->orderBy('date')->get();
         return $query;
     }
@@ -268,6 +336,19 @@ class Well extends TBDModel
     public function eventsOfWell(int $well_id,?string $date) : ?object
     {
         $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
+        return $query;
+    }
+
+    public function getInjectionEvents(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id)->whereNotNull('activity');
         if($date)
         {
             $query = $query->where('date','>=',$date);

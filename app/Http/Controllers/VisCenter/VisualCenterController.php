@@ -33,6 +33,15 @@ use Illuminate\Support\Facades\Cache;
 class VisualCenterController extends Controller
 {
     private $allCompanies = array('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','ПКИ','КПО','ПКК','ТП','АГ');
+    private $reasonFields = array(
+        'opec_explanation_reasons' => 'opec_oil_losses',
+        'impulse_explanation_reasons' => 'impulse_oil_losses',
+        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
+        'accident_explanation_reasons' => 'accident_oil_losses',
+        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
+        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
+        'other_explanation_reasons' => 'other_oil_losses'
+    );
 
     public function __construct()
     {
@@ -452,6 +461,7 @@ class VisualCenterController extends Controller
             ->whereNull('is_corrected')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->orderBy('date')
             ->get()
             ->toArray();
     }
@@ -652,5 +662,38 @@ class VisualCenterController extends Controller
             array_push($diff,'КГМКМГ');
         }
         return $diff;
+    }
+
+    public function getDecreaseReasons(Request $request)
+    {
+        $dailyData = DzoImportData::query()
+            ->select('id','date','dzo_name','is_corrected')
+            ->whereDate('date', Carbon::parse($request->date))
+            ->whereIn('dzo_name',$request->companies)
+            ->whereNull('is_corrected')
+            ->with('importDecreaseReason')
+            ->get();
+        $filtered = array();
+        foreach($dailyData as $company) {
+            if ($company->importDecreaseReason) {
+                $reasons = $this->getFilteredReasons($company->importDecreaseReason);
+                if (count($reasons) > 0) {
+                    $filtered[$company->dzo_name] = $reasons;
+                }
+            }
+        }
+        return $filtered;
+    }
+
+    private function getFilteredReasons($reasons)
+    {
+        $filtered = array();
+        $attributes = $reasons->getAttributes();
+        foreach($attributes as $key => $reason) {
+            if (in_array($key, array_keys($this->reasonFields)) && !is_null($reason)) {
+                array_push($filtered,array($reason,$attributes[$this->reasonFields[$key]]));
+            }
+        }
+        return $filtered;
     }
 }

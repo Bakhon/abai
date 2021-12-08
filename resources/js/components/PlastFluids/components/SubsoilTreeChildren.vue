@@ -53,8 +53,9 @@ export default {
       get() {
         return this.currentSubsoilField;
       },
-      set(value) {
-        this.UPDATE_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+      async set(value) {
+        await this.UPDATE_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+        if (value.length) this.GET_SUBSOIL_FIELD_COUNTERS();
       },
     },
     hasChild() {
@@ -76,7 +77,10 @@ export default {
       "SET_CURRENT_SUBSOIL_HORIZON",
       "SET_SUBSOIL_FIELDS",
     ]),
-    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
+      "GET_SUBSOIL_FIELD_COUNTERS",
+    ]),
   },
   beforeDestroy() {
     this.UPDATE_CURRENT_SUBSOIL_FIELD({});
@@ -88,6 +92,7 @@ export default {
 <style scoped>
 .subsoil-secondary-tree > div {
   margin: 15px;
+  color: #fff;
 }
 
 .subsoil-horizons {

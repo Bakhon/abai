@@ -67,7 +67,6 @@ export default {
                 this.changeDefaultDzo();
                 return;
             }
-            this.isDataExist = true;
             let self = this;
             _.forEach(Object.keys(this.cellsMapping), function (key) {
                 if (self.otherCategories.includes(key)) {
@@ -92,7 +91,7 @@ export default {
             _.forEach(block.fields, function(fieldName, index) {
                 if (!categoryName && !formattedTodayData) {
                     self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 2));
-                } else {
+                } else if (formattedTodayData !== null) {
                     self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 2));
                 }
             });

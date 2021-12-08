@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "columns": [
     {
       "title": "uwi_number",
@@ -31,6 +32,7 @@
       "code": "od",
       "table": "prod.well_constr",
       "column": "od",
+      "date_field": "landing_date",
       "additional_filter": {
         "casing_type": {
           "table": "dict.equip_type",
@@ -77,6 +79,7 @@
       "code": "od",
       "table": "prod.well_constr",
       "column": "od",
+      "date_field": "landing_date",
       "type": "float",
       "additional_filter": {
         "casing_type": {

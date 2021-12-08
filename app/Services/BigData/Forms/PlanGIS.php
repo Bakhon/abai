@@ -60,7 +60,7 @@ class PlanGIS extends TableForm
             return $org;
         }
 
-        if ($org->parentOrg->type->code === 'SUBC') {
+        if ($this->isOrganization($org->parentOrg)) {
             return $org->parentOrg;
         }
 
@@ -92,40 +92,27 @@ class PlanGIS extends TableForm
         $dateTo = Carbon::parse($filter->date_to);
 
         $childCodesByMonths = [];
-        while (true) {
-            $mergeColumns['date_' . $date->format('n_Y')] = [
-                'code' => 'date_' . $date->format('n_Y'),
+        while ($date < $dateTo) {
+            $mergeColumns['date_' . $date->format('d.m.Y')] = [
+                'code' => 'date_' . $date->format('d.m.Y'),
                 'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
             ];
 
             $childCodes = [];
             foreach ($children as $child) {
-                $code = "date_{$date->format('n_Y')}_" . $child->id;
+                $code = "date_{$date->format('d.m.Y')}_" . $child->id;
                 $childCodes[] = $code;
                 $childCodesByMonths[$child->id][] = $code;
                 $columns[] = [
                     'code' => $code,
                     'title' => $child->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
+                    'parent_column' => 'date_' . $date->format('d.m.Y'),
                     'type' => 'integer',
                     'is_editable' => $org->name_short_ru === 'ММГ' ? false : true
                 ];
             }
 
-            $orgCode = "date_{$date->format('n_Y')}_" . $org->id;
-            $formula = $this->getSumFormula($childCodes);
-            $columns[] = [
-                'code' => $orgCode,
-                'title' => $org->name_short_ru,
-                'parent_column' => 'date_' . $date->format('n_Y'),
-                'type' => 'calc',
-                'formula' => $formula
-            ];
-
             $date->addMonth();
-            if ($date >= $dateTo) {
-                break;
-            }
         }
 
         $mergeColumns['total'] = [
@@ -134,10 +121,13 @@ class PlanGIS extends TableForm
         ];
 
         $totalColumnCodes = [];
+        $totalFormula = [];
         foreach ($children as $child) {
             $code = $child->id . '_total';
             $totalColumnCodes[] = $code;
             $formula = $this->getSumFormula($childCodesByMonths[$child->id]);
+            $totalFormula[] = $formula;
+            if(count($children) <= 1) continue;
 
             $columns[] = [
                 'code' => $code,
@@ -148,13 +138,12 @@ class PlanGIS extends TableForm
             ];
         }
 
-        $formula = $this->getSumFormula($totalColumnCodes);
         $columns[] = [
             'code' => 'dzo_total',
             'title' => trans('bd.forms.plan_g_i_s.total'),
             'parent_column' => 'total',
             'type' => 'calc',
-            'formula' => $formula
+            'formula' => implode(' + ', $totalFormula)
         ];
 
         return [
@@ -189,7 +178,6 @@ class PlanGIS extends TableForm
                 'num' => ['value' => $gisType['id']],
                 'name' => ['value' => $gisType['name']]
             ];
-
             $date = Carbon::parse($filter->date);
             $dateTo = Carbon::parse($filter->date_to);
 
@@ -203,8 +191,12 @@ class PlanGIS extends TableForm
 
             $rows[] = $row;
         }
-
+        $rows = array_slice($rows, 1);
         usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
+
+        for($i = 0; $i < count($rows); $i++) {
+            $rows[$i]['num']['value'] = $i+1;
+        }
         return $rows;
     }
 
@@ -223,7 +215,14 @@ class PlanGIS extends TableForm
                 ->where('plan_gis_type', $gisTypeId)
                 ->first();
 
-            $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
+            $row["date_{$date->format('d.m.Y')}_" . $child->id] = [
+                'value' => $plan ? $plan->count : 0,
+                'params' => [
+                    'plan_gis_type' => $gisTypeId,
+                    'date' => $date->format('d.m.Y'),
+                    'org_id' => $child->id
+                ]
+            ];
         }
 
         $plan = $plans->where('month', $date->format('n'))
@@ -232,40 +231,52 @@ class PlanGIS extends TableForm
             ->where('plan_gis_type', $gisTypeId)
             ->first();
 
-        $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
+        $row["date_{$date->format('d.m.Y')}_" . $org->id] = [
+            'value' => $plan ? $plan->count : 0,
+            'params' => [
+                'plan_gis_type' => $gisTypeId,
+                'date' => $date->format('d.m.Y'),
+                'org_id' => $org->id
+            ]
+        ];
         return $row;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        list($date, $month, $year, $org) = explode('_', $params['field']);
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                $date = Carbon::parse($field['params']['date'], 'Asia/Almaty');
+                $plan = DB::connection('tbd')
+                    ->table('prod.plan_gis')
+                    ->where('org', $field['params']['org_id'])
+                    ->where('plan_gis_type', $field['params']['plan_gis_type'])
+                    ->where('month', $date->format('n'))
+                    ->where('year', $date->year)
+                    ->first();
 
-        $plan = DB::connection('tbd')
-            ->table('prod.plan_gis')
-            ->where('org', $org)
-            ->where('plan_gis_type', $params['wellId'])
-            ->where('month', $month)
-            ->where('year', $year)
-            ->first();
-
-        if ($plan) {
-            DB::connection('tbd')
-                ->table('prod.plan_gis')
-                ->where('id', $plan->id)
-                ->update(['count' => $params['value']]);
-        } else {
-            DB::connection('tbd')
-                ->table('prod.plan_gis')
-                ->insert(
-                    [
-                        'org' => $org,
-                        'plan_gis_type' => $params['wellId'],
-                        'month' => $month,
-                        'year' => $year,
-                        'count' => $params['value']
-                    ]
-                );
+                if ($plan) {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gis')
+                        ->where('id', $plan->id)
+                        ->update(['count' => $field['value']]);
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gis')
+                        ->insert(
+                            [
+                                'org' => $field['params']['org_id'],
+                                'plan_gis_type' => $field['params']['plan_gis_type'],
+                                'month' => $date->format('n'),
+                                'year' => $date->year,
+                                'count' => $field['value']
+                            ]
+                        );
+                }
+            }
         }
+
+        return [];
     }
 
 }

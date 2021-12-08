@@ -1,43 +1,30 @@
-import RightClickMenu from './shared/RightClickMenu'
 import TopMenu from './shared/TopMenu'
 import PrinterModal from './modals/PrinterModal'
-import BuildMapModal from './modals/BuildMapModal'
 import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
 import ReportModal from './modals/ReportModal'
 import ExportModal from './modals/ExportModal'
 import './MyFilter'
 import 'ol/ol.css';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {Fill, Stroke, Style, Text} from 'ol/style';
-import Feature from 'ol/Feature';
-import Map from 'ol/Map';
-import Projection from 'ol/proj/Projection';
-import View from 'ol/View';
-import {Point, LineString, Polygon} from "ol/geom";
-import LayerGroup from "ol/layer/Group";
+import 'ol-ext/dist/ol-ext.css'
 import {globalloadingMutations} from '@store/helpers';
-import draggable from 'vuedraggable'
-import {Overlay} from "ol";
-import Chart from 'ol-ext/style/Chart'
-import CircleStyle from "ol/style/Circle";
+import Project from './components/Project';
+import VModal from 'vue-js-modal/dist/index.nocss.js'
+import 'vue-js-modal/dist/styles.css'
+import NameModal from './modals/NameModal';
+import BuildMapModal from './modals/BuildMapModal';
+import ContextMenu from 'vue-context-menu';
+import moment from 'moment';
+import IsolinesMenu from "./modals/IsolinesMenu";
 
 export default {
     data() {
         return {
-            selectedMonth: null,
-            viewMenu: false,
-            viewMenuLayers: false,
-            rightLayers: false,
-            rightMap: false,
-            top: '0px',
-            left: '0px',
-            windHeight: window.innerHeight,
-            windWidth: window.innerWidth,
+            selectedMonth: '',
             leftTools: [
                 {
                     icon: 'fas fa-plus',
-                    langCode: 'map_constructor.add'
+                    langCode: 'map_constructor.add',
+                    action: 'addGeographicalMap'
                 },
                 {
                     icon: 'fas fa-location-arrow',
@@ -72,9 +59,42 @@ export default {
                     langCode: 'map_constructor.fictitious_point'
                 },
             ],
-            map: {},
-            layerGroups: [],
+            ctxMenuItems: [
+                {
+                    name: this.trans('map_constructor.isolines'),
+                    action: 'isolines',
+                    visible: false,
+                    forTypes: 'polygon',
+                    icon: 'fas fa-bars text-black-50',
+                },
+                {
+                    name: this.trans('map_constructor.rename'),
+                    action: 'rename',
+                    visible: false,
+                    forTypes: 'all',
+                    childMenu: null,
+                },
+                {
+                    name: this.trans('map_constructor.delete'),
+                    action: 'delete',
+                    visible: false,
+                    forTypes: 'project',
+                    childMenu: null,
+                },
+            ],
+            maps: [],
             gridMapsValues: [],
+            projects: [],
+            activeProjectIndex: 0,
+            rightClickTargetIndex: null,
+            rightClickTargetProjectIndex: null,
+            rightClickTargetType: 'project',
+            geoList: {
+                dzoList: [],
+                fieldList: [],
+                horizonList: [],
+            },
+            bubblesData: [],
         }
     },
     components: {
@@ -83,118 +103,50 @@ export default {
         BuildMapSpecificModal,
         ReportModal,
         ExportModal,
-        RightClickMenu,
         TopMenu,
-        draggable,
+        Project,
+        NameModal,
+        ContextMenu,
+        IsolinesMenu,
+        VModal,
     },
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        setMenu(top, left) {
-            let largestHeight = this.windHeight - this.$refs.rightClickMenu.$refs.right.offsetHeight - 25;
-            let largestWidth = this.windWidth - this.$refs.rightClickMenu.$refs.right.offsetWidth - 25;
-
-            top = top > largestHeight ? largestHeight : top;
-            left = left > largestWidth ? largestWidth : left
-
-            this.top = `${top}px`;
-            this.left = `${left}px`;
+        toggleOpacity(e, layerGroup) {
+            layerGroup.forEach(layer => {
+                layer.setOpacity(e.target.checked ? 1 : 0);
+            })
         },
-        setMenuLayers(top, left) {
-            let largestHeight = this.windHeight -  this.$refs.rightClickMenu.$refs.rightLayers.offsetHeight - 25;
-            let largestWidth = this.windWidth -  this.$refs.rightClickMenu.$refs.rightLayers.offsetWidth - 25;
-
-            top = top > largestHeight ? largestHeight : top;
-            left = left > largestWidth ? largestWidth : left
-
-            this.top = `${top}px`;
-            this.left = `${left}px`;
-        },
-        closeMenu() {
-            this.viewMenu = false;
-        },
-        closeMenuLayers() {
-            this.viewMenuLayers = false;
-        },
-        openMenu(e) {
-            this.viewMenu = true;
-            Vue.nextTick(() => {
-                this.$refs.rightClickMenu.$refs.right.focus();
-                this.setMenu(e.y, e.x);
-            });
-            e.preventDefault();
-        },
-        openMenuLayers(e) {
-            this.viewMenuLayers = true;
-            Vue.nextTick(() => {
-                this.$refs.rightClickMenu.$refs.rightLayers.focus();
-                this.setMenuLayers(e.y, e.x);
-            });
-            e.preventDefault();
-        },
-        openRightLayers() {
-            this.rightLayers = !this.rightLayers;
-        },
-        openRightMap() {
-            this.rightMap = !this.rightMap;
-        },
-        showModal() {
-            this.$refs['my-modal'].show()
-        },
-        hideModal() {
-            this.$refs['my-modal'].hide()
+        layerGroupsChangeOrder(layerGroups) {
+            layerGroups.forEach((layerGroup, index) => {
+                layerGroup.getLayers().forEach(layer => {
+                    layer.setZIndex(index);
+                })
+            })
         },
         importFile(file) {
             this.SET_LOADING(true);
             const extensions = ['irap', 'zmap', 'shp', 'txt'];
             let fileType = '';
             extensions.forEach(extension => {
-                if (fileType === '' && file.name.indexOf(extension) !== -1) {
-                    fileType = extension;
-                }
+                  if (fileType === '' && file.name.indexOf(extension) !== -1) {
+                      fileType = extension;
+                  }
               }
             )
             if (fileType === '') {
                 this.$notifyError(this.trans('map_constructor.file_extension_error'));
                 this.SET_LOADING(false);
+                return false;
+            }
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                this.SET_LOADING(false);
+                return false;
             }
             this.sendFileToAPI(file, fileType);
-        },
-        drawLines(fileData) {
-            let features = [];
-            fileData.forEach(dataItem => {
-                dataItem = dataItem.map(
-                  value => {
-                      if (value !== '') {
-                          return value;
-                      }
-                  }
-                );
-                dataItem.forEach(lineData => {
-                    features.push(new Feature({
-                        geometry: new LineString(lineData)
-                    }))
-                })
-            });
-            const newLayer = new VectorLayer({
-                source: new VectorSource({
-                    features: features,
-                    wrapX: false,
-                }),
-                style: new Style({
-                    stroke: new Stroke({
-                        color: '#3be7c5',
-                        width: 3,
-                    }),
-                }),
-                zIndex: this.layerGroups.length + 1
-            });
-            let layerGroup = new LayerGroup();
-            layerGroup.name = 'Слой ' + this.layerGroups.length;
-            layerGroup.getLayers().push(newLayer);
-            this.addLayerGroupToMap(layerGroup);
-            this.SET_LOADING(false);
         },
         sendFileToAPI(file, type) {
             let formData = new FormData();
@@ -211,11 +163,32 @@ export default {
               }
             ).then((response) => {
                 if (response.data) {
-                    if (type === 'shp' || type === 'txt') {
-                        this.drawLines(response.data)
-                    } else {
-                        this.addPolygons(response.data);
-                    }
+                    const projectRef = this.projects[this.activeProjectIndex].key;
+                    this.$refs[projectRef][0].importData(response.data, type);
+                }
+                this.SET_LOADING(false);
+            })
+            .catch(function(e){
+              $self.$notifyError($self.trans('map_constructor.import_error'));
+              $self.SET_LOADING(false);
+            });
+        },
+        sendExcelToAPI(file) {
+            this.SET_LOADING(true);
+            let formData = new FormData();
+            let $self = this;
+            formData.append('file', file);
+            axios.post(this.localeUrl('map-constructor/get_data_from_excel'),
+              formData,
+              {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              }
+            ).then((response) => {
+                if (response.data) {
+                    $self.bubblesData = response.data;
+                    $self.showBubblesByDate();
                 }
                 this.SET_LOADING(false);
             })
@@ -224,284 +197,310 @@ export default {
                 $self.SET_LOADING(false);
             });
         },
-        initMap(projection) {
-            const mapExtent = projection.getExtent();
-            this.map = new Map({
-                target: 'olmap',
-                layers: this.layerGroups,
-                view: new View({
-                    projection: projection,
-                    center: [mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 2,
-                        mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2],
-                    zoom: 1,
-                }),
-            });
-        },
-        addPolygons(data) {
-            let x1 = data.top_left[0];
-            let y1 = data.top_left[1];
-            let x2 = data.bottom_right[0];
-            let y2 = data.bottom_right[1];
-            const extent = [x1, y1, x2, y2];
-            const projection = new Projection({
-                units: 'pixels',
-                extent: extent,
-            });
-            this.initMap(projection);
-            const internalStyle = new Style({
-                stroke: new Stroke({
-                    color: 'rgba(255, 255, 255, 0.1)',
-                    width: 1,
-                }),
-                fill: new Fill({
-                    color: 'rgba(255, 255, 255, 0.1)',
-                }),
-            });
-            let layerGroup = new LayerGroup();
-            const emptyLayer = new VectorLayer({
-                source: new VectorSource({
-                    features: [new Feature({
-                        geometry: new Polygon([[
-                            [x1, y1],
-                            [x2, y1],
-                            [x2, y2],
-                            [x1, y2],
-                        ]])
-                    })]
-                }),
-                style: internalStyle,
-                type: 'empty',
-            });
-            layerGroup.getLayers().push(emptyLayer);
-            let redColor = 255;
-            let greenColor = 255;
-            data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
-                levelIndex = levelIndex !== 0 ? levelIndex : 1;
-                const colorIndex = 255 - 255 / (levelIndex);
-                if (levelIndex % 2 === 0) {
-                    redColor = colorIndex;
+        buildNameModal() {
+            const $self = this;
+            let oldName = '';
+            if (this.rightClickTargetIndex !== null) {
+                if (this.rightClickTargetType === 'project') {
+                    oldName = this.projects[this.rightClickTargetIndex].name;
                 } else {
-                    greenColor = colorIndex;
+                    oldName = this.projects[this.rightClickTargetProjectIndex].layerGroups[this.rightClickTargetIndex].name;
                 }
-                this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
-                  'internal': internalStyle,
-                  'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
-                    parseInt(polygonsPerLevel.lower_bound).toString()),
-                });
-            });
-            layerGroup.name = 'Слой ' + this.layerGroups.length;
-            this.addLayerGroupToMap(layerGroup);
-            if (typeof data.grid !== "undefined") {
-                this.addGrid(data);
             }
-        },
-        toggleOpacity(layerGroup) {
-            layerGroup.forEach(layer => {
-                if (layer.values_.type !== 'empty') {
-                    layer.setOpacity(layer.getOpacity() ? 0 : 1);
-                }
-            })
-        },
-        layerGroupsChangeOrder() {
-            this.layerGroups.forEach((layerGroup, index) => {
-                layerGroup.getLayers().forEach(layer => {
-                    layer.setZIndex(index);
-                })
-            })
-        },
-        addGrid(data) {
-            let binValues = this.decodeFromBase64(data.grid);
-            let shape = data.shape;
-            let resultArray = [];
-            for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
-                resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
-            }
-            if (this.map) {
-                const self = this;
-                const mapExtent = this.map.getView().getProjection().getExtent();
-                this.gridMapsValues.push(resultArray);
-                let popupDiv = document.createElement('div');
-                let popupOverlay = new Overlay({
-                    element: popupDiv,
-                });
-                this.map.on('pointermove', function (evt) {
-                    if (
-                      evt.coordinate[0] < mapExtent[0]
-                      || evt.coordinate[0] > mapExtent[2]
-                      || evt.coordinate[1] < mapExtent[1]
-                      || evt.coordinate[1] > mapExtent[3]
-                      || evt.dragging
-                    ) {
-                        popupDiv.classList.add('d-none');
-                        return;
+            this.$modal.show(NameModal, {
+                oldName: oldName,
+                save(name) {
+                    if (name !== "") {
+                        $self.saveName(name);
+                        $self.resetToDefaultRightClickValues();
                     }
-                    if (self.gridMapsValues.length > 0) {
-                        const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
-                        const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
-                        popupDiv.classList.remove('d-none');
-                        popupOverlay.setPosition(evt.coordinate);
-                        let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
-                        let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
-                        let value = self.gridMapsValues[0][x][y];
-                        if (isNaN(value)) {
-                            popupDiv.classList.add('d-none');
+                }
+            }, {
+                height: "20%",
+                styles: "background-color: rgb(51, 57, 117);",
+            });
+        },
+        buildIsolinesModal() {
+            const $self = this;
+            this.$modal.show(IsolinesMenu, {
+                isolinesData: {
+                    selectedFilterType: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].selectedFilterType,
+                    selectedFilterValue: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].selectedFilterValue,
+                    bounds: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].bounds,
+                    show: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].show,
+                },
+                save(isolinesData) {
+                    const projectRef = $self.projects[$self.rightClickTargetProjectIndex].key;
+                    $self.$refs[projectRef][0].map.removeLayer($self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex]);
+                    $self.projects[$self.rightClickTargetProjectIndex].layerGroups
+                      .splice($self.rightClickTargetIndex, 1);
+                    const base64Data = $self.$refs[projectRef][0].base64Data;
+                    $self.SET_LOADING(true);
+                    axios.post($self.localeUrl('map-constructor/get_grid_by_base64'),
+                      {
+                          selectedFilterType: isolinesData.selectedFilterType,
+                          selectedFilterValue: isolinesData.selectedFilterValue,
+                          base64Data: base64Data,
+                      },
+                    ).then((response) => {
+                        if (response.data) {
+                            response.data.selectedFilterType = isolinesData.selectedFilterType;
+                            response.data.selectedFilterValue = isolinesData.selectedFilterValue;
+                            response.data.bounds = isolinesData.bounds;
+                            response.data.show = isolinesData.show;
+                            $self.$refs[projectRef][0].importData(response.data, 'grid');
+                        }
+                        $self.SET_LOADING(false);
+                        $self.resetToDefaultRightClickValues();
+                    }).catch(function(e){
+                          $self.$notifyError($self.trans('map_constructor.import_error'));
+                          $self.SET_LOADING(false);
+                    });
+                    this.$modal.hideAll();
+                }
+            }, {
+                height: "35%",
+                styles: "background-color: rgb(51, 57, 117);",
+            });
+        },
+        buildMapModal() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            if (this.$refs[projectRef][0].map === null) {
+                this.$notifyError(this.trans('map_constructor.geo_map_empty'));
+                return false;
+            }
+            const $self = this;
+            this.$modal.show(BuildMapModal, {
+                buildMap() {
+                    if (!this.lineFileDisabled && this.lineFileData !== null) {
+                        $self.importFile(this.lineFileData);
+                    }
+                    if (this.bubblesFileData !== null) {
+                        $self.sendExcelToAPI(this.bubblesFileData);
+                    }
+                    this.$modal.hideAll();
+                }
+            }, {
+                styles: "background-color: rgb(51, 57, 117);",
+            });
+        },
+        buildMapSpecificModal() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const $self = this;
+            if (this.geoList.dzoList.length > 0) {
+                this.$modal.show(BuildMapSpecificModal, {
+                    geoList: this.geoList,
+                    getGeoList(type, id) {
+                        if (id !== 0) {
+                            if (type === 'field') {
+                                $self.geoList.fieldList = [];
+                                $self.geoList.horizonList = [];
+                            } else if (type === 'horizon') {
+                                $self.geoList.horizonList = [];
+                            }
+                            $self.getGeoList(type, id);
+                        }
+                    },
+                    buildMapSpecific(selectedData) {
+                        let geo = selectedData.selectedHorizon ? selectedData.selectedHorizon
+                          : selectedData.selectedField ? selectedData.selectedField
+                            : null;
+                        if (!geo) {
+                            this.$notifyError(this.trans('map_constructor.select_field_or_horizon'));
                             return;
                         }
-                        popupDiv.innerHTML = '<div class="bg-white p-1"> Значение: ' + value.toFixed(2) + '</div';
+                        $self.SET_LOADING(true);
+                        axios.post(this.localeUrl('map-constructor/wells'), {
+                            geo: geo,
+                            selectedDzo: selectedData.selectedDzo,
+                        }).then((response) => {
+                            if (response.data) {
+                                if (response.data.length === 0) {
+                                    this.$notifyError(this.trans('map_constructor.empty_data'));
+                                    return;
+                                }
+                                const projectRef = $self.projects[$self.activeProjectIndex].key;
+                                $self.$refs[projectRef][0].showBubbles(response.data, 'oil_with_water');
+                            }
+                            this.$modal.hideAll();
+                            this.geoList.fieldList = [];
+                            this.geoList.horizonList = [];
+                            $self.SET_LOADING(false);
+                        });
                     }
+                }, {
+                    styles: "background-color: rgb(51, 57, 117);",
                 });
-                this.map.addOverlay(popupOverlay);
+            } else {
+                this.$notifyError(this.trans('map_constructor.get_dzo_error'));
             }
-            this.SET_LOADING(false);
         },
-        decodeFromBase64(encodedString) {
-            let binary_string = atob(encodedString);
-            let buffer = new ArrayBuffer(binary_string.length);
-            let bytes_buffer = new Uint8Array(buffer);
-
-            for (let i = 0; i < binary_string.length; i++) {
-                bytes_buffer[i] = binary_string.charCodeAt(i);
-            }
-
-            let values = new Float64Array(buffer);
-            return Array.from(values);
-        },
-        showBubbles() {
-            const mapExtent = this.map.getView().getProjection().getExtent();
-            const middleX = mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 2;
-            const middleY = mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2;
-            let oilWithWaterBubbleStyle = new Style({
-                image: new Chart({
-                    radius: 15,
-                    type: "pie",
-                    data: [120 , 20],
-                    colors: [`rgba(222, 138, 11, 0.8)`, `rgba(10, 134, 145, 0.8)`],
-                }),
-            });
-            let waterBubbleStyle = new Style({
-                image: new CircleStyle({
-                    radius: 20,
-                    fill: new Fill({
-                        color: 'rgba(14, 162, 198, 0.6)',
-                    }),
-                    stroke: new Stroke({
-                        color: 'rgba(14, 162, 198, 0.8)',
-                        width: 1,
-                    }),
-                }),
-            });
-            let bubbleLayers = [
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature({
-                            geometry: new Point([middleX, middleY]),
-                        })]
-                    }),
-                    style: [oilWithWaterBubbleStyle],
-                    zIndex: this.layerGroups.length + 1
-                }),
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature({
-                            geometry: new Point([
-                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 1.5,
-                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2.5,
-                            ]),
-                        })]
-                    }),
-                    style: [oilWithWaterBubbleStyle],
-                    zIndex: this.layerGroups.length + 1
-                }),
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature({
-                            geometry: new Point([
-                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 1.5,
-                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 1.5,
-                            ]),
-                        })]
-                    }),
-                    style: [oilWithWaterBubbleStyle],
-                    zIndex: this.layerGroups.length + 1
-                }),
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature({
-                            geometry: new Point([
-                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 4,
-                                middleY
-                            ]),
-                        })]
-                    }),
-                    style: [waterBubbleStyle],
-                    zIndex: this.layerGroups.length + 1
-                }),
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature({
-                            geometry: new Point([
-                                mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 4,
-                                mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2.5,
-                            ]),
-                        })]
-                    }),
-                    style: [waterBubbleStyle],
-                    zIndex: this.layerGroups.length + 1
-                }),
-            ];
-            let layerGroup = new LayerGroup();
-            bubbleLayers.forEach(item => {
-                layerGroup.getLayers().push(item);
-            })
-            layerGroup.name = 'Слой ' + this.layerGroups.length;
-            this.addLayerGroupToMap(layerGroup);
-        },
-        addLayerGroupToMap(layerGroup) {
-            this.layerGroups.push(layerGroup);
-            this.map.getLayerGroup().getLayers().push(layerGroup);
-        },
-        getPolygonsLayerGroup(layerGroup, polygonsPerLevel, styles) {
-            let internalVectorSource = new VectorSource();
-            let externalVectorSource = new VectorSource();
-            polygonsPerLevel.polygons.forEach((polygon) => {
-                const feature = new Feature({
-                    geometry: new Polygon([polygon.data])
-                });
-                if (polygon.type === 'internal') {
-                    internalVectorSource.addFeature(feature)
+        saveName(name) {
+            this.$modal.hideAll();
+            if (this.rightClickTargetType === 'project') {
+                if (this.rightClickTargetIndex !== null) {
+                    this.projects[this.rightClickTargetIndex].name = name;
+                    return;
+                }
+                if (this.projects.length < 4) {
+                    this.activeProjectIndex = this.projects.length;
+                    this.projects.push({
+                        key: 'mcProject_' + this.projects.length,
+                        name: name,
+                        layerGroups: [],
+                    });
+                    this.projectsMapResize();
                 } else {
-                    externalVectorSource.addFeature(feature)
+                    this.$notifyError(this.trans('map_constructor.max_projects'));
+                }
+            } else {
+                if (this.rightClickTargetProjectIndex !== null && this.rightClickTargetIndex !== null) {
+                    this.projects[this.rightClickTargetProjectIndex].layerGroups[this.rightClickTargetIndex].name = name;
+                }
+            }
+        },
+        openCtxMenu(projectIndex, targetType, layerGroupIndex) {
+            let showCTXMenu = false;
+            this.ctxMenuItems.forEach(item => {
+                item.visible = item.forTypes.indexOf(targetType) !== -1 || item.forTypes.indexOf('all') !== -1;
+                if (item.visible) {
+                    showCTXMenu = true;
+                }
+            })
+            if (showCTXMenu) {
+                this.$refs.ctxMenu.open();
+                this.rightClickTargetProjectIndex = projectIndex;
+                this.rightClickTargetIndex = layerGroupIndex;
+                this.rightClickTargetType = targetType;
+            }
+        },
+        ctxMenuAction(action) {
+            switch (action) {
+                case 'isolines':
+                    this.buildIsolinesModal();
+                    break;
+                case 'rename':
+                    this.buildNameModal();
+                    break;
+                case 'delete':
+                    if (this.rightClickTargetType === 'project') {
+                        if (this.rightClickTargetProjectIndex !== null) {
+                            this.projects.splice(this.rightClickTargetProjectIndex, 1);
+                            this.activeProjectIndex = 0;
+                        }
+                    } else {
+                        if (this.rightClickTargetProjectIndex !== null && this.rightClickTargetIndex !== null) {
+                            const projectRef = this.projects[this.activeProjectIndex].key;
+                            this.projects[this.rightClickTargetProjectIndex]
+                              .layerGroups.splice(this.rightClickTargetIndex, 1);
+                            let layerToDelete = null;
+                            this.$refs[projectRef][0].map.getLayers().forEach((layer, index) => {
+                                if (index === this.rightClickTargetIndex) {
+                                    layerToDelete = layer;
+                                }
+                            })
+                            if (layerToDelete) {
+                                this.$refs[projectRef][0].map.removeLayer(layerToDelete);
+                            }
+                            if (mapLayers.length === 0) {
+                                this.$refs[projectRef][0].map = null;
+                            }
+                        }
+                    }
+                    this.projectsMapResize();
+                    this.resetToDefaultRightClickValues();
+                    break;
+            }
+        },
+        projectsMapResize() {
+            this.projects.forEach((project, index) => {
+                let $self = this;
+                setTimeout( function() {
+                    $self.$refs[project.key][0].updateMapSize();
+                }, 200);
+            });
+        },
+        getGeoList(type, id) {
+            this.SET_LOADING(true);
+            axios.post(this.localeUrl('map-constructor/structure'), {
+                type: type,
+                id: id,
+            }).then((response) => {
+                if (response.data) {
+                    this.geoList[type + 'List'] = response.data;
+                } else {
+                    this.$notifyError(this.trans('map_constructor.get_dzo_error'));
+                }
+                this.SET_LOADING(false);
+            });
+        },
+        toolAction(action) {
+            if (typeof action !== "undefined") {
+                this[action]();
+            }
+        },
+        addGeographicalMap() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            this.$refs[projectRef][0].addGeographicalMap();
+        },
+        showBubblesByDate() {
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            let data = null;
+            this.bubblesData.forEach(item => {
+                if (!this.selectedMonth) {
+                    this.selectedMonth = moment(new Date()).format('YYYY-MM-DD');
+                }
+                const selectedDate = new Date(this.selectedMonth);
+                const excelDate = new Date(item.date);
+                if (excelDate.getFullYear() === selectedDate.getFullYear()
+                  && excelDate.getMonth() === selectedDate.getMonth()) {
+                      data = item;
                 }
             });
-            let internalVectorLayer = new VectorLayer({
-                source: internalVectorSource,
-                style: styles.internal,
-            });
-            let externalVectorLayer = new VectorLayer({
-                source: externalVectorSource,
-                style: styles.external,
-            });
-            layerGroup.getLayers().push(externalVectorLayer);
-            layerGroup.getLayers().push(internalVectorLayer);
+            if (data !== null) {
+                this.$refs[projectRef][0].showBubbles(data, 'ppm');
+            }
         },
-        getExternalLayerStyle(color, text) {
-            return new Style({
-                stroke: new Stroke({
-                    color: color,
-                    width: 1,
-                }),
-                fill: new Fill({
-                    color: color,
-                }),
-                text: new Text({
-                    font: '14px bold Calibri,sans-serif',
-                    fill: new Fill({
-                        color: 'white',
-                    }),
-                    text: text,
-                    placement: 'line',
-                }),
-            });
+        changeDate() {
+            if (this.bubblesData.length > 0) {
+                this.showBubblesByDate();
+            }
+        },
+        monthUp() {
+            let selectedDate = moment(this.selectedMonth, 'YYYY-MM-DD');
+            let newDate = moment(selectedDate.add(1, 'M'));
+            this.selectedMonth = newDate.format('YYYY-MM-DD');
+            this.changeDate();
+        },
+        monthDown() {
+            let selectedDate = moment(this.selectedMonth, 'YYYY-MM-DD');
+            let newDate = moment(selectedDate.add(-1, 'M'));
+            this.selectedMonth = newDate.format('YYYY-MM-DD');
+            this.changeDate();
+        },
+        resetToDefaultRightClickValues() {
+            this.rightClickTargetProjectIndex = null;
+            this.rightClickTargetIndex = null;
+            this.rightClickTargetType = 'project';
         }
     },
+    mounted() {
+        this.getGeoList('dzo');
+    }
 }

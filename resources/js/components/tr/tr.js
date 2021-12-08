@@ -12,7 +12,7 @@ import Paginate from 'vuejs-paginate';
 import moment from 'moment';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-
+import totalTable from "./totalTable.vue";
 Vue.component('paginate', Paginate);
 Vue.component('v-select', vSelect)
 
@@ -29,6 +29,7 @@ export default {
     SearchFormRefresh,
     TrMultiselect,
     Multiselect,
+    totalTable,
   },
   computed: {
     isExpMethButton() {
@@ -270,6 +271,7 @@ export default {
               fields: [...fields],
           },
       ],
+      all_summary_total: [],
       rowExpMeth: null,
       dt: null,
       editedWells: [],
@@ -328,7 +330,7 @@ export default {
       isActiveHorizonFilterr: false,
       editedAddWells: [],
       filterList: ['field','horizon','wellType', 'object','block', 'expMeth','plannedEvents'],
-
+      isEditable: true,
     };
   },
   methods: {
@@ -346,12 +348,15 @@ export default {
         if (day > 25 && mm < 12) {
             var month = today.getMonth() + 2;
             var year = today.getFullYear();
+            this.isEditable = true;
         } else if (day > 25 && mm === 12) {
             var month = 1;
             var year = today.getFullYear() + 1;
+            this.isEditable = true;
         } else {
             var month = today.getMonth() + 1;
             var year = today.getFullYear();
+            this.isEditable = false;
         }
         this.$store.commit("tr/SET_MONTH", month);
         this.$store.commit("tr/SET_YEAR", year);
@@ -828,6 +833,7 @@ export default {
             return true
         }
     },
+    
 
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
@@ -845,10 +851,15 @@ export default {
         this.loadPage();
         this.reRender();
     },
+    closeTotalModal(modalName) {
+      this.$modal.hide(modalName)
+  },
     addpush() {
         this.$modal.show('add_well')
     },
-
+    totalModal() {
+      this.$modal.show('total_modal')
+  },
     handlerSearch(search) {
         this.searchString = search;
     },
@@ -901,6 +912,23 @@ export default {
                 this.reRender();
             })
     },
+    summaryTotalModal() {
+      this.axios
+      .get(
+          this.postApiUrl + "techmode/pivot_table/" +
+        this.$store.state.tr.year + '/' +
+        this.$store.state.tr.month +'/',
+      )
+      .then((response) => {
+          let data = response.data;
+          if (data) {
+              this.all_summary_total = data.data;
+          } else {
+              console.log("No data");
+          }
+
+      });
+  },
     searchWell() {
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("globalloading/SET_LOADING", true);

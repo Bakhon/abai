@@ -1,17 +1,19 @@
 <template>
   <AwGisColumn
+      ref="depthCanvas"
       v-bind="$attrs"
       :context.sync="context"
       @resized="initAxis"
       :header-height="headerHeight"
       :depth-column-width="depthColumnWidth"
       :offset-y="offsetY"
-      :elements="[{data: {name: 'SSTVD'}}]"
+      :elements="[{data: {name: 'DEPTH'}}]"
   />
 </template>
 <script>
 import AwGisColumn from "./AwGisColumn";
 import {SET_SCROLL_BLOCK_Y} from "../../../../../store/modules/geologyGis.const";
+
 export default {
   name: "AwGisDepthColumn",
   components: {
@@ -39,11 +41,11 @@ export default {
         this.offsetDepth = val;
       }
     },
-    scrollBlock:{
-      get(){
+    scrollBlock: {
+      get() {
         return this.$store.state.geologyGis.blocksScrollY;
       },
-      set(y){
+      set(y) {
         this.$store.commit(SET_SCROLL_BLOCK_Y, y)
       }
     }
@@ -69,11 +71,13 @@ export default {
     }
   },
   methods: {
-    mouseMove(e){
+    mouseMove(e) {
       e.preventDefault();
       this.scrollBlock -= e?.movementY;
     },
     initAxis() {
+      if (!this.context)
+        this.context = this.$refs.depthCanvas.canvas.getContext('2d');
       this.clearCanvas();
       this.drawAxis();
     },
@@ -81,9 +85,11 @@ export default {
     drawAxis() {
       let ctx = this.context;
       let axisSize = this.scaleY;
-      let offsetY = this.scrollBlock+this.getOffsetDepth;
+
+      let offsetY = this.scrollBlock + this.getOffsetDepth;
       let canvasHeight = ctx.canvas.height / axisSize;
       canvasHeight = canvasHeight += offsetY;
+
       ctx.beginPath();
       for (let i = offsetY; i < canvasHeight; i++) {
         let y = (i * axisSize) - offsetY * axisSize;

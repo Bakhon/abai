@@ -1,8 +1,23 @@
 <template>
     <div class="page-wrapper">
         <div class="row pl-3 mr-0">
-            <div class="col-12 title pb-2">
+            <div class="col-11 title pb-2">
                 {{ trans('visualcenter.oilCondensateDynamic') }}
+            </div>
+            <div class="col-1 mt-2 text-left">
+                <label
+                        @mouseover="isHoverActive = true"
+                        @mouseout="isHoverActive = false"
+                        class="switch"
+                >
+                    <input type="checkbox" class="form-check-input" v-model="isCorrectedFactActive" @change="updateDailyView">
+                    <span class="slider round"></span>
+                </label>
+                <span v-show="isHoverActive" class="hovered-tooltip">
+                    <span v-if="isCorrectedFactActive">{{ trans('visualcenter.withoutCorrectedFact') }}</span>
+                    <span v-else>{{ trans('visualcenter.withCorrectedFact') }}</span>
+
+                </span>
             </div>
             <div class="col-4 p-0 ml-3">
                 <select
@@ -226,9 +241,14 @@ export default {
                     this.trans("visualcenter.Fact"),
                 ]
             },
+            isCorrectedFactActive: true,
+            isHoverActive: false
         };
     },
     async mounted() {
+        if (moment().date() === 1) {
+            this.selectedMonth = this.selectedMonth - 1;
+        }
         this.fillMonthes();
         this.updateDailyView();
     },
@@ -237,7 +257,8 @@ export default {
             let uri = this.localeUrl("/oil-dynamic-daily");
             let queryOptions = {
                 'month': this.selectedMonth,
-                'type' : this.selectedDzo.ticker
+                'type' : this.selectedDzo.ticker,
+                'isCorrectedFactActive': this.isCorrectedFactActive
             };
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {
@@ -445,5 +466,74 @@ export default {
 }
 .daily-chart {
     margin-bottom: -5px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+.hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    margin-left: -200px;
+    margin-top: 40px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
 }
 </style>

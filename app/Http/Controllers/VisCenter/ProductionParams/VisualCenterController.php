@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
 use App\Http\Resources\VisualCenter\Dzo\Factory;
+use App\Models\VisCenter\ImportForms\DZOyear;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -36,9 +37,16 @@ class VisualCenterController extends Controller
             'oilCondensateProductionWithoutKMG' => array(),
             'oilCondensateDelivery' => array(),
             'oilCondensateDeliveryWithoutKMG' => array(),
+            'oilCondensateDeliveryOilResidue' => array(),
         )
     );
     private $isOpek = false;
+    private $categoriesWithYearlyPlan = array (
+       'oilCondensateProduction',
+       'oilCondensateProductionWithoutKMG',
+       'oilCondensateDelivery',
+       'oilCondensateDeliveryWithoutKMG'
+    );
 
     public function getProductionParamsByCategory(Request $request)
     {
@@ -91,7 +99,7 @@ class VisualCenterController extends Controller
             $query->where('dzo', $this->dzoName);
         }
         $result = $query->orderBy('date', 'asc')->get();
-        if ($this->periodType !== 'year') {
+        if ($this->periodType !== 'year' && $this->periodType !== 'period') {
             foreach ($result as $dzoItem) {
                 foreach($dzoItem->getAttributes() as $key => $item) {
                     if (is_numeric($item)) {
@@ -112,6 +120,14 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category,$this->periodRange + 1,$this->periodType);
         }
+        if ($this->periodType === 'month' && Carbon::now()->day < 3 && Carbon::now()->day !== 1) {
+            $this->periodRange = 0;
+            $plan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
+            $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
+            $monthStart = Carbon::now()->startOf('month')->startOf('day');
+            $fact = $fact->where('date', '>=', $monthStart);
+            $plan = $plan->where('date', '>=', $monthStart);
+        }
 
         return array (
             'table' => $this->getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan),
@@ -122,18 +138,19 @@ class VisualCenterController extends Controller
     private function getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan)
     {
         $tableData = array();
-        $tableData['current']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['current']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->periodEnd);
+        $tableData['historical']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->historicalPeriodEnd);
+        $tableData['current']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->periodEnd);
+        $tableData['historical']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->historicalPeriodEnd);
+        $tableData['current']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->periodEnd);
+        $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->periodEnd);
+        $tableData['historical']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->historicalPeriodEnd);
+        $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName,$this->historicalPeriodEnd);
         $tableData['current'] = array_merge($tableData['current'],$factory->makeCategory('gasProduction')->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         $tableData['historical'] = array_merge($tableData['historical'],$factory->makeCategory('gasProduction')->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         if ($this->category === 'oilCondensateDeliveryOilResidue') {
             $tableData['current']['oilCondensateDeliveryOilResidue'] = $factory->makeCategory('oilCondensateDeliveryOilResidue')->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
+            $tableData['historical']['oilCondensateDeliveryOilResidue'] = $factory->makeCategory('oilCondensateDeliveryOilResidue')->getDataByOilResidueCategory($historicalFact,$this->periodRange,$this->dzoName);
         }
         if (str_contains(strtolower($this->category), 'water')) {
             $tableData['current'] = array_merge($tableData['current'], $factory->makeCategory('waterInjection')->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
@@ -143,6 +160,12 @@ class VisualCenterController extends Controller
 
     private function getYearlyPlan()
     {
+        if (in_array($this->category,$this->categoriesWithYearlyPlan)) {
+            return DZOyear::query()
+             ->where('date',Carbon::now()->year)
+             ->get();
+        }
+
         $daysCountFromYearStart = $this->periodStart->diffInDays($this->periodEnd) + 1;
         $query = DzoPlan::query()
             ->whereYear('date', $this->periodStart->year);

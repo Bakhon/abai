@@ -121,11 +121,18 @@ import {
   FETCH_WELLS,
   GET_WELLS_OPTIONS,
   SET_WELLS,
-  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS
+  GET_FIELDS_OPTIONS,
+  GET_DZOS_OPTIONS,
+  SET_WELLS_BLOCKS,
+  FETCH_WELLS_MNEMONICS,
+  FETCH_WELLS_CURVES,
+  FETCH_WELLS_HORIZONS
 } from "../../../store/modules/geologyGis.const";
+import {Fetch_Wells} from "../api/petrophysics.api";
 
 export default {
   name: "Geology-LSide",
+  props:['saveTableSettings'],
   data() {
     return {
       dropdownValue: {
@@ -137,7 +144,7 @@ export default {
         wells: false,
         mnemonics: false
       },
-      selectedWells: [{"sort":0,"value":"UZN_0144"}]
+      selectedWells: []
     }
   },
   components: {
@@ -168,7 +175,9 @@ export default {
   },
 
   async mounted() {
+    this.loadingStates.dzos = true;
     await this.$store.dispatch(FETCH_DZOS);
+    this.loadingStates.dzos = false;
   },
 
   methods: {
@@ -192,9 +201,12 @@ export default {
       let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
       this.loadingStates.mnemonics = true;
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      await this.$store.dispatch(FETCH_WELLS_HORIZONS, arr.map((item)=>item.value));
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
+      this.saveTableSettings()
     },
+
     selectWellsHandle(item, i) {
       let index = this.selectedWells.findIndex((a) => a.value === item.value);
       if (~index) {

@@ -106,6 +106,13 @@ export default {
             type: 'redirect',
             editMode: this.clickedObject.type
           });
+        } else {
+          options.push({
+            name: this.trans('monitoring.map.calculate-chain') + ' ' + this.clickedObject.object.name,
+            mapObject: this.clickedObject,
+            type: 'showCalcForm',
+            editMode: this.clickedObject.type
+          });
         }
 
         options.push({
@@ -170,7 +177,11 @@ export default {
       this.showContextMenu = false;
     },
     onClickOutside() {
-      this.hideContextMenu()
+      this.hideContextMenu();
+
+      if (this.showContextMenu) {
+        this.$emit('click-outside')
+      }
     },
     optionClicked(option) {
       this.hideContextMenu();

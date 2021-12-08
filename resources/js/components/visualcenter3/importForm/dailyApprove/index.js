@@ -19,7 +19,10 @@ export default {
                 'is_approved_by_second_master',
                 'created_at',
                 'updated_at',
-                'user_position'
+                'user_position',
+                'oil_production_fact_corrected',
+                'condensate_production_fact_corrected',
+                'user_id'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
@@ -130,7 +133,7 @@ export default {
                     'isFirstMasterApproved': approveItem.is_approved_by_first_master,
                     'isSecondMasterApproved': approveItem.is_approved_by_second_master,
                     'firstMasterApproveTranslation': this.statusTransition[0],
-                    'secondMasterApproveTranslation': this.statusTransition[0],
+                    'secondMasterApproveTranslation': this.statusTransition[0]
                 };
                 if (approve.isFirstMasterApproved) {
                     approve.firstMasterApproveTranslation = this.statusTransition[1]
@@ -176,12 +179,19 @@ export default {
         },
         getChildDifference(current, actual) {
             let difference = {};
+            if (current === null) {
+                return {};
+            }
             _.forEach(Object.keys(current), (currentKey) => {
                 if (this.systemFields.includes(currentKey)) {
                     return;
                 }
                 let currentDetail = current[currentKey];
-                let actualDetail = actual[currentKey];
+                let actualDetail = null;
+                if (actual) {
+                    actualDetail = actual[currentKey];
+                }
+
                 if (currentDetail !== actualDetail) {
                     difference[currentKey] = {
                         'currentDetail':  currentDetail,
@@ -193,6 +203,9 @@ export default {
         },
         getChildFields(currentFields, actualFields) {
             let difference = {};
+            if (currentFields.length !== actualFields.length) {
+                return difference;
+            }
             _.forEach(currentFields, (field, index) => {
                 difference[field['field_name']] = this.getChildDifference(field,actualFields[index]);
             });

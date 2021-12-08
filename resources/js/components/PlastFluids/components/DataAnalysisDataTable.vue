@@ -6,7 +6,7 @@
     <div class="data-analysis-table-header">
       <div>
         <div class="title-holder">
-          <img src="/img/PlastFluids/tableIcon.svg" />
+          <img :src="imagePath" />
           <p>{{ trans("plast_fluids." + tableTitle) }}</p>
         </div>
         <img src="/img/PlastFluids/settings.svg" alt="customize table" />
@@ -30,6 +30,9 @@
         :items="items"
         tableType="analysis"
         :sticky="true"
+        :currentSelectedRow="handleRowSelectState"
+        @select-row="selectTableRow"
+        :currentRoute="reservoilOilInfo[1]"
       />
     </div>
   </div>
@@ -43,19 +46,58 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "DataAnalysisDataTable",
   props: {
+    imagePath: String,
     tableTitle: String,
     items: [Array, Object],
     fields: [Array, Object],
   },
+  inject: { reservoilOilInfo: { default: "template" } },
   components: {
     BaseTable,
     SmallCatLoader,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading", "tableState"]),
+    ...mapState("plastFluidsLocal", [
+      "loading",
+      "tableState",
+      "currentSelectedSamples",
+      "currentModel",
+      "currentSelectedWell",
+    ]),
+    handleRowSelectState() {
+      let state = {};
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          state = this.currentSelectedSamples;
+          break;
+        case "maps-and-tables":
+          state = this.currentSelectedWell;
+          break;
+      }
+      return state;
+    },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_TABLE_STATE"]),
+    ...mapMutations("plastFluidsLocal", [
+      "SET_TABLE_STATE",
+      "SET_CURRENT_SELECTED_SAMPLES",
+      "SET_CURRENT_SELECTED_WELL",
+    ]),
+    selectTableRow(row) {
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          this.SET_CURRENT_SELECTED_SAMPLES(row.item.key);
+          break;
+        case "maps-and-tables":
+          !this.currentModel.id
+            ? ""
+            : this.SET_CURRENT_SELECTED_WELL({
+                id: row.item.key,
+                index: row.index,
+              });
+          break;
+      }
+    },
   },
 };
 </script>
@@ -94,6 +136,7 @@ export default {
 
 .title-holder {
   display: flex;
+  align-items: center;
 }
 
 .title-holder > img {

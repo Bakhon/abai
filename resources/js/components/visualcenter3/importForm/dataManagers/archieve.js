@@ -7,7 +7,8 @@ export default {
             category: {
                 'isArchieveActive': false,
                 'isFactActive': true,
-                'isPlanActive': false
+                'isPlanActive': false,
+                'isCloseMonthActive': false
             },
             period: moment().subtract(1,'days').format("YYYY-MM-DD HH:mm:ss"),
             datePickerOptions: {
@@ -40,6 +41,8 @@ export default {
                 this.excelData['user_name'] = this.userName;
                 this.excelData['user_position'] = this.userPosition;
                 this.excelData['change_reason'] = this.changeReason;
+                this.excelData['oil_production_fact_corrected'] = this.todayData.oil_production_fact_corrected;
+                this.excelData['condensate_production_fact_corrected'] = this.todayData.condensate_production_fact_corrected;
                 this.excelData['toList'] = ['firstMaster','secondMaster','mainMaster'];
                 await this.storeData(uri);
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
@@ -51,15 +54,20 @@ export default {
            this.isDataExist = false;
            this.isDataReady = false;
            this.disableHighlightOnCells();
+           this.turnOffErrorHighlight();
            if (name === 'isPlanActive') {
                await this.sleep(100);
                for (let i=0; i <=12; i++) {
                    this.setClassToElement($('#planGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
                }
+           } else if (name === 'isCloseMonthActive') {
+               await this.sleep(100);
+               for (let i=0; i < (this.monthColumnsCount-1); i++) {
+                   this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+               }
            } else {
                await this.changeDefaultDzo();
                await this.updateCurrentData();
-               this.addListeners();
                this.setTableFormat();
            }
        },
@@ -67,12 +75,8 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
-            if (this.selectedDzo.ticker === 'КОА') {
-                this.addColumnsToGrid();
-            }
             this.changeDefaultDzo();
             this.handleSwitchFilter();
-            this.addListeners();
             this.SET_LOADING(false);
         },
         async handleSwitchFilter() {

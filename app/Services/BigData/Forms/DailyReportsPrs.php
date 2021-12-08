@@ -15,35 +15,43 @@ class DailyReportsPrs extends TableForm
     protected $configurationFileName = 'daily_reports_prs';
     protected $repairType = 'WLO';
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $workoverId = $params['wellId'];
+        foreach ($rows as $workoverId => $row) {
+            $report = DB::connection('tbd')
+                ->table('prod.report_org_daily_repair')
+                ->where('workover', $workoverId)
+                ->first();
 
-        $report = DB::connection('tbd')
-            ->table('prod.report_org_daily_repair')
-            ->where('workover', $workoverId)
-            ->first();
+            $fields = [];
+            foreach ($row as $fieldCode => $field) {
+                $fields[$fieldCode] = $field['value'];
+            }
 
-        if (empty($report)) {
+            if (empty($report)) {
+                DB::connection('tbd')
+                    ->table('prod.report_org_daily_repair')
+                    ->insert(
+                        array_merge(
+                            [
+                                'workover' => $workoverId
+                            ],
+                            $fields
+                        )
+                    );
+                continue;
+            }
+
             DB::connection('tbd')
                 ->table('prod.report_org_daily_repair')
-                ->insert(
-                    [
-                        'workover' => $workoverId,
-                        $params['field'] => $params['value']
-                    ]
-                );
-            return;
+                ->where('id', $report->id)
+                ->update($fields);
         }
+        return [];
+    }
 
-        DB::connection('tbd')
-            ->table('prod.report_org_daily_repair')
-            ->where('id', $report->id)
-            ->update(
-                [
-                    $params['field'] => $params['value']
-                ]
-            );
+    protected function saveSingleFieldInDB(array $params): void
+    {
     }
 
     public function getResults(): array
@@ -69,6 +77,7 @@ class DailyReportsPrs extends TableForm
                 'ww.repair_work_type',
                 'rodr.machine_type',
                 'rodr.work_done',
+                'rodr.comment',
                 't.name_ru as tech',
             )
             ->leftJoin('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
@@ -77,8 +86,8 @@ class DailyReportsPrs extends TableForm
             ->leftJoin('prod.well_tech as wt', 'w.id', 'wt.well')
             ->leftJoin('dict.tech as t', 'wt.tech', 't.id')
             ->whereIn('w.id', $wellIds)
-            ->where('ww.request_date', '<=', $filter->date)
-            ->where('ww.expected_date', '>', $filter->date)
+            ->where('ww.dbeg', '<=', $filter->date)
+            ->where('ww.dend', '>=', $filter->date)
             ->where('wrt.code', $this->repairType)
             ->where('wt.dbeg', '<=', $filter->date)
             ->where('wt.dend', '>', $filter->date)

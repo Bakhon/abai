@@ -11,7 +11,6 @@ import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from "vue";
 import FullPageLoader from "@ui-kit/FullPageLoader";
-import * as htmlToImage from "html-to-image";
 import Tabs from "./components/tabs/Tabs.vue";
 import { globalloadingMutations } from "@store/helpers";
 import _ from 'lodash'
@@ -34,9 +33,10 @@ export default {
       "lines",
       "points",
       "analysisSettings",
-      "centralizer_range",
+      "centralizerRange",
       'sensetiveSettings',
       "mainSettings",
+      "centralizerResult"
     ]),
     ...pgnoMapGetters([
       'curveSettingsStore',
@@ -46,9 +46,8 @@ export default {
   data: function () {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
+      ecnPump: null,
       updateCurveTrigger: true,
-      devBlockRatedFeed: null,
-      devBlockFrequency: null,
       steel: null,
       techmodeDate: null,
       curveSettings: {},
@@ -218,9 +217,32 @@ export default {
         return false;
       }
     },
+    isRodCorrect() {
+      for(let el of this.shgnSettings.rodsTypes) {
+        if(el == '25') {
+          if(this.curveSettings.nkt < 59.3) {
+            this.setNotify(this.trans("pgno.alert_rods_nkt"), '', 'warning')
+            return false
+          }
+        } else if(el == '29') {
+          if(this.curveSettings.nkt < 75.9) {
+            this.setNotify(this.trans("pgno.alert_rods_nkt"), '', 'warning')
+            return false
+          }
+        }
+      }
+    },
+    isNktCorrect() {
+      if ((this.curveSettings.nkt == 83.6 && this.well.casOd * 1 < 127) || (this.curveSettings.nkt == 100.3 && this.well.casOd * 1 < 139.7)) {
+        this.setNotify(this.trans("pgno.alert_ek_nkt\t"), '', 'warning')
+        return false
+      } else {
+        return true
+      }
+    },
     isNktExist(val) {
       const found = this.nkt_choose.some(
-        (el) => el.for_calc_value === this.curveSettings.nkt
+          (el) => el.for_calc_value === this.curveSettings.nkt
       );
       if (!found) {
         let type
@@ -295,10 +317,11 @@ export default {
         this.ao = 'АО "ММГ"';
       } else if (["UZN", "KMB"].includes(this.field)) {
         this.ao = 'АО "ОМГ"';
+      } else if (["ASY", "NUR", "AKSH"].includes(this.field)) {
+        this.ao = "КГМ";
       } else {
         this.ao = null;
       }
-
       let url = this.apiUrl + this.field + "/" + wellnumber;
       await this.getWell(url);
       this.curveSettings.separationMethod = this.well.separationMethod;
@@ -311,6 +334,7 @@ export default {
         this.curveSelect = "hdyn";
         this.mech_sep = false;
       } else if (this.well.expMeth === "ЭЦН") {
+        this.ecnPump = this.well.pumpType.split(" ")[1].split("/")[0]
         this.curveSelect = "hdyn";
         this.mech_sep = true;
       } else if (this.well.expMeth === "ФОН") {
@@ -343,10 +367,11 @@ export default {
       this.horizon = this.well.horizon;
       if (this.well.wellError === "no_well_data") {
         this.setNotify(this.trans('pgno.notify_well_doesnt_exist'), "Error", 'danger')
-      } else if (!this.well.newWell && !this.isSkExist(this.skType)) {
+      } else if (!this.well.newWell && !this.isSkExist(this.skType) && this.well.expMeth==="ШГН") {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Warning", "warning");
-        this.isNktExist("get")
+
       }
+      this.isNktExist("get")
       this.setCurveSettings(this.curveSettings);
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
@@ -354,6 +379,7 @@ export default {
     preparePost() {
       var payload = {};
       payload.url = this.apiUrl + "calculate";
+      this.checkMechSep()
       if (this.curveSettings.expChoosen ==="ФОН") {
         payload.data = {
           shgn_settings: this.shgnSettings,
@@ -381,7 +407,8 @@ export default {
       }
       this.mainSettings.isVisibleChart = true;
       this.SET_LOADING(true);
-      if (this.well.casOd < 127) {
+      if (this.well.casOd < 127 &&
+        this.curveSettings.expChoosen == "ЭЦН") {
         this.setNotify(
           this.trans("pgno.notify_ek_127_down"),
           "Error",
@@ -433,19 +460,27 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
+    checkMechSep() {
+      if ((this.curveSettings.mechanicalSeparation && this.curveSettings.separationMethod!=="input_value") && this.shgnSettings.komponovka.includes("hvostovik")) {
+        this.shgnSettings.komponovka = this.shgnSettings.komponovka.filter(e => e!=="hvostovik")
+      }
+    },
     onPgnoClick() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
         return
       }
-      var nktError = this.isNktExist("pgno")
-      var errorCheck = this.raiseTargetNotify();
+      let nktError = this.isNktExist("pgno")
+      let nktNotCorrect = this.isNktCorrect()
+      let errorCheck = this.raiseTargetNotify()
+      let rodsError = this.isRodCorrect()
       if (!this.isSkExist(this.skType)) {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Error", "danger");
-      } else if (errorCheck || nktError) {
+      } else if (errorCheck || nktError || nktNotCorrect || rodsError) {
         if (this.curveSettings.expChoosen == "ШГН") {
           if (this.mainSettings.isVisibleChart) {
             this.SET_LOADING(true);
+            this.checkMechSep()
             var payload = {
               shgn_settings: this.shgnSettings,
               well: this.well,
@@ -479,12 +514,8 @@ export default {
                     "Warning",
                     "warning"
                   );
-                  this.setNotify(
-                    this.trans("pgno.notify_change_depth_descent"),
-                    "Warning",
-                    "warning"
-                  );
-                } else {
+                }
+              
                   this.shgnPumpType = data.kPodData["pump_type"]
                   this.freegasCel = this.points.freegasCelValue.toFixed(1),
                   this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
@@ -536,7 +567,6 @@ export default {
                     );
                   }
                   this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
-                }
               })
               .catch((error) => {
                 if (error.request) {
@@ -595,21 +625,21 @@ export default {
       };
       await this.getInclinometry(payload);
       this.centratorsType = this.trans('pgno.required')
-      if (this.centralizer_range === "NoIncl") {
+      if (this.centralizerRange === "NoIncl") {
         this.centratorsRequiredValue = "Нет данных"
-      } else if (!this.centralizer_range["red"]) {
+      } else if (!this.centralizerRange["red"]) {
         this.centratorsType = this.trans('pgno.recommended')
-        this.centratorsRequiredValue = this.centralizer_range["yellow"];
+        this.centratorsRequiredValue = this.centralizerRange["yellow"];
       } else {
-        this.centratorsRequiredValue = this.centralizer_range["red"];
+        this.centratorsRequiredValue = this.centralizerRange["red"];
       }
     },
 
     closeModal(modalName) {
       this.$modal.hide(modalName);
     },
-    openSensAnalysisModal() {
-      this.$modal.show('sensAnalysisModal')
+    openCentralizersModal() {
+      this.$modal.show('modalCentralizers')
     },
     openEcoModal() {
       if (!this.wellNumber) {
@@ -739,7 +769,7 @@ export default {
         var url = this.apiUrl + "excel/download"
         var filename = "ПГНО_КРИВЫЕ_" + this.field + "_" + this.wellNumber + ".xlsx"
       } else if (menu === "gno" || menu === "report") {
-        this.shgnResult.centralizer_range = this.centralizer_range
+        this.shgnResult.centralizerRange = this.centralizerRange
         this.shgnResult.shgnImg = this.shgnImg
         this.shgnResult.user = this.user
         var payload = {
@@ -749,10 +779,12 @@ export default {
           analysis_settings: this.analysisSettings,
           points: this.points,
           result: this.shgnResult,
+          centralizers: this.centralizerResult
         };
         var url = menu === "gno" ? this.apiUrl + "shgn/download": this.apiUrl + "report/download"
         var startline = menu === "gno" ? "ПГНО_РЕЗУЛЬТАТ_" : "ПГНО_ОТЧЁТ_"
-        var filename = startline + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
+        let todayDate = new Date().toLocaleDateString()
+        var filename = startline + this.field + "_" + this.wellNumber + "_" + todayDate + "_ШГН" + ".xlsx"
       }
       this.axios.post(url, payload, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, filename)
@@ -811,44 +843,6 @@ export default {
       }
 
       this.mainSettings.activeRightTabName = val;
-    },
-    takePhoto() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
-    },
-    takePhotoOldNewWell() {
-      this.SET_LOADING(true);
-
-      htmlToImage
-        .toPng(this.$refs["gno-chart-new-old-well"])
-        .then(function (dataUrl) {
-          let link = document.createElement("a");
-          link.setAttribute("href", dataUrl);
-          link.setAttribute("download", "download");
-          link.click();
-          link.remove();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
     },
   },
 

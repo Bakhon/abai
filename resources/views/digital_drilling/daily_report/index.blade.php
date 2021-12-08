@@ -6,10 +6,11 @@
 
 @endsection
 @section('module_title', trans('digital_drilling.module_title'))
+@section('module_home_url', route('digital-drilling'))
 @section('content')
     <link rel="stylesheet" href="/css/digital-drilling.css">
     <div class="row digital_drilling">
-        <daily-raport />
+        <daily-report-open />
     </div>
 @endsection
 @section('sidebar_menu_additional')

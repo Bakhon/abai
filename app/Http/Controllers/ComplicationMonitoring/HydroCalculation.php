@@ -10,8 +10,9 @@ use App\Http\Resources\HydroCalcPrepareListResource;
 use App\Http\Resources\HydroCalculatedListResource;
 use App\Jobs\CalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\Ngdu;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -169,19 +170,19 @@ class HydroCalculation extends Controller
     public function list(IndexTableRequest $request)
     {
         $input = $request->validated();
-        $points = null;
+        $pipes = null;
 
         if (isset($input['date'])) {
-            $points = $this->getCalculatedData($input['date']);
-            $list = json_decode(HydroCalculatedListResource::collection($points)->toJson());
+            $pipes = $this->getCalculatedData($input['date']);
+            $list = json_decode(HydroCalculatedListResource::collection($pipes)->toJson());
         }
 
-        if (!$points || !$points->total()) {
+        if (!$pipes || !$pipes->total()) {
             $prepairedData = $this->getPrepairedData($input);
-            $points = $prepairedData['points'];
+            $pipes = $prepairedData['pipes'];
             $alerts = $prepairedData['alerts'];
             $request->session()->put('from_hydro_calc', true);
-            $list = json_decode(HydroCalcPrepareListResource::collection($points)->toJson());
+            $list = json_decode(HydroCalcPrepareListResource::collection($pipes)->toJson());
 
             if (count($alerts)) {
                 $list->alerts = $alerts;
@@ -193,33 +194,39 @@ class HydroCalculation extends Controller
 
     public function getPrepairedData(array $input): array
     {
-        $query = TrunklinePoint::query()
-            ->with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point');
+        $ngdu_id = Ngdu::where('name', 'НГДУ-4')->first()->id;
+        $query = OilPipe::query()
+            ->with(
+                'pipeType',
+                'firstCoords',
+                'lastCoords',
+                'gu'
+            )
+            ->where('ngdu_id', $ngdu_id)
+            ->where('trunkline', true);
 
-        $points = $this
+        $pipes = $this
             ->getFilteredQuery($input, $query)
-            ->whereNotNull('gu_id')
-            ->orWhereNotNull('point_end_id')
             ->get();
-
+        
         $alerts = [];
 
-        foreach ($points as $key => $point) {
+        foreach ($pipes as $key => $pipe) {
 
-            if (!$points[$key]->gu) {
+            if (!$pipe->gu) {
                 continue;
             }
 
-            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id);
+            $query = OmgNGDU::where('gu_id', $pipe->gu->id);
 
             if (isset($input['date'])) {
                 $query = $query->where('date', $input['date']);
             }
 
-            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+            $pipes[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
-            if (!$points[$key]->omgngdu) {
-                $message = $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
+            if (!$pipe->omgngdu) {
+                $message = $pipe->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
                     $message .= ' на ' . $input['date'];
@@ -232,41 +239,41 @@ class HydroCalculation extends Controller
                 continue;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $pipe->omgngdu->heater_output_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->omgngdu->heater_output_temperature = $temperature;
+            $pipes[$key]->omgngdu->heater_output_temperature = $temperature;
 
-            if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
+            if ($pipe->omgngdu->pump_discharge_pressure == 0) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.pressure-0'),
+                    'message' => $pipe->gu->name . ' ' . trans('monitoring.hydro_calculation.message.pressure-0'),
                     'variant' => 'danger'
                 ];
             }
 
-            if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
+            if (is_null($pipe->omgngdu->pump_discharge_pressure)) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-pressure-data'),
+                    'message' => $pipe->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-pressure-data'),
                     'variant' => 'danger'
                 ];
             }
 
-            if (!$points[$key]->omgngdu->daily_fluid_production) {
+            if (!$pipe->omgngdu->daily_fluid_production) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
+                    'message' => $pipe->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
                     'variant' => 'danger'
                 ];
             }
 
-            if (!$points[$key]->omgngdu->bsw) {
+            if (!$pipe->omgngdu->bsw) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-bsw-data'),
+                    'message' => $pipe->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-bsw-data'),
                     'variant' => 'danger'
                 ];
             }
         }
 
-        $points = $this->paginate($points, 25, (int)$input['page']);
-        return ['points' => $points, 'alerts' => $alerts];
+        $pipes = $this->paginate($pipes, 25, (int)$input['page']);
+        return ['pipes' => $pipes, 'alerts' => $alerts];
     }
 
     public function getCalculatedData(string $date)

@@ -33,6 +33,7 @@ return [
     'actions' => 'Действия',
     'documents' => 'Документы',
     'forms' => [
+        'title' => 'Формы ввода',
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',
             'uwi_number' => 'Номер скважины',
@@ -425,6 +426,29 @@ return [
             'gas_f' => 'Средний газовый фактор',
             'title2' => 'Проект бурения'
         ],
+        'well_edit' => [
+            'title' => 'Редактирование скважины',
+            'main' => 'Основное',
+            'numb' => 'Номер скважины',
+            'data' => 'Дата создания проекта',
+            'sv_well' => 'Свойства скважины',
+            'alt' => 'Альтитуда',
+            'alt_h' => 'Превышение стола ротора',
+            'coord' => 'Координатная система',
+            'coord_x' => 'Координаты устья X',
+            'coord_y' => 'Координаты устья Y',
+            'well_t' => 'Вид скважины',
+            'coord_x_p' => 'Координаты забоя X',
+            'coord_y_p' => 'Координаты забоя Y',
+            'str_date' => 'Дата начала бурения',
+            'end_date' => 'Дата окончания бурения',
+            'podr' => 'Подрядчик',
+            'nom_dog' => 'Номер договора',
+            'data_dog' => 'Дата договора',
+            'depth' => 'Проектная глубина, м',
+            'gas_f' => 'Средний газовый фактор',
+            'title2' => 'Проект бурения'
+        ],
         'gas_production' => [
             'title' => 'Добыча газа',
             'measure_last_month' => 'Замеры по скважине за последний месяц',
@@ -476,7 +500,7 @@ return [
             'oil_production' => 'Добыча нефти (т)',
             'water_injection' => 'Закачка воды (м3)',
             'water_production' => 'Добыча воды (м3)',
-            'liquid_production' => 'Добыча жидкости (м3)',
+            'liquid_production' => 'Добыча жидкости (т)',
             'oil_injection' => 'Сдача нефти (т)',
             'gas_production' => 'Добыча газа (м3)',
             'steam_injection' => 'Закачка пара (м3)',
@@ -718,6 +742,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_fluid_prod' => [
             'date' => 'Дата',
@@ -741,6 +766,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_gas_prod' => [
             'date' => 'Дата',
@@ -764,6 +790,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_oil_sale' => [
             'date' => 'Дата',
@@ -787,6 +814,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_prod' => [
             'date' => 'Дата',
@@ -810,6 +838,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'daily_reports_water_upload' => [
             'date' => 'Дата',
@@ -833,6 +862,7 @@ return [
             'year_fact_gs' => 'Факт с начала года ГС',
             'year_deviation' => 'Годовое отклонение',
             'cits_gs_year_deviation' => 'Отклонение ЦИТС от ГС',
+            'note' => 'Примечание'
         ],
         'well_tech' => [
             'title' => 'Технологическая структура',
@@ -938,6 +968,7 @@ return [
             'files' => 'Загружаемые файлы',
         ],
         'well_document' => [
+            'title'=> 'Документ скважины',
             'author' => 'Владелец документа',
             'date' => 'Дата ввода',
             'name' => 'Наименование документа',
@@ -950,10 +981,12 @@ return [
             'value' => 'Значение'
         ],
         'well_document_short' => [
+            'title'=> 'Документ скважины',
             'document_date' => 'Дата документа',
             'uploaded_files' => 'Загружаемые файлы',
         ],
         'gdis' => [
+            'title' => 'Сложные ГДИС',
             'main' => 'Главная',
             'uwi' => 'Скважина',
             'dbeg' => 'Дата начала и время',
@@ -1022,8 +1055,10 @@ return [
             'table' => 'Документы',
             'doc_date' => 'Дата документа',
             'files' => 'Загружаемые файлы',
+            'research_results' => 'Данные исследования'
         ],         
         'well_mark' => [
+            'title'=> 'Отметка ВНК и ГНК',
             'mark' => "Глубина отметки ВНК и ГНК",
             'main' => 'Главная',
             'dbeg' => 'Начало периода',
@@ -1034,6 +1069,7 @@ return [
             'doc' => 'Документы'
         ],
         'well_treat' => [
+            'title'=> 'Обработка скважин',
             'uwi' => 'Номер скважины',
             'volume' => 'Объем, м3',
             'pretreat_pressure' => 'Рагр. пред., атм',
@@ -1048,6 +1084,7 @@ return [
             'date' => 'Дата',
         ],
         'drilling' => [
+            'title' => 'Бурение',
             'main' => 'Главная',
             'drilling' => 'Бурение',
             'uwi_number' => 'Скважина',
@@ -1057,18 +1094,24 @@ return [
             'date' => 'Дата',
             'work_name' => 'Проводимые работы'
         ],
+        'well_exploitation' =>[
+            'title' => 'Освоение, обустройство',
+        ],
         'daily_drill_kpc' => [
+            'title' => 'Суточные сводки - КРС',
             'org' => 'Подразделение',
             'company' => 'Подрядчик',
             'repair_work_type' => 'Вид ремонтных работ',
             'work_done' => 'Проделанные работы',
             'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
+            'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
+            'geo' => 'Горизонт',
+            'date' => 'Дата',
+            'note' => 'Примечание'
         ],
         'research_lab_research' => [
+            'title'=> 'Исследования - Лабораторные исследования',
             'date' => 'Дата исследования',
             'main' => 'Основное',
             'research_type' => 'Вид исследования',
@@ -1184,6 +1227,7 @@ return [
             'research_results' => 'Данные исследования'
         ],
         'meas_lab_research' => [
+            'title'=> 'Лабораторные исследования',
             'uwi_number' => 'Номер скважины',
             'date' => 'Дата исследования',
             'research_type' => 'Вид исследования',
@@ -1297,24 +1341,15 @@ return [
             'nak_ion' => 'Содержание ионов. Натрий+Калий (Na+K), мг/л',
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
         ],
-        'daily_drill_kpc' => [
-            'org' => 'Подразделение',
-            'company' => 'Подрядчик',
-            'repair_work_type' => 'Вид ремонтных работ',
-            'work_done' => 'Проделанные работы',
-            'uwi' => 'Истинная глубина по вертикали',
-            'machine_type'=> 'Вид станка',
-            'well' => 'Скважина',
-            'geo'=> 'Горизонт',
-            'date' => 'Дата'
-        ],
         'plan_g_d_i_s' => [
+            'title'=> 'План по ГДИС',
             'date' => 'Дата с',
             'date_to' => 'Дата по',
             'well' => 'скваж.',
             'measure' => 'замер.',
         ],
         'plan_g_i_s' => [
+            'title'=> 'План по ГИС',
             'name' => 'Наименование',
             'total_period' => 'Всего за период',
             'total' => 'Всего',
@@ -1330,9 +1365,11 @@ return [
             'uwi' => 'Истинная глубина по вертикали',
             'machine_type' => 'Вид станка',
             'well' => 'Скважина',
-            'geo' => 'Горизонт'
+            'geo' => 'Горизонт',
+            'note' => 'Примечание'
         ],
         'zu_gzu_production' => [
+            'title'=> 'Добыча ГУ/ГЗУ',
             'pf' => 'ПФ',
             'ngdu' => 'НГДУ',
             'cdng' => 'ЦДНГ',
@@ -1350,6 +1387,7 @@ return [
             'gaz_prod_tel' => 'Добыча газа, м3/сут (телеметрия)',
         ],
         'meas_water_prod' => [
+            'title' => 'Тех.режим - Водозаборные скважины',
             'prod_meas' => 'Показатели тех.режимов',
             'main_param' => 'Параметры режима',
             'water_prod_val' => 'Дебит воды, м3/сут',
@@ -1361,11 +1399,13 @@ return [
             'planned_month' => 'Планируемый месяц'
         ],
         'tech_events' => [
+            'title'=> 'Мероприятия',
             'planned_events' => 'Намечаемые мероприятия',
             'event' => 'Мероприятие',
             'planned_month' => 'Планируемый месяц'
         ],
         'tech_water_well' => [
+            'title' => 'Водозаборные скважины',
             'uwi_number' => 'Номер скважины',
             'bottom_hole' => 'Факт. забой',
             'horizon' => 'Горизонт',
@@ -1379,6 +1419,7 @@ return [
             'events' => 'Мероприятия',
         ],
         'fluid_production_month' => [
+            'title'=> 'Добыча жидкости (по месяцам)',
             'liquid' => 'Жидкость, м3/сут',
             'bsw' => 'Обводненность, %',
             'oil' => 'Нефть, т/сут',
@@ -1395,7 +1436,8 @@ return [
             'meas_count' => 'Кол-во замеров',
         ],
         'current_g_d_i_s' => [
-            'conclusion' => 'Заключение',
+            'title'=> 'Текущие замеры ГДИС',
+            'conclusion' => 'Справочник заключений ГДИС',
             'target' => 'Цель',
             'device' => 'Прибор',
             'transcript_dynamogram' => 'Расшифровка динамограммы',
@@ -1407,6 +1449,7 @@ return [
             'last_measure_value' => 'Значение последнего замера',
         ],
         'tech_mode_prod' => [
+            'title' => 'Тех.режим (цех) Добывающие скважины',
             'uwi_number' => 'Номер скважины',
             'bottom_hole' => 'Факт. забой',
             'horizon' => 'Горизонт',
@@ -1432,6 +1475,7 @@ return [
             'events' => 'Мероприятия',
         ],
         'meas_water_inj' => [
+            'title'=> 'Закачка воды (по месяцам)',
             'uwi' => 'Скважина',
             'indicators' => 'Показатели/дата',
             'tap' => 'Отвод',
@@ -1441,6 +1485,7 @@ return [
             'worktime' => 'Отработанное время',
         ],
         'underground_equipment' => [
+            'title' => 'Подземное оборудование',
             'equip_type' => 'Вид оборудования',
             'equip_element' => 'Элемент оборудования',
             'equip_params' => 'Параметры установки',
@@ -1452,18 +1497,41 @@ return [
             'repair_equipment' => 'Ремонты оборудования',
         ],
         'underground_equipment_installation' => [
+            'title' => 'Монтаж оборудования',
             'equip_type' => 'Вид оборудования',
             'equip_element' => 'Элемент оборудования',
-            'installation' => 'Монтаж оборудования',
-            'disassembling' => 'Демонтаж оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования'
+        ],
+        'underground_equipment_element' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+        ],
+        'underground_equipment_params' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
             'installation_date' => 'Дата установки',
             'installation_parameters' => 'Параметры установки оборудования'
         ],
         'underground_equipment_disassembling' => [
+            'title' => 'Демонтаж оборудования',
             'disassembling' => 'Демонтаж',
             'disassembling_date' => 'Дата демонтажа',
         ],
+        'underground_equipment_repair' => [
+            'title' => 'Ремонт оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования',
+            'work_info' => 'Проделанные работы',
+            'repair_date' => 'Дата проведения ремонта'
+        ],
         'tech_mode_inj' => [
+            'title' => 'Нагнетательные скважины',
             'uwi_number' => 'Номер скважины',
             'bottom_hole' => 'Факт. забой',
             'horizon' => 'Горизонт',
@@ -1484,6 +1552,7 @@ return [
             'events' => 'Мероприятия',
         ],
         'water_production_month' => [
+            'title' => 'Добыча воды (по месяцам)',
             'uwi' => 'Скважина',
             'water_prod_val' => 'Дебит воды, м3/сут',
             'water_val' => 'Добыча воды, м3',
@@ -1492,6 +1561,7 @@ return [
             "indicators" => 'Показатели/Дата'
         ],
         'meas_current_gdis' => [
+            'title' => 'Журнал замеров - Текущие замеры ГДИС',
             'conclusion' => 'Заключение',
             'target' => 'Цель',
             'device' => 'Прибор',
@@ -1537,6 +1607,7 @@ return [
             'meas_date' => 'Дата исследования'
         ],
         'well_treatment' => [
+            'title' => 'Обработка',
             'treat' => 'Обработка',
             'volume' => 'Объем, м3',
             'pretreat_pressure' => 'Рагр. пред., атм',
@@ -1550,6 +1621,27 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'date' => 'Дата',
         ],
+        'production_plan' => [
+            'title' => 'План добычи/сдачи по месторождениям',
+            'oil_production' => 'Добыча нефти (т)',
+            'water_injection' => 'Закачка воды (м3)',
+            'water_production' => 'Добыча воды (м3)',
+            'liquid_production' => 'Добыча жидкости (м3)',
+            'oil_injection' => 'Сдача нефти (т)',
+            'gas_production' => 'Добыча газа (м3)',
+            'steam_injection' => 'Закачка пара (м3)',
+            'absorption' => 'Поглощение',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'select_ngdu' => 'Выберите НГДУ'
+        ],
+        'org_tech_link' => [
+            'title' => 'Связь Оргструктуры и Техструктуры',
+            'dbeg' => 'Дата начала',
+            'dend' => 'Дата окончания',
+            'org' => 'Огрструктура',
+            'tech' => 'Техструктура'
+        ]
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',
@@ -1579,7 +1671,7 @@ return [
     'end_date' => 'Конечная дата',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
-    'create_report' => 'Создать отчет', 
+    'create_report' => 'Создать отчет',
     'choose_template' => 'Выбрать шаблон',
     'choose_start_month' => 'Выберите начальный месяц',
     'choose_end_month' => 'Выберите конечный месяц',
@@ -1588,5 +1680,7 @@ return [
     'wells' => 'Скважины',
     'select_company' => 'Выберите компанию',
     'show_events' => 'Показывать события',
-    'show_full_history' => 'Показывать всю историю'
+    'show_full_history' => 'Показывать всю историю',
+    'org_structure' => 'Оргструктура',
+    'input_form' => 'Форма ввода'
 ];

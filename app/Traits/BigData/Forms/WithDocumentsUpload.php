@@ -10,7 +10,7 @@ trait WithDocumentsUpload
 {
     protected $documents;
 
-    protected function insertInnerTable(int $id)
+    protected function submitInnerTable(int $parentId)
     {
         if (empty($this->tableFields)) {
             $this->tableFields = $this->getFields()
@@ -23,15 +23,15 @@ trait WithDocumentsUpload
 
         if ($this->tableFields && $this->tableFields->isNotEmpty()) {
             foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
+                if ($this->request->get($field['code']) !== null) {
                     if ($field['code'] === 'documents') {
-                        $this->submitFiles($id, $field);
+                        $this->submitFiles($parentId, $field);
                         return;
                     }
 
                     $this->submittedData['table_fields'][$field['code']] = [];
                     foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
+                        $data[$field['parent_column']] = $parentId;
                         $this->submittedData['table_fields'][$field['code']][] = $data;
                         DB::connection('tbd')->table($field['table'])->insert($data);
                     }

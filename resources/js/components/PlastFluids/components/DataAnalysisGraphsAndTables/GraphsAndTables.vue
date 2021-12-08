@@ -17,25 +17,26 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graph, key) in graphData"
-            :key="key"
+            v-for="(graphKey, index) in currentGraphics"
+            :key="index"
             class="content-child"
             :style="
-              Object.keys(graphData).length > 2
+              currentGraphics.length > 2
                 ? 'height: calc(50% - 3px);'
                 : 'height: calc(100% - 6px);'
             "
           >
             <ScatterGraph
-              :series="graph"
-              :title="trans(`plast_fluids.${graphType}_graph_${key}`)"
-              :graphType="key"
+              :series="graphData[graphKey]"
+              :title="trans(`plast_fluids.${graphType}_graph_${graphKey}`)"
+              :graphType="graphKey"
             />
           </div>
         </div>
         <SmallCatLoader :loading="loading" v-else />
       </div>
       <DataAnalysisDataTable
+        imagePath="/img/PlastFluids/tableIcon.svg"
         tableTitle="sampling_quality_table"
         :items="tableRows"
         :fields="tableFields"
@@ -70,6 +71,8 @@ export default {
       "tableState",
       "loading",
       "graphType",
+      "currentGraphics",
+      "currentBlocks",
     ]),
     graphData() {
       const zeroX = ["Ps", "Bs", "Ds", "Ms"];
@@ -83,6 +86,7 @@ export default {
         allGraphData[keys[i]] = {};
         allGraphData[keys[i]].name = "Данные";
         allGraphData[keys[i]].data = [];
+        allGraphData[keys[i]].data2 = [];
         allGraphData[keys[i]].type = "scatter";
         allGraphData[keys[i]].config = {
           minX: zeroX.includes(keys[i]) ? 0 : "auto",
@@ -94,7 +98,15 @@ export default {
       const fKeys = Object.keys(allGraphData);
       this.tableRows.forEach((row) => {
         for (let i = 0; i < fKeys.length; i++) {
-          allGraphData[fKeys[i]].data.push(row[fKeys[i]]);
+          const sample = row[fKeys[i]];
+          if (sample.x2) {
+            allGraphData[fKeys[i]].data2.push({
+              x: sample.x2,
+              y: sample.y,
+              key: sample.key,
+            });
+          }
+          allGraphData[fKeys[i]].data.push(sample);
         }
       });
       return allGraphData;
@@ -104,21 +116,38 @@ export default {
         Object.keys(this.graphData).length &&
         !Object.keys(this.graphData).some(
           (key) => !this.graphData[key].data.length
-        )
+        ) &&
+        !this.loading
       );
     },
   },
   watch: {
     currentSubsoilField: {
       handler(value) {
-        this.handleTableGraphData({ field_id: value[0].field_id });
+        this.handleAnalysisTableData({
+          field_id: value[0].field_id,
+          postUrl: "analytics/pvt-data-analysis",
+        });
       },
       deep: true,
+    },
+    currentSubsoilHorizon(value) {
+      this.handleBlocksFilter(value);
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
+    currentBlocks() {
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", [
-      "handleTableGraphData",
+      "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
     setConfig() {},
@@ -130,8 +159,9 @@ export default {
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {
-      await this.handleTableGraphData({
+      await this.handleAnalysisTableData({
         field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
       });
       this.handleBlocksFilter(this.currentSubsoilHorizon);
     }
@@ -197,7 +227,7 @@ export default {
 }
 
 .content-child {
-  width: calc(50% - 3px);
+  flex: 1 1 calc(50% - 3px);
   overflow: auto;
   padding: 0;
   min-height: 0;

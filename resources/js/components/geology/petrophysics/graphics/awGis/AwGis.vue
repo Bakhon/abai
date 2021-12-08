@@ -1,17 +1,9 @@
 <template>
-  <div class="aw-gis" ref="mainContainer" :style="{height: `${settings.heightContainer}px`}">
+  <div class="aw-gis" ref="mainContainer" :style="{ height: `${settings.heightContainer}px` }">
     <div class="block-wrapper d-flex" ref="blockWrapper">
-      <AwGisBlock
-          v-for="(well, key) in getWellsBlock"
-          :ref="`block_${key}`"
-          :alt="`block_${key}`"
-          v-bind="settings"
-          :key="key"
-          :block-name="well.name"
-          :block-id="well.name"
-          :groups="getGroups"
-      />
-      <canvas ref="infoCanvas" id="awGisCanvas" :height="settings.heightContainer" />
+      <AwGisBlock v-for="(well, key) in getWellsBlock" :style="key===0&&{marginLeft: `${stratigraphy.length?settings.offsetColumnsLeft:0}px`}" :ref="`block_${key}`" :alt="`block_${key}`" v-bind="settings"
+                  :key="key" :block-name="well.name" :block-id="well.name" :groups="getGroups" />
+      <svg ref="infoSvg" id="awGisSvg" :height="settings.heightContainer" />
     </div>
   </div>
 </template>
@@ -19,17 +11,19 @@
 <script>
 import AwGisBlock from "./AwGisBlock";
 import {GET_GIS_GROUPS} from "../../../../../store/modules/geologyGis.const";
+import {MD5} from "../../../js/MD5";
 
 export default {
   name: "awGis",
+  props:{
+    stratigraphy: Array
+  },
   components: {
-    AwGisBlock
+    AwGisBlock,
   },
   data() {
     return {
-      awGis: null,
-      gisData: null,
-      gisWells: [],
+      wellsHash: null,
       groupSettingDefault: {},
       blocksScrollY: 0,
       settings: {
@@ -39,62 +33,101 @@ export default {
         offsetY: 0,
         heightContainer: 500,
         columnTopPadding: 30,
-      }
-    }
-  },
-
-  async mounted() {
-    setTimeout(() => {
-      this.setInfoCanvasSize();
-    }, 1)
+        offsetColumnsLeft: 200,
+        offsetColumnsRight: 200
+      },
+    };
   },
 
   computed: {
-    getGroups(){
+    tHorizon() {
+      return this.$store.state.geologyGis.tHorizon;
+    },
+    getGroups() {
       return this.$store.getters[GET_GIS_GROUPS];
     },
     getWellsBlock() {
       return this.$store.state.geologyGis.gisWells;
-    }
+    },
+  },
+  watch: {
+    settings: {
+      deep: true,
+      handler() {
+        this.tHorizon.settings = this.settings;
+        this.initSvg();
+      },
+    },
+    stratigraphy(){
+      this.initSvg();
+    },
+    "$store.state.geologyGis.changeGisData"() {
+      this.initSvg();
+      this.tHorizon.redrawLastElements();
+    },
+  },
+  mounted() {
+    this.tHorizon.settings = this.settings;
+    this.tHorizon.svg = this.$refs.infoSvg;
+    this.initSvg();
   },
   methods: {
-    update() {
-      this.gisGroups = this.awGis.getGroupsWithData;
-    },
+    initSvg() {
+      let blocksRef = this.$refs,
+          totalWidth = 0;
+      let headerHeight = this.settings.headerHeight + this.settings.columnTopPadding;
+      let widthBlock = Object.keys(blocksRef)
+          .filter((name) => name.match(/block_/))
+          .reduce((acc, blockName, index) => {
+            let component = blocksRef[blockName][0];
+            if (blocksRef[blockName].length && component) {
+              let element = component.$el;
+              acc.push({
+                component,
+                element,
+                props: {
+                  wellName: component.blockName,
+                  top: element.offsetTop,
+                  left: element.offsetLeft,
+                  right: element.offsetWidth + element.offsetLeft,
+                  bottom: element.offsetHeight + (element.offsetTop + headerHeight),
+                  width: element.offsetWidth,
+                  height: element.offsetHeight,
+                },
+              });
+              totalWidth += element?.offsetWidth + (this.getWellsBlock.length - 1 !== index ? this.settings.blocksMargin : 0);
+            }
+            return acc;
+          }, []);
 
-    setInfoCanvasSize() {
-      let blocksRef = this.$refs
-      let widthBlock = 0;
-      let filteredBlocks = Object.keys(blocksRef).filter((name) => name.match(/block_/));
-      if (filteredBlocks.length) {
-        for (const name of filteredBlocks) {
-          let block = blocksRef[name][0].$el;
-          widthBlock += block?.offsetWidth + this.settings.blocksMargin
-        }
-        this.$refs.infoCanvas.width = widthBlock - this.settings.blocksMargin;
-        this.$refs.infoCanvas.height = this.$refs.blockWrapper.offsetHeight;
+      if (totalWidth > 0) {
+        let width = totalWidth + this.settings.offsetColumnsLeft;
+        let height = this.$refs.blockWrapper.offsetHeight - headerHeight;
+        this.$refs.infoSvg.setAttribute("width", `${width}px`);
+        this.$refs.infoSvg.setAttribute("height", `${height}px`);
+        this.$refs.infoSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        this.$refs.infoSvg.style.top = `${headerHeight}px`;
       }
+      this.tHorizon.wells = widthBlock;
+      this.tHorizon.calcWells();
+      this.tHorizon.updateMaps();
+      this.wellsHash = MD5(JSON.stringify(this.getWellsBlock));
     },
   },
-  provide() {
-    return {
-      awGis: this.awGis,
-      update: this.update,
-    }
-  }
-}
+};
 </script>
 
 <style scoped lang="scss">
-
 .aw-gis {
   position: relative;
   border: 1px solid #f6f6f6;
   font-size: 16px;
   box-sizing: content-box;
 
-  canvas#awGisCanvas {
+  #awGisSvg {
     position: absolute;
+    top: 0;
+    left: 0;
     pointer-events: none;
   }
 

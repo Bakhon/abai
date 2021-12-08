@@ -49,21 +49,18 @@ const secondIndicators = [
         response: 100,
         pressure: 123,
         distance: 452,
-        diameter: 2
     },
     {
         number: 'UZN_0002',
         response: 200,
         pressure: 120,
         distance: 245,
-        diameter: 3
     },
     {
         number: 'UZN_0003',
         response: 500,
         pressure: 100,
         distance: 345,
-        diameter: 4
     }
 ]
 
@@ -172,6 +169,37 @@ const horizons = [
     }
 ]
 
+const objectList = [
+    {
+        id: 1,
+        title: 'УзенМунайГаз',
+        children: [
+            {
+                id: 13,
+                title: '13 горизонт',
+                children: [
+                    {
+                        id: 21,
+                        title: 'Хум'
+                    },
+                    {
+                        id: 22,
+                        title: 'Парс'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                title: '14 горизонт'
+            },
+        ]
+    },
+    {
+        id: 2,
+        title: 'КаражанбасМунай'
+    }
+]
+
 const properties = ['Значок', 'Шрифт', 'Палитра']
 
 const fileActions = [
@@ -274,89 +302,363 @@ const rowsOil = [
 
 const rowsHorizon = [
     {
-        key: 'Пробуренный фонд на 31.12.2012',
-        value: 1002
+        key: 'Пробуренный фонд на 2008г.',
+        value: 50
     },
     {
-        key: 'Действующий проектный документ',
-        value: 'Проект разработки 2007 г.'
+        key: 'Количество проектных скважин',
+        value: 80
     },
     {
-        key: 'ПТД',
-        value: 'Авторский надзор 2012 г.'
+        key: 'Количество пробуренных скважин 2007-2008гг.',
+        value: 34
     },
     {
-        key: 'Проектные скважины ПР-2007',
-        value: 731
+        key: 'Радиус',
+        value1: '50м',
+        value2: '100м',
+        value3: '200м'
     },
     {
-        key: 'Пробуренный фонд до 2007г',
-        value: 545
-    },
-    {
-        key: 'Пробуренный фонд после 2007г',
-        value: 324
-    },
-    {
-        key: 'Плотность сетки, га/скв',
-        value: '18,3'
-    },
-    {
-        key: 'Расстояние между скважинами, м',
-        value1: 50,
-        value2: 100,
-        value3: 200
-    },
-    {
-        key: 'Кол-во пробуренных точек после 2007, ед.',
-        value1: 57,
-        value2: 197,
-        value3: 239
-    },
-    {
-        key: 'Совпадение точек после 2007г, %',
-        value1: '74,3%',
-        value2: '62,2%',
-        value3: '49%'
+        key: 'Совпадение пробуренных скважин с проектными точками, скв.(%)',
+        value1: '5(10%)',
+        value2: '7(15%)',
+        value3: '8(17%)'
     }
 ];
 
 const actualIndicators = [
     {
         id: 1,
-        title: 'Добыча нефти, тыс.т'
-    },
-    {
-        id: 2,
-        title: 'Добыча нефти по новым скважинам, тыс.т'
+        title: 'Добыча нефти, тыс.т',
+        value: 'oil_production'
     },
     {
         id: 3,
-        title: 'Добыча жидкости, тыс.т'
+        title: 'Добыча жидкости, тыс.т',
+        value: 'liquid_val'
     },
     {
         id: 4,
-        title: 'Обводненность, %'
+        title: 'Обводненность, %',
+        value: 'water_inj'
+    }
+]
+
+const analysis = [
+    {
+        id: 1,
+        title: 'Сравнение по добыче нефти и фонду скважин',
+        checked: false
+    },
+    {
+        id: 2,
+        title: 'Сравнение по накопленной добыче нефти',
+        checked: false
+    },
+    {
+        id: 3,
+        title: 'Отклонение по добыче нефти и фонду скважин',
+        checked: false
+    },
+    {
+        id: 4,
+        title: 'Отклонение по добыче нефти и дебиту нефти',
+        checked: false
     },
     {
         id: 5,
-        title: 'Дебит нефти, т/сут'
+        title: 'Распределение отклонений нефти по факторам, тыс.т',
+        checked: false
     },
     {
         id: 6,
-        title: 'Дебит нефти по новым скважинам, т/сут'
+        title: 'Распределение отклонений нефти по факторам, %',
+        checked: false
+    }
+]
+
+const factorTableHeads = [
+    [
+        {
+            title: 'Годы',
+            rowspan: '3',
+        },
+        {
+            title: 'Сравнение по добыче нефти, тыс.т.',
+            rowspan: '2',
+            colspan: '3'
+        },
+        {
+            title: 'Распределение отклонения добычи нефти по факторам',
+            colspan: '8'
+        }
+    ],
+    [
+        {
+            title: 'по фонду добывающих скважин',
+            colspan: '2'
+        },
+        {
+            title: 'по дебиту нефти',
+            colspan: '2'
+        },
+        {
+            title: 'по обводненности',
+            colspan: '2'
+        },
+        {
+            title: 'по закачке (компенсации отборов) и другим факторам',
+            colspan: '2'
+        }
+    ],
+    [
+        {
+            title: 'проект'
+        },
+        {
+            title: 'факт'
+        },
+        {
+            title: 'разница, +/-'
+        },
+        {
+            title: '+/-'
+        },
+        {
+            title: '% распределения'
+        },
+        {
+            title: '+/-'
+        },
+        {
+            title: '% распределения'
+        },
+        {
+            title: '+/-'
+        },
+        {
+            title: '% распределения'
+        },
+        {
+            title: '+/-'
+        },
+        {
+            title: '% распределения'
+        },
+    ]
+]
+
+const factorRows = [
+    {
+        year: 2007,
+        project: '324,6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '31',
+        oilDifference: '-48.9',
+        oilDistribution: '67',
+        waterDifference: '1.7',
+        waterDistribution: '2',
+        uploadDifference: '',
+        uploadDistribution: ''
     },
     {
-        id: 7,
-        title: 'Ввод скважин, ед.'
+        year: 2008,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '31',
+        oilDifference: '-48.9',
+        oilDistribution: '67',
+        waterDifference: '1.7',
+        waterDistribution: '2',
+        uploadDifference: '',
+        uploadDistribution: ''
     },
     {
-        id: 8,
-        title: 'Ввод добывающих скважин из бурения, ед.'
+        year: 2009,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
     },
     {
-        id: 9,
-        title: 'Ввод нагнетательных скважин скважин из бурения, ед.'
+        year: 2010,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2011,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '96',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '-2.4',
+        waterDistribution: '3',
+        uploadDifference: '-1.9',
+        uploadDistribution: '2'
+    },
+    {
+        year: 2012,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '80',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '-16.4',
+        uploadDistribution: '20'
+    },
+    {
+        year: 2013,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2014,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-73.3',
+        wellDifference: '-22.7',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2015,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '5.0',
+        wellDifference: '5.0',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2016,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '16.9',
+        wellDifference: '8.0',
+        wellDistribution: '47',
+        oilDifference: '8.9',
+        oilDistribution: '53',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2017,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '16.3',
+        wellDifference: '2.0',
+        wellDistribution: '12',
+        oilDifference: '5.0',
+        oilDistribution: '31',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '9.3',
+        uploadDistribution: '57'
+    },
+    {
+        year: 2018,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-8.3',
+        wellDifference: '-8.3',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2019,
+        project: '324.6',
+        fact: '-21.9',
+        difference: '-18.8',
+        wellDifference: '-18.8',
+        wellDistribution: '100',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '',
+        waterDistribution: '',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 2020,
+        project: '324.6',
+        fact: '297.4',
+        difference: '-48.5',
+        wellDifference: '-47.8',
+        wellDistribution: '99',
+        oilDifference: '',
+        oilDistribution: '',
+        waterDifference: '-0.4',
+        waterDistribution: '1',
+        uploadDifference: '',
+        uploadDistribution: ''
+    },
+    {
+        year: 'Итого',
+        project: '3421.2',
+        fact: '1.2323',
+        difference: '1.693',
+        wellDifference: '1.434',
+        wellDistribution: '86',
+        oilDifference: '-64.3',
+        oilDistribution: '12',
+        waterDifference: '-7.1',
+        waterDistribution: '1',
+        uploadDifference: '-48.2',
+        uploadDistribution: '2'
     }
 ]
 
@@ -372,5 +674,9 @@ export {
     mapActions,
     rowsOil,
     rowsHorizon,
-    actualIndicators
+    actualIndicators,
+    objectList,
+    analysis,
+    factorTableHeads,
+    factorRows
 }

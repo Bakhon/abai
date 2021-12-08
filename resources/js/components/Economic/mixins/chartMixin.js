@@ -7,7 +7,7 @@ const PROFITLESS_PROFITABILITIES = [
 ]
 
 import {GRANULARITY_DAY} from "../components/SelectGranularity";
-import {PROFITABILITY_FULL} from "../components/SelectProfitability";
+import {PROFITABILITY_FULL} from "../nrs/components/SelectProfitability";
 
 export const chartInitMixin = {
     props: {

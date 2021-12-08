@@ -16,7 +16,8 @@ class EconomicDataLogRequest extends FormRequest
                 'integer',
                 Rule::in(EconomicDataLogType::ids())
             ],
-            'author_id' => 'nullable|integer|min:1'
+            'author_id' => 'nullable|integer|min:1',
+            'is_processed' => 'nullable|boolean',
         ];
     }
 }

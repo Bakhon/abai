@@ -13,11 +13,6 @@ class HydroCalcResult extends Model
     ];
     protected $connection = 'tbd_cmon';
 
-    public function trunkline_point()
-    {
-        return $this->setConnection('mysql')->belongsTo(TrunklinePoint::class,'id','trunkline_point_id');
-    }
-
     public function oilPipe()
     {
         return $this->belongsTo(OilPipe::class);

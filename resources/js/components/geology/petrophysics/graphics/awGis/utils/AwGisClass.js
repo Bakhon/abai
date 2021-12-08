@@ -6,19 +6,22 @@ export default class AwGisClass {
     #__tElements = new TElements();
 
     save(){
-        this.#__tGroup.save();
         this.#__tElements.save();
+        this.#__tGroup.save();
     }
 
     reset(){
-        this.#__tGroup.reset();
         this.#__tElements.reset();
+        this.#__tGroup.reset();
+    }
+
+    get getElementsCount(){
+        return this.#__tElements.getElementsCount
     }
 
     get getGroupsWithData() {
         return this.#__tGroup.getGroupsWithData;
     }
-
     getGroupWithData(groupName) {
         return this.#__tGroup.getGroupWithData(groupName);
     }
@@ -62,6 +65,10 @@ export default class AwGisClass {
 
     editElementData(elementName, data) {
         this.#__tElements.editElementData(elementName, data)
+    }
+
+    editPropertyElementData(elementName, editableMapName, path, value, force = false) {
+        this.#__tElements.editPropertyElementData(elementName, editableMapName, path, value, force)
     }
 
     editElementOptions(elementName, settings) {

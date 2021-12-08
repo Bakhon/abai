@@ -12,7 +12,8 @@
             </button>
           </div>
           <div class="templates">
-            <div v-for="(template, index) in templates" v-if="templates" @click="loadTemplate(index); closeModal('templateSelectorModal')">
+            <div v-for="(template, index) in templates" v-if="templates"
+                 @click="loadTemplate(index); closeModal('templateSelectorModal')">
               {{ template['name'] }}
             </div>
           </div>
@@ -35,7 +36,7 @@
             </button>
           </div>
           <input type="text" placeholder="Имя шаблона" id="template-name" v-model="newTemplateName">
-          <button type="button"  :disabled="newTemplateName.length === 0" class="modal-bign-button template-name-ok"
+          <button type="button" :disabled="newTemplateName.length === 0" class="modal-bign-button template-name-ok"
                   @click="saveTemplate(); closeModal('newTemplateNameModal');">
             Ок
           </button>
@@ -45,7 +46,7 @@
     </div>
 
 
-    <div class="left-section bg-dark">
+    <div :class="{'hide': isLeftSectionHided}" class="bg-dark left-section">
       <div class="col">
         <div class="row menu">
           <div class="left-section-title" v-bind:class="{active: currentStructureType === 'org'}"
@@ -108,7 +109,7 @@
                 <ul>
 
                   <li @click="onSelectStructureType(structureType)"
-                      v-for="structureType in structureTypes[currentStructureType]" 
+                      v-for="structureType in structureTypes[currentStructureType]"
                       class="dropdown-item">
 
                     <div class="dropdown-item-inner">
@@ -216,84 +217,89 @@
           </div>
         </div>
       </div>
+      <div class="arrow-hide" @click="onSectionHidingEvent('left')">
+        <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+        </svg>
+      </div>
     </div>
-    <div class="section-main">
+    <div :class="{'hide': isLeftSectionHided}" class="section-main">
       <div class="col">
         <div class="row">
           <div class="col">
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
-                  <div class="row date-container">
-                    <div class="col">
-                      <div class="row start-date-container mb-2">
-                        <label class="col">{{ trans('bd.start_date') }}</label>
-                        <template>
-                          <datetime
-                              type="date"
-                              v-bind:value="startDate"
-                              v-on:input="onStartDatePickerClick($event)"
-                              class="col start-date"
-                              value-zone="Asia/Almaty"
-                              zone="Asia/Almaty"
-                              :title="trans('bd.choose_start_date')"
-                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                              :max-datetime="endDate"
-                              :week-start="1"
-                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                              auto
-                              :flow="dateFlow"
-                          >
-                          </datetime>
-                        </template>
-                      </div>
-                      <div class="row end-date-container mb-2">
-                        <label class="col">{{ trans('bd.end_date') }}</label>
-                        <template>
-                          <datetime
-                              type="date"
-                              v-bind:value="endDate"
-                              v-on:input="onEndDatePickerClick($event)"
-                              class="end-date"
-                              value-zone="Asia/Almaty"
-                              zone="Asia/Almaty"
-                              :title="trans('bd.choose_end_date')"
-                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                              :min-datetime="startDate"
-                              :week-start="1"
-                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                              auto
-                              :flow="dateFlow"
-                          >
-                          </datetime>
-                        </template>
-                      </div>
+                <div class="row date-container">
+                  <div class="col">
+                    <div class="row start-date-container mb-2">
+                      <label class="col">{{ trans('bd.start_date') }}</label>
+                      <template>
+                        <datetime
+                            type="date"
+                            v-bind:value="startDate"
+                            v-on:input="onStartDatePickerClick($event)"
+                            class="col start-date"
+                            value-zone="Asia/Almaty"
+                            zone="Asia/Almaty"
+                            :title="trans('bd.choose_start_date')"
+                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                            :max-datetime="endDate"
+                            :week-start="1"
+                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                            auto
+                            :flow="dateFlow"
+                        >
+                        </datetime>
+                      </template>
                     </div>
-                    <div class="col date-picker inline-flex">
-                      <button
-                          @click="onMonthClick()"
-                          class="calendar mb-2"
-                          v-bind:class="{active: currentDatePickerFilter === 'month'}"
-                      >{{ trans('bd.month_3') }}
-                      </button>
-
-                      <button
-                          @click="onYearClick()"
-                          class="calendar justify-content-center mb-2"
-                          v-bind:class="{active: currentDatePickerFilter === 'year'}"
-                      >{{ trans('bd.year_1') }}
-                      </button>
-                    </div>
-
-                    <div class="btn-container">
-                      <button @click="clearDate()"> Очистить дату </button>
-                      <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
-                          trans('bd.choose_template')
-                        }}
-                      </button>
+                    <div class="row end-date-container mb-2">
+                      <label class="col">{{ trans('bd.end_date') }}</label>
+                      <template>
+                        <datetime
+                            type="date"
+                            v-bind:value="endDate"
+                            v-on:input="onEndDatePickerClick($event)"
+                            class="end-date"
+                            value-zone="Asia/Almaty"
+                            zone="Asia/Almaty"
+                            :title="trans('bd.choose_end_date')"
+                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                            :min-datetime="startDate"
+                            :week-start="1"
+                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                            auto
+                            :flow="dateFlow"
+                        >
+                        </datetime>
+                      </template>
                     </div>
                   </div>
+                  <div class="col date-picker inline-flex">
+                    <button
+                        @click="onMonthClick()"
+                        class="calendar mb-2"
+                        v-bind:class="{active: currentDatePickerFilter === 'month'}"
+                    >{{ trans('bd.month_3') }}
+                    </button>
+
+                    <button
+                        @click="onYearClick()"
+                        class="calendar justify-content-center mb-2"
+                        v-bind:class="{active: currentDatePickerFilter === 'year'}"
+                    >{{ trans('bd.year_1') }}
+                    </button>
+                  </div>
+
+                  <div class="btn-container">
+                    <button @click="clearDate()"> Очистить дату</button>
+                    <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
+                        trans('bd.choose_template')
+                      }}
+                    </button>
+                  </div>
+                </div>
 
               </div>
 
@@ -400,13 +406,31 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
-                          <td class="table-body" v-for="column in statisticsColumns[sheetType]">
-                            <div class="centered">
-                              {{ formatCell(row[column]) }}
-                            </div>
-                          </td>
-                        </tr>
+                        <template v-if="sheetType in sheetConfigurations">
+                          <tr v-for="(row, uniqueId) in statisticsOfSheet" v-if="isContainsData(row)">
+                            <td class="table-body" v-for="column in statisticsColumns[sheetType]['generic']">
+                              <div class="centered" v-if="row[column]">
+                                {{ formatCell(row[column]) }}
+                              </div>
+                            </td>
+                            <template v-for="date in sheetConfigurations[sheetType]['orderedDates']">
+                              <td class="table-body" v-for="column in statisticsColumns[sheetType]['daily']">
+                                <div class="centered" v-if="row[date] && row[date][column]">
+                                  {{ formatCell(row[date][column]) }}
+                                </div>
+                              </td>
+                            </template>
+                          </tr>
+                        </template>
+                        <template v-else>
+                          <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
+                            <td class="table-body" v-for="column in statisticsColumns[sheetType]['generic']">
+                              <div class="centered" v-if="row[column]">
+                                {{ formatCell(row[column]) }}
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
                         </tbody>
                       </table>
                     </template>
@@ -416,7 +440,7 @@
               <div class="row">
                 <div class="btn-container">
                   <button class="" :disabled="!startDate" @click="updateStatistics()">
-                    {{trans('bd.create_report')}}
+                    {{ trans('bd.create_report') }}
                   </button>
                   <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button @click="showModal('newTemplateNameModal')">Сохранить как шаблон</button>
@@ -734,6 +758,43 @@ body {
   display: flex;
 }
 
+.left-section.hide{
+  width: 50px;
+  background: #272953;
+  overflow: hidden;
+
+}
+
+.left-section.hide div{
+  display: none;
+}
+
+.left-section.hide .arrow-hide {
+  display: flex;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+
+.arrow-hide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2B3384;
+  border-radius: 5px 0px 0px 5px;
+  top: 50%;
+  transform:translateY(-50%);
+}
+
+.arrow-hide:hover{
+  background: #3366FF;
+  cursor: pointer;
+}
+
 .left-section {
   width: 441px;
   margin-left: 15px;
@@ -959,6 +1020,10 @@ body {
       width: 350px;
     }
   }
+}
+
+.section-main.hide {
+  max-width: calc(100% - 70px);
 }
 
 .section-main {

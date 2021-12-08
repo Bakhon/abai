@@ -50,11 +50,14 @@
 
     <map-legend :variant="mapColorsMode" :referentValue="+referentValue"/>
 
+    <map-params :mapParams="mapParams" @mapRedraw="mapRedraw" />
+
     <div id="map"></div>
 
     <map-context-menu
         v-model="clickedObject"
         @option-clicked="optionClicked"
+        @click-outside="clearSelected"
         ref="contextMenu"
     ></map-context-menu>
 
@@ -112,7 +115,7 @@
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -133,11 +136,26 @@
         modal-class="long-modal"
         :title="omgNgduFormModalTitle"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <wellOmgNgduForm v-if="selectedWell" :well="selectedWell"/>
       <guOmgNgduForm v-if="selectedGu" :gu="selectedGu"/>
       <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu"/>
+    </b-modal>
+
+    <b-modal
+        size="sm"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="calc-form"
+        :title="trans('monitoring.map.calculate-hydro')"
+        :ok-only="true"
+        @ok="clearSelected()"
+    >
+      <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
     </b-modal>
 
     <div v-show="false">
@@ -155,6 +173,7 @@ import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 import mapLegend from "./mapLegend";
+import mapParams from "./mapParams";
 import objectForm from "./objectForm";
 import mapPipeForm from "./mapPipeForm";
 import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
@@ -171,6 +190,7 @@ import guOmgNgduForm from "./guOmgNgduForm"
 import zuOmgNgduForm from "./zuOmgNgduForm"
 import turfLength from '@turf/length';
 import {lineString as turfLineString} from "@turf/helpers";
+import calcForm from "./calcForm";
 
 export default {
   name: "tech-map",
@@ -186,7 +206,9 @@ export default {
     pipeLongInfo,
     wellOmgNgduForm,
     guOmgNgduForm,
-    zuOmgNgduForm
+    zuOmgNgduForm,
+    calcForm,
+    mapParams
   },
   data() {
     return {
@@ -223,6 +245,11 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
+      waterPipes: [],
+      waterWellPoints: [],
+      bgsPoints: [],
+      kmbWellPoints: [],
+      bknsWellPoints: [],
       mapColorsMode: 'speedFlow',
       selectedDate: null,
       activeFilter: 'speedFlow',
@@ -242,13 +269,21 @@ export default {
         },
       ],
       referentValue: 10,
+      mapParams: {
+        show_ppd: {
+          value: false,
+          title: 'Показать ППД',
+          name: 'show_ppd'
+        }
+      },
       objectHovered: null,
       pipeHovered: null,
       pipeHoveredParameter: null,
       selectedPipe: null,
       selectedWell: null,
       selectedGu: null,
-      selectedZu: null
+      selectedZu: null,
+      calcAlerts: []
     };
   },
   created() {
@@ -304,20 +339,16 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
-    resetSelectedObjects() {
-      this.selectedPipe = null;
-      this.selectedWell = null;
-      this.selectedGu = null;
-      this.selectedZu = null;
-      this.objectHovered = null;
-      this.pipeHovered = null;
-      this.pipeHoveredParameter = null;
-    },
     async initMap() {
       this.SET_LOADING(true);
       let data = await this.getMapData(this.gu);
       this.pipes = data.pipes;
-      this.selectedDate = data.date;
+      this.waterPipes = data.water_pipes;
+      this.selectedDate = moment().toISOString(data.date);
+      this.waterWellPoints = data.water_wells;
+      this.bgsPoints = data.bgs;
+      this.kmbWellPoints = data.kmb_wells;
+      this.bknsWellPoints = data.bkns_wells;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -437,7 +468,7 @@ export default {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
       let guPointsLayer = this.createIconLayer('icon-layer-gu', this.guPoints, 'gu');
       let zuPointsLayer = this.createIconLayer('icon-layer-zu', this.zuPoints, 'zu');
-      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well')
+      let wellPointsLayer = this.createIconLayer('icon-layer-well', this.wellPoints, 'well');
 
       this.layersIds = [
         'path-layer',
@@ -450,8 +481,28 @@ export default {
         pipesLayer,
         guPointsLayer,
         zuPointsLayer,
-        wellPointsLayer,
+        wellPointsLayer
       ];
+
+      if (this.mapParams.show_ppd.value) {
+        let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
+        let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
+        let bgsPointsLayer = this.createIconLayer('icon-layer-bgs', this.bgsPoints, 'bgs-well');
+        let kmbWellPointsLayer = this.createIconLayer('icon-layer-kmb-well', this.kmbWellPoints, 'kmb-well');
+        let bknsWellPointsLayer = this.createIconLayer('icon-layer-bkns-well', this.bknsWellPoints, 'bkns-well');
+
+        this.layersIds.push('icon-layer-water-well');
+        this.layersIds.push('water-pipes-layer');
+        this.layersIds.push('icon-layer-bgs');
+        this.layersIds.push('icon-layer-kmb-well');
+        this.layersIds.push('icon-layer-bkns-well');
+
+        this.layers.push(waterWellPointsLayer);
+        this.layers.push(waterPipesLayer);
+        this.layers.push(bgsPointsLayer);
+        this.layers.push(kmbWellPointsLayer);
+        this.layers.push(bknsWellPointsLayer);
+      }
     },
     async mapClickHandle(e) {
       let elevation = await this.getElevationByCoords({
@@ -529,6 +580,18 @@ export default {
         case "well":
           iconAtlas = '/img/icons/map/well_black.png';
           break;
+        case "water-well":
+          iconAtlas = '/img/icons/map/well_normal.png';
+          break;
+        case "bgs-well":
+          iconAtlas = '/img/icons/map/well_problem.png';
+          break;
+        case "kmb-well":
+          iconAtlas = '/img/icons/map/well_stop.png';
+          break;
+        case "bkns-well":
+          iconAtlas = '/img/icons/map/well_working.png';
+          break;
       }
 
       let name = this.getObjectName(type);
@@ -585,6 +648,10 @@ export default {
       });
     },
     getPipeColor(pipe) {
+      if (pipe.water_pipe) {
+        return pipeColors.default.water_pipe;
+      }
+
       if (this.activeFilter) {
         switch (this.activeFilter) {
           case "speedFlow":
@@ -726,20 +793,39 @@ export default {
       this.confirmDelete(title);
     },
     onShowDetailInfo(option) {
+      this.clearSelected();
       this.selectedPipe = option.mapObject.object;
       this.$bvModal.show('pipe-calc-modal');
     },
     onShowOmgNgduWellForm(option) {
+      this.clearSelected();
       this.selectedWell = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
     onShowOmgNgduGuForm(option) {
+      this.clearSelected();
       this.selectedGu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
     },
+    onShowCalcForm(option) {
+      this.clearSelected();
+      this.calcAlerts = [];
+      this.selectedGu = option.mapObject.object;
+      this.$bvModal.show('calc-form');
+    },
     onShowOmgNgduZuForm(option) {
+      this.clearSelected();
       this.selectedZu = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-form');
+    },
+    clearSelected() {
+      this.selectedPipe = null;
+      this.selectedWell = null;
+      this.selectedGu = null;
+      this.selectedZu = null;
+      this.objectHovered = null;
+      this.pipeHovered = null;
+      this.pipeHoveredParameter = null;
     },
     optionClicked(option) {
       this.editMode = option.editMode;
@@ -1092,13 +1178,19 @@ export default {
             return response.data;
           });
     },
-    layerRedraw(layerId, type, data) {
+    deleteLayer(layerId){
       let layerIndex = this.layers.findIndex((layer) => {
         return layer.id == layerId;
       });
 
-      this.layers.splice(layerIndex, 1);
-      this.updateLayers();
+      if (layerIndex !== -1){
+        this.layers.splice(layerIndex, 1);
+        this.map.removeLayer(layerId);
+        this.updateLayers();
+      }
+    },
+    layerRedraw(layerId, type, data) {
+      this.deleteLayer(layerId);
 
       if (type != 'pipe') {
         this.layers.push(this.createIconLayer(layerId, data, type));
@@ -1232,6 +1324,10 @@ export default {
           return this.trans('monitoring.pipe.pipe')
           break;
 
+        case 'water-well':
+          return this.trans('monitoring.water-well')
+          break;
+
         default:
           return ""
           break;
@@ -1286,10 +1382,73 @@ export default {
       }, 500)()
     },
     mapRedraw() {
+      this.deleteLayer('water-pipes-layer');
+      this.deleteLayer('icon-layer-water-well')
+      this.deleteLayer('icon-layer-bgs');
+      this.deleteLayer('icon-layer-kmb-well');
+      this.deleteLayer('icon-layer-bkns-well');
+
+      if (this.mapParams.show_ppd.value) {
+        this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
+        this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
+        this.layerRedraw('icon-layer-bgs', 'bgs-well', this.bgsPoints);
+        this.layerRedraw('icon-layer-kmb-well', 'kmb-well', this.kmbWellPoints);
+        this.layerRedraw('icon-layer-bkns-well', 'bkns-well', this.bknsWellPoints);
+      }
+
       this.layerRedraw('path-layer', 'pipe', this.pipes);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
+    },
+    calcualteHydroDinamycs(date) {
+      this.SET_LOADING(true);
+      this.axios.post(this.localeUrl("/tech-map/calculate"), {gu_id: this.selectedGu.id, date}).then((response) => {
+        let interval = setInterval(() => {
+          this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
+            if (response.data.job.status === 'finished') {
+              this.calcAlerts = [];
+              clearInterval(interval)
+              let isError = false;
+
+              if (response.data.job.output) {
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
+                  isError = true;
+                }
+
+                if (response.data.job.output.alerts) {
+                  this.calcAlerts = response.data.job.output.alerts;
+                  isError = true;
+                }
+              }
+
+              this.SET_LOADING(false);
+
+              if (!isError) {
+                this.loadCalculatedData(date);
+              }
+            }
+
+            if (response.data.job.status === 'failed') {
+              this.SET_LOADING(false);
+              clearInterval(interval)
+              alert(this.trans('monitoring.map.calculate_error'))
+            }
+          })
+        }, 2000)
+      })
+          .catch((error) => this.showToast(error, this.trans('app.error'), 'danger'))
+          .finally(() => {
+            this.SET_LOADING(false);
+          });
+
+    },
+    loadCalculatedData(date) {
+      this.selectedDate = date;
+      this.activeFilter = 'speedFlow';
+      this.$bvModal.hide('calc-form');
+      this.applyFilter();
     }
   }
 }

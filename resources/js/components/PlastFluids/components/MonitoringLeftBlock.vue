@@ -9,7 +9,7 @@
           :items="subsoils"
           :placeholder="trans('plast_fluids.subsurface_user')"
           :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
-          dropKey="owner_name"
+          :dropKey="['owner_name']"
           @dropdown-select="UPDATE_CURRENT_SUBSOIL"
         />
         <Dropdown
@@ -23,7 +23,7 @@
           :selectedValue="
             currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
           "
-          dropKey="field_name"
+          :dropKey="['field_name']"
           :parentShortName="
             currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
           "
@@ -42,6 +42,7 @@
             v-for="template in templates"
             :key="template.name"
             :template="template"
+            :isOpenedTrees.sync="isOpenedTrees"
           />
         </ul>
       </div>
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       collapsed: false,
+      isOpenedTrees: [],
     };
   },
   watch: {
@@ -76,6 +78,16 @@ export default {
       },
       deep: true,
     },
+    currentTemplate(value) {
+      if (value.custom_template) {
+        const found = this.templates.find(
+          (template) => template.childNodes[0].custom_template
+        );
+        !this.isOpenedTrees.includes(found.name)
+          ? this.isOpenedTrees.push(found.name)
+          : "";
+      }
+    },
   },
   computed: {
     ...mapState("plastFluids", [
@@ -85,6 +97,7 @@ export default {
       "currentSubsoilField",
       "subsoilHorizons",
     ]),
+    ...mapState("plastFluidsLocal", ["currentTemplate"]),
   },
   methods: {
     ...mapActions("plastFluids", [

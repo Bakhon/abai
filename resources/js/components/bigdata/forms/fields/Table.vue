@@ -160,20 +160,23 @@ export default {
     initValues() {
       if (!this.values) return
 
-      if (this.params.form) {
-        this.items = this.values
-        return
-      }
-
       this.items = this.values.map(value => {
         let obj = {}
         for (let i in value) {
+          if (typeof value[i] === 'object') {
+            obj[i] = value[i]
+            continue
+          }
+
           obj[i] = {
-            value: value[i]
+            value: value[i],
+            text: value[i]
           }
         }
         return obj
       })
+
+      this.updateParentField()
 
     },
     openCreateForm() {
@@ -211,6 +214,9 @@ export default {
       this.params.columns.forEach(column => {
         formValues[column.code] = item[column.code]
       })
+      if (item.id) {
+        formValues.id = item.id
+      }
       this.formValues = formValues
 
     },

@@ -4,6 +4,7 @@ import {
     FETCH_FIELDS,
     FETCH_WELLS,
     FETCH_WELLS_MNEMONICS,
+    FETCH_WELLS_HORIZONS,
 
     SET_WELLS_MNEMONICS,
     SET_FIELDS,
@@ -12,21 +13,25 @@ import {
     SET_DRAG_PARAMS,
     SET_SELECTED_WELL_CURVES_FORCE,
     SET_GIS_DATA,
-    SET_WELL_NAME,
+    SET_CURVE_NAME,
     SET_SELECTED_WELL_CURVES,
     SET_DZOS,
     SET_SCROLL_BLOCK_Y,
     SET_CURVES,
+    SET_GIS_DATA_FOR_GRAPH,
+    SET_CURVE_OPTIONS,
+    SET_WELLS_HORIZONS,
 
     GET_CURVES,
     GET_WELLS_OPTIONS,
     GET_TREE_CURVES,
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
-    GET_GIS_GROUPS,
+    GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
+    GET_TREE_STRATIGRAPHY, COLOR_PALETTE
 } from "./geologyGis.const";
 
-import { uuidv4 } from "../../components/geology/petrophysics/graphics/awGis/utils/utils";
+import {isFloat, uuidv4} from "../../components/geology/js/utils";
 import AwGisClass from "../../components/geology/petrophysics/graphics/awGis/utils/AwGisClass";
 import {
     Fetch_Curves,
@@ -35,16 +40,27 @@ import {
     Fetch_Wells,
     Fetch_WellsMnemonics
 } from "../../components/geology/api/petrophysics.api";
+import {Fetch_Horizons} from "../../components/geology/api/horizons.api";
+import THorizon from '../../components/geology/petrophysics/graphics/awGis/utils/THorizon'
 
 const geologyGis = {
     state: {
+        changeGisData: Date.now(),
         gisDataCurves: {},
         gisData: [],
         gisGroups: [],
-        wellName: null,
+        curveName: null,
+
         selectedGisCurvesOld: [],
         selectedGisCurves: [],
+
+        selectedHorizonOld: [],
+        selectedHorizon: [],
+
+        tHorizon: new THorizon(),
         awGis: new AwGisClass(),
+
+        awGisElementsCount: 0,
         gisWells: [],
         blocksScrollY: 0,
         wellTreeParam: {
@@ -66,12 +82,10 @@ const geologyGis = {
         WELLS: [],
         WELLS_MNEMONICS: [],
         WELLS_MNEMONICS_FOR_TREE: [],
-        CURVES_OF_SELECTED_WELLS: {}
+        CURVES_OF_SELECTED_WELLS: {},
+        WELLS_HORIZONS: {}
     },
     getters: {
-        [GET_CURVES]() {
-
-        },
         [GET_WELLS_OPTIONS](state) {
             return forDropDownMap(state.WELLS, ["name", "name"]);
         },
@@ -90,10 +104,38 @@ const geologyGis = {
                 return acc;
             }, {});
         },
+        [GET_TREE_STRATIGRAPHY](state) {
+            let stratigraphyArray = Object.entries(state.WELLS_HORIZONS);
+            if (stratigraphyArray.length) {
+                let stratigraphyElements = state.tHorizon.elements.reduce((acc, el) => {
+                    acc.push({
+                        name: el.name,
+                        iconType: "u1",
+                        value: el.name,
+                        iconFill: el.fill,
+                    })
+
+                    acc.push({
+                        name: `Zone ${el.name}_top`,
+                        iconType: "zone",
+                        iconFill: el.fill,
+                    })
+                    return acc
+                }, []);
+
+                return [{
+                    name: "Stratigraphy",
+                    iconType: "zoneStatic",
+                    value: [].join('/'),
+                    isOpen: true,
+                    children: [...stratigraphyElements]
+                }];
+            }
+        },
 
         [GET_TREE_CURVES](state) {
             let array = state.selectedGisCurves;
-            return state.gisData.map(({ groupName, elements, options }) => {
+            return state.gisData.map(({groupName, elements, options}) => {
                 elements = Array.isArray(elements) ? elements.length ? elements.join('/') : options.name : elements;
 
                 let every = elements.split('/').every((el) => array.includes(el));
@@ -105,7 +147,7 @@ const geologyGis = {
                     name: elements,
                     indeterminate: !every && every !== some,
                     isSelectedAllElements: elements.split('/').every((el) => array.includes(el)),
-                    children: state.awGis.getGroupElementsWithData(groupName).map(({ data }) => {
+                    children: state.awGis.getGroupElementsWithData(groupName).map(({data}) => {
                         return {
                             ...data,
                             groupID: groupName,
@@ -114,7 +156,7 @@ const geologyGis = {
                     })
                 }
             })
-        }
+        },
     },
     mutations: {
         [SET_DRAG_PARAMS](state, [param, value]) {
@@ -134,20 +176,38 @@ const geologyGis = {
         },
 
         [SET_WELLS](state, data) {
-            state.WELLS = data.filter((item) => ['UZN_1428', 'UZN_0144', 'UZN_144'].includes(item.name)); //TODO удалить после дебагинга
+            state.WELLS = data.filter((item) => [
+                'UZN_1428',
+                'UZN_0144',
+                'UZN_1027',
+                'UZN_9093',
+                "UZN_1291",
+                "UZN_3313",
+                "UZN_3314",
+                "UZN_3505",
+                "UZN_4140",
+                "UZN_4439",
+                "UZN_7272",
+                "UZN_7296",
+                "UZN_7934",
+                "UZN_9133",
+                "UZN_4439",
+                "UZN_5617",
+            ].includes(item.name));
         },
 
         [SET_SCROLL_BLOCK_Y](state, y) {
             state.blocksScrollY = y;
         },
 
-        [SET_WELL_NAME](state, wellName) {
-            state.wellName = wellName;
+        [SET_CURVE_NAME](state, curveName) {
+            state.curveName = curveName;
         },
 
         [SET_SELECTED_WELL_CURVES_FORCE](state, value) {
             state.selectedGisCurves = value;
         },
+
         [SET_SELECTED_WELL_CURVES](state, value) {
             // TODO Переделать в нормальный код.
             value = value.split('/');
@@ -182,48 +242,114 @@ const geologyGis = {
         },
 
         [SET_WELLS_BLOCKS](state, blockIds) {
-            state.gisWells = blockIds.map(({ sort }) => {
+            state.gisWells = blockIds.map(({sort}) => {
                 return state.WELLS[sort];
-            })
+            });
+            state.tHorizon.selectedWells = blockIds.map((w) => w.value);
+
         },
 
         [SET_WELLS_MNEMONICS](state, mnemonics) {
             state.WELLS_MNEMONICS = mnemonics;
         },
-        [SET_GIS_DATA](state) {
-            state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS]);
-            state.gisGroups = state.awGis.getGroupList
+
+        [SET_WELLS_HORIZONS](state, horizons) {
+            for (const [wellName, horizonsElement] of Object.entries(horizons)) {
+                for (const el of horizonsElement) {
+                    if (!state.tHorizon.hasElement(el.name)) {
+                        let fillColor = Math.floor(Math.random() * 16777215).toString(16);
+                        state.tHorizon.addElement(el.name, {
+                                name: el.name,
+                                show: false,
+                                fill: `#${fillColor}`,
+                                toWells: {},
+                                wells: [],
+                            }
+                        );
+                    }
+                    state.tHorizon.editPropertyElementData(el.name, "toWells", (prop) => ({...prop, [wellName]: el}));
+                    state.tHorizon.editPropertyElementData(el.name, "wells", (prop) => (!prop.includes(wellName) && prop.push(wellName), prop));
+                }
+            }
+            state.WELLS_HORIZONS = horizons;
         },
 
-        [SET_CURVES](state, curves){
+        [SET_GIS_DATA](state) {
+            state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS, state]);
+            state.gisGroups = state.awGis.getGroupList
+            state.awGisElementsCount = state.awGis.getElementsCount
+        },
+
+        [SET_CURVES](state, curves) {
             state.CURVES_OF_SELECTED_WELLS = {...state.CURVES_OF_SELECTED_WELLS, ...curves};
+        },
+
+        [SET_GIS_DATA_FOR_GRAPH](state) {
+            for (const curveName of state.selectedGisCurves) {
+                if (state.awGis.hasElement(curveName)) {
+                    let {data: {curve_id}} = state.awGis.getElement(curveName);
+                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT: {}, name: {},colorPalette:{}};
+                    let isLithology = curveName.toLowerCase().trim() === "litho";
+                    let isFluid = curveName.toLowerCase().trim() === "fluid";
+                    state.awGis.editElementData(curveName, {
+                        curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
+                            let curve = state.CURVES_OF_SELECTED_WELLS[id];
+                            let curveWithoutNull = [...curve.filter((x) => +x)]
+                            curveOptions.name[key] = curveName;
+                            curveOptions.startX[key] = curveWithoutNull[0];
+                            curveOptions.min[key] = Math.min(...curveWithoutNull);
+                            curveOptions.max[key] = Math.max(...curveWithoutNull);
+                            curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
+                            curveOptions.isLithology[key] = isLithology;
+                            curveOptions.isCSAT[key] = isFluid;
+                            if (curve) acc[key] = curve;
+                            return acc;
+                        }, {})
+                    })
+                    if (isLithology || isFluid) {
+                        curveOptions.colorPalette = COLOR_PALETTE[curveName.toLowerCase()];
+                    }
+                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify({...curveOptions})));
+                }
+            }
+            state.changeGisData = Date.now();
+        },
+
+        [SET_CURVE_OPTIONS](state, [propName, props]) {
+            if (state.awGis.hasElement(state.curveName)) {
+                state.awGis.editPropertyElementData(state.curveName, 'options', `customParams.${propName}`, (p) => ({...p, ...props}));
+            }
         }
     },
 
     actions: {
-        async [FETCH_DZOS]({ commit }) {
+        async [FETCH_DZOS]({commit}) {
             commit(SET_DZOS, await Fetch_DZOS());
         },
 
-        async [FETCH_FIELDS]({ commit }, payload) {
+        async [FETCH_FIELDS]({commit}, payload) {
             if (typeof payload === "number") {
                 commit(SET_FIELDS, await Fetch_Fields(payload));
             }
         },
 
-        async [FETCH_WELLS]({ commit }, payload) {
+        async [FETCH_WELLS]({commit}, payload) {
             if (typeof payload === "number") {
                 commit(SET_WELLS, await Fetch_Wells(payload));
             }
         },
 
-        async [FETCH_WELLS_MNEMONICS]({ commit, state }, payload) {
+        async [FETCH_WELLS_MNEMONICS]({commit, state}, payload) {
             commit(SET_WELLS_MNEMONICS, await Fetch_WellsMnemonics(payload));
             commit(SET_GIS_DATA)
         },
 
-        async [FETCH_WELLS_CURVES]({ commit, state }, payload) {
-            if(payload.length) commit(SET_CURVES, await Fetch_Curves(payload));
+        async [FETCH_WELLS_CURVES]({commit, state}, payload) {
+            if (payload.length) return commit(SET_CURVES, await Fetch_Curves(payload));
+        },
+
+        async [FETCH_WELLS_HORIZONS]({commit, state}, payload) {
+            if (payload.length) return commit(SET_WELLS_HORIZONS, await Fetch_Horizons(payload));
         },
     }
 }
@@ -239,14 +365,15 @@ function forDropDownMap(arr, [first, second] = ["name", "id"]) {
 
 let wellID = null;
 let groupsIds = new Map();
-function mnemonicsSort(data) {
+
+function mnemonicsSort(data, state) {
     // TODO Переделать в нормальный код.
     for (let datum of data) {
         if (datum.mnemonics) {
             wellID = datum.well;
-            mnemonicsSort.apply(this, [datum.mnemonics]);
+            mnemonicsSort.apply(this, [datum.mnemonics, state]);
         } else {
-            let { name, curve_id } = datum;
+            let {name, curve_id} = datum;
             let groupId = uuidv4();
 
             if (!groupsIds.has(name)) {
@@ -262,25 +389,53 @@ function mnemonicsSort(data) {
             }
 
             if (this.hasElement(name)) {
-                let { data: { curve_id: cId, wellID: wId } } = this.getElement(name);
-                if (!wId.includes(wellID)) wId = [...wId, wellID]
-                if (!cId[wellID.toString()]) cId[wellID.toString()] = curve_id
-                this.editElementData(name, { wellID: wId, curve_id: cId })
+                state.awGis.editPropertyElementData(name, 'data', 'curve_id', (elCurveIDS) => {
+                    if (!elCurveIDS[wellID.toString()]) elCurveIDS[wellID.toString()] = curve_id;
+                    return elCurveIDS;
+                });
+
+                state.awGis.editPropertyElementData(name, 'data', 'wellID', (wellIDS) => {
+                    if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
+                    return wellIDS;
+                });
+
             } else {
+                let curveColor = COLOR_PALETTE.curves, hex;
+
+                if (curveColor.hasOwnProperty(name.toLowerCase())) {
+                    let [r, g, b] = curveColor[name.toLowerCase()];
+                    hex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+
+                    CURVE_ELEMENT_OPTIONS.customParams = {
+                        ...CURVE_ELEMENT_OPTIONS.customParams,
+                        curveColor: COLOR_PALETTE.curves.hasOwnProperty(name.toLowerCase()) ? {
+                            use: true,
+                            value: hex
+                        } : {use: false, value: "#000000"}
+                    }
+                }
+
                 this.addElement(name, {
                     name: name,
                     value: name,
                     id: uuidv4(),
                     wellID: [wellID],
-                    curve_id: { [wellID]: curve_id }
-                })
+                    isShow: true,
+                    curve_id: {[wellID]: curve_id},
+                }, JSON.parse(JSON.stringify(CURVE_ELEMENT_OPTIONS)))
             }
 
-            if (!this.hasElementInGroup(groupsIds.get(name), name))
+            if (!this.hasElementInGroup(groupsIds.get(name), name)) {
                 this.addElementToGroup(groupsIds.get(name), name);
+            }
         }
     }
     return this.getGroupsWithData;
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
 }
 
 export default geologyGis;

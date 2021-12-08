@@ -13,7 +13,7 @@ export default {
       center: [85000, 52000],
       zoom: -6,
       minZoom: -6,
-      maxZoom: -1,
+      maxZoom: 10,
       renderer: L.canvas({ padding: 0.5 }),
     }
   },
@@ -25,6 +25,7 @@ export default {
         zoomControl: false,
         minZoom: this.minZoom,
         maxZoom: this.maxZoom,
+        attributionControl: false
       });
 
       L.control.zoom({
@@ -110,7 +111,7 @@ export default {
 
     setTriangleMarker(coordinate, title, color = '#000') {
       const triangleMarker = L.triangleMarker(coordinate, {
-        renderer:   this.renderer,
+        renderer: this.renderer,
         color: color,
         fillColor: color,
         fillOpacity: 0,

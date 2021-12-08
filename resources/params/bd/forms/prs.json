@@ -1,6 +1,6 @@
 {
   "table": "prod.well_workover",
-  "default_values":{
+  "default_values": {
     "file_type": 4
   },
   "sort": [
@@ -8,6 +8,16 @@
       "field": "dbeg",
       "order": "desc"
     }
+  ],
+  "table_fields": [
+    "dbeg",
+    "dend",
+    "repair_work_type",
+    "work_list",
+    "contractor",
+    "brigadier",
+    "reason_equip_fail",
+    "documents"
   ],
   "tabs": [
     {
@@ -28,7 +38,7 @@
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type,id",
-                "dict": "repair_type_prs"
+                "dict": "repair_type_prs_ktm"
               },
               {
                 "code": "work_plan",
@@ -143,13 +153,13 @@
                 "code": "cnl_new",
                 "type": "numeric",
                 "title": "nkt_new",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "cnl_used",
                 "type": "numeric",
                 "title": "nkt_used",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "td",
@@ -210,21 +220,20 @@
                 "code": "reason_equip_fail",
                 "type": "dict",
                 "title": "cause_h_failure",
-                "validation": "required|exists:tbd.dict.reason,id",
+                "validation": "nullable|exists:tbd.dict.reason,id",
                 "dict": "reason_ref"
               },
               {
                 "code": "add_reason_equip_fail",
                 "type": "dict",
                 "title": "add_f",
-                "validation": "required|exists:tbd.dict.reason_equip_fail,id",
+                "validation": "nullable|exists:tbd.dict.reason_equip_fail,id",
                 "dict": "reason_equip_fail"
               },
               {
                 "code": "more_info_reason_fail",
                 "type": "text",
-                "title": "reason_type",
-                "validation": "required"
+                "title": "reason_type"
               }
             ]
           }

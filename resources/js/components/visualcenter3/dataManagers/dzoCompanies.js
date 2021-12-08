@@ -74,7 +74,9 @@ export default {
                 'КГМКМГ': '50% * 33%',
                 'ТП': '50% * 33%',
                 'АГ': '100%'
-            }
+            },
+            opekHoverIndex: null,
+            factHoverIndex: null
         };
     },
     methods: {
@@ -101,7 +103,7 @@ export default {
 
         selectAllDzoCompanies() {
             if (!this.isOneDzoSelected) {
-                this.productionData = _.cloneDeep(this.productionTableData);
+                //this.productionData = _.cloneDeep(this.productionTableData);
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);

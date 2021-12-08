@@ -1,14 +1,111 @@
 <template>
-  <div class="row m-0 p-0 bd-forms__wrapper">
-    <div class="col col-9 p-0 bd-forms__main scrollable">
-      <proto-form :id="id" :type="type"></proto-form>
+  <div class="db-container">
+    <div
+        :class="{'hide': !isSidebarOpen}"
+        class="asside-db"
+    >
+      <div class="asside-db-tab-top">
+        <div
+            :class="{'active': selector === 'form'}"
+            class="asside-db-tab_item"
+            @click="selector = 'form'"
+        >
+          {{ trans('bd.input_form') }}
+        </div>
+        <div
+            :class="{'active': selector === 'org'}"
+            class="asside-db-tab_item"
+            @click="selector = 'org'"
+        >
+          {{ trans('bd.org_structure') }}
+        </div>
+      </div>
+      <form action="" class="search-bd">
+        <button class="search-btn-bd">
+          <svg fill="none" height="11" viewBox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd"
+                  d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z"
+                  fill="#9EA4C9"
+                  fill-rule="evenodd"/>
+          </svg>
+        </button>
+        <input v-show="selector === 'org'" v-model="searchOrgQuery" class="search-input-bd" placeholder="Поиск"
+               type="text">
+        <input v-show="selector === 'form'" v-model="searchFormQuery" class="search-input-bd" placeholder="Поиск"
+               type="text">
+      </form>
+      <div class="asside-db-tab-content">
+        <div v-show="selector === 'org'" class="asside-db-tab-content__item asside-db-tab-content__item--org">
+          <bigdata-org-select-tree
+              v-if="selectedForm"
+              :key="`org_selector_${selectedForm.structure_types ? selectedForm.structure_types.join('_') : ''}`"
+              :currentWellId="orgTech.id"
+              :query="searchOrgQuery"
+              :structure-types="selectedForm.structure_types"
+              @idChange="idChange">
+          </bigdata-org-select-tree>
+          <div v-else class="asside-db-tab-content-msg">
+            <span>Выберите форму</span>
+          </div>
+        </div>
+
+        <div v-show="selector === 'form'" class="asside-db-tab-content__item asside-db-tab-content__item--form">
+          <div class="asside-db-form">
+            <bigdata-form-selector
+                :query="searchFormQuery"
+                @selected="onFormSelected"
+            >
+            </bigdata-form-selector>
+          </div>
+        </div>
+      </div>
+      <div class="arrow-hide" @click="toggleSidebar">
+        <svg fill="none" height="13" viewBox="0 0 7 13" width="7" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white"
+                stroke-linecap="round" stroke-miterlimit="22.9256" stroke-width="2"/>
+        </svg>
+      </div>
     </div>
-    <div class="col col-3 p-0 org-select-tree-block scrollable">
-      <proto-org-select-tree
-          :currentWellId="id"
-          @idChange="idChange">
-      </proto-org-select-tree>
+    <div class="content-db ">
+      <div class="content-db__tab_head">
+        <template
+            v-for="(group, id) in tabGroups"
+        >
+          <div
+              :title="group.fullName"
+              class="tab-head-title"
+          >
+            {{ group.name }}
+          </div>
+          <div
+              v-for="(tab, index)  in group.items"
+              :key="tab.key"
+              :class="{'active': selectedTab.orgTech === tab.orgTech && selectedTab.form.code === tab.form.code}"
+              class="content-db__tab_head__item"
+              @click="selectedTab = tab"
+              :title="tab.orgTech.fullName"
+          >
+            {{ tab.orgTech.name }}
+            <span
+                class="content-db__tab_head__item__close"
+                @click.stop="closeTab(tab)"
+            ></span>
+          </div>
+        </template>
+      </div>
+      <div class="content-db-container">
+        <bigdata-form
+            v-for="tab in tabs"
+            v-show="isTabSelected(tab)"
+            :id="tab.orgTech.id"
+            :key="`form_${tab.orgTech.id}_${tab.orgTech.type}_${tab.form.code}`"
+            :form="tab.form"
+            :type="tab.orgTech.type"
+        >
+        </bigdata-form>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -17,293 +114,67 @@
 export default {
   data() {
     return {
-      id: 0,
-      type: ''
+      isSidebarOpen: true,
+      tabs: [],
+      selector: 'form',
+      orgTech: {
+        id: null,
+        name: null,
+        type: null
+      },
+      selectedForm: null,
+      selectedTab: null,
+      searchOrgQuery: '',
+      searchFormQuery: '',
     }
+  },
+  computed: {
+    tabGroups() {
+      let result = {}
+      this.tabs.forEach(tab => {
+        if (!result[tab.form.code]) {
+          result[tab.form.code] = {
+            name: tab.form.name,
+            items: []
+          }
+        }
+        result[tab.form.code].items.push(tab)
+      })
+      return result
+    }
+  },
+  mounted() {
+
   },
   methods: {
     idChange(node) {
-      this.id = node.id
-      this.type = node.type
+      if (this.selectedForm) {
+        let tab = {
+          orgTech: node,
+          form: this.selectedForm,
+          key: `tab_${node.type}_${node.id}_${this.selectedForm.code}`
+        }
+        if (!this.tabs.find(tabItem => tabItem.key === tab.key)) {
+          this.tabs.push(tab)
+        }
+        this.selectedTab = Object.assign({}, tab)
+      } else {
+        this.$notifyWarning('Выберите форму')
+      }
     },
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
+    },
+    onFormSelected(selectedForm) {
+      this.selectedForm = selectedForm
+      this.selector = 'org'
+    },
+    isTabSelected(tab) {
+      return tab.orgTech === this.selectedTab.orgTech && tab.form.code === this.selectedTab.form.code
+    },
+    closeTab(tab) {
+      this.tabs.splice(this.tabs.findIndex(tabItem => tabItem === tab), 1)
+    }
   }
 }
 </script>
-
-<style lang="scss">
-.bd-forms {
-
-  &__wrapper {
-    align-items: stretch;
-  }
-
-  &__main {
-    height: calc(100vh - 100px);
-    overflow-y: auto;
-  }
-
-  .blueblock {
-    background-color: #272953 !important;
-    margin: 7px;
-
-    &.one {
-      padding: 16px 24px 10px;
-    }
-
-    &__buttons {
-      background: #31335F;
-      border-radius: 8px;
-      height: 136px;
-      line-height: 17px;
-      margin: 12px 0 0;
-      overflow: hidden;
-      padding: 18px 35px 16px;
-
-      &_full {
-        height: auto;
-      }
-
-      &-button {
-        margin-bottom: 20px;
-        width: 9%;
-      }
-    }
-  }
-
-  .two {
-    height: 335px
-  }
-
-  .three {
-    padding: 0 24px 15px;
-    @media (max-width: 1200px) {
-      height: auto;
-    }
-  }
-
-  .protobutton {
-    position: absolute;
-    bottom: 15px;
-    width: calc(100% - 30px);
-  }
-
-  .icon-one {
-    margin-right: 14px;
-  }
-
-  .title-one {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 1;
-    margin: 0;
-  }
-
-  .block-one-icon {
-    margin: 0 0 12px;
-
-    &.active {
-      svg {
-        rect {
-          fill: #2C44BD;
-        }
-
-        path {
-          fill: #fff;
-        }
-      }
-    }
-  }
-
-  .block-one-title {
-    font-size: 14px;
-    color: #fff;
-  }
-
-  .block-two-header {
-    margin: 16px 24px auto 24px;
-  }
-
-  .block-two-reload {
-    margin: 5px auto auto 20px;
-  }
-
-  #block-two-datepicker {
-    background-color: #1A1D46;
-    border: none;
-    width: 127px;
-    height: 24px;
-    color: #9EA4C9;
-  }
-
-  .block-two-child {
-    background-color: #2B2E5E;
-    height: 269px;
-    margin-top: 50px;
-  }
-
-  .block-two-child-cards {
-    width: 438px;
-  }
-
-
-  .block-form-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 16px 24px auto 24px;
-  }
-
-  .block-three-edit {
-    margin-left: 15px;
-    margin-right: 20px;
-  }
-
-  .excel-title {
-    color: #fff;
-    font-size: 12px;
-    margin-top: 5px;
-    margin-left: 7px;
-  }
-
-  .block-four-title {
-    margin-bottom: 30px;
-    font-size: 22px;
-    font-weight: 700;
-  }
-
-  .report-filter {
-    &-content {
-      &-wrapper {
-        color: white;
-        height: calc(100% - 14px);
-        margin-right: -7px;
-        position: relative;
-        padding: 20px 15px 100px;
-        @media (max-width: 768px) {
-          margin: 0 -20px 0 -7px;
-        }
-      }
-    }
-
-    &-items {
-      @media(max-width: 1200px) {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
-
-      .filter-group {
-        @media (max-width: 1200px) {
-          width: 32%;
-        }
-        @media (max-width: 768px) {
-          width: 48%;
-        }
-      }
-    }
-  }
-
-  .forms-list {
-    &.expand {
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: 100;
-
-      .blueblock__buttons {
-        height: auto;
-      }
-    }
-
-    &__search {
-      margin-left: 41px;
-      position: relative;
-
-      input {
-        background: #393D75;
-        border: 0.4px solid #656A8A;
-        border-radius: 4px;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 600;
-        display: block;
-        height: 30px;
-        padding: 0 10px 0 46px;
-        width: 290px;
-
-        &::placeholder {
-          color: #eaeaea;
-        }
-      }
-
-      &:before {
-        background: #42487D;
-        content: "";
-        height: 16px;
-        left: 38px;
-        position: absolute;
-        top: 7px;
-        width: 1px;
-      }
-
-      &:after {
-        background: url(/img/bd/search.svg) no-repeat;
-        content: "";
-        height: 20px;
-        left: 10px;
-        position: absolute;
-        top: 5px;
-        width: 20px;
-      }
-    }
-  }
-
-  .block-toggle {
-    align-items: center;
-    display: flex;
-    color: #fff;
-
-    span {
-      margin-left: 5px;
-    }
-  }
-
-  .bd-main-block {
-    .table-container {
-      height: calc(100vh - 360px);
-    }
-  }
-}
-
-.org-select-tree-block {
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-  position: sticky;
-  top: 10px;
-}
-
-.scrollable {
-  &::-webkit-scrollbar {
-    height: 10px;
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #40467E;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #656A8A;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #656A8A;
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: #20274F;
-  }
-}
-</style>

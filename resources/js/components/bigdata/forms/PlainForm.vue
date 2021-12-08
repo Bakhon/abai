@@ -41,6 +41,7 @@
                         :error="errors[item.code]"
                         :form="params"
                         :item="item"
+                        :editable="item.hasOwnProperty('editable') ? item.editable : true"
                         v-on:change="validateField($event, item)"
                         v-on:input="callback($event, item)"
                     >
@@ -85,6 +86,10 @@ export default {
     },
     wellId: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     values: {
@@ -162,7 +167,13 @@ export default {
       this.activeTab = 0
 
       if (this.values) {
-        this.formValues = this.values
+        this.formValues = Object.assign({}, this.values)
+        for (let i in this.formValues) {
+          let value = this.formValues[i]
+          if (value && typeof value === 'object' && value.value) {
+            this.formValues[i] = value.value
+          }
+        }
       }
 
       this.updateForm(this.params.code)
@@ -227,9 +238,13 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
+            type: this.type,
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {
+
+            this.SET_LOADING(false)
+
             this.errors = []
             this.$refs.form.reset()
             this.$notifySuccess('Ваша форма успешно отправлена')
@@ -241,6 +256,8 @@ export default {
             this.formValues = {}
           })
           .catch(error => {
+
+            this.SET_LOADING(false)
 
             if (error.response.status === 500) {
               this.$notifyError(error.response.data.message)
@@ -266,9 +283,6 @@ export default {
                 }
               }
             }
-          })
-          .finally(() => {
-            this.SET_LOADING(false)
           })
     },
     submitForm(params) {
@@ -385,6 +399,10 @@ export default {
 
       let isShowField = true
       field.depends_on.forEach(dependency => {
+        if (dependency.value === false && !this.formValues[dependency.field]) {
+          return;
+        }
+
         if (this.formValues[dependency.field] !== dependency.value) {
           isShowField = false
         }

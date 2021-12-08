@@ -1,74 +1,88 @@
 export default class TCoords {
-    canvas = null
-    canvasOptions = {
+    #canvas = null;
+    #__settings = {
         width: 0,
         height: 0,
-        centerX: 0,
-        centerY: 0,
-        origin: {x: 0, y: 0},
-        zoom: 1,
-        scale: 1,
         scaleX: 1,
         scaleY: 1,
+        offsetY: 0,
+        offsetX: 0,
+        center: {
+            x: 0,
+            y: 0
+        }
     }
 
-    constructor(canvas, options) {
-        let {offsetWidth, offsetHeight} = this.canvas = canvas;
-        options = {
-            width: offsetWidth,
-            height: offsetHeight,
-            centerX: offsetWidth / 2,
-            centerY: offsetHeight /2,
-            ...options,
-        }
+    set setCanvas(canvas) {
+        this.#canvas = canvas;
+        this.setParams();
+    }
 
-        this.setDefaultOptions = options
+    get getCanvas() {
+        return this.#canvas;
     }
 
     set setOrigin(origin) {
-        this.setDefaultOptions = origin
+        this.#__settings.centerX = origin.x === 'default' ? this.#__settings.width / 2 : +origin.x ?? +origin[0] ?? +origin;
+        this.#__settings.centerY = origin.y === 'default' ? this.#__settings.height / 2 : +origin.y ?? +origin.x ?? +origin[1] ?? +origin[0] ?? +origin;
     }
 
-    set setCenter(center){
-        this.setDefaultOptions = center
+    set setOffsetY(offsetY) {
+        this.#__settings.offsetY = offsetY;
     }
 
-    set setSizeCanvas(size){
-        this.setDefaultOptions = size
+    get getOffsetY() {
+        return this.#__settings.offsetY;
     }
 
-    set setDefaultOptions(options){
-        this.canvasOptions = {
-            ...this.canvasOptions,
-            ...options,
-        }
+    set setOffsetX(offsetX) {
+        this.#__settings.offsetX = offsetX;
     }
 
-    width(w){
-        return this.scale(w);
+    set setScaleY(scaleY) {
+        this.#__settings.scaleY = scaleY;
     }
 
-    height(h){
-        return this.scale(h);
+    set setScaleX(scaleX) {
+        this.#__settings.scaleX = scaleX;
     }
 
-    coordinateX(x){
-        return this.scaleX(+x) + +this.canvasOptions.centerX;
+    setParams() {
+        this.#__settings.width = this.#canvas.width;
+        this.#__settings.height = this.#canvas.height;
+        this.#__settings.centerX = this.#__settings.width / 2;
+        this.#__settings.centerY = this.#__settings.height / 2;
     }
 
-    coordinateY(y){
-        return this.scaleY(+y) + +this.canvasOptions.centerY;
+    width(w) {
+        return this.scaleX(w);
     }
 
-    scale(s){
-        return s * this.canvasOptions.scale
+    height(h) {
+        return this.scaleX(h);
     }
 
-    scaleX(s){
-        return s * this.canvasOptions.scaleX
+    positionX(x) {
+        return this.scaleX(+x) + +this.#__settings.centerX - this.#__settings.offsetX;
     }
 
-    scaleY(s){
-        return s * this.canvasOptions.scaleY
+    positionY(y) {
+        return this.scaleY(+y) + +this.#__settings.centerY - this.#__settings.offsetY;
+    }
+
+    percentPositionX(X, maxValue, minValue) {
+        return this.#__settings.width * (X - minValue) / (maxValue - minValue) - this.#__settings.offsetX;
+    }
+
+    percentPositionY(Y, maxValue) {
+        return ((this.#__settings.height / maxValue * 100) * Y) / 100 - this.#__settings.offsetY;
+    }
+
+    scaleX(s) {
+        return s * this.#__settings.scaleX
+    }
+
+    scaleY(s) {
+        return s * this.#__settings.scaleY
     }
 }

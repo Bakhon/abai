@@ -6,12 +6,12 @@
                     <i class="far fa-file mr-2"></i>
                     <span>{{ trans('map_constructor.file') }}</span>
                 </template>
-                <b-dropdown-item href="#">
-                  {{ trans('map_constructor.new') }}
+                <b-dropdown-item @click="buildNameModal">
+                  {{ trans('map_constructor.new_project') }}
                 </b-dropdown-item>
                 <label for="file-upload" class="dropdown-item">
                   {{ trans('map_constructor.open') }}
-                  <input type="file" name="myfile" id="file-upload"/>
+                  <input class="d-none" type="file" name="myfile" id="file-upload"/>
                 </label>
 
                 <b-dropdown-item href="#">
@@ -19,7 +19,7 @@
                 </b-dropdown-item>
                 <label for="import" class="dropdown-item">
                   {{ trans('map_constructor.import') }}
-                  <input type="file" @change="importFile" name="import" id="import"/>
+                  <input class="d-none" type="file" @change="importFile" ref="importFile" id="import"/>
                 </label>
                 <b-dropdown-item data-toggle="modal" data-target="#exportModal">
                   {{ trans('map_constructor.export') }}
@@ -35,9 +35,8 @@
                     <i class="far fa-map mr-2"></i>
                     <span>{{ trans('map_constructor.map') }}</span>
                 </template>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapSpecificModal">{{ trans('map_constructor.build_current') }}</b-dropdown-item>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapSpecificModal">{{ trans('map_constructor.build_accumulated') }}</b-dropdown-item>
-                <b-dropdown-item data-toggle="modal" data-target="#buildMapModal">{{ trans('map_constructor.build_map') }}</b-dropdown-item>
+                <b-dropdown-item @click="buildMapSpecificModal">{{ trans('map_constructor.build_current_accumulated_maps') }}</b-dropdown-item>
+                <b-dropdown-item @click="buildMapModal">{{ trans('map_constructor.build_map') }}</b-dropdown-item>
                 <b-dropdown-item href="#">{{ trans('map_constructor.calculator') }}</b-dropdown-item>
             </b-dropdown>
         </div>
@@ -65,15 +64,19 @@
 </template>
 <script>
     export default {
+        props: {
+            buildNameModal: Function,
+            buildMapModal: Function,
+            buildMapSpecificModal: Function,
+        },
         methods: {
             importFile(event) {
                 this.$refs.dropdown.hide(true);
                 if (typeof event.target.files[0] != "undefined") {
                     this.$emit('importFile', event.target.files[0]);
                 }
+                this.$refs.importFile.value = null;
             },
         },
-        mounted() {
-        }
     }
 </script>

@@ -97,7 +97,7 @@
                                     <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                  {{trans('tr.add')}}</a>
+                                  {{trans('tr.show')}}</a>
 
                                   <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
@@ -222,7 +222,20 @@
                       </table>
                   </div>
                 </div>
-              </modal>
+    </modal>
+    <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
+      <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
+        <div class="header-total-div">
+          <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+          <div class="exit-div">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
+              {{ trans('pgno.zakrit') }}
+            </button>
+          </div>
+        </div>
+        <totalTable :all_summary_total= all_summary_total />
+      </div>
+    </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -355,9 +368,9 @@
             aria-labelledby="dropdownMenuLink"
           >
               
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label" >{{trans('tr.start_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
                   <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
@@ -404,10 +417,22 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              
-
+    
               <button
                 v-if="isPermission"
+                type="button" 
+                data-toggle="modal" 
+                data-target="#exampleModalCenter" 
+                @click="totalModal()"
+                @click.prevent="summaryTotalModal"
+                style="background: #272953; border: none; margin-left: 10px;"
+                v-bind:title="trans('tr.add_well')"
+                >
+                <img class="cursor-pointer" src="/img/tr/total_report.svg" alt="">
+
+              </button>
+              <button
+                v-if="isPermission && isEditable"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
@@ -533,7 +558,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission && isMaxDate"
+                v-if="!isEdit && isPermission && isMaxDate && isEditable"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -6476,7 +6501,7 @@
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </paginate>
-            <div>
+            <div class="pagination-div">
                     <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
@@ -6679,7 +6704,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
@@ -6774,7 +6798,6 @@ tr:nth-child(even) td {
   color: black;
 }
 .input_edit_modal {
-
   color: black;
   font-size: 12px;
   height: 31px;
@@ -6793,7 +6816,6 @@ tr:nth-child(even) td {
   border: none;
   margin-left: 11px;
 }
-
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -6897,8 +6919,25 @@ table::-webkit-scrollbar-corner {
   font-size: 12px;
   height: 31px;
 }
+.input-date-label {
+  margin-left: 8px;
+  color:#fff;
+}
 .modal_table {
   height: 240px !important;
+}
+.total-modal-header {
+  color: #fff;
+  font-size: 16px;
+  padding-left: 10px;
+
+}
+.header-total-div {
+  display: flex;
+  padding-top: 9px;
+}
+.exit-div {
+  padding-left: calc(100% - 378px);
 }
 
     .table-outer{

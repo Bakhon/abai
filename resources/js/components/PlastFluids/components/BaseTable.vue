@@ -1,7 +1,9 @@
 <template>
   <div
     class="table-container"
-    :style="tableType === 'analysis' ? 'height: 100%;' : ''"
+    :style="
+      tableType === 'analysis' || tableType === 'study' ? 'height: 100%;' : ''
+    "
   >
     <div class="table-div" :style="!pagination ? 'height: 100%' : ''">
       <div>
@@ -53,7 +55,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="tableBody">
             <template v-if="isObjectArray">
               <tr v-for="item in items" :key="item.id">
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
@@ -61,15 +63,32 @@
                 </td>
                 <td v-if="tableType === 'upload'">
                   <button @click="handleReportDownload(item)">
-                    <img src="/img/PlastFluids/downloadTableIcon.svg" alt="download">
+                    <img
+                      src="/img/PlastFluids/downloadTableIcon.svg"
+                      alt="download"
+                    />
                     <p>{{ trans("plast_fluids.download") }}</p>
                   </button>
                 </td>
               </tr>
             </template>
             <template v-else-if="tableType === 'analysis'">
-              <tr v-for="(item, index) in items" :key="index">
-                <td v-for="(itemTD, ind) in item.table_data" :key="ind">
+              <tr
+                tabindex="0"
+                v-for="(item, index) in items"
+                :key="index"
+                :style="
+                  isPaintRow(item, index) ? 'background-color: #009000;' : ''
+                "
+                style="cursor: pointer"
+                @click="$emit('select-row', { item, index })"
+              >
+                <td
+                  v-for="(itemTD, ind) in item.table_data
+                    ? item.table_data
+                    : item"
+                  :key="ind"
+                >
                   {{ itemTD }}
                 </td>
               </tr>
@@ -77,7 +96,7 @@
             <template v-else>
               <tr v-for="(item, index) in items" :key="index">
                 <template v-if="typeof item === 'string'">
-                  <td style="background-color: #272953;">
+                  <td style="background-color: #272953">
                     {{ item }}
                   </td>
                 </template>
@@ -125,6 +144,7 @@
 <script>
 import { downloadUserReport } from "../services/templateService";
 import { mapMutations } from "vuex";
+import { downloadExcelFile } from "../helpers";
 
 export default {
   name: "BaseTable",
@@ -138,6 +158,8 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
+    currentRoute: String,
+    currentSelectedRow: [Object, Array],
   },
   data() {
     return {
@@ -149,6 +171,11 @@ export default {
       handler(val) {
         this.$emit("show-items-per-page", Number(val));
       },
+    },
+    currentSelectedRow(value) {
+      if (value.length && this.currentRoute === "graphs-and-tables") {
+        this.$refs.tableBody.children[value[value.length - 1]].focus();
+      }
     },
   },
   methods: {
@@ -162,20 +189,26 @@ export default {
         const postData = new FormData();
         postData.append("file_id", item.file_id);
         const report = await downloadUserReport(postData);
-        let link = document.createElement("a");
-
-        link.download = item.file_name;
-        const blob = new Blob([report.data], {
-          type: "application/vnd.ms-excel",
-        });
-
-        link.href = URL.createObjectURL(blob);
-        link.click();
+        downloadExcelFile(item.file_name, report.data);
       } catch (error) {
         console.log(error);
       } finally {
         this.SET_LOADING(false);
       }
+    },
+    isPaintRow(row, index) {
+      let condition = false;
+      switch (this.currentRoute) {
+        case "graphs-and-tables":
+          condition = this.currentSelectedRow?.includes(index);
+          break;
+        case "maps-and-tables":
+          condition =
+            this.currentSelectedRow.id === row.key &&
+            this.currentSelectedRow.index === index;
+          break;
+      }
+      return condition;
     },
   },
   computed: {

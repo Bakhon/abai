@@ -1,36 +1,11 @@
 <template>
   <div class="main-page-map">
-    <div class="map-header">
-      <p>{{ trans("plast_fluids.oil_map") }}</p>
-      <div class="map-header-toolbar">
-        <div class="toolbar-search">
-          <div class="input-holder">
-            <label for="main-page-map-search"
-              ><img
-                src="/img/PlastFluids/main-page-search.svg"
-                alt="search for provinces"
-            /></label>
-            <div class="break"></div>
-            <input type="text" id="main-page-map-search" :placeholder="trans('plast_fluids.search')" />
-          </div>
-          <button class="toolbar-search-button">
-            {{ trans("plast_fluids.search") }}
-          </button>
-        </div>
-        <img src="/img/PlastFluids/box-icon.svg" alt="" />
-        <img src="/img/PlastFluids/openModal.svg" alt="open map fullscreen" />
-      </div>
-    </div>
-    <div class="satelite-holder">
+    <div class="back-button-holder">
       <button
-        v-if="zoomLevel !== 'global'"
+        v-if="zoomLevel !== 'global' && zoom > 5"
         @click="zoomToFeature({ target: 'previous' })"
       >
         {{ trans("plast_fluids.back") }}
-      </button>
-      <button>
-        <img src="/img/PlastFluids/satelite.svg" alt="" />
-        <span>{{ trans("plast_fluids.satelite") }}</span>
       </button>
     </div>
     <div id="map"></div>
@@ -56,6 +31,7 @@ export default {
       rk: null,
       prevZoomLevel: [],
       zoomLevel: "global",
+      zoom: 5,
       prevBounds: [],
       provinces: [],
       provinceChilds: {},
@@ -72,12 +48,12 @@ export default {
         "#023858",
       ],
       mapOptions: {
-        dragging: false,
         doubleClickZoom: false,
         boxZoom: false,
         zoomControl: false,
         center: [47.78333, 67.76667],
         zoom: 5,
+        attributionControl: false,
       },
       tooltipOptions: {
         permanent: true,
@@ -93,7 +69,7 @@ export default {
       "currentSubsoilField",
     ]),
     isGlobalZoom() {
-      return this.zoomLevel === "global";
+      return this.zoomLevel === "global" || this.zoom === 5;
     },
   },
   watch: {
@@ -123,6 +99,7 @@ export default {
       });
       await this.UPDATE_CURRENT_SUBSOIL(subsoil);
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(field);
+      await this.GET_SUBSOIL_FIELD_COUNTERS();
     },
     setField() {
       const foundLayer = Object.values(this.fields._layers).find(
@@ -135,12 +112,12 @@ export default {
           duration: 0.5,
           easeLinearity: 1.0,
         });
-        const foundLayerParent = this.provinceChilds[
-          foundLayer.feature.properties.parent_id
-        ];
-        const foundLayerProvince = this.provinceChildsLayers[
-          foundLayerParent.feature.properties.parent_id
-        ];
+        const foundLayerParent =
+          this.provinceChilds[foundLayer.feature.properties.parent_id];
+        const foundLayerProvince =
+          this.provinceChildsLayers[
+            foundLayerParent.feature.properties.parent_id
+          ];
         this.zoomLevel = "FLD";
         this.prevZoomLevel = ["global", "NGP", "NGR"];
         this.prevBounds = [
@@ -153,35 +130,32 @@ export default {
     bounds(prevZoomLevel, newBounds, prevBounds) {
       this.map.fitBounds(newBounds);
       this.zoomLevel =
-        prevZoomLevel === "global"
-          ? "NGP"
-          : prevZoomLevel === "NGP"
-          ? "NGR"
-          : prevZoomLevel === "NGR"
-          ? "FLD"
-          : "";
+        prevZoomLevel === "NGP" ? "NGR" : prevZoomLevel === "NGR" ? "FLD" : "";
       this.prevZoomLevel.push(prevZoomLevel);
       this.prevBounds.push(prevBounds);
     },
     zoomToFeature({ target }) {
-      this.map.scrollWheelZoom.disable();
       if (target === "previous") {
-        this.map.fitBounds(this.prevBounds.pop());
-        this.zoomLevel = this.prevZoomLevel.pop();
-        this.zoomLevel === "NGR" ? this.map.scrollWheelZoom.enable() : "";
+        if (this.zoomLevel === "NGP" || this.prevBounds.length === 1) {
+          this.map.fitBounds(this.rk.getBounds());
+          this.zoomLevel = "global";
+        } else {
+          this.map.fitBounds(this.prevBounds.pop());
+          this.zoomLevel = this.prevZoomLevel.pop();
+        }
         return;
       }
-      const provinceBounds = this.provinceChildsLayers[
-        target.feature.properties.parent_id
-      ]?.getBounds();
+      const provinceBounds =
+        this.provinceChildsLayers[
+          target.feature.properties.parent_id
+        ]?.getBounds();
       switch (this.zoomLevel) {
         case "global":
-          this.bounds(this.zoomLevel, provinceBounds, this.rk.getBounds());
+          this.map.fitBounds(provinceBounds);
           break;
         case "NGP":
           this.bounds(this.zoomLevel, target.getBounds(), provinceBounds);
           this.currentProvinceChild = target.feature.properties.id;
-          this.map.scrollWheelZoom.enable();
           break;
         case "NGR":
         case "FLD":
@@ -243,11 +217,26 @@ export default {
       return styles.join(";");
     },
     toggleTooltipStyles() {
+      this.zoom = this.map.getZoom();
       this.fields.eachLayer((layer) => layer.unbindTooltip());
 
-      for (let key in this.provinceChilds) {
-        this.provinceChilds[key].unbindTooltip().bindTooltip(
-          `<div style='${this.getTooltipStyles()}'>
+      this.zoomLevel =
+        this.zoom <= 5
+          ? "global"
+          : this.zoom === 6
+          ? "NGP"
+          : this.zoom === 7
+          ? "NGR"
+          : "FLD";
+
+      if (this.zoomLevel === "global") {
+        this.prevBounds = this.prevBounds.slice(0, 1);
+        this.prevZoomLevel = this.prevZoomLevel.slice(0, 1);
+      }
+      if (this.zoom < 7) {
+        for (let key in this.provinceChilds) {
+          this.provinceChilds[key].unbindTooltip().bindTooltip(
+            `<div style='${this.getTooltipStyles()}'>
               <div style='${this.getTooltipIconStyles()}'></div>
               <p style='margin: 0;'>${
                 this.provinceChilds[key].feature.properties[
@@ -255,23 +244,21 @@ export default {
                 ]
               }</p>
             </div>`,
-          this.tooltipOptions
-        );
+            this.tooltipOptions
+          );
+        }
       }
-      if (this.zoomLevel === "NGR") {
+
+      if (this.zoomLevel === "NGR" || this.zoom >= 7) {
         for (let key in this.provinceChilds) {
           this.provinceChilds[key].unbindTooltip();
         }
 
         this.fields.eachLayer((layer) => {
-          if (
-            layer.feature.properties.parent_id === this.currentProvinceChild
-          ) {
-            layer.bindTooltip(
-              layer.feature.properties["name_" + this.currentLang],
-              this.tooltipOptions
-            );
-          }
+          layer.bindTooltip(
+            layer.feature.properties["name_" + this.currentLang],
+            this.tooltipOptions
+          );
         });
       }
     },
@@ -336,9 +323,10 @@ export default {
 
       await this.getProvinceChilds();
       await this.getFields();
-
+      this.prevBounds.push(this.rk.getBounds());
+      this.prevZoomLevel.push("global");
       this.toggleTooltipStyles();
-      this.map.on("zoomstart", () => {
+      this.map.on("zoomend", () => {
         this.toggleTooltipStyles();
       });
       if (this.currentSubsoilField[0]) this.setField();
