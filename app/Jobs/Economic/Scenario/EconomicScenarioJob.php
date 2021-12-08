@@ -333,7 +333,7 @@ class EconomicScenarioJob implements ShouldQueue
             ->groupBy("uwi");
 
         foreach ($wells as &$well) {
-            $well["coordinates"] = $wellCoordinates->get($well["uwi"])[0]["spatialObject"][0]["coord_point"] ?? null;
+            $well["coordinates"] = $wellCoordinates->get($well["uwi"])[0]["spatialObject"]["coord_point"] ?? null;
         }
 
         return $wells;
