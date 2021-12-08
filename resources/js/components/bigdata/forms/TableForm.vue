@@ -151,7 +151,7 @@
                         }}</span>
                             <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
                                   class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
                       </span>
                           </a>
                         </template>
@@ -227,7 +227,7 @@
                         }}</span>
                             <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
                                   class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
                       </span>
                           </template>
                         </template>

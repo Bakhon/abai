@@ -74,13 +74,13 @@ class PlainFormHistory
             }
 
             if ($formField['type'] === 'date') {
-                $oldValue = Carbon::parse($oldValue)->format('Y-m-d');
-                $value = Carbon::parse($value)->format('Y-m-d');
+                $oldValue = Carbon::parse($oldValue)->format('d.m.Y');
+                $value = Carbon::parse($value)->format('d.m.Y');
             }
 
             if ($formField['type'] === 'datetime') {
-                $oldValue = Carbon::parse($oldValue)->format('Y-m-d H:i');
-                $value = Carbon::parse($value)->format('Y-m-d H:i');
+                $oldValue = Carbon::parse($oldValue)->format('d.m.Y H:i');
+                $value = Carbon::parse($value)->format('d.m.Y H:i');
             }
 
             $result[] = [

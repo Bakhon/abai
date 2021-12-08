@@ -325,7 +325,7 @@ export default {
       if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
-          text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
+          text: value ? moment(value).format('DD.MM.YYYY HH:MM:SS') : null,
           value: value ? moment(value).format() : null
         }
       }
