@@ -454,7 +454,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: {od: null},
+        tubeNom: {nd: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -1386,14 +1386,14 @@ export default {
       return value;
     },
     getTubeNom(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od;
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd;
       }
       return "";
     },
     getTube(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
+      if(this.well.tubeNom.nd){
+        return this.well.tubeNom.nd + ' / ' + this.well.tubeNom.nd;
       }
       return "";
     },
