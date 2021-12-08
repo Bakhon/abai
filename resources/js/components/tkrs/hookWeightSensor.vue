@@ -7,13 +7,13 @@
             <div>
 
               <div class="nav nav-tabs all-tabs">
-                <div style="display:flex">
+                <div style="display:flex; width: 249px;">
                   <li class="nav-item">
                       <a class="nav-link active tab-lblock-header" 
                       @click="selectTab(1)" href="#">
                       <a>{{trans('tkrs.current_work')}}</a></a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item" style="width: 107px;">
                       <a class="nav-link tab-lblock-header" 
                       @click="selectTab(2)" href="#">
                       <a>{{trans('tkrs.archive')}}</a></a>
@@ -24,13 +24,9 @@
             </div>
           </div>
           <div class="dropdown-holder">
-      
-            <!-- <b-form-select class="custom-dropdown-block" @change="onChangeWell" :options="wellList.data" ></b-form-select>
+            <b-form-select class="custom-dropdown-block" :options="archiveData" ></b-form-select>
             <div class="line-block"></div>
-
-            <b-form-select  class="custom-dropdown-block" :options="wellDate.data" @change="onChangeWellDate"></b-form-select>
-            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button> -->
-            <div v-if="currentTab == 1">
+            <div style="padding-left: 6px; overflow: scroll; height: 618px;" classv-if="currentTab == 1">
                   <currentWorkHook v-for="template in wellsTree"
             :key="template.well_name" :template="template"></currentWorkHook>
               </div>
@@ -238,6 +234,7 @@ export default {
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWorkTable: "dayliWork1/",
       wellsTree: {},
+      archiveData: ['Бригада', 'Скважина'],
       
     }
   },
@@ -551,6 +548,7 @@ table, th, td {
 }
 .line-block {
   height: 4px;
+  padding-bottom: 22px;
 }
 .online-block {
   width: 100%;
