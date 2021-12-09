@@ -874,16 +874,18 @@
     display: flex;
     justify-content: space-between;
 }
-.filter-block__item {
+.filter-block__item{
     padding: 9px 36px 7px;
     background: #333975;
     border-radius: 4px;
     width: 33%;
     font-size: 16px;
     line-height: 1;
-    color: #FFFFFF;
+    color: #fff;
     background-repeat: no-repeat;
     background-position: left 8px center;
+    display: flex;
+    align-items: center;
     &--well {
       background-image: url(/img/bd/well_icon.svg);
     }
@@ -975,7 +977,7 @@ body {
   cursor: pointer;
 }
 
-.left-section[data-v-b3aac03c] {
+.left-section{
     width: 441px;
     margin-left: 15px;
     height: calc(100vh - 91px);
