@@ -48,7 +48,7 @@ class WellsController extends Controller
             'whc',
             'bottom_coord'
         )->find($well);
-   /    if (Cache::has('well_' . $well->id)) {
+        if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }
 
