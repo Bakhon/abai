@@ -14,6 +14,10 @@
         class="well-kits"
         @change="$emit('change')"
     >
+      <option :value="null" disabled selected>
+        {{ trans('economic_reference.select_item') }}
+      </option>
+
       <option
           v-for="kit in kits"
           :key="kit.id"
