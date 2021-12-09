@@ -1,0 +1,186 @@
+[
+  {
+    "column1": "Нефть, т/сут",
+    "column2": "Добыча",
+    "column3": "Сдача",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "АО \"ПетроКазахстан Кумколь Ресорсиз\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины: СУТОЧНЫЕ",
+    "column2": "Пояснения причин",
+    "column3": "Принимаемые меры",
+    "column4": "Количество скважин, ед.",
+    "column5": "Время простоя, час",
+    "column6": "Потери по нефти, тонн"
+  },
+  {
+    "column1": "Причина 1: СУТОЧНАЯ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 2: СУТОЧНАЯ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 3: СУТОЧНАЯ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 4: СУТОЧНАЯ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 5: СУТОЧНАЯ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины: С НАЧАЛА МЕСЯЦА",
+    "column2": "Пояснения причин",
+    "column3": "Принимаемые меры",
+    "column4": "Количество скважин, ед.",
+    "column5": "Время простоя, час",
+    "column6": "Потери по нефти, тонн"
+  },
+  {
+    "column1": "Причина 1: С НАЧАЛА МЕСЯЦА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 2: С НАЧАЛА МЕСЯЦА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 3: С НАЧАЛА МЕСЯЦА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 4: С НАЧАЛА МЕСЯЦА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 5: С НАЧАЛА МЕСЯЦА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины: С НАЧАЛА ГОДА",
+    "column2": "Пояснения причин",
+    "column3": "Принимаемые меры",
+    "column4": "Количество скважин, ед.",
+    "column5": "Время простоя, час",
+    "column6": "Потери по нефти, тонн"
+  },
+  {
+    "column1": "Причина 1: С НАЧАЛА ГОДА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 2: С НАЧАЛА ГОДА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 3: С НАЧАЛА ГОДА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 4: С НАЧАЛА ГОДА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причина 5: С НАЧАЛА ГОДА",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  }
+]

@@ -10,6 +10,9 @@ import initialRowsEMG from './dzoData/initial_rows_emg.json';
 import initialRowsTSHO from './dzoData/initial_rows_tsho.json';
 import initialRowsNKO from './dzoData/initial_rows_nko.json';
 import initialRowsKPO from './dzoData/initial_rows_kpo.json';
+import initialRowsPKK from './dzoData/initial_rows_pkk.json';
+import initialRowsTP from './dzoData/initial_rows_tp.json';
+import initialRowsAG from './dzoData/initial_rows_ag.json';
 import formatMappingKOA from './dzoData/format_mapping_koa.json';
 import formatMappingKTM from './dzoData/format_mapping_ktm.json';
 import formatMappingKBM from './dzoData/format_mapping_kbm.json';
@@ -21,6 +24,9 @@ import formatMappingEMG from './dzoData/format_mapping_emg.json';
 import formatMappingTSHO from './dzoData/format_mapping_tsho.json';
 import formatMappingKPO from './dzoData/format_mapping_kpo.json';
 import formatMappingNKO from './dzoData/format_mapping_nko.json';
+import formatMappingPKK from './dzoData/format_mapping_pkk.json';
+import formatMappingTP from './dzoData/format_mapping_tp.json';
+import formatMappingAG from './dzoData/format_mapping_ag.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
 import cellsMappingKBM from './dzoData/cells_mapping_kbm.json';
@@ -32,6 +38,9 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import cellsMappingTSHO from './dzoData/cells_mapping_tsho.json';
 import cellsMappingNKO from './dzoData/cells_mapping_nko.json';
 import cellsMappingKPO from './dzoData/cells_mapping_kpo.json';
+import cellsMappingPKK from './dzoData/cells_mapping_pkk.json';
+import cellsMappingTP from './dzoData/cells_mapping_tp.json';
+import cellsMappingAG from './dzoData/cells_mapping_ag.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
@@ -184,6 +193,30 @@ export default {
                         10: 1
                     }
                 },
+                "ПКК" : {
+                    rows: initialRowsPKK,
+                    format: formatMappingPKK,
+                    cells: cellsMappingPKK,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {}
+                },
+                "ТП" : {
+                    rows: initialRowsTP,
+                    format: formatMappingTP,
+                    cells: cellsMappingTP,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {}
+                },
+                "АГ" : {
+                    rows: initialRowsAG,
+                    format: formatMappingAG,
+                    cells: cellsMappingAG,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {}
+                },
             },
             dzoCompanies: [
                 {
@@ -229,6 +262,18 @@ export default {
                 {
                     ticker: 'КПО',
                     name: 'Карачаганак Петролеум Оперейтинг б.в.'
+                },
+                {
+                    ticker: 'ПКК',
+                    name: 'АО "ПетроКазахстан Кумколь Ресорсиз"'
+                },
+                {
+                    ticker: 'ТП',
+                    name: 'АО "Тургай-Петролеум"'
+                },
+                {
+                    ticker: 'АГ',
+                    name: 'ТОО "Амангельды Газ"'
                 },
             ],
             selectedDzo: {
