@@ -242,7 +242,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                                 </td>
@@ -323,7 +323,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pbuf')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pbuf')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -337,7 +337,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pzat')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pzat')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -351,7 +351,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'p_line')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'p_line')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -365,7 +365,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'temp_head')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'temp_head')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -379,7 +379,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_current')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_current')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -393,7 +393,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_freq')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_freq')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -407,7 +407,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_efficiency')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_efficiency')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -421,7 +421,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_temp')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_temp')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -435,7 +435,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_intk_press')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_intk_press')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
@@ -451,7 +451,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td>{{getMiddle(periodItem.params.monthlyData,'pump_stroke')}}/{{getMiddle(periodItem.params.monthlyData,'pump_spm')}}</td>
-                                                <td>{{getSummary(periodItem.params.monthlyData,'pump_stroke')}}/{{getSummary(periodItem.params.monthlyData,'pump_spm')}}</td>
+                                                <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td

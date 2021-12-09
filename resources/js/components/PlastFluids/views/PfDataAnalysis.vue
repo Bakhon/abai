@@ -17,6 +17,7 @@ export default {
   name: "PfDataAnalysis",
   props: {
     route: String,
+    user: Object,
   },
   components: {
     Header,
@@ -30,6 +31,7 @@ export default {
   },
   provide() {
     return {
+      userID: this.user.id,
       headingKey: this.url[1],
       reservoilOilInfo: this.url.length > 2 ? [this.url[2], this.url[3]] : "",
     };
