@@ -172,6 +172,18 @@ export default {
                         1: 1,
                     }
                 },
+                "КГМ" : {
+                    rows: initialRowsKGM,
+                    format: formatMappingKGM,
+                    cells: cellsMappingKGM,
+                    id: 108,
+                    requiredRows: [1,4,10],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        10: 1
+                    }
+                },
             },
             dzoCompanies: [
                 {
@@ -193,6 +205,10 @@ export default {
                 {
                     ticker: 'ММГ',
                     name: 'АО "Мангистаумунайгаз"'
+                },
+                {
+                    ticker: 'КГМ',
+                    name: 'ТОО "СП "Казгермунай"'
                 },
                 {
                     ticker: 'ОМГ',
