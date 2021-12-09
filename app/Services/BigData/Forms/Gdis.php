@@ -137,7 +137,9 @@ class Gdis extends PlainForm
                 }
                 $gdisComplexValues[$metric->id] = $value;
             } else {
-                $data[$key] = $value;
+                if($key === 'id' || $this->getFields()->where('code', $key)->isNotEmpty()) {
+                    $data[$key] = $value;
+                }
             }
         }
 
