@@ -34,24 +34,18 @@ export default {
     },
   },
   async mounted() {
-    this.initMap()
+    this.initMap(this.scenarioWells.active[this.wellsProfitability[0]][0].coordinates)
   },
   methods: {
     plotMap() {
       this.initPopup()
 
       this.wellsProfitability.forEach(profitability => {
-        let color = this.getColor(profitability)
-
-        this.map.addSource(profitability, this.getMapSource(this.scenarioWells.active[profitability]))
-
-        this.addHeatLayer(profitability, color)
-
-        this.addPointLayer(profitability, color)
-
-        this.map.on('mouseenter', `${profitability}-point`, (event) => this.showPopup(event))
-
-        this.map.on('mouseleave', profitability, () => this.hidePopup())
+        this.addMapSource(
+            profitability,
+            this.scenarioWells.active[profitability],
+            this.getColor(profitability)
+        )
       })
 
       this.plotStoppedWells()
@@ -62,11 +56,21 @@ export default {
         return this.removeMapSource('stoppedWells')
       }
 
-      let color = this.getColor(null, true)
+      this.addMapSource(
+          'stoppedWells',
+          this.scenarioWells.stopped,
+          this.getColor(null, true)
+      )
+    },
 
-      let sourceId = 'stoppedWells'
+    addMapSource(sourceId, wells, color) {
+      let source = this.map.getSource(sourceId)
 
-      this.map.addSource(sourceId, this.getMapSource(this.scenarioWells.stopped))
+      if (source) {
+        return source.setData(this.getMapSource(wells).data)
+      }
+
+      this.map.addSource(sourceId, this.getMapSource(wells))
 
       this.addHeatLayer(sourceId, color)
 
@@ -78,15 +82,7 @@ export default {
     },
 
     updateMap() {
-      this.wellsProfitability.forEach(profitability => {
-        let source = this.map.getSource(profitability)
-
-        source
-            ? source.setData(this.getMapSource(this.scenarioWells.active[profitability]).data)
-            : this.addMapSource(this.scenarioWells.active[profitability])
-      })
-
-      this.plotStoppedWells()
+      this.plotMap()
 
       this.totalProfitability
           .filter(profitability => !this.wellsProfitability.includes(profitability))

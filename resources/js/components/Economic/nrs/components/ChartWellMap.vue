@@ -135,6 +135,12 @@ export default {
     },
 
     addMapSource(profitability) {
+      let source = this.map.getSource(profitability)
+
+      if (source) {
+        return source.setData(this.getMapSource(profitability).data)
+      }
+
       let color = this.getColor(profitability)
 
       this.map.addSource(profitability, this.getMapSource(profitability))
@@ -153,13 +159,7 @@ export default {
 
       this.currentDate = date
 
-      this.wellsProfitability.forEach(profitability => {
-        let source = this.map.getSource(profitability)
-
-        source
-            ? source.setData(this.getMapSource(profitability).data)
-            : this.addMapSource(profitability)
-      })
+      this.plotMap()
 
       this.totalProfitability
           .filter(profitability => !this.wellsProfitability.includes(profitability))
