@@ -121,8 +121,14 @@ import {
   FETCH_WELLS,
   GET_WELLS_OPTIONS,
   SET_WELLS,
-  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS, FETCH_WELLS_CURVES
+  GET_FIELDS_OPTIONS,
+  GET_DZOS_OPTIONS,
+  SET_WELLS_BLOCKS,
+  FETCH_WELLS_MNEMONICS,
+  FETCH_WELLS_CURVES,
+  FETCH_WELLS_HORIZONS
 } from "../../../store/modules/geologyGis.const";
+import {Fetch_Wells} from "../api/petrophysics.api";
 
 export default {
   name: "Geology-LSide",
@@ -195,10 +201,12 @@ export default {
       let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
       this.loadingStates.mnemonics = true;
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      await this.$store.dispatch(FETCH_WELLS_HORIZONS, arr.map((item)=>item.value));
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
       this.saveTableSettings()
     },
+
     selectWellsHandle(item, i) {
       let index = this.selectedWells.findIndex((a) => a.value === item.value);
       if (~index) {

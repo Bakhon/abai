@@ -72,6 +72,7 @@ export default {
       "loading",
       "graphType",
       "currentGraphics",
+      "currentBlocks",
     ]),
     graphData() {
       const zeroX = ["Ps", "Bs", "Ds", "Ms"];
@@ -129,6 +130,19 @@ export default {
         });
       },
       deep: true,
+    },
+    currentSubsoilHorizon(value) {
+      this.handleBlocksFilter(value);
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
+    currentBlocks() {
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
     },
   },
   methods: {

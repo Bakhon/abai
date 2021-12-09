@@ -1,7 +1,9 @@
 <template>
   <div
     class="table-container"
-    :style="tableType === 'analysis' ? 'height: 100%;' : ''"
+    :style="
+      tableType === 'analysis' || tableType === 'study' ? 'height: 100%;' : ''
+    "
   >
     <div class="table-div" :style="!pagination ? 'height: 100%' : ''">
       <div>

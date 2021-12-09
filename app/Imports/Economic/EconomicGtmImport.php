@@ -32,10 +32,10 @@ class EconomicGtmImport implements ToModel, WithBatchInserts, WithChunkReading
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::create([
-            'author_id' => $userId,
+        $this->logId = EconomicDataLog::firstOrCreate([
             'name' => $fileName,
             'type_id' => EconomicDataLogType::GTM,
+            'author_id' => $userId
         ])->id;
     }
 

@@ -1,9 +1,9 @@
 <template>
   <div>
     <gtm-main-menu
-        :parentType="this.parentType"
-        :mainMenu="menu"
-        @menuClick="menuClick"
+      :parentType="this.parentType"
+      :mainMenu="menu"
+      @menuClick="menuClick"
     />
     <div class="rating-sections">
       <div class="rating-content">
@@ -11,10 +11,10 @@
           <div>{{ trans('digital_rating.sectorMap') }}</div>
           <div class="d-flex align-items-center">
             <SearchFormRefresh
-                @input="(val) => this.searchSector = val"
-                placeholder="Поиск"
-                @start-search="onSearchSector()"
-                class="mr-10px"
+              @input="(val) => this.searchSector = val"
+              placeholder="Поиск"
+              @start-search="onSearchSector()"
+              class="mr-10px"
             />
             <btn-dropdown :list="fileActions" class="mr-10px">
               <template #icon>
@@ -49,41 +49,46 @@
         <accordion title="digital_rating.horizon">
           <ul class="list">
             <li
-                v-for="(item, index) in horizons" :key="index"
-                @click="selectPanelItem('horizon', item)"
-                :class="{'active': item.id === horizonNumber}"
+              v-for="(item, index) in horizons" :key="index"
+              @click="handleSelectHorizon(item)"
+              :class="{'active': item.id === horizonNumber}"
             >
               {{ item.title || item }}
             </li>
           </ul>
         </accordion>
-        <accordion
-            :list="maps"
-            title="digital_rating.mapsGeologyDevelopment"
-            @selectItem="(item) => selectPanelItem('map', item)"
-        />
+        <accordion title="digital_rating.mapsGeologyDevelopment">
+          <ul class="list">
+            <li
+              v-for="(item, index) in maps" :key="index"
+              @click="handleSelectMap(item)"
+              :class="{'active': selectedMaps.includes(item.id)}"
+            >
+              {{ item.title }}
+            </li>
+          </ul>
+        </accordion>
         <accordion title="digital_rating.legend">
           <ul class="list">
             <li
-                v-for="(item, index) in legends" :key="index">
+              v-for="(item, index) in legends" :key="index">
               <span>{{ index + 1 }}</span>
-              <div :style="`background: ${item.color}`" class="legend">
-              </div>
-              <span>{{ item.title }}</span>
+              <div :style="`background: ${item.color}`" class="legend"></div>
+              <span>{{ item.legend }}</span>
             </li>
           </ul>
         </accordion>
         <accordion
-            :list="properties"
-            title="digital_rating.property"
+          :list="properties"
+          title="digital_rating.property"
         />
       </div>
       <setting-modal
-          @close="closeSettingModal"
+        @close="closeSettingModal"
       />
       <well-atlas-modal
-          ref="atlasModal"
-          @close="closeAtlasModal"
+        ref="atlasModal"
+        @close="closeAtlasModal"
       />
     </div>
   </div>

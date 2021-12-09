@@ -59,6 +59,7 @@ import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@
 export default {
     props: {
         changeColumnsVisible: Function,
+        wellExplDate: String
     },
     data() {
         return {
@@ -110,9 +111,11 @@ export default {
         },
         fillDates() {
             this.dates = [];
-            for (let i = 2008; i <= 2021; i++) {
+            let explYear = moment(this.wellExplDate, 'YYYY/MM/DD').year();
+            let currentYear = moment().year();
+            for (let i = explYear; i <= currentYear; i++) {
                 let obj = {
-                    'id': i,
+                    'id': i,    
                     'month': null,
                     'year': i,
                     'isChecked': false,
@@ -210,12 +213,12 @@ export default {
             let summary = template;
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
-            summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
+            summary['waterDebit'] = _.meanBy(filtered, 'waterDebit');
             summary['waterCut'] = _.meanBy(filtered, 'waterCut');
             if (!summary['waterCut']) {
                 summary['waterCut'] = 0;
             }
-            summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
+            summary['oilDebit'] = _.meanBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },

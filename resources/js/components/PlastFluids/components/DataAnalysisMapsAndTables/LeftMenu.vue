@@ -30,7 +30,7 @@
       <div class="content-holder">
         <div class="content-heading">
           <img
-            src="/img/PlastFluids/mapsAndTablesFluidsProperties.svg"
+            src="/img/PlastFluids/tableCustomization.svg"
             alt="fluid properties"
           />
           <p>{{ trans("plast_fluids.show_fluid_properties") }}</p>
