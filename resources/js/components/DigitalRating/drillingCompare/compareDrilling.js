@@ -43,6 +43,7 @@ export default {
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
+      owcList: [],
       show: false
     }
   },
@@ -53,7 +54,6 @@ export default {
     await this.initWellOnMap();
     await this.initContourOnMap();
     await this.initLegends();
-    // await this.draw();
   },
 
   watch: {
@@ -216,17 +216,23 @@ export default {
       }
     },
 
-    initContourOnMap() {
-      for (let i = 0; i < owcList.length; i++) {
-        owcList[i].reverse();
-      }
+    async initContourOnMap() {
+      const res = await axios.get(this.localeUrl(
+        `digital-rating/api/get_maps?field=kmb&horizon=14&owc=owc_out_kmb_14_vost`
+      ));
+      if (!res.error) {
+        this.owcList = res?.data[0]?.coordinates;
 
-      L.polyline(owcList, {
-        renderer: this.renderer,
-        color: 'white',
-        weight: 1,
-        smoothFactor: 1
-      }).addTo(this.map);
+        for (let i = 0; i < owcList.length; i++) {
+          owcList[i].reverse();
+        }
+        L.polyline(owcList, {
+          renderer: this.renderer,
+          color: 'white',
+          weight: 1,
+          smoothFactor: 1
+        }).addTo(this.map);
+      }
     },
 
     initLegends() {
@@ -235,14 +241,14 @@ export default {
       legend.onAdd = function() {
         let div = L.DomUtil.create("div", "legend");
         div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
-          '<span> - добывающая проектная скважина</span><br>';
+          '<span> - Проектная добывающая скважина</span><br>';
         div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
           'width: 0;\n' +
           'height: 0;\n' +
           'border-style: solid;\n' +
-          'border-width: 0 8px 8px 8px;\n' +
+          'border-width: 0 7px 7px 7px;\n' +
           'border-color: transparent transparent #fcad00 transparent;"></div>' +
-          '<span> - нагнетательный скважин</span>';
+          '<span> - Проектная нагнетательная скважина</span>';
         return div;
       };
 
@@ -278,22 +284,6 @@ export default {
 
     getChildren(item) {
       return item?.children?.length;
-    },
-
-    draw() {
-      const triangle = document.getElementById('triangle');
-      console.log('triangle', triangle.getContext);
-      if (triangle.getContext){
-        const ctx = triangle.getContext('2d');
-        // Stroked triangle
-        ctx.beginPath();
-        ctx.moveTo(24,24);
-        ctx.lineTo(125,45);
-        ctx.lineTo(45,125);
-        ctx.strokeStyle('#fcad00');
-        ctx.closePath();
-        ctx.stroke();
-      }
     },
   }
 }

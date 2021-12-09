@@ -25,7 +25,7 @@
                         <tr v-for="(date,index) in dates" v-if="date.isVisible" :class="getRowColor(date,index)">
                             <td>
                                 <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
-                                <label v-else class="form-check-label">{{date.month}}</label>
+                                <label v-else class="form-check-label month-name">{{date.month}}</label>
                                 <span class="ml-1"></span>
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
@@ -36,6 +36,15 @@
                             <td>{{formatNumber(date.waterCut.toFixed(0))}}</td>
                             <td>{{formatNumber(date.oilDebit.toFixed(1))}}</td>
                             <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">Итого</td>
+                            <td>{{ formatNumber(this.getTotalWater().toFixed(1)) }}</td>
+                            <td>{{ formatNumber(this.getTotalLiquid().toFixed(1)) }}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>                                                 
                         </tr>
                     </tbody>
                 </table>
@@ -210,6 +219,20 @@ export default {
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
         },
+        getTotalWater(){         
+         let sum = 0;
+         let totalcnt = _.forEach(this.productionHistoricalData, (item) => {
+             sum += item.water;
+         })
+         return sum;
+        },
+        getTotalLiquid(){
+         let sum = 0;
+         let totalcnt = _.forEach(this.productionHistoricalData, (item) => {
+            sum += item.oil;
+         })
+        return sum;
+        },
         formatNumber(num) {
             return new Intl.NumberFormat("ru-RU").format(num);
         },
@@ -339,5 +362,8 @@ export default {
         background: #CCFFFF;
         color: black;
     }
+}
+.month-name {
+    color: black;
 }
 </style>

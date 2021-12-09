@@ -1,11 +1,11 @@
 {
   "type": "table",
+  "new": true,
   "show_history": false,
-  "update_after_edit": false,
   "columns": [
     {
       "code": "uwi",
-      "type": "text",
+      "type": "link",
       "is_editable": false,
       "title": "uwi",
       "freezed": true,

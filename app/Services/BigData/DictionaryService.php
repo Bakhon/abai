@@ -100,7 +100,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
+            'name_field' => 'description'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -520,7 +520,9 @@ class DictionaryService
         $path = [$value['label']];
         while (isset($value['parent'])) {
             $value = $dict->where('id', $value['parent'])->first();
-            $path[] = $value['label'];
+            if ($value) {
+                $path[] = $value['label'];
+            }
         }
         return implode(' / ', array_reverse($path));
     }
@@ -619,16 +621,13 @@ class DictionaryService
 
     public function getUserGeoPermissionIds() {
         $orgIds = $this->getUserOrgPermissionIds();
-        $result = [];
-        foreach($orgIds as $id) {
-            $itemElements = DB::connection('tbd')
-                ->table('prod.org_geo as og')
-                ->select('og.geo as geo')
-                ->where('og.org', $id)
-                ->get()
-                ->toArray();
-            $result = array_merge($result, $itemElements);
-        }
+        $result = DB::connection('tbd')
+            ->table('prod.org_geo as og')
+            ->select('og.geo as geo')
+            ->whereIn('og.org', $orgIds)
+            ->get()
+            ->toArray();
+
         $result = array_unique(array_map(function ($item) {
             return (int)$item->geo;
         }, $result));
@@ -672,33 +671,30 @@ class DictionaryService
         return $result;
     }
 
-    public function getUserOrgPermissionIds() {
-        $orgIds = array_filter(auth()->user()->org_structure, function($item) {
+    public function getUserOrgPermissionIds()
+    {
+        $orgIds = array_filter(auth()->user()->org_structure, function ($item) {
             return substr($item, 0, strpos($item, ":")) == 'org';
         });
         $orgIds = array_map(function ($item) {
             return (int)substr($item, strpos($item, ":") + 1);
         }, $orgIds);
-        $organizations = [];
-        foreach($orgIds as $id) {
-            $organization = Org::find($id);
-            if(isset($organization)) {
-                $organizations[] = $organization;
-            }
-        }
 
-        $orgIds = $this->getOrgWithChildrens($organizations);
+        $parentOrganizations = Org::whereIn('id', $orgIds)->get();
+        $allOrganizations = Org::select('id', 'parent')->get();
+
+        $orgIds = $this->getOrgWithChildren($parentOrganizations, $allOrganizations);
         return $orgIds;
     }
 
-    private function getOrgWithChildrens($organizations) {
+    private function getOrgWithChildren($parentOrganizations, $allOrganizations)
+    {
         $result = [];
-        foreach($organizations as $organization) {
-            if(!isset($organization->id)) continue;
+        foreach ($parentOrganizations as $organization) {
             $result[] = $organization->id;
-            $children = $organization->children()->get();
-            
-            $result = array_merge($result, $this->getOrgWithChildrens($children));
+            $children = $allOrganizations->where('parent', $organization->id);
+
+            $result = array_merge($result, $this->getOrgWithChildren($children, $allOrganizations));
         }
 
         return $result;
@@ -833,7 +829,7 @@ class DictionaryService
     private function getRepairTypeDict(string $type){
         $items = DB::connection('tbd')
             ->table('dict.repair_work_type as dr')
-            ->select('dr.id','dr.name_ru as name')
+            ->selectRaw('dr.id, CONCAT_WS(\' \', dr.code, dr.name_ru) as name')
             ->where('dw.code', $type)
             ->distinct()
             ->orderBy('name', 'asc')
@@ -896,9 +892,11 @@ class DictionaryService
     private function getGisMethodTypesForGisTypeForm()
     {
         $dict = $this->get('gis_method_types');
-        return array_filter($dict, function ($item) {
-            return !in_array($item['code'], ['GATR']);
-        });
+        return array_values(
+            array_filter($dict, function ($item) {
+                return !in_array($item['code'], ['GATR']);
+            })
+        );
     }
 
     private function getGisKindsForGisTypeForm()
@@ -921,7 +919,7 @@ class DictionaryService
     private function getRepairTypeDictKrsPrs($type){
         $items = DB::connection('tbd')
             ->table('dict.repair_work_type as dr')
-            ->select('dr.id','dr.name_ru as name', 'pr.org as org')
+            ->selectRaw('dr.id, CONCAT_WS(\' \', dr.code, dr.name_ru) as name, pr.org as org')
             ->where('dw.code', $type)          
             ->leftJoin('prod.well_workover as p', 'p.repair_work_type', 'dr.id')  
             ->leftJoin('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')   

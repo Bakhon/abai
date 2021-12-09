@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div>
     <gtm-main-menu
       :parentType="this.parentType"
@@ -114,7 +114,7 @@
               <tr>
                 <th class="align-middle" rowspan="2">{{ trans('digital_rating.year') }}</th>
                 <th class="align-middle" colspan="3">
-                  {{ indicatorTitle }}, {{ trans('digital_rating.thousandTons') }}
+                  {{ indicatorTitle }}
                 </th>
               </tr>
               <tr>

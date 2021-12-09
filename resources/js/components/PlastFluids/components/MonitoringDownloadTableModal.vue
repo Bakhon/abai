@@ -23,15 +23,19 @@
           >
             <input
               type="checkbox"
-              :value="field"
-              v-model="checkedFields"
+              :value="index"
+              v-model="computedCheckedFields"
               :id="index + 'pf-upload-' + field"
             /><label :for="index + 'pf-upload-' + field">{{ field }}</label>
           </div>
         </div>
       </div>
       <div class="content-footer">
-        <button>
+        <button
+          @click="addCustomTemplate"
+          :disabled="!checkedFields.length"
+          :class="{ disabled: !checkedFields.length }"
+        >
           <img src="/img/PlastFluids/add.svg" alt="create template" />{{
             trans("plast_fluids.create_template")
           }}
@@ -47,6 +51,7 @@ export default {
   props: {
     templateName: String,
     fields: Array,
+    checkedFields: Array,
   },
   computed: {
     multiplier() {
@@ -61,13 +66,20 @@ export default {
       const width = this.fields.length <= 14 ? 400 : 200;
       return width + "px";
     },
-  },
-  data() {
-    return {
-      checkedFields: [],
-    };
+    computedCheckedFields: {
+      get() {
+        return this.checkedFields;
+      },
+      set(value) {
+        this.$emit("update:checkedFields", value);
+      },
+    },
   },
   methods: {
+    addCustomTemplate() {
+      this.$emit("add-custom-template");
+      this.$emit("close-modal");
+    },
     emitClose() {
       this.$emit("close-modal");
     },
@@ -191,10 +203,19 @@ button {
   padding: 8px 14px;
   border-radius: 4px;
   font-weight: 700;
-  background-color: #656A8A;
+  background: #293688;
+  color: #fff;
+  border: 0.5px solid #3366FF;
 }
 
 .content-footer > button > img {
   margin-right: 13px;
+}
+
+.disabled {
+  background-color: #656a8a !important;
+  color: #fff;
+  cursor: not-allowed;
+  border: 0.5px solid #656A8A !important;
 }
 </style>

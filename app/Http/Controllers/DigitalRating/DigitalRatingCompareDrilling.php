@@ -74,12 +74,12 @@ class DigitalRatingCompareDrilling extends Controller
    {  
      
      
-    $horizon = $request->input('horizon');
-    $year = $request->input('year');
-    $date_to = $year.'-01-01 00:00:00+06';
-    $date_end = $year.'-12-31 00:00:00+06';
-    $block= $request->input('block');
-    $filed= 'UZN';
+   $horizon = $request->input('horizon');
+   $year = $request->input('year');
+   $date_to = $year.'-01-01 00:00:00+06';
+   $date_end = $year.'-12-31 00:00:00+06';
+   $block= $request->input('block');
+   $filed= 'UZN';
    $actual_wells =   DB::connection('tbd')->table('tbdi.well')
       ->where('tbdi.well.uwi', 'like', '%'.$filed.'%')
       ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')

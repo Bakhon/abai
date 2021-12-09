@@ -92,6 +92,7 @@ export default {
 <style scoped>
 .subsoil-secondary-tree > div {
   margin: 15px;
+  color: #fff;
 }
 
 .subsoil-horizons {

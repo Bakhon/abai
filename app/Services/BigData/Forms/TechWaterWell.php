@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class TechWaterWell extends TableForm
+class TechWaterWell extends TechModeForm
 {
     protected $configurationFileName = 'tech_water_well';
     protected $waterMeasurements;
@@ -85,38 +84,4 @@ class TechWaterWell extends TableForm
         }
     }
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString(),
-                'dend' => Well::DEFAULT_END_DATE
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
-        }
-    }
 }

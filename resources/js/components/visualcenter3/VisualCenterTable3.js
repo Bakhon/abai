@@ -125,7 +125,7 @@ export default {
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
             chartReasons: [],
-            opecEndDate: moment('01.09.2021', 'DD.MM.YYYY')
+            opecEndDate: moment('01.08.2021', 'DD.MM.YYYY')
         };
     },
     methods: {
@@ -188,9 +188,6 @@ export default {
 
         getReasonExplanations() {
             let reasons = {};
-            if (this.periodEnd < this.opecEndDate) {
-                this.productionTableData = this.getProductionDataByOpekRestriction();
-            }
             _.forEach(this.productionTableData, (item) => {
                 if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
                     reasons[item.name] = item.decreaseReasonExplanations;
@@ -307,7 +304,6 @@ export default {
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
         }
         this.productionParams = await this.getProductionParamsByCategory();
-        this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
         this.chartReasons = this.getReasonExplanations();
         this.productionData = _.cloneDeep(this.productionTableData);

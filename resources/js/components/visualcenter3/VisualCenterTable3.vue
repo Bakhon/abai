@@ -14,7 +14,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.oilProductionFact) }}
+                              {{ getFormattedNumber(summaryOilFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -30,37 +30,41 @@
                             <br />
                             <div
                                     class="progress-bar"
-                                    v-if="summary.oilProductionFact"
+                                    v-if="summaryOilFact"
                                     role="progressbar"
-                                    :style="{width: getProgress(summary.oilProductionFact,summary.oilProductionPlan) + '%'}"
-                                    :aria-valuenow="summary.oilProductionFact"
+                                    :style="{width: getProgress(summaryOilFact,summaryOilPlan) + '%'}"
+                                    :aria-valuenow="summaryOilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.oilProductionPlan"
+                                    :aria-valuemax="summaryOilPlan"
                             ></div>
                           </div>
                           <div class="row">
                             <div
                                     class="percent-header col-5 col-md-6"
-                                    v-if="summary.oilProductionFact"
+                                    v-if="summaryOilFact"
                             >
-                              {{ getDiffProcentLastBigN(summary.oilProductionFact,summary.oilProductionPlan)}}%
+                              {{ getDiffProcentLastBigN(summaryOilFact,summaryOilPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.oilProductionPlan">
-                              {{ formatDigitToThousand(summary.oilProductionPlan) }}
+                            <div class="plan-header col-6" v-if="summaryOilPlan">
+                              {{ getFormattedNumber(summaryOilPlan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.oilProductionFact,historicalSummaryFact.oilProductionFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryOilFact,summaryHistoricalOilFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.oilProductionFact,summary.oilProductionFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilFact,summaryOilFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} -  {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -72,7 +76,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.oilDeliveryFact) }}
+                              {{ getFormattedNumber(summaryOilDeliveryFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -89,36 +93,49 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    v-if="summary.oilDeliveryFact"
-                                    :style="{width: getProgress(summary.oilDeliveryFact,summary.oilDeliveryPlan) + '%'}"
-                                    :aria-valuenow="summary.oilDeliveryFact"
+                                    v-if="summaryOilDeliveryFact"
+                                    :style="{width: getProgress(summaryOilDeliveryFact,summaryOilDeliveryPlan) + '%'}"
+                                    :aria-valuenow="summaryOilDeliveryFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.oilDeliveryPlan"
+                                    :aria-valuemax="summaryOilDeliveryPlan"
                             ></div>
                           </div>
                           <div class="row">
                             <div
-                                    v-if="summary.oilDeliveryFact"
+                                    v-if="summaryOilDeliveryFact && summaryOilDeliveryPlan"
                                     class="percent-header col-5 col-md-6"
                             >
-                              {{ getDiffProcentLastBigN(summary.oilDeliveryFact,summary.oilDeliveryPlan)}}%
+                              {{ getDiffProcentLastBigN(summaryOilDeliveryFact,summaryOilDeliveryPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.oilDeliveryPlan">
-                              {{ formatDigitToThousand(summary.oilDeliveryPlan) }}
+                            <div
+                                    v-else
+                                    class="percent-header col-5 col-md-6"
+                            >
+                              0%
+                            </div>
+                            <div class="plan-header col-6" v-if="summaryOilDeliveryPlan">
+                              {{ getFormattedNumber(summaryOilDeliveryPlan) }}
+                            </div>
+                            <div class="plan-header col-6" v-else>
+                              0
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.oilDeliveryFact,historicalSummaryFact.oilDeliveryFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryOilDeliveryFact,summaryHistoricalOilDeliveryFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.oilDeliveryFact,summary.oilDeliveryFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilDeliveryFact,summaryOilDeliveryFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -130,7 +147,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.gasProductionFact) }}
+                              {{ getFormattedNumber(summaryGasProductionFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -148,34 +165,38 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    v-if="summary.gasProductionFact"
-                                    :style="{width: getProgress(summary.gasProductionFact,summary.gasProductionPlan) + '%'}"
-                                    :aria-valuenow="summary.gasProductionFact"
+                                    v-if="summaryGasProductionFact"
+                                    :style="{width: getProgress(summaryGasProductionFact,summaryGasPlan) + '%'}"
+                                    :aria-valuenow="summaryGasProductionFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.gasProductionPlan"
+                                    :aria-valuemax="summaryGasPlan"
                             ></div>
 
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="summary.gasProductionFact">
-                              {{ getDiffProcentLastBigN(summary.gasProductionFact,summary.gasProductionPlan)}}%
+                            <div class="percent-header col-5 col-md-6" v-if="summaryGasProductionFact">
+                              {{ getDiffProcentLastBigN(summaryGasProductionFact,summaryGasPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.gasProductionPlan">
-                              {{ formatDigitToThousand(summary.gasProductionPlan) }}
+                            <div class="plan-header col-6" v-if="summaryGasPlan">
+                              {{ getFormattedNumber(summaryGasPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.gasProductionFact,historicalSummaryFact.gasProductionFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryGasProductionFact,summaryGasHistoricalFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.gasProductionFact,summary.gasProductionFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryGasHistoricalFact,summaryGasProductionFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span> {{ todayDate }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -805,7 +826,7 @@
                       :class="[isDecreaseReasonActive ? 'd-none vis-table' : 'col-sm-7 vis-table',periodRange === 0 ? 'main-table__scroll' : '']"
               >
                 <table
-                        v-if="productionTableData.length"
+                        v-if="productionTableData && productionTableData.length"
                         :class="getProductionTableClass()"
                 >
                   <thead>
@@ -1009,11 +1030,11 @@
                       </div>
                     </td>
                     <td
-                            @click="item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
+                            @click="item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon cursor-pointer' : ''">
+                      <div :class="item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0 ? 'reason-icon cursor-pointer' : ''">
                       </div>
                     </td>
                   </tr>
@@ -1097,7 +1118,7 @@
                     </td>
                     <td
                             v-if="isFilterTargetPlanActive && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="periodRange === 0 ? getLighterClass(index) : getDarkerClass(index)"
+                            :class="periodRange === 0 ? getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div class="font">
                         {{getFormattedNumber(summaryTargetPlan)}}
@@ -1214,7 +1235,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'injectionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1375,7 +1396,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'productionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1545,7 +1566,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'drilling')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1789,7 +1810,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'wellsWorkover')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1943,7 +1964,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'chemistry')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2455,6 +2476,9 @@
       th {
         &:nth-child(1) {
           width: 350px;
+        }
+        &:nth-child(3) {
+          width: 13%;
         }
       }
     }

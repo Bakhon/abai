@@ -3,13 +3,11 @@
 namespace App\Console\Commands\Import;
 
 use App\Imports\PipesPointsImport;
-use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class ImportPipesPoints extends Command
 {

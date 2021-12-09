@@ -6,7 +6,7 @@
                     <div class="daily_raport_block-header-first">
                         <div class="daily_raport_block-header-input">
                             <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
-                            <input type="text" disabled v-model="report.report_daily.date" />
+                            <input type="date" class="date-report" v-model="reportDate":max="getPreviousDay()"  @change="changeDate">
                         </div>
                         <div class="daily_raport_block-header-input">
                             <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
@@ -192,7 +192,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.drilling_progress">
+                                <input type="text" v-model="report.general_data_daily.reaming_drilling">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
@@ -327,13 +327,13 @@
                                 <tbody>
                                 <tr v-for="i in 17">
                                     <td class="w-15">
-                                        {{report.prod_time_daily[i-1].operations_type.name_ru}}
+                                        {{report.prod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.prod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.prod_time_daily[i-1].daily"></td>
                                     <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
-                                        {{report.unprod_time_daily[i-1].operations_type.name_ru}}
+                                        {{report.unprod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.unprod_time_daily[i-1].previous}}</td>
                                     <td><input type="text" v-model="report.unprod_time_daily[i-1].daily"></td>
@@ -1439,10 +1439,11 @@
     import moment from "moment";
 
     export default {
-        name: "DailyRaport",
+        name: "PreviousDailyRaport",
         props: ['report'],
         data(){
             return{
+                reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                 bitWareLetters: ["I", "O", "D", "L", "B", "G", "D1", "R"],
                 bit_cond_iadc_letter: {
                     I: 'inner_rows',
@@ -1463,10 +1464,34 @@
             this.changeTotalTime(6)
             var inputs = document.getElementsByTagName("INPUT");
             for (var i = 0; i < inputs.length; i++) {
-                inputs[i].disabled = true;
+                if (inputs[i]['type'] != 'date') {
+                    inputs[i].disabled = true;
+                }
             }
         },
         methods:{
+            getPreviousDay(){
+                let date = new Date();
+                date.setDate(date.getDate() - 1);
+                return moment(date).format('YYYY-MM-DD') ;
+            },
+            changeDate(){
+                let date =  moment(this.reportDate, 'YYYY-MM-DD').format('DD-MM-YYYY')
+                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/well/date',{
+                    well: this.report.general_data_daily.well.id,
+                    date: date
+                }).then((response) => {
+                    if (response) {
+                        this.$emit('changePreviousReport', response.data)
+                    } else {
+                        console.log("No data");
+                    }
+                })
+                    .catch((error) => {
+                        this.reportDate = moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+                        console.log(error)
+                    })
+            },
             back(){
                 this.$emit('closePreviousReport')
             },

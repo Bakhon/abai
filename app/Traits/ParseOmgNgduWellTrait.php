@@ -86,6 +86,7 @@ trait ParseOmgNgduWellTrait
                 $omgngdu->sg_oil = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['sg_oil'] : 0.85;
                 $omgngdu->sg_gas = 0.79;
                 $omgngdu->sg_water = 1.046;
+                $omgngdu->pressure = $row->p_kol;
                 $omgngdu->save();
             }
         }

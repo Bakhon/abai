@@ -54,28 +54,51 @@ export default {
                 kmgParticipation: this.trans("visualcenter.dolyaUchast"),
                 isRegion: this.trans("visualcenter.summaryByRegion"),
             },
+            activeTableMapping: {
+                'injectionFond': {
+                    'dzo': 'injectionFondSelectedCompany',
+                    'period': 'switchInjectionFondPeriod',
+                    'periodName': 'dailyPeriod'
+                },
+                'productionFond': {
+                    'dzo': 'productionFondSelectedCompany',
+                    'period': 'switchProductionFondPeriod',
+                    'periodName': 'productionFondDailyPeriod'
+                },
+                'drilling': {
+                    'dzo': 'drillingSelectedCompany',
+                    'period': 'switchDrillingPeriod',
+                    'periodName': 'drillingDailyPeriod'
+                },
+                'wellsWorkover': {
+                    'dzo': 'wellsWorkoverSelectedCompany',
+                    'period': 'switchWellsWorkoverPeriod',
+                    'periodName': 'wellsWorkoverMonthlyPeriod'
+                },
+                'chemistry': {
+                    'dzo': 'chemistrySelectedCompany',
+                    'period': 'switchChemistryPeriod',
+                    'periodName': 'chemistryMonthlyPeriod'
+                }
+            }
         };
     },
     methods: {
-        changeTable(tableName, isWidgetClosed) {
+        changeTable(tableName, isWidgetClosed,activeTable) {
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
                 _.set(item, 'hover', '');
             });
             if (isWidgetClosed) {
-                this.chemistrySelectedCompany = 'all';
-                this.wellsWorkoverSelectedCompany = 'all';
-                this.drillingSelectedCompany = 'all';
-                this.productionFondSelectedCompany = 'all';
-                this.injectionFondSelectedCompany = 'all';
-                this.updateChemistryWidget();
-                this.updateWellsWorkoverWidget();
-                this.updateDrillingWidget();
-                this.updateProductionFondWidget();
-                this.updateInjectionFondWidget();
+                this.SET_LOADING(true);
+                this.switchWidgetsByDaily(this.activeTableMapping[activeTable]);
             }
             this.tableMapping[tableName]['class'] = 'show-company-list';
             this.tableMapping[tableName]['hover'] = 'button_hover';
+        },
+        switchWidgetsByDaily(activeTable) {
+            this[activeTable.dzo] = 'all';
+            this[activeTable.period](activeTable.periodName);
         },
     }
 }

@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                             <div class="well_body-form-input">
-                                <label for="field">{{ trans('digital_drilling.default.field') }}:</label>
+                                <label for="field">{{ trans('digital_drilling.default.field') }}</label>
                                 <select  id="field" v-model="currentField" @change="getWELL">
                                     <option value="" disabled selected="selected">{{ trans('digital_drilling.default.field_selection') }}</option>
                                     <option :value="item.id" v-for="item in fields">{{item.name}}</option>
@@ -44,7 +44,10 @@
                             </div>
                             <div class="well_body-form-input" v-if="newWell=='new'">
                                 <label for="well">{{ trans('digital_drilling.passport.well') }}:</label>
-                                <input type="text" placeholder="| Введите скважину" id="well" class="new">
+                                <input type="text" placeholder="| Введите скважину" id="well" class="new"
+                                       v-model="newWellNumber"
+                                       :class="{error: error && newWellNumber==''}"
+                                >
                             </div>
                             <div class="well_body-form-coordinates" v-if="newWell=='new'">
                                 <div class="coordinates-title">
@@ -53,20 +56,28 @@
                                 <div class="coordinates-form">
                                     <div class="coordinates-form-input">
                                         <label for="mouthX">x</label>
-                                        <input type="text" id="mouthX" placeholder="| x">
+                                        <input type="text" id="mouthX" placeholder="| x"
+                                               v-model="whcx"
+                                               :class="{error: error && whcx==null}"
+                                        >
                                     </div>
                                     <div class="coordinates-form-input">
                                         <label for="mouthY">y</label>
-                                        <input type="text" id="mouthY" placeholder="| y">
+                                        <input type="text" id="mouthY" placeholder="| y"
+                                               v-model="whcy"
+                                               :class="{error: error && whcy==null}"
+                                        >
                                     </div>
                                 </div>
                             </div>
                             <div class="well_body-form-input" v-if="newWell=='old'">
                                 <label for="wellID">{{ trans('digital_drilling.passport.well') }}:</label>
-                                <select  id="wellID" v-model="currentWell">
-                                    <option value="" disabled selected="selected">Выбор скавжины</option>
-                                    <option :value="item.id" v-for="item in well">{{item.name}}</option>
-                                </select>
+                                <dropdown title="Сважина" :options="well" class="dropdown__area"
+                                          :search="true"
+                                          :report="true"
+                                          :current="currentWell"
+                                          @updateList="changeCurrentWell"
+                                          @search="filterWell"/>
                             </div>
                         </div>
                     </div>
@@ -82,20 +93,26 @@
 
 <script>
     import DailyRaport from './DailyRaport'
+    import Dropdown from '../components/dropdown'
+
     export default {
         name: "DailyReportOpen",
-        components: {DailyRaport},
+        components: {DailyRaport, Dropdown},
         data(){
             return{
                 newWell: "new",
                 dzo: [],
                 fields: [],
                 well: {},
+                newWellNumber: '',
+                whcx: null,
+                whcy: null,
                 currentDZO: '',
                 currentField: '',
                 currentWell: '',
                 created: false,
                 report: {},
+                error: false,
             }
         },
         mounted(){
@@ -105,21 +122,51 @@
             create(){
                 this.getDailyReport()
             },
+            changeCurrentWell(item){
+                this.currentWell = item
+            },
             getDailyReport(){
-                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
-                    {
-                        "well": this.currentWell,
-                        "geo": this.currentField,
-                        "org": this.currentDZO
-                    }).then((response) => {
-                    if (response.data) {
-                        this.report = response.data
-                        this.created = true
-                    } else {
-                        console.log("No data");
+                if (this.newWell == 'new'){
+                    if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
+                        this.error = false
+                        this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                            {
+                                "is_new_well": true,
+                                "uwi": this.newWellNumber,
+                                "geo": this.currentField,
+                                "org": this.currentDZO,
+                                "whcx": this.whcx,
+                                "whcy": this.whcy
+                            }).then((response) => {
+                            if (response.data) {
+                                this.report = response.data
+                                this.created = true
+                            } else {
+                                console.log("No data");
+                            }
+                        })
+                            .catch((error) => console.log(error))
+                    }else{
+                        this.error = true
                     }
-                })
-                    .catch((error) => console.log(error))
+                } else{
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                        {
+                            "is_new_well": this.currentWell.is_new_well,
+                            "well": this.currentWell.well_id,
+                            "geo": this.currentField,
+                            "org": this.currentDZO
+                        }).then((response) => {
+                        if (response.data) {
+                            this.report = response.data
+                            this.created = true
+                        } else {
+                            console.log("No data");
+                        }
+                    })
+                        .catch((error) => console.log(error))
+                }
+
             },
             onChangeWellType(event){
                 this.newWell = event.target.value
@@ -150,11 +197,22 @@
                 });
 
             },
-            getWELL(){
-                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'/'+this.currentField).then((response) => {
+            filterWell(query){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/digital_drill/search/'+this.currentDZO+'/'+this.currentField+'?q='+query).then((response) => {
                     let data = response.data;
                     if (data) {
                         this.well = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
+            getWELL(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/digital_drill/search/'+this.currentDZO+'/'+this.currentField).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.well = data;
+                        this.currentWell = data[0]
                     } else {
                         console.log('No data');
                     }
@@ -174,6 +232,12 @@
     }
     .Marine{
         width: 160px;
+    }
+    .dropdown__area{
+        margin-left: 10px;
+    }
+    .error{
+        border: 1px solid red!important;
     }
 
 </style>

@@ -150,5 +150,7 @@
 </script>
 
 <style scoped>
-
+.digital_drilling{
+    color: #ffffff;
+}
 </style>

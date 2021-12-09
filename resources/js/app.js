@@ -103,6 +103,8 @@ Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
 Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
 Vue.component('economic-nrs-well', require('./components/Economic/well.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
+Vue.component('economic-analysis', require('./components/Economic/analysis/index.vue').default);
+Vue.component('economic-analysis-wells', require('./components/Economic/analysis/wells.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
 Vue.component('centralizers', require('./components/gno/modals/Centralizers.vue').default);
@@ -214,6 +216,7 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
+Vue.component('faq-page', require('./components/faqPage.vue').default);
 
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 

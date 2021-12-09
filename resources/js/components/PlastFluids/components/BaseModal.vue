@@ -3,21 +3,24 @@
     <div>
       <p>{{ heading }}</p>
       <div class="input-holder" v-if="type === 'edit'">
-        <label for="">{{ inputLabel }}</label>
-        <input type="text" id="" v-model="inputText" />
+        <label :for="heading + 'edit-input'">{{ inputLabel }}</label>
+        <input
+          type="text"
+          :id="heading + 'edit-input'"
+          v-model="inputText"
+          :class="{ error: isEmpty }"
+        />
       </div>
       <div class="action-buttons">
         <button
-          :class="type === 'delete' ? 'delete-button' : 'save-button'"
-          @click="save"
+          v-if="type === 'delete'"
+          @click="handleDelete"
+          class="delete-button"
         >
-          {{
-            trans(
-              `plast_fluids.${
-                type === "delete" ? "delete" : type === "notify" ? "ok" : "save"
-              }`
-            )
-          }}
+          {{ trans("plast_fluids.delete") }}
+        </button>
+        <button v-else class="save-button" @click="handleSave">
+          {{ trans(`plast_fluids.${type === "notify" ? "ok" : "save"}`) }}
         </button>
         <button
           v-if="type !== 'notify'"
@@ -34,6 +37,11 @@
 <script>
 export default {
   name: "BaseModal",
+  data() {
+    return {
+      isEmpty: false,
+    };
+  },
   props: {
     heading: String,
     inputLabel: String,
@@ -57,7 +65,16 @@ export default {
         this.$emit("close-modal");
       }
     },
-    save(e) {
+    handleSave(e) {
+      if (this.inputText) {
+        e.stopPropagation();
+        this.$emit("modal-response");
+        this.$emit("close-modal");
+      } else {
+        this.isEmpty = true;
+      }
+    },
+    handleDelete(e) {
       e.stopPropagation();
       this.$emit("modal-response");
       this.$emit("close-modal");
@@ -89,6 +106,9 @@ button {
 }
 
 .base-modal > div {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   min-width: 520px;
   padding: 20px;
   background-color: #272953;
@@ -99,11 +119,27 @@ button {
   font-weight: 700;
   font-size: 20px;
   text-align: center;
+  color: #fff;
 }
 
 .input-holder {
+  display: flex;
+  align-items: center;
   padding: 14px 10px;
   background-color: #2b2e5e;
+  width: 330px;
+}
+
+.input-holder > label {
+  margin: 0 10px 0 0;
+  font-size: 16px;
+}
+
+.input-holder > input {
+  width: 100%;
+  font-size: 14px;
+  padding: 3px;
+  border: 1px solid #fff;
 }
 
 .action-buttons {
@@ -125,5 +161,9 @@ button {
 .cancel-button {
   margin-left: 5px;
   background-color: #40467e;
+}
+
+.error {
+  border: 1px solid red !important;
 }
 </style>

@@ -19,21 +19,21 @@
         </div>
       </div>
     </template>
-    <div class="bd-main-block__body">
-      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%" @submit.prevent="">
+    <div ref="container" class="bd-main-block__body">
+      <form ref="form" class="bd-main-block__form" @submit.prevent="">
         <div class="table-page">
           <template v-if="formParams">
             <p v-if="formError" class="table__message">
               {{ formError }}
             </p>
-            <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
+            <p v-else-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
               {{ trans('bd.select_ngdu') }}
             </p>
             <p v-else-if="!id" class="table__message">
               {{ trans('bd.select_dzo') }}
             </p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
+            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
               <div v-for="custom_column in formParams.custom_columns">
                 <div :is="custom_column.component_name"
                      :allColumns="formParams.columns"
@@ -118,7 +118,7 @@
                       <td
                           v-for="column in visibleColumns"
                           :class="{
-                        'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column),
+                        'editable': isCellEdited(row, column),
                         'freezed': column.freezed
                       }"
                           :style="getCellStyles(column)"
@@ -128,7 +128,8 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
+                             target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
@@ -170,7 +171,6 @@
                                 zone="Asia/Almaty"
                             >
                             </datetime>
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
                           </div>
                           <template v-else-if="row[column.code]">
                       <span class="value">
@@ -184,6 +184,7 @@
                               :id="row.id"
                               :key="`field_${column.code}_${row.id}`"
                               v-model="row[column.code].value"
+                              :editable="isCellEdited(row, column)"
                               :item="getFieldParams(row, column)"
                           >
                           </bigdata-form-field>
@@ -210,13 +211,15 @@
                           </template>
                         </template>
                         <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
-                          <div v-if="isCellEdited(row, column)" class="input-wrap">
-                            <input
-                                v-model="row[column.code].value"
-                                class="form-control"
-                                type="text">
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                          </div>
+                          <template v-if="isCellEdited(row, column)">
+                            <div class="input-wrap">
+                              <input
+                                  v-if="row[column.code]"
+                                  v-model="row[column.code].value"
+                                  class="form-control"
+                                  type="text">
+                            </div>
+                          </template>
                           <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
@@ -237,6 +240,12 @@
                             </div>
                           </b-popover>
                         </template>
+                        <span
+                            v-if="isCellEdited(row, column) && errors && errors[row.id] && errors[row.id][column.code]"
+                            class="error"
+                        >
+                          {{ showError(errors[row.id][column.code]) }}
+                        </span>
                       </td>
                     </tr>
                   </template>
@@ -258,7 +267,8 @@
                           <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'link'">
-                          <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
+                             target="_blank">{{ row[column.code].name }}</a>
                         </template>
                         <template v-else-if="getCellType(row, column) === 'label'">
                           <label v-html="row[column.code].name || ''"></label>
@@ -525,6 +535,8 @@ export default {
           this.$emit('initialized', data)
           this.updateTableData()
         })
+
+    window.addEventListener('resize', this.setTableHeight);
   },
   methods: {
     ...bdFormActions([
@@ -571,6 +583,7 @@ export default {
           })
           .finally(() => {
             this.setLoading(false)
+            this.setTableHeight()
           })
 
     },
@@ -682,8 +695,15 @@ export default {
       this.rows.map((row, index) => {
         if (!difference[index]) return
         fields[row.id] = difference[index]
+        for (let code in fields[row.id]) {
+          if (row[code].id) {
+            fields[row.id][code].id = row[code].id
+          }
+          if (row[code].params) {
+            fields[row.id][code].params = row[code].params
+          }
+        }
       })
-
 
       let data = {
         fields: fields,
@@ -703,7 +723,7 @@ export default {
             this.$emit('sent')
           })
           .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
+            this.errors = error.response.data.errors
             this.setLoading(false)
           })
     },
@@ -933,6 +953,13 @@ export default {
         'min-width': column.width + 'px',
         'width': column.width + 'px'
       }
+    },
+    setTableHeight() {
+      this.$nextTick(() => {
+        let height = window.innerHeight - this.$refs.container.getBoundingClientRect().top - 5;
+        this.$refs.container.style.height = height + 'px'
+        this.$refs.table_wrap.style.height = (height - 10) + 'px'
+      })
     }
   },
 };
@@ -941,7 +968,9 @@ export default {
 body.fixed {
   overflow: hidden;
 }
-
+.well_link_color{
+  color: #fff;
+}
 .bd-main-block {
 
   &__tabs {
@@ -1005,9 +1034,7 @@ body.fixed {
     background: #363B68;
     display: flex;
     justify-content: space-between;
-    //height: calc(100vh - 430px);
-    min-height: 500px;
-    padding: 10px;
+    padding: 5px;
 
     &-history {
       width: 100%;
@@ -1036,7 +1063,6 @@ body.fixed {
 
   &__form {
     background: #272953;
-    overflow-y: auto;
     width: 100%;
   }
 
@@ -1046,8 +1072,6 @@ body.fixed {
     padding: 0;
 
     .tables {
-      height: 100%;
-      margin: 0 0 10px;
       overflow-x: auto;
       overflow-y: auto;
       width: 100%;
@@ -1081,6 +1105,7 @@ body.fixed {
 
     border-collapse: separate;
     border-spacing: 0;
+    margin-bottom: 0;
 
     &__message {
       align-items: center;

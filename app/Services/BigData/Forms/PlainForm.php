@@ -75,6 +75,9 @@ abstract class PlainForm extends BaseForm
         try {
             $result = $this->submitForm();
             DB::connection('tbd')->commit();
+            if (isset($result['well'])) {
+                Cache::forget("well_{$result['well']}");
+            }
             return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
@@ -118,6 +121,7 @@ abstract class PlainForm extends BaseForm
         }
 
         $this->submitInnerTable($id);
+        $this->afterSubmit($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
@@ -282,12 +286,16 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function submitInnerTable(int $parentParentId)
+    protected function submitInnerTable(int $parentId)
     {
-        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        $insertedTableFields = $this->innerTableService->submitTables($parentId, $this->tableFields);
         if (!empty($insertedTableFields)) {
             $this->submittedData['table_fields'] = $insertedTableFields;
         }
+    }
+
+    protected function afterSubmit(int $id)
+    {
     }
 
     protected function formatRows(Collection $rows): Collection
@@ -315,6 +323,10 @@ abstract class PlainForm extends BaseForm
 
     protected function getRows(): Collection
     {
+        if ($this->request->get('type') && $this->request->get('type') !== 'well') {
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $wellId = $this->request->get('well_id');
         $query = DB::connection('tbd')
             ->table($this->params()['table'])

@@ -1,6 +1,6 @@
 <template>
-    <div class="row ml-10 h-100">
-        <div class="col-sm-10 leftBlock pl-0 pr-0">
+    <div class="h-100">
+        <div class="h-100">
             <div class="resultsBlock">
                 <ul>
                     <li>
@@ -45,10 +45,22 @@
                             <p class="percent"><img src="/img/digital-drilling/triangle.svg" alt="" class="mr-1"><span>1,4%</span> vs 23.03.2021</p>
                         </div>
                     </li>
+                    <li>
+                        <div class="analyticsBlock">
+                            <p class="num"><span>1230</span>{{ trans('digital_drilling.default.meters') }}</p>
+                            <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="analyticsBlock">
+                            <p class="num"><span>14251</span>{{ trans('digital_drilling.default.meters') }}</p>
+                            <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
+                        </div>
+                    </li>
                 </ul>
             </div>
 
-            <div class="contentBlock">
+            <div class="contentBlock defaultScroll">
                 <div class="contentBlock__map">
                     <div class="contentBlock__map-header">
                         <div class="contentBlock__map-search">
@@ -123,39 +135,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-2 rightBlock pr-0">
-            <div class="analyticsBlock">
-                <p class="num"><span>1230</span>{{ trans('digital_drilling.default.meters') }}</p>
-                <p class="name"><img src="/img/digital-drilling/drilling-day.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
-            </div>
-            <div class="analyticsBlock">
-                <p class="num"><span>14251</span>метров</p>
-                <p class="name"><img src="/img/digital-drilling/drilling-all.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
-            </div>
-            <div class="operatingCosts">
-                <div class="operatingCosts-title">
-                    {{ trans('digital_drilling.default.EMG_development_drilling') }}
-                </div>
-                <div class="operatingCosts-statistics">
-                    <div class="operatingCosts-single" v-for="costs in operatingCosts">
-                        <div class="operatingCosts-single-title">
-                            {{costs.year}}
-                        </div>
-                        <div class="operatingCosts-single-content">
-                            <progress max="20000000" :value="costs.item">
-                                {{costs.item}}
-                            </progress>
-                            <div class="value">
-                                {{costs.item}},00
-                            </div>
-                        </div>
-                        <div class="operatingCosts-single-tg">
-                            {{ trans('digital_drilling.default.thousands_tenge') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="characteristic__modal" v-if="characteristicModal">
             <div class="characteristic_content">
                 <div class="characteristic_header">
@@ -205,6 +184,42 @@
                                     <th>{{trans("digital_drilling.default.status")}}</th>
                                 </tr>
                                 <tr v-for="info in technicalDescription.sensor">
+                                    <td>{{info.parameter}}</td>
+                                    <td class="text-center fs-16">
+                                        <span v-if="info.value">+</span>
+                                        <span v-else>-</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="modalTable-title">
+                                Измеряемые параметры во время бурения
+                            </div>
+                            <table class="table defaultTable modalTable">
+                                <tbody>
+                                <tr>
+                                    <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.status")}}</th>
+                                </tr>
+                                <tr v-for="info in technicalDescription.measuring_parameter">
+                                    <td>{{info.parameter}}</td>
+                                    <td class="text-center fs-16">
+                                        <span v-if="info.value">+</span>
+                                        <span v-else>-</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="modalTable-title">
+                                Наличие ГТИ или ДЭЛ
+                            </div>
+                            <table class="table defaultTable modalTable">
+                                <tbody>
+                                <tr>
+                                    <th>{{trans("digital_drilling.default.r_name")}}</th>
+                                    <th>{{trans("digital_drilling.default.status")}}</th>
+                                </tr>
+                                <tr v-for="info in technicalDescription.equipment">
                                     <td>{{info.parameter}}</td>
                                     <td class="text-center fs-16">
                                         <span v-if="info.value">+</span>
@@ -472,7 +487,11 @@
 </script>
 
 <style scoped>
-
+    .modalTable-title{
+        font-size: 16px;
+        font-weight: bold;
+        margin: 15px 0 0;
+    }
     .well_content{
         min-height: 300px;
     }
@@ -628,243 +647,7 @@
         align-items: center;
         justify-content: center;
     }
-    .digital_drilling .col-sm-10.leftBlock {
-        max-width: 79.5%;
-    }
 
-    .digital_drilling .col-sm-2.rightBlock {
-        flex: 0 0 20%;
-        max-width: 20%;
-        padding: 0 5px 0 10px;
-    }
-
-    .digital_drilling .col-sm-12.centerBlock {
-        padding: 0 10px;
-    }
-    .digital_drilling .controlBlock {
-        display: table;
-        width: 100%;
-        margin: 0 0 10px;
-    }
-
-    .digital_drilling .controlBlock .block {
-        display: inline-table;
-        width: 20%;
-    }
-
-    .digital_drilling .resultsBlock {
-        width: 100%;
-        display: table;
-        background: #20274F;
-        border-radius: 3px;
-    }
-
-    .digital_drilling .resultsBlock ul {
-        display: table;
-        width: 100%;
-        margin: 0;
-    }
-
-    .digital_drilling .resultsBlock ul li {
-        display: inline-table;
-        width: 25%;
-        margin: 0;
-        padding: 0;
-        border-right: 0.5669px solid #454D7D;
-    }
-
-    ul li .block {
-        display: table;
-        margin: 0 auto;
-        width: 85%;
-        padding: 0;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.num {
-        display: table;
-        margin: 0;
-    }
-    .digital_drilling .resultsBlock ul li .block p.num span {
-        display: inline-table;
-        vertical-align: bottom;
-        font-size: 16px;
-        color: #82BAFF;
-        margin: 0 0 0 10px;
-    }
-    .digital_drilling .resultsBlock ul li .block p.num span.big {
-        margin: 0;
-        color: #fff;
-        font-size: 35px;
-        line-height: 0.9;
-        font-weight: 600;
-    }
-
-
-
-    .digital_drilling .resultsBlock ul li .block p.title {
-        display: table;
-        margin: 10px 0 0;
-        color: #fff;
-        font-size: 14px;
-        border-bottom: 3px solid transparent;
-        padding-bottom: 3px;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.title.green {
-        border-color: #00963F;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.title.yellow {
-        border-color: #FFEC08;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.title.red {
-        border-color: #E3000F;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.percent {
-        display: table;
-        margin: 10px 0 0;
-        color: #82BAFF;
-        font-size: 14px;
-    }
-
-    .digital_drilling .resultsBlock ul li .block p.percent span {
-        font-weight: 600;
-        color: #fff;
-        font-size: 14px;
-        margin: 0 4px;
-    }
-
-    .digital_drilling .resultsBlock ul li:last-child {
-        border: none;
-    }
-
-    .digital_drilling .analyticsBlock {
-        background: #272953;
-        border-radius: 3px;
-        display: table;
-        width: 100%;
-        margin: 0 0 10px;
-    }
-    .digital_drilling .analyticsBlock:first-child{
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock {
-        display: table;
-        width: 100%;
-        padding: 0 20px 20px;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock .graphicBlock {
-        display: table;
-        margin: 10px auto;
-        max-width: 100%;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock .graphicBlock img {
-        display: table;
-        max-width: 100%;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock p {
-        display: table;
-        margin: 15px 0 0;
-        color: #fff;
-        font-size: 16px;
-        width: 100%;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock p span:last-child {
-        width: 40%;
-        text-align: right;
-        vertical-align: bottom;
-        font-size: 22px;
-        font-weight: 600;
-        color: #fff;
-        opacity: 1;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock p span {
-        display: inline-table;
-        margin: 0;
-        width: 60%;
-    }
-
-    .digital_drilling .analyticsBlock .mspBlock p span:last-child {}
-
-    .digital_drilling .analyticsBlock p.num {
-        display: table;
-        margin: 0 0 20px;
-        width: 100%;
-        padding: 16px 18px 0;
-        color: #82BAFF;
-        font-size: 16px;
-    }
-
-    .digital_drilling .analyticsBlock p.num span {
-        color: #fff;
-        font-size: 35px;
-        font-weight: 600;
-        line-height: 1;
-    }
-
-    .digital_drilling .analyticsBlock p.name {
-        display: table;
-        width: 100%;
-        padding: 0 18px 20px;
-        margin: 0;
-    }
-
-    .digital_drilling .analyticsBlock p.name span {
-        display: inline-table;
-        vertical-align: middle;
-        margin: 0;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .digital_drilling .analyticsBlock p.name img {
-        display: inline-table;
-        vertical-align: middle;
-        margin: 0 12px 0 0;
-    }
-
-    .digital_drilling button.alarm {
-        display: table;
-        width: 100%;
-        padding: 15px;
-        background: #C63E4B;
-        color: #fff;
-        font-size: 18px;
-        font-weight: 600;
-        border: none;
-        border-radius: 8px;
-        transition: .2s linear;
-    }
-    .digital_drilling button.alarm:hover {
-        background: #c75f6a;
-    }
-    .digital_drilling .contentBlock {
-        width: 100%;
-        display: block;
-        margin: 10px 0 0;
-    }
-    input.rangeInput {
-        background: linear-gradient(to right, #3C4270 0%, #3C4270 50%, #3C4270 50%, #3C4270 100%);
-        height: 8px;
-        width: 100%;
-        outline: none;
-        transition: all 450ms ease-in;
-        -webkit-appearance: none;
-        padding: 15px;
-        border-radius: 2px;
-    }
-
-    input.rangeInput::-webkit-slider-thumb {
-        display: none;
-    }
     .contentBlock{
         height: calc(100% - 130px);
     }

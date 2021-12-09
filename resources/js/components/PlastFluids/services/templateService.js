@@ -1,4 +1,4 @@
-import axios from "axios";
+import translation from "../../../VueTranslation/Translation";
 
 export const getDownloadTemplates = async () => {
   try {
@@ -67,25 +67,64 @@ export const getTemplateHistory = async (postData) => {
   }
 };
 
-export const getUploadTemplates = async () => {
+export const getUploadTemplates = async (postData) => {
   try {
-    const response = await axios.get(
-      `${process.env.MIX_PLAST_FLUIDS_API}/api/templates/download-report-templates`
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/user-templates`,
+      postData
     );
-    return response.data.report;
+    return response.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getTemplateData = async (
-  payload,
-  url = "/reservoir-oil-study-of-samples"
-) => {
+export const getTemplateData = async (postData) => {
   try {
     const response = await axios.post(
-      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports${url}`,
-      payload
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/table-report`,
+      postData
+    );
+    if (response.status === 204)
+      throw translation.translate("plast_fluids.no_report_content");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTemplateFile = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/file-report`,
+      postData,
+      {
+        responseType: "blob",
+      }
+    );
+    return response.data;
+  } catch (error) {
+    alert(error);
+  }
+};
+
+export const saveCustomTemplate = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/custom-template-save`,
+      postData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCustomTemplate = async (postData) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports/custom-template-delete`,
+      postData
     );
     return response.data;
   } catch (error) {

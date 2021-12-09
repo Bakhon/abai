@@ -14,7 +14,10 @@ export default {
             factFieldsMapping: {},
             isMonthValidateError: false,
             isMonthFactFilled: false,
-            changedRows: []
+            changedRows: [],
+            measuringFactColumn: 'oil_production_fact',
+            condensateFactColumn: 'condensate_production_fact',
+
         };
     },
     methods: {
@@ -68,14 +71,14 @@ export default {
             if (this.companiesWithOil.includes(this.selectedDzo.ticker)) {
                 header['column2'] = 'Добыча нефти';
                 header['column3'] = 'Сдача нефти';
-                this.factFieldsMapping['2'] = 'oil_production_fact';
+                this.factFieldsMapping['2'] = 'oil_production_fact_corrected';
                 this.factFieldsMapping['3'] = 'oil_delivery_fact';
 
             }
             if (this.companiesWithCondensate.includes(this.selectedDzo.ticker)) {
                 let currentIndex = Object.keys(header).length + 1;
                 header['column'+(Object.keys(header).length + 1)] = 'Добыча конденсата';
-                this.factFieldsMapping[Object.keys(header).length] = 'condensate_production_fact';
+                this.factFieldsMapping[Object.keys(header).length] = 'condensate_production_fact_corrected';
                 header['column'+(Object.keys(header).length + 1)] = 'Сдача конденсата';
                 this.factFieldsMapping[Object.keys(header).length] = 'condensate_delivery_fact';
             }
@@ -105,8 +108,12 @@ export default {
                 let cellDate = moment(row['column1'],'DD.MM.YYYY');
                 for (let y=2;y<=Object.keys(row).length;y++) {
                      let fact = this.monthlyFact.find(month => moment(month.date).date() === cellDate.date());
-                     if (fact) {
+                     if (fact && fact[this.factFieldsMapping[y]] !== null) {
                          row['column'+y] = fact[this.factFieldsMapping[y]];
+                     } else if (fact && fact[this.condensateFactColumn] && this.factFieldsMapping[y].includes('condensate')) {
+                         row['column'+y] = fact[this.condensateFactColumn];
+                     } else if (fact && fact[this.measuringFactColumn] && this.factFieldsMapping[y].includes('oil')) {
+                         row['column'+y] = fact[this.measuringFactColumn];
                      }
                 }
             }

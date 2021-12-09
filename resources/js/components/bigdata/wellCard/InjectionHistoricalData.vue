@@ -19,7 +19,7 @@
                     <tr v-for="(date,index) in dates" v-if="date.isVisible" :class="getRowColor(date,index)">
                         <td>
                             <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date)">{{date.year}}</label>
-                            <label v-else class="form-check-label">{{date.month}}</label>
+                            <label v-else class="form-check-label month-name">{{date.month}}</label>
                             <span class="ml-1"></span>
                             <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                         </td>
@@ -27,6 +27,13 @@
                         <td>{{formatNumber(date.dailyWaterInjection.toFixed(1))}}</td>
                         <td>{{formatNumber(date.accumulateWaterInjection)}}</td>
                         <td>{{date.hoursWorked.toFixed(0)}} дн.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Итого</td>
+                        <td>{{ formatNumber(this.getTotalWaterInjection().toFixed(1)) }}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
                     </tr>
                 </tbody>
             </table>
@@ -142,7 +149,7 @@
                         isChecked = true;
                     }
                     summary.isChecked = isChecked;
-                    calculated.push(summary);
+                    calculated.push(summary); 
                     calculated = calculated.concat(sorted);
                 });
                 return calculated;
@@ -150,12 +157,23 @@
             getSummaryBy(year, template) {
                 let filtered = _.filter(this.injectionHistoricalData, (item) => parseInt(item.year) === year);
                 let summary = template;
-                summary['waterInjection'] = _.sumBy(filtered, 'dailyWaterInjection');
-                summary['dailyWaterInjection'] = _.meanBy(filtered, 'dailyWaterInjection');
+                let dailyWaterInjection =  _.meanBy(filtered, 'dailyWaterInjection');
+                if (isNaN(dailyWaterInjection)) {
+                    dailyWaterInjection = 0;
+                }               
+                summary['waterInjection'] = _.sumBy(filtered, 'waterInjection');               
+                summary['dailyWaterInjection'] = dailyWaterInjection;
                 summary['accumulateWaterInjection'] = 0;
-                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
+                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');         
                 return summary;
             },
+            getTotalWaterInjection(){
+              let sum = 0;                   
+              _.forEach(this.dates, (item) => {                  
+                 sum += item.waterInjection;                 
+              });                                        
+              return sum/2;
+            },                     
             formatNumber(num) {
                 return new Intl.NumberFormat("ru-RU").format(num);
             },
@@ -173,7 +191,7 @@
         },
         mounted() {
             this.fillDates();
-            this.dates = this.getHistorical();
+            this.dates = this.getHistorical();            
         },
         computed: {
             ...bigdatahistoricalVisibleState(['injectionHistoricalData']),
@@ -285,5 +303,8 @@
             background: #CCFFFF;
             color: black;
         }
+    }
+    .month-name {
+        color: black;
     }
 </style>

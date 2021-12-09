@@ -52,7 +52,7 @@
     "companyName": "visualcenter.consolidatedDzoNameMapping.KGMKMG",
     "selected": true,
     "ticker":"КГМКМГ",
-    "type": "isOperating",
+    "type": "isNonOperating",
     "region": "kuzulord"
   },
   {

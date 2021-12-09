@@ -77,12 +77,12 @@ class Well extends TBDModel
 
     public function spatialObject()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
+        return $this->belongsTo(SpatialObject::class, 'whc');
     }
 
     public function spatialObjectBottom()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsTo(SpatialObject::class, 'bottom_coord');
     }
 
     public function bottomHole()
@@ -103,6 +103,11 @@ class Well extends TBDModel
     public function wellPerf()
     {
         return $this->hasMany(WellPerf::class, 'well', 'id');
+    }
+
+    public function wellBlock()
+    {
+        return $this->hasMany(WellBlock::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -143,6 +148,11 @@ class Well extends TBDModel
     public function dmartDailyProd()
     {
         return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+    public function dailyInjectionOil()
+    {
+        return $this->hasMany(DailyInjectionOil::class, 'well', 'id');
     }
 
         public function pzabWell()
@@ -301,6 +311,24 @@ class Well extends TBDModel
         return $query;
     }
 
+    public function getWellInjectionData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'pressure_inj',
+            'water_vol',
+            'hdin',
+            'activity'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
     /**
      * @param int $well_id
      * @param string|null $date
@@ -309,6 +337,19 @@ class Well extends TBDModel
     public function eventsOfWell(int $well_id,?string $date) : ?object
     {
         $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
+        return $query;
+    }
+
+    public function getInjectionEvents(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id)->whereNotNull('activity');
         if($date)
         {
             $query = $query->where('date','>=',$date);

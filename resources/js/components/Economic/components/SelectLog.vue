@@ -12,7 +12,15 @@
         v-for="log in logs"
         :key="log.id"
         :value="log.id">
-      {{ log.name }}
+      <span v-if="log.is_processed === 1">
+          {{ trans('economic_reference.processed') }}:
+      </span>
+
+      <span v-else-if="log.is_processed === 0">
+          {{ trans('economic_reference.in_processing') }}:
+      </span>
+
+      <span>{{ log.name }}</span>
     </option>
   </select>
 </template>

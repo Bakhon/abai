@@ -41,6 +41,8 @@ export default {
                 this.excelData['user_name'] = this.userName;
                 this.excelData['user_position'] = this.userPosition;
                 this.excelData['change_reason'] = this.changeReason;
+                this.excelData['oil_production_fact_corrected'] = this.todayData.oil_production_fact_corrected;
+                this.excelData['condensate_production_fact_corrected'] = this.todayData.condensate_production_fact_corrected;
                 this.excelData['toList'] = ['firstMaster','secondMaster','mainMaster'];
                 await this.storeData(uri);
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
@@ -66,7 +68,6 @@ export default {
            } else {
                await this.changeDefaultDzo();
                await this.updateCurrentData();
-               this.addListeners();
                this.setTableFormat();
            }
        },
@@ -76,7 +77,6 @@ export default {
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
             this.handleSwitchFilter();
-            this.addListeners();
             this.SET_LOADING(false);
         },
         async handleSwitchFilter() {

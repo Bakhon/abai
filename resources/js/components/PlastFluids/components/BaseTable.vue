@@ -76,15 +76,17 @@
                 v-for="(item, index) in items"
                 :key="index"
                 :style="
-                  currentSelectedSamples &&
-                  currentSelectedSamples.includes(index)
-                    ? 'background-color: #009000;'
-                    : ''
+                  isPaintRow(item, index) ? 'background-color: #009000;' : ''
                 "
                 style="cursor: pointer"
-                @click="$emit('select-row', item)"
+                @click="$emit('select-row', { item, index })"
               >
-                <td v-for="(itemTD, ind) in item.table_data" :key="ind">
+                <td
+                  v-for="(itemTD, ind) in item.table_data
+                    ? item.table_data
+                    : item"
+                  :key="ind"
+                >
                   {{ itemTD }}
                 </td>
               </tr>
@@ -140,6 +142,7 @@
 <script>
 import { downloadUserReport } from "../services/templateService";
 import { mapMutations } from "vuex";
+import { downloadExcelFile } from "../helpers";
 
 export default {
   name: "BaseTable",
@@ -153,7 +156,8 @@ export default {
     items: Array,
     handlePageChange: Function,
     tableType: String,
-    currentSelectedSamples: Array,
+    currentRoute: String,
+    currentSelectedRow: [Object, Array],
   },
   data() {
     return {
@@ -166,8 +170,8 @@ export default {
         this.$emit("show-items-per-page", Number(val));
       },
     },
-    currentSelectedSamples(value) {
-      if (value.length) {
+    currentSelectedRow(value) {
+      if (value.length && this.currentRoute === "graphs-and-tables") {
         this.$refs.tableBody.children[value[value.length - 1]].focus();
       }
     },
@@ -183,20 +187,26 @@ export default {
         const postData = new FormData();
         postData.append("file_id", item.file_id);
         const report = await downloadUserReport(postData);
-        let link = document.createElement("a");
-
-        link.download = item.file_name;
-        const blob = new Blob([report.data], {
-          type: "application/vnd.ms-excel",
-        });
-
-        link.href = URL.createObjectURL(blob);
-        link.click();
+        downloadExcelFile(item.file_name, report.data);
       } catch (error) {
         console.log(error);
       } finally {
         this.SET_LOADING(false);
       }
+    },
+    isPaintRow(row, index) {
+      let condition = false;
+      switch (this.currentRoute) {
+        case "graphs-and-tables":
+          condition = this.currentSelectedRow?.includes(index);
+          break;
+        case "maps-and-tables":
+          condition =
+            this.currentSelectedRow.id === row.key &&
+            this.currentSelectedRow.index === index;
+          break;
+      }
+      return condition;
     },
   },
   computed: {
