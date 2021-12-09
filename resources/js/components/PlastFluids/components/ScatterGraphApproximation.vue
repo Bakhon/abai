@@ -64,7 +64,7 @@
                 <input
                   type="number"
                   @blur="updatePolynomialDegreeValue"
-                  v-model="computedPolynomialDegree"
+                  v-model.number="polynomialDegree"
                   :style="!isPolynomialSelected ? 'cursor: not-allowed;' : ''"
                   :disabled="!isPolynomialSelected"
                   id="polynomial-degree"
@@ -162,7 +162,7 @@
               step="0.1"
               placeholder="0.0"
               @blur="updateIntersection"
-              v-model="intersection"
+              v-model.number="intersection"
             />
           </div>
           <ScatterGraphApproximationLabelCheckbox
@@ -295,20 +295,12 @@ export default {
   },
   computed: {
     isAxisTyped() {
-      const isSingleWritten =
-        this.abscissaFrom ||
-        this.abscissaTo ||
-        this.ordinateFrom ||
-        this.ordinateTo;
-      return isSingleWritten ? true : false;
-    },
-    computedPolynomialDegree: {
-      get() {
-        return Number(this.polynomialDegree);
-      },
-      set(value) {
-        this.polynomialDegree = Number(value);
-      },
+      return [
+        this.abscissaFrom,
+        this.abscissaTo,
+        this.ordinateFrom,
+        this.ordinateTo,
+      ].some((val) => typeof val === "number");
     },
     isPolynomialSelected() {
       return this.approximationSelected === "polynomial";
@@ -366,8 +358,8 @@ export default {
       }
     },
     updateIntersection(e) {
-      if (Number(e.target.value) < this.minY) this.intersection = this.minY;
-      if (Number(e.target.value) > this.maxY) this.intersection = this.maxY;
+      if (e.target.value < this.minY) this.intersection = this.minY;
+      if (e.target.value > this.maxY) this.intersection = this.maxY;
     },
     closeApproximation(e) {
       e.stopPropagation();
@@ -377,15 +369,15 @@ export default {
     async drawApproximation() {
       const emitData = {};
       if (this.approximationSelected && !this.isNameRepeated) {
-        if (this.backwardPredict) {
+        if (typeof this.backwardPredict === "number") {
           const min = Math.min(...this.x);
-          this.x.push(Number(min - this.backwardPredict));
+          this.x.push(min - this.backwardPredict);
           this.y.push(0);
         }
-        if (this.aheadPredict) {
+        if (typeof this.aheadPredict === "number") {
           const maxY = Math.max(...this.y);
           const maxX = Math.max(...this.x);
-          this.x.push(Number(maxX + this.aheadPredict));
+          this.x.push(maxX + this.aheadPredict);
           this.y.push(maxY);
         }
         const requestData = {
@@ -393,11 +385,12 @@ export default {
           y: this.y,
           type:
             this.approximationSelected === "polynomial"
-              ? "polynomial_" + this.computedPolynomialDegree
+              ? "polynomial_" + this.polynomialDegree
               : this.approximationSelected,
           y0:
-            this.isConfigureIntersection && this.intersection
-              ? Number(this.intersection)
+            this.isConfigureIntersection &&
+            typeof this.intersection === "number"
+              ? this.intersection
               : "",
         };
         const {

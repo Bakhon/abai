@@ -23,7 +23,12 @@ const plastFluidsLocal = {
     tableState: "default",
     loading: false,
     graphType: "ps_bs_ds_ms",
-    currentGraphics: ["Ps", "Bs", "Ds", "Ms"],
+    currentGraphics: [
+      { key: "Ps", order: 0 },
+      { key: "Bs", order: 1 },
+      { key: "Ds", order: 2 },
+      { key: "Ms", order: 3 },
+    ],
     localHorizons: [],
     blocks: [],
     currentBlocks: [],

@@ -17,7 +17,7 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graphKey, index) in currentGraphics"
+            v-for="(graph, index) in sortedCurrentGraphics"
             :key="index"
             class="content-child"
             :style="
@@ -27,9 +27,10 @@
             "
           >
             <ScatterGraph
-              :series="graphData[graphKey]"
-              :title="trans(`plast_fluids.${graphType}_graph_${graphKey}`)"
-              :graphType="graphKey"
+              :series="graphData[graph.key]"
+              :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
+              :graphType="graph.key"
+              :currentGraphs="sortedCurrentGraphics"
             />
           </div>
         </div>
@@ -118,6 +119,9 @@ export default {
         ) &&
         !this.loading
       );
+    },
+    sortedCurrentGraphics() {
+      return this.currentGraphics.sort((a, b) => a.order - b.order);
     },
   },
   watch: {

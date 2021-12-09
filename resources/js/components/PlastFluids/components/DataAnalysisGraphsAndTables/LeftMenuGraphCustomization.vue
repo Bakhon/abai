@@ -1,6 +1,9 @@
 <template>
   <div class="customization-category">
-    <div class="category-header" :class="{ active: currentGraphicType === valueKey }">
+    <div
+      class="category-header"
+      :class="{ active: currentGraphicType === valueKey }"
+    >
       <input
         :disabled="
           valueKey === 'temperature' || valueKey === 'density' ? true : false
@@ -22,26 +25,21 @@
       >
         <input
           :class="{
-            disabled:
-              currentGraphics.length === 4 &&
-              !computedCurrentGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           type="checkbox"
           :id="'customization-' + child.key"
-          :value="child.key"
+          :value="{ key: child.key, order: child.order }"
           :disabled="
             valueKey !== currentGraphicType ||
-              (currentGraphics.length === 4 &&
-                !computedCurrentGraphics.includes(child.key))
+              (currentGraphics.length === 4 && !arrayIncludes(child.key))
           "
           v-model="computedCurrentGraphics"
         />
         <label
           :for="'customization-' + child.key"
           :class="{
-            disabled:
-              currentGraphics.length === 4 &&
-              !computedCurrentGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           >{{ child.Label }}</label
         >
@@ -80,6 +78,11 @@ export default {
       },
     },
   },
+  methods: {
+    arrayIncludes(key) {
+      return this.computedCurrentGraphics.some((el) => el.key === key);
+    },
+  },
 };
 </script>
 
@@ -114,7 +117,7 @@ input {
 .category-content {
   padding: 8px 24px;
   width: 100%;
-  background: #28326A;
+  background: #28326a;
 }
 
 .category-content-child {

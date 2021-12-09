@@ -70,7 +70,7 @@ import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
 import _ from "lodash";
 import { mapState, mapMutations } from "vuex";
-import { convertToFormData, between } from "../helpers";
+import { convertToFormData } from "../helpers";
 import { getCorrelationData } from "../services/graphService";
 
 export default {
@@ -84,10 +84,12 @@ export default {
     series: Object,
     title: String,
     graphType: String,
+    currentGraphs: Array,
   },
   data() {
     return {
       type: "scatter",
+      unwatch: null,
       doubled: false,
       isFullScreen: false,
       isApproximationOpen: false,
@@ -189,6 +191,21 @@ export default {
     };
   },
   watch: {
+    currentGraphs: {
+      handler() {
+        if (this.unwatch) this.unwatch();
+        const correlationType =
+          this.graphType === "Ds" ? "bs" : this.graphType.toLowerCase();
+        this.unwatch = this.$watch(
+          function() {
+            return this["currentSelectedCorrelation_" + correlationType];
+          },
+          () => this.handleCorrelationAdd(correlationType)
+        );
+      },
+      deep: true,
+      immediate: true,
+    },
     series: {
       handler(obj) {
         let filtered2;
@@ -491,10 +508,10 @@ export default {
           xaxis: {
             ...this.chartOptions.xaxis,
             min: data.graphOptions.abscissaFrom
-              ? Number(data.graphOptions.abscissaFrom)
+              ? data.graphOptions.abscissaFrom
               : this.chartOptions.xaxis.min,
             max: data.graphOptions.abscissaTo
-              ? Number(data.graphOptions.abscissaTo)
+              ? data.graphOptions.abscissaTo
               : this.chartOptions.xaxis.max,
           },
           yaxis: {
@@ -506,10 +523,10 @@ export default {
             },
             tickAmount: 4,
             min: data.graphOptions.ordinateFrom
-              ? Number(data.graphOptions.ordinateFrom)
+              ? data.graphOptions.ordinateFrom
               : minY,
             max: data.graphOptions.ordinateTo
-              ? Number(data.graphOptions.ordinateTo)
+              ? data.graphOptions.ordinateTo
               : maxY,
           },
         };
@@ -658,12 +675,7 @@ export default {
     },
   },
   created() {
-    const correlationType =
-      this.graphType === "Ds" ? "bs" : this.graphType.toLowerCase();
     this.setEvents();
-    this.$watch("currentSelectedCorrelation_" + correlationType, () =>
-      this.handleCorrelationAdd(correlationType)
-    );
   },
   mounted() {
     this.chartOptions = {
