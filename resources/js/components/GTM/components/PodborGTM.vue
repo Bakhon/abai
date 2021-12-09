@@ -10,8 +10,17 @@
                 {{ this.trans("paegtm.wells-candidates") }}
               </div>
               <div class="d-flex">
-                <div class="pr-3 pb-1">
-                  <img src="/img/GTM/download.svg" alt="">
+                <div class="pr-2 mt-2px">
+                  <button class="download-well-candidates" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="download-icon" src="/img/gno/download.svg" alt="">
+                      {{ trans('pgno.download') }}
+                    <img class="bottom-arrow-icon" src="/img/gno/bottom-arrow.svg" alt="">
+                  </button>
+                  <div class="dropdown-menu gtm-dropdown-menu">
+                    <a class="dropdown-item">PDF</a>
+                    <a class="dropdown-item" @click="onDownloadExcel">MS Excel</a>
+                  </div>
                 </div>
                 <div class="pr-3 pb-1">
                   <img src="/img/GTM/full-screen.svg" alt="">
@@ -89,12 +98,9 @@
           <div class="bottom-block-box">
             <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
               <div>
-                {{ this.trans("paegtm.well") }} {{ wellNumber }}
+                {{ this.trans("paegtm.well") }}
               </div>
               <div class="d-flex">
-                <div class="pr-3 pb-1">
-                  <img src="/img/GTM/download.svg" alt="">
-                </div>
                 <div class="pr-3 pb-1">
                   <img src="/img/GTM/full-screen.svg" alt="">
                 </div>
@@ -111,6 +117,7 @@
                     :height="340"
                     :options="lineChartOptions"
                     :series="lineChartSeries"
+                    ref="lineChartOptionsRef"
                 ></apexchart>
               </div>
             </div>
@@ -121,9 +128,6 @@
                 {{ this.trans("paegtm.factor_analyse") }}
               </div>
               <div class="d-flex">
-                <div class="pr-3 pb-1">
-                  <img src="/img/GTM/download.svg" alt="">
-                </div>
                 <div class="pr-3 pb-1">
                   <img src="/img/GTM/full-screen.svg" alt="">
                 </div>
@@ -266,17 +270,23 @@
           </div>
 
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
-            <div class="gtm-dark row m-0 p-2">
-              <div class="col-1 text-right mt-1 mb-1 p-0">
-                <img src="../img/lens.svg">
+            <div class="d-flex m-0 p-2 justify-content-between">
+              <div class="d-flex">
+                <div class="pt-1">
+                  <img src="../img/lens.svg">
+                </div>`
+                <div>
+                  <input class="search-input" type="text" placeholder="Поиск по скважине">
+                </div>
               </div>
-              <div class="col-11 row p-0">
-                <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
-                <button class="search-button pl-2 pr-2">{{ trans("paegtm.search") }}</button>
+              <div class="d-flex">
+                <div>
+                  <button class="search-button pl-2 pr-2">{{ trans("paegtm.search") }}</button>
+                </div>
               </div>
-              <div class="gtm-dark text-white h-221 pl-2">
-                {{ trans("paegtm.all_wells") }}
-              </div>
+            </div>
+            <div class="gtm-dark text-white h-244 pl-2">
+              {{ trans("paegtm.all_wells") }}
             </div>
           </div>
         </div>
