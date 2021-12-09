@@ -8,6 +8,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoImportField;
+use App\Models\VisCenter\ExcelForm\DzoPlan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use \jamesiarmes\PhpEws\Client;
@@ -466,5 +467,15 @@ class ExcelFormController extends Controller
                 ->first()
                 ->update($forUpdate);
          }
+    }
+
+    public function getDailyPlan(Request $request)
+    {
+        return DzoPlan::query()
+            ->select(['plan_oil','plan_kondensat'])
+            ->whereMonth('date',Carbon::parse($request->date))
+            ->whereYear('date',Carbon::parse($request->date))
+            ->where('dzo',$request->dzo)
+            ->first();
     }
 }

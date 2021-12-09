@@ -472,7 +472,9 @@ return array (
     'saveTitle' => 'Сохранено!',
     'validateTitle' => 'Проверено!',
     'errorTitle' => 'Ошибка!',
-    'selectYear' => 'Выберите год'
+    'selectYear' => 'Выберите год',
+    'factBelowPlanTitle' => 'Найдено отклонение!',
+    'dailyFactBelowPlanBody' => 'Добыча за сутки меньше запланированного. Пожалуйста, заполните Суточные причины отклонений!'
   ),
   'processingAssociatedGasForOwnExpenses' => 'Переработка попутного газа на собственные нужды',
   'associatedGasFlaring' => 'Сжигание попутного газа на факелах',

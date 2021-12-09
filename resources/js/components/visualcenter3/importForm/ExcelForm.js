@@ -159,7 +159,8 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7
                 },
                 "НКО" : {
                     rows: initialRowsNKO,
@@ -324,7 +325,12 @@ export default {
             dzoUsers: [],
             requiredRows: 0,
             isNotNullRows: {},
-            bigDzo: ['ТШО','КПО','НКО','ПКК','АГ','ТП','КГМ']
+            bigDzo: ['ТШО','КПО','НКО','ПКК','АГ','ТП','КГМ'],
+            dzoListByCondensate: ['АГ'],
+            factValidationMapping: {
+                'oil': 'oil_production_fact',
+                'condensate': 'condensate_production_fact'
+            },
         };
     },
     props: ['userId'],
@@ -462,12 +468,15 @@ export default {
             }
             return [];
         },
-        handleValidate() {
+        async handleValidate() {
             this.isValidateError = false;
             this.isDataReady = false;
             this.turnOffErrorHighlight();
+            this.disableHightLightForReasons();
             this.processTableData();
-            if (!this.isValidateError) {
+            if (await this.isFactBelowPlan()) {
+                this.showToast(this.trans("visualcenter.excelFormPlans.dailyFactBelowPlanBody"), this.trans("visualcenter.excelFormPlans.factBelowPlanTitle"), 'danger');
+            } else if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
@@ -478,6 +487,40 @@ export default {
             if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
                 this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
+        },
+        async isFactBelowPlan() {
+            if (this.dzoListByCondensate.includes(this.excelData.dzo_name)) {
+                return false;
+            }
+            let dailyPlan = await this.getDailyPlanByDzo();
+            let isDailyAbnormal = this.excelData[this.factValidationMapping.oil] < dailyPlan['plan_oil'];
+            if (isDailyAbnormal) {
+                let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + dailyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                return true;
+            }
+            return false;
+        },
+        disableHightLightForReasons() {
+            for (let i=1;i<5;i++) {
+                let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
+                let dailySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + dailyRow + '"]');
+                this.removeClassFromElement(dailySelector,'cell__color-red');
+            }
+        },
+        async getDailyPlanByDzo() {
+            let uri = this.localeUrl("/get-daily-plan-by-import-form");
+            let queryParams = {
+                'date': this.currentDateDetailed,
+                'dzo': this.selectedDzo.ticker
+            };
+            const response = await axios.get(uri,{params: queryParams});
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         },
         processTableData() {
             let self = this;
