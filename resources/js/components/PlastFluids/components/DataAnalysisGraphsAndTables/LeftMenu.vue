@@ -20,7 +20,10 @@
         />
       </div>
     </div>
-    <div class="correlations-holder">
+    <div
+      v-show="currentGraphicType === 'ps_bs_ds_ms'"
+      class="correlations-holder"
+    >
       <div
         class="correlation"
         v-for="(correlations, key) in correlationList"

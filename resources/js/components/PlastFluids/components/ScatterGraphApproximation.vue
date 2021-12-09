@@ -186,14 +186,14 @@
             :inputText.sync="abscissaFrom"
             labelTransKey="from"
             :isAxisInput="true"
-            :initialValue="minX"
+            :initialValue="initialMinX"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="abscissaTo"
             labelTransKey="to"
             :isAxisInput="true"
-            :initialValue="maxX"
+            :initialValue="initialMaxX"
           />
         </div>
       </div>
@@ -206,14 +206,14 @@
             :inputText.sync="ordinateFrom"
             labelTransKey="from"
             :isAxisInput="true"
-            :initialValue="minY"
+            :initialValue="initialMinY"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="ordinateTo"
             labelTransKey="to"
             :isAxisInput="true"
-            :initialValue="maxY"
+            :initialValue="initialMaxY"
           />
         </div>
       </div>
@@ -251,8 +251,10 @@ export default {
     series: Array,
     graphType: String,
     seriesNames: Array,
-    minX: [String, Number],
-    maxX: [String, Number],
+    initialMinY: [String, Number],
+    initialMaxY: [String, Number],
+    initialMaxX: [String, Number],
+    initialMinX: [String, Number],
     minY: [String, Number],
     maxY: [String, Number],
   },

@@ -44,10 +44,12 @@
       "
       :seriesNames="seriesNames"
       :graphType="graphType"
-      :minX="minXAxisBorder"
-      :maxX="maxXAxisBorder"
-      :minY="minYAxisBorder"
-      :maxY="maxYAxisBorder"
+      :maxY="computedMaxY"
+      :minY="computedMinY"
+      :initialMinY="minYAxisBorder"
+      :initialMaxY="maxYAxisBorder"
+      :initialMinX="minXAxisBorder"
+      :initialMaxX="maxXAxisBorder"
       @close-approximation="closeApproximation"
       @get-approximation="getApproximation"
     />
@@ -91,10 +93,8 @@ export default {
       isApproximationOpen: false,
       isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
-      prevPoint: null,
       currentSeries: null,
       graphSeries: [],
-      approximation: [],
       minXAxisBorder: "",
       minYAxisBorder: "",
       maxXAxisBorder: "",
@@ -355,6 +355,12 @@ export default {
       names.shift();
       return names;
     },
+    computedMinY() {
+      return this.chartOptions.yaxis.min ?? this.chartOptions.yaxis[0].min;
+    },
+    computedMaxY() {
+      return this.chartOptions.yaxis.max ?? this.chartOptions.yaxis[0].max;
+    },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_CURRENT_SELECTED_SAMPLES"]),
@@ -415,7 +421,9 @@ export default {
             ? "R2: " + data.approximation.r2.toFixed(2)
             : "";
           let equation = data.approximation.function
-            ? "Функция: " + data.approximation.function
+            ? `${this.trans("plast_fluids._function")}: ${
+                data.approximation.function
+              }`
             : "";
           const temp = _.cloneDeep(this.chartOptions);
           !temp.colors[this.currentAnnotationColorIndex]
@@ -529,10 +537,12 @@ export default {
             larger = true;
           }
           if (larger) {
-            point.label.borderColor =
-              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
-            point.label.style.background =
-              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
+            point.label.borderColor = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
+            point.label.style.background = this.chartOptions.colors[
+              this.currentAnnotationColorIndex - 1
+            ];
             point.x = this.r2AndEquationHelper(
               this.currentAnnotationColorIndex - 1,
               1
@@ -597,12 +607,10 @@ export default {
       exprt.exportToPng();
     },
     setEvents() {
-      this.chartOptions.chart.events.dataPointSelection =
-        this.handleDataPointSelection;
+      this.chartOptions.chart.events.dataPointSelection = this.handleDataPointSelection;
       this.chartOptions.chart.events.legendClick = this.openRemoveModal;
     },
-
-    async handleCorrelationAdd() {
+    async handleCorrelationAdd(correlationType) {
       const horizonIDs = this.currentSubsoilHorizon.length
         ? this.currentSubsoilHorizon.map((horizon) => horizon.horizon_id)
         : "None";
@@ -612,18 +620,16 @@ export default {
         : "None";
       const postTemp = {
         field_id: this.currentSubsoilField[0].field_id,
-        correlations_type: this.graphType.toLowerCase(),
-        func_id:
-          this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
-            .func_id,
+        correlations_type: correlationType,
+        func_id: this["currentSelectedCorrelation_" + correlationType].func_id,
         horizons: horizonIDs,
         blocks: blockIDs,
       };
       const postData = convertToFormData(postTemp);
       const correlationData = await getCorrelationData(postData);
+
       const correlationSeries = {
-        name: this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
-          .name,
+        name: this["currentSelectedCorrelation_" + correlationType].name,
         type: "line",
         data: [],
       };
@@ -636,17 +642,15 @@ export default {
           type: "line",
         },
       };
-      correlationSeries.data = correlationData[
-        this.graphType.toLowerCase()
-      ].chart.reduce((result, xy) => {
+      const chartData =
+        this.graphType === "Ds"
+          ? correlationData.bs.material_balance_chart
+          : correlationData[correlationType].chart;
+      correlationSeries.data = chartData.reduce((result, xy) => {
         const entry = Object.entries(xy)[0];
-        if (
-          between(Number(entry[0]), this.minXAxisBorder, this.maxXAxisBorder) &&
-          between(Number(entry[1]), this.minYAxisBorder, this.maxYAxisBorder)
-        ) {
-          const objectToPush = { x: Number(entry[0]), y: Number(entry[1]) };
-          result.push(objectToPush);
-        }
+
+        const objectToPush = { x: Number(entry[0]), y: Number(entry[1]) };
+        result.push(objectToPush);
         return result;
       }, []);
       this.currentAnnotationColorIndex++;
@@ -654,10 +658,11 @@ export default {
     },
   },
   created() {
+    const correlationType =
+      this.graphType === "Ds" ? "bs" : this.graphType.toLowerCase();
     this.setEvents();
-    this.$watch(
-      "currentSelectedCorrelation_" + this.graphType.toLowerCase(),
-      () => this.handleCorrelationAdd()
+    this.$watch("currentSelectedCorrelation_" + correlationType, () =>
+      this.handleCorrelationAdd(correlationType)
     );
   },
   mounted() {
