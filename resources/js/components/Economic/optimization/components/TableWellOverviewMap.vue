@@ -13,15 +13,16 @@
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
-
 import Subtitle from "../../components/Subtitle";
+
+import {profitabilityMapMixin} from "../../mixins/mapMixin";
 
 export default {
   name: "TableWellOverviewMap",
   components: {
     Subtitle
   },
+  mixins: [profitabilityMapMixin],
   props: {
     scenario: {
       required: true,
@@ -32,74 +33,71 @@ export default {
       type: Array
     },
   },
-  data: () => ({
-    map: null,
-  }),
   async mounted() {
     this.initMap()
   },
   methods: {
-    initMap() {
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-        center: this.wellPoints[0].coordinates,
-        zoom: 11,
-        bearing: 0,
-        pitch: 30,
-        accessToken: process.env.MIX_MAPBOX_TOKEN
+    plotMap() {
+      this.initPopup()
+
+      this.wellsProfitability.forEach(profitability => {
+        let color = this.getColor(profitability)
+
+        this.map.addSource(profitability, this.getMapSource(this.scenarioWells.active[profitability]))
+
+        this.addHeatLayer(profitability, color)
+
+        this.addPointLayer(profitability, color)
+
+        this.map.on('mouseenter', `${profitability}-point`, (event) => this.showPopup(event))
+
+        this.map.on('mouseleave', profitability, () => this.hidePopup())
       })
 
-      this.map.on('load', () => {
-        this.wellPoints.forEach(well => {
-          let marker = document.createElement('div');
+      this.plotStoppedWells()
+    },
 
-          marker.id = this.getMarkerId(well)
+    plotStoppedWells() {
+      if (!this.scenarioWells.stopped.length) {
+        return this.removeMapSource('stoppedWells')
+      }
 
-          marker.style.backgroundColor = well.color;
+      let color = this.getColor(null, true)
 
-          marker.className = 'well-map-circle';
+      let sourceId = 'stoppedWells'
 
-          new mapboxgl
-              .Marker(marker)
-              .setLngLat(well.coordinates)
-              .setPopup(new mapboxgl.Popup({closeButton: false}).setText(well.uwi))
-              .addTo(this.map)
-        })
-      })
+      this.map.addSource(sourceId, this.getMapSource(this.scenarioWells.stopped))
+
+      this.addHeatLayer(sourceId, color)
+
+      this.addPointLayer(sourceId, color)
+
+      this.map.on('mouseenter', `${sourceId}-point`, (event) => this.showPopup(event))
+
+      this.map.on('mouseleave', sourceId, () => this.hidePopup())
     },
 
     updateMap() {
-      this.wellPoints.forEach(well => {
-        let marker = document.getElementById(this.getMarkerId(well))
+      this.wellsProfitability.forEach(profitability => {
+        let source = this.map.getSource(profitability)
 
-        if (!marker) return
-
-        marker.style.backgroundColor = well.color;
+        source
+            ? source.setData(this.getMapSource(this.scenarioWells.active[profitability]).data)
+            : this.addMapSource(this.scenarioWells.active[profitability])
       })
-    },
 
-    getColor({uwi, profitability}) {
-      if (this.scenario.stopped_uwis.includes(uwi)) {
-        return '#8125B0'
-      }
+      this.plotStoppedWells()
 
-      if (profitability === 'profitable') {
-        return '#387249'
-      }
-
-      return profitability === 'profitless_cat_1'
-          ? '#8D2540'
-          : '#F7BB2E'
-    },
-
-    getMarkerId({uwi}) {
-      return `well-map-circle-${uwi}`
+      this.totalProfitability
+          .filter(profitability => !this.wellsProfitability.includes(profitability))
+          .forEach(profitability => this.removeMapSource(profitability))
     },
   },
   computed: {
-    wellPoints() {
-      let points = []
+    scenarioWells() {
+      let activeWells = {}
+
+      let stoppedWells = []
 
       this.scenarios
           .find(scenario =>
@@ -118,15 +116,32 @@ export default {
 
             if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return
 
-            points.push({
+            if (this.scenario.stopped_uwis.includes(well.uwi)) {
+              return stoppedWells.push({
+                uwi: well.uwi,
+                coordinates: {lat: lat, lon: lon}
+              })
+            }
+
+            if (!activeWells.hasOwnProperty(well.profitability)) {
+              activeWells[well.profitability] = []
+            }
+
+            activeWells[well.profitability].push({
               uwi: well.uwi,
-              color: this.getColor(well),
               coordinates: {lat: lat, lon: lon}
             })
           })
 
-      return points
+      return {
+        active: activeWells,
+        stopped: stoppedWells
+      }
     },
+
+    wellsProfitability() {
+      return Object.keys(this.scenarioWells.active)
+    }
   },
   watch: {
     scenario: {
@@ -146,11 +161,9 @@ export default {
   width: 100%;
 }
 
-.well-map >>> .well-map-circle {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  display: inline-block;
+.well-map >>> .mapboxgl-popup {
+  max-width: 400px;
+  font-size: 12px;
 }
 
 #map {

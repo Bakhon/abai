@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
-
 import {globalloadingMutations} from '@store/helpers';
+
+import {profitabilityMapMixin} from "../../mixins/mapMixin";
 
 import Subtitle from "../../components/Subtitle";
 
@@ -64,6 +64,7 @@ export default {
   components: {
     Subtitle
   },
+  mixins: [profitabilityMapMixin],
   props: {
     orgForm: {
       required: true,
@@ -77,7 +78,6 @@ export default {
     },
     wells: [],
     currentDate: null,
-    map: null,
   }),
   async created() {
     this.form.interval_start = this.orgForm.interval_start
@@ -99,7 +99,7 @@ export default {
 
         this.currentDate = this.dates[0]
 
-        this.initMap()
+        this.initMap(this.wellsByProfitability[this.wellsProfitability[0]][0].coordinates)
       } catch (e) {
         console.log(e)
       }
@@ -107,17 +107,7 @@ export default {
       this.SET_LOADING(false)
     },
 
-    getColor(profitability) {
-      if (profitability === 'profitable') {
-        return '#387249'
-      }
-
-      return profitability === 'profitless_cat_2'
-          ? '#F7BB2E'
-          : '#8D2540'
-    },
-
-    getMapSource(profitability) {
+    getMapSource(profitability = null) {
       return {
         type: 'geojson',
         data: {
@@ -136,101 +126,26 @@ export default {
       }
     },
 
-    initMap() {
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/dark-v9',
-        zoom: 8,
-        accessToken: process.env.MIX_MAPBOX_TOKEN,
-        center: this.wellsByProfitability[this.wellsProfitability[0]][0].coordinates,
-      })
-
-      this.map.on('load', () => this.plotMap())
-    },
-
     plotMap() {
-      const popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false
-      })
+      this.initPopup()
 
       this.wellsProfitability.forEach(profitability => {
-        let color = this.getColor(profitability)
-
-        this.map.addSource(profitability, this.getMapSource(profitability))
-
-        this.map.addLayer(
-            {
-              'id': `${profitability}-heat`,
-              'type': 'heatmap',
-              'source': profitability,
-              'maxzoom': 12,
-              'paint': {
-                'heatmap-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['heatmap-density'],
-                  0, 'rgba(33,102,172,0)',
-                  0.2, color,
-                  0.4, color,
-                  0.6, color,
-                  0.8, color,
-                  1, color
-                ],
-                'heatmap-radius': {
-                  stops: [
-                    [10, 15],
-                    [15, 20]
-                  ]
-                },
-                'heatmap-opacity': {
-                  default: 1,
-                  stops: [
-                    [11, 1],
-                    [12, 0]
-                  ]
-                }
-              }
-            },
-            'waterway-label'
-        )
-
-        this.map.addLayer({
-              'id': `${profitability}-point`,
-              'type': 'circle',
-              'source': profitability,
-              'minzoom': 11,
-              'paint': {
-                'circle-color': color,
-                'circle-radius': 6,
-                'circle-stroke-width': 2,
-                'circle-stroke-color': '#ffffff'
-              }
-            },
-            'waterway-label'
-        )
-
-        this.map.on('mouseenter', `${profitability}-point`, (e) => {
-          this.map.getCanvas().style.cursor = 'pointer'
-
-          let coordinates = e.features[0].geometry.coordinates.slice()
-
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
-          }
-
-          popup
-              .setLngLat(coordinates)
-              .setHTML(e.features[0].properties.description)
-              .addTo(this.map)
-        })
-
-        this.map.on('mouseleave', profitability, () => {
-          this.map.getCanvas().style.cursor = ''
-
-          popup.remove()
-        })
+        this.addMapSource(profitability)
       })
+    },
+
+    addMapSource(profitability) {
+      let color = this.getColor(profitability)
+
+      this.map.addSource(profitability, this.getMapSource(profitability))
+
+      this.addHeatLayer(profitability, color)
+
+      this.addPointLayer(profitability, color)
+
+      this.map.on('mouseenter', `${profitability}-point`, (event) => this.showPopup(event))
+
+      this.map.on('mouseleave', profitability, () => this.hidePopup())
     },
 
     updateDate(date) {
@@ -239,8 +154,16 @@ export default {
       this.currentDate = date
 
       this.wellsProfitability.forEach(profitability => {
-        this.map.getSource(profitability).setData(this.getMapSource(profitability).data)
+        let source = this.map.getSource(profitability)
+
+        source
+            ? source.setData(this.getMapSource(profitability).data)
+            : this.addMapSource(profitability)
       })
+
+      this.totalProfitability
+          .filter(profitability => !this.wellsProfitability.includes(profitability))
+          .forEach(profitability => this.removeMapSource(profitability))
     },
   },
   computed: {
@@ -312,6 +235,15 @@ export default {
         })
       })
     },
+
+    totalProfitability() {
+      return [
+        'profitable',
+        'profitless',
+        'profitless_cat_1',
+        'profitless_cat_2',
+      ]
+    }
   }
 }
 </script>
@@ -325,7 +257,7 @@ export default {
 
 .well-map >>> .mapboxgl-popup {
   max-width: 400px;
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 
 .bg-blue {
