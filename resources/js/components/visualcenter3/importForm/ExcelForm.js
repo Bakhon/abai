@@ -324,7 +324,7 @@ export default {
             dzoUsers: [],
             requiredRows: 0,
             isNotNullRows: {},
-            bigDzo: ['ТШО','КПО','НКО']
+            bigDzo: ['ТШО','КПО','НКО','ПКК','АГ','ТП','КГМ']
         };
     },
     props: ['userId'],
