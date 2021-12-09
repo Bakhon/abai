@@ -1,6 +1,5 @@
 import TopMenu from './shared/TopMenu'
 import PrinterModal from './modals/PrinterModal'
-import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
 import ReportModal from './modals/ReportModal'
 import ExportModal from './modals/ExportModal'
 import './MyFilter'
@@ -12,6 +11,8 @@ import VModal from 'vue-js-modal/dist/index.nocss.js'
 import 'vue-js-modal/dist/styles.css'
 import NameModal from './modals/NameModal';
 import BuildMapModal from './modals/BuildMapModal';
+import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
+import InterpolationModal from './modals/InterpolationModal';
 import ContextMenu from 'vue-context-menu';
 import moment from 'moment';
 import IsolinesMenu from "./modals/IsolinesMenu";
@@ -101,6 +102,7 @@ export default {
         PrinterModal,
         BuildMapModal,
         BuildMapSpecificModal,
+        InterpolationModal,
         ReportModal,
         ExportModal,
         TopMenu,
@@ -190,6 +192,35 @@ export default {
                     $self.bubblesData = response.data;
                     $self.showBubblesByDate();
                 }
+                this.SET_LOADING(false);
+            })
+            .catch(function(e){
+                $self.$notifyError($self.trans('map_constructor.import_error'));
+                $self.SET_LOADING(false);
+            });
+        },
+        getInterpolationData(files, params) {
+            this.SET_LOADING(true);
+            let formData = new FormData();
+            let $self = this;
+            formData.append('dataFile', files.dataFile);
+            if (typeof files.contourFiles !== "undefined" && files.contourFiles.length > 0) {
+                files.contourFiles.forEach(item => {
+                    formData.append('contourFiles[]', item);
+                })
+            }
+            formData.append('params', JSON.stringify(params));
+            axios.post(this.localeUrl('map-constructor/get_interpolation_data'),
+              formData,
+              {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              }
+            ).then((response) => {
+                const projectRef = this.projects[this.activeProjectIndex].key;
+                this.$refs[projectRef][0].base64Data = response.data;
+                this.$refs[projectRef][0].importData(response.data, 'grid_without_isolines');
                 this.SET_LOADING(false);
             })
             .catch(function(e){
@@ -346,6 +377,44 @@ export default {
             } else {
                 this.$notifyError(this.trans('map_constructor.get_dzo_error'));
             }
+        },
+        interpolationModal() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const $self = this;
+            this.$modal.show(InterpolationModal, {
+                buildMap() {
+                    if (this.dataFile !== null) {
+                        const files = {};
+                        files.dataFile = this.dataFile
+                        const params = {
+                            trendFileData: this.trendFileData,
+                            interpolation_type: this.methodType,
+                            shape_x: this.shapeX,
+                            shape_y: this.shapeY,
+                        }
+                        if (this.selectedFilterType === 0) {
+                            params.number_of_levels = this.selectedFilterValue;
+                        } else {
+                            params.step = this.selectedFilterValue;
+                        }
+                        if (this.isVariogramModelShow) {
+                            params.variogram_model = this.variogramModel;
+                        }
+                        if (!this.lineFileDisabled && this.lineFilesData !== null) {
+                            params.contours_type = this.lineFileType;
+                            files.contourFiles = this.lineFilesData
+                        }
+                        $self.getInterpolationData(files, params);
+                    }
+                    $self.SET_LOADING(true);
+                    this.$modal.hideAll();
+                }
+            }, {
+                styles: "background-color: rgb(51, 57, 117);",
+            });
         },
         saveName(name) {
             this.$modal.hideAll();

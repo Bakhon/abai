@@ -9,6 +9,7 @@ use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use App\Services\PolygonsService;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +58,30 @@ class MapConstructorController extends Controller
         $file = $request->file('file');
 
         return $this->polygonsService->getDataFromExcel($file);
+    }
+
+    public function getInterpolationData(Request $request): array {
+        $dataFile = $request->file('dataFile');
+        $files = [[
+            'name' => 'wells_file',
+            'contents' => Utils::tryFopen($dataFile->path(), 'r'),
+            'filename' => $dataFile->getClientOriginalName()
+        ]];
+        $contourFiles = $request->file('contourFiles');
+        if ($contourFiles) {
+            $contourFilesToSend = [];
+            foreach ($contourFiles as $contourFile) {
+                $contourFilesToSend += [
+                    'name' => 'external_contours_files',
+                    'contents' => Utils::tryFopen($contourFile->path(), 'r'),
+                    'filename' => $contourFile->getClientOriginalName()
+                ];
+            }
+            $files[] = $contourFilesToSend;
+        }
+        $params = (array)json_decode($request->get('params'));
+
+        return $this->polygonsService->getInterpolationData($files, $params);
     }
 
     public function getStructure(Request $request): array {

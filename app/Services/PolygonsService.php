@@ -67,6 +67,13 @@ class PolygonsService
         ])->getBody()->getContents());
     }
 
+    public function getInterpolationData(array $files, array $params): array {
+        return (array)json_decode($this->client->request('POST', '/polygons/interpolator', [
+            'multipart' => $files,
+            'query' => http_build_query($params),
+        ])->getBody()->getContents());
+    }
+
     public function getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue): array {
         $type = 'number_of_levels';
         if ((int)$selectedFilterType === 1) {

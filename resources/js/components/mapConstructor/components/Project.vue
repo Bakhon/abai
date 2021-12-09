@@ -47,6 +47,7 @@ export default {
             x2: 0,
             y1: 0,
             y2: 0,
+            polygonsType: null,
         }
     },
     methods: {
@@ -54,6 +55,7 @@ export default {
             'SET_LOADING'
         ]),
         importData(data, type) {
+            this.polygonsType = type;
             this.initMap(data, type).then(() => {
                 if (this.isGridMap(type)) {
                     this.base64Data = data;
@@ -127,7 +129,10 @@ export default {
                     color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
-            const isolinesShow = typeof data.show !== "undefined" ? data.show : true;;
+            let isolinesShow = typeof data.show !== "undefined" ? data.show : true;
+            if (this.polygonsType === 'grid_without_isolines') {
+                isolinesShow = false;
+            }
             let layerGroup = new LayerGroup();
             layerGroup.type = 'polygon';
             const polygonsCount = data.polygons_per_levels.length;
