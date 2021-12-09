@@ -1,8 +1,13 @@
 <template>
   <li class="has-child">
-    <input id="tree-controll1" type="checkbox" v-model="isOpen" /><span
+    <input
+      id="tree-controll1"
+      type="checkbox"
+      :value="template.name"
+      v-model="computedIsOpenedTrees"
+    /><span
       class="tree-control"
-      :class="{ rotate: !isOpen }"
+      :class="{ rotate: !computedIsOpenedTrees.includes(template.name) }"
     ></span>
     <label>
       <i
@@ -28,14 +33,20 @@ export default {
   name: "MonitoringTreeMenu",
   props: {
     template: Object,
+    isOpenedTrees: Array,
   },
   components: {
     MonitoringTreeMenuChild,
   },
-  data() {
-    return {
-      isOpen: false,
-    };
+  computed: {
+    computedIsOpenedTrees: {
+      get() {
+        return this.isOpenedTrees;
+      },
+      set(value) {
+        this.$emit("update:isOpenedTrees", value);
+      },
+    },
   },
 };
 </script>

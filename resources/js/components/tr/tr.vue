@@ -225,7 +225,14 @@
     </modal>
     <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
       <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
-        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+        <div class="header-total-div">
+          <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+          <div class="exit-div">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
+              {{ trans('pgno.zakrit') }}
+            </button>
+          </div>
+        </div>
         <totalTable :all_summary_total= all_summary_total />
       </div>
     </modal>
@@ -421,25 +428,11 @@
                 style="background: #272953; border: none; margin-left: 10px;"
                 v-bind:title="trans('tr.add_well')"
                 >
-                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.5 15.5001V0.5H17.5001V15.5001H0.5Z" stroke="white"/>
-<mask id="path-2-inside-1_1110_210" fill="white">
-<rect x="2.5" y="2.5" width="3.43145" height="3.36111" rx="0.4"/>
-</mask>
-<rect x="2.5" y="2.5" width="3.43145" height="3.36111" rx="0.4" stroke="white" stroke-width="1.4" mask="url(#path-2-inside-1_1110_210)"/>
-<path d="M2.85 13.1C2.85 13.1276 2.87239 13.15 2.9 13.15H5.53145C5.55906 13.15 5.58145 13.1276 5.58145 13.1V8.01806C5.58145 7.99044 5.55906 7.96806 5.53145 7.96806H2.9C2.87239 7.96806 2.85 7.99044 2.85 8.01806V13.1Z" stroke="white" stroke-width="0.7"/>
-<path d="M8 12.0001H13.6C13.8209 12.0001 14 11.821 14 11.6001V8" stroke="white" stroke-width="0.7"/>
-<path d="M9 11L8.00707 11.9929C8.00317 11.9968 8.00317 12.0032 8.00707 12.0071L9 13" stroke="white" stroke-width="0.7" stroke-linecap="round"/>
-<path d="M15 9L14.0071 8.00707C14.0032 8.00317 13.9968 8.00317 13.9929 8.00707L13 9" stroke="white" stroke-width="0.7" stroke-linecap="round"/>
-<mask id="path-7-inside-2_1110_210" fill="white">
-<rect width="7.72075" height="3.36111" rx="0.4" transform="matrix(-1 0 0 1 15.5 2.5)"/>
-</mask>
-<rect width="7.72075" height="3.36111" rx="0.4" transform="matrix(-1 0 0 1 15.5 2.5)" stroke="white" stroke-width="1.4" mask="url(#path-7-inside-2_1110_210)"/>
-</svg>
+                <img class="cursor-pointer" src="/img/tr/total_report.svg" alt="">
 
               </button>
               <button
-                v-if="isPermission"
+                v-if="isPermission && isEditable"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
@@ -565,7 +558,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission && isMaxDate"
+                v-if="!isEdit && isPermission && isMaxDate && isEditable"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -6936,6 +6929,15 @@ table::-webkit-scrollbar-corner {
 .total-modal-header {
   color: #fff;
   font-size: 16px;
+  padding-left: 10px;
+
+}
+.header-total-div {
+  display: flex;
+  padding-top: 9px;
+}
+.exit-div {
+  padding-left: calc(100% - 378px);
 }
 
     .table-outer{

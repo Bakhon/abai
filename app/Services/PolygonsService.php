@@ -66,4 +66,17 @@ class PolygonsService
             ]],
         ])->getBody()->getContents());
     }
+
+    public function getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue): array {
+        $type = 'number_of_levels';
+        if ((int)$selectedFilterType === 1) {
+            $type = 'step';
+        }
+        return (array)json_decode($this->client->request('POST', '/polygons/base64gridmap', [
+            RequestOptions::BODY => json_encode($base64Data),
+            'query' => http_build_query([
+                $type => (int)$selectedFilterValue,
+            ]),
+        ])->getBody()->getContents());
+    }
 }

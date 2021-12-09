@@ -28,6 +28,13 @@
                         <td>{{formatNumber(date.accumulateWaterInjection)}}</td>
                         <td>{{date.hoursWorked.toFixed(0)}} дн.</td>
                     </tr>
+                    <tr>
+                        <td rowspan="2">Итого</td>
+                        <td>{{ formatNumber(this.getTotalWaterInjection().toFixed(1)) }}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -41,6 +48,7 @@
     export default {
         props: {
             changeColumnsVisible: Function,
+            wellExplDate: String
         },
         data() {
             return {
@@ -92,7 +100,9 @@
             },
             fillDates() {
                 this.dates = [];
-                for (let i = 2008; i <= 2021; i++) {
+                let explYear = moment(this.wellExplDate, 'YYYY/MM/DD').year();
+                let currentYear = moment().year();
+                for (let i = explYear; i <= currentYear; i++) {
                     let obj = {
                         'id': i,
                         'month': null,
@@ -142,7 +152,7 @@
                         isChecked = true;
                     }
                     summary.isChecked = isChecked;
-                    calculated.push(summary);
+                    calculated.push(summary); 
                     calculated = calculated.concat(sorted);
                 });
                 return calculated;
@@ -153,13 +163,20 @@
                 let dailyWaterInjection =  _.meanBy(filtered, 'dailyWaterInjection');
                 if (isNaN(dailyWaterInjection)) {
                     dailyWaterInjection = 0;
-                }
-                summary['waterInjection'] = _.sumBy(filtered, 'dailyWaterInjection');
+                }               
+                summary['waterInjection'] = _.sumBy(filtered, 'waterInjection');               
                 summary['dailyWaterInjection'] = dailyWaterInjection;
                 summary['accumulateWaterInjection'] = 0;
-                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
+                summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');         
                 return summary;
             },
+            getTotalWaterInjection(){
+              let sum = 0;                   
+              _.forEach(this.dates, (item) => {                  
+                 sum += item.waterInjection;                 
+              });                                        
+              return sum/2;
+            },                     
             formatNumber(num) {
                 return new Intl.NumberFormat("ru-RU").format(num);
             },
@@ -177,7 +194,7 @@
         },
         mounted() {
             this.fillDates();
-            this.dates = this.getHistorical();
+            this.dates = this.getHistorical();            
         },
         computed: {
             ...bigdatahistoricalVisibleState(['injectionHistoricalData']),

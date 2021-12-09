@@ -1,7 +1,13 @@
 import translation from "../../VueTranslation/Translation";
-import { getTemplateData } from "../../components/PlastFluids/services/templateService";
+import {
+  getTemplateData,
+  getUploadTemplates,
+} from "../../components/PlastFluids/services/templateService";
 import { getTableData } from "../../components/PlastFluids/services/mapService";
-import { convertToFormData } from "../../components/PlastFluids/helpers";
+import {
+  convertToFormData,
+  convertTemplateData,
+} from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -12,6 +18,7 @@ const plastFluidsLocal = {
     downloadFileData: {},
     tableFields: [],
     tableRows: [],
+    templates: [],
     currentTemplate: {},
     tableState: "default",
     loading: false,
@@ -50,6 +57,9 @@ const plastFluidsLocal = {
     },
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
+    },
+    SET_TEMPLATES(state, payload) {
+      state.templates = payload;
     },
     SET_CURRENT_TEMPLATE(state, payload) {
       state.currentTemplate = payload;
@@ -149,32 +159,48 @@ const plastFluidsLocal = {
       });
       commit("SET_FILE_LOG", entries);
     },
-    async getTableData({}, obj) {
-      const payload = new FormData();
-      for (let key in obj.mutatedData) {
-        payload.append(key, obj.mutatedData[key]);
-      }
-      const data = await getTemplateData(payload, obj.url);
+    async getTableData({}, postData) {
+      const payload = convertToFormData(postData);
+      const data = await getTemplateData(payload);
       return data;
     },
-    async handleTableData({ commit, state, dispatch }, incomeData) {
+    async getTemplates({ commit }, payload) {
+      const postData = new FormData();
+      postData.append("user_id", payload.userID);
+      const data = await getUploadTemplates(postData);
+      commit("SET_TEMPLATES", convertTemplateData(data, payload.lang));
+      const template = data.find(
+        (template) => template.id === payload.templateID
+      );
+      commit("SET_CURRENT_TEMPLATE", template);
+    },
+    async handleTableData({ state, rootState, commit, dispatch }, incomeData) {
       try {
+        const { template, type, ...rest } = incomeData;
         commit("SET_LOADING", true);
+        let horizonIDs = "None";
+        let blockIDs = "None";
+        if (type === "analysis") {
+          if (rootState.plastFluids.currentSubsoilHorizon.length)
+            horizonIDs = rootState.plastFluids.currentSubsoilHorizon.map(
+              (horizon) => horizon.horizon_id
+            );
+          if (state.currentBlocks.length)
+            blockIDs = state.currentBlocks.map((block) => block.block_id);
+        }
         const postDataMock = {
-          horizons: "None",
-          blocks: "None",
+          field_id: rootState.plastFluids.currentSubsoilField[0].field_id,
+          horizons: horizonIDs,
+          blocks: blockIDs,
           row_on_page: 30,
           page_number: 1,
+          report_id: 1,
         };
-        let merged = { ...postDataMock, ...incomeData };
-        const url = state.currentTemplate.api_url ?? undefined;
-        const data = await dispatch("getTableData", {
-          mutatedData: merged,
-          url,
-        });
-        commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
-        commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
-        commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
+        let merged = { ...postDataMock, ...rest };
+        const data = await dispatch("getTableData", merged);
+        template ? commit("SET_CURRENT_TEMPLATE", template) : "";
+        commit("SET_TABLE_FIELDS", data.header[0]);
+        commit("SET_TABLE_ROWS", data.table.rows);
       } catch (error) {
         alert(error);
       } finally {

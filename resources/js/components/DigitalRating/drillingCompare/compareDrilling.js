@@ -241,14 +241,14 @@ export default {
       legend.onAdd = function() {
         let div = L.DomUtil.create("div", "legend");
         div.innerHTML += '<i class="far fa-circle" style="color: #fcad00"></i>' +
-          '<span> - добывающая проектная скважина</span><br>';
+          '<span> - Проектная добывающая скважина</span><br>';
         div.innerHTML += '<div id="triangle" style="display: inline-block;\n' +
           'width: 0;\n' +
           'height: 0;\n' +
           'border-style: solid;\n' +
-          'border-width: 0 8px 8px 8px;\n' +
+          'border-width: 0 7px 7px 7px;\n' +
           'border-color: transparent transparent #fcad00 transparent;"></div>' +
-          '<span> - нагнетательный скважин</span>';
+          '<span> - Проектная нагнетательная скважина</span>';
         return div;
       };
 

@@ -11,34 +11,10 @@
       "is_editable": false
     },
     {
-      "title": "pzat",
-      "code": "pzat",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "OTP"
-          }
-        }
-      },
-      "table":"prod.gdis_current_value",
-      "type": "float",
-      "is_editable": true
-    },
-    {
-      "title": "ptr",
-      "code": "ptr",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "TBP"
-          }
-        }
-      },
-      "table":"prod.gdis_current_value",
+      "title": "target",
+      "code": "target",
+      "column":"target",
+      "table":"prod.gdis_current",
       "type": "float",
       "is_editable": true
     },
@@ -67,6 +43,38 @@
           "table": "dict.metric",
           "fields": {
             "code": "STLV"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pzat",
+      "code": "pzat",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OTP"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pbuf",
+      "code": "pbuf",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BP"
           }
         }
       },
@@ -112,15 +120,7 @@
       "table":"prod.gdis_current_value",
       "type": "float",
       "is_editable": true
-    },
-    {
-      "title": "target",
-      "code": "target",
-      "column":"target",
-      "table":"prod.gdis_current",
-      "type": "float",
-      "is_editable": true
-    },
+    },    
     {
       "title": "pri",
       "code": "pri",
@@ -264,23 +264,7 @@
       "table":"prod.gdis_current_value",
       "type": "float",
       "is_editable": true
-    },
-    {
-      "title": "pbuf",
-      "code": "pbuf",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "BP"
-          }
-        }
-      },
-      "table":"prod.gdis_current_value",
-      "type": "float",
-      "is_editable": true
-    },
+    },    
     {
       "title": "pstat",
       "code": "pstat",

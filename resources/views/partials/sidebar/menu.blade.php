@@ -128,6 +128,12 @@
                                         {{ trans('economic_reference.analysis_of_actual_stops') }}
                                     </a>
                                 </li>
+
+                                <li class="left-menu-li">
+                                    <a href="{{route('eco_refs_list')}}">
+                                        {{ trans('economic_reference.input_params') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -140,7 +146,7 @@
 @yield('sidebar_menu_additional')
 
 <div class="nav_bottom">
-<a href="#"
+<a href="{{route('faq')}}"
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/nav_icon1.svg" class="companyLogo">

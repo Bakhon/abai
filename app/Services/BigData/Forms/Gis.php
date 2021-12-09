@@ -212,8 +212,13 @@ class Gis extends PlainForm
 
         foreach ($existedFiles as $existedFile) {
             $value = array_filter($values, function ($item) use ($existedFile) {
-                if (is_array($item) && $item['id'] === $existedFile->document_id) {
-                    return true;
+                if (is_array($item)) {
+                    if (isset($item['id']) && $item['id'] === $existedFile->document_id) {
+                        return true;
+                    }
+                    if (isset($item['value']) && $item['value'] === $existedFile->document_id) {
+                        return true;
+                    }
                 }
                 return false;
             });

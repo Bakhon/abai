@@ -74,6 +74,44 @@
             </tbody>
           </table>
         </div>
+        <div class="rating-analysis__diagram">
+          <div class="rating-analysis__diagram--header">
+            <btn-dropdown :list="getYearList" @select="handleSelectYear" class="mr-10px">
+              <template #title>
+                {{ trans('digital_rating.year') }}
+              </template>
+            </btn-dropdown>
+          </div>
+          <div class="rating-analysis__diagram--body">
+            <div class="rating-analysis__chart">
+              <div class="rating-analysis__chart--header">
+                <span>{{ trans('digital_rating.oilProductionLossDistribution') }},
+                  {{ trans('digital_rating.thousandTons') }}</span>
+              </div>
+              <div class="rating-analysis__chart--body">
+                <apexchart
+                  height="350"
+                  type="bar"
+                  :series="barChartData"
+                  :options="barChartOptions"
+                />
+              </div>
+            </div>
+            <div class="rating-analysis__chart">
+              <div class="rating-analysis__chart--header">
+                <span>{{ trans('digital_rating.oilProductionLossDistribution') }}, %</span>
+              </div>
+              <div class="rating-analysis__chart--body">
+                <apexchart
+                  height="350"
+                  type="donut"
+                  :series="donutChartData"
+                  :options="donutChartOptions"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -145,16 +183,33 @@
     margin-bottom: 6px;
   }
 
-  &__chart {
-    p {
-      background: #323370;
-      border: 1px solid #545580;
-      box-sizing: border-box;
-      padding: 6px;
-      margin: 0;
+  &__diagram {
+    width: 30%;
+    margin-left: 6px;
+
+    &--header {
+      background-color: #363B68;
+      padding: 8px;
+      text-align: center;
     }
-    div {
-      border: 3px solid #545580;
+
+    &--body {
+      border: 5px solid #363B68;
+      border-top: none;
+      padding: 4px;
+    }
+  }
+
+  &__chart {
+
+    &--header {
+      background-color: #323370;
+      padding: 4px 8px;
+    }
+
+    &--body {
+      border: 5px solid #363B68;
+      padding: 4px;
     }
   }
 }

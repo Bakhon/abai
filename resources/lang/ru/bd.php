@@ -426,6 +426,29 @@ return [
             'gas_f' => 'Средний газовый фактор',
             'title2' => 'Проект бурения'
         ],
+        'well_edit' => [
+            'title' => 'Редактирование скважины',
+            'main' => 'Основное',
+            'numb' => 'Номер скважины',
+            'data' => 'Дата создания проекта',
+            'sv_well' => 'Свойства скважины',
+            'alt' => 'Альтитуда',
+            'alt_h' => 'Превышение стола ротора',
+            'coord' => 'Координатная система',
+            'coord_x' => 'Координаты устья X',
+            'coord_y' => 'Координаты устья Y',
+            'well_t' => 'Вид скважины',
+            'coord_x_p' => 'Координаты забоя X',
+            'coord_y_p' => 'Координаты забоя Y',
+            'str_date' => 'Дата начала бурения',
+            'end_date' => 'Дата окончания бурения',
+            'podr' => 'Подрядчик',
+            'nom_dog' => 'Номер договора',
+            'data_dog' => 'Дата договора',
+            'depth' => 'Проектная глубина, м',
+            'gas_f' => 'Средний газовый фактор',
+            'title2' => 'Проект бурения'
+        ],
         'gas_production' => [
             'title' => 'Добыча газа',
             'measure_last_month' => 'Замеры по скважине за последний месяц',
@@ -477,7 +500,7 @@ return [
             'oil_production' => 'Добыча нефти (т)',
             'water_injection' => 'Закачка воды (м3)',
             'water_production' => 'Добыча воды (м3)',
-            'liquid_production' => 'Добыча жидкости (м3)',
+            'liquid_production' => 'Добыча жидкости (т)',
             'oil_injection' => 'Сдача нефти (т)',
             'gas_production' => 'Добыча газа (м3)',
             'steam_injection' => 'Закачка пара (м3)',
@@ -1484,8 +1507,19 @@ return [
             'title' => 'Монтаж оборудования',
             'equip_type' => 'Вид оборудования',
             'equip_element' => 'Элемент оборудования',
-            'installation' => 'Монтаж оборудования',
-            'disassembling' => 'Демонтаж оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования'
+        ],
+        'underground_equipment_element' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+        ],
+        'underground_equipment_params' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
             'installation_date' => 'Дата установки',
             'installation_parameters' => 'Параметры установки оборудования'
         ],
@@ -1493,6 +1527,15 @@ return [
             'title' => 'Демонтаж оборудования',
             'disassembling' => 'Демонтаж',
             'disassembling_date' => 'Дата демонтажа',
+        ],
+        'underground_equipment_repair' => [
+            'title' => 'Ремонт оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования',
+            'work_info' => 'Проделанные работы',
+            'repair_date' => 'Дата проведения ремонта'
         ],
         'tech_mode_inj' => [
             'title' => 'Нагнетательные скважины',

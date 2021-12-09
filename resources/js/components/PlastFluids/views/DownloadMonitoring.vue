@@ -12,13 +12,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import Header from "../components/Header.vue";
 import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
 import MonitoringDownloadTable from "../components/MonitoringDownloadTable.vue";
 import SmallCatLoader from "../components/SmallCatLoader.vue";
-import { getUploadTemplates } from "../services/templateService";
-import { convertTemplateData } from "../helpers";
 
 export default {
   name: "DownloadMonitoring",
@@ -28,45 +26,33 @@ export default {
     MonitoringDownloadTable,
     SmallCatLoader,
   },
-  data() {
+  props: {
+    user: Object,
+  },
+  provide() {
     return {
-      templates: [],
-      currentPage: 1,
-      perPage: 15,
-      pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
+      userID: this.user.id,
+      userName: this.user.name,
     };
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading"]),
+    ...mapState("plastFluidsLocal", ["loading", "templates"]),
   },
   methods: {
-    async getTemplates() {
-      const data = await getUploadTemplates();
-      this.templates = convertTemplateData(data, this.currentLang);
-    },
+    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_TEMPLATE"]),
+    ...mapActions("plastFluidsLocal", ["getTemplates"]),
   },
   mounted() {
-    this.getTemplates();
+    this.getTemplates({
+      userID: this.user.id,
+      lang: this.currentLang,
+      templateID: 1,
+    });
   },
 };
 </script>
 
 <style scoped>
-:root {
-  box-sizing: border-box;
-}
-
-*,
-::before,
-::after {
-  box-sizing: inherit;
-}
-
-a {
-  text-decoration: none;
-  color: #fff;
-}
-
 .top-wrapper {
   width: 100%;
 }

@@ -138,7 +138,13 @@ class WellDocument extends PlainForm
     private function getFilesInfo(array $fileIds)
     {
         $attachmentService = app()->make(AttachmentService::class);
-        return $attachmentService->getInfo($fileIds);
+        return $attachmentService->getInfo($fileIds)->map(function ($file) {
+            return [
+                'id' => $file->id,
+                'filename' => $file->file_name,
+                'size' => $file->file_size
+            ];
+        });
     }
 
     private function updateFiles(int $id, array $files)

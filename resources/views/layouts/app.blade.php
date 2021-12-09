@@ -27,18 +27,21 @@
 </head>
 
 <body class="@yield('body_class')">
-@include('layouts.navbar')
-<div class="row flex-nowrap m-0" id="app">
+    @if (Request::path() != 'ru/faq')
+        @include('layouts.navbar')
+    @endif
+    <div class="row flex-nowrap m-0" id="app">
+        @if (Request::path() != 'ru/faq')
+            @include('layouts.head-sidebar')
+        @endif
 
-    @include('layouts.head-sidebar')
-
-    <div class="container-fluid col pt-md-10px mx-md-10px px-0 container-main">
-        <notifications position="top"></notifications>
-        <cat-loader></cat-loader>
-        @yield('content')
+        <div class="container-fluid col pt-md-10px mx-md-10px px-0 container-main">
+            <notifications position="top"></notifications>
+            <cat-loader></cat-loader>
+            @yield('content')
+        </div>
     </div>
-</div>
-@yield('custom_js')
+    @yield('custom_js')
 </body>
 
 </html>

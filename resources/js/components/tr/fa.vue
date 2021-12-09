@@ -85,9 +85,9 @@
         >
           <td class="calheader">{{trans('tr.monthly_fa')}}</td>
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
-          <input type="date" class="form-control" v-model="firstCalendarDate" />
+          <input type="date" class="form-control" v-model="firstMonthlyCalendarDate" />
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
-          <input type="date" class="form-control" v-model="secondCalendarDate" />
+          <input type="date" class="form-control" v-model="secondMonthlyCalendarDate" />
           <div class="fix_calendar">
                   <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form caldate"
                     >{{trans('tr.form')}}</a
@@ -1025,7 +1025,14 @@ export default {
     TrMultiselect,
   },
   computed: {
-    changeSecondCalendarDate() {
+    changeSecondMonthCalendarDate() {
+      const { firstMonthlyCalendarDate} = this;
+      var dynamicLastBegginingMonthDate = new Date(firstMonthlyCalendarDate)
+      this.dynamicLastBegginingMonthDate = dynamicLastBegginingMonthDate.setMonth(dynamicLastBegginingMonthDate.getMonth()-1);
+      this.secondMonthlyCalendarDate = dynamicLastBegginingMonthDate.toLocaleDateString("en-CA");
+      return this.secondMonthlyCalendarDate;
+    },
+    changeSecondWeeklyCalendarDate() {
       const { firstCalendarDate} = this;
       var dynamicLastBegginingWeekDate = new Date(firstCalendarDate)
       this.dynamicLastBegginingWeekDate = dynamicLastBegginingWeekDate.setDate(dynamicLastBegginingWeekDate.getDate()-7);
@@ -1036,6 +1043,7 @@ export default {
   data: function () {
     return {
       dynamicLastBegginingWeekDate: null,
+      dynamicLastBegginingMonthDate: null,
       postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
@@ -1082,6 +1090,8 @@ export default {
       lastBeginningWeekDate: null,
       startEndingWeekDate: null,
       startBeginningWeekDate: null,
+      firstMonthlyCalendarDate: null,
+      secondMonthlyCalendarDate: null,
     };
   },
   watch: {
@@ -1091,8 +1101,11 @@ export default {
     filter() {
       this.chooseField();
     },
+    firstMonthlyCalendarDate() {
+      this.changeSecondMonthCalendarDate;
+    },
     firstCalendarDate() {
-      this.changeSecondCalendarDate;
+      this.changeSecondWeeklyCalendarDate;
     },
   },
   methods: {
@@ -1236,9 +1249,9 @@ export default {
         });
     },
     chooseDate() {
-      const { firstCalendarDate, secondCalendarDate } = this;
-      var firstDate = firstCalendarDate.split("-");
-      var secondDate = secondCalendarDate.split("-");
+      const { firstMonthlyCalendarDate, secondMonthlyCalendarDate } = this;
+      var firstDate = firstMonthlyCalendarDate.split("-");
+      var secondDate = secondMonthlyCalendarDate.split("-");
       const month = firstDate[1];
       const previousMonth = secondDate[1];
       const year = firstDate[0];
@@ -1499,7 +1512,7 @@ export default {
           console.log("No data");
         }
         this.firstCalendarDate = firstWeek;
-        this.secondCalendarDate = lastWeek;
+        this.firstMonthlyCalendarDate = firstWeek;
         this.faTableHeader = this.trans('tr.period_of_act_data') + this.lastBeginningWeekDate + '-' + this.lastEndingWeekDate;
         this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.startBeginningWeekDate + '-' + this.startEndingWeekDate;
         this.faHeader = this.trans('tr.fa') + ' ' + this.startBeginningWeekDate + '-' + this.lastEndingWeekDate;

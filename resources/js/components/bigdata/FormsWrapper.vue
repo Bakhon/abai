@@ -38,7 +38,7 @@
         <div v-show="selector === 'org'" class="asside-db-tab-content__item asside-db-tab-content__item--org">
           <bigdata-org-select-tree
               v-if="selectedForm"
-              :key="`org_selector_${selectedForm.code}`"
+              :key="`org_selector_${selectedForm.structure_types ? selectedForm.structure_types.join('_') : ''}`"
               :currentWellId="orgTech.id"
               :query="searchOrgQuery"
               :structure-types="selectedForm.structure_types"
@@ -167,6 +167,7 @@ export default {
     },
     onFormSelected(selectedForm) {
       this.selectedForm = selectedForm
+      this.selector = 'org'
     },
     isTabSelected(tab) {
       return tab.orgTech === this.selectedTab.orgTech && tab.form.code === this.selectedTab.form.code

@@ -115,7 +115,7 @@
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -136,7 +136,7 @@
         modal-class="long-modal"
         :title="omgNgduFormModalTitle"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <wellOmgNgduForm v-if="selectedWell" :well="selectedWell"/>
       <guOmgNgduForm v-if="selectedGu" :gu="selectedGu"/>
@@ -153,7 +153,7 @@
         id="calc-form"
         :title="trans('monitoring.map.calculate-hydro')"
         :ok-only="true"
-        @ok="resetSelectedObjects()"
+        @ok="clearSelected()"
     >
       <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
     </b-modal>
@@ -247,6 +247,9 @@ export default {
       pipes: [],
       waterPipes: [],
       waterWellPoints: [],
+      bgsPoints: [],
+      kmbWellPoints: [],
+      bknsWellPoints: [],
       mapColorsMode: 'speedFlow',
       selectedDate: null,
       activeFilter: 'speedFlow',
@@ -268,7 +271,7 @@ export default {
       referentValue: 10,
       mapParams: {
         show_ppd: {
-          value: true,
+          value: false,
           title: 'Показать ППД',
           name: 'show_ppd'
         }
@@ -336,22 +339,16 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
-    resetSelectedObjects() {
-      this.selectedPipe = null;
-      this.selectedWell = null;
-      this.selectedGu = null;
-      this.selectedZu = null;
-      this.objectHovered = null;
-      this.pipeHovered = null;
-      this.pipeHoveredParameter = null;
-    },
     async initMap() {
       this.SET_LOADING(true);
       let data = await this.getMapData(this.gu);
       this.pipes = data.pipes;
       this.waterPipes = data.water_pipes;
-      this.selectedDate = data.date;
+      this.selectedDate = moment().toISOString(data.date);
       this.waterWellPoints = data.water_wells;
+      this.bgsPoints = data.bgs;
+      this.kmbWellPoints = data.kmb_wells;
+      this.bknsWellPoints = data.bkns_wells;
 
       this.viewState = {
         latitude: this.mapCenter.latitude,
@@ -490,10 +487,21 @@ export default {
       if (this.mapParams.show_ppd.value) {
         let waterWellPointsLayer = this.createIconLayer('icon-layer-water-well', this.waterWellPoints, 'water-well');
         let waterPipesLayer = this.createPipeLayer('water-pipes-layer', this.waterPipes);
+        let bgsPointsLayer = this.createIconLayer('icon-layer-bgs', this.bgsPoints, 'bgs-well');
+        let kmbWellPointsLayer = this.createIconLayer('icon-layer-kmb-well', this.kmbWellPoints, 'kmb-well');
+        let bknsWellPointsLayer = this.createIconLayer('icon-layer-bkns-well', this.bknsWellPoints, 'bkns-well');
+
         this.layersIds.push('icon-layer-water-well');
         this.layersIds.push('water-pipes-layer');
+        this.layersIds.push('icon-layer-bgs');
+        this.layersIds.push('icon-layer-kmb-well');
+        this.layersIds.push('icon-layer-bkns-well');
+
         this.layers.push(waterWellPointsLayer);
         this.layers.push(waterPipesLayer);
+        this.layers.push(bgsPointsLayer);
+        this.layers.push(kmbWellPointsLayer);
+        this.layers.push(bknsWellPointsLayer);
       }
     },
     async mapClickHandle(e) {
@@ -574,6 +582,15 @@ export default {
           break;
         case "water-well":
           iconAtlas = '/img/icons/map/well_normal.png';
+          break;
+        case "bgs-well":
+          iconAtlas = '/img/icons/map/well_problem.png';
+          break;
+        case "kmb-well":
+          iconAtlas = '/img/icons/map/well_stop.png';
+          break;
+        case "bkns-well":
+          iconAtlas = '/img/icons/map/well_working.png';
           break;
       }
 
@@ -802,10 +819,13 @@ export default {
       this.$bvModal.show('omg-ngdu-form');
     },
     clearSelected() {
-      this.selectedGu = null;
-      this.selectedWell = null;
-      this.selectedZu = null;
       this.selectedPipe = null;
+      this.selectedWell = null;
+      this.selectedGu = null;
+      this.selectedZu = null;
+      this.objectHovered = null;
+      this.pipeHovered = null;
+      this.pipeHoveredParameter = null;
     },
     optionClicked(option) {
       this.editMode = option.editMode;
@@ -1165,12 +1185,12 @@ export default {
 
       if (layerIndex !== -1){
         this.layers.splice(layerIndex, 1);
+        this.map.removeLayer(layerId);
+        this.updateLayers();
       }
     },
     layerRedraw(layerId, type, data) {
       this.deleteLayer(layerId);
-
-      this.updateLayers();
 
       if (type != 'pipe') {
         this.layers.push(this.createIconLayer(layerId, data, type));
@@ -1363,11 +1383,17 @@ export default {
     },
     mapRedraw() {
       this.deleteLayer('water-pipes-layer');
-      this.deleteLayer('icon-layer-water-well');
+      this.deleteLayer('icon-layer-water-well')
+      this.deleteLayer('icon-layer-bgs');
+      this.deleteLayer('icon-layer-kmb-well');
+      this.deleteLayer('icon-layer-bkns-well');
 
       if (this.mapParams.show_ppd.value) {
         this.layerRedraw('water-pipes-layer', 'pipe', this.waterPipes);
         this.layerRedraw('icon-layer-water-well', 'water-well', this.waterWellPoints);
+        this.layerRedraw('icon-layer-bgs', 'bgs-well', this.bgsPoints);
+        this.layerRedraw('icon-layer-kmb-well', 'kmb-well', this.kmbWellPoints);
+        this.layerRedraw('icon-layer-bkns-well', 'bkns-well', this.bknsWellPoints);
       }
 
       this.layerRedraw('path-layer', 'pipe', this.pipes);

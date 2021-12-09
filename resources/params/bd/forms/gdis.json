@@ -44,19 +44,17 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required|lte:10000|gte:0"
+                "validation": "nullable|lte:10000|gte:0"
               },
               {
                 "code": "research_target_text",
                 "type": "text",
-                "title": "aim",
-                "validation": "required"
+                "title": "aim"
               },
               {
                 "code": "conclusion_text",
                 "type": "text",
-                "title": "conclusion",
-                "validation": "required"
+                "title": "conclusion"
               }
             ]
           }
