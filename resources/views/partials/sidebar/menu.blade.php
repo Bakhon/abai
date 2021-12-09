@@ -128,6 +128,12 @@
                                         {{ trans('economic_reference.analysis_of_actual_stops') }}
                                     </a>
                                 </li>
+
+                                <li class="left-menu-li">
+                                    <a href="{{route('eco_refs_list')}}">
+                                        {{ trans('economic_reference.input_params') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

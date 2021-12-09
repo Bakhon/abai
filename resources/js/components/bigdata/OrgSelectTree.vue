@@ -8,7 +8,10 @@
         :handle-click="nodeClick"
         :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
         :isShowCheckboxes="false"
-        :isWell="isWell"
+        :active="isActiveNode"
+        :is-well="isWell"
+        :load-wells="isLoadWells"
+        :structure-types="structureTypes"
         :node="treeData"
     ></org-select-tree-item>
   </ul>
@@ -55,12 +58,16 @@ export default {
   },
   methods: {
     init() {
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`), {
+        params: {
+          types: this.structureTypes.join(',')
+        }
+      }).then(data => {
         this.tree = data.data
       })
     },
     nodeClick(node) {
-      if (this.structureTypes.length > 0 && !this.structureTypes.includes(node.type)) return false
+      if (!this.isActiveNode(node)) return false
       this.$emit('idChange', {
         id: node.id,
         type: node.type,
@@ -68,18 +75,30 @@ export default {
         fullName: node.full_name
       })
     },
+    isActiveNode(node) {
+      if (!this.structureTypes) return true
+      return this.structureTypes
+          .filter(type => {
+            if (type.indexOf(':') === -1) return node.type.toLowerCase() === type.toLowerCase()
+            let typeWithSub = type.toLowerCase().split(':')
+            return node.type.toLowerCase() === typeWithSub[0] && node.sub_type.toLowerCase() === typeWithSub[1]
+          })
+          .length > 0
+    },
     isNodeOnBottomLevelOfHierarchy: function (node) {
       return node.type !== 'org'
     },
     isWell: function (node) {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
+    isLoadWells() {
+      return this.structureTypes.includes('well')
+    },
     getWells: function (child) {
-      if (!this.structureTypes.includes('well')) {
+      if (!this.isLoadWells()) {
         child.isLoading = false
         return
       }
-
 
       let node = child.node
       this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {

@@ -1,7 +1,7 @@
 <template>
-  <div class="bd-forms col-12 p-0 pl-2 h-100">
-    <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3" v-if="renderComponent">
+  <div class="bd-forms col-12 p-0  ">
+    <div class="blueblock m-0">
+      <div class="wells-select-block m-0 " v-if="renderComponent">
         <tree-view
             v-for="(treeData, index) in selectedObjects[currentOption.name]"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"

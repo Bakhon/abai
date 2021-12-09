@@ -56,7 +56,7 @@ class EconomicAnalysisController extends Controller
 
     public function index(): View
     {
-        return view('economic.analysis');
+        return view('economic.analysis.index');
     }
 
     public function inputParams(): View

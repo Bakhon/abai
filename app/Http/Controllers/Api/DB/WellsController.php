@@ -13,7 +13,6 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\TechModeOil;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\WellBlock;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -33,7 +32,8 @@ class WellsController extends Controller
 
     public function getStructureTree(StructureService $service, Request $request)
     {
-        return $service->getTreeWithPermissions();
+        $types = array_filter(explode(',', $request->get('types')));
+        return $service->getFormTree($types);
     }
 
     public function wellInfo($well)
@@ -193,7 +193,7 @@ class WellsController extends Controller
                         ->wherePivot('project_drill', '=', 'false')
                         ->wherePivot('casing_type', '=', '8', 'or')
                         ->WherePivot('casing_type', '=', '9')
-                        ->get(['prod.well_constr.od'])
+                        ->get(['prod.well_constr.nd'])
                         ->toArray();
 
         if($wellConstr){
@@ -204,9 +204,9 @@ class WellsController extends Controller
         $wellConstrOd = DB::connection('tbd')
                         ->table('prod.well_constr')
                         ->where('well', '=', $well->id)
-                        ->where('od', '!=', null)                        
-                        ->orderBy('id', 'desc')
-                        ->get('od')
+                        ->where('nd', '!=', null)                        
+                        ->orderBy('id', 'asc')
+                        ->get('nd')
                         ->toArray();   
         if($wellConstrOd){
         return $wellConstrOd[0];
@@ -336,6 +336,8 @@ class WellsController extends Controller
                 ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
                 ->where('m.code', '=', 'BND')
                 ->where('e.code', '=', 'CHK')
+                ->where('wq.well', $well->id)
+                ->orderBy('wq.dbeg', 'desc')
                 ->get('efp.value_double')
                 ->toArray();
 
