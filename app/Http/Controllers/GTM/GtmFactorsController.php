@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GTM;
 
+use App\Exports\PaegtmGtmFactorAnalysisExport;
 use App\Http\Controllers\Controller;
 use App\Models\Paegtm\GtmFactorAnalysis;
 use Carbon\Carbon;
@@ -9,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class GtmFactorsController extends Controller
 {
@@ -43,7 +46,9 @@ class GtmFactorsController extends Controller
 
         return $returnQuery ?
             $dzoGtmFactorsQuery :
-            $dzoGtmFactorsQuery->orderBy('gtm_date', 'desc')->get();
+            $dzoGtmFactorsQuery
+                ->where('status', __('paegtm.unsuccessful_gtm_filter'))
+                ->orderBy('gtm_date', 'desc')->get();
     }
 
     /**
@@ -78,6 +83,10 @@ class GtmFactorsController extends Controller
         return response()->json($result);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getFactorsChartData(Request $request): JsonResponse
     {
         $result = [];
@@ -127,5 +136,41 @@ class GtmFactorsController extends Controller
         ];
 
         return response()->json($result);
+    }
+
+    /**
+     * @param Request $request
+     * @return BinaryFileResponse
+     */
+    public function exportToExcel(Request $request)
+    {
+        $result = $this->getMainData($request);
+
+        return Excel::download(
+            new PaegtmGtmFactorAnalysisExport($result),
+            'gtm_factor_analysis.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getGtmsFactorAnalysisCount(Request $request): JsonResponse
+    {
+        $gtmFactorsQuery =  $this->getMainData($request, true);
+
+        $totalGtmsCount = $gtmFactorsQuery->count();
+        $unsuccessfulGtmsCount = with(clone $gtmFactorsQuery)->where('status', __('paegtm.unsuccessful_gtm_filter'))->count();
+        $successfulGtmsCount = with(clone $gtmFactorsQuery)->where('status', __('paegtm.successful_gtm_filter'))->count();
+
+
+        return response()->json([
+            'total_gtms_count' => $totalGtmsCount,
+            'successful_gtms_count' => $successfulGtmsCount,
+            'unsuccessful_gtms_count' => $unsuccessfulGtmsCount,
+            'successful_gtms_percent' => $totalGtmsCount ? round($successfulGtmsCount / $totalGtmsCount * 100, 1) : 0
+        ]);
     }
 }

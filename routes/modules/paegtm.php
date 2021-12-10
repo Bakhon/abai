@@ -28,6 +28,8 @@ Route::group(
                     Route::get('/get-accumulated-oil-data', 'GTM\AegtmController@getAccumulatedOilData');
                     Route::get('/get-gtm-factors-data', 'GTM\GtmFactorsController@getGtmFactorsData');
                     Route::get('/get-gtm-factors-chart-data', 'GTM\GtmFactorsController@getFactorsChartData');
+                    Route::post('/export-gtm-factors-analysis', 'GTM\GtmFactorsController@exportToExcel');
+                    Route::get('/get-gtms-factor-analysis-count', 'GTM\GtmFactorsController@getGtmsFactorAnalysisCount');
                 });
             }
         );

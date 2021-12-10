@@ -38,7 +38,7 @@
         "name": "Анализ запускных параметров",
         "component": {
           "name": "child-component",
-          "template": "<div><gtm-aegtm-unsuccessful-distribution></gtm-aegtm-unsuccessful-distribution></div>",
+          "template": "<div><gtm-aegtm-starting-parameters></gtm-aegtm-starting-parameters></div>",
           "parentType": "aegtm"
         },
         "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",

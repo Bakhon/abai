@@ -2,45 +2,55 @@
     <div>
         <div class="row m-0 pl-1 pt-1">
             <div class="gtm-dark col-lg-10 p-2 mb-2">
-
-                <div class="block-header block-header pt-1 pb-3">
-                    {{ trans('paegtm.distribution_of_unsuccessful_gtm_title') }}
+                <div class="d-flex justify-content-between">
+                        <div class="block-header block-header pt-1 pb-3">
+                            {{ trans('paegtm.distribution_of_unsuccessful_gtm_title') }}
+                        </div>
+                        <button class="download-gtm-factor-analysis-table mt-2" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="download-icon" src="/img/gno/download.svg" alt="">
+                            {{ trans('paegtm.download') }}  <img class="bottom-arrow-icon" src="/img/gno/bottom-arrow.svg" alt="">
+                        </button>
+                        <div class="dropdown-menu gtm-dropdown-menu">
+                            <a class="dropdown-item" href="#" @click="downloadPdf()">PDF</a>
+                            <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                        </div>
                 </div>
 
                 <table class="table table-striped text-center text-white distribution-table mb-2">
                     <thead>
                     <tr>
                         <th class="align-middle" rowspan="2">№</th>
-                        <th class="align-middle" rowspan="2">ДЗО</th>
-                        <th class="align-middle" rowspan="2">ДЗО (сокр.)</th>
-                        <th class="align-middle" rowspan="2">№ Скв</th>
-                        <th class="align-middle" rowspan="2">м/р</th>
-                        <th class="align-middle" colspan="4">Параметры до ГТМ</th>
-                        <th class="align-middle" rowspan="2">Вид ГТМ</th>
-                        <th class="align-middle" rowspan="2">Дата проведения ГТМ</th>
-                        <th class="align-middle" colspan="3">Планируемые параметры ГТМ</th>
-                        <th class="align-middle" colspan="4">Параметры после ГТМ</th>
-                        <th class="align-middle" colspan="2">Отклонение план/факт</th>
-                        <th class="align-middle" rowspan="2">Фактор неуспешности</th>
-                        <th class="align-middle" rowspan="2">Причина недостижения</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.dzo') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.dzo_short') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.uwi') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.oilfield') }}</th>
+                        <th class="align-middle" colspan="4">{{ this.trans('paegtm.params_before_gtm') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.gtmType') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.gtm_date') }}</th>
+                        <th class="align-middle" colspan="3">{{ this.trans('paegtm.gtm_plan_params') }}</th>
+                        <th class="align-middle" colspan="4">{{ this.trans('paegtm.params_after_gtm') }}</th>
+                        <th class="align-middle" colspan="2">{{ this.trans('paegtm.gtm_params_deviation') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.gtm_failure_factor') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.gtm_failure_reason') }}</th>
                     </tr>
                     <tr>
-                        <th class="align-middle" rowspan="2">Индекс пласта до ГТМ</th>
-                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
-                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
-                        <th class="align-middle" rowspan="2">обв., %</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.formation_index_before_gtm') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_liq_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_oil_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.wct_percent') }}</th>
 
-                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
-                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
-                        <th class="align-middle" rowspan="2">обв., %</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_liq_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_oil_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.wct_percent') }}</th>
 
-                        <th class="align-middle" rowspan="2">Индекс пласта после ГТМ</th>
-                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
-                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
-                        <th class="align-middle" rowspan="2">обв., %</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.formation_index_after_gtm') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_liq_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_oil_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.wct_percent') }}</th>
 
-                        <th class="align-middle" rowspan="2">Qж, м3/сут</th>
-                        <th class="align-middle" rowspan="2">Qн, т/сут</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_liq_m3_day') }}</th>
+                        <th class="align-middle" rowspan="2">{{ this.trans('paegtm.q_oil_m3_day') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -196,22 +206,7 @@
                     </div>
                 </div>
                 <div class="gtm-dark mt-2 row m-0 mb-2">
-                    <div class="gtm-indicator-item flex-fill d-inline-block p-2">
-                        <div class="bigNumber">356 <span class="units">{{ trans('paegtm.successful_events_count') }}</span></div>
-                        <div class="title">{{ trans('paegtm.gtm_and_vns_count') }}</div>
-                        <div class="progress gtm-progress mb-0">
-                            <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width: 89%"
-                                >
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between m-0 mt-1">
-                            <div class="d-inline-block m-0 text-white dr-fw-700">89,25%</div>
-                            <div class="progressMax d-inline-block m-0">291 167</div>
-                        </div>
-                    </div>
+                    <successful-factors-indicator ref="successfulFactorsIndicatorRef"></successful-factors-indicator>
                 </div>
             </div>
         </div>

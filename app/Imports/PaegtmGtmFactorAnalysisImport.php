@@ -25,31 +25,24 @@ class PaegtmGtmFactorAnalysisImport implements ToModel, WithStartRow, WithBatchI
         'org_name_short' => 2,
         'uwi' => 3,
         'oilfield' => 4,
-
         'formation_index_before_gtm' => 5,
-
         'q_l_before_gtm' => 6,
         'q_o_before_gtm' => 7,
         'wct_before_gtm' => 8,
-
         'gtm' => 9,
         'gtm_date' => 10,
-
         'q_l_plan' => 11,
         'q_o_plan' => 12,
         'wct_plan' => 13,
-
         'formation_index_after_gtm' => 14,
-
         'q_l_after_gtm' => 15,
         'q_o_after_gtm' => 16,
         'wct_after_gtm' => 17,
-
         'q_l_deviation' => 18,
         'q_o_deviation' => 19,
-
         'failure_factor' => 20,
         'failure_reason' => 21,
+        'status' => 22,
     ];
 
     private $_orgs;
@@ -117,7 +110,9 @@ class PaegtmGtmFactorAnalysisImport implements ToModel, WithStartRow, WithBatchI
             'q_o_deviation' => $row[self::COLUMNS['q_o_deviation']],
 
             'failure_factor' => $row[self::COLUMNS['failure_factor']],
-            'failure_reason' => $row[self::COLUMNS['failure_reason']]
+            'failure_reason' => $row[self::COLUMNS['failure_reason']],
+
+            'status' => $row[self::COLUMNS['status']]
 
         ]);
     }

@@ -384,6 +384,13 @@
     }
 }
 
+.startting-params-table {
+    thead tr:nth-child(2) th {
+        position: sticky;
+        top: 29px;
+    }
+}
+
 .paegtm-gtm-table {
     overflow-y: scroll;
     display: block;
@@ -654,6 +661,51 @@
 .chart-wrapper {
     background: #2B2E5E;
     border: 1px solid #454D7D;
+}
+
+.download-gtm-factor-analysis-table {
+    text-align: center;
+    width: 125px;
+    height: 26px;
+    line-height: 25px;
+    font-size: 14px;
+    color: white;
+    border: 1px solid #454d7d;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: #334296;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+
+    a.dropdown-item {
+        color: white;
+        background: #334296;
+        font-size: 13px;
+    }
+
+    a.dropdown-item:hover {
+        background-color: #494AA5;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .bottom-arrow-icon {
+        padding-right: 5px;
+        padding-top: 10px;
+    }
+
+    .download-icon {
+        padding-top: 2px;
+    }
+}
+
+.gtm-dropdown-menu .dropdown-item {
+    padding: 5px;
+
+    &:hover {
+        border-radius: 0;
+    }
 }
 
 

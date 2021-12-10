@@ -33,7 +33,7 @@ export default {
                 name: this.trans('paegtm.plan') ,
                 data:  [28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138],
             },],
-            donutChartData: [45,60],
+            donutChartData: [],
             lineChartOptions: {
                 chart: {
                     type: 'line',
@@ -225,6 +225,23 @@ export default {
                     });
                 }
             });
+
+            this.axios.get(
+                this.localeUrl('/paegtm/aegtm/get-gtms-factor-analysis-count'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data && data.successful_gtms_count && data.unsuccessful_gtms_count) {
+                    this.donutChartData = [data.successful_gtms_count, data.unsuccessful_gtms_count]
+                }
+            }).catch(err => {
+                this.setNotify(this.trans('paegtm.empty_responce'), this.trans('app.error'), "danger")
+            }).finally(() => this.SET_LOADING(false));
+
+            if(typeof this.$refs.successfulFactorsIndicatorRef !== 'undefined') {
+                this.$refs.successfulFactorsIndicatorRef.onFilterChanged();
+            }
+
             this.SET_LOADING(false);
         },
         setNotify(message, title, type) {

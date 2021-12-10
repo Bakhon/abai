@@ -228,7 +228,6 @@ class AegtmController extends Controller
      */
     public function getAccumulatedOilData(Request $request): JsonResponse
     {
-        // учитывать фильтр по ГТМ
         $result = [];
 
         $period = CarbonPeriod::create($request->dateStart, '1 month', $request->dateEnd);
@@ -263,38 +262,39 @@ class AegtmController extends Controller
             return $q->where('org_name_short', $request->dzoName);
         });
 
-        $techEfficiencyQuery->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
+        $dateStart = Carbon::parse($request->input('dateStart'))->format('Y-m-d');
+        $dateEnd = Carbon::parse($request->input('dateEnd'))->format('Y-m-d');
+
+        $techEfficiencyQuery->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request, $dateStart, $dateEnd) {
             return $q->whereBetween('date_start_after_gtm', [
-                $request->input('dateStart'),
-                $request->input('dateEnd'),
-            ])
-                ->whereBetween('month', [
-                    $request->input('dateStart'),
-                    $request->input('dateEnd'),
-                ]);
+                $dateStart,
+                $dateEnd,
+            ]);
         });
 
-        $techEfficiencyResult = $techEfficiencyQuery->get();
+        $techEfficiencyResult = $techEfficiencyQuery->get()->sortBy('month');
 
         $techEfficiencyResult = $techEfficiencyResult
+            ->whereBetween('month', [
+                $dateStart,
+                $dateEnd,
+            ])
+            ->sortBy('month')
             ->groupBy(function($val) {
-                return Carbon::parse($val->date_start_after_gtm)->format('m.y');
+                return Carbon::parse($val->month)->format('m.y');
+            })
+            ->sortBy(function ($group, $key) {
+                return $group->first()->month;
+            })
+            ->map(function ($row) {
+                return $row->sum('actual_production_month') > 0 ? $row->sum('actual_production_month') : 0;
             });
 
-        $techEfficiencyResultSorted = $techEfficiencyResult->sortBy(function ($group, $key) {
-            return $group->first()->date_start_after_gtm;
-        });
+        $teResult = [];
 
-        $techEfficiencyResultSorted = $techEfficiencyResultSorted->map(function ($row) {
-            return $row->sum('actual_production_month');
-        });
-
-
-        $accumulatedValue = 0;
         foreach( $result['months'] as $month) {
-            if (isset($techEfficiencyResultSorted[$month])) {
-                $teResult[$month] = round(($techEfficiencyResultSorted[$month] + $accumulatedValue) / 1000, 2);
-                $accumulatedValue += $techEfficiencyResultSorted[$month];
+            if (isset($techEfficiencyResult[$month])) {
+                $teResult[$month] = round(($techEfficiencyResult[$month]) / 1000, 2);
             }
         }
 

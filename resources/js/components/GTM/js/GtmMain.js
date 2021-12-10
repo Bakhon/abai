@@ -232,9 +232,15 @@ export default {
                 if (data) {
                     this.chartData = data;
 
-                    this.$refs.newWellsDynamicsChart.updateOptions({ labels: data.months });
+                    if(typeof this.$refs.newWellsDynamicsChart !== 'undefined') {
+                        this.$refs.newWellsDynamicsChart.updateOptions({ labels: data.months });
+                    }
+
+                    if(typeof this.$refs.gtmDynamicsChart !== 'undefined') {
+                        this.$refs.gtmDynamicsChart.updateOptions({ labels: data.months });
+                    }
+
                     this.chartOptions.labels = data.months;
-                    this.$refs.gtmDynamicsChart.updateOptions({ labels: data.months });
                     this.chartOptions2.labels = data.months;
                 }
             }).finally(() => this.SET_LOADING(false));
