@@ -3,9 +3,17 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
     <subtitle v-if="wells.length" class="text-white text-wrap">
-      {{ trans('economic_reference.total') }}
-      {{ wellsByDates[currentDate].length }}
-      {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}
+      <span>
+        {{ trans('economic_reference.total') }}
+        {{ totalWellsCount }}
+        {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}.
+      </span>
+
+      <span v-for="profitability in wellsProfitability"
+            :key="profitability">
+        {{ trans(`economic_reference.wells_${profitability}`) }}:
+        {{ wellsByProfitability[profitability].length }}.
+      </span>
     </subtitle>
 
     <div class="d-flex align-items-center white-placeholder mt-2">
@@ -44,6 +52,44 @@
           @click="updateDate(dates[index])">
         {{ date }}
       </button>
+
+      <div class="ml-3 flex-grow-1 d-flex justify-content-end">
+        <div class="d-flex align-items-center form-check">
+          <input v-model="isVisibleProfitable"
+                 id="visible_profitable"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitable"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitable') }}
+          </label>
+        </div>
+
+        <div class="d-flex align-items-center form-check ml-2">
+          <input v-model="isVisibleProfitlessCat1"
+                 id="visible_profitless_cat_1"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitless_cat_1"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitless_cat_1') }}
+          </label>
+        </div>
+
+        <div class="d-flex align-items-center form-check ml-2">
+          <input v-model="isVisibleProfitlessCat2"
+                 id="visible_profitless_cat_2"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitless_cat_2"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitless_cat_2') }}
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="mt-2 well-map">
@@ -78,6 +124,9 @@ export default {
     },
     wells: [],
     currentDate: null,
+    isVisibleProfitable: true,
+    isVisibleProfitlessCat1: true,
+    isVisibleProfitlessCat2: true,
   }),
   async created() {
     this.form.interval_start = this.orgForm.interval_start
@@ -132,6 +181,10 @@ export default {
       this.wellsProfitability.forEach(profitability => {
         this.addMapSource(profitability)
       })
+
+      this.totalProfitability
+          .filter(profitability => !this.wellsProfitability.includes(profitability))
+          .forEach(profitability => this.removeMapSource(profitability))
     },
 
     addMapSource(profitability) {
@@ -160,10 +213,6 @@ export default {
       this.currentDate = date
 
       this.plotMap()
-
-      this.totalProfitability
-          .filter(profitability => !this.wellsProfitability.includes(profitability))
-          .forEach(profitability => this.removeMapSource(profitability))
     },
   },
   computed: {
@@ -219,7 +268,27 @@ export default {
     },
 
     wellsProfitability() {
-      return Object.keys(this.wellsByProfitability)
+      return Object
+          .keys(this.wellsByProfitability)
+          .filter(key => this.visibleProfitability.includes(key))
+    },
+
+    visibleProfitability() {
+      let keys = []
+
+      if (this.isVisibleProfitable) {
+        keys.push('profitable')
+      }
+
+      if (this.isVisibleProfitlessCat1) {
+        keys.push('profitless_cat_1')
+      }
+
+      if (this.isVisibleProfitlessCat2) {
+        keys.push('profitless_cat_2')
+      }
+
+      return keys
     },
 
     dates() {
@@ -239,10 +308,19 @@ export default {
     totalProfitability() {
       return [
         'profitable',
-        'profitless',
         'profitless_cat_1',
         'profitless_cat_2',
       ]
+    },
+
+    totalWellsCount() {
+      let count = 0
+
+      this.wellsProfitability.forEach(profitability => {
+        count += this.wellsByProfitability[profitability].length
+      })
+
+      return count
     }
   }
 }
