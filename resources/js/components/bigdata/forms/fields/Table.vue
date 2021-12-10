@@ -257,6 +257,12 @@ export default {
       this.formValues[column.code] = event
     },
     updateResults(event) {
+      //todo: hotfix, need to do it properly
+      if (this.params.form === 'well_document_short') {
+        event.values.filenames = event.values.file.map(file => {
+          return file.name
+        }).join(', ')
+      }
       this.items.push(event)
 
       this.$emit('change', this.items.map(row => row.id))

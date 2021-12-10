@@ -19,7 +19,7 @@
                         {{ report.document_name}}
                     </td>
                     <td>
-                        <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.id +'/?file_id='+ report.file_id)">
+                        <button class="download" @click="downloadFile()">
                             Скачать
                         </button>
                     </td>
@@ -59,8 +59,7 @@
             }
         },
         methods:{
-            downloadFile(link){
-                window.location.href = link;
+            downloadFile(){
             },
             ...globalloadingMutations([
                 'SET_LOADING'

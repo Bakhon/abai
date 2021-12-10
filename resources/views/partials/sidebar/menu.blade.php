@@ -128,6 +128,12 @@
                                         {{ trans('economic_reference.analysis_of_actual_stops') }}
                                     </a>
                                 </li>
+
+                                <li class="left-menu-li">
+                                    <a href="{{route('eco_refs_list')}}">
+                                        {{ trans('economic_reference.input_params') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -140,32 +146,55 @@
 @yield('sidebar_menu_additional')
 
 <div class="nav_bottom">
-<a href="#"
+<a href="{{route('faq')}}"
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/nav_icon1.svg" class="companyLogo">
         <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.help') }}</span>
     </div>
 </a>
-<a href="#"
-   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
-    <div class="d-flex w-100 justify-content-start align-items-center">
-        <img src="/img/nav_icon2.svg" class="companyLogo">
-        <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.support') }}</span>
+<div class="dropright">
+    <div data-toggle="dropdown">
+        <a href="#" class="bg-dark-new list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <img src="/img/nav_icon2.svg" class="companyLogo">
+                <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.support') }}</span>
+            </div>
+        </a>
     </div>
-</a>
-<a href="#"
+    <div class="dropdown-menu dropdown-menu__support">
+        <div class="menu-header justify-content-between">
+            <div class="d-flex align-items-center">
+                <img src="/img/nav_icon2.svg" class="companyLogo">
+                {{ trans('app.support') }}
+            </div>
+        </div>
+        <div class="move-menu">
+            <li class="left-menu-li">
+                <a href="#">
+                <img src="/img/icons/default_phone.svg" class="companyLogo"> Для абонентов «Казахтелеком» 1444
+                </a>
+            </li>
+            <li class="left-menu-li">
+                <a href="#">
+                <img src="/img/icons/mobile_phone.svg" class="companyLogo">  Для мобильных абонентов  +7 (800) 080 1444
+                </a>
+            </li>
+        </div>
+    </div>
+</div>
+<a href="mailto:sms.abai@niikmg.kz"
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/nav_icon3.svg" class="companyLogo">
         <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.mail') }}</span>
     </div>
 </a>
-<a href="#"
+<div
    class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/nav_icon4.svg" class="companyLogo">
         <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.chat') }}</span>
     </div>
-</a>
+</div>
 </div>

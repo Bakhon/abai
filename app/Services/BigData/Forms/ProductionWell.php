@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\HasPlannedEvents;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,7 @@ class ProductionWell extends PlainForm
         $dend = DB::connection('tbd')
             ->table('prod.tech_mode_prod_oil')
             ->where('well', $wellId)
-            ->where('dend' ,'<' , '3333-12-31 00:00:00+06')
+            ->where('dend', '<', Well::DEFAULT_END_DATE)
             ->orderBy('dend', 'desc')
             ->get('dend')
             ->first();
@@ -47,12 +48,61 @@ class ProductionWell extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
-            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg');
+        if (!$this->request->get('id') && !$this->isValidDate(
+                $this->request->get('well'),
+                $this->request->get('dbeg')
+            )) {
+            $errors['dbeg'][] = trans('bd.validation.dbeg');
         }
 
         return $errors;
     }
 
+    protected function afterSubmit(int $id)
+    {
+        $row = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('id', $id)
+            ->first();
 
+        $prevRow = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $row->well)
+            ->where('id', '!=', $row->id)
+            ->where('dend', '<=', $row->dend)
+            ->where('dend', '>', $row->dbeg)
+            ->orderBy('dbeg', 'desc')
+            ->first();
+
+        if ($prevRow) {
+            DB::connection('tbd')
+                ->table($this->params()['table'])
+                ->where('id', $prevRow->id)
+                ->update(
+                    [
+                        'dend' => $row->dbeg
+                    ]
+                );
+        }
+
+        $nextRow = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $row->well)
+            ->where('id', '!=', $row->id)
+            ->where('dbeg', '>', $row->dbeg)
+            ->where('dbeg', '<=', $row->dend)
+            ->orderBy('dbeg', 'asc')
+            ->first();
+
+        if ($nextRow) {
+            DB::connection('tbd')
+                ->table($this->params()['table'])
+                ->where('id', $nextRow->id)
+                ->update(
+                    [
+                        'dbeg' => $row->dend
+                    ]
+                );
+        }
+    }
 }

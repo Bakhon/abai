@@ -9,6 +9,7 @@ use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use App\Services\PolygonsService;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,10 +46,40 @@ class MapConstructorController extends Controller
         return $this->polygonsService->getPolygons($file, $numberOfLevels, $type);
     }
 
+    public function getGridByBase64(Request $request): array {
+        $base64Data = $request->get('base64Data');
+        $selectedFilterType = $request->get('selectedFilterType');
+        $selectedFilterValue = $request->get('selectedFilterValue');
+
+        return $this->polygonsService->getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue);
+    }
+
     public function getDataFromExcel(Request $request): array {
         $file = $request->file('file');
 
         return $this->polygonsService->getDataFromExcel($file);
+    }
+
+    public function getInterpolationData(Request $request): array {
+        $dataFile = $request->file('dataFile');
+        $files = [[
+            'name' => 'wells_file',
+            'contents' => Utils::tryFopen($dataFile->path(), 'r'),
+            'filename' => $dataFile->getClientOriginalName()
+        ]];
+        $contourFiles = $request->file('contourFiles');
+        if ($contourFiles) {
+            foreach ($contourFiles as $contourFile) {
+                $files[] = [
+                    'name' => 'external_contours_files',
+                    'contents' => Utils::tryFopen($contourFile->path(), 'r'),
+                    'filename' => $contourFile->getClientOriginalName()
+                ];
+            }
+        }
+        $params = json_decode($request->get('params'), true);
+
+        return $this->polygonsService->getInterpolationData($files, $params);
     }
 
     public function getStructure(Request $request): array {

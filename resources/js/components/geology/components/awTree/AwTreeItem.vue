@@ -25,7 +25,7 @@
       </div>
     </div>
     <ul v-if="item.children" v-show="isOpen" :style="getPaddingWithDeep">
-      <AwTreeItem :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
+      <AwTreeItem :selected="selected" :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
     </ul>
   </li>
 </template>
@@ -35,6 +35,9 @@ import AwTreeItemsMixins from "./AwTreeItemsMixins";
 export default {
   name: "AwTreeItem",
   mixins: [AwTreeItemsMixins],
+  props:{
+    selected: Array
+  },
   computed: {
     getPaddingWithDeep() {
       return {

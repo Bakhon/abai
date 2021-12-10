@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:id="'mcMap_' + projectIndex" class="col" style="min-width: 50%"></div>
+    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%"></div>
 </template>
 
 <script>
@@ -14,27 +14,40 @@ import Feature from "ol/Feature";
 import {LineString, Point, Polygon} from "ol/geom";
 import {Overlay} from "ol";
 import Chart from "ol-ext/style/Chart";
+import LegendControl from "ol-ext/control/Legend";
+import Legend from "ol-ext/legend/Legend";
 import CircleStyle from "ol/style/Circle";
 import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
-import {Control, defaults as defaultControls} from 'ol/control';
+import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
 
 export default {
     props: {
         data: Object,
-        projectIndex: 0,
-    },
-    components: {
+        projectKey: 0,
     },
     data() {
         return {
+            base64Data: null,
             map: null,
             gridMapsValues: [],
+            legend: null,
+            legendControl: null,
+            mapOverlay: null,
+            overlayValues: {
+                grid: {
+                    html: '',
+                },
+                featureValues: {
+                    html: '',
+                },
+            },
             x1: 0,
             x2: 0,
             y1: 0,
             y2: 0,
+            polygonsType: null,
         }
     },
     methods: {
@@ -42,12 +55,15 @@ export default {
             'SET_LOADING'
         ]),
         importData(data, type) {
+            this.polygonsType = type;
             this.initMap(data, type).then(() => {
                 if (this.isGridMap(type)) {
+                    this.base64Data = data;
                     this.addPolygons(data);
                 } else {
                     this.drawLines(data);
                 }
+              this.refreshLegend();
             }, () => {});
         },
         initMap(data, type) {
@@ -63,12 +79,18 @@ export default {
                     if (this.map === null) {
                         const extent = [this.x1, this.y1, this.x2, this.y2];
                         const projection = new Projection({
-                            units: 'pixels',
+                            units: 'm',
+                            metersPerUnit: 20,
                             extent: extent,
                         });
                         const mapExtent = projection.getExtent();
                         this.map = new Map({
-                            target: 'mcMap_' + this.projectIndex,
+                            controls: defaultControls().extend([
+                                new ScaleLine({
+                                    units: 'metric',
+                                }),
+                            ]),
+                            target: this.projectKey,
                             layers: this.data.layerGroups,
                             view: new View({
                                 projection: projection,
@@ -77,6 +99,8 @@ export default {
                                 zoom: 1,
                             }),
                         });
+                        this.addMapOverlay();
+                        this.addMapLegend();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -105,24 +129,55 @@ export default {
                     color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
+            let isolinesShow = typeof data.show !== "undefined" ? data.show : true;
+            if (this.polygonsType === 'grid_without_isolines') {
+                isolinesShow = false;
+            }
             let layerGroup = new LayerGroup();
-            let redColor = 255;
-            let greenColor = 255;
+            layerGroup.type = 'polygon';
+            const polygonsCount = data.polygons_per_levels.length;
+            const colorDivider = Math.ceil(polygonsCount / 3);
+            let colorIndex = 0;
+            let color = [255, 0, 0];
+            let legendItems = [];
             data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
-                levelIndex = levelIndex !== 0 ? levelIndex : 1;
-                const colorIndex = 255 - 255 / (levelIndex);
-                if (levelIndex % 2 === 0) {
-                    redColor = colorIndex;
-                } else {
-                    greenColor = colorIndex;
+                let correctDivider = levelIndex % colorDivider + 1;
+                if (levelIndex > 0 && levelIndex % colorDivider === 0) {
+                    colorIndex++;
+                    color = [0, 0, 0];
                 }
+                color[colorIndex] = (255 / correctDivider).toFixed();
+                if (correctDivider < 2) {
+                    color[colorIndex - 1] = (128 - 128 / correctDivider).toFixed();
+                }
+                legendItems.push({
+                    title: '> ' + polygonsPerLevel.lower_bound.toString(),
+                    typeGeom: 'Polygon',
+                    className: 'legend-item',
+                    style: new Style({
+                        stroke: new Stroke({
+                            color: `rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`
+                        }),
+                        fill: new Fill({
+                            color: `rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`
+                        }),
+                    }),
+                })
                 this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
                     'internal': internalStyle,
-                    'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
-                        parseInt(polygonsPerLevel.lower_bound).toString()),
+                    'external': this.getExternalLayerStyle(`rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`,
+                        parseInt(polygonsPerLevel.lower_bound).toString(), isolinesShow),
                 });
             });
-            layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.name = 'Грид карта  ' + (this.data.layerGroups.length + 1);
+            layerGroup.legendItems = legendItems;
+            layerGroup.selectedFilterType = typeof data.selectedFilterType !== "undefined"
+                ? data.selectedFilterType : 0;
+            layerGroup.selectedFilterValue = typeof data.selectedFilterValue !== "undefined"
+                ? data.selectedFilterValue : layerGroup.selectedFilterType === 0 ? 10 : 0;
+            layerGroup.step = typeof data.step !== "undefined" ? data.step : 0;
+            layerGroup.bounds = typeof data.bounds !== "undefined" ? data.bounds : [0, 0];
+            layerGroup.show = isolinesShow;
             this.addLayerGroupToMap(layerGroup);
             if (typeof data.grid !== "undefined") {
                 this.addGrid(data);
@@ -144,21 +199,30 @@ export default {
                     }))
                 })
             });
+            const lineStyle = new Style({
+                stroke: new Stroke({
+                    color: '#3be7c5',
+                    width: 3,
+                }),
+            });
             const newLayer = new VectorLayer({
                 source: new VectorSource({
                     features: features,
                     wrapX: false,
                 }),
-                style: new Style({
-                    stroke: new Stroke({
-                        color: '#3be7c5',
-                        width: 3,
-                    }),
-                }),
-                zIndex: this.data.layerGroups.length + 1
+                style: lineStyle,
+                zIndex: this.data.layerGroups.length + 1,
             });
+            let legendItems = [{
+                title: 'Контур',
+                typeGeom: 'Line',
+                className: 'legend-item',
+                style: lineStyle,
+            }]
             let layerGroup = new LayerGroup();
             layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.type = 'border';
+            layerGroup.legendItems = legendItems;
             layerGroup.getLayers().push(newLayer);
             this.addLayerGroupToMap(layerGroup);
             this.SET_LOADING(false);
@@ -189,23 +253,29 @@ export default {
             layerGroup.getLayers().push(externalVectorLayer);
             layerGroup.getLayers().push(internalVectorLayer);
         },
-        getExternalLayerStyle(color, text) {
-            return new Style({
-                stroke: new Stroke({
-                    color: color,
+        getExternalLayerStyle(color, text, show = true) {
+            let stroke = null;
+            let textStyle = null;
+            if (show) {
+                stroke = new Stroke({
+                    color: '#000',
                     width: 1,
-                }),
-                fill: new Fill({
-                    color: color,
-                }),
-                text: new Text({
+                });
+                textStyle = new Text({
                     font: '14px bold Calibri,sans-serif',
                     fill: new Fill({
-                        color: 'white',
+                        color: '#000',
                     }),
                     text: text,
                     placement: 'line',
+                });
+            }
+            return new Style({
+                stroke: stroke,
+                fill: new Fill({
+                    color: color,
                 }),
+                text: textStyle,
             });
         },
         addLayerGroupToMap(layerGroup) {
@@ -237,13 +307,9 @@ export default {
                 resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
             }
             if (this.map) {
-                const self = this;
+                const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
                 this.gridMapsValues.push(resultArray);
-                let popupDiv = document.createElement('div');
-                let popupOverlay = new Overlay({
-                    element: popupDiv,
-                });
                 this.map.on('pointermove', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
@@ -252,22 +318,18 @@ export default {
                         || evt.coordinate[1] > mapExtent[3]
                         || evt.dragging
                     ) {
-                        popupDiv.classList.add('d-none');
                         return;
                     }
-                    if (self.gridMapsValues.length > 0) {
+                    if ($self.gridMapsValues.length > 0) {
                         const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
                         const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
-                        popupDiv.classList.remove('d-none');
-                        popupOverlay.setPosition(evt.coordinate);
                         let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
                         let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
-                        let value = self.gridMapsValues[0][x][y];
+                        let value = $self.gridMapsValues[0][x][y];
                         if (isNaN(value)) {
-                            popupDiv.classList.add('d-none');
                             return;
                         }
-                        popupDiv.innerHTML = '<div class="bg-white p-1"> Значение: ' + value.toFixed(2) + '</div>';
+                        $self.overlayValues.grid.html = '<div> Значение грид карты: ' + value.toFixed(2) + '</div>';
                     }
                 });
             }
@@ -306,7 +368,20 @@ export default {
             }
             let bubbleLayers = [];
             const defaultRadius = 5;
+            let legendBubbleStyle = null;
+            let legendBubbleTitle = 'Нефть/Вода';
             if (type === 'oil_with_water') {
+                legendBubbleStyle = new Style({
+                    image: new Chart({
+                        radius: 10,
+                        type: "pie",
+                        data: [
+                            50,
+                            50,
+                        ],
+                        colors: [`rgba(10, 134, 145, 0.8)`, `rgba(222, 138, 11, 0.8)`],
+                    }),
+                });
                 data.forEach(item => {
                     if (item.data.measLiq.data.length > 0) {
                         const measLiqSum = item.data.measLiq.data.reduce((a, b) => {
@@ -342,15 +417,15 @@ export default {
                                             },
                                             {
                                                 key: 'Жидкость, м3',
-                                                value: measLiqSum,
+                                                value: measLiqSum.toFixed(2),
                                             },
                                             {
                                                 key: 'Обводненность, %',
-                                                value: measWaterCutPercent,
+                                                value: measWaterCutPercent.toFixed(2),
                                             },
                                             {
                                                 key: 'Нефть, т',
-                                                value: oilSum,
+                                                value: oilSum.toFixed(2),
                                             },
                                         ],
                                     })]
@@ -366,6 +441,19 @@ export default {
                 const ppmMax = Math.max(...bubbleData.map(function(item) {
                     return item.ppm;
                 }));
+                legendBubbleStyle = new Style({
+                    image: new CircleStyle({
+                        radius: 10,
+                        fill: new Fill({
+                            color: 'rgba(233,149,46, 0.6)',
+                        }),
+                        stroke: new Stroke({
+                            color: 'rgba(179,93,27, 0.8)',
+                            width: 1,
+                        }),
+                    }),
+                });
+                legendBubbleTitle = 'ppm';
                 bubbleData.forEach(item => {
                     let waterBubbleStyle = new Style({
                         image: new CircleStyle({
@@ -418,6 +506,14 @@ export default {
                     );
                 }
             }
+            let legendItems = [{
+                title: legendBubbleTitle,
+                feature: new Feature({
+                    geometry: new Point([0, 0]),
+                }),
+                className: 'legend-item',
+                style: legendBubbleStyle,
+            }];
             if (bubbleLayers.length > 0) {
                 this.removeOldBubbleLayerGroupFromMap();
                 let layerGroup = new LayerGroup();
@@ -426,25 +522,13 @@ export default {
                 })
                 layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Слой ' + this.data.layerGroups.length;
                 layerGroup.key = 'bubbles' + data.date;
+                layerGroup.type = 'bubbles';
+                layerGroup.legendItems = legendItems;
                 this.addLayerGroupToMap(layerGroup);
+                this.refreshLegend();
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
-        },
-        removeAllLayers() {
-            return new Promise((resolve, reject) => {
-                try {
-                    this.data.layerGroups = [];
-                    if (this.map !== null) {
-                        this.map.getLayers().forEach(layer => {
-                            this.map.removeLayer(layer);
-                        });
-                    }
-                } catch (e) {
-                    reject();
-                }
-                resolve();
-            })
         },
         updateMapSize() {
             if (this.map !== null) {
@@ -465,17 +549,21 @@ export default {
                     wrapX: true,
                     crossOrigin:"anonymous",
                 }),
+                visible: true,
             });
             let defaultMapLayer = new TileLayer({
                 source: new OSM(),
-                opacity: 0,
+                visible: false,
             });
             this.map = new Map({
                 controls: defaultControls().extend([
+                    new ScaleLine({
+                        units: 'metric',
+                    }),
                     new ToggleMapStyle(),
                     new ExportMap(),
                 ]),
-                target: 'mcMap_' + this.projectIndex,
+                target: this.projectKey,
                 view: new View({
                     projection: 'EPSG:4326',
                     zoom: 0,
@@ -484,10 +572,67 @@ export default {
             });
             let layerGroup = new LayerGroup();
             layerGroup.name = 'Географическая карта';
-            layerGroup.groupType = 'tileLayers';
+            layerGroup.type = 'map';
             layerGroup.getLayers().push(defaultMapLayer);
             layerGroup.getLayers().push(satelliteMapLayer);
             this.addLayerGroupToMap(layerGroup);
+            this.addMapLegend();
+        },
+        addMapOverlay() {
+            let $self = this;
+            let popupDiv = document.getElementById('bubblePopup');
+            if (popupDiv === null) {
+                popupDiv = document.createElement('div');
+                popupDiv.setAttribute("id", "bubblePopup");
+            }
+            this.mapOverlay = new Overlay({
+                element: popupDiv,
+            });
+            this.map.addOverlay(this.mapOverlay);
+            this.map.on('pointermove', function (e) {
+                if (e.dragging) {
+                    return;
+                }
+                let values = [];
+                this.forEachFeatureAtPixel(e.pixel, function (f) {
+                    values = f.values_.values;
+                    $self.mapOverlay.setPosition(e.coordinate);
+                    return true;
+                });
+                $self.mapOverlay.getElement().innerHTML = '';
+                let valuesText = '';
+                if (typeof values !== "undefined" && values.length > 0) {
+                    values.forEach(item => {
+                        valuesText += `<div>${item.key}: ${item.value}</div>`
+                    });
+                }
+                $self.overlayValues.featureValues.html = valuesText;
+                for (const [key, item] of Object.entries($self.overlayValues)) {
+                    $self.mapOverlay.getElement().innerHTML += `${item.html}`;
+                }
+            });
+        },
+        addMapLegend() {
+            this.legend = new Legend({
+                title: 'Легенда',
+                margin: 2
+            });
+            this.legendControl = new LegendControl({
+              className: 'ol-legend mapLegend',
+              legend: this.legend,
+            });
+            this.map.addControl(this.legendControl);
+        },
+        refreshLegend() {
+          let $self = this;
+          this.legend.getItems().clear();
+          this.data.layerGroups.forEach(item => {
+            if (typeof item.legendItems !== "undefined" && item.legendItems) {
+              item.legendItems.forEach(legendItem => {
+                $self.legend.addItem(legendItem);
+              })
+            }
+          });
         }
     }
 }
@@ -518,13 +663,10 @@ class ToggleMapStyle extends Control {
         }
         let mapLayers = this.getMap().getLayers();
         mapLayers.forEach(item => {
-            if (item.groupType === 'tileLayers') {
+            if (item.type === 'map') {
                 item.getLayers().forEach(tileLayer => {
-                    if (tileLayer.getOpacity() === 1) {
-                        tileLayer.setOpacity(0);
-                    } else {
-                        tileLayer.setOpacity(1);
-                    }
+                    tileLayer.setOpacity(tileLayer.values_.visible ? 0 : 1);
+                    tileLayer.values_.visible = !tileLayer.values_.visible;
                 })
             }
         })
@@ -605,11 +747,13 @@ class ExportMap extends Control {
 }
 </script>
 <style>
-.bubblePopup {
+#bubblePopup {
     border-radius: 2px;
     color: white;
     background: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem;
+}
+#bubblePopup div {
+    padding: 0.1rem 0.5rem;
 }
 .activeBg {
     background-color: rgba(157, 255, 0, 0.6);
@@ -626,5 +770,8 @@ class ExportMap extends Control {
     margin: 0;
     padding: 0.2rem;
     width: 100%;
+}
+.ol-control.mapLegend {
+    bottom: 2.5em;
 }
 </style>

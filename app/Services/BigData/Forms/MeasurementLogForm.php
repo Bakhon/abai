@@ -22,12 +22,24 @@ abstract class MeasurementLogForm extends TableForm
         self::WELL_STATUS_ACCUMULATION
     ];
 
+    protected $workTimes;
+    protected $otherUwis;
+
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $params['filter']['well_category'] = $this->wellCategories;
 
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $this->workTimes = WorktimeHelper::getWorkTime(
+            $wells->pluck('id')->toArray(),
+            $date->startOfDay(),
+            $date->endOfDay()
+        );
+
+        $this->otherUwis = $this->getOtherUwis($wells->pluck('id')->toArray());
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
         $rowData = $this->fetchRowData(
@@ -64,7 +76,10 @@ abstract class MeasurementLogForm extends TableForm
         switch ($field['code']) {
             case 'worktime':
 
-                return $this->getWorktime($item);
+                if (!isset($this->workTimes[$item->id])) {
+                    return ['value' => 0];
+                }
+                return ['value' => reset($this->workTimes[$item->id]) * 24];
 
             case 'density_oil':
 
@@ -74,7 +89,10 @@ abstract class MeasurementLogForm extends TableForm
 
             case 'other_uwi':
 
-                return $this->getOtherUwis($item);
+                if (!isset($this->otherUwis[$item->id])) {
+                    return ['value' => ''];
+                }
+                return $this->otherUwis[$item->id];
 
             case 'geo':
 
@@ -86,56 +104,30 @@ abstract class MeasurementLogForm extends TableForm
         return null;
     }
 
-    private function getWorktime(Model $well)
+    private function getOtherUwis(array $wellIds): array
     {
-        $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
-        $startOfDay = $date->startOfDay();
-        $endOfDay = $date->endOfDay();
-
-        $wellStatuses = DB::connection('tbd')
-            ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend', 's.well')
-            ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dbeg', '<=', $endOfDay)
-            ->where('dend', '>=', $startOfDay)
-            ->where('well', $well->id)
-            ->whereIn('dict.well_status_type.code', self::WELL_ACTIVE_STATUSES)
-            ->get()
-            ->map(
-                function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
-                    return $item;
-                }
-            );
-
-        $hours = WorktimeHelper::getHoursForOneDay(
-            $wellStatuses,
-            $startOfDay,
-            $endOfDay,
-            $well->id
-        );
-
-        return [
-            'value' => min($hours, 24)
-        ];
-    }
-
-    private function getOtherUwis(Model $item)
-    {
-        $uwi = DB::connection('tbd')
+        $uwis = DB::connection('tbd')
             ->table('dict.well')
-            ->selectRaw('well.id,well.uwi as other_uwi')
+            ->selectRaw('well.id,well.uwi,array_agg(b.uwi) joint_well')
             ->leftJoin('prod.joint_wells as j', 'well.id', DB::raw("any(j.well_id_arr)"))
             ->leftJoin('dict.well as b', 'b.id', DB::raw('any(array_remove(j.well_id_arr, well.id))'))
-            ->where('well.id', $item->id)
+            ->whereIn('well.id', $wellIds)
             ->groupBy('well.id', 'well.uwi')
-            ->first();
+            ->get();
 
-        return [
-            'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-        ];
+        $result = [];
+        foreach ($wellIds as $wellId) {
+            $uwi = $uwis->where('id', $wellId)->first();
+            $result[$wellId] = [
+                'value' => (!$uwi || $uwi->joint_well === '{NULL}') ? null : str_replace(
+                    ['{', '}'],
+                    '',
+                    $uwi->joint_well
+                ),
+            ];
+        }
+
+        return $result;
     }
 
     private function getGeoBreadcrumbs($geo = null)
@@ -184,39 +176,17 @@ abstract class MeasurementLogForm extends TableForm
                             ]
                         );
                 } else {
-                    $data = [
-                        'well' => $wellId,
-                        $column['column'] => $field['value'],
-                        'dbeg' => $filter['date'],
-                        'dend' => $filter['date'],
-                    ];
-                    if (!empty($column['additional_filter'])) {
-                        $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
-                    }
-                    DB::connection('tbd')
-                        ->table($column['table'])
-                        ->insert($data);
+                    $this->insertValueInCell(
+                        $column['table'],
+                        $column['column'],
+                        $column['additional_filter'] ?? null,
+                        $wellId,
+                        $filter['date'],
+                        $field['value']
+                    );
                 }
             }
         }
         return [];
-    }
-
-    private function addDefaultData($source)
-    {
-        $data = [];
-        foreach ($source as $key => $value) {
-            if (is_array($value)) {
-                $query = DB::connection('tbd')->table($value['table']);
-                foreach ($value['fields'] as $fieldName => $fieldValue) {
-                    $query->where($fieldName, $fieldValue);
-                }
-                $entity = $query->first();
-                if (!empty($entity)) {
-                    $data[$key] = $entity->id;
-                }
-            }
-        }
-        return $data;
     }
 }

@@ -17,7 +17,7 @@
         :items="subsoils"
         :placeholder="trans('plast_fluids.subsurface_user')"
         :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
-        dropKey="owner_name"
+        :dropKey="['owner_name']"
         @dropdown-select="updateCurrentSubsoil"
       />
       <Dropdown
@@ -26,7 +26,7 @@
         :selectedValue="
           currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
         "
-        dropKey="field_name"
+        :dropKey="['field_name']"
         :parentShortName="
           currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
         "
@@ -78,12 +78,9 @@ export default {
       get() {
         return this.currentSubsoilHorizon;
       },
-      async set(value) {
+      set(value) {
         this.SET_CURRENT_SUBSOIL_HORIZON(value);
-        await this.handleBlocksFilter(value);
-        this.handleTableGraphData({
-          field_id: this.currentSubsoilField[0].field_id,
-        });
+        if (!value.length) this.SET_CURRENT_BLOCKS([]);
       },
     },
     selectedBlocks: {
@@ -92,9 +89,6 @@ export default {
       },
       set(value) {
         this.SET_CURRENT_BLOCKS(value);
-        this.handleTableGraphData({
-          field_id: this.currentSubsoilField[0].field_id,
-        });
       },
     },
   },
@@ -104,11 +98,11 @@ export default {
       "UPDATE_CURRENT_SUBSOIL_FIELD",
     ]),
     ...mapActions("plastFluidsLocal", [
-      "handleTableGraphData",
+      "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
-    ...mapMutations("plastFluidsLocal", ["SET_CURRENT_BLOCKS"]),
+    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS", "SET_CURRENT_BLOCKS"]),
     async updateCurrentSubsoil(value) {
       await this.UPDATE_CURRENT_SUBSOIL(value);
       this.handleBlocksFilter([]);

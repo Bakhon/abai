@@ -75,6 +75,9 @@ abstract class PlainForm extends BaseForm
         try {
             $result = $this->submitForm();
             DB::connection('tbd')->commit();
+            if (isset($result['well'])) {
+                Cache::forget("well_{$result['well']}");
+            }
             return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
@@ -320,6 +323,10 @@ abstract class PlainForm extends BaseForm
 
     protected function getRows(): Collection
     {
+        if ($this->request->get('type') && $this->request->get('type') !== 'well') {
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $wellId = $this->request->get('well_id');
         $query = DB::connection('tbd')
             ->table($this->params()['table'])

@@ -283,6 +283,7 @@ class ExcelFormController extends Controller
 
     public function approveDailyCorrection(Request $request)
     {
+        $this->deleteDuplicates($request->dzo_name,$request->date,$request->actualId);
         $client = $this->getEmailClient();
         $updateOptions = array(
             $request->currentApproverField => true
@@ -298,6 +299,24 @@ class ExcelFormController extends Controller
         DzoImportData::query()
             ->where('id', $request->currentId)
             ->update($updateOptions);
+    }
+
+    protected function deleteDuplicates($dzo,$date,$currentId)
+    {
+        $records = DzoImportData::query()
+            ->where('dzo_name',$dzo)
+            ->whereDate('date',Carbon::parse($date))
+            ->whereNull('is_corrected')
+            ->get();
+        foreach($records as $record) {
+            if ($record->id === $currentId) {
+                continue;
+            }
+            DzoImportField::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportDecreaseReason::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportDowntimeReason::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportData::where('id',$record->id)->delete();
+        }
     }
 
     protected function getEmailClient()

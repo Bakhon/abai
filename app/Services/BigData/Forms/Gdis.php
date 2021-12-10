@@ -16,11 +16,22 @@ class Gdis extends PlainForm
     use WithDocumentsUpload;
 
     protected $configurationFileName = 'gdis';
+    protected $metricColumns;
+
+    protected function params(): array
+    {
+        $params = parent::params();
+        $params['tabs'][0]['blocks'][0][0]['items'] = array_merge(
+            $params['tabs'][0]['blocks'][0][0]['items'],
+            $this->getMetricColumns()
+        );
+        return $params;
+    }
 
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-       
+
         if (!$this->isValidDate(
             $this->request->get('well'),
             $this->request->get('dbeg'),
@@ -31,6 +42,50 @@ class Gdis extends PlainForm
         }
 
         return $errors;
+    }
+
+    protected function getMetricColumns()
+    {
+        if ($this->metricColumns) {
+            return $this->metricColumns;
+        }
+
+        $metrics = DB::connection('tbd')
+            ->table('dict.metric as m')
+            ->select('m.code', 'm.name_ru', 'rm.id', 'm.data_type', 'm.value_double_min', 'm.value_double_max')
+            ->join('prod.gdis_method_metric as gmm', 'm.id', 'gmm.metric')
+            ->join('dict.research_method as rm', 'gmm.research_method', 'rm.id')
+            ->where('rm.gdis_complex', true)
+            ->get();
+
+        foreach ($metrics as $metric) {
+            $validation = [];
+            if ($metric->value_double_min) {
+                $validation[] = 'gte:' . $metric->value_double_min;
+            }
+            if ($metric->value_double_max) {
+                $validation[] = 'lte:' . $metric->value_double_max;
+            }
+            $validation = implode('|', $validation);
+
+            $columns[] = [
+                'code' => $metric->code,
+                'table' => 'prod.gdis_complex_value',
+                'type' => 'numeric',
+                'title' => $metric->name_ru,
+                'validation' => $validation,
+                'depends_on' => [
+                    [
+                        'field' => 'method',
+                        'value' => $metric->id
+                    ]
+                ]
+            ];
+        }
+
+        $this->metricColumns = $columns;
+
+        return $columns;
     }
 
     protected function getRows(): Collection
@@ -82,7 +137,9 @@ class Gdis extends PlainForm
                 }
                 $gdisComplexValues[$metric->id] = $value;
             } else {
-                $data[$key] = $value;
+                if($key === 'id' || $this->getFields()->where('code', $key)->isNotEmpty()) {
+                    $data[$key] = $value;
+                }
             }
         }
 

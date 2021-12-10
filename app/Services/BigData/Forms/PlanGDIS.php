@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Services\BigData\DictionaryService;
+use App\Models\BigData\Dictionaries\ResearchMethod;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +53,7 @@ class PlanGDIS extends TableForm
                 'title' => trans('bd.forms.plan_g_d_i_s.well'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
+                'validation' => 'nullable|numeric',
                 'is_editable' => true
             ];
             $columns[] = [
@@ -60,6 +61,7 @@ class PlanGDIS extends TableForm
                 'title' => trans('bd.forms.plan_g_d_i_s.measure'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
+                'validation' => 'nullable|numeric',
                 'is_editable' => true
             ];
         }
@@ -94,7 +96,11 @@ class PlanGDIS extends TableForm
         $num = 1;
         foreach ($tree as $item) {
             $rows[] = [
-                'value' => ['name' => ($level === 0 ? $num++ . '. ' : '') . "<b>{$item['label']}</b>"]
+                'value' => [
+                    'name' => ($level === 0 ? $num++ . '. ' : '') . "<b>" . trans(
+                            'bd.forms.plan_g_d_i_s.' . $item['name']
+                        ) . "</b>"
+                ]
             ];
             if (!empty($item['rows'])) {
                 foreach ($item['rows'] as $treeRow) {
@@ -110,26 +116,36 @@ class PlanGDIS extends TableForm
         return $rows;
     }
 
-    private function addRow(\stdClass $treeRow, array $dates, Collection $data): array
+    private function addRow(ResearchMethod $treeRow, array $dates, Collection $data): array
     {
         $row = [
             'id' => $treeRow->id,
-            'value' => ['name' => $treeRow->name]
+            'value' => ['name' => $treeRow->name_ru]
         ];
         foreach ($dates as $date) {
             $rowData = $data
                 ->where('month', $date->month)
                 ->where('year', $date->year)
-                ->where('expl_type_proced_type_plan_gdis', $treeRow->id)
+                ->where('research_method', $treeRow->id)
                 ->first();
 
             $row["date_{$date->format('m_Y')}_well_count"] = [
                 'value' => $rowData ? $rowData->well_count : 0,
-                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
+                'params' => [
+                    'research_method' => $treeRow->id,
+                    'org_id' => $this->request->get('id'),
+                    'date' => $date->format('d.m.Y'),
+                    'column' => 'well_count'
+                ]
             ];
             $row["date_{$date->format('m_Y')}_measure"] = [
                 'value' => $rowData ? $rowData->measure : 0,
-                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
+                'params' => [
+                    'research_method' => $treeRow->id,
+                    'org_id' => $this->request->get('id'),
+                    'date' => $date->format('d.m.Y'),
+                    'column' => 'measure'
+                ]
             ];
         }
         return $row;
@@ -137,73 +153,86 @@ class PlanGDIS extends TableForm
 
     private function getExplTree()
     {
-        $dictionaryService = app()->make(DictionaryService::class);
-        $explTypes = $dictionaryService->get('expl_type_plan_gdis');
-        $procedTypes = DB::connection('tbd')
-            ->table('dict.expl_type_proced_type_plan_gdis as e')
-            ->join('dict.proced_type_plan_gdis as p', 'p.id', 'e.proced_type_plan_gdis')
-            ->select('expl_type_plan_gdis', 'proced_type_plan_gdis', 'p.name', 'e.id')
-            ->get()
-            ->groupBy('expl_type_plan_gdis');
-        $explTypes = $this->generateExplTree($explTypes, $procedTypes);
+        $researchMethods = ResearchMethod::all();
+
+        $sections = [
+            [
+                'name' => 'flowing_wells'
+            ],
+            [
+                'name' => 'depthpump_wells',
+                'children' => [
+                    [
+                        'name' => 'pumpjack'
+                    ],
+                    [
+                        'name' => 'evn_ecn'
+                    ]
+                ]
+            ],
+            [
+                'name' => 'inj_wells'
+            ],
+            [
+                'name' => 'obs_wells'
+            ],
+            [
+                'name' => 'water_wells'
+            ],
+        ];
+
+        $explTypes = $this->generateExplTree($sections, $researchMethods);
         return $explTypes;
     }
 
-    private function generateExplTree($tree, $procedTypes)
+    private function generateExplTree($tree, $researchMethods)
     {
         $result = [];
         foreach ($tree as $key => $item) {
             $result[$key] = $item;
-            if ($procedTypes->get($item['id'])) {
-                $result[$key]['rows'] = $procedTypes->get($item['id'])->toArray();
+            if ($researchMethods->where($item['name'], true)->isNotEmpty()) {
+                $result[$key]['rows'] = $researchMethods->where($item['name'], true);
             }
             if (!empty($item['children'])) {
-                $result[$key]['children'] = $this->generateExplTree($tree[$key]['children'], $procedTypes);
+                $result[$key]['children'] = $this->generateExplTree($tree[$key]['children'], $researchMethods);
             }
         }
         return $result;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        list($date, $month, $year, $field) = explode('_', $params['field'], 4);
-        $explProcedType = $this->request->params['expl_proced_type'];
-        $orgId = $this->request->params['org_id'];
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                $date = Carbon::parse($field['params']['date'], 'Asia/Almaty');
+                $plan = DB::connection('tbd')
+                    ->table('prod.plan_gdis')
+                    ->where('well', $field['params']['org_id'])
+                    ->where('research_method', $field['params']['research_method'])
+                    ->where('month', $date->month)
+                    ->where('year', $date->year)
+                    ->first();
 
-        $plan = DB::connection('tbd')
-            ->table('prod.plan_gdis')
-            ->where('well', $orgId)
-            ->where('expl_type_proced_type_plan_gdis', $explProcedType)
-            ->where('month', $month)
-            ->where('year', $year)
-            ->first();
-
-        if ($plan) {
-            DB::connection('tbd')
-                ->table('prod.plan_gdis')
-                ->where('id', $plan->id)
-                ->update([$field => $params['value']]);
-        } else {
-            DB::connection('tbd')
-                ->table('prod.plan_gdis')
-                ->insert(
-                    [
-                        'well' => $orgId,
-                        'expl_type_proced_type_plan_gdis' => $explProcedType,
-                        'month' => $month,
-                        'year' => $year,
-                        $field => $params['value']
-                    ]
-                );
+                if ($plan) {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gdis')
+                        ->where('id', $plan->id)
+                        ->update([$field['params']['column'] => $field['value']]);
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gdis')
+                        ->insert(
+                            [
+                                'well' => $field['params']['org_id'],
+                                'research_method' => $field['params']['research_method'],
+                                'month' => $date->month,
+                                'year' => $date->year,
+                                $field['params']['column'] => $field['value']
+                            ]
+                        );
+                }
+            }
         }
-    }
-
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-        if (!is_numeric($this->request->get($field))) {
-            $errors[$field][] = trans('bd.validation.numeric');
-        }
-        return $errors;
+        return [];
     }
 }

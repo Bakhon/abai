@@ -17,10 +17,24 @@
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
                    @click="showForm(action.form, action.default_values || null)">{{ action.title }}</a>
-                <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
-                   @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
-                <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
-                   @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
+                <a
+                    v-else-if="action.action === 'edit'"
+                    :class="{'dropdown-item_disabled': !selectedRow}"
+                    class="dropdown-item"
+                    href="#"
+                    @click.prevent="editRow(selectedRow, action.form)"
+                >
+                  {{ action.title }}
+                </a>
+                <a
+                    v-else-if="action.action === 'delete'"
+                    :class="{'dropdown-item_disabled': !selectedRow}"
+                    class="dropdown-item"
+                    href="#"
+                    @click.prevent="deleteRow(selectedRow, action.form)"
+                >
+                  {{ action.title }}
+                </a>
               </template>
             </div>
           </div>
@@ -116,6 +130,7 @@
                 :params="formParams"
                 :values="formValues"
                 :well-id="wellId"
+                :type="type"
                 @change="updateResults"
                 @close="isFormOpened = false"
             >
@@ -150,6 +165,10 @@ export default {
   name: "BigdataPlainFormResults",
   props: {
     code: {
+      type: String,
+      required: true
+    },
+    type: {
       type: String,
       required: true
     },
@@ -226,7 +245,7 @@ export default {
 
       this.axios.get(
           this.localeUrl(`/api/bigdata/forms/${this.code}/results`),
-          {params: {well_id: this.wellId}}
+          {params: {well_id: this.wellId, type: this.type}}
       ).then(({data}) => {
         this.rows = data.rows
         this.columns = data.columns
@@ -402,7 +421,6 @@ export default {
       font-weight: normal;
       padding: 5px 13px;
       vertical-align: middle;
-      text-align: left;
 
       p {
         margin: 0;
@@ -468,7 +486,7 @@ export default {
       padding: 9px 13px;
 
       p {
-        float: left;
+        float: right;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;
@@ -508,5 +526,11 @@ export default {
 
 .dropdown-menu {
   overflow: auto;
+}
+
+.dropdown-item {
+  &_disabled {
+    color: #999;
+  }
 }
 </style>

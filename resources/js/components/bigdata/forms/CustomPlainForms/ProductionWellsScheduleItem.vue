@@ -65,7 +65,7 @@
                                 colors: '#000000',
                             },
                             formatter: function (value) {
-                                return value.toFixed(1);
+                                return value ? value.toFixed(1) : "";
                             }
                         },
                         title: {
@@ -92,11 +92,11 @@
                                 colors: '#000000',
                             },
                             formatter: function (value) {
-                                return value.toFixed(1);
+                                return value ? value.toFixed(1) : "";
                             }
                         },
                         title: {
-                            text: this.trans('prototype_bd.oilAndLiq'),
+                            text: this.trans('prototype_bd.liquid'),
                             style: {
                                 color: '#000000',
                             }
@@ -104,14 +104,27 @@
                     },
                     {
                         seriesName: this.trans('prototype_bd.oil'),
+                        opposite: true,
                         min: 0,
                         max: 0,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
                         labels: {
                             formatter: function (value) {
-                                return value.toFixed(1);
+                                return value ? value.toFixed(1) : "";
                             }
                         },
-                        show: false
+                        title: {
+                            text: this.trans('prototype_bd.oil'),
+                            style: {
+                                color: '#000000',
+                            }
+                        },
                     },
                     {
                         seriesName: this.trans('app.waterCut'),
@@ -130,7 +143,7 @@
                                 colors: '#000000',
                             },
                             formatter: function (value) {
-                                return value.toFixed(1);
+                                return value ? value.toFixed(1) : "";
                             }
                         },
                         title: {
@@ -185,7 +198,7 @@
                     },
                 ],
                 activePeriod: 90,
-                colors: ['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)', 'rgba(230, 230, 0, 1)'],
+                colors: ['rgba(255, 0, 0, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(33, 186, 78, 1)', 'rgba(230, 230, 0, 1)'],
             }
         },
         methods: {
@@ -245,7 +258,7 @@
                         curve: 'smooth'
                     },
                     legend: {
-                        position: 'right',
+                        position: 'bottom',
                     },
                     chart: {
                         background: 'rgba(255, 255, 255, 1)',
@@ -259,6 +272,12 @@
                         },
                         locales: [ru],
                         defaultLocale: 'ru',
+                        animations: {
+                            enabled: false,
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
                     },
                     markers: {
                         size: [0,0,0,0,4],
@@ -268,8 +287,10 @@
                         }
                     },
                     xaxis: {
+                        tooltip: {
+                            enabled: false
+                        },
                         type: 'datetime',
-                        tickAmount: 10,
                         labels: {
                             format: 'dd-MM-yyyy',
                         }
@@ -332,9 +353,9 @@
 
                     this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) * 0.1));
                     this.maximumTick.oil = Math.round(parseFloat(this.maximumTick.oil) + (parseFloat(this.maximumTick.oil) * 0.1));
-                    this.yaxis[1].max = this.maximumTick.liq;
-                    this.yaxis[2].max = this.maximumTick.oil;
                     this.yaxis[0].max = this.maximumTick.hdin;
+                    this.yaxis[1].max = this.maximumTick.liq;
+                    this.yaxis[2].max = this.maximumTick.oil*3;
                     this.yaxis[3].max = this.maximumTick.waterCut;
                 }
             }

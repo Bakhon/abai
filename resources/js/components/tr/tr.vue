@@ -225,8 +225,15 @@
     </modal>
     <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
       <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
-        <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
-        <totalTable />
+        <div class="header-total-div">
+          <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+          <div class="exit-div">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
+              {{ trans('pgno.zakrit') }}
+            </button>
+          </div>
+        </div>
+        <totalTable :all_summary_total= all_summary_total />
       </div>
     </modal>
     <div class="col-md-12 row trcolmd12">
@@ -416,6 +423,19 @@
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
+                @click="totalModal()"
+                @click.prevent="summaryTotalModal"
+                style="background: #272953; border: none; margin-left: 10px;"
+                v-bind:title="trans('tr.add_well')"
+                >
+                <img class="cursor-pointer" src="/img/tr/total_report.svg" alt="">
+
+              </button>
+              <button
+                v-if="isPermission && isEditable"
+                type="button" 
+                data-toggle="modal" 
+                data-target="#exampleModalCenter" 
                 @click="addpush()"
                 @click.prevent="wellAdd"
                 style="background: #272953; border: none; margin-left: 10px;"
@@ -538,7 +558,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission && isMaxDate"
+                v-if="!isEdit && isPermission && isMaxDate && isEditable"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -6909,6 +6929,15 @@ table::-webkit-scrollbar-corner {
 .total-modal-header {
   color: #fff;
   font-size: 16px;
+  padding-left: 10px;
+
+}
+.header-total-div {
+  display: flex;
+  padding-top: 9px;
+}
+.exit-div {
+  padding-left: calc(100% - 378px);
 }
 
     .table-outer{

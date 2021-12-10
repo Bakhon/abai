@@ -29,7 +29,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
 
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
 
         $params['filter']['well_category'] = ['OIL'];
         $this->wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
@@ -80,7 +80,11 @@ class FluidProductionMonth extends MeasLogByMonth
         $rows = [];
         foreach ($this->wells as $well) {
             $firstRow = [
-                'uwi' => ['value' => $well->uwi],
+                'uwi' => [
+                    'id' => $well->id,
+                    'name' => $well->uwi,
+                    'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+                ],
                 'other_uwi' => $otherUwis[$well->id],
                 'tap' => ['value' => $well->tech ? $well->tech->name_ru : null],
             ];
@@ -141,7 +145,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'ml.value_type', 'vt.id')
             ->whereIn('ml.well', $wellIds)
             ->where('ml.dbeg', '>=', $date->startOfMonth())
-            ->where('ml.dend', '<=', $date->endOfDay())
+            ->where('ml.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -169,7 +173,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wellIds)
             ->where('mwc.dbeg', '>=', $date->startOfMonth())
-            ->where('mwc.dend', '<=', $date->endOfDay())
+            ->where('mwc.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -189,6 +193,8 @@ class FluidProductionMonth extends MeasLogByMonth
         return DB::connection('tbd')
             ->table('prod.meas_gas_prod')
             ->whereIn('well', $wellIds)
+            ->where('dbeg', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date->endOfDay())
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -637,7 +643,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 'sum' => $wellBsw->sum()
             ];
         });
-        if ($result->isEmpty()) {
+        if ($result->isEmpty() || !$result->sum('count')) {
             return 0;
         }
         return $result->sum('sum') / $result->sum('count');
@@ -916,7 +922,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         foreach ($rows as $row) {
             foreach ($row as $date => $field) {
-                $date = Carbon::parse($date)->timezone('Asia/Almaty')->toImmutable();
+                $date = Carbon::parse($date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
                 $wellId = $field['params']['well_id'];
                 switch ($field['params']['indicator']) {
                     case 'liquid':
@@ -948,14 +954,21 @@ class FluidProductionMonth extends MeasLogByMonth
                                     ]
                                 );
                         } else {
-                            DB::connection('tbd')
-                                ->table('prod.meas_gas_prod')
-                                ->where('id', $row->id)
-                                ->update(
-                                    [
-                                        'gas_prod_val' => $field['value'],
-                                    ]
-                                );
+                            if (empty($field['value'])) {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->delete();
+                            } else {
+                                DB::connection('tbd')
+                                    ->table('prod.meas_gas_prod')
+                                    ->where('id', $row->id)
+                                    ->update(
+                                        [
+                                            'gas_prod_val' => $field['value'],
+                                        ]
+                                    );
+                            }
                         }
                         break;
                 }
@@ -969,38 +982,17 @@ class FluidProductionMonth extends MeasLogByMonth
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();
 
-        $row = DB::connection('tbd')
-            ->table($table)
-            ->where('activity', $activity->id)
-            ->where('value_type', $valueType->id)
-            ->where('well', $wellId)
-            ->where('dbeg', '>=', $date->startOfDay())
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->first();
-
-        if (empty($row)) {
-            DB::connection('tbd')
-                ->table($table)
-                ->insert(
-                    [
-                        'activity' => $activity->id,
-                        'value_type' => $valueType->id,
-                        'well' => $wellId,
-                        $field => $value,
-                        'dbeg' => $date->startOfDay(),
-                        'dend' => $date->endOfDay()
-                    ]
-                );
-        } else {
-            DB::connection('tbd')
-                ->table($table)
-                ->where('id', $row->id)
-                ->update(
-                    [
-                        $field => $value
-                    ]
-                );
-        }
+        $this->insertValueInCell(
+            $table,
+            $field,
+            [
+                'activity' => $activity->id,
+                'value_type' => $valueType->id,
+            ],
+            $wellId,
+            $date,
+            $value
+        );
     }
 
 }

@@ -2,9 +2,10 @@
     <div class="map-constructor">
         <TopMenu
             @importFile="importFile"
-            :addProjectModal="addProjectModal"
+            :buildNameModal="buildNameModal"
             :buildMapModal="buildMapModal"
             :buildMapSpecificModal="buildMapSpecificModal"
+            :interpolationModal="interpolationModal"
         ></TopMenu>
         <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">
@@ -54,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main">
+                <div class="map-constructor-main">
                     <div class="layers">
                         <div class="form-group has-search m-0">
                             <span class="fa fa-search form-control-feedback"></span>
@@ -66,7 +67,7 @@
                         >
                             <div
                                 @click="activeProjectIndex = index"
-                                @contextmenu.prevent="openCtxMenu(index)">
+                                @contextmenu.prevent="openCtxMenu(index, 'project', index)">
                                 <i class="fas fa-caret-down ml-2"></i>
                                 <i class="fas fa-vector-square ml-2"></i>
                                 <span class="ml-2 h4"
@@ -74,18 +75,23 @@
                             </div>
                           <draggable class="ml-3 text-white" v-model="project.layerGroups" @change="layerGroupsChangeOrder(project.layerGroups)"
                                      group="layers" @start="drag=true" @end="drag=false" >
-                              <div v-for="(layerGroup, index) in project.layerGroups" :key="index">
-                                  <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup.getLayers())">
-                                  {{ layerGroup.name }}
+                              <div class="d-flex align-items-center"
+                                   v-for="(layerGroup, layerGroupIndex) in project.layerGroups"
+                                   :key="'layerGroup_' + layerGroupIndex">
+                                  <input class="mr-1" type="checkbox" checked="1"
+                                         @change="toggleOpacity($event, layerGroup.getLayers())">
+                                  <div @contextmenu.prevent="openCtxMenu(index, layerGroup.type, layerGroupIndex)">
+                                      {{ layerGroup.name }}
+                                  </div>
                               </div>
                           </draggable>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap" style="width: 80%;">
                         <Project v-for="(project, index) in projects"
-                                 :ref="'mkProject_' + index"
-                                 :key="'mkProject_' + index"
-                                 :projectIndex="index"
+                                 :ref="project.key"
+                                 :key="project.key"
+                                 :projectKey="project.key"
                                  :data="project"
                                  class="projectBlock"
                         ></Project>
@@ -98,8 +104,15 @@
         <ExportModal></ExportModal>
 
         <context-menu class="right-click-menu" ref="ctxMenu" id="context-menu">
-            <li v-for="projectCtxMenuItem in projectCtxMenuItems" @click="ctxMenuAction(projectCtxMenuItem.action)">
-                {{ projectCtxMenuItem.name }}
+            <li v-for="ctxMenuItem in ctxMenuItems"
+                @click="ctxMenuAction(ctxMenuItem.action)"
+                v-if="ctxMenuItem.visible"
+                class="d-flex justify-content-between"
+            >
+                <div>{{ ctxMenuItem.name }}</div>
+                <div v-if="ctxMenuItem.icon">
+                    <i :class="ctxMenuItem.icon"></i>
+                </div>
             </li>
         </context-menu>
     </div>

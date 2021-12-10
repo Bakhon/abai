@@ -50,10 +50,10 @@
                     </div>
                 </div>
             </div>
-          <div class="mt-3 d-flex flex-row-reverse w-100">
-            <button type="button" class="btn btn-secondary" @click="$emit('close')"> {{ trans('map_constructor.cancel') }}</button>
-            <button type="button" class="btn btn-primary mr-1" @click="buildMapSpecificHandler"> {{ trans('map_constructor.build') }}</button>
-          </div>
+            <div class="mt-3 d-flex flex-row-reverse w-100">
+              <button type="button" class="btn btn-secondary" @click="$emit('close')"> {{ trans('map_constructor.cancel') }}</button>
+              <button type="button" class="btn btn-primary mr-1" @click="buildMapSpecificHandler"> {{ trans('map_constructor.build') }}</button>
+            </div>
         </div>
     </div>
 </template>

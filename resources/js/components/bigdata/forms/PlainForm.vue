@@ -41,6 +41,7 @@
                         :error="errors[item.code]"
                         :form="params"
                         :item="item"
+                        :editable="item.hasOwnProperty('editable') ? item.editable : true"
                         v-on:change="validateField($event, item)"
                         v-on:input="callback($event, item)"
                     >
@@ -85,6 +86,10 @@ export default {
     },
     wellId: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     values: {
@@ -163,6 +168,12 @@ export default {
 
       if (this.values) {
         this.formValues = Object.assign({}, this.values)
+        for (let i in this.formValues) {
+          let value = this.formValues[i]
+          if (value && typeof value === 'object' && value.value) {
+            this.formValues[i] = value.value
+          }
+        }
       }
 
       this.updateForm(this.params.code)
@@ -227,6 +238,7 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
+            type: this.type,
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {

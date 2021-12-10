@@ -12,86 +12,9 @@ use Carbon\CarbonImmutable;
 class MeasCurrentGdis extends TableForm
 {
     protected $configurationFileName = 'meas_current_gdis';
-    protected $metricCodes = [
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RPL',
-        'RZAB',
-        'PMAX',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'PRIV',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR'
-    ];
-
-    protected $fieldsOrder = [
-        'target',
-        'device',
-        'conclusion',
-        'transcript_dynamogram',
-        'RTR',
-        'RZAT',
-        'HSTA',
-        'HDN',
-        'RZAB',
-        'RPL',
-        'PRIV',
-        'PMAX',
-        'RBUF',
-        'RSTA',
-        'TPL',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR',
-        'note',
-        'conclusion_text',
-        'file_dynamogram'
-    ];
-
 
     public function getResults(array $params = []): array
     {
-        if ($this->request->get('type') !== 'tech') {
-            throw new \Exception(trans('bd.select_gu'));
-        }
-
         $filter = json_decode($this->request->get('filter'));
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
 
@@ -109,11 +32,12 @@ class MeasCurrentGdis extends TableForm
     {
         $wellIds = $this->wells->pluck('id')->toArray();
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date, 'Asia/Almaty');
+        $date = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
 
         return GdisCurrent::query()
             ->whereIn('well', $wellIds)
             ->where('meas_date', '>', $date->subYear())
+            ->where('meas_date', '<=', $date)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')
@@ -143,7 +67,9 @@ class MeasCurrentGdis extends TableForm
 
                         if ($column['code'] === 'uwi') {
                             $result[$column['code']] = [
-                                'value' => $well->uwi
+                                'id' => $well->id,
+                                'name' => $well->uwi,
+                                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
                             ];
                             continue;
                         }
@@ -164,6 +90,10 @@ class MeasCurrentGdis extends TableForm
                                     'code',
                                     $column['additional_filter']['metric']['fields']['code']
                                 );
+                                if (!$metric) {
+                                    continue;
+                                }
+
                                 $measurementValue = $wellMeasurement->values->where('metric', $metric->id)->first();
                                 if (!empty($measurementValue)) {
                                     $value = $measurementValue->value_string ?? $measurementValue->value_double;
@@ -236,10 +166,10 @@ class MeasCurrentGdis extends TableForm
                             ]
                         );
                     }
-                    if (!isset($field['params'])) {
-                        dd($field, $column);
-                    }
                     $metric = Metric::where('code', $field['params']['code'])->first();
+                    if (!$metric) {
+                        continue;
+                    }
                     $measurementValue = $measurement->values->where('metric', $metric->id)->first();
                     if (!$measurementValue) {
                         $measurementValue = $measurement->values()->create(
