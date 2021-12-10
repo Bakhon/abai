@@ -3,7 +3,7 @@
   "table": "prod.well_equip",
   "tabs": [
     {
-      "title": "",
+      "title": "title",
       "blocks": [
         [
           {
