@@ -56,9 +56,6 @@
                 <div class="row">
                     <div class="col-4 d-none d-lg-block pr-0">
                         <div class="chart-wrapper mb-2">
-                            <div class="block-header pb-0 pl-2 text-center">
-                                {{ trans('paegtm.distribution_of_unsuccessful_gtm') }}
-                            </div>
                             <div class="p-1 pl-2">
                               <apexchart
                                   type="donut" :height="280"
@@ -71,9 +68,6 @@
 
                     <div class="col-4 d-none d-lg-block pl-1 pr-1">
                         <div class="chart-wrapper mb-2">
-                            <div class="block-header pb-0 pl-2 text-center">
-                                {{ trans('paegtm.liquid_failure') }}
-                            </div>
                             <div class="p-1 pl-2">
                               <apexchart
                                   type="donut" :height="280"
@@ -86,9 +80,6 @@
 
                     <div class="col-4 d-none d-lg-block pl-0">
                         <div class="chart-wrapper mb-2">
-                            <div class="block-header pb-0 pl-2 text-center">
-                                {{ trans('paegtm.failure_water_cut_achieve') }}
-                            </div>
                             <div class="p-1 pl-2 pr-3">
                               <apexchart
                                   type="donut" :height="280"

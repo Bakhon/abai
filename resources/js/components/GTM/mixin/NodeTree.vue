@@ -88,6 +88,10 @@ export default {
 }
 </script>
 <style lang="scss">
+.span {
+  font-size: 12px;
+}
+
 $border: #ddd;
 $ident: 10px;
 
