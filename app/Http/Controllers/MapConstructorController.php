@@ -77,7 +77,7 @@ class MapConstructorController extends Controller
                 ];
             }
         }
-        $params = (array)json_decode($request->get('params'));
+        $params = json_decode($request->get('params'), true);
 
         return $this->polygonsService->getInterpolationData($files, $params);
     }

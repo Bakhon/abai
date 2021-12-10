@@ -68,10 +68,10 @@ class PolygonsService
     }
 
     public function getInterpolationData(array $files, array $params): array {
-        return (array)json_decode($this->client->request('POST', '/polygons/interpolator', [
+        return json_decode($this->client->request('POST', '/polygons/interpolator', [
             'multipart' => $files,
             'query' => http_build_query($params),
-        ])->getBody()->getContents());
+        ])->getBody()->getContents(), true);
     }
 
     public function getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue): array {
@@ -79,11 +79,11 @@ class PolygonsService
         if ((int)$selectedFilterType === 1) {
             $type = 'step';
         }
-        return (array)json_decode($this->client->request('POST', '/polygons/base64gridmap', [
+        return json_decode($this->client->request('POST', '/polygons/base64gridmap', [
             RequestOptions::BODY => json_encode($base64Data),
             'query' => http_build_query([
                 $type => (int)$selectedFilterValue,
             ]),
-        ])->getBody()->getContents());
+        ])->getBody()->getContents(), true);
     }
 }
