@@ -565,12 +565,12 @@ export default {
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
-            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],factField)) {
+            if (await this.isMonthlyDifferenceAbnormal(monthlyFact,factField)) {
                 return true;
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (await this.isYearlyDifferenceAbnormal(yearlyFact[0])) {
+            if (await this.isYearlyDifferenceAbnormal(yearlyFact)) {
                 return true;
             }
 

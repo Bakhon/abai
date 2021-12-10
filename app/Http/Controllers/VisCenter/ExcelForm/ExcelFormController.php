@@ -48,13 +48,6 @@ class ExcelFormController extends Controller
         'ММГ' => 's.sugal@kmg.kz',
     );
     private $systemFields = ['id','dzo_import_data_id'];
-    private $fieldsOilLosses = [
-        'daily_reason_1_losses',
-        'daily_reason_2_losses',
-        'daily_reason_3_losses',
-        'daily_reason_4_losses',
-        'daily_reason_5_losses'
-    ];
     private $condensateCompanies = ['АГ'];
 
     public function getDzoCurrentData(Request $request)
@@ -534,11 +527,9 @@ class ExcelFormController extends Controller
     public function getFactForReason(Request $request)
     {
         if ($request->type === 'monthly') {
-            return [$this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'='),
-                $this->getOilLosses($request->dzo,Carbon::parse($request->date),$this->fieldsOilLosses,'=')];
+            return $this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'=');
         } elseif ($request->type === 'yearly') {
-            return [$this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'<'),
-                $this->getOilLosses($request->dzo,Carbon::parse($request->date),$this->fieldsOilLosses,'<')];
+            return $this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'<');
         }
     }
 
@@ -554,27 +545,5 @@ class ExcelFormController extends Controller
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
             ->sum($field);
-    }
-
-    private function getOilLosses($dzo,$date,$fields,$type)
-    {
-        $ids = DzoImportData::query()
-           ->select('id')
-           ->whereMonth('date',$type,$date)
-           ->whereYear('date',$date)
-           ->where('dzo_name',$dzo)
-           ->pluck('id')
-           ->toArray();
-        $oilLosses = DzoImportDecreaseReason::query()
-            ->select($fields)
-            ->whereIn('dzo_import_data_id',$ids)
-            ->get();
-
-        $summ = 0;
-        foreach($this->fieldsOilLosses as $fieldName) {
-            $summ += $oilLosses->sum($fieldName);
-        }
-
-        return $summ;
     }
 }
