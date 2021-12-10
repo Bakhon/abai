@@ -68,7 +68,10 @@ export default {
                         11: 1,
                         16: 1,
                         21: 1,
-                    }
+                    },
+                    dailyReasonRow: 73,
+                    monthlyReasonRow: 80,
+                    yearlyReasonRow: 87,
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
@@ -81,7 +84,10 @@ export default {
                         6: 1,
                         11: 1,
                         16: 1
-                    }
+                    },
+                    dailyReasonRow: 68,
+                    monthlyReasonRow: 75,
+                    yearlyReasonRow: 82,
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
@@ -95,7 +101,10 @@ export default {
                         7: 1,
                         10: 1,
                         10: 3,
-                    }
+                    },
+                    dailyReasonRow: 58,
+                    monthlyReasonRow: 65,
+                    yearlyReasonRow: 72,
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
@@ -109,7 +118,10 @@ export default {
                         11: 1,
                         15: 1,
                         20: 1,
-                    }
+                    },
+                    dailyReasonRow: 72,
+                    monthlyReasonRow: 79,
+                    yearlyReasonRow: 86,
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
@@ -124,7 +136,10 @@ export default {
                         10: 1,
                         13: 1,
                         16: 1,
-                    }
+                    },
+                    dailyReasonRow: 64,
+                    monthlyReasonRow: 71,
+                    yearlyReasonRow: 78,
                 },
                 "УО" : {
                     rows: initialRowsYO,
@@ -136,7 +151,10 @@ export default {
                         1: 1,
                         7: 1,
                         12: 1
-                    }
+                    },
+                    dailyReasonRow: 67,
+                    monthlyReasonRow: 74,
+                    yearlyReasonRow: 81,
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
@@ -149,7 +167,10 @@ export default {
                         8: 1,
                         15: 1,
                         22: 1
-                    }
+                    },
+                    dailyReasonRow: 78,
+                    monthlyReasonRow: 85,
+                    yearlyReasonRow: 92,
                 },
                 "ТШО" : {
                     rows: initialRowsTSHO,
@@ -172,7 +193,10 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
                 },
                 "КПО" : {
                     rows: initialRowsKPO,
@@ -182,7 +206,10 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
                 },
                 "КГМ" : {
                     rows: initialRowsKGM,
@@ -194,7 +221,10 @@ export default {
                         1: 1,
                         4: 1,
                         10: 1
-                    }
+                    },
+                    dailyReasonRow: 61,
+                    monthlyReasonRow: 68,
+                    yearlyReasonRow: 75,
                 },
                 "ПКК" : {
                     rows: initialRowsPKK,
@@ -202,7 +232,10 @@ export default {
                     cells: cellsMappingPKK,
                     id: 0,
                     requiredRows: [],
-                    isNotNull: {}
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
                 },
                 "ТП" : {
                     rows: initialRowsTP,
@@ -210,7 +243,10 @@ export default {
                     cells: cellsMappingTP,
                     id: 0,
                     requiredRows: [],
-                    isNotNull: {}
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
                 },
                 "АГ" : {
                     rows: initialRowsAG,
@@ -218,7 +254,10 @@ export default {
                     cells: cellsMappingAG,
                     id: 0,
                     requiredRows: [],
-                    isNotNull: {}
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
                 },
             },
             dzoCompanies: [
@@ -518,26 +557,17 @@ export default {
                 this.excelData['decreaseReason'] = {};
             }
 
-            if (this.excelData['decreaseReason']['daily_reason_1_explanation'] !== '' &&
-                this.excelData['decreaseReason']['daily_reason_1_losses'] !== 'null') {
-                    return false;
-            } else if (this.isDailyDifferenceAbnormal()) {
+            if (await this.isDailyDifferenceAbnormal()) {
                 return true;
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
-            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' &&
-                this.isOilLossesNormal(this.monthlyLossesField,monthlyFact[1])) {
-                    return false;
-            } else if (this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1])) {
+            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1])) {
                 return true;
             }
-            let yearlyFact = await this.getSummaryFactByDzo('yearly');
 
-            if (this.excelData['decreaseReason']['yearly_reason_1_explanation'] !== '' &&
-                this.isOilLossesNormal(this.yearlyLossesField,yearlyFact[1])) {
-                    return false;
-            } else if (this.isYearlyDifferenceAbnormal(yearlyFact[0],yearlyFact[1])) {
+            let yearlyFact = await this.getSummaryFactByDzo('yearly');
+            if (await this.isYearlyDifferenceAbnormal(yearlyFact[0],yearlyFact[1])) {
                 return true;
             }
 
@@ -559,6 +589,7 @@ export default {
                     Заполните "Причины: СУТОЧНЫЕ"!`;
                 this.$bvToast.toast(message, toastOptions);
             }
+
             return isDailyAbnormal;
         },
         isOilLossesNormal(fields,fact) {
@@ -577,6 +608,9 @@ export default {
             return summ < max && summ > min;
         },
         async isMonthlyDifferenceAbnormal(monthlyFact,losses) {
+            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.excelData['decreaseReason']['monthly_reason_1_losses'] !== '') {
+                return false;
+            }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping.oil]) < monthlyPlan;
@@ -593,9 +627,13 @@ export default {
                     Заполните "Причины: С НАЧАЛА МЕСЯЦА!"`;
                 this.$bvToast.toast(message, toastOptions);
             }
+
             return isMonthlyPlanAbnormal;
         },
         async isYearlyDifferenceAbnormal(yearlyFact,losses) {
+            if (this.excelData['decreaseReason']['yearlyreason_1_explanation'] !== '' && this.excelData['decreaseReason']['yearly_reason_1_losses'] !== '') {
+                return false;
+            }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let yearlyPlan = await this.getSummaryPlanByDzo('yearly');
 
