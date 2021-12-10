@@ -160,7 +160,9 @@ export default {
                     isNotNull: {
                         1: 1,
                     },
-                    dailyReasonRow: 7
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
                 },
                 "НКО" : {
                     rows: initialRowsNKO,
@@ -331,6 +333,26 @@ export default {
                 'oil': 'oil_production_fact',
                 'condensate': 'condensate_production_fact'
             },
+            toastOptions: {
+                title: '',
+                variant: '',
+                solid: true,
+                noAutoHide: true,
+            },
+            monthlyLossesField: [
+                'monthly_reason_1_losses',
+                'monthly_reason_2_losses',
+                'monthly_reason_3_losses',
+                'monthly_reason_4_losses',
+                'monthly_reason_5_losses'
+            ],
+            yearlyLossesField: [
+                'yearly_reason_1_losses',
+                'yearly_reason_2_losses',
+                'yearly_reason_3_losses',
+                'yearly_reason_4_losses',
+                'yearly_reason_5_losses'
+            ]
         };
     },
     props: ['userId'],
@@ -475,7 +497,7 @@ export default {
             this.disableHightLightForReasons();
             this.processTableData();
             if (await this.isFactBelowPlan()) {
-                this.showToast(this.trans("visualcenter.excelFormPlans.dailyFactBelowPlanBody"), this.trans("visualcenter.excelFormPlans.factBelowPlanTitle"), 'danger');
+                return;
             } else if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
@@ -492,29 +514,142 @@ export default {
             if (this.dzoListByCondensate.includes(this.excelData.dzo_name)) {
                 return false;
             }
-            let dailyPlan = await this.getDailyPlanByDzo();
+            if (!this.excelData['decreaseReason']) {
+                this.excelData['decreaseReason'] = {};
+            }
+
+            if (this.excelData['decreaseReason']['daily_reason_1_explanation'] !== '' &&
+                this.excelData['decreaseReason']['daily_reason_1_losses'] !== 'null') {
+                    return false;
+            } else if (this.isDailyDifferenceAbnormal()) {
+                return true;
+            }
+
+            let monthlyFact = await this.getSummaryFactByDzo('monthly');
+            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' &&
+                this.isOilLossesNormal(this.monthlyLossesField,monthlyFact[1])) {
+                    return false;
+            } else if (this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1])) {
+                return true;
+            }
+            let yearlyFact = await this.getSummaryFactByDzo('yearly');
+
+            if (this.excelData['decreaseReason']['yearly_reason_1_explanation'] !== '' &&
+                this.isOilLossesNormal(this.yearlyLossesField,yearlyFact[1])) {
+                    return false;
+            } else if (this.isYearlyDifferenceAbnormal(yearlyFact[0],yearlyFact[1])) {
+                return true;
+            }
+
+            return false;
+        },
+        async isDailyDifferenceAbnormal() {
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let dailyPlan = await this.getSummaryPlanByDzo('daily');
             let isDailyAbnormal = this.excelData[this.factValidationMapping.oil] < dailyPlan['plan_oil'];
             if (isDailyAbnormal) {
                 let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
                 for (let i=1;i<6;i++) {
                     this.setClassToElement($('#factGrid').find('div[data-row="' + dailyRow + '"][data-col="' + i + '"]'),'cell__color-red');
                 }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за сутки меньше запланированного.
+                    Ожидаемая суточная добыча: ${this.getFormattedNumberByThousand(dailyPlan['plan_oil'])} (т).
+                    Заполните "Причины: СУТОЧНЫЕ"!`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+            return isDailyAbnormal;
+        },
+        isOilLossesNormal(fields,fact) {
+            let summ = 0;
+            _.forEach(fields, (field) => {
+                let parsed = parseFloat(this.excelData['decreaseReason'][field]);
+                if (!isNaN(parsed)) {
+                    summ += parsed;
+                }
+            });
+            if (fact === 0) {
                 return true;
             }
-            return false;
+            let max = fact + fact * 0.05;
+            let min = fact - fact * 0.05;
+            return summ < max && summ > min;
+        },
+        async isMonthlyDifferenceAbnormal(monthlyFact,losses) {
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
+            let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping.oil]) < monthlyPlan;
+            if (isMonthlyPlanAbnormal) {
+                let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + monthlyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за месяц меньше запланированного.
+                    Ожидаемая месячная добыча: ${this.getFormattedNumberByThousand(monthlyPlan)} (т).
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(losses)} (т) за месяц.
+                    Заполните "Причины: С НАЧАЛА МЕСЯЦА!"`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+            return isMonthlyPlanAbnormal;
+        },
+        async isYearlyDifferenceAbnormal(yearlyFact,losses) {
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let yearlyPlan = await this.getSummaryPlanByDzo('yearly');
+
+            let isYearlyPlanAbnormal = yearlyFact < yearlyPlan;
+            if (isYearlyPlanAbnormal) {
+                let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + yearlyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за год меньше запланированного.
+                    Ожидаемая годовая добыча: ${this.getFormattedNumberByThousand(yearlyPlan)} (т).
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(losses)} (т) за год.
+                    Заполните "Причины: С НАЧАЛА ГОДА!"`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+            return isYearlyPlanAbnormal;
+        },
+        getFormattedNumberByThousand(num) {
+            return (new Intl.NumberFormat("ru-RU").format(num))
         },
         disableHightLightForReasons() {
-            for (let i=1;i<5;i++) {
+            for (let i=1;i<6;i++) {
                 let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
+                let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
+                let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
                 let dailySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + dailyRow + '"]');
+                let monthlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + monthlyRow + '"]');
+                let yearlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + yearlyRow + '"]');
                 this.removeClassFromElement(dailySelector,'cell__color-red');
+                this.removeClassFromElement(monthlySelector,'cell__color-red');
+                this.removeClassFromElement(yearlySelector,'cell__color-red');
             }
         },
-        async getDailyPlanByDzo() {
-            let uri = this.localeUrl("/get-daily-plan-by-import-form");
+        async getSummaryPlanByDzo(type) {
+            let uri = this.localeUrl("/get-plan-by-import-form");
             let queryParams = {
                 'date': this.currentDateDetailed,
-                'dzo': this.selectedDzo.ticker
+                'dzo': this.selectedDzo.ticker,
+                'type': type
+            };
+            const response = await axios.get(uri,{params: queryParams});
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
+        },
+        async getSummaryFactByDzo(type) {
+            let uri = this.localeUrl("/get-fact-by-import-form");
+            let queryParams = {
+                'date': this.currentDateDetailed,
+                'dzo': this.selectedDzo.ticker,
+                'type': type
             };
             const response = await axios.get(uri,{params: queryParams});
             if (response.status === 200) {

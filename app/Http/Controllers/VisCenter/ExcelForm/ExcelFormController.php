@@ -48,6 +48,13 @@ class ExcelFormController extends Controller
         'ММГ' => 's.sugal@kmg.kz',
     );
     private $systemFields = ['id','dzo_import_data_id'];
+    private $fieldsOilLosses = [
+        'daily_reason_1_losses',
+        'daily_reason_2_losses',
+        'daily_reason_3_losses',
+        'daily_reason_4_losses',
+        'daily_reason_5_losses'
+    ];
 
     public function getDzoCurrentData(Request $request)
     {
@@ -469,13 +476,92 @@ class ExcelFormController extends Controller
          }
     }
 
-    public function getDailyPlan(Request $request)
+    public function getPlanForReasons(Request $request)
+    {
+        if ($request->type === 'daily') {
+            return $this->getDailyPlan($request->dzo,Carbon::parse($request->date));
+        } elseif ($request->type === 'monthly') {
+            return $this->getMonthlyPlan($request->dzo,Carbon::parse($request->date));
+        } elseif ($request->type === 'yearly') {
+            return $this->getYearlyPlan($request->dzo,Carbon::parse($request->date));
+        }
+    }
+
+    public function getDailyPlan($dzo,$date)
     {
         return DzoPlan::query()
             ->select(['plan_oil','plan_kondensat'])
-            ->whereMonth('date',Carbon::parse($request->date))
-            ->whereYear('date',Carbon::parse($request->date))
-            ->where('dzo',$request->dzo)
+            ->whereMonth('date',$date)
+            ->whereYear('date',$date)
+            ->where('dzo',$dzo)
             ->first();
+    }
+
+    public function getMonthlyPlan($dzo,$date)
+    {
+        $dailyPlan = $this->getDailyPlan($dzo,$date);
+        return $dailyPlan->plan_oil * $date->day;
+    }
+
+    private function getYearlyPlan($dzo,$date)
+    {
+        $plans = DzoPlan::query()
+            ->select(['plan_oil','plan_kondensat','date'])
+            ->whereMonth('date','<',$date)
+            ->whereYear('date',$date)
+            ->where('dzo',$dzo)
+            ->get()
+            ->toArray();
+
+        $summ = 0;
+        foreach($plans as $plan) {
+            $daysCount = Carbon::parse($plan['date'])->daysInMonth;
+            $summ += $plan['plan_oil'] * $daysCount;
+        }
+
+        return $summ;
+    }
+
+    public function getFactForReason(Request $request)
+    {
+        if ($request->type === 'monthly') {
+            return [$this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'='),
+                $this->getOilLosses($request->dzo,Carbon::parse($request->date),$this->fieldsOilLosses,'=')];
+        } elseif ($request->type === 'yearly') {
+            return [$this->getMonthlyFact($request->dzo,Carbon::parse($request->date),array('oil_production_fact','condensate_production_fact'),'<'),
+                $this->getOilLosses($request->dzo,Carbon::parse($request->date),$this->fieldsOilLosses,'<')];
+        }
+    }
+
+    private function getMonthlyFact($dzo,$date,$fields,$type)
+    {
+        return DzoImportData::query()
+            ->select($fields)
+            ->whereMonth('date',$type,$date)
+            ->whereYear('date',$date)
+            ->where('dzo_name',$dzo)
+            ->sum($fields[0]);
+    }
+
+    private function getOilLosses($dzo,$date,$fields,$type)
+    {
+        $ids = DzoImportData::query()
+           ->select('id')
+           ->whereMonth('date',$type,$date)
+           ->whereYear('date',$date)
+           ->where('dzo_name',$dzo)
+           ->pluck('id')
+           ->toArray();
+        $oilLosses = DzoImportDecreaseReason::query()
+            ->select($fields)
+            ->whereIn('dzo_import_data_id',$ids)
+            ->get();
+
+        $summ = 0;
+        foreach($this->fieldsOilLosses as $fieldName) {
+            $summ += $oilLosses->sum($fieldName);
+        }
+
+        return $summ;
     }
 }
