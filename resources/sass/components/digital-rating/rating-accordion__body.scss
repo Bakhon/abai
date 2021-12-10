@@ -15,9 +15,9 @@
       padding: 4px 6px;
       display: flex;
       align-items: baseline;
-      &:hover, &.active {
-        background: #2E50E9;
-        cursor: pointer;
+      cursor: pointer;
+      &.active, &.focus {
+        background-color: #2E50E9;
       }
     }
 

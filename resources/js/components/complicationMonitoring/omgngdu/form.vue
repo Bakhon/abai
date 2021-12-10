@@ -29,7 +29,7 @@
             :week-start="1"
             use24-hour
             auto
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
         </datetime>
         <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
@@ -59,7 +59,7 @@
             name="bsw"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.daily_water_production') }}</label>
@@ -73,7 +73,7 @@
             name="daily_water_production"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
       </div>
     </div>
@@ -101,7 +101,7 @@
             name="daily_fluid_production"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }}</label>
@@ -128,7 +128,7 @@
             name="daily_oil_production"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
       </div>
     </div>
@@ -169,7 +169,7 @@
             name="daily_gas_production_in_sib"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
+            :disabled="!isEditable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.heater_output_temperature') }}</label>
@@ -211,6 +211,10 @@ export default {
     validationParams: {
       type: Object,
       required: true,
+    },
+    isEditable: {
+      type: Boolean,
+      default: false
     }
   },
   data: function () {
@@ -232,7 +236,6 @@ export default {
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
         heater_output_temperature: null,
-        editable: 1,
       },
       ngdus: {},
       cndgs: {},

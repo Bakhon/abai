@@ -15,8 +15,17 @@
               alt="download template"
             />
           </button>
-          <button @click="isOpenModal = true">
+          <button
+            v-if="!currentTemplate.custom_template"
+            @click.stop="isOpenModal = true"
+          >
             <img src="/img/PlastFluids/settings.svg" alt="customize table" />
+          </button>
+          <button v-else @click="isDeleteTemplateModalOpen = true">
+            <img
+              src="/img/PlastFluids/delete.svg"
+              alt="delete custom template"
+            />
           </button>
         </div>
       </div>
@@ -30,12 +39,36 @@
     </template>
     <p v-else>{{ trans("plast_fluids.no_field_selected") }}</p>
     <Modal
-      v-if="isOpenModal"
+      v-if="!currentTemplate.custom_template"
+      v-show="isOpenModal"
       @close-modal="isOpenModal = false"
+      @add-custom-template="isTemplateNameModalOpen = true"
       :templateName="
         currentTemplate ? currentTemplate['name_' + currentLang] : ''
       "
       :fields="tableFields"
+      :checkedFields.sync="checkedFields"
+    />
+    <BaseModal
+      v-if="!currentTemplate.custom_template"
+      v-show="isTemplateNameModalOpen"
+      type="edit"
+      heading="Введите название шаблона"
+      inputLabel="Название"
+      :inputValue.sync="customTemplateName"
+      @close-modal="isTemplateNameModalOpen = false"
+      @modal-response="handleCustomTemplateSave"
+    />
+    <BaseModal
+      v-if="currentTemplate.custom_template"
+      v-show="isDeleteTemplateModalOpen"
+      type="delete"
+      :heading="
+        `${trans('plast_fluids.sure_want_to_delete_optional')}
+          ${currentTemplate['name_' + currentLang]}?`
+      "
+      @close-modal="isDeleteTemplateModalOpen = false"
+      @modal-response="handleCustomTemplateDelete"
     />
   </div>
 </template>
@@ -43,24 +76,41 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import BaseTable from "./BaseTable.vue";
+import BaseModal from "./BaseModal.vue";
 import Modal from "./MonitoringDownloadTableModal.vue";
-import { downloadExcelFile, convertToFormData } from "../helpers";
-import { getTemplateFile } from "../services/templateService";
+import {
+  downloadExcelFile,
+  convertToFormData,
+  compareNumbers,
+} from "../helpers";
+import {
+  getTemplateFile,
+  saveCustomTemplate,
+  deleteCustomTemplate,
+} from "../services/templateService";
 
 export default {
   name: "MonitoringDownloadTable",
   data() {
     return {
       isOpenModal: false,
+      isTemplateNameModalOpen: false,
+      isDeleteTemplateModalOpen: false,
+      customTemplateName: "",
+      checkedFields: [],
     };
   },
   inject: {
     userID: {
       default: "",
     },
+    userName: {
+      default: "",
+    },
   },
   components: {
     BaseTable,
+    BaseModal,
     Modal,
   },
   computed: {
@@ -73,17 +123,62 @@ export default {
   },
   watch: {
     currentSubsoilField: {
-      handler(value) {
+      handler() {
         this.handleTableData({
-          field_id: value[0].field_id,
           user_id: this.userID,
+          type: "upload",
         });
       },
       deep: true,
     },
   },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleTableData"]),
+    ...mapActions("plastFluidsLocal", ["handleTableData", "getTemplates"]),
+    async handleCustomTemplateSave() {
+      try {
+        const payload = {
+          columns: this.checkedFields.sort(compareNumbers),
+          user: this.userName,
+          user_id: this.userID,
+          parent_template_id: this.currentTemplate.id,
+          name: this.customTemplateName,
+          description: "",
+        };
+        const response = await saveCustomTemplate(payload);
+        this.getTemplates({
+          userID: this.userID,
+          lang: this.currentLang,
+          templateID: response.id,
+        });
+        this.handleTableData({
+          user_id: this.userID,
+          report_id: response.id,
+          type: "upload",
+        });
+      } catch (error) {
+        alert(this.trans("plast_fluids.unexpected_error"));
+      }
+    },
+    async handleCustomTemplateDelete() {
+      try {
+        const payload = {
+          custom_template_id: this.currentTemplate.id,
+          user_id: this.userID,
+        };
+        await deleteCustomTemplate(payload);
+        this.getTemplates({
+          userID: this.userID,
+          lang: this.currentLang,
+          templateID: 1,
+        });
+        this.handleTableData({
+          user_id: this.userID,
+          type: "upload",
+        });
+      } catch (error) {
+        alert(this.trans("plast_fluids.unexpected_error"));
+      }
+    },
     async handleTemplateDownload() {
       const postData = convertToFormData({
         user_id: this.userID,
@@ -103,8 +198,8 @@ export default {
       !this.tableFields.length
     ) {
       this.handleTableData({
-        field_id: this.currentSubsoilField[0].field_id,
         user_id: this.userID,
+        type: "upload",
       });
     }
   },

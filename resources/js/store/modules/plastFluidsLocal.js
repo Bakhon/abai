@@ -1,7 +1,13 @@
 import translation from "../../VueTranslation/Translation";
-import { getTemplateData } from "../../components/PlastFluids/services/templateService";
+import {
+  getTemplateData,
+  getUploadTemplates,
+} from "../../components/PlastFluids/services/templateService";
 import { getTableData } from "../../components/PlastFluids/services/mapService";
-import { convertToFormData } from "../../components/PlastFluids/helpers";
+import {
+  convertToFormData,
+  convertTemplateData,
+} from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -154,20 +160,38 @@ const plastFluidsLocal = {
       commit("SET_FILE_LOG", entries);
     },
     async getTableData({}, postData) {
-      const payload = new FormData();
-      for (let key in postData) {
-        payload.append(key, postData[key]);
-      }
+      const payload = convertToFormData(postData);
       const data = await getTemplateData(payload);
       return data;
     },
-    async handleTableData({ commit, dispatch }, incomeData) {
+    async getTemplates({ commit }, payload) {
+      const postData = new FormData();
+      postData.append("user_id", payload.userID);
+      const data = await getUploadTemplates(postData);
+      commit("SET_TEMPLATES", convertTemplateData(data, payload.lang));
+      const template = data.find(
+        (template) => template.id === payload.templateID
+      );
+      commit("SET_CURRENT_TEMPLATE", template);
+    },
+    async handleTableData({ state, rootState, commit, dispatch }, incomeData) {
       try {
-        const { template, ...rest } = incomeData;
+        const { template, type, ...rest } = incomeData;
         commit("SET_LOADING", true);
+        let horizonIDs = "None";
+        let blockIDs = "None";
+        if (type === "analysis") {
+          if (rootState.plastFluids.currentSubsoilHorizon.length)
+            horizonIDs = rootState.plastFluids.currentSubsoilHorizon.map(
+              (horizon) => horizon.horizon_id
+            );
+          if (state.currentBlocks.length)
+            blockIDs = state.currentBlocks.map((block) => block.block_id);
+        }
         const postDataMock = {
-          horizons: "None",
-          blocks: "None",
+          field_id: rootState.plastFluids.currentSubsoilField[0].field_id,
+          horizons: horizonIDs,
+          blocks: blockIDs,
           row_on_page: 30,
           page_number: 1,
           report_id: 1,

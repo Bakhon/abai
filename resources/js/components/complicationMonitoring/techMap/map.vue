@@ -344,7 +344,7 @@ export default {
       let data = await this.getMapData(this.gu);
       this.pipes = data.pipes;
       this.waterPipes = data.water_pipes;
-      this.selectedDate = data.date;
+      this.selectedDate = moment().toISOString(data.date);
       this.waterWellPoints = data.water_wells;
       this.bgsPoints = data.bgs;
       this.kmbWellPoints = data.kmb_wells;

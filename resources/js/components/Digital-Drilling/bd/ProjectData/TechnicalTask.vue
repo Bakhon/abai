@@ -8,19 +8,18 @@
                 <th class="raport">Полное название технического проекта</th>
                 <th></th>
             </tr>
-            <tr v-for="i in 30">
+            <tr v-for="project in projects" v-if="projects.length>0">
                 <td>
-
+                    {{ currentWell.field_name }}
                 </td>
                 <td>
-
+                    {{ currentWell.well_num }}
                 </td>
                 <td>
+                    {{ project.document_name}}
                 </td>
                 <td>
-                    <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.well_id +'/?file_id='+ report.file_id)">
-                        Скачать
-                    </button>
+                    <a class="download" :href="DIGITAL_DRILLING_FILE_URL + '/?file_id='+ project.file_id" target="_blank">Скачать</a>
                 </td>
             </tr>
             </tbody>
@@ -35,8 +34,9 @@
         name: "TechnicalTask",
         data(){
             return{
-                reports: [],
-                DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/',
+                projects: [],
+                DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/',
+                DIGITAL_DRILLING_FILE_URL: 'http://172.20.103.203:8089/get/',
             }
         },
         computed: {
@@ -44,7 +44,14 @@
                 'currentWell'
             ]),
         },
-
+        mounted(){
+            this.getReportsByWell()
+        },
+        watch: {
+            currentWell: function (val) {
+                this.getReportsByWell()
+            }
+        },
         methods:{
             downloadFile(link){
                 window.location.href = link;
@@ -55,11 +62,12 @@
             async getReportsByWell(){
                 this.SET_LOADING(true);
                 try{
-                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/' +
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/' +
                         this.currentWell.well_id).then((response) => {
                         let data = response.data;
                         if (data) {
-                            this.reports = data;
+                            this.projects = data;
+                            console.log(data)
                         } else {
                             console.log('No data');
                         }
@@ -94,6 +102,8 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto;
+        color: #FFFFFF!important;
+        text-decoration: none;
     }
 
 </style>

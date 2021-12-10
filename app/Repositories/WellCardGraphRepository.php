@@ -67,7 +67,7 @@ class WellCardGraphRepository  implements WellRepositoryInterface
            $result['measLiq']['data'][] = $item->liquid;
            $result['measWaterCut']['data'][] = $item->wcut;
            $result['oil']['data'][] = $item->oil;
-           $result['ndin']['data'][] = $item->hdin;
+           $result['ndin']['data'][] = $item->hdin === null ? 0 : $item->hdin;
            $result['labels'][] = $dateItem;
 
            $result['events']['data'][] = $item->activity ? 10 : 0;
@@ -107,11 +107,6 @@ class WellCardGraphRepository  implements WellRepositoryInterface
                'type' => 'line',
                'data'=>[]
           ],
-          'ndin' => [
-               'name' => trans('app.ndin'),
-               'type' => 'line',
-               'data'=>[]
-          ],
           'labels' => [],
           'events'=>[
                'name'=>trans('well_card_graph.events'),
@@ -125,7 +120,6 @@ class WellCardGraphRepository  implements WellRepositoryInterface
           $dateItem = date('Y-m-d',strtotime($item->date));
           $result['liquidInjection']['data'][] = $item->water_vol;
           $result['liquidPressure']['data'][] = $item->pressure_inj;
-          $result['ndin']['data'][] = is_null($item->hdin) ? 0 : $item->hdin;
           $result['labels'][] = $dateItem;
           $result['events']['data'][] = $item->activity ? 10 : 0;
           $result['events']['info'][] = $item->activity;

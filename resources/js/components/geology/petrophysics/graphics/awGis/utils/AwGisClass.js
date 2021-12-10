@@ -67,6 +67,10 @@ export default class AwGisClass {
         this.#__tElements.editElementData(elementName, data)
     }
 
+    editPropertyElementData(elementName, editableMapName, path, value, force = false) {
+        this.#__tElements.editPropertyElementData(elementName, editableMapName, path, value, force)
+    }
+
     editElementOptions(elementName, settings) {
         this.#__tElements.editElementOptions(elementName, settings)
     }

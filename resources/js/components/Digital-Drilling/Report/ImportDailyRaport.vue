@@ -1,6 +1,5 @@
 <template>
     <div >
-        <daily-raport class="daily-raport"/>
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily-raport-block">
@@ -15,7 +14,7 @@
                                 </div>
                             </div>
                             <div class="header-close">
-                                <a href="daily-report">{{ trans('digital_drilling.default.close') }}</a>
+                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.close') }}</a>
                             </div>
                         </div>
                         <div class="import-daily-body">
@@ -34,14 +33,22 @@
                                         </div>
                                     </label>
                                     <ul v-if="filelist.length" v-cloak>
-                                        <li class="text-sm p-1" v-for="file in filelist">
-                                            {{file.name}}<button class="ml-2" type="button" @click="remove(filelist.indexOf(file))" title="Remove file">remove</button>
+                                        <li class="text-sm p-1">
+                                            <span class="file-name">
+                                                {{filelist[0].name}}
+                                            </span>
+
+                                            <button class="ml-2 remove-file" type="button" @click="remove(0)" title="Remove file">Удалить</button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
+                            <div class="form">
+                                <input type="number" class="input" placeholder="Напишите номер скважины" v-model="form.well_num" @input="checkForm">
+                                <input type="date" class="input" placeholder="Дата" v-model="form.date" @input="checkForm">
+                            </div>
                             <div class="import-daily-body-btns">
-                                <button :class="{disabled: !filelist.length}">{{ trans('digital_drilling.default.import') }}</button>
+                                <button :class="{disabled: !uploadTrue }" @click="importFile">{{ trans('digital_drilling.default.import') }}</button>
                                 <button>{{ trans('digital_drilling.default.reset') }}</button>
                             </div>
                         </div>
@@ -58,15 +65,39 @@
         name: "ImportDailyRaport",
         data(){
             return{
-                filelist: []
+                filelist: [],
+                form: {
+                    well_num: "",
+                    date: "",
+                },
+                uploadTrue: false
             }
         },
         methods: {
+            importFile(){
+                if (this.uploadTrue) {
+                    let formData = new FormData();
+                    formData.append('file', this.filelist[0]);
+                    formData.append('well_num', this.form.well_num);
+                    formData.append('file', this.form.date);
+                    console.log(formData)
+                }
+            },
             onChange() {
                 this.filelist = [...this.$refs.file.files];
+                this.checkForm()
+            },
+            checkForm(){
+                if (this.filelist.length>0 && this.form.date != "" && this.form.well_num != ""){
+                    this.uploadTrue = true
+                }else{
+                    this.uploadTrue = false
+                }
             },
             remove(i) {
-                this.filelist.splice(i, 1);
+                this.filelist = []
+                this.checkForm()
+                // this.filelist.splice(i, 1);
             },
             dragover(event) {
                 event.preventDefault();
@@ -86,7 +117,7 @@
             addDeleteClass(){
                 event.currentTarget.classList.add('bg-gray-100');
                 event.currentTarget.classList.remove('bg-green-300');
-            }
+            },
         }
     }
 </script>
@@ -111,6 +142,7 @@
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
     }
     .import-daily-raport{
         background: #272953;
@@ -228,6 +260,55 @@
         background-color: #cccccc;
         color: #666666;
         cursor: default;
+    }
+    .text-sm{
+        display: flex;
+        align-items: center;
+    }
+    .text-sm .file-name{
+        margin-right: 12px;
+        max-width: 250px;
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        position: relative;
+    }
+    .text-sm .file-name:hover {
+        text-overflow: clip;
+        white-space: normal;
+        word-break: break-all;
+    }
+    .form input[type='date']::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
+    .form input{
+        display: block;
+        width: 100%;
+        margin-bottom: 30px;
+        background: #1F2142;
+        border: 1px solid #454FA1;
+        border-radius: 4px;
+        padding: 7px;
+        color: #ffffff;
+    }
+    .form input::placeholder{
+        color: #ffffffa3;
+    }
+    .form input.error{
+        border-color: red;
+    }
+    .form input:focus{
+        outline: none;
+    }
+    .remove-file{
+        padding: 5px;
+        line-height: 1;
+        border: 0;
+        color: #ffffff;
+        background: #c63e4b;
+        border-radius: 5px;
+        font-weight: 600;
     }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
     <ProductionWellsSchedule
             v-if="isScheduleVisible"
-            :mainWell="{id: well.id, name: well.wellInfo.uwi,category: well.category}"
+            :mainWell="{id: well.id, name: well.wellInfo.uwi,category: well.category_last}"
             @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
     ></ProductionWellsSchedule>
     <div v-else class="main-block w-100 px-2 py-3">
@@ -92,10 +92,8 @@
                                 <table class="table text-center text-white  historical-table">
                                     <thead>
                                     <tr>
-                                        <th v-if="periodItem.isHorizontalExpanded">Год /<br>Месяц</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">По</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">L</th>
-                                        <th v-if="periodItem.isHorizontalExpanded">Ø<br>штуцера</th>
+                                        <th v-if="periodItem.isHorizontalExpanded">Длина НКТ, м</th>
+                                        <th v-if="periodItem.isHorizontalExpanded">Ø<br>штуцера, мм</th>
                                         <th v-if="periodItem.isHorizontalExpanded">Вид<br>агента</th>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
@@ -110,8 +108,6 @@
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">
                                                 {{techModeItem.label}}
                                             </td>
@@ -120,8 +116,6 @@
                                             </td>
                                         </tr>
                                         <tr class="header-background_dark">
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
@@ -148,8 +142,8 @@
                                         >
                                             {{dayNumber}}
                                         </th>
-                                        <th>Средние <br>(по методике)</th>
-                                        <th>Суммарные <br>(по методике)</th>
+                                        <th>Средние</th>
+                                        <th>Суммарные</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -189,19 +183,6 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                 v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                        >
-                                            &nbsp;
-                                        </td>
-                                        <td v-else>
-                                            &nbsp;
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                 :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                         >
                                             {{periodItem.params.monthlyData[dayNumber-1].workHours}}
@@ -211,37 +192,6 @@
                                         </td>
                                         <td>{{getMiddle(periodItem.params.monthlyData,'workHours')}}</td>
                                         <td>{{getSummary(periodItem.params.monthlyData,'workHours')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].gtm,
-                                                            periodItem.params.techMode[0],
-                                                            dayNumber,periodItem.params.activity)"
-                                        >
-                                            {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gtm.toFixed(1))}}
-                                        </td>
-                                        <td v-else>
-                                            &nbsp;
-                                        </td>
-                                        <td>{{getMiddle(periodItem.params.monthlyData,'gtm')}}</td>
-                                        <td>{{getSummary(periodItem.params.monthlyData,'gtm')}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                        >
-                                            &nbsp;
-                                        </td>
-                                        <td v-else>
-
-                                        </td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td
@@ -404,25 +354,17 @@
                             'params': {
                                 'techMode': [
                                     {
-                                        'label': 'Приемистость',
+                                        'label': 'Приемистость, м³/сут',
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Давление закачки',
+                                        'label': 'Давление закачки, атм',
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Состояние скважины',
+                                        'label': 'Обработанное время, ч',
                                         'value': '-',
                                     },
-                                    {
-                                        'label': 'Обработанное время',
-                                        'value': '-',
-                                    },
-                                    {
-                                        'label': 'ГТМ',
-                                        'value': '-',
-                                    }
                                 ],
                                 'monthlyData': month
                             }
