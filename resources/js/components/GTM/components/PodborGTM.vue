@@ -144,6 +144,7 @@
                     :height="340"
                     :options="waterFallChartOptions"
                     :series="waterFallChartSeries"
+                    ref="waterFallChartOptionsRef"
                 ></apexchart>
               </div>
             </div>

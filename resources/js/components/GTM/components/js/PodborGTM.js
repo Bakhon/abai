@@ -309,7 +309,9 @@ export default {
                     }]
             }).finally(() => {
                 this.SET_LOADING(false);
-                this.$refs.lineChartOptionsRef.updateOptions({title: {text: v}})})
+                this.$refs.lineChartOptionsRef.updateOptions({title: {text: v}})
+                this.$refs.waterFallChartOptionsRef.updateOptions({title: {text: v}})
+            })
         },
         closeTree() {
             this.treeChildrenComponent = 0;
@@ -317,10 +319,10 @@ export default {
             this.showShadow = false
         },
         onHoverTree() {
-          this.showShadow = true
+            this.showShadow = true
         },
         async onGetTreeData() {
-            let body = { url: this.url, body: this.body }
+            let body = {url: this.url, body: this.body}
             this.SET_LOADING(true);
             await getTreeData(body).then((res) => {
                 this.dataRangeInfo = res.date_range_model;
@@ -351,7 +353,10 @@ export default {
             this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
             this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
             this.changeTreeDate(this.dataRangeInfo);
-            const bodyTree = createTreeBody('calc_button_pressed',this.dataRangeInfo, this.fieldName, {name: 'root', children: v})
+            const bodyTree = createTreeBody('calc_button_pressed', this.dataRangeInfo, this.fieldName, {
+                name: 'root',
+                children: v
+            })
             let body = {url: this.url, body: bodyTree}
             this.SET_LOADING(true);
             await postTreeData(body).then((res) => {
