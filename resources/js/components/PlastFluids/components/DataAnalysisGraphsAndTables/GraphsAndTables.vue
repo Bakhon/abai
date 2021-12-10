@@ -150,7 +150,6 @@ export default {
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
-    setConfig() {},
     getMaxMin(arrayData) {
       const max = Math.max(...arrayData);
       const min = Math.min(...arrayData);

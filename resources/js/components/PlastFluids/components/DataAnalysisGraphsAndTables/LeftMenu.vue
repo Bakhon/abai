@@ -8,7 +8,7 @@
         />
         <p>{{ trans("plast_fluids.graphs_settings") }}</p>
       </div>
-      <div class="customization-content">
+      <div class="customization-content graphs-customization-content">
         <LeftMenuGraphCustomization
           v-for="category in categoryList"
           :key="category.key"
@@ -18,29 +18,6 @@
           :currentGraphicType.sync="currentGraphicType"
           :currentGraphics.sync="computedCurrentGraphics"
         />
-        <div class="customization-category">
-          <LeftMenuGraphCustomization
-            categoryName="temperature"
-            valueKey="temperature"
-            :children="[
-              { key: 'Ms', Label: 'μos' },
-              { key: 'Mod', Label: 'mod' },
-              { key: 'Ds', Label: 'Ds' },
-            ]"
-            :currentGraphicType.sync="currentGraphicType"
-            :currentGraphics.sync="computedCurrentGraphics"
-          />
-          <LeftMenuGraphCustomization
-            categoryName="density_st"
-            valueKey="density"
-            :children="[
-              { key: 'Mod', Label: 'mod' },
-              { key: 'Mo', Label: 'Mo' },
-            ]"
-            :currentGraphicType.sync="currentGraphicType"
-            :currentGraphics.sync="computedCurrentGraphics"
-          />
-        </div>
       </div>
     </div>
     <div class="correlations-holder">
@@ -67,7 +44,7 @@
         />
         <p>{{ trans("plast_fluids.table_settings") }}</p>
       </div>
-      <div class="customization-content">
+      <div class="customization-content table-customization-content">
         <div class="table-customization-inputs-holder">
           <div
             v-for="option in tableCustomizationOptions"
@@ -131,6 +108,23 @@ export default {
             { key: "viscosity_reservoir_oil", Label: "mo" },
             { key: "density_separated_oil", Label: "po" },
             { key: "Mod", Label: "mod" },
+          ],
+        },
+        {
+          name: "temperature",
+          key: "temperature",
+          children: [
+            { key: "Ms", Label: "μos" },
+            { key: "Mod", Label: "mod" },
+            { key: "Ds", Label: "Ds" },
+          ],
+        },
+        {
+          name: "density_st",
+          key: "density",
+          children: [
+            { key: "Mod", Label: "mod" },
+            { key: "Mo", Label: "Mo" },
           ],
         },
       ],
