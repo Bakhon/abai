@@ -15,10 +15,6 @@ class MeasCurrentGdis extends TableForm
 
     public function getResults(array $params = []): array
     {
-        if ($this->request->get('type') !== 'tech') {
-            throw new \Exception(trans('bd.select_gu'));
-        }
-
         $filter = json_decode($this->request->get('filter'));
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
 
@@ -36,11 +32,12 @@ class MeasCurrentGdis extends TableForm
     {
         $wellIds = $this->wells->pluck('id')->toArray();
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date, 'Asia/Almaty');
+        $date = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
 
         return GdisCurrent::query()
             ->whereIn('well', $wellIds)
             ->where('meas_date', '>', $date->subYear())
+            ->where('meas_date', '<=', $date)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')

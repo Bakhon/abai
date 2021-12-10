@@ -46,4 +46,8 @@ export default {
 .tree-setting-block div {
   min-width: 30rem !important;
 }
+
+.tree-main-ul {
+  font-size: 12px
+}
 </style>

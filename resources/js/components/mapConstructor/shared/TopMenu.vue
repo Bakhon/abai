@@ -37,6 +37,7 @@
                 </template>
                 <b-dropdown-item @click="buildMapSpecificModal">{{ trans('map_constructor.build_current_accumulated_maps') }}</b-dropdown-item>
                 <b-dropdown-item @click="buildMapModal">{{ trans('map_constructor.build_map') }}</b-dropdown-item>
+                <b-dropdown-item @click="interpolationModal">{{ trans('map_constructor.interpolation') }}</b-dropdown-item>
                 <b-dropdown-item href="#">{{ trans('map_constructor.calculator') }}</b-dropdown-item>
             </b-dropdown>
         </div>
@@ -67,6 +68,7 @@
         props: {
             buildNameModal: Function,
             buildMapModal: Function,
+            interpolationModal: Function,
             buildMapSpecificModal: Function,
         },
         methods: {

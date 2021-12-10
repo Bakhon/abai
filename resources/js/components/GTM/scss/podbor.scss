@@ -1,21 +1,22 @@
 
 
-.h-221 {
-  min-height: 221px;
+.h-244 {
+  min-height: 244px;
 }
 
 .left-block {
   display: flex;
-  flex: 3;
-  width: 100%;
+  flex: 4;
+  width: 1460px;
   flex-direction: column;
   gap: 3px;
+  height: 910px;
 }
 
 .right-block {
   display: flex;
   flex: 1;
-  height: 100%;
+  height: 905px;
   width: 100%;
 }
 
@@ -327,4 +328,57 @@ tr:nth-child(even) td {
 
 .activeTr {
   background: #2C44BD;
+}
+
+.podbor-middle-table tbody tr:nth-of-type(odd) {
+  background-color: rgba(0,0,0,.05);
+}
+
+.download-well-candidates {
+  text-align: center;
+  width: 125px;
+  height: 26px;
+  line-height: 25px;
+  font-size: 14px;
+  color: white;
+  border: 1px solid #454d7d;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: #334296;
+  outline: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+a.dropdown-item {
+  color: white;
+  background: #334296;
+  font-size: 13px;
+}
+
+a.dropdown-item:hover {
+  background-color: #494AA5;
+  color: white;
+  border-radius: 5px;
+}
+
+.bottom-arrow-icon {
+  padding-right: 5px;
+  padding-top: 10px;
+}
+
+.gtm-dropdown-menu .dropdown-item {
+  padding: 5px;
+
+  &:hover {
+    border-radius: 0;
+  }
+}
+
+.download-icon {
+  padding-top: 2px;
+}
+
+.mt-2px {
+  margin-top: 2px;
 }

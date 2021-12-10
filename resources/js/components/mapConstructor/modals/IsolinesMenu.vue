@@ -11,14 +11,14 @@
             <div>{{ trans('map_constructor.max_value') }}: {{ isolinesData.bounds[1].toFixed(2) }}</div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-10">
+            <div class="form-group col-md-9">
                 <select id="inputState" class="form-control" v-model="isolinesData.selectedFilterType">
                     <option selected value="0">{{ trans('map_constructor.isolines_count') }}</option>
                     <option value="1">{{ trans('map_constructor.interval') }}</option>
                 </select>
             </div>
-            <div class="form-group col-md-2">
-                <input type="text" class="form-control" id="inputZip" v-model="isolinesData.selectedFilterValue">
+            <div class="form-group col-md-3">
+                <input type="number" class="form-control" id="inputZip" v-model="isolinesData.selectedFilterValue">
             </div>
         </div>
         <div class="mt-3 d-flex flex-row-reverse w-100">

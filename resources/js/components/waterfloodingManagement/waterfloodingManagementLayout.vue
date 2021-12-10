@@ -1,13 +1,18 @@
 <template>
   <div class="main-wrappers">
-    <water-flooding-management-main-menu :menuType="menuType" @menuClick="menuClick" />
+    <menuList :menuType="menuType" @menuClick="menuClick" />
     <div v-bind:is="mainContent" @prediction="prediction"></div>
   </div>
 </template>
 <script>
-import mainMenu from './main_menu.json'
+import mainMenu from './mock-data/main_menu.json'
+import {waterfloodingManagementMapActions} from "../../store/helpers";
+import menuList from './components/mainMenu'
 
 export default {
+  components: {
+    menuList
+  },
   data: function () {
     return {
       menu: mainMenu,
@@ -21,24 +26,48 @@ export default {
           }
         }
       },
+      forecasting: {
+        name: this.trans('waterflooding_management.forecasting_optimization'),
+        "template": `<water-flooding-management-forecasting v-on:monitoring="monitoring"></water-flooding-management-forecasting>`,
+        methods:{
+          monitoring(data){
+            this.$emit("prediction", data);
+          }
+        }
+      },
       mainContent: null,
     };
   },
   mounted() {
-    this.mainContent = this.mapObject
+    this.mainContent = this.mapObject;
+    this.changePolygonFeatures(null)
+    this.changeChoosePolygons(null)
+    this.changePolygonList([])
   },
   methods: {
+    ...waterfloodingManagementMapActions([
+      'changePolygonFeatures',
+      'changeChoosePolygons',
+      'changeChooseModelPrediction',
+      'changeOptimizationTask',
+      'changePolygonList'
+    ]),
     menuClick(data) {
       if (data.type == "choose_object_area"){
         this.mainContent = this.mapObject
-        this.menuType = "choose_object_area";
+      }else if (data.type == "forecasting_optimization"){
+        this.mainContent = this.forecasting
       }else{
         this.mainContent = data;
-        this.menuType = data.type;
       }
+      this.menuType = data.type;
     },
-    prediction(){
-      let component = this.menu[1].component
+    prediction(data){
+      let component = ""
+      if (data == 'choose_object_area')
+        component = this.menu[1].component
+      else
+        component = this.menu[2].component
       this.mainContent = component;
       this.menuType = component.type;
     }
@@ -152,5 +181,16 @@ export default {
 }
 .table-td-first{
   background-color: #454D7D;
+}
+.inactive{
+  background-color: #5f6781!important;
+}
+.recommendation__block{
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #2B2E5E;
+  border: 0.5px solid #363B68;
+  box-sizing: border-box;
 }
 </style>
