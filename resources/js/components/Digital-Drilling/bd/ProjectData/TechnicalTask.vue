@@ -19,7 +19,7 @@
                     {{ project.document_name}}
                 </td>
                 <td>
-                    <a class="download" :href="DIGITAL_DRILLING_URL + currentWell.well_id +'/?file_id='+ project.file_id" target="_blank">Скачать</a>
+                    <a class="download" :href="DIGITAL_DRILLING_FILE_URL + '/?file_id='+ project.file_id" target="_blank">Скачать</a>
                 </td>
             </tr>
             </tbody>
@@ -36,6 +36,7 @@
             return{
                 projects: [],
                 DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/',
+                DIGITAL_DRILLING_FILE_URL: process.env.MIX_DIGITAL_DRILLING_FILE_URL,
             }
         },
         computed: {
