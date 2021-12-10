@@ -175,7 +175,7 @@ class AegtmController extends Controller
         $techEfficiencyQuery->select(
             'gtm',
             'uwi',
-            DB::raw('sum(actual_production_month) as sum_actual_production_month'),
+            DB::raw('sum(actual_production) as sum_actual_production_month'),
             DB::raw('avg(cast(NULLIF(actual_increase_month, 0) AS DOUBLE PRECISION)) AS avg_actual_increase_month')
         );
 
