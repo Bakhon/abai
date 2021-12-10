@@ -20,7 +20,10 @@
         />
       </div>
     </div>
-    <div class="correlations-holder">
+    <div
+      v-show="currentGraphicType === 'ps_bs_ds_ms'"
+      class="correlations-holder"
+    >
       <div
         class="correlation"
         v-for="(correlations, key) in correlationList"
@@ -81,50 +84,50 @@ export default {
           name: "connection_with_rs",
           key: "ps_bs_ds_ms",
           children: [
-            { key: "Ps", Label: "Ps" },
-            { key: "Bs", Label: "Bos" },
-            { key: "Ds", Label: "Dos" },
-            { key: "Ms", Label: "μos" },
+            { key: "Ps", Label: "Ps", order: 0 },
+            { key: "Bs", Label: "Bos", order: 1 },
+            { key: "Ds", Label: "Dos", order: 2 },
+            { key: "Ms", Label: "μos", order: 3 },
           ],
         },
         {
           name: "sampling_time",
           key: "data_rs_ps_ds",
           children: [
-            { key: "Rs", Label: "Rs" },
-            { key: "Ps", Label: "Ps" },
-            { key: "Mo", Label: "μo" },
-            { key: "Ds", Label: "po" },
+            { key: "Rs", Label: "Rs", order: 0 },
+            { key: "Ps", Label: "Ps", order: 1 },
+            { key: "Mo", Label: "μo", order: 2 },
+            { key: "Ds", Label: "po", order: 3 },
           ],
         },
         {
           name: "depth",
           key: "all_depth",
           children: [
-            { key: "pi_ps", Label: "Ps" },
-            { key: "Rs", Label: "Rs" },
-            { key: "volume_coefficient", Label: "Bo" },
-            { key: "Do", Label: "Do" },
-            { key: "viscosity_reservoir_oil", Label: "mo" },
-            { key: "density_separated_oil", Label: "po" },
-            { key: "Mod", Label: "mod" },
+            { key: "pi_ps", Label: "Ps", order: 0 },
+            { key: "Rs", Label: "Rs", order: 1 },
+            { key: "volume_coefficient", Label: "Bo", order: 2 },
+            { key: "Do", Label: "Do", order: 3 },
+            { key: "viscosity_reservoir_oil", Label: "mo", order: 4 },
+            { key: "density_separated_oil", Label: "po", order: 5 },
+            { key: "Mod", Label: "mod", order: 6 },
           ],
         },
         {
           name: "temperature",
           key: "temperature",
           children: [
-            { key: "Ms", Label: "μos" },
-            { key: "Mod", Label: "mod" },
-            { key: "Ds", Label: "Ds" },
+            { key: "Ms", Label: "μos", order: 0 },
+            { key: "Mod", Label: "mod", order: 1 },
+            { key: "Ds", Label: "Ds", order: 2 },
           ],
         },
         {
           name: "density_st",
           key: "density",
           children: [
-            { key: "Mod", Label: "mod" },
-            { key: "Mo", Label: "Mo" },
+            { key: "Mod", Label: "mod", order: 0 },
+            { key: "Mo", Label: "Mo", order: 1 },
           ],
         },
       ],
@@ -191,15 +194,24 @@ export default {
     ]),
     setInitialGraphics(graphType) {
       return graphType === "ps_bs_ds_ms"
-        ? ["Ps", "Bs", "Ds", "Ms"]
+        ? [
+            { key: "Ps", order: 0 },
+            { key: "Bs", order: 1 },
+            { key: "Ds", order: 2 },
+            { key: "Ms", order: 3 },
+          ]
         : graphType === "all_depth"
         ? [
-            "pi_ps",
-            "volume_coefficient",
-            "viscosity_reservoir_oil",
-            "density_separated_oil",
+            { key: "pi_ps", order: 0 },
+            { key: "volume_coefficient", order: 2 },
+            { key: "viscosity_reservoir_oil", order: 4 },
+            { key: "density_separated_oil", order: 5 },
           ]
-        : ["Ds", "Ps", "Rs"];
+        : [
+            { key: "Rs", order: 0 },
+            { key: "Ps", order: 1 },
+            { key: "Ds", order: 3 },
+          ];
     },
     getCurrentSelectedCorrelation(key) {
       return this["currentSelectedCorrelation_" + key];
