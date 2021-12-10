@@ -3,12 +3,6 @@
   "default_values": {
     "gis_type": 1
   },
-  "sort": [
-    {
-      "field": "gis_date",
-      "order": "desc"
-    }
-  ],
   "tabs": [
     {
       "title": "title",
@@ -149,10 +143,15 @@
                 "type": "table",
                 "form": "well_document_short",
                 "title": "conclusion",
+                "document_list": true,
                 "columns": [
                   {
-                    "code": "name_ru",
-                    "title": "scan_doc"
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }

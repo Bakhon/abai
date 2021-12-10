@@ -27,7 +27,7 @@
         </a>
     </div>
 </div>
-<a href="" class="bg-dark-new list-group-item list-group-item-action">
+<a href="{{route('companyValuation')}}" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <svg width="31" height="32" viewBox="3 0 31 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M30.2996 4.66099C30.2996 2.57402 28.607 0.881546 26.52 0.881546H20.8506V4.66099H26.52V10.3303H30.2996V4.66099Z" fill="white" />

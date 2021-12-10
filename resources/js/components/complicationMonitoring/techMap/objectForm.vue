@@ -121,19 +121,19 @@
       <div class="color-white">
         <p>{{ trans('monitoring.gu.fields.date') }}: {{ guParams.date }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}:
-          {{ guParams.daily_fluid_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
+          {{ getValueOrNoData(guParams.daily_fluid_production) + ' ' + trans('measurements.m3/day') }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_oil_production') }}:
-          {{ guParams.daily_oil_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
+          {{ getValueOrNoData(guParams.daily_oil_production) + ' ' + trans('measurements.m3/day') }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_water_production') }}:
-          {{ guParams.daily_water_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
-        <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent') }}</p>
+          {{ getValueOrNoData(guParams.daily_water_production) + ' ' + trans('measurements.m3/day') }}</p>
+        <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ getValueOrNoData(guParams.bsw) + trans('measurements.percent') }}</p>
         <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}:
-          {{ guParams.pump_discharge_pressure.toFixed(2) + ' ' + trans('measurements.pressure_bar') }}</p>
+          {{ getValueOrNoData(guParams.pump_discharge_pressure) + ' ' + trans('measurements.pressure_bar') }}</p>
         <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}:
-          {{ guParams.heater_output_temperature.toFixed(2) + ' ' + trans('measurements.celsius') }}</p>
-        <p>{{ trans('monitoring.gu.fields.daily_gas_production_in_sib') }}: {{ guParams.daily_gas_production_in_sib.toFixed(2) }}
+          {{ getValueOrNoData(guParams.heater_output_temperature) + ' ' + trans('measurements.celsius') }}</p>
+        <p>{{ trans('monitoring.gu.fields.daily_gas_production_in_sib') }}: {{ getValueOrNoData(guParams.daily_gas_production_in_sib) }}
           {{ trans('measurements.st.m3/day') }}</p>
-        <p>{{ trans('monitoring.gu.fields.surge_tank_pressure') }}: {{ guParams.surge_tank_pressure.toFixed(2) }}
+        <p>{{ trans('monitoring.gu.fields.surge_tank_pressure') }}: {{ getValueOrNoData(guParams.surge_tank_pressure) }}
           {{ trans('measurements.pressure_bar') }}</p>
       </div>
     </template>
@@ -143,6 +143,7 @@
 <script>
 import {guMapState} from '@store/helpers';
 import {required} from "vuelidate/lib/validators";
+import getValueOrNoData from '~/mixins/getValueOrNoData';
 
 const blankGuParams = {
   daily_fluid_production: 'N/A ',
@@ -163,6 +164,7 @@ export default {
     },
     editMode: String
   },
+  mixins: [getValueOrNoData],
   data: function () {
     return {
       validationParams:
@@ -267,7 +269,7 @@ export default {
       }
 
       return this.object.last_omgngdu;
-    },
+    }
   },
   validations() {
     switch (this.editMode) {

@@ -16,11 +16,25 @@
             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu scrollable" style="max-height: 220px">
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
-                   @click="showForm(action.form)">{{ action.title }}</a>
-                <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
-                   @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
-                <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
-                   @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
+                   @click="showForm(action.form, action.default_values || null)">{{ action.title }}</a>
+                <a
+                    v-else-if="action.action === 'edit'"
+                    :class="{'dropdown-item_disabled': !selectedRow}"
+                    class="dropdown-item"
+                    href="#"
+                    @click.prevent="editRow(selectedRow, action.form)"
+                >
+                  {{ action.title }}
+                </a>
+                <a
+                    v-else-if="action.action === 'delete'"
+                    :class="{'dropdown-item_disabled': !selectedRow}"
+                    class="dropdown-item"
+                    href="#"
+                    @click.prevent="deleteRow(selectedRow, action.form)"
+                >
+                  {{ action.title }}
+                </a>
               </template>
             </div>
           </div>
@@ -116,6 +130,7 @@
                 :params="formParams"
                 :values="formValues"
                 :well-id="wellId"
+                :type="type"
                 @change="updateResults"
                 @close="isFormOpened = false"
             >
@@ -150,6 +165,10 @@ export default {
   name: "BigdataPlainFormResults",
   props: {
     code: {
+      type: String,
+      required: true
+    },
+    type: {
       type: String,
       required: true
     },
@@ -226,7 +245,7 @@ export default {
 
       this.axios.get(
           this.localeUrl(`/api/bigdata/forms/${this.code}/results`),
-          {params: {well_id: this.wellId}}
+          {params: {well_id: this.wellId, type: this.type}}
       ).then(({data}) => {
         this.rows = data.rows
         this.columns = data.columns
@@ -257,9 +276,9 @@ export default {
     getDictFlat(code) {
       return this.$store.getters['bdform/dictFlat'](code);
     },
-    showForm(formCode = null) {
+    showForm(formCode = null, defaultValues = null) {
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
-      this.formValues = null
+      this.formValues = defaultValues
       this.isFormOpened = true
     },
     editRow(row, formCode = null) {
@@ -287,7 +306,7 @@ export default {
           .then(result => {
             if (result === true) {
               this.axios.delete(this.localeUrl(`/api/bigdata/forms/${this.code}/${row.id}`)).then(({data}) => {
-                this.rows.splice(rowIndex, 1)
+                this.updateResults()
               })
             }
           })
@@ -299,6 +318,14 @@ export default {
       ) {
         let dict = this.getDictFlat(this.dictFields[column.code])
 
+        if (column.multiple) {
+          if (!row[column.code]) return '';
+          return row[column.code].map(itemId => {
+            let value = dict.find(dictItem => dictItem.id === itemId)
+            return value.name || value.label
+          }).join(', ')
+        }
+
         let value = dict.find(dictItem => dictItem.id === row[column.code])
 
         if (!value) return null
@@ -309,6 +336,9 @@ export default {
             if (value.parent) {
               value = dict.find(dictItem => dictItem.id === value.parent)
               result.push(value.label)
+              if (column.dict === 'geos') {
+                if (value.type === 'FLD') break;
+              }
               continue;
             }
             break;
@@ -326,7 +356,7 @@ export default {
       }
 
       if (row[column.code] && column.type === 'datetime') {
-        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:MM')
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:mm')
       }
 
       if (column.type === 'checkbox') {
@@ -343,9 +373,14 @@ export default {
         if (!row[column.code]) return ''
         return Object.values(row[column.code]).map(item => {
           return item.values.file.map(file => {
-            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.filename} (${file.info.size})</a>`
+            if (!file.info) return null
+            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.file_name} (${file.info.file_size})</a>`
           }).join('<br>')
         }).join('<br>')
+      }
+
+      if (row[column.code] && typeof row[column.code] === 'object') {
+        return row[column.code].formated_value
       }
 
       return row[column.code]
@@ -363,11 +398,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.bd-main-block {
+  .table-container-body {
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .table-container {
   background-color: #272953;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -410,7 +453,9 @@ export default {
   &-column-header {
     background-color: #505684;
     min-height: 50px;
+    position: sticky;
     text-align: center;
+    top: 0;
 
     .row {
       flex-wrap: nowrap;
@@ -476,9 +521,16 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+
 }
 
 .dropdown-menu {
   overflow: auto;
+}
+
+.dropdown-item {
+  &_disabled {
+    color: #999;
+  }
 }
 </style>

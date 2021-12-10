@@ -1,8 +1,11 @@
 <template>
+<div class="cmp-tree-container">
   <div class="cmp-tree">
     <div class="cmp-node" @click="isOpen = !isOpen">
       <label>
-        <input name="checkbox" type="checkbox" @click.stop="handleChange" :checked="headerNode.isChecked"
+        <input name="checkbox" type="checkbox" 
+          v-if="renderComponent"
+          @click.stop="handleChange" :checked="headerNode.isChecked"
         /></label>
       {{ translateAttribute(headerNode.label) }}
       <div
@@ -30,12 +33,15 @@
             @input="updateChildNode"
             :group="group"
             :rowKey="rowKey"
+            :updateThisComponent="updateThisComponent"
+            :renderComponent="renderComponent"
         >
           <span>{{ translateAttribute(item.label) }}</span>
         </ReportHeaderNode>
       </draggable>
     </ul>
   </div>
+</div>
 </template>
 
 <script>
@@ -69,6 +75,8 @@ export default {
       default: "label",
     },
     translateAttribute: Function,
+    renderComponent: Number,
+    updateThisComponent: Function,
   },
   data() {
     return {
@@ -121,7 +129,39 @@ export default {
       } else {
         this.headerNode.isChecked = !this.headerNode.isChecked
       }
+
+      this.updateChildren(this.headerNode);
+      this.updateParent(this.headerNode.isChecked);
+      this.updateThisComponent();
     },
+    updateChildren(headerNode) {
+      if(!headerNode?.children) return;
+      for(let child of headerNode.children) {
+        child.isChecked = headerNode.isChecked;
+        this.updateChildren(child);
+      }
+    },
+    updateParent(val) {
+      let content = this.$parent;
+      while(!!content) {
+        if(!content.headerNode) {
+          content = content.$parent;
+          continue;
+        }
+        if(!val && this.hasSelectedChildren(content.headerNode)) {
+          break;
+        }
+        content.headerNode.isChecked = val;
+        content = content.$parent;
+      }
+    },
+    hasSelectedChildren(headerNode) {
+      if(!headerNode?.children) return false;
+      for(let child of headerNode.children) {
+        if(child.isChecked || this.hasSelectedChildren(child)) return true;
+      }
+      return false;
+    }
   },
 };
 </script>
@@ -130,12 +170,30 @@ export default {
 .cmp-node {
   display: flex;
   align-items: center;
+  font-size: 16px;
 }
-
-.cmp-node:hover {
-  background-color: #5d7980;
+.cmp-node input {
+      height: 14px;
+    width: 14px;
+    background-color: white;
+    border-radius: 3.5px;
+    border: 10px solid #237DEB;
+    margin-bottom: auto;
+    margin-top: auto;
+    outline: none;
 }
-
+.hierarchy .cmp-tree-container {
+    padding-left: 0;
+}
+.cmp-tree-container {
+    padding-left: 20px;
+}
+.cmp-node label {
+      margin-bottom: 0;
+      display: block;
+      height: auto;
+      margin-right: 4px;
+}
 .cmp-drag-node {
   background-color: #768487;
   opacity: 0.7;
@@ -165,7 +223,7 @@ export default {
 
 
 ul.hierarchy {
-  padding-left: 40px;
+  padding-left: 0;
 }
 
 @keyframes spin {

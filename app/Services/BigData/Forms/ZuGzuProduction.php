@@ -4,51 +4,41 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ZuGzuProduction extends TableForm
 {
-
     protected $configurationFileName = 'zu_gzu_production';
+    protected $formType = 'default';
 
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
 
-        $guName = '';
+        $structureTree = $this->getStructureTree();
 
-        $tech = $this->getTech();
-        if ($tech->type->code === 'GU') {
-            $zus = $tech->children()
-                ->where('dbeg', '<=', $filter->date)
-                ->where('dend', '>=', $filter->date)
-                ->whereHas('type', function ($query) {
-                    $query->whereIn('code', ['MS', 'GMS']);
-                })
-                ->get();
-            $guName = $tech->name_ru;
-        } else {
-            $parent = $tech->parentItem;
-            if ($parent && $parent->type->code === 'GU') {
-                $guName = $parent->name_ru;
-            }
-
-            $zus = collect([$tech]);
+        $dzo = $this->getDzo($structureTree);
+        if ($dzo && $dzo->code === 'KTM') {
+            $this->formType = 'ktm';
         }
+
+        $techs = $this->getTechs($structureTree, $filter);
 
         $measurements = DB::connection('tbd')
             ->table('prod.meas_gzu_prod')
             ->where('meas_date', $filter->date)
-            ->whereIn('gzu', $zus->pluck('id')->toArray())
+            ->whereIn('gzu', $techs->pluck('id')->toArray())
             ->get();
 
         $fields = $this->getFields();
 
         $result = collect([]);
-        foreach ($zus as $zu) {
+        foreach ($techs as $zu) {
             $row = [
                 'id' => $zu->id
             ];
@@ -67,18 +57,24 @@ class ZuGzuProduction extends TableForm
                     continue;
                 }
 
-                $row['gu'] = ['value' => $guName];
                 $row['zu_gzu'] = ['value' => $zu->name_ru];
+                $structureItem = $structureTree->where('type', 'tech')->where('id', $zu->id)->first();
+                $pf = $this->findParent($structureTree, $structureItem, 'org', ['SUBC']);
+                if ($this->formType === 'ktm') {
+                    $upn = $this->findParent($structureTree, $structureItem, 'tech', ['OTU', 'OPPS']);
+                    $row['upn'] = ['value' => $upn ? $upn['name'] : null];
+                } else {
+                    $gu = $this->findParent($structureTree, $structureItem, 'tech', ['GU']);
+                    $ngdu = $this->findParent($structureTree, $structureItem, 'org', ['FOFS']);
+                    $cdng = $this->findParent($structureTree, $structureItem, 'org', ['OGPU']);
 
-                $structureService = app()->make(StructureService::class);
-                $path = $structureService->getPath($tech->id, 'tech');
-                $pf = $path->where('sub_type', 'SUBC')->first();
-                $ngdu = $path->where('sub_type', 'FOFS')->first();
-                $cdng = $path->where('sub_type', 'OGPU')->first();
+                    $row['gu'] = ['value' => $gu ? $gu['name'] : null];
+                    $row['ngdu'] = ['value' => $ngdu ? $ngdu['name'] : null];
+                    $row['cdng'] = ['value' => $cdng ? $cdng['name'] : null];
+                }
+
 
                 $row['pf'] = ['value' => $pf ? $pf['name'] : null];
-                $row['ngdu'] = ['value' => $ngdu ? $ngdu['name'] : null];
-                $row['cdng'] = ['value' => $cdng ? $cdng['name'] : null];
             }
 
             $result->push($row);
@@ -87,56 +83,128 @@ class ZuGzuProduction extends TableForm
         $this->addLimits($result);
 
         return [
-            'rows' => $result->toArray()
+            'rows' => $result->toArray(),
+            'columns' => $this->getColumns()
         ];
     }
 
-    private function getTech(): Tech
+    private function getStructureTree()
     {
-        if ($this->request->get('type') !== 'tech') {
-            throw new \Exception(trans('bd.select_gu'));
-        }
-
-        /** @var Tech $gu */
-        $gu = Tech::query()
-            ->where('id', $this->request->get('id'))
-            ->whereHas('type', function ($query) {
-                $query->whereIn('code', ['GU', 'GMS', 'MS']);
-            })
-            ->first();
-
-        if (!$gu) {
-            throw new \Exception(trans('bd.select_gu'));
-        }
-
-        return $gu;
+        $structureService = app()->make(StructureService::class);
+        return $structureService->getFlattenTree();
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    private function getTechs(Collection $structureTree, \stdClass $filter)
     {
-        $measurement = DB::connection('tbd')
-            ->table('prod.meas_gzu_prod')
-            ->where('meas_date', $this->request->get('date'))
-            ->where('gzu', $params['wellId'])
-            ->first();
+        $item = $structureTree->where('type', $this->request->get('type'))
+            ->where('id', $this->request->get('id'))->first();
 
-        if (empty($measurement)) {
-            DB::connection('tbd')
-                ->table('prod.meas_gzu_prod')
-                ->insert([
-                             'gzu' => $params['wellId'],
-                             'meas_date' => $this->request->get('date'),
-                             $params['field'] => $params['value']
-                         ]);
-            return;
+        $items = $this->getItemWithChildren($structureTree, $item);
+        $techIds = array_map(
+            function ($item) {
+                return $item['id'];
+            },
+            array_filter($items, function ($item) {
+                return $item['type'] === 'tech' && in_array($item['sub_type'], ['MS', 'GMS']);
+            })
+        );
+
+        return Tech::whereIn('id', $techIds)
+            ->where('dbeg', '<=', $filter->date)
+            ->where('dend', '>=', $filter->date)
+            ->whereHas('type', function ($query) {
+                $query->whereIn('code', ['MS', 'GMS']);
+            })
+            ->get();
+    }
+
+    private function getDzo(Collection $structureTree): ?Org
+    {
+        $item = $structureTree->where('type', $this->request->get('type'))
+            ->where('id', $this->request->get('id'))->first();
+        $dzo = $this->findParent($structureTree, $item, 'org', ['SUBC']);
+        if (empty($dzo)) {
+            return null;
         }
 
-        DB::connection('tbd')
+        return Org::find($dzo['id']);
+    }
+
+    private function findParent(Collection $structureTree, $item, string $type, array $subTypes): ?array
+    {
+        while (true) {
+            if ($item['type'] === $type && in_array($item['sub_type'], $subTypes)) {
+                return $item;
+            }
+
+            if (!isset($item['parent_id']) || !isset($item['parent_type'])) {
+                return null;
+            }
+
+            $parent = $structureTree->where('id', $item['parent_id'])
+                ->where('type', $item['parent_type'])->first();
+            if (empty($parent)) {
+                break;
+            }
+
+            $item = $parent;
+        }
+
+        return null;
+    }
+
+    private function getItemWithChildren(Collection $structureTree, $item): ?array
+    {
+        $result = [$item];
+
+        $children = $structureTree->where('parent_id', $item['id'])
+            ->where('parent_type', $item['type']);
+
+        foreach ($children as $child) {
+            $result = array_merge($result, $this->getItemWithChildren($structureTree, $child));
+        }
+
+        return $result;
+    }
+
+    public function submitForm(array $fields, array $filter = []): array
+    {
+        $guIds = array_keys($fields);
+        $measurements = DB::connection('tbd')
             ->table('prod.meas_gzu_prod')
-            ->where('id', $measurement->id)
-            ->update([
-                         $params['field'] => $params['value']
-                     ]);
+            ->where('meas_date', $filter['date'])
+            ->whereIn('gzu', $guIds)
+            ->get();
+
+        foreach ($guIds as $guId) {
+            $measurement = $measurements->where('gzu', $guId)->first();
+
+            $values = array_map(function ($field) {
+                return $field['value'];
+            }, $fields[$guId]);
+
+            if (empty($measurement)) {
+                DB::connection('tbd')
+                    ->table('prod.meas_gzu_prod')
+                    ->insert(
+                        array_merge(
+                            [
+                                'gzu' => $guId,
+                                'meas_date' => $filter['date']
+                            ],
+                            $values
+                        )
+                    );
+                continue;
+            }
+
+            DB::connection('tbd')
+                ->table('prod.meas_gzu_prod')
+                ->where('id', $measurement->id)
+                ->update($values);
+        }
+
+        return [];
     }
 
     public function copyFieldValue(int $zuId, Carbon $date)
@@ -165,4 +233,16 @@ class ZuGzuProduction extends TableForm
 
         return [];
     }
+
+    private function getColumns()
+    {
+        return $this->getFields()
+            ->filter(function ($field) {
+                if (!isset($field['form_type'])) {
+                    return true;
+                }
+                return $field['form_type'] === $this->formType;
+            })->values();
+    }
+
 }

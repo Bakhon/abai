@@ -4,8 +4,13 @@ import initialRowsKOA from "../dzoData/initial_rows_koa.json";
 export default {
     data: function () {
         return {
-            isArchiveActive: false,
-            period: moment().subtract(1,'days'),
+            category: {
+                'isArchieveActive': false,
+                'isFactActive': true,
+                'isPlanActive': false,
+                'isCloseMonthActive': false
+            },
+            period: moment().subtract(1,'days').format("YYYY-MM-DD HH:mm:ss"),
             datePickerOptions: {
                 disabledDate (date) {
                     return moment(date) >= moment().startOf('day');
@@ -23,15 +28,7 @@ export default {
     methods: {
         async changeDate() {
             this.isDataSended = false;
-            this.SET_LOADING(true);
-            let queryOptions = {
-                'dzoName': this.selectedDzo.ticker,
-                'isCorrected': true,
-                'date': this.period
-            };
-            this.todayData = await this.getDzoTodayData(queryOptions);
-            this.processTodayData();
-            this.SET_LOADING(false);
+            this.handleSwitchFilter();
         },
         async sendToApprove() {
             this.handleValidate();
@@ -44,31 +41,62 @@ export default {
                 this.excelData['user_name'] = this.userName;
                 this.excelData['user_position'] = this.userPosition;
                 this.excelData['change_reason'] = this.changeReason;
+                this.excelData['oil_production_fact_corrected'] = this.todayData.oil_production_fact_corrected;
+                this.excelData['condensate_production_fact_corrected'] = this.todayData.condensate_production_fact_corrected;
                 this.excelData['toList'] = ['firstMaster','secondMaster','mainMaster'];
                 await this.storeData(uri);
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
             }
         },
-       async changeCategory() {
-            this.isArchiveActive = !this.isArchiveActive;
-            if (!this.isArchiveActive) {
-                this.isDataExist = false;
-                this.isDataReady = false;
-                await this.changeDefaultDzo();
-                await this.updateCurrentData();
-                this.addListeners();
-            }
-        },
+       async changeCategory(name) {
+           this.category = _.mapValues(this.category, () => false);
+           this.category[name] = true;
+           this.isDataExist = false;
+           this.isDataReady = false;
+           this.disableHighlightOnCells();
+           this.turnOffErrorHighlight();
+           if (name === 'isPlanActive') {
+               await this.sleep(100);
+               for (let i=0; i <=12; i++) {
+                   this.setClassToElement($('#planGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+               }
+           } else if (name === 'isCloseMonthActive') {
+               await this.sleep(100);
+               for (let i=0; i < (this.monthColumnsCount-1); i++) {
+                   this.setClassToElement($('#monthGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+               }
+           } else {
+               await this.changeDefaultDzo();
+               await this.updateCurrentData();
+               this.setTableFormat();
+           }
+       },
         async switchCompany(e) {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
-            if (this.selectedDzo.ticker === 'КОА') {
-                this.addColumnsToGrid();
-            }
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
-            await this.updateCurrentData();
-            this.addListeners();
+            this.handleSwitchFilter();
+            this.SET_LOADING(false);
+        },
+        async handleSwitchFilter() {
+            let self = this;
+            this.SET_LOADING(true);
+            _.forEach(Object.keys(this.todayDataOptions), async function(key) {
+                let uri = self.todayDataOptions[key]['url'] + '?dzoName=' + self.selectedDzo.ticker;
+                let inputData = await self.getCurrentData(uri);
+                if (Object.keys(inputData).length > 0) {
+                    let dataset = self[self.todayDataOptions[key]['name']];
+                    self.processCurrentData(inputData,dataset);
+                }
+            });
+            let queryOptions = {
+                'dzoName': this.selectedDzo.ticker,
+                'isCorrected': true,
+                'date': this.period
+            };
+            this.todayData = await this.getDzoTodayData(queryOptions);
+            this.processTodayData();
             this.SET_LOADING(false);
         }
     },

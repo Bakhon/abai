@@ -47,6 +47,8 @@ export default {
             "2_hd_nop_y_h_noyagp" : '/img/gno/shgn/2s-h-y-hd.svg',
             "2_hd_nop_noy_h_noyagp": '/img/gno/shgn/2s-h-hd.svg',
             "2_hd_nop_noy_h_yagp" : '/img/gno/shgn/2s-h-yagp-hd.svg',
+            "2_nohd_nop_noy_noh_yagp" : '/img/gno/shgn/2s-yagp.svg',
+            "2_hd_nop_noy_noh_yagp" : '/img/gno/shgn/2s-yagp-hd.svg',
             "1_nohd_nop_noy_noh_noyagp" : '/img/gno/shgn/1s.svg',
             "1_nohd_p_noy_noh_noyagp" : '/img/gno/shgn/1s-ph.svg',
             "1_nohd_nop_y_h_noyagp" : '/img/gno/shgn/1s-h-y.svg',

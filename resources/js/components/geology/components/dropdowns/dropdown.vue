@@ -7,7 +7,7 @@
       <AwIcon width="20" height="20" name="loading" v-else/>
     </Button>
     <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target customScroll">
-      <button :disabled="disabled" @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
+      <button v-bind="$attrs" :disabled="disabled" @click="selectOption(option, $event)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
         {{ option.label || option.value  }}
       </button>
       <slot />
@@ -23,7 +23,7 @@ import AwIcon from "../icons/AwIcon.vue"
 export default {
   name: "dropdown",
   props: {
-    selectedValue: [String, Number],
+    selectedValue: [String, Number, Array, Object],
     buttonText: String,
     block: Boolean,
     position: String,
@@ -65,7 +65,7 @@ export default {
     },
     cSelected: {
       get() {
-        return this.cOptions.find(({value}) => value === this.selectedValue||this.selectedLocal)||{};
+        return this.cOptions.find(({value}) => value === (this.selectedValue??this.selectedLocal))||{};
       },
       set(option) {
         this.selectedLocal = option.value;
@@ -79,7 +79,8 @@ export default {
     closeDropDown() {
       this.dropDownOpened = false
     },
-    selectOption(option) {
+    selectOption(option, e) {
+      if(this.cSelected.value !== option.value) this.$emit('change', option.value, e, option)
       this.cSelected = option;
       this.closeDropDown();
     }

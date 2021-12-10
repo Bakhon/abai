@@ -5,6 +5,26 @@ td {
   color: #fff;
 }
 
+td > button {
+  display: flex;
+  align-items: center;
+  background: #334296;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  transition: 0.2s ease;
+}
+
+td > button:hover {
+  background: #2e50e9;
+}
+
+td > button > p {
+  margin: 0 0 0 5px;
+  font-size: 12px;
+  color: #fff;
+}
+
 table {
   width: 100%;
   position: relative;
@@ -17,11 +37,11 @@ th {
 }
 
 tr:nth-child(even) {
-  background: #272953;
+  background: #2b2e5e;
 }
 
 tr:nth-child(odd) {
-  background: rgba(69, 77, 125, 0.32);
+  background: rgb(51, 56, 104);
 }
 
 .table-container {

@@ -2,23 +2,35 @@
     <div>
 
         <div class="row main-layout pb-3">
-            <div class="col-12 row mt-3 ml-1">
-                <div class="col-4"></div>
+            <div class="col-12 row mt-3 ml-1 justify-content-center">
                 <div
-                        :class="[!isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
-                        @click="changeCategory"
+                        :class="[category.isFactActive ? 'category-button_border' : '',' col-3 category-button d-flex justify-content-center']"
+                        @click="changeCategory('isFactActive')"
                 >
-                    <div class="insert-data-icon"></div>
-                    {{trans('visualcenter.importForm.insertData')}}
+                    <div class="col-1 insert-data-icon"></div>
+                    <div class="col-7">{{trans('visualcenter.importForm.insertData')}}</div>
                 </div>
                 <div
-                        :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
-                        @click="changeCategory"
+                        :class="[category.isArchieveActive ? 'category-button_border' : '',' col-3 category-button d-flex justify-content-center']"
+                        @click="changeCategory('isArchieveActive')"
                 >
-                    <div class="archieve-icon"></div>
-                    <div>{{trans('visualcenter.importForm.dataArchieve')}}</div>
+                    <div class="col-1 archieve-icon"></div>
+                    <div class="col-6">{{trans('visualcenter.importForm.dataArchieve')}}</div>
                 </div>
-                <div class="col-4"></div>
+                <div
+                        :class="[category.isPlanActive ? 'category-button_border' : '',' col-3 category-button d-flex justify-content-center']"
+                        @click="changeCategory('isPlanActive')"
+                >
+                    <div class="insert-data-icon col-1"></div>
+                    <div class="col-8">{{trans('visualcenter.importForm.planParams')}}</div>
+                </div>
+                <div
+                        :class="[category.isCloseMonthActive ? 'category-button_border' : '',' col-3 category-button d-flex justify-content-center']"
+                        @click="changeCategory('isCloseMonthActive')"
+                >
+                    <div class="insert-data-icon col-1"></div>
+                    <div class="col-9">{{trans('visualcenter.closeMonth')}} ({{trans('visualcenter.factLowerCase')}})</div>
+                </div>
             </div>
         </div>
         <div class="row main-layout mt-2">
@@ -27,12 +39,51 @@
                     <span>{{trans('visualcenter.importForm.yesterdayDate')}}:</span><br>
                     <span class="dzo-name">{{currentDate}}</span><br>
                 </div>
-                <div class="col-12 status-block dzoname-label status-label">
+                <div class="col-12 status-block currentdate-label status-label mt-1">
                     <span class="dzo-name">{{selectedDzo.name}}</span>
                 </div>
             </div>
-
-            <div v-if="!isArchiveActive" class="col-2 row mt-3 ml-1">
+            <div v-if="category.isPlanActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled opacity-0"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        class="col-12 status-block status-block_little menu__button mt-3"
+                        @click="validatePlan()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isPlanFilled ? 'menu__button_disabled' : '', 'status-block status-block_little menu__button col-12 mt-3']"
+                        @click="savePlan()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled opacity-0"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && isUserPositionCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
+                        @click="validateMonthlyFact()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[isMonthFactFilled ? '' : 'menu__button_disabled', 'status-block status-block_little menu__button col-12 mt-3']"
+                        @click="saveMonthlyFact()"
+                >
+                    {{trans('visualcenter.importForm.approve')}}
+                </div>
+            </div>
+            <div v-else-if="category.isFactActive" class="col-2 row mt-3 ml-1">
                 <div
                         class="col-12 status-block status-block_little menu__button rainbow"
                         @click="pasteClipboardContent()"
@@ -52,7 +103,7 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
-            <div v-else class="col-2 row mt-3 ml-1">
+            <div v-else-if="category.isArchieveActive" class="col-2 row mt-3 ml-1">
                 <div class="col-12 date-select">
                     <span>{{trans('visualcenter.importForm.dateSelect')}}:</span><br>
                 </div>
@@ -76,8 +127,8 @@
                     {{trans('visualcenter.importForm.approve')}}
                 </div>
             </div>
-            <div v-if="!isArchiveActive" class="col-4 mt-3 row ml-1"></div>
-            <div v-else class="col-4 mt-3 row ml-1">
+            <div v-else class="col-2 row mt-3 ml-1"></div>
+            <div v-if="category.isArchieveActive || category.isCloseMonthActive" class="col-4 mt-3 row ml-1">
                 <b-form-input
                         size="sm"
                         v-model="userName"
@@ -100,17 +151,24 @@
                         :state="changeReasonState"
                 ></b-form-textarea>
             </div>
+            <div v-else class="col-4 mt-3 row ml-1"></div>
             <div class="col-2 row mt-3 ml-1">
-                <div class="col-12 status-block status-block_little status-label">
-                    <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
-                    <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+                <div class="col-12 status-block status-block_little">
+                    &nbsp;
                 </div>
                 <select
-                        class="form-select col-12 mt-3 status-block status-block_little"
-                        v-if="!dzoUsers.includes(parseInt(userId))"
+                        class="form-select col-12 mt-3 status-block status-block_little text-left"
+                        v-if="!dzoUsers.includes(parseInt(userId)) && (category.isArchieveActive || category.isFactActive)"
                         @change="switchCompany($event)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                </select>
+                <select
+                        class="form-select col-12 mt-3 status-block status-block_little text-left"
+                        v-else-if="!dzoUsers.includes(parseInt(userId)) && (category.isPlanActive || category.isCloseMonthActive)"
+                        @change="switchDzo($event)"
+                >
+                    <option v-for="company in planCompanies" :value="company.ticker">{{company.name}}</option>
                 </select>
                 <div v-else class="col-12 mt-3 status-block status-block_little">
                     &nbsp;
@@ -120,11 +178,11 @@
                 </div>
             </div>
 
-            <div class="col-2 row mt-3 ml-1">
+            <div v-if="(category.isFactActive || category.isArchieveActive) && !bigDzo.includes(selectedDzo.ticker)" class="col-2 row mt-3 ml-1">
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -163,7 +221,7 @@
                     </div>
                 </div>
                 <div
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
                         @click="changeWellBlockVisibility()"
                 >
                     {{trans('visualcenter.importForm.wellWorkover')}}
@@ -193,16 +251,73 @@
                 </div>
 
             </div>
-
+            <div v-else-if="category.isPlanActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.excelFormPlans.selectYear')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="currentPlan.year"
+                            type="year"
+                            format="yyyy"
+                            popper-class="custom-date-picker"
+                            @change="handleYearChange"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
+            <div v-else-if="category.isCloseMonthActive" class="col-2 row mt-3 ml-1">
+                <div class="col-12">&nbsp;</div>
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.selectMonth')}}:</span><br>
+                </div>
+                <div
+                        class="col-12 status-block status-block_little p-0 mt-1"
+                >
+                    <el-date-picker
+                            v-model="monthDate"
+                            type="month"
+                            format="MMMM"
+                            popper-class="custom-date-picker"
+                            @change="handleMonthChange"
+                            :picker-options="datePickerOptions"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="table-form col-12 mt-3 ml-1">
                 <v-grid
+                        v-if="category.isArchieveActive || category.isFactActive"
+                        id="factGrid"
                         theme="material"
                         :source="rows"
                         :columns="columns"
                         :rowSize="30"
                         @beforeRangeEdit="beforeRangeEdit"
-                        @beforeEdit="beforeRangeEdit"
+                        @beforeEdit="beforeEdit"
+                        @beforeCellFocus="beforeFocus"
                         :frameSize="72"
+                ></v-grid>
+                <v-grid
+                        v-else-if="category.isPlanActive"
+                        id="planGrid"
+                        theme="material"
+                        :source="currentPlan.rows"
+                        :columns="currentPlan.columns"
+                        @beforeEdit="beforePlanEdit"
+                        @beforeRangeEdit="beforePlanRangeEdit"
+                ></v-grid>
+                <v-grid
+                        v-else
+                        id="monthGrid"
+                        theme="material"
+                        :source="monthRows"
+                        :columns="monthColumns"
+                        @beforeEdit="beforeMonthEdit"
+                        @beforeRangeEdit="beforeMonthRangeEdit"
                 ></v-grid>
             </div>
         </div>
@@ -270,8 +385,18 @@
         flex-wrap: wrap;
         display: inline-block;
     }
-    revo-grid {
+    #factGrid {
         height: 782px;
+        font-size: 12px;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+    }
+    #planGrid {
+        height: 582px;
+        font-size: 12px;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+    }
+    #monthGrid {
+        height: 622px;
         font-size: 12px;
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
@@ -313,7 +438,6 @@
         color: #82BAFF;
     }
     .status-block .dzo-name {
-        font-size: 22px;
         color: #82BAFF;
     }
     .button-block {
@@ -327,7 +451,7 @@
     }
     .main-layout {
         background: #272953;
-        max-width: 1838px;
+        max-width: 1834px;
     }
     .menu__button {
         background: #656A8A;
@@ -337,23 +461,9 @@
     .status-label {
         border: 1px solid #656A8A;
     }
-    .dzoname-label {
-        bottom: 0;
-        position: absolute;
-        width: 90%;
-        font-size: 16px;
-        span.dzo-name {
-            font-size: 16px;
-        }
-    }
     .currentdate-label {
-        position: absolute;
-        width: 90%;
-        height: 65%;
-        span.dzo-name {
-            bottom: 0;
-            position: absolute;
-            left: 27%;
+        span {
+            font-size: 16px;
         }
     }
     @keyframes rotate {
@@ -429,14 +539,12 @@
     }
     .insert-data-icon {
         background: url(/img/visualcenter3/import-form-insert-data.svg) no-repeat;
-        position: absolute;
         width: 20px;
         height: 20px;
         margin-top: 1vh;
     }
     .archieve-icon {
         background: url(/img/visualcenter3/import-form-archieve.svg) no-repeat;
-        position: absolute;
         width: 20px;
         height: 20px;
         margin-top: 1vh;
@@ -454,6 +562,12 @@
     }
     select.status-block {
         color: black;
+    }
+    .opacity-0 {
+        opacity: 0;
+    }
+    ::-webkit-scrollbar {
+        width: '';
     }
 
 </style>

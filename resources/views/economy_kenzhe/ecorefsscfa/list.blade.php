@@ -77,9 +77,13 @@
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_cost')}}
                     </a>
-                    <a href="{{ route('economic.cost.index',['is_forecast'=> 1]) }}"
+                    <a href="{{ route('economic.optimization.input_params') }}"
                        class="text-primary list-group-item list-group-item-action">
-                        {{__('economic_reference.eco_refs_scenario')}}
+                        {{__('economic_reference.input_params_for_opt')}}
+                    </a>
+                    <a href="{{ route('economic.analysis.input_params') }}"
+                       class="text-primary list-group-item list-group-item-action">
+                        {{__('economic_reference.input_params_for_afo')}}
                     </a>
                     <a href="{{url('/')}}/ru/module_economy/ecorefsmacro"
                        class="list-group-item list-group-item-action text-primary">

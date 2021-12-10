@@ -98,13 +98,22 @@ export default {
         }
       ];
 
-      if (this.clickedObject.type == 'gu' ) {
-        options.push({
-          name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
-          mapObject: this.clickedObject,
-          type: 'redirect',
-          editMode: this.clickedObject.type
-        });
+      if (this.clickedObject.type == 'gu') {
+        if (!this.isManualGu(this.clickedObject.object.id)) {
+          options.push({
+            name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
+            mapObject: this.clickedObject,
+            type: 'redirect',
+            editMode: this.clickedObject.type
+          });
+        } else {
+          options.push({
+            name: this.trans('monitoring.map.calculate-chain') + ' ' + this.clickedObject.object.name,
+            mapObject: this.clickedObject,
+            type: 'showCalcForm',
+            editMode: this.clickedObject.type
+          });
+        }
 
         options.push({
           name: this.trans('monitoring.add-omg-ngdu-data'),
@@ -168,7 +177,11 @@ export default {
       this.showContextMenu = false;
     },
     onClickOutside() {
-      this.hideContextMenu()
+      this.hideContextMenu();
+
+      if (this.showContextMenu) {
+        this.$emit('click-outside')
+      }
     },
     optionClicked(option) {
       this.hideContextMenu();
@@ -178,6 +191,9 @@ export default {
       if (event.keyCode === 27) {
         this.hideContextMenu();
       }
+    },
+    isManualGu (id) {
+      return id >= 10000;
     }
   }
 }

@@ -14,7 +14,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.oilProductionFact) }}
+                              {{ getFormattedNumber(summaryOilFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -30,38 +30,41 @@
                             <br />
                             <div
                                     class="progress-bar"
-                                    v-if="summary.oilProductionFact"
+                                    v-if="summaryOilFact"
                                     role="progressbar"
-                                    :style="{width: getProgress(summary.oilProductionFact,summary.oilProductionPlan) + '%'}"
-                                    :aria-valuenow="summary.oilProductionFact"
+                                    :style="{width: getProgress(summaryOilFact,summaryOilPlan) + '%'}"
+                                    :aria-valuenow="summaryOilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.oilProductionPlan"
+                                    :aria-valuemax="summaryOilPlan"
                             ></div>
                           </div>
                           <div class="row">
                             <div
                                     class="percent-header col-5 col-md-6"
-                                    v-if="summary.oilProductionFact"
+                                    v-if="summaryOilFact"
                             >
-                              {{ getDiffProcentLastBigN(summary.oilProductionFact,summary.oilProductionPlan)}}%
+                              {{ getDiffProcentLastBigN(summaryOilFact,summaryOilPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.oilProductionPlan">
-                              {{ formatDigitToThousand(summary.oilProductionPlan) }}
+                            <div class="plan-header col-6" v-if="summaryOilPlan">
+                              {{ getFormattedNumber(summaryOilPlan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.oilProductionFact,historicalSummaryFact.oilProductionFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryOilFact,summaryHistoricalOilFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.oilProductionFact,summary.oilProductionFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilFact,summaryOilFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} -  {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -73,7 +76,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.oilDeliveryFact) }}
+                              {{ getFormattedNumber(summaryOilDeliveryFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -90,37 +93,49 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    v-if="summary.oilDeliveryFact"
-                                    :style="{width: getProgress(summary.oilDeliveryFact,summary.oilDeliveryPlan) + '%'}"
-                                    :aria-valuenow="summary.oilDeliveryFact"
+                                    v-if="summaryOilDeliveryFact"
+                                    :style="{width: getProgress(summaryOilDeliveryFact,summaryOilDeliveryPlan) + '%'}"
+                                    :aria-valuenow="summaryOilDeliveryFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.oilDeliveryPlan"
+                                    :aria-valuemax="summaryOilDeliveryPlan"
                             ></div>
                           </div>
                           <div class="row">
                             <div
-                                    v-if="summary.oilDeliveryFact"
+                                    v-if="summaryOilDeliveryFact && summaryOilDeliveryPlan"
                                     class="percent-header col-5 col-md-6"
                             >
-                              {{ getDiffProcentLastBigN(summary.oilDeliveryFact,summary.oilDeliveryPlan)}}%
+                              {{ getDiffProcentLastBigN(summaryOilDeliveryFact,summaryOilDeliveryPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.oilDeliveryPlan">
-                              {{ formatDigitToThousand(summary.oilDeliveryPlan) }}
+                            <div
+                                    v-else
+                                    class="percent-header col-5 col-md-6"
+                            >
+                              0%
+                            </div>
+                            <div class="plan-header col-6" v-if="summaryOilDeliveryPlan">
+                              {{ getFormattedNumber(summaryOilDeliveryPlan) }}
+                            </div>
+                            <div class="plan-header col-6" v-else>
+                              0
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.oilDeliveryFact,historicalSummaryFact.oilDeliveryFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryOilDeliveryFact,summaryHistoricalOilDeliveryFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.oilDeliveryFact,summary.oilDeliveryFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryHistoricalOilDeliveryFact,summaryOilDeliveryFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -132,7 +147,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(summary.gasProductionFact) }}
+                              {{ getFormattedNumber(summaryGasProductionFact) }}
                             </div>
                             <div
                                     class="unit-vc ml-2"
@@ -150,35 +165,38 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    v-if="summary.gasProductionFact"
-                                    :style="{width: getProgress(summary.gasProductionFact,summary.gasProductionPlan) + '%'}"
-                                    :aria-valuenow="summary.gasProductionFact"
+                                    v-if="summaryGasProductionFact"
+                                    :style="{width: getProgress(summaryGasProductionFact,summaryGasPlan) + '%'}"
+                                    :aria-valuenow="summaryGasProductionFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="summary.gasProductionPlan"
+                                    :aria-valuemax="summaryGasPlan"
                             ></div>
 
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="summary.gasProductionFact">
-                              {{ getDiffProcentLastBigN(summary.gasProductionFact,summary.gasProductionPlan)}}%
+                            <div class="percent-header col-5 col-md-6" v-if="summaryGasProductionFact">
+                              {{ getDiffProcentLastBigN(summaryGasProductionFact,summaryGasPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="summary.gasProductionPlan">
-                              {{ formatDigitToThousand(summary.gasProductionPlan) }}
+                            <div class="plan-header col-6" v-if="summaryGasPlan">
+                              {{ getFormattedNumber(summaryGasPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(summary.gasProductionFact,historicalSummaryFact.gasProductionFact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(summaryGasProductionFact,summaryGasHistoricalFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{ Math.abs(getDifferencePercentBetweenLastValues(historicalSummaryFact.gasProductionFact,summary.gasProductionFact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(summaryGasHistoricalFact,summaryGasProductionFact))}}%
                             </div>
-                            <div class="txt3">
+                            <div v-if="periodRange === 0" class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }}</span>
+                            </div>
+                            <div v-else class="txt3">
+                              vs
+                              <span> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -426,36 +444,6 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory('associatedGasProduction','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.productionAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
-                              @click="switchCategory('associatedGasFlaring','gasProduction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
-                        ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                        >
-                          {{ trans("visualcenter.flaringAssociatedGas") }}
-                        </a>
-                      </li>
-                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
-                      <li
-                              class="center-li row px-4"
                               @click="switchCategory('naturalGasDelivery','gasProduction')"
                       >
                         <div
@@ -486,6 +474,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('associatedGasProduction','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasProduction ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('associatedGasDelivery','gasProduction')"
                       >
                         <div
@@ -511,6 +514,36 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{ trans("visualcenter.raskhodpoputGaz") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('processingAssociatedGas','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.processingAssociatedGas ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.pererabotkapoputGaz") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('associatedGasFlaring','gasProduction')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.associatedGasFlaring ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{ trans("visualcenter.associatedGasFlaring") }}
                         </a>
                       </li>
                     </ul>
@@ -586,6 +619,21 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
+                              @click="switchCategory('volgaWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.volgaWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.volgaWaterInjection")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
                               @click="switchCategory('streamWaterInjection','waterInjection')"
                       >
                         <div
@@ -634,9 +682,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating','type')}`"
+                                    @click="`${changeAssets('isOperating')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -645,9 +692,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating','type')}`"
+                                    @click="`${changeAssets('isNonOperating')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
@@ -660,9 +706,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
-                                    @click="`${changeAssets('isRegion','region',region)}`"
+                                    @click="changeRegions(region)"
                             ></input>
                             {{dzoRegionsMapping[region].translationName}}
                             <div
@@ -678,7 +723,6 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
                                     @change="`${selectOneDzoCompany(company.ticker)}`"
                             ></input>
@@ -692,7 +736,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonDailyTab}`,'button2']"
+                        :class="[`${buttonDailyTab}`,isDecreaseReasonActive ? 'button__disabled' : 'cursor-pointer','button2']"
                         @click="switchView('day')"
                 >
                   {{ trans("visualcenter.daily") }}
@@ -700,7 +744,7 @@
               </div>
               <div class="col-8 col-lg px-1">
                 <div
-                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        :class="[`${buttonMonthlyTab}`,'button2 cursor-pointer']"
                         @click="switchView('month')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
@@ -709,7 +753,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex cursor-pointer']">
                   <div
                           class="button1-vc-inner"
                           @click="switchView('year')"
@@ -736,13 +780,11 @@
                     </ul>
                   </div>
                 </div>
-
-
               </div>
               <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
                   <div
-                          :class="[`${buttonPeriodTab}`,'button2']"
+                          :class="[`${buttonPeriodTab}`,'button2 cursor-pointer']"
                   >
                     <span v-if="periodRange === 0">
                       {{ trans("visualcenter.date") }} [{{periodStart.format('DD.MM.YYYY')}}]</span
@@ -763,6 +805,7 @@
                                   is-range
                                   class="m-auto"
                                   :max-date="disabledDate"
+                                  :min-date="minimumDate"
                                   @input="switchView('period')"
                           />
                         </div>
@@ -771,75 +814,51 @@
                   </ul>
                 </div>
               </div>
+              <div
+                      v-if="mainMenu.oilCondensateProduction"
+                      :class="isDecreaseReasonActive ? 'chart-reason-active-icon' : 'chart-reason-icon'"
+                      @click="switchDecreaseReasonExplanations()"
+              ></div>
             </div>
-
             <div class="d-flex mh-60 mt-3">
               <div
-                      class="col-sm-7 vis-table"
-                      :class="periodRange === 0 ? 'main-table__scroll' : ''"
+                      class=""
+                      :class="[isDecreaseReasonActive ? 'd-none vis-table' : 'col-sm-7 vis-table',periodRange === 0 ? 'main-table__scroll' : '']"
               >
                 <table
-                        v-if="productionTableData.length"
+                        v-if="productionTableData && productionTableData.length"
                         :class="getProductionTableClass()"
                 >
                   <thead>
                   <tr>
-                    <th>№</th>
                     <th>{{ trans("visualcenter.companyName") }}</th>
-                    <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoMonthlyPlan") }},
-                      <div v-if="periodRange === 0">
-                        {{ getMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                    </th>
-                    <th v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoYearlyPlan") }},
-                      <div v-if="periodRange === 0">
-                        {{ getMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                    </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.plan") }},
-                      <div v-if="periodRange === 0">
+                      <div>
                         {{ getMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
-                        {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
-                      {{ trans("visualcenter.plan") }}
-                      <div>
+                      <div v-if="periodEnd < opecEndDate">
+                        {{ trans("visualcenter.plan") }}
                         {{ trans("visualcenter.dzoOpec") }},
                       </div>
-                      <div v-if="periodRange !== 0">
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
                       <div v-else>
+                        {{ trans("visualcenter.correctedOpec") }},
+                      </div>
+                      <div>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
                     <th>
                       {{ trans("visualcenter.fact") }},
-                      <div v-if="periodRange !== 0">
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
+                      <div>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoDifference") }},
-                      <div v-if="periodRange !== 0">
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
+                      <div>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
@@ -848,10 +867,7 @@
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
                       </div>
-                      <div v-if="periodRange !== 0">
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
+                      <div>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
@@ -866,18 +882,6 @@
                   <tbody>
                   <tr v-for="(item, index) in productionData">
                     <td
-                            v-if="isConsolidatedCategoryActive()"
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id}}
-                    </td>
-                    <td
-                            v-else
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id + (index + 1)}}
-                    </td>
-                    <td
                             @mouseover="dzoHoverIndex = index"
                             @mouseout="dzoHoverIndex = null"
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.name)}` : `${selectAllDzoCompanies()}`"
@@ -888,6 +892,12 @@
                               :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
@@ -895,6 +905,12 @@
                               :class="isTroubleCompany(item.name)  ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else>
@@ -910,59 +926,61 @@
                       </span>
                     </td>
                     <td
-                            v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
-                    >
-                      <div class="font">
-                        {{ formatDigitToThousand(item.yearlyPlan) }}
-                      </div>
-                    </td>
-                    <td
-                            v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
-                    >
-                      <div class="font">
-                        {{ formatDigitToThousand(item.monthlyPlan) }}
-                      </div>
-                    </td>
-                    <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
+                            :class="getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
-                        {{ formatDigitToThousand(item.plan) }}
+                        {{ getFormattedNumber(item.plan) }}
                       </div>
                     </td>
                     <td
+                            @mouseover="opekHoverIndex = index"
+                            @mouseout="opekHoverIndex = null"
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
+                            :class="getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
-                        {{ formatDigitToThousand(item.opek) }}
+                        {{ getFormattedNumber(item.opek) }}
+                        <span v-if="dzoWithOpekRestriction.includes(item.name)" class="color__yellow"> *</span>
+                        <span
+                                v-if="isOpekHoverShouldBeShown() && dzoWithOpekRestriction.includes(item.name)"
+                                v-show="opekHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.opekEnabled')}}
+                      </span>
                       </div>
                     </td>
                     <td
+                            @mouseover="factHoverIndex = index"
+                            @mouseout="factHoverIndex = null"
                             v-if="isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
+                            :class="getDzoColumnsClass(index,'plan')"
                     >
                       <div class="font">
-                        {{ formatDigitToThousand(item.fact) }}
+                        {{ getFormattedNumber(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
+                        <span
+                                v-if="isOpekHoverShouldBeShown() && missedCompanies.includes(item.name)"
+                                v-show="factHoverIndex === index"
+                                class="opek-hovered-tooltip"
+                        >
+                        {{trans('visualcenter.oldFact')}}
+                      </span>
                       </div>
                     </td>
                     <td
                             v-else
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'fact')"
+                            :class="getDzoColumnsClass(index,'fact')"
                     >
                       <div class="font">
-                        {{ formatDigitToThousand(item.fact) }}
+                        {{ getFormattedNumber(item.fact) }}
+                        <span v-if="missedCompanies.includes(item.name)" class="color__yellow"> !</span>
                       </div>
                     </td>
                     <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
+                            :class="getDzoColumnsClass(index,'percent')">
                       <div
                               v-if="item.plan - item.fact  !== 0"
                               :class="item.plan > item.fact || item.fact === 0 ?
@@ -976,8 +994,7 @@
                     </td>
                     <td
                             v-else-if="!mainMenu.oilCondensateDeliveryOilResidue && !isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'percent') : getDzoColumnsClass(index,'monthlyPlan')">
+                            :class="getDzoColumnsClass(index,'monthlyPlan')">
                       <div
                               v-if="item.plan - item.fact  !== 0"
                               :class="item.plan > item.fact || item.fact === 0 ?
@@ -991,8 +1008,7 @@
                     </td>
                     <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
+                            :class="getDzoColumnsClass(index,'difference')"
                     >
                       <div
                               v-if="item.opek - item.fact  !== 0"
@@ -1007,54 +1023,31 @@
                     </td>
                     <td
                             v-if="isFilterTargetPlanActive"
-                            :class="buttonYearlyTab || buttonMonthlyTab ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
+                            :class="getDzoColumnsClass(index,'difference')"
                     >
                       <div class="font dynamic">
-                        {{getFormattedNumberToThousand(item.yearlyPlan - item.plan)}}
+                        {{getFormattedNumber(item.yearlyPlan - item.plan)}}
                       </div>
                     </td>
                     <td
-                            @click="$modal.show('modalReasonExplanations')"
+                            @click="item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0 ? $modal.show('chartModal') : ''"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : ''">
+                      <div :class="item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0 ? 'reason-icon cursor-pointer' : ''">
                       </div>
                     </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
-                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
-
-                    <td
-                            v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getHighlightClassForSummary(false)"
-                    >
-                      <div class="font">
-                        {{formatDigitToThousand(summaryYearlyPlan)}}
-                      </div>
-                    </td>
-
-                    <td
-                            v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getHighlightClassForSummary(false)"
-                    >
-                      <div class="font">
-                        {{formatDigitToThousand(summaryMonthlyPlan)}}
-                        <div class="right">
-                          {{ trans("visualcenter.thousand") }} {{ metricName }}
-                        </div>
-                      </div>
-                    </td>
                     <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(true) : getHighlightClassForSummary(false)"
+                            :class="getHighlightClassForSummary(false)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryPlan)}}
+                        {{getFormattedNumber(summaryPlan)}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }} {{ metricName }}
                         </div>
@@ -1062,10 +1055,10 @@
                     </td>
                     <td
                             v-if="isConsolidatedCategoryActive() && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(false) : getHighlightClassForSummary(true)"
+                            :class="getHighlightClassForSummary(true)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryOpek)}}
+                        {{getFormattedNumber(summaryOpek)}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }} {{ metricName }}
                         </div>
@@ -1073,11 +1066,10 @@
                     </td>
                     <td
                             v-if="isConsolidatedCategoryActive()"
-                            :class="periodRange === 0 ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getLighterClass(index)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryFact)}}
+                        {{getFormattedNumber(summaryFact)}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }} {{ metricName }}
                         </div>
@@ -1085,11 +1077,10 @@
                     </td>
                     <td
                             v-else
-                            :class="periodRange === 0 ?
-                            getDarkerClass(index) : getLighterClass(index)"
+                            :class="getDarkerClass(index)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryFact)}}
+                        {{getFormattedNumber(summaryFact)}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }} {{ metricName }}
                         </div>
@@ -1097,14 +1088,14 @@
                     </td>
                     <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(false) : getHighlightClassForSummary(true)"
+                            :class="getHighlightClassForSummary(true)"
                     >
                       <div
                               v-if="summaryFact !== 0"
                               :class="getIndicatorClass(summaryPlan,summaryFact)"
                       ></div>
                       <div class="font dynamic">
-                        {{formatDigitToThousand(Math.abs(summaryDifference))}}
+                        {{getFormattedNumber(Math.abs(summaryDifference))}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }}{{ metricName }}
                         </div>
@@ -1112,14 +1103,14 @@
                     </td>
                     <td
                             v-if="!mainMenu.oilCondensateDeliveryOilResidue && !isConsolidatedCategoryActive()"
-                            :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(true) : getHighlightClassForSummary(false)"
+                            :class="getHighlightClassForSummary(false)"
                     >
                       <div
                               v-if="summaryFact !== 0"
                               :class="getIndicatorClass(summaryPlan,summaryFact)"
                       ></div>
                       <div class="font dynamic">
-                        {{formatDigitToThousand(Math.abs(summaryDifference))}}
+                        {{getFormattedNumber(Math.abs(summaryDifference))}}
                         <div class="right">
                           {{ trans("visualcenter.thousand") }}{{ metricName }}
                         </div>
@@ -1127,23 +1118,22 @@
                     </td>
                     <td
                             v-if="isFilterTargetPlanActive && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="periodRange === 0 ? getLighterClass(index) : getDarkerClass(index)"
+                            :class="periodRange === 0 ? getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryTargetPlan)}}
+                        {{getFormattedNumber(summaryTargetPlan)}}
                       </div>
                     </td>
                     <td
                             v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="periodRange === 0 ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getLighterClass(index)"
                     >
                       <div
                               v-if="summaryFact !== 0"
                               :class="getIndicatorClass(summaryOpek,summaryFact)"
                       ></div>
                       <div class="font dynamic">
-                        {{formatDigitToThousand(Math.abs(summaryOpekDifference))}}
+                        {{getFormattedNumber(Math.abs(summaryOpekDifference))}}
                       </div>
                     </td>
                     <td
@@ -1186,30 +1176,24 @@
 
               </div>
               <div
-                      class="pl-3 col-sm-5"
+                      :class="isDecreaseReasonActive ? 'pl-3 col-sm-12' : 'pl-3 col-sm-5'"
                       v-if="periodRange > 0"
               >
                 <div
-                        v-if="isConsolidatedCategoryActive() && !mainMenu.oilCondensateDeliveryOilResidue"
-                        class="oil-condensate-chart-secondary-name"
+
+                        :class="isDecreaseReasonActive ? 'mt_7 oil-condensate-chart-secondary-name' : 'mt_dynamic oil-condensate-chart-secondary-name'"
                 >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                  {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
-                <div
-                        v-else-if="mainMenu.oilCondensateDeliveryOilResidue"
-                        class="oil-condensate-chart-secondary-name"
-                >
-                  {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div
-                        v-else
-                        class="name-chart-left"
-                >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div class="name-chart-head">{{ chartHeadName }}</div>
-                <vc-chart :height="465"> </vc-chart>
+                <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
+                <vc-chart
+                        :class="isDecreaseReasonActive ? 'ml-1' : ''"
+                        :height="465"
+                        :isDecreaseReasonActive="isDecreaseReasonActive"
+                        :selectedCompanies="selectedDzoCompanies"
+                        @chartReasons="getChartReasons"
+                ></vc-chart>
               </div>
             </div>
           </div>
@@ -1251,7 +1235,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'injectionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1412,7 +1396,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'productionFond')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1497,8 +1481,15 @@
 
                   <div class="col pl-2">
                     <div
+                            v-if="productionFondSelectedCompany !== 'УО'"
                             :class="fondsFilter.isProductionIdleActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="switchProductionFondFilter('isProductionIdleActive')"
+                    >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                    <div
+                            v-else
+                            class="button2 button__disabled"
                     >
                       {{ trans("visualcenter.inIdle") }}
                     </div>
@@ -1575,7 +1566,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'drilling')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1788,7 +1779,7 @@
                 </div>
                 <div class="row m-0 emergency-table__header">
                   <span class="col-2 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.companies") }}</span>
                   <span class="col-5 py-2">{{ trans("visualcenter.emergency") }}</span>
                   <span class="col-2 px-0 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
@@ -1819,7 +1810,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'wellsWorkover')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1973,7 +1964,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails', true)">
+                  <div class="close2" @click="changeTable('productionDetails',true,'chemistry')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2368,14 +2359,13 @@
               <div>
                 <table class="table emergency-table">
                   <tr class="d-flex">
-                    <td class="col-6">
-                      <div class="secondaryTitle">0</div>
-                      <div class="metric-title">
-                        {{ trans('visualcenter.chemistryMetricTon') }}
-                      </div>
-                      <div class="in-idle">
-                        {{ timeSelect }}
-                      </div>
+                    <td class="col-6 cursor-pointer">
+                      <a :href="oilDynamicRoute" class="secondaryTitle d-flex">
+                        <div class="col-9 p-0 oil-dynamic-icon"></div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </a>
                     </td>
                     <td
                             class="col-6 cursor-pointer emergency-block"
@@ -2393,7 +2383,7 @@
                   <tr class="d-flex">
                     <td class="col-6">
                       <div class="right-column_header">
-                        {{ trans('visualcenter.expectedProduction') }}
+                        {{ trans('visualcenter.dailyDynamic') }}
                       </div>
                     </td>
                     <td
@@ -2412,7 +2402,7 @@
         </div>
       </div>
     </div>
-    <modal-reasons :reasons="reasonExplanations"></modal-reasons>
+    <chart-modal :reasons="chartReasons"></chart-modal>
   </div>
 </template>
 
@@ -2484,17 +2474,13 @@
     }
     .production-table {
       th {
-        &:first-child {
-          width: 20px;
+        &:nth-child(1) {
+          width: 350px;
         }
-        &:nth-child(2) {
-          width: 390px;
+        &:nth-child(3) {
+          width: 13%;
         }
       }
-      td:first-child {
-        width: 20px;
-      }
-
     }
 
     .table4 {
@@ -2508,7 +2494,7 @@
           &:not(:first-child) {
             min-width: 71px;
           }
-          &:nth-child(2) {
+          &:nth-child(1) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2574,7 +2560,7 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:nth-child(2) {
+        &:nth-child(1) {
           padding-top: 5px;
           font-size: 15px;
         }
@@ -2939,11 +2925,16 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: 15%;
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .mt_dynamic {
+    margin-top: calc(100% - 500px);
+  }
+  .mt_7 {
+    margin-top: 7%;
   }
   .emergency-situations {
     background: #333975 60%;
@@ -3070,4 +3061,48 @@
     padding: 5px;
     text-align: center;
   }
+
+  .additional-title {
+    background: #3366FF;
+    border-radius: 10px;
+    padding: 2px 5px;
+  }
+  .oil-dynamic-icon {
+    width: 70px;
+    height: 70px;
+    background: url(/img/visualcenter3/oil-graph.svg) no-repeat;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+  .button__disabled{
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .color__yellow {
+    color: #FFC607;
+  }
+  .chart-reason-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason.svg) no-repeat;
+    background-color: #333975;
+  }
+  .chart-reason-active-icon {
+    width: 40px;
+    background: url(/img/visualcenter3/chart-reason-active.svg) no-repeat;
+    background-color: #333975;
+  }
+  .opek-hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    margin-left: 10px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+  }
+
 </style>

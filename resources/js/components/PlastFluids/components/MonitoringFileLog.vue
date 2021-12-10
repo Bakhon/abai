@@ -2,15 +2,29 @@
   <div class="upload-status-log">
     <p class="upload-status-title">{{ trans("plast_fluids.download_log") }}</p>
     <div class="log" ref="logDiv">
-      <div style="color: red;" v-if="reportDuplicated">
-        <p>{{ trans("plast_fluids.report_duplicated") }}</p>
+      <div style="color: red;" v-if="downloadFileData.status === 'error'">
+        <p v-if="downloadFileData.description">
+          {{ downloadFileData.description }}
+        </p>
+        <p v-else>{{ trans("plast_fluids.something_went_wrong") }}</p>
+      </div>
+      <div style="color: lightgreen;" v-if="downloadFileData.status === 'ok'">
+        <p>
+          {{
+            `${trans("plast_fluids.template_upload_successfully")} ${
+              downloadFileData.user
+            } ${downloadFileData.template}`
+          }}
+        </p>
       </div>
       <template v-for="(sheetlog, ind) in fileLog">
         <div v-if="sheetlog[1].length" :key="ind">
           <p>{{ sheetlog[0] }}</p>
           <div class="row-log">
             <p v-for="(rowlog, index) in sheetlog[1]" :key="index">
-              {{ rowlog[Object.keys(rowlog)[0]] }}
+              {{
+                Object.keys(rowlog)[0] + " " + rowlog[Object.keys(rowlog)[0]]
+              }}
             </p>
           </div>
         </div>
@@ -20,8 +34,8 @@
       <button
         @click="downloadLog"
         class="log-button"
-        :disabled="!fileLog"
-        :class="{ disabled: !fileLog }"
+        :disabled="isButtonDisabled"
+        :class="{ disabled: isButtonDisabled }"
       >
         {{ trans("plast_fluids.download_status_log") }}
       </button>
@@ -35,7 +49,14 @@ import { mapState } from "vuex";
 export default {
   name: "MonitoringFileLog",
   computed: {
-    ...mapState("plastFluidsLocal", ["fileLog", "reportDuplicated"]),
+    ...mapState("plastFluidsLocal", [
+      "fileLog",
+      "reportDuplicated",
+      "downloadFileData",
+    ]),
+    isButtonDisabled() {
+      return !this.fileLog?.length;
+    },
   },
   methods: {
     downloadLog() {

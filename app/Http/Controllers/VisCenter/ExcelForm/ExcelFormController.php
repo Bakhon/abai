@@ -46,6 +46,7 @@ class ExcelFormController extends Controller
         'КТМ' => 's.sugal@kmg.kz',
         'ММГ' => 's.sugal@kmg.kz',
     );
+    private $systemFields = ['id','dzo_import_data_id'];
 
     public function getDzoCurrentData(Request $request)
     {
@@ -57,7 +58,7 @@ class ExcelFormController extends Controller
 
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',$date)
+            ->whereDate('date',Carbon::parse($date))
             ->where('dzo_name',$dzoName)
             ->whereNull('is_corrected')
             ->with('importField')
@@ -127,7 +128,14 @@ class ExcelFormController extends Controller
 
     public function getDzoSummaryData($dzo_input_data)
     {
-        $children_keys = array('downtimeReason' => 1, 'decreaseReason' => 2, 'fields' => 3);
+        $children_keys = array(
+            'downtimeReason' => 1,
+            'decreaseReason' => 2,
+            'fields' => 3,
+            'import_field' => 4,
+            'import_downtime_reason' => 5,
+            'import_decrease_reason' => 6
+        );
         $dzo_summary_data = new DzoImportData;
         foreach ($dzo_input_data as $key => $item) {
             if (array_key_exists($key, $children_keys)) {
@@ -141,6 +149,12 @@ class ExcelFormController extends Controller
     public function saveDzoFieldsSummaryData($dzo_summary_last_record,$request)
     {
         $fields_data = $request->request->get('fields');
+        if (!$fields_data) {
+            $fields_data = $request->request->get('import_field');
+        }
+        if (is_null($fields_data)) {
+            return;
+        }
         foreach ($fields_data as $field_name => $field) {
             $dzo_import_field_data = $this->getDzoFieldData($field_name,$dzo_summary_last_record,$field);
             $dzo_import_field_data->save();
@@ -152,7 +166,13 @@ class ExcelFormController extends Controller
         $dzo_import_field = new DzoImportField;
         $dzo_import_field->importData()->associate($dzo_summary_last_record);
         $dzo_import_field->field_name = $field_name;
+        foreach($this->systemFields as $fieldName) {
+            unset($field->$fieldName);
+        }
         foreach($field as $key => $item) {
+            if (in_array($key, $this->systemFields)) {
+                continue;
+            }
             $dzo_import_field->$key = $field[$key];
         }
         return $dzo_import_field;
@@ -160,6 +180,10 @@ class ExcelFormController extends Controller
     public function getDzoChildSummaryData($child_item,$dzo_input_data,$dzo_summary_last_record)
     {
         $child_item->importData()->associate($dzo_summary_last_record);
+        foreach($this->systemFields as $fieldName) {
+            unset($dzo_input_data[$fieldName]);
+        }
+
         foreach ($dzo_input_data as $key => $item) {
             $child_item->$key = $dzo_input_data[$key];
         }
@@ -171,21 +195,31 @@ class ExcelFormController extends Controller
         $emails = $request->toList;
         $request->request->remove('toList');
         $isApproveRequired = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
+        $isCorrected = true;
         if (!$isApproveRequired) {
+            $isCorrected = null;
             $request->request->set('is_corrected', null);
         }
         $this->saveDzoSummaryData($request);
-        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
-
+        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', $isCorrected)->first();
+        $correctedDate = $dzo_summary_last_record->created_at->addHour();
+        $dzo_summary_last_record->created_at = $correctedDate;
+        $dzo_summary_last_record->save();
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
+        if (!$downtime_data) {
+            $downtime_data = $request->request->get('import_downtime_reason');
+        }
         $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
         $dzo_downtime_reason->save();
 
         $dzo_decrease_reason = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
+        if (!$decrease_data) {
+            $decrease_data = $request->request->get('import_decrease_reason');
+        }
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
         if ($isApproveRequired) {
@@ -201,7 +235,7 @@ class ExcelFormController extends Controller
         $existRecord = DzoImportData::query()
             ->whereNull('is_corrected')
             ->where('dzo_name', $dzoName)
-            ->whereDate('date', $date)
+            ->whereDate('date', Carbon::parse($date))
             ->first();
         return !is_null($existRecord);
     }
@@ -249,6 +283,7 @@ class ExcelFormController extends Controller
 
     public function approveDailyCorrection(Request $request)
     {
+        $this->deleteDuplicates($request->dzo_name,$request->date,$request->actualId);
         $client = $this->getEmailClient();
         $updateOptions = array(
             $request->currentApproverField => true
@@ -259,10 +294,29 @@ class ExcelFormController extends Controller
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportData::where('id',$request->actualId)->delete();
         $updateOptions['is_corrected'] = null;
+        $updateOptions['user_id'] = $request->userId;
 
         DzoImportData::query()
             ->where('id', $request->currentId)
             ->update($updateOptions);
+    }
+
+    protected function deleteDuplicates($dzo,$date,$currentId)
+    {
+        $records = DzoImportData::query()
+            ->where('dzo_name',$dzo)
+            ->whereDate('date',Carbon::parse($date))
+            ->whereNull('is_corrected')
+            ->get();
+        foreach($records as $record) {
+            if ($record->id === $currentId) {
+                continue;
+            }
+            DzoImportField::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportDecreaseReason::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportDowntimeReason::where('dzo_import_data_id',$record->id)->delete();
+            DzoImportData::where('id',$record->id)->delete();
+        }
     }
 
     protected function getEmailClient()
@@ -289,7 +343,8 @@ class ExcelFormController extends Controller
             ->update(
                 [
                     'is_corrected' => false,
-                    'is_approved' => false
+                    'is_approved' => false,
+                    'user_id' => $request->userId
                 ]
             );
     }
@@ -378,5 +433,38 @@ class ExcelFormController extends Controller
             <b>Причина:</b> {$input->get('change_reason')}";
         $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$input->get('dzo_name')]);
         $this->sendEmail($messageOptions,$client);
+    }
+
+    public function getFactByMonth(Request $request)
+    {
+     return DzoImportData::query()
+         ->select()
+         ->whereNull('is_corrected')
+         ->whereYear('date',$request->year)
+         ->whereMonth('date',$request->month)
+         ->where('dzo_name',$request->dzo)
+         ->with('importField')
+         ->with('importDowntimeReason')
+         ->with('importDecreaseReason')
+         ->get();
+    }
+
+    public function storeFactByMonth(Request $request)
+    {
+        $systemFields = ['dzo_name','date'];
+        $forUpdate = array();
+        $params = $request->request->all();
+         foreach(reset($params) as $fact) {
+            foreach($fact as $field => $value) {
+                if (!in_array($field, $systemFields)) {
+                    $forUpdate[$field] = $value;
+                }
+            }
+            DzoImportData::query()
+                ->where('dzo_name',$fact['dzo_name'])
+                ->whereDate('date',Carbon::parse($fact['date']))
+                ->first()
+                ->update($forUpdate);
+         }
     }
 }

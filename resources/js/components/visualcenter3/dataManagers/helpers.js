@@ -139,15 +139,7 @@ export default {
         },
 
         getFormattedNumberToThousand(plan,fact) {
-            let formattedPlan = this.formatDigitToThousand(plan);
-            let formattedFact = this.formatDigitToThousand(fact);
-            if (formattedPlan) {
-                formattedPlan = this.getNumberFromString(formattedPlan);
-            }
-            if (formattedFact) {
-                formattedFact = this.getNumberFromString(formattedFact);
-            }
-            let diff = formattedPlan - formattedFact;
+            let diff = plan - fact;
             let formattedNumber = Math.abs(Math.round(diff));
             return new Intl.NumberFormat("ru-RU").format(formattedNumber);
         },
@@ -226,7 +218,7 @@ export default {
 
         getThousandMetricNameByCategorySelected() {
             if (!this.isConsolidatedCategoryActive()) {
-                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubic');
             } else {
                 return this.trans("visualcenter.dzoThousandTon");
             }
@@ -236,6 +228,30 @@ export default {
             return _.filter(_.cloneDeep(this.productionTableData), (item) => {
                 return this.selectedDzoCompanies.includes(item.name);
             });
+        },
+
+        getSummaryByField(data,field) {
+            let summary = 0;
+            _.forEach(data, (item) => {
+                summary+=item[field];
+            });
+            return summary;
+        },
+
+        getActiveCategoriesCount() {
+            let count = 0;
+            _.forEach(this.mainMenu, (item) => {
+                if (item) {
+                    count ++;
+                }
+            });
+            return count;
+        },
+        isOpekHoverShouldBeShown() {
+            return this.isConsolidatedCategoryActive() &&
+                !this.mainMenu.oilCondensateProductionCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryOilResidue;
         },
     },
     computed: {

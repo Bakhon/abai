@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use App\Traits\BigData\Forms\DepthValidationTrait;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,26 +13,96 @@ use Illuminate\Support\Facades\DB;
 class Gdis extends PlainForm
 {
     use DateMoreThanValidationTrait;
-    use DepthValidationTrait;
+    use WithDocumentsUpload;
 
     protected $configurationFileName = 'gdis';
+    protected $metricColumns;
+
+    protected function params(): array
+    {
+        $params = parent::params();
+        $params['tabs'][0]['blocks'][0][0]['items'] = array_merge(
+            $params['tabs'][0]['blocks'][0][0]['items'],
+            $this->getMetricColumns()
+        );
+        return $params;
+    }
 
     protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
-            $errors['depth'] = trans('bd.validation.depth');
-        }
+
         if (!$this->isValidDate(
             $this->request->get('well'),
-            $this->request->get('research_date'),
+            $this->request->get('dbeg'),
             'dict.well',
             'drill_start_date'
         )) {
-            $errors['research_date'] = trans('bd.validation.date');
+            $errors['dbeg'] = trans('bd.validation.date');
         }
 
         return $errors;
+    }
+
+    protected function getMetricColumns()
+    {
+        if ($this->metricColumns) {
+            return $this->metricColumns;
+        }
+
+        $metrics = DB::connection('tbd')
+            ->table('dict.metric as m')
+            ->select('m.code', 'm.name_ru', 'rm.id', 'm.data_type', 'm.value_double_min', 'm.value_double_max')
+            ->join('prod.gdis_method_metric as gmm', 'm.id', 'gmm.metric')
+            ->join('dict.research_method as rm', 'gmm.research_method', 'rm.id')
+            ->where('rm.gdis_complex', true)
+            ->get();
+
+        foreach ($metrics as $metric) {
+            $validation = [];
+            if ($metric->value_double_min) {
+                $validation[] = 'gte:' . $metric->value_double_min;
+            }
+            if ($metric->value_double_max) {
+                $validation[] = 'lte:' . $metric->value_double_max;
+            }
+            $validation = implode('|', $validation);
+
+            $columns[] = [
+                'code' => $metric->code,
+                'table' => 'prod.gdis_complex_value',
+                'type' => 'numeric',
+                'title' => $metric->name_ru,
+                'validation' => $validation,
+                'depends_on' => [
+                    [
+                        'field' => 'method',
+                        'value' => $metric->id
+                    ]
+                ]
+            ];
+        }
+
+        $this->metricColumns = $columns;
+
+        return $columns;
+    }
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+            $rows = $rows->map(function ($row) use ($documents) {
+                if ($documents->get($row->id)) {
+                    $row->documents = $documents->get($row->id)->toArray();
+                }
+                return $row;
+            });
+        }
+
+        return $rows;
     }
 
     protected function submitForm(): array
@@ -67,7 +137,9 @@ class Gdis extends PlainForm
                 }
                 $gdisComplexValues[$metric->id] = $value;
             } else {
-                $data[$key] = $value;
+                if($key === 'id' || $this->getFields()->where('code', $key)->isNotEmpty()) {
+                    $data[$key] = $value;
+                }
             }
         }
 
@@ -117,9 +189,21 @@ class Gdis extends PlainForm
             }
         }
 
-        $this->insertInnerTable($id);
+        $this->submitInnerTable($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        return array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['documents', 'research_results']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     protected function insertComplexValue(int $id, int $metricId, $value)
@@ -153,10 +237,15 @@ class Gdis extends PlainForm
                 }
             }
 
+            $researchResults = [];
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
+                $field = $this->getFields()->where('code', $value->code)->first();
+                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_string;
                 $row->{$value->code} = $value->value_string;
             }
+
+            $row->research_results = implode(', ', $researchResults);
 
             return $row;
         });

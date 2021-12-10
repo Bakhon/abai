@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100">
+  <div class="w-100 main-fa">
     <div
       class="row justify-content-between farowjustcontbet"
       style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; line-height: 31px;"
@@ -85,9 +85,9 @@
         >
           <td class="calheader">{{trans('tr.monthly_fa')}}</td>
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
-          <input type="date" class="form-control" v-model="firstCalendarDate" />
+          <input type="date" class="form-control" v-model="firstMonthlyCalendarDate" />
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
-          <input type="date" class="form-control" v-model="secondCalendarDate" />
+          <input type="date" class="form-control" v-model="secondMonthlyCalendarDate" />
           <div class="fix_calendar">
                   <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form caldate"
                     >{{trans('tr.form')}}</a
@@ -201,6 +201,7 @@
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
       >
         <tr class="headerColumn">
+          <td rowspan="3" style="background: #12135c"><span>№</span></td>
           <td rowspan="3" style="background: #12135c"><span>{{trans('tr.well')}}</span></td>
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>{{trans('tr.field')}}</span>
@@ -239,23 +240,22 @@
           </td>
         </tr>
         <tr class="headerColumn">
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_liquid')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.q_oil')}}</span></td>
           <td v-show= isHide rowspan="2" style="background: #2c3379">
             <span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.p_layer')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 93px;"><span>{{trans('tr.productivity_index')}}</span></td>
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.work_day')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_liquid')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_oil')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370">
-            <span>{{trans('tr.water_cut')}}</span>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.p_layer')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 93px;"><span>{{trans('tr.productivity_index')}}</span></td>
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.work_day')}}</span></td>
           <td rowspan="2" style="background: #12135C"><span>{{trans('tr.d_q_oil')}}</span></td>
           <td rowspan="2" style="background: #12135C">
@@ -277,6 +277,9 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn" style="cursor: pointer">
+          <td   style="background: #12135c" class="sortik">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
            <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -363,6 +366,7 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
+          <td style="background: #12135c; min-width: 102px;">{{ row_index + 1 }}</td>
           <td style="background: #12135c; min-width: 102px;">{{ row.rus_wellname }}</td>
           <td style="background: #12135c; min-width: 182px;">{{ row.field }}</td>
           <td style="background: #12135c; min-width: 102px;">{{ row.horizon }}</td>
@@ -1020,8 +1024,26 @@ export default {
     SearchFormRefresh,
     TrMultiselect,
   },
+  computed: {
+    changeSecondMonthCalendarDate() {
+      const { firstMonthlyCalendarDate} = this;
+      var dynamicLastBegginingMonthDate = new Date(firstMonthlyCalendarDate)
+      this.dynamicLastBegginingMonthDate = dynamicLastBegginingMonthDate.setMonth(dynamicLastBegginingMonthDate.getMonth()-1);
+      this.secondMonthlyCalendarDate = dynamicLastBegginingMonthDate.toLocaleDateString("en-CA");
+      return this.secondMonthlyCalendarDate;
+    },
+    changeSecondWeeklyCalendarDate() {
+      const { firstCalendarDate} = this;
+      var dynamicLastBegginingWeekDate = new Date(firstCalendarDate)
+      this.dynamicLastBegginingWeekDate = dynamicLastBegginingWeekDate.setDate(dynamicLastBegginingWeekDate.getDate()-7);
+      this.secondCalendarDate = dynamicLastBegginingWeekDate.toLocaleDateString("en-CA");
+      return this.secondCalendarDate;
+    },
+  },
   data: function () {
     return {
+      dynamicLastBegginingWeekDate: null,
+      dynamicLastBegginingMonthDate: null,
       postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
@@ -1068,6 +1090,8 @@ export default {
       lastBeginningWeekDate: null,
       startEndingWeekDate: null,
       startBeginningWeekDate: null,
+      firstMonthlyCalendarDate: null,
+      secondMonthlyCalendarDate: null,
     };
   },
   watch: {
@@ -1076,6 +1100,12 @@ export default {
     },
     filter() {
       this.chooseField();
+    },
+    firstMonthlyCalendarDate() {
+      this.changeSecondMonthCalendarDate;
+    },
+    firstCalendarDate() {
+      this.changeSecondWeeklyCalendarDate;
     },
   },
   methods: {
@@ -1219,9 +1249,9 @@ export default {
         });
     },
     chooseDate() {
-      const { firstCalendarDate, secondCalendarDate } = this;
-      var firstDate = firstCalendarDate.split("-");
-      var secondDate = secondCalendarDate.split("-");
+      const { firstMonthlyCalendarDate, secondMonthlyCalendarDate } = this;
+      var firstDate = firstMonthlyCalendarDate.split("-");
+      var secondDate = secondMonthlyCalendarDate.split("-");
       const month = firstDate[1];
       const previousMonth = secondDate[1];
       const year = firstDate[0];
@@ -1482,7 +1512,7 @@ export default {
           console.log("No data");
         }
         this.firstCalendarDate = firstWeek;
-        this.secondCalendarDate = lastWeek;
+        this.firstMonthlyCalendarDate = firstWeek;
         this.faTableHeader = this.trans('tr.period_of_act_data') + this.lastBeginningWeekDate + '-' + this.lastEndingWeekDate;
         this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.startBeginningWeekDate + '-' + this.startEndingWeekDate;
         this.faHeader = this.trans('tr.fa') + ' ' + this.startBeginningWeekDate + '-' + this.lastEndingWeekDate;
@@ -1672,6 +1702,7 @@ font-size: large;
 }
 .calinput_date {
 margin-left: 8px;
+color: white; 
 }
 .dropdown-menu .fadropmenu.newmenu {
 background: #1627c4; 
@@ -1692,5 +1723,8 @@ padding-top: 4px;
 .fatable {
 position: relative;
 }
-
+.main-fa {
+position: relative; 
+z-index: 1; 
+}
 </style>

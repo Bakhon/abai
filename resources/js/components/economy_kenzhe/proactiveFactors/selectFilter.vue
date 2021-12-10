@@ -3,7 +3,7 @@
     <select class="filter__input w-100 px-2">
       >
       <option class="filter__option"      
-        v-for="(select, index) in selectFilter"
+        v-for="(select, index) in selectFilter" :key="index"
         :value="select.value"
         >{{ trans("economy_pf." + select.option) }}</option
       >

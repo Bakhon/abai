@@ -6,24 +6,26 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
+use App\Services\AttachmentService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class CurrentGDIS extends TableForm
 {
     protected $configurationFileName = 'current_g_d_i_s';
     protected $gdisFields = [
         [
+            'code' => 'target',
+            'params' => [
+                'type' => 'text'
+            ]
+        ],
+        [
             'code' => 'conclusion',
             'params' => [
                 'type' => 'dict',
                 'dict' => 'gdis_conclusion',
-            ]
-        ],
-        [
-            'code' => 'target',
-            'params' => [
-                'type' => 'text'
             ]
         ],
         [
@@ -60,42 +62,95 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
-        'HDN',
-        'RZAB',
-        'PMAX',
-        'PURP',
-        'PNS',
-        'QJT',
-        'QJDM',
-        'QJDM',
-        'GAZF',
-        'KNAP',
-        'KPOD',
-        'PRIV',
-        'RPL',
-        'RBUF',
-        'RSTA',
-        'RZAT',
-        'RTR',
-        'HSTA',
-        'TPL',
-        'GISL',
-        'KOFP',
-        'HZAB',
-        'DHP',
-        'GDNC',
-        'GSMN',
-        'RZAT',
-        'DNSN',
-        'LMM',
-        'NMIN',
-        'DSPR',
-        'DSEL',
-        'OBOR'
+        'TBP',
+        'OTP',
+        'OTPM',
+        'STLV',
+        'FLVL',
+        'BHP',
+        'RP',
+        'RRP',
+        'MLP',
+        'BP',
+        'STP',
+        'RSVT',
+        'INJR',
+        'FLRT',
+        'FLRD',
+        'GASR',
+        'ADMCF',
+        'PDCF',
+        'RSD',
+        'PRDK',
+        'DBD',
+        'SLHDM',
+        'PSHDM',
+        'PSD',
+        'TPDM',
+        'PLST',
+        'PMPR',
+        'SHDMD',
+        'SHDME',
+        'RPM',
+        'WCUT'
     ];
+
+    protected $fieldsOrder = [       
+        'target',        
+        'FLVL',
+        'STLV',
+        'OTP',
+        'BP',
+        'BHP',
+        'RP',
+        'TBP',      
+        'GASR',        
+        'INJR',
+        'FLRT',
+        'FLRD',
+        'WCUT',
+        'MLP',  
+        'conclusion',     
+        'ADMCF',
+        'PDCF',
+        'RRP',
+        'STP',
+        'RSVT',
+        'device',
+        'transcript_dynamogram',
+        'RSD',
+        'PRDK',
+        'DBD',
+        'SLHDM',
+        'PSHDM',
+        'note',
+        'PSD',
+        'OTPM',
+        'TPDM',
+        'PLST',
+        'PMPR',
+        'SHDMD',
+        'SHDME',
+        'RPM',
+        'conclusion_text',
+        'file_dynamogram'
+    ];
+
+    protected $attachmentService;
+
+    public function __construct(Request $request)
+    {
+        $this->attachmentService = app()->make(AttachmentService::class);
+        parent::__construct($request);
+    }
 
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'well') {
+            //todo: сделать универсальные сообщения, в которые будут передаваться типы объектов
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -119,23 +174,25 @@ class CurrentGDIS extends TableForm
             ->get();
 
         if ($dates->isEmpty()) {
-            return [
-                'rows' => []
-            ];
+            return collect();
         }
         $oldestDate = $dates->last()->meas_date;
 
-        return GdisCurrent::query()
+        $gdisCurrent = GdisCurrent::query()
             ->where('well', $wellId)
             ->where('meas_date', '>=', $oldestDate)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')
-            ->get()
+            ->get();
+
+        $files = $this->getFiles($gdisCurrent);
+
+        return $gdisCurrent
             ->groupBy(function ($item) {
                 return $item->meas_date->format('d.m.Y');
             })
-            ->map(function ($items, $date) {
+            ->map(function ($items, $date) use ($files) {
                 $result = [
                     'date' => $date
                 ];
@@ -143,8 +200,13 @@ class CurrentGDIS extends TableForm
                 foreach ($this->gdisFields as $field) {
                     $item = $items->whereNotNull($field['code'])->first();
                     if (!empty($item)) {
+                        $value = $item->{$field['code']};
+                        if ($field['code'] === 'file_dynamogram' && $value) {
+                            $value = $files->where('id', $value);
+                        }
+
                         $result['fields'][$field['code']] = [
-                            'value' => $item->{$field['code']},
+                            'value' => $value,
                         ];
                         if ($field['params']) {
                             $result['fields'][$field['code']] = array_merge(
@@ -171,10 +233,16 @@ class CurrentGDIS extends TableForm
 
     private function getRows(Collection $measurements): array
     {
-        return array_merge(
-            $this->getGdisFieldRows($measurements),
+        $result = array_merge(
             $this->getGdisMetricRows($measurements),
+            $this->getGdisFieldRows($measurements),
         );
+
+        usort($result, function ($a, $b) {
+            return (array_search($a['code'], $this->fieldsOrder) > array_search($b['code'], $this->fieldsOrder));
+        });
+
+        return $result;
     }
 
     public function getGdisFieldRows(Collection $measurements)
@@ -182,20 +250,24 @@ class CurrentGDIS extends TableForm
         $rows = [];
         foreach ($this->gdisFields as $field) {
             $row = [
-                'id' => $this->request->get('id'),
+                'id' => implode('_', [$this->request->get('id'), 'field', $field['code']]),
+                'code' => $field['code'],
                 'value' => [
                     'name' => trans('bd.forms.current_g_d_i_s.' . $field['code'])
                 ],
                 'last_measure_date' => ['name' => null],
                 'last_measure_value' => [
-                    'value' => null,
+                    'value' => $field['params']['type'] === 'file' ? [] : null,
                     'params' => [
                         'type' => 'field',
-                        'code' => $field['code']
+                        'code' => $field['code'],
+                        'well_id' => $this->request->get('id')
                     ]
                 ],
             ];
+
             $row['last_measure_value'] = array_merge($row['last_measure_value'], $field['params']);
+
             foreach ($measurements as $date => $measurement) {
                 if (isset($measurement['fields'][$field['code']])) {
                     $row[$date] = $measurement['fields'][$field['code']];
@@ -214,13 +286,17 @@ class CurrentGDIS extends TableForm
     public function getGdisMetricRows(Collection $measurements)
     {
         $metricNames = Metric::whereIn('code', $this->metricCodes)
-            ->pluck('name_ru', 'code')
+            ->pluck('name_short_ru', 'code')
             ->toArray();
 
         $rows = [];
         foreach ($this->metricCodes as $code) {
+            if (!isset($metricNames[$code])) {
+                continue;
+            }
             $row = [
-                'id' => $this->request->get('id'),
+                'id' => implode('_', [$this->request->get('id'), 'metric', $code]),
+                'code' => $code,
                 'value' => [
                     'name' => $metricNames[$code]
                 ],
@@ -229,7 +305,8 @@ class CurrentGDIS extends TableForm
                     'value' => null,
                     'params' => [
                         'type' => 'metric',
-                        'code' => $code
+                        'code' => $code,
+                        'well_id' => $this->request->get('id')
                     ]
                 ],
             ];
@@ -280,61 +357,104 @@ class CurrentGDIS extends TableForm
         return $columns;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    protected function uploadFile(array $row, array $column, array $filter)
     {
-        $code = $this->request->get('params')['code'];
+        $date = Carbon::parse($filter['date'], 'Asia/Almaty');
+        $wellId = $row['last_measure_value']['params']['well_id'];
+        $query = [
+            'origin' => 'dynamogramm',
+            'user_id' => auth()->id(),
+        ];
+        $files = $this->attachmentService->upload($this->request->uploads, $query);
+
         $measurement = GdisCurrent::query()
-            ->where('well', $params['wellId'])
-            ->where('meas_date', $params['date'])
+            ->where('well', $wellId)
+            ->where('meas_date', $date)
             ->first();
 
-        try {
-            DB::connection('tbd')->beginTransaction();
+        if (empty($measurement)) {
+            GdisCurrent::create(
+                [
+                    'well' => $wellId,
+                    'meas_date' => $date,
+                    $row['code'] => reset($files)
+                ]
+            );
+        } else {
+            $measurement->update(
+                [
+                    $row['code'] => reset($files)
+                ]
+            );
+        }
 
-            if (empty($measurement)) {
-                $measurement = GdisCurrent::create(
-                    [
-                        'well' => $params['wellId'],
-                        'meas_date' => $params['date']
-                    ]
-                );
-            }
+        return $this->attachmentService->getInfo($files);
+    }
 
-            switch ($this->request->get('params')['type']) {
-                case 'field':
-                    $measurement->update(
-                        [
-                            $code => $params['value']
-                        ]
-                    );
-                    break;
-                case 'metric':
+    private function getFiles(Collection $gdisCurrent): Collection
+    {
+        $fileIds = $gdisCurrent->pluck('file_dynamogram')->filter()->toArray();
+        if (!empty($fileIds)) {
+            return $this->attachmentService->getInfo($fileIds);
+        }
+        return collect();
+    }
 
-                    $metric = Metric::where('code', $code)->first();
-                    $measurementValue = $measurement->values->where('metric', $metric->id)->first();
 
-                    if (empty($measurementValue)) {
-                        $measurementValue = $measurement->values()->create(
+    public function submitForm(array $rows, array $filter = []): array
+    {
+        $date = Carbon::parse($filter['date'], 'Asia/Almaty');
+        $wellId = reset($rows)['last_measure_value']['params']['well_id'];
+        $measurement = GdisCurrent::query()
+            ->where('well', $wellId)
+            ->where('meas_date', $date)
+            ->first();
+
+        if (empty($measurement)) {
+            $measurement = GdisCurrent::create(
+                [
+                    'well' => $wellId,
+                    'meas_date' => $date
+                ]
+            );
+        }
+
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                switch ($field['params']['type']) {
+                    case 'field':
+                        $measurement->update(
                             [
-                                'metric' => $metric->id
+                                $field['params']['code'] => $field['value']
                             ]
                         );
-                    }
+                        break;
+                    case 'metric':
 
-                    $measurementValue->update(
-                        [
-                            'value_string' => $params['value']
-                        ]
-                    );
+                        $metric = Metric::where('code', $field['params']['code'])->first();
+                        $measurementValue = $measurement->values->where('metric', $metric->id)->first();
 
-                    break;
-                default:
-                    throw new \Exception('Saving error');
+                        if (empty($measurementValue)) {
+                            $measurementValue = $measurement->values()->create(
+                                [
+                                    'metric' => $metric->id
+                                ]
+                            );
+                        }
+
+                        $measurementValue->update(
+                            [
+                                'value_string' => $field['value']
+                            ]
+                        );
+
+                        break;
+                    default:
+                        throw new \Exception('Saving error');
+                }
             }
-            DB::connection('tbd')->commit();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new \Exception('Saving error');
         }
+
+        return [];
     }
 }

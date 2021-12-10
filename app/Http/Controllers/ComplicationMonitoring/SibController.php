@@ -92,11 +92,15 @@ class SibController extends CrudController
             $params['links']['export'] = route('sib.export');
         }
 
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.sib.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
+        parent::list($request);
+
         $query = Sib::query()
             ->with('gu');
 

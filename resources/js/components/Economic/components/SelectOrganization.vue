@@ -1,6 +1,20 @@
 <template>
-  <div>
-    <label v-if="!hideLabel" for="org">
+  <select
+      v-if="hideLabel"
+      v-model="form.org_id"
+      class="form-control text-white bg-main4-important border-0"
+      @change="$emit('change')"
+  >
+    <option
+        v-for="org in organizations"
+        :key="org.id"
+        :value="org.id">
+      {{ org.name }}
+    </option>
+  </select>
+
+  <div v-else>
+    <label for="org">
       {{ trans('economic_reference.org') }}
     </label>
 

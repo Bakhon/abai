@@ -25,6 +25,7 @@ Route::get("/ecoeco", "ComplicationMonitoring\OilGasController@ecoData");
 Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
+        Route::get('/faq', 'FaqController@index')->name('faq');;
         Route::group(
             ['middleware' => 'auth'],
             function () {
@@ -75,6 +76,17 @@ Route::group(
                 Route::post('attachments', 'AttachmentController@upload')->name('attachment.upload');
                 Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
                 Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
+
+                Route::post('map-constructor/import', 'MapConstructorController@importFile');
+                Route::post('map-constructor/get_data_from_excel', 'MapConstructorController@getDataFromExcel');
+                Route::post('map-constructor/structure', 'MapConstructorController@getStructure');
+                Route::post('map-constructor/wells', 'MapConstructorController@getWells');
+                Route::post('map-constructor/get_grid_by_base64', 'MapConstructorController@getGridByBase64');
+                Route::get('/ceo-module-state', 'ModuleStateController@ceoModuleState');
+                Route::get('/get-module-state', 'ModuleStateController@getStates');
+                Route::get('/get-module-header', 'ModuleStateController@getHeader');
+                Route::get('/ceo-module-state-input', 'ModuleStateController@ceoModuleStateInput');
+                Route::post('/store-module-state', 'ModuleStateController@storeStates');
             }
         );
         Auth::routes(

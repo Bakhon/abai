@@ -932,7 +932,8 @@ ul.dropdown-child {
     height: 48px;
     left: 6px;
     margin-right: 82px;
-    background: url(../img/level1/logo.svg);
+    background: url(../img/icons/main_logo.svg) no-repeat;
+    background-size: 155px 48px;
 }
 @media (max-width: 992px) {
     .logo {
@@ -1417,10 +1418,6 @@ h2.subtitle {
     margin-left: 15px;
 }
 
-li.left-menu-li {
-    width: 15vw;
-    margin-left: 10px;
-}
 
 
 #sidebar-container2 .left-panel .left-menu-li .dropdown-child {

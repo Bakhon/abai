@@ -15,6 +15,10 @@ class PlanGDIS extends TableForm
 
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        }
+
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
             return ['rows' => []];
@@ -49,6 +53,7 @@ class PlanGDIS extends TableForm
                 'title' => trans('bd.forms.plan_g_d_i_s.well'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
+                'validation' => 'nullable|numeric',
                 'is_editable' => true
             ];
             $columns[] = [
@@ -56,6 +61,7 @@ class PlanGDIS extends TableForm
                 'title' => trans('bd.forms.plan_g_d_i_s.measure'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
+                'validation' => 'nullable|numeric',
                 'is_editable' => true
             ];
         }
@@ -121,11 +127,21 @@ class PlanGDIS extends TableForm
 
             $row["date_{$date->format('m_Y')}_well_count"] = [
                 'value' => $rowData ? $rowData->well_count : 0,
-                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
+                'params' => [
+                    'expl_proced_type' => $treeRow->id,
+                    'org_id' => $this->request->get('id'),
+                    'date' => $date->format('d.m.Y'),
+                    'column' => 'well_count'
+                ]
             ];
             $row["date_{$date->format('m_Y')}_measure"] = [
                 'value' => $rowData ? $rowData->measure : 0,
-                'params' => ['expl_proced_type' => $treeRow->id, 'org_id' => $this->request->get('id')]
+                'params' => [
+                    'expl_proced_type' => $treeRow->id,
+                    'org_id' => $this->request->get('id'),
+                    'date' => $date->format('d.m.Y'),
+                    'column' => 'measure'
+                ]
             ];
         }
         return $row;
@@ -160,46 +176,39 @@ class PlanGDIS extends TableForm
         return $result;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        list($date, $month, $year, $field) = explode('_', $params['field'], 4);
-        $explProcedType = $this->request->params['expl_proced_type'];
-        $orgId = $this->request->params['org_id'];
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                $date = Carbon::parse($field['params']['date'], 'Asia/Almaty');
+                $plan = DB::connection('tbd')
+                    ->table('prod.plan_gdis')
+                    ->where('well', $field['params']['org_id'])
+                    ->where('expl_type_proced_type_plan_gdis', $field['params']['expl_proced_type'])
+                    ->where('month', $date->month)
+                    ->where('year', $date->year)
+                    ->first();
 
-        $plan = DB::connection('tbd')
-            ->table('prod.plan_gdis')
-            ->where('well', $orgId)
-            ->where('expl_type_proced_type_plan_gdis', $explProcedType)
-            ->where('month', $month)
-            ->where('year', $year)
-            ->first();
-
-        if ($plan) {
-            DB::connection('tbd')
-                ->table('prod.plan_gdis')
-                ->where('id', $plan->id)
-                ->update([$field => $params['value']]);
-        } else {
-            DB::connection('tbd')
-                ->table('prod.plan_gdis')
-                ->insert(
-                    [
-                        'well' => $orgId,
-                        'expl_type_proced_type_plan_gdis' => $explProcedType,
-                        'month' => $month,
-                        'year' => $year,
-                        $field => $params['value']
-                    ]
-                );
+                if ($plan) {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gdis')
+                        ->where('id', $plan->id)
+                        ->update([$field['params']['column'] => $field['value']]);
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.plan_gdis')
+                        ->insert(
+                            [
+                                'well' => $field['params']['org_id'],
+                                'expl_type_proced_type_plan_gdis' => $field['params']['expl_proced_type'],
+                                'month' => $date->month,
+                                'year' => $date->year,
+                                $field['params']['column'] => $field['value']
+                            ]
+                        );
+                }
+            }
         }
-    }
-
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-        if (!is_numeric($this->request->get($field))) {
-            $errors[$field][] = trans('bd.validation.numeric');
-        }
-        return $errors;
+        return [];
     }
 }

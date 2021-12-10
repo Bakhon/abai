@@ -391,7 +391,7 @@ export default {
       }
 
       queryParams.model_name = this.params.model_name;
-      queryParams.checkbox_selected = this.checkboxSelected;
+      queryParams.gu_ids = this.checkboxSelected;
 
       return queryParams
     },
@@ -487,7 +487,7 @@ export default {
                 }
               }
 
-              if (this.params.links.calc && !isError) {
+              if (this.params.links.calc && !isError && url != this.params.links.export) {
                 this.loadData();
               }
 
@@ -581,7 +581,7 @@ export default {
     async downloadFile(file_id) {
       this.SET_LOADING(true);
       let fileInfo = await this.getFileInfo(file_id);
-      let label = fileInfo.filename;
+      let label = fileInfo.file_name;
       let url = this.localeUrl('/attachments/' + file_id);
 
       this.axios.get(url, {responseType: 'blob'})

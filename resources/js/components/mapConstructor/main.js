@@ -1,59 +1,30 @@
-import RightClickMenu from './shared/RightClickMenu'
 import TopMenu from './shared/TopMenu'
 import PrinterModal from './modals/PrinterModal'
-import BuildMapModal from './modals/BuildMapModal'
 import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
 import ReportModal from './modals/ReportModal'
 import ExportModal from './modals/ExportModal'
 import './MyFilter'
-import moment from 'moment'
-import {Datetime} from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
 import 'ol/ol.css';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {Fill, Stroke, Style, Text} from 'ol/style';
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import Select from 'ol/interaction/Select';
-import 'ol/ol.css';
-import ImageLayer from 'ol/layer/Image';
-import Map from 'ol/Map';
-import Projection from 'ol/proj/Projection';
-import View from 'ol/View';
-import CircleStyle from 'ol/style/Circle';
-import Overlay from 'ol/Overlay';
-import Static from 'ol/source/ImageStatic';
-import Chart from 'ol-ext/style/Chart'
-import monthlyOilValue from './data.json'
+import 'ol-ext/dist/ol-ext.css'
+import {globalloadingMutations} from '@store/helpers';
+import Project from './components/Project';
+import VModal from 'vue-js-modal/dist/index.nocss.js'
+import 'vue-js-modal/dist/styles.css'
+import NameModal from './modals/NameModal';
+import BuildMapModal from './modals/BuildMapModal';
+import ContextMenu from 'vue-context-menu';
+import moment from 'moment';
+import IsolinesMenu from "./modals/IsolinesMenu";
+
 export default {
     data() {
         return {
-            monthlyOilValue: monthlyOilValue.data,
-            isLoading: false,
-            date3: null,
-            accumulatedSelected: false,
-            currentSelected: false,
-            data: null,
-            monthLabels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сеп', 'Окт', 'Ноя', 'Дек'],
-            selectedMonth: null,
-            min: null,
-            max: null,
-            files: [],
-            viewMenu: false,
-            viewMenuLayers: false,
-            rightLayers: false,
-            rightMap: false,
-            top: '0px',
-            left: '0px',
-            windHeight: window.innerHeight,
-            windWidth: window.innerWidth,
-            date: null,
-            mapInitialized: false,
+            selectedMonth: '',
             leftTools: [
                 {
                     icon: 'fas fa-plus',
-                    langCode: 'map_constructor.add'
+                    langCode: 'map_constructor.add',
+                    action: 'addGeographicalMap'
                 },
                 {
                     icon: 'fas fa-location-arrow',
@@ -87,392 +58,449 @@ export default {
                     icon: 'far fa-circle',
                     langCode: 'map_constructor.fictitious_point'
                 },
-            ]
+            ],
+            ctxMenuItems: [
+                {
+                    name: this.trans('map_constructor.isolines'),
+                    action: 'isolines',
+                    visible: false,
+                    forTypes: 'polygon',
+                    icon: 'fas fa-bars text-black-50',
+                },
+                {
+                    name: this.trans('map_constructor.rename'),
+                    action: 'rename',
+                    visible: false,
+                    forTypes: 'all',
+                    childMenu: null,
+                },
+                {
+                    name: this.trans('map_constructor.delete'),
+                    action: 'delete',
+                    visible: false,
+                    forTypes: 'project',
+                    childMenu: null,
+                },
+            ],
+            maps: [],
+            gridMapsValues: [],
+            projects: [],
+            activeProjectIndex: 0,
+            rightClickTargetIndex: null,
+            rightClickTargetProjectIndex: null,
+            rightClickTargetType: 'project',
+            geoList: {
+                dzoList: [],
+                fieldList: [],
+                horizonList: [],
+            },
+            bubblesData: [],
         }
     },
     components: {
-        Datetime,
         PrinterModal,
         BuildMapModal,
         BuildMapSpecificModal,
         ReportModal,
         ExportModal,
-        RightClickMenu,
         TopMenu,
+        Project,
+        NameModal,
+        ContextMenu,
+        IsolinesMenu,
+        VModal,
     },
     methods: {
-        mapInit() {
-            this.mapInitialized = false;
-            this.$nextTick(() => this.mapInit2())
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+        toggleOpacity(e, layerGroup) {
+            layerGroup.forEach(layer => {
+                layer.setOpacity(e.target.checked ? 1 : 0);
+            })
         },
-        async mapInit2() {
-            this.mapInitialized = true;
-
-            let extent = [11705000, 5089113, 11718100, 5100000];
-
-            let projection = new Projection({
-                code: 'myOwnProjection',
-                units: 'pixels',
-                extent: extent,
+        layerGroupsChangeOrder(layerGroups) {
+            layerGroups.forEach((layerGroup, index) => {
+                layerGroup.getLayers().forEach(layer => {
+                    layer.setZIndex(index);
+                })
+            })
+        },
+        importFile(file) {
+            this.SET_LOADING(true);
+            const extensions = ['irap', 'zmap', 'shp', 'txt'];
+            let fileType = '';
+            extensions.forEach(extension => {
+                  if (fileType === '' && file.name.indexOf(extension) !== -1) {
+                      fileType = extension;
+                  }
+              }
+            )
+            if (fileType === '') {
+                this.$notifyError(this.trans('map_constructor.file_extension_error'));
+                this.SET_LOADING(false);
+                return false;
+            }
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                this.SET_LOADING(false);
+                return false;
+            }
+            this.sendFileToAPI(file, fileType);
+        },
+        sendFileToAPI(file, type) {
+            let formData = new FormData();
+            let $self = this;
+            formData.append('file', file);
+            formData.append('number_of_levels', '10');
+            formData.append('type', type);
+            axios.post(this.localeUrl('map-constructor/import'),
+              formData,
+              {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              }
+            ).then((response) => {
+                if (response.data) {
+                    const projectRef = this.projects[this.activeProjectIndex].key;
+                    this.$refs[projectRef][0].importData(response.data, type);
+                }
+                this.SET_LOADING(false);
+            })
+            .catch(function(e){
+              $self.$notifyError($self.trans('map_constructor.import_error'));
+              $self.SET_LOADING(false);
             });
-            let layers = [
-                new ImageLayer({
-                    source: await new Static({
-                        url: '/img/map-constructor/map.jpg',
-                        projection: projection,
-                        imageExtent: extent,
-                    }),
-                }),
-            ];
-            let map = new Map({
-                layers: layers,
-                target: 'olmap',
-                view: await new View({
-                    projection: projection,
-                    center: [11710374.75, 5095815.04],
-                    extent: extent,
-                    zoom: 1,
-                }),
+        },
+        sendExcelToAPI(file) {
+            this.SET_LOADING(true);
+            let formData = new FormData();
+            let $self = this;
+            formData.append('file', file);
+            axios.post(this.localeUrl('map-constructor/get_data_from_excel'),
+              formData,
+              {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              }
+            ).then((response) => {
+                if (response.data) {
+                    $self.bubblesData = response.data;
+                    $self.showBubblesByDate();
+                }
+                this.SET_LOADING(false);
+            })
+            .catch(function(e){
+                $self.$notifyError($self.trans('map_constructor.import_error'));
+                $self.SET_LOADING(false);
             });
-            let popup = new Overlay({
-                element: document.getElementById('popup'),
+        },
+        buildNameModal() {
+            const $self = this;
+            let oldName = '';
+            if (this.rightClickTargetIndex !== null) {
+                if (this.rightClickTargetType === 'project') {
+                    oldName = this.projects[this.rightClickTargetIndex].name;
+                } else {
+                    oldName = this.projects[this.rightClickTargetProjectIndex].layerGroups[this.rightClickTargetIndex].name;
+                }
+            }
+            this.$modal.show(NameModal, {
+                oldName: oldName,
+                save(name) {
+                    if (name !== "") {
+                        $self.saveName(name);
+                        $self.resetToDefaultRightClickValues();
+                    }
+                }
+            }, {
+                height: "20%",
+                styles: "background-color: rgb(51, 57, 117);",
             });
-            map.addOverlay(popup);
-            let styleCache = {};
-
-            function drawData (feature, sel, rad, circleType) {
-                let k = $("#graph").val() + "-" + $("#color").val() + "-" + (sel ? "1-" : "") + feature.get("data");
-                let style = styleCache[k];
-                if (!style) {
-                    let radius;
-                    radius = 8 * Math.sqrt(feature.get("sum") / Math.PI) / rad;
-                    let data = feature.get("data");
-                    let name = feature.get("name").toString();
-                    let pos = feature.get("position");
-                    let sum = feature.get("sum");
-                    let water_percent = feature.get("water_percent");
-                    let element = popup.getElement();
-
-                    if (circleType === 'pieChart') {
-                        style = [new Style({
-                            image: new Chart({
-                                type: "pie",
-                                radius: radius,
-                                data: data,
-                                colors: ["#150fba", "#873e23"],
-                                rotateWithView: true,
-                            }),
-                            text: new Text({
-                                font: 'bold 14px "Open Sans", "Arial Unicode MS", "sans-serif"',
-                                placement: 'point',
-                                fill: new Fill({color: 'black'}),
-                                text: name,
-                            }),
-                        })];
-                        if (sel) {
-                            $(element).popover('dispose');
-                            popup.setPosition(pos);
-                            switch (rad) {
-                                case 1:
-                                    $(element).popover({
-                                        container: element,
-                                        placement: 'top',
-                                        animation: false,
-                                        html: true,
-                                        content: '<p>Скважина\n<code class="text-dark font-weight-bold">' + name + '</code></p>' + '<p> Жидкость, м3/сут\n<code class="text-dark font-weight-bold">' + sum + '</code></p>' + '<p>Нефть, м3/сут\n<code class="text-dark font-weight-bold">' + data[1] + '</code></p>' + '<p>Обводненность, %\n<code class="text-dark font-weight-bold">' + water_percent + '</code></p>' + '<p>Координаты:\n</p><p><code class="text-dark font-weight-bold">' + pos[0] + '</code></p><p><code class="text-dark font-weight-bold">' + pos[1] + '</code></p>',
-                                    });
-                                    break
-                                case 40:
-                                    $(element).popover({
-                                        container: element,
-                                        placement: 'top',
-                                        animation: false,
-                                        html: true,
-                                        content: '<p>Скважина\n<code class="text-dark font-weight-bold">' + name + '</code></p>' + '<p> Жидкость, м3\n<code class="text-dark font-weight-bold">' + sum + '</code></p>' + '<p>Нефть, т\n<code class="text-dark font-weight-bold">' + data[1] + '</code></p>' + '<p>Обводненность, %\n<code class="text-dark font-weight-bold">' + water_percent + '</code></p>' + '<p>Координаты:\n</p><p><code class="text-dark font-weight-bold">' + pos[0] + '</code></p><p><code class="text-dark font-weight-bold">' + pos[1] + '</code></p>',
-                                    });
-                                    break
+        },
+        buildIsolinesModal() {
+            const $self = this;
+            this.$modal.show(IsolinesMenu, {
+                isolinesData: {
+                    selectedFilterType: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].selectedFilterType,
+                    selectedFilterValue: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].selectedFilterValue,
+                    bounds: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].bounds,
+                    show: $self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex].show,
+                },
+                save(isolinesData) {
+                    const projectRef = $self.projects[$self.rightClickTargetProjectIndex].key;
+                    $self.$refs[projectRef][0].map.removeLayer($self.projects[$self.rightClickTargetProjectIndex]
+                      .layerGroups[$self.rightClickTargetIndex]);
+                    $self.projects[$self.rightClickTargetProjectIndex].layerGroups
+                      .splice($self.rightClickTargetIndex, 1);
+                    const base64Data = $self.$refs[projectRef][0].base64Data;
+                    $self.SET_LOADING(true);
+                    axios.post($self.localeUrl('map-constructor/get_grid_by_base64'),
+                      {
+                          selectedFilterType: isolinesData.selectedFilterType,
+                          selectedFilterValue: isolinesData.selectedFilterValue,
+                          base64Data: base64Data,
+                      },
+                    ).then((response) => {
+                        if (response.data) {
+                            response.data.selectedFilterType = isolinesData.selectedFilterType;
+                            response.data.selectedFilterValue = isolinesData.selectedFilterValue;
+                            response.data.bounds = isolinesData.bounds;
+                            response.data.show = isolinesData.show;
+                            $self.$refs[projectRef][0].importData(response.data, 'grid');
+                        }
+                        $self.SET_LOADING(false);
+                        $self.resetToDefaultRightClickValues();
+                    }).catch(function(e){
+                          $self.$notifyError($self.trans('map_constructor.import_error'));
+                          $self.SET_LOADING(false);
+                    });
+                    this.$modal.hideAll();
+                }
+            }, {
+                height: "35%",
+                styles: "background-color: rgb(51, 57, 117);",
+            });
+        },
+        buildMapModal() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            if (this.$refs[projectRef][0].map === null) {
+                this.$notifyError(this.trans('map_constructor.geo_map_empty'));
+                return false;
+            }
+            const $self = this;
+            this.$modal.show(BuildMapModal, {
+                buildMap() {
+                    if (!this.lineFileDisabled && this.lineFileData !== null) {
+                        $self.importFile(this.lineFileData);
+                    }
+                    if (this.bubblesFileData !== null) {
+                        $self.sendExcelToAPI(this.bubblesFileData);
+                    }
+                    this.$modal.hideAll();
+                }
+            }, {
+                styles: "background-color: rgb(51, 57, 117);",
+            });
+        },
+        buildMapSpecificModal() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const $self = this;
+            if (this.geoList.dzoList.length > 0) {
+                this.$modal.show(BuildMapSpecificModal, {
+                    geoList: this.geoList,
+                    getGeoList(type, id) {
+                        if (id !== 0) {
+                            if (type === 'field') {
+                                $self.geoList.fieldList = [];
+                                $self.geoList.horizonList = [];
+                            } else if (type === 'horizon') {
+                                $self.geoList.horizonList = [];
                             }
-                            $(element).popover('show');
+                            $self.getGeoList(type, id);
                         }
-                    }
-                    if (circleType === 'circle') {
-                        style = [new Style({
-                            image: new CircleStyle({
-                                radius: radius,
-                                data: data,
-                                fill: new Fill({
-                                    color: '#0079FF'
-                                }),
-                                rotateWithView: true,
-                                stroke: new Stroke({
-                                    color: "black",
-                                    width: 2
-                                }),
-                            }),
-                            text: new Text({
-                                font: 'bold 14px "Open Sans", "Arial Unicode MS", "sans-serif"',
-                                placement: 'point',
-                                fill: new Fill({color: 'black'}),
-                                text: name
-                            }),
-                        })];
-                        if (sel) {
-                            $(element).popover('dispose');
-                            popup.setPosition(pos);
-                            switch (rad) {
-                                case 5:
-                                    $(element).popover({
-                                        container: element,
-                                        placement: 'top',
-                                        animation: false,
-                                        html: true,
-                                        content: '<p>Скважина\n<code class="text-dark font-weight-bold">' + name + '</code></p>' + '<p>Закачка, м3\n<code class="text-dark font-weight-bold">' + sum + '</code></p>' + '<p>Координаты:\n</p><p><code class="text-dark font-weight-bold">' + pos[0] + '</code></p><p><code class="text-dark font-weight-bold">' + pos[1] + '</code></p>',
-                                    });
-                                    break
-                                case 2:
-                                    $(element).popover({
-                                        container: element,
-                                        placement: 'top',
-                                        animation: false,
-                                        html: true,
-                                        content: '<p>Скважина\n<code class="text-dark font-weight-bold">' + name + '</code></p>' + '<p>Среднесуточная приемистость, м3/сут\n<code class="text-dark font-weight-bold">' + sum + '</code></p>' + '<p>Координаты:\n</p><p><code class="text-dark font-weight-bold">' + pos[0] + '</code></p><p><code class="text-dark font-weight-bold">' + pos[1] + '</code></p>',
-                                    });
-                                    break
+                    },
+                    buildMapSpecific(selectedData) {
+                        let geo = selectedData.selectedHorizon ? selectedData.selectedHorizon
+                          : selectedData.selectedField ? selectedData.selectedField
+                            : null;
+                        if (!geo) {
+                            this.$notifyError(this.trans('map_constructor.select_field_or_horizon'));
+                            return;
+                        }
+                        $self.SET_LOADING(true);
+                        axios.post(this.localeUrl('map-constructor/wells'), {
+                            geo: geo,
+                            selectedDzo: selectedData.selectedDzo,
+                        }).then((response) => {
+                            if (response.data) {
+                                if (response.data.length === 0) {
+                                    this.$notifyError(this.trans('map_constructor.empty_data'));
+                                    return;
+                                }
+                                const projectRef = $self.projects[$self.activeProjectIndex].key;
+                                $self.$refs[projectRef][0].showBubbles(response.data, 'oil_with_water');
                             }
-                            $(element).popover('show');
-                            map.on('movestart', function () {
-                                $(element).popover('dispose');
-                            });
-                        }
+                            this.$modal.hideAll();
+                            this.geoList.fieldList = [];
+                            this.geoList.horizonList = [];
+                            $self.SET_LOADING(false);
+                        });
                     }
-
-                }
-                return style;
-            }
-
-            let selectedDate = moment(this.selectedMonth).format('01.MM.YYYY');
-
-            let currentProductionFeatures = [];
-            let currentInjectionFeatures = [];
-            let accumProductionFeatures = [];
-            let accumInjectionFeatures = [];
-            let dateIndex;
-            switch (selectedDate) {
-                case '01.01.2021':
-                    dateIndex = 0;
-                    break
-                case '01.02.2021':
-                    dateIndex = 1;
-                    break
-                case '01.03.2021':
-                    dateIndex = 2;
-                    break
-                case '01.04.2021':
-                    dateIndex = 3;
-                    break
-                case '01.05.2021':
-                    dateIndex = 4;
-                    break
-            }
-            if (this.currentSelected) {
-                for (let i = 0; i < this.monthlyOilValue[dateIndex].production.names.length; i++) {
-                    let data = this.monthlyOilValue[dateIndex].production.current.values;
-                    let sum = this.monthlyOilValue[dateIndex].production.current.sum;
-                    let position = this.monthlyOilValue[dateIndex].production.coordinates;
-                    let name = this.monthlyOilValue[dateIndex].production.names;
-                    let water_percent = this.monthlyOilValue[dateIndex].production.water_percent;
-                    currentProductionFeatures[i] = new Feature({
-                        geometry: new Point(position[i]),
-                        data: data[i],
-                        sum: sum[i],
-                        name: name[i],
-                        position: position[i],
-                        water_percent: water_percent[i]
-                    });
-                }
-                for (let i = 0; i < this.monthlyOilValue[dateIndex].injection.names.length; i++) {
-                    let data = this.monthlyOilValue[dateIndex].injection.current.values;
-                    let sum = this.monthlyOilValue[dateIndex].injection.current.sum;
-                    let position = this.monthlyOilValue[dateIndex].injection.coordinates;
-                    let name = this.monthlyOilValue[dateIndex].injection.names;
-                    currentInjectionFeatures[i] = new Feature({
-                        geometry: new Point(position[i]),
-                        data: data[i],
-                        sum: sum[i],
-                        name: name[i],
-                        position: position[i],
-                    });
-                }
-            }
-            if (this.accumulatedSelected) {
-                for (let i = 0; i < this.monthlyOilValue[dateIndex].production.names.length; i++) {
-                    let data = this.monthlyOilValue[dateIndex].production.accumulated.values;
-                    let sum = this.monthlyOilValue[dateIndex].production.accumulated.sum;
-                    let position = this.monthlyOilValue[dateIndex].production.coordinates;
-                    let name = this.monthlyOilValue[dateIndex].production.names;
-                    let water_percent = this.monthlyOilValue[dateIndex].production.water_percent;
-                    accumProductionFeatures[i] = new Feature({
-                        geometry: new Point(position[i]),
-                        data: data[i],
-                        sum: sum[i],
-                        name: name[i],
-                        position: position[i],
-                        water_percent: water_percent[i]
-                    });
-                }
-                for (let i = 0; i < this.monthlyOilValue[dateIndex].injection.names.length; i++) {
-                    let data = this.monthlyOilValue[dateIndex].injection.accumulated.values;
-                    let sum = this.monthlyOilValue[dateIndex].injection.accumulated.sum;
-                    let position = this.monthlyOilValue[dateIndex].injection.coordinates;
-                    let name = this.monthlyOilValue[dateIndex].injection.names;
-                    accumInjectionFeatures[i] = new Feature({
-                        geometry: new Point(position[i]),
-                        data: data[i],
-                        sum: sum[i],
-                        name: name[i],
-                        position: position[i],
-                    });
-                }
-            }
-
-            let vectorCurrentProd = new VectorLayer({
-                name: 'vectorCurrentProd',
-                source: new VectorSource({features: currentProductionFeatures}),
-                style: (f) => {
-                    return drawData(f, false,1,'pieChart');
-                }
-            })
-            let vectorCurrentInject = new VectorLayer({
-                name: 'vectorCurrentInject',
-                source: new VectorSource({features: currentInjectionFeatures}),
-                style: function (f) {
-                    return drawData(f, false, 2 , 'circle');
-                }
-            })
-            let vectorAccumProd = new VectorLayer({
-                name: 'vectorAccumProd',
-                source: new VectorSource({features: accumProductionFeatures}),
-                style: function (f) {
-                    return drawData(f, false,40,'pieChart');
-                }
-            })
-            let vectorAccumInject = new VectorLayer({
-                name: 'vectorAccumInject',
-                source: new VectorSource({features: accumInjectionFeatures}),
-                style: function (f) {
-                    return drawData(f, false, 5 , 'circle');
-                }
-            })
-
-            map.addLayer(vectorAccumInject);
-            map.addLayer(vectorAccumProd);
-            map.addLayer(vectorCurrentProd);
-            map.addLayer(vectorCurrentInject);
-
-            let selectNew = new Select();
-            map.addInteraction(selectNew);
-
-            selectNew.on('select', function (evt) {
-                if (evt.selected.length > 0) {
-                    let pieData = evt.selected[0].values_
-                    if (pieData.data[1] === 0 && pieData.sum[0] % 1 !== 0) {
-                        selectNew.style_ = function (f) {
-                            return drawData(f, true,2,'circle');
-                        }
-                        map.addInteraction(selectNew);
-                    }
-                    if (pieData.data[1] === 0 && pieData.sum[0] % 1 === 0) {
-                        selectNew.style_ = function (f) {
-                            return drawData(f, true,5,'circle');
-                        }
-                        map.addInteraction(selectNew);
-                    }
-                    if (pieData.sum[0] < 200 && pieData.data[1] !== 0) {
-                        selectNew.style_ = function (f) {
-                            return drawData(f, true,1,'pieChart');
-                        }
-                        map.addInteraction(selectNew);
-                    }
-                    if (pieData.sum[0] > 200 && pieData.data[1] !== 0) {
-                        selectNew.style_ = function (f) {
-                            return drawData(f, true,40,'pieChart');
-                        }
-                        map.addInteraction(selectNew);
-                    }
-                }
-            });
-
-        },
-        setMenu(top, left) {
-            let largestHeight = this.windHeight - this.$refs.rightClickMenu.$refs.right.offsetHeight - 25;
-            let largestWidth = this.windWidth - this.$refs.rightClickMenu.$refs.right.offsetWidth - 25;
-
-            top = top > largestHeight ? largestHeight : top;
-            left = left > largestWidth ? largestWidth : left
-
-            this.top = `${top}px`;
-            this.left = `${left}px`;
-        },
-        setMenuLayers(top, left) {
-            let largestHeight = this.windHeight -  this.$refs.rightClickMenu.$refs.rightLayers.offsetHeight - 25;
-            let largestWidth = this.windWidth -  this.$refs.rightClickMenu.$refs.rightLayers.offsetWidth - 25;
-
-            top = top > largestHeight ? largestHeight : top;
-            left = left > largestWidth ? largestWidth : left
-
-            this.top = `${top}px`;
-            this.left = `${left}px`;
-        },
-        closeMenu() {
-            this.viewMenu = false;
-        },
-        closeMenuLayers() {
-            this.viewMenuLayers = false;
-        },
-        openMenu(e) {
-            this.viewMenu = true;
-            Vue.nextTick(() => {
-                this.$refs.rightClickMenu.$refs.right.focus();
-                this.setMenu(e.y, e.x);
-            });
-            e.preventDefault();
-        },
-        openMenuLayers(e) {
-            this.viewMenuLayers = true;
-            Vue.nextTick(() => {
-                this.$refs.rightClickMenu.$refs.rightLayers.focus();
-                this.setMenuLayers(e.y, e.x);
-            });
-            e.preventDefault();
-        },
-        openRightLayers() {
-            this.rightLayers = !this.rightLayers;
-        },
-        openRightMap() {
-            this.rightMap = !this.rightMap;
-        },
-        showModal() {
-            this.$refs['my-modal'].show()
-        },
-        hideModal() {
-            this.$refs['my-modal'].hide()
-        },
-        showFiles() {
-            let more = document.getElementById(`files`);
-            let arrow = document.getElementById(`arrow`);
-            if (more.style.display === "block") {
-                more.style.display = "none";
-                arrow.classList.remove('rotate90')
+                }, {
+                    styles: "background-color: rgb(51, 57, 117);",
+                });
             } else {
-                more.style.display = "block";
-                arrow.classList.add('rotate90')
+                this.$notifyError(this.trans('map_constructor.get_dzo_error'));
             }
         },
-        addFile() {
-            this.files += 1;
-            if (this.files === 1) {
-                this.showFiles();
+        saveName(name) {
+            this.$modal.hideAll();
+            if (this.rightClickTargetType === 'project') {
+                if (this.rightClickTargetIndex !== null) {
+                    this.projects[this.rightClickTargetIndex].name = name;
+                    return;
+                }
+                if (this.projects.length < 4) {
+                    this.activeProjectIndex = this.projects.length;
+                    this.projects.push({
+                        key: 'mcProject_' + this.projects.length,
+                        name: name,
+                        layerGroups: [],
+                    });
+                    this.projectsMapResize();
+                } else {
+                    this.$notifyError(this.trans('map_constructor.max_projects'));
+                }
+            } else {
+                if (this.rightClickTargetProjectIndex !== null && this.rightClickTargetIndex !== null) {
+                    this.projects[this.rightClickTargetProjectIndex].layerGroups[this.rightClickTargetIndex].name = name;
+                }
             }
         },
+        openCtxMenu(projectIndex, targetType, layerGroupIndex) {
+            let showCTXMenu = false;
+            this.ctxMenuItems.forEach(item => {
+                item.visible = item.forTypes.indexOf(targetType) !== -1 || item.forTypes.indexOf('all') !== -1;
+                if (item.visible) {
+                    showCTXMenu = true;
+                }
+            })
+            if (showCTXMenu) {
+                this.$refs.ctxMenu.open();
+                this.rightClickTargetProjectIndex = projectIndex;
+                this.rightClickTargetIndex = layerGroupIndex;
+                this.rightClickTargetType = targetType;
+            }
+        },
+        ctxMenuAction(action) {
+            switch (action) {
+                case 'isolines':
+                    this.buildIsolinesModal();
+                    break;
+                case 'rename':
+                    this.buildNameModal();
+                    break;
+                case 'delete':
+                    if (this.rightClickTargetType === 'project') {
+                        if (this.rightClickTargetProjectIndex !== null) {
+                            this.projects.splice(this.rightClickTargetProjectIndex, 1);
+                            this.activeProjectIndex = 0;
+                        }
+                    } else {
+                        if (this.rightClickTargetProjectIndex !== null && this.rightClickTargetIndex !== null) {
+                            const projectRef = this.projects[this.activeProjectIndex].key;
+                            this.projects[this.rightClickTargetProjectIndex]
+                              .layerGroups.splice(this.rightClickTargetIndex, 1);
+                            let layerToDelete = null;
+                            this.$refs[projectRef][0].map.getLayers().forEach((layer, index) => {
+                                if (index === this.rightClickTargetIndex) {
+                                    layerToDelete = layer;
+                                }
+                            })
+                            if (layerToDelete) {
+                                this.$refs[projectRef][0].map.removeLayer(layerToDelete);
+                            }
+                            if (mapLayers.length === 0) {
+                                this.$refs[projectRef][0].map = null;
+                            }
+                        }
+                    }
+                    this.projectsMapResize();
+                    this.resetToDefaultRightClickValues();
+                    break;
+            }
+        },
+        projectsMapResize() {
+            this.projects.forEach((project, index) => {
+                let $self = this;
+                setTimeout( function() {
+                    $self.$refs[project.key][0].updateMapSize();
+                }, 200);
+            });
+        },
+        getGeoList(type, id) {
+            this.SET_LOADING(true);
+            axios.post(this.localeUrl('map-constructor/structure'), {
+                type: type,
+                id: id,
+            }).then((response) => {
+                if (response.data) {
+                    this.geoList[type + 'List'] = response.data;
+                } else {
+                    this.$notifyError(this.trans('map_constructor.get_dzo_error'));
+                }
+                this.SET_LOADING(false);
+            });
+        },
+        toolAction(action) {
+            if (typeof action !== "undefined") {
+                this[action]();
+            }
+        },
+        addGeographicalMap() {
+            if (this.projects.length === 0) {
+                this.$notifyError(this.trans('map_constructor.import_add_project'));
+                return false;
+            }
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            this.$refs[projectRef][0].addGeographicalMap();
+        },
+        showBubblesByDate() {
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            let data = null;
+            this.bubblesData.forEach(item => {
+                if (!this.selectedMonth) {
+                    this.selectedMonth = moment(new Date()).format('YYYY-MM-DD');
+                }
+                const selectedDate = new Date(this.selectedMonth);
+                const excelDate = new Date(item.date);
+                if (excelDate.getFullYear() === selectedDate.getFullYear()
+                  && excelDate.getMonth() === selectedDate.getMonth()) {
+                      data = item;
+                }
+            });
+            if (data !== null) {
+                this.$refs[projectRef][0].showBubbles(data, 'ppm');
+            }
+        },
+        changeDate() {
+            if (this.bubblesData.length > 0) {
+                this.showBubblesByDate();
+            }
+        },
+        monthUp() {
+            let selectedDate = moment(this.selectedMonth, 'YYYY-MM-DD');
+            let newDate = moment(selectedDate.add(1, 'M'));
+            this.selectedMonth = newDate.format('YYYY-MM-DD');
+            this.changeDate();
+        },
+        monthDown() {
+            let selectedDate = moment(this.selectedMonth, 'YYYY-MM-DD');
+            let newDate = moment(selectedDate.add(-1, 'M'));
+            this.selectedMonth = newDate.format('YYYY-MM-DD');
+            this.changeDate();
+        },
+        resetToDefaultRightClickValues() {
+            this.rightClickTargetProjectIndex = null;
+            this.rightClickTargetIndex = null;
+            this.rightClickTargetType = 'project';
+        }
+    },
+    mounted() {
+        this.getGeoList('dzo');
     }
 }

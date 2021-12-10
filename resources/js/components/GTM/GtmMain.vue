@@ -85,7 +85,7 @@
           <gtm-date-picker @dateChanged="getData" :showSettings="false" :showPeriodTitle="true"></gtm-date-picker>
         </div>
         <div class="gtm-dark h-360">
-          <table class="table text-center text-white podbor-middle-table h-100 mb-0">
+          <table class="table text-center text-white podbor-middle-table paegtm-gtm-table h-100 mb-0">
             <thead>
             <tr>
               <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>

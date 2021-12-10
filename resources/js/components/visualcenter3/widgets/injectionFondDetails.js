@@ -197,7 +197,7 @@ export default {
             }
             let compared = this.getMergedByChild(injectionFondDetails,'import_downtime_reason');
             if (!this.isInjectionFondPeriodSelected) {
-                this.forDailyInjectionChart = await this.getChartData(this.injectionFondWorkFields,this.injectionFondIdleFields,this.injectionFondPeriodStart,this.injectionFondPeriodEnd);
+                this.forDailyInjectionChart = await this.getChartData(this.injectionFondWorkFields,this.injectionFondIdleFields,this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection',this.injectionFondSelectedCompany);
                 this.updateDailyChart(this.forDailyInjectionChart,this.injectionFondSelectedCompany,'isInjectionIdleActive','injectionDailyChart');
             } else {
                 this.injectionFondChartData = this.getInjectionFondWidgetChartData(compared);

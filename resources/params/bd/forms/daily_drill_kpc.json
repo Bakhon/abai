@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "table_type": "wells",
   "columns": [
     {
@@ -11,7 +12,7 @@
     },
     {
       "title": "org",
-      "code": "org",
+      "code": "tech",
       "type": "text",
       "is_editable": false
     },
@@ -50,16 +51,22 @@
       "title": "repair_work_type",
       "code": "repair_work_type",
       "type": "dict",
-      "dict":"repair_work_types",
+      "dict": "repair_work_types",
       "is_editable": false,
-      "validation":"exists:tbd.dict.geo,id"
+      "validation": "exists:tbd.dict.geo,id"
     },
     {
       "title": "work_done",
       "code": "work_done",
       "type": "text",
       "is_editable": true,
-      "validation":"required"
+      "validation": "required"
+    },
+    {
+      "title": "note",
+      "code": "comment",
+      "type": "text",
+      "is_editable": true
     }
   ]
 }

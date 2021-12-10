@@ -3,9 +3,17 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexTableRequest;
+use App\Jobs\ManualCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\BG;
+use App\Models\ComplicationMonitoring\BknsWell;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\KmbWell;
 use App\Models\ComplicationMonitoring\ManualGu;
+use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
+use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\ManualWell;
 use App\Models\ComplicationMonitoring\ManualZu;
@@ -16,6 +24,7 @@ use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\OmgNGDUZu;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\ComplicationMonitoring\WaterWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
 use App\Services\DruidService;
@@ -56,36 +65,34 @@ class TechMapController extends Controller
 
     public function mapData(): array
     {
+        $date = HydroCalcResult::orderBy('date', 'desc')->first()->date;
         $pipes = OilPipe::with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'hydroCalcLong' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 },
-                'hydroCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'hydroCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 },
-                'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                'reverseCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
                 }
             ])
-            ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
+            ->where('water_pipe', false)
             ->get();
 
         $manualPipes = ManualOilPipe::with('coords', 'pipeType')
             ->with([
                 'hydroCalcLong' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 },
                 'hydroCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 },
                 'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 }
             ])
-            ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
             ->get();
 
         $center = [52.854602599069, 43.426262258809];
@@ -141,6 +148,19 @@ class TechMapController extends Controller
         $pipeTypes = PipeType::all();
         $ngdus = Ngdu::all();
         $cdngs = Cdng::all();
+        $water_pipes = OilPipe::with('coords', 'pipeType')
+            ->where('water_pipe', true)
+            ->get();
+
+        $water_pipes->map(function ($pipe) {
+            $pipe->name = 'Pipe ID: ' . $pipe->id;
+            return $pipe;
+        });
+
+        $water_wells = WaterWell::all();
+        $bgs = BG::all();
+        $kmb_wells = KmbWell::all();
+        $bkns_wells = BknsWell::all();
 
         return [
             'pipes' => $pipes,
@@ -151,12 +171,21 @@ class TechMapController extends Controller
             'guPoints' => $guPoints,
             'center' => $center,
             'pipeTypes' => $pipeTypes,
+            'date' => $date,
+            'water_pipes' => $water_pipes,
+            'water_wells' => $water_wells,
+            'bgs' => $bgs,
+            'kmb_wells' => $kmb_wells,
+            'bkns_wells' => $bkns_wells
         ];
     }
 
     private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        $oilPipes = OilPipe::with('coords', 'pipeType')->get();
+        $oilPipes = OilPipe::with('coords', 'pipeType')
+            ->where('water_pipe', false)
+            ->get();
+
         $coords = [];
 
         $oilPipes->map(
@@ -302,6 +331,7 @@ class TechMapController extends Controller
         $pipe_input = $request->input('pipe');
         $pipe = new ManualOilPipe;
         $pipe->fill($pipe_input);
+        $pipe->user_id = auth()->user()->id;
         $pipe->save();
 
         foreach ($pipe_input['coords'] as $coord) {
@@ -581,7 +611,23 @@ class TechMapController extends Controller
         }
 
         $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
-        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+
+        if ($id >= 100000) {
+            ManualHydroCalcResult::whereIn('oil_pipe_id', function ($query) use ($pipe) {
+                $query->select('id')
+                    ->from(with(new ManualOilPipe)->getTable())
+                    ->where('gu_id', $pipe->gu_id);
+            })->delete();
+
+            ManualHydroCalcLong::whereIn('oil_pipe_id', function ($query) use ($pipe) {
+                $query->select('id')
+                    ->from(with(new ManualOilPipe)->getTable())
+                    ->where('gu_id', $pipe->gu_id);
+            })->delete();
+        }
+
+        $pipe->user_id = auth()->user()->id;
+        $pipe->save();
         $pipe->delete();
 
         return response()->json(
@@ -609,7 +655,8 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 },
             ]
-        )->get();
+        )->where('water_pipe', false)
+            ->get();
 
         $manualPipes = ManualOilPipe::with(
             [
@@ -642,5 +689,17 @@ class TechMapController extends Controller
                 $pipe->save();
             }
         }
+    }
+
+    public function calculate(IndexTableRequest $request)
+    {
+        $job = new ManualCalculateHydroDynamics($request->validated());
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 }

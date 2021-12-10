@@ -18,7 +18,11 @@ export default {
                 'is_approved_by_first_master',
                 'is_approved_by_second_master',
                 'created_at',
-                'updated_at'
+                'updated_at',
+                'user_position',
+                'oil_production_fact_corrected',
+                'condensate_production_fact_corrected',
+                'user_id'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
@@ -65,7 +69,8 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
-                'isFinalApprove': master.isFinalApprove
+                'isFinalApprove': master.isFinalApprove,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -81,6 +86,7 @@ export default {
                 'date': this.currentDzo.date,
                 'user_name': this.currentDzo.userName,
                 'change_reason': this.currentDzo.reason,
+                'userId': this.userId
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
@@ -120,13 +126,14 @@ export default {
                     'dzoName': approveItem.dzo_name,
                     'userName': approveItem.user_name,
                     'reason': approveItem.change_reason,
+                    'position': approveItem.user_position,
                     'selected': false,
                     'currentId': approveItem.id,
                     'actualId': actual.id,
                     'isFirstMasterApproved': approveItem.is_approved_by_first_master,
                     'isSecondMasterApproved': approveItem.is_approved_by_second_master,
                     'firstMasterApproveTranslation': this.statusTransition[0],
-                    'secondMasterApproveTranslation': this.statusTransition[0],
+                    'secondMasterApproveTranslation': this.statusTransition[0]
                 };
                 if (approve.isFirstMasterApproved) {
                     approve.firstMasterApproveTranslation = this.statusTransition[1]
@@ -172,12 +179,19 @@ export default {
         },
         getChildDifference(current, actual) {
             let difference = {};
+            if (current === null) {
+                return {};
+            }
             _.forEach(Object.keys(current), (currentKey) => {
                 if (this.systemFields.includes(currentKey)) {
                     return;
                 }
                 let currentDetail = current[currentKey];
-                let actualDetail = actual[currentKey];
+                let actualDetail = null;
+                if (actual) {
+                    actualDetail = actual[currentKey];
+                }
+
                 if (currentDetail !== actualDetail) {
                     difference[currentKey] = {
                         'currentDetail':  currentDetail,
@@ -189,6 +203,9 @@ export default {
         },
         getChildFields(currentFields, actualFields) {
             let difference = {};
+            if (currentFields.length !== actualFields.length) {
+                return difference;
+            }
             _.forEach(currentFields, (field, index) => {
                 difference[field['field_name']] = this.getChildDifference(field,actualFields[index]);
             });
@@ -203,5 +220,6 @@ export default {
         this.allProduction = await this.getForApprove();
         this.compared = this.getCompared();
         this.SET_LOADING(false);
-    }
+    },
+    props: ['userId'],
 }

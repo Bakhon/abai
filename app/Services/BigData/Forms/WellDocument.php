@@ -25,7 +25,7 @@ class WellDocument extends PlainForm
             ->orderBy('d.id', 'desc');
 
         $tmpRows = $query->get();
-        $rows = [];
+        $rows = collect();
         $fileIds = $tmpRows->pluck('file')->unique()->toArray();
         if (!empty($fileIds)) {
             $files = $this->getFilesInfo($fileIds);
@@ -68,7 +68,7 @@ class WellDocument extends PlainForm
             );
 
         return [
-            'rows' => array_values($rows),
+            'rows' => $rows->values(),
             'columns' => $columns,
             'form' => $this->params()
         ];
@@ -138,7 +138,13 @@ class WellDocument extends PlainForm
     private function getFilesInfo(array $fileIds)
     {
         $attachmentService = app()->make(AttachmentService::class);
-        return $attachmentService->getInfo($fileIds);
+        return $attachmentService->getInfo($fileIds)->map(function ($file) {
+            return [
+                'id' => $file->id,
+                'filename' => $file->file_name,
+                'size' => $file->file_size
+            ];
+        });
     }
 
     private function updateFiles(int $id, array $files)

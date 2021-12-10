@@ -6,7 +6,8 @@
                 align="center">
           Список скважин
         </Button>
-        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
+        <Button :disabled="!this.$store.state.geologyGis.awGisElementsCount" @click="isShowTableSettings = true"
+                color="accent" icon="settPhone" class="flex-grow-1 mr-3"
                 align="center">
           Настройка планшета
         </Button>
@@ -23,7 +24,7 @@
       </div>
     </div>
     <div class="main_graph mb-2">
-      <component v-bind="getGraphComponents[0]" />
+      <component :stratigraphy="getSelectedStratigraphy" v-bind="getGraphComponents[0]" :is="getGraphComponents[0].is" />
     </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
@@ -35,7 +36,7 @@
           </div>
         </template>
         <div class="secondary__graph">
-          <component v-bind="getGraphComponents[1]" />
+          <component v-bind="getGraphComponents[1]" :is="getGraphComponents[1].is" />
         </div>
       </ToolBlock>
       <div class="info__grid">
@@ -47,10 +48,10 @@
                 :selected-value.sync="dropdownValue.value"
                 button-text="Выбор ДЗО"
                 :options="[
-                    {label: 'option 1', value: 1},
-                    {label: 'option 2', value: 2},
-                    {label: 'option 3', value: 3}
-                  ]"
+								{ label: 'option 1', value: 1 },
+								{ label: 'option 2', value: 2 },
+								{ label: 'option 3', value: 3 },
+							]"
             />
             <Button class="geology-l-side__toggle w-100 mb-2" color="accent">
               Выбор месторождения
@@ -98,21 +99,30 @@
       <ListOfWells />
     </AwModal>
 
-    <AwModal is-confirm position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
-      <AwTree class="p-2" :selected.sync="chooseStratModalTree" :items="chooseStratModalTreeItems" />
+    <AwModal @save="saveStratigraphy" @cancel="cancelStratigraphy" is-confirm position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
+      <AwTree class="p-2" :selected.sync="getSelectedStratigraphy" :items="getStratigraphy" />
     </AwModal>
 
-    <AwModal is-confirm position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
-      <TableSettings />
+    <AwModal @cancel="cancelTableSettings" @save="saveTableSettings" is-confirm position="top" size="lg"
+             title="Настройка планшета" :is-show.sync="isShowTableSettings">
+      <TableSettings ref="tableSettings" />
     </AwModal>
 
     <AwModal is-confirm position="top" size="xl" title="Кросс-плот" :is-show.sync="isShowCrossPlot">
-      <CrossPlot/>
+      <CrossPlot />
     </AwModal>
   </div>
 </template>
 
 <script>
+import {globalloadingMutations} from "@store/helpers";
+import {geologyState} from "../../../store/helpers";
+import {
+  FETCH_WELLS_CURVES, GET_TREE_STRATIGRAPHY,
+  SET_GIS_DATA, SET_GIS_DATA_FOR_GRAPH,
+  SET_SELECTED_WELL_CURVES_FORCE, SET_WELLS, SET_WELLS_BLOCKS
+} from "../../../store/modules/geologyGis.const";
+
 import Button from "../components/buttons/Button";
 import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
@@ -124,8 +134,8 @@ import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
 import graph2 from "./graphics/graph2";
 import curve from "../demo_json/curve.json";
-import {globalloadingMutations} from '@store/helpers';
 import AwGis from "./graphics/awGis/AwGis";
+
 export default {
   name: "Geology-Page",
   components: {
@@ -144,9 +154,9 @@ export default {
       activeGraph: "GisGraph",
       graphComponents: [
         {
-          id: 'canvasWrapper',
+          id: "canvasWrapper",
           is: AwGis,
-          graphData: curve
+          graphData: curve,
         },
         {
           id: 2,
@@ -156,71 +166,111 @@ export default {
       dropdownValue: {
         value: null,
       },
+      selectedGisCurvesOld: [],
       isShowTableSettings: false,
       isShowCrossPlot: false,
       isShowListOfWellsModal: false,
       isShowChooseStratModal: false,
       chooseStratModalTree: [],
-      chooseStratModalTreeItems: {
+      chooseStratModalTreeOld: [],
+    };
+  },
+  computed: {
+    getSelectedStratigraphy:{
+      get(){
+        return this.chooseStratModalTree;
+      },
+      set(val){
+        this.chooseStratModalTree = val;
+      }
+    },
+    getStratigraphy() {
+      return {
         name: "J-I-III.txt",
         value: 1,
         iconType: "welltops",
         isOpen: true,
-        children: [
-          {
-            name: "Attributes",
-            value: "1-1",
-            iconType: "ybs",
-            children: [
-              {
-                name: "name",
-                iconType: "u1",
-              },
-            ],
-          },
-          {
-            name: "Stratigraphy",
-            iconType: "zoneStatic",
-            value: 2,
-            children: [
-              {
-                name: "U1_top",
-                iconType: "u1",
-                value: "111",
-              },
-              {
-                name: "Zone U1_top",
-                iconType: "zone",
-              },
-              {
-                name: "U1_bot",
-                iconType: "u1",
-                value: "1111",
-              },
-              {
-                name: "Zone U1_top",
-                iconType: "zone",
-              },
-            ],
-          },
-        ],
-      },
-    };
-  },
-  computed: {
+        children: this.$store.getters[GET_TREE_STRATIGRAPHY]||[]
+      };
+    },
     getGraphComponents() {
-      return this.graphComponents.sort(e => e.id === this.activeGraph ? -1 : 1);
-    }
+      return this.graphComponents.sort((e) => (e.id === this.activeGraph ? -1 : 1));
+    },
+    ...geologyState(["isOpenedRightSide", "isOpenedLeftSide"]),
   },
+  watch: {
+    "$store.state.geologyGis.blocksScrollY"(val) {
+      this.$store.state.geologyGis.tHorizon.scrollY = val;
+      this.drawStratigraphy()
+    },
+
+    isShowChooseStratModal(val){
+      if(val) {
+        this.$store.state.geologyGis.tHorizon.clearSvg();
+        this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+      }
+    },
+
+    isShowTableSettings(val) {
+      if (val) {
+        this.$store.state.geologyGis.tHorizon.clearSvg();
+        this.selectedGisCurvesOld = [...this.$store.state.geologyGis.selectedGisCurves];
+        this.$store.state.geologyGis.awGis.save();
+      }
+    },
+  },
+
   async mounted() {
     this.SET_LOADING(false);
   },
-  methods:{
-    ...globalloadingMutations([
-      'SET_LOADING'
-    ]),
-  }
-}
+
+  methods: {
+    saveStratigraphy(){
+      this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+      this.drawStratigraphy()
+    },
+
+    cancelStratigraphy(){
+      this.chooseStratModalTree = [...this.chooseStratModalTreeOld];
+      this.drawStratigraphy();
+    },
+    drawStratigraphy(){
+      this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.chooseStratModalTree]);
+    },
+    async saveTableSettings() {
+      this.SET_LOADING(true);
+      const awGisData = this.$store.state.geologyGis.awGis.getElementsWithData();
+      const {
+        CURVES_OF_SELECTED_WELLS: loadedCurves,
+        selectedGisCurves: awGisSelectedCurves,
+        gisWells: awGisSelectedWells
+      } = this.$store.state.geologyGis;
+
+      let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
+        let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
+        if (findElement && findElement.data) {
+          let curves = Object.values(findElement.data.curve_id);
+          let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));
+          if (!hasCurve) acc.push(...curves);
+        }
+        return acc;
+      }, []);
+
+      await this.$store.dispatch(FETCH_WELLS_CURVES, selectedCurves);
+      this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
+      this.$refs.tableSettings.updateOptions()
+      this.SET_LOADING(false);
+    },
+
+    cancelTableSettings() {
+      this.$store.state.geologyGis.awGis.reset();
+      this.$store.commit(SET_SELECTED_WELL_CURVES_FORCE, [...this.selectedGisCurvesOld]);
+      this.$store.commit(SET_GIS_DATA);
+      this.$refs.tableSettings.updateOptions()
+    },
+    ...globalloadingMutations(["SET_LOADING"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -229,9 +279,7 @@ export default {
   width: 100%;
   grid-template-rows: 1fr 96px;
   grid-gap: 10px;
-  grid-template-areas:
-			"item1 item2"
-			"item3 item3";
+  grid-template-areas: "item1 item2" "item3 item3";
 
   #item1 {
     grid-area: item1;
@@ -284,18 +332,12 @@ export default {
   max-height: 560px;
   width: 100%;
   overflow: hidden;
-
-  img {
-    display: block;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
 }
 
 //!TODO Поменять стили после создания графиков
 .secondary__graph {
-  min-width: 560px;
+  width: 560px;
+  overflow: hidden;
 
   img {
     display: block;

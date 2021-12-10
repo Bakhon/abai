@@ -1,11 +1,9 @@
 {
   "type": "plain",
   "table": "prod.well_constr",
-  "table_fields": [
-    "equip_type",
-    "depth",
-    "casing_type"
-  ],
+  "default_values": {
+    "project_drill": true
+  },
   "tabs": [
     {
       "title": "well_design_project",
@@ -25,7 +23,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "casing_running_depth",
-                "validation": "required|numeric"
+                "validation": "required|numeric|lte:10000"
               },
               {
                 "code": "sidetrack",
@@ -33,10 +31,10 @@
                 "title": "side_barrel"
               },
               {
-                "code": "model",
+                "code": "casing_nom",
                 "type": "dict",
-                "title": "tube_nom",
-                "dict": "tube_nom",
+                "title": "casing_type",
+                "dict": "casings",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {

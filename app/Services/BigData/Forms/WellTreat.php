@@ -16,21 +16,39 @@ class WellTreat extends TableForm
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+        if (empty($filter->treatment_type)) {
+            throw new \Exception('Выберите вид обработки');
+        }
 
-        $tables = $this->getFields()->pluck('table')->filter()->unique();
-        $rowData = $this->fetchRowData(
-            $tables,
-            $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
-        );
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
+        $date = Carbon::parse($filter->date)->toImmutable();
+
+        $rowData = DB::connection('tbd')
+            ->table('prod.well_treatment')
+            ->whereIn('well', $wells->pluck('id')->toArray())
+            ->where('treatment_type', $filter->treatment_type)
+            ->where('treat_date', '>=', $date->startOfDay())
+            ->where('treat_date', '<=', $date->endOfDay())
+            ->orderBy('treat_date', 'desc')
+            ->get();
 
         $wells->transform(
             function ($item) use ($rowData) {
-                $result = [];
+                $result = [
+                    'id' => $item->id,
+                    'uwi' => [
+                        'id' => $item->id,
+                        'name' => $item->uwi,
+                        'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
+                    ],
+                ];
 
                 foreach ($this->getFields() as $field) {
-                    $fieldValue = $this->getFieldValue($field, $rowData, $item);
+                    if ($field['code'] === 'uwi') {
+                        continue;
+                    }
+                    $rowItem = $rowData->where('well', $item->id)->first();
+                    $fieldValue = ['value' => $rowItem ? $rowItem->{$field['column']} : null];
                     if (!empty($fieldValue)) {
                         $result[$field['code']] = $fieldValue;
                     }
@@ -46,38 +64,49 @@ class WellTreat extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $fields, array $filter = []): array
     {
-        $column = $this->getFieldByCode($params['field']);
+        $date = Carbon::parse($filter['date'])->toImmutable();
+        foreach ($fields as $wellId => $wellFields) {
+            foreach ($wellFields as $columnCode => $field) {
+                $column = $this->getFieldByCode($columnCode);
 
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
+                $row = DB::connection('tbd')
+                    ->table($column['table'])
+                    ->where('well', $wellId)
+                    ->whereBetween(
+                        'treat_date',
+                        [
+                            $date->startOfDay(),
+                            $date->endOfDay()
+                        ]
+                    )
+                    ->where('treatment_type', $filter['treatment_type'])
+                    ->first();
 
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
+                if (!empty($row)) {
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->where('id', $row->id)
+                        ->update(
+                            [
+                                $column['column'] => $field['value']
+                            ]
+                        );
+                } else {
+                    $data = [
+                        'well' => $wellId,
+                        'treatment_type' => $filter['treatment_type'],
+                        'treat_date' => $date,
+                        $column['column'] => $field['value']
+                    ];
+                    DB::connection('tbd')
+                        ->table($column['table'])
+                        ->insert($data);
                 }
             }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
         }
+        return [];
     }
 
     protected function getCustomValidationErrors(string $field = null): array

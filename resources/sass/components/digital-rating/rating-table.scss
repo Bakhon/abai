@@ -1,6 +1,6 @@
 .rating-table {
   display: block;
-  height: 320px;
+  height: 100%;
   overflow-y: auto;
   thead {
     th {
@@ -24,6 +24,7 @@
       td {
         border: 1px solid #454D7D;
         width: 20%;
+        vertical-align: middle;
       }
     }
   }

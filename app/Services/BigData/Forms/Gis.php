@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Services\AttachmentService;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -18,9 +19,8 @@ class Gis extends PlainForm
 
     public function getResults(): array
     {
-        $wellId = $this->request->get('well_id');
         try {
-            $rows = $this->getRows($wellId);
+            $rows = $this->getRows();
 
             $columns = $this->getColumns();
 
@@ -59,6 +59,7 @@ class Gis extends PlainForm
         $row = array_merge($row, $this->getRowFiles($wellId));
 
         if (!empty($row)) {
+            $row['id'] = $wellId;
             $rows->push($row);
         }
 
@@ -100,8 +101,11 @@ class Gis extends PlainForm
             ->map(function ($group) use ($filesInfo) {
                 return $group
                     ->map(function ($file) use ($filesInfo) {
-                        $file->info = $filesInfo->where('id', $file->file)->first();
-                        $file->filename = $file->info->filename;
+                        $fileInfo = $filesInfo->where('id', $file->file)->first();
+                        $file->info = $fileInfo;
+                        if ($fileInfo) {
+                            $file->filename = $file->info->file_name;
+                        }
                         return $file;
                     })
                     ->groupBy('document_id')
@@ -144,28 +148,6 @@ class Gis extends PlainForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('matering_from'))) {
-            $errors['matering_from'][] = trans('bd.validation.depth');
-        }
-        if (!$this->isValidDate(
-            $this->request->get('well'),
-            $this->request->get('gis_date'),
-            'dict.well',
-            'drill_start_date'
-        )) {
-            $errors['gis_date'][] = trans('bd.validation.date');
-        }
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('process_from'))) {
-            $errors['process_from'][] = trans('bd.validation.depth');
-        }
-
-
-        return $errors;
-    }
-
     protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
@@ -181,10 +163,17 @@ class Gis extends PlainForm
             ->pluck('code')
             ->each(function ($code) use ($fileTypes) {
                 $values = $this->request->get($code);
+
+                $this->removeExistedFiles($fileTypes, $code, $values);
+
                 if (empty($values)) {
                     return;
                 }
+
                 foreach ($values as $value) {
+                    if (is_array($value)) {
+                        continue;
+                    }
                     DB::connection('tbd')
                         ->table('prod.conn_files')
                         ->insert(
@@ -207,5 +196,53 @@ class Gis extends PlainForm
             ->get()
             ->pluck('id', 'code')
             ->toArray();
+    }
+
+    private function removeExistedFiles(array $fileTypes, string $code, array $values = null)
+    {
+        if ($values === null) {
+            return;
+        }
+
+        $existedFiles = DB::connection('tbd')
+            ->table('prod.conn_files')
+            ->where('well', $this->request->get('well'))
+            ->where('type_connect', $fileTypes[$code])
+            ->get();
+
+        foreach ($existedFiles as $existedFile) {
+            $value = array_filter($values, function ($item) use ($existedFile) {
+                if (is_array($item)) {
+                    if (isset($item['id']) && $item['id'] === $existedFile->document_id) {
+                        return true;
+                    }
+                    if (isset($item['value']) && $item['value'] === $existedFile->document_id) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            if (empty($value)) {
+                DB::connection('tbd')
+                    ->table('prod.conn_files')
+                    ->where('id', $existedFile->id)
+                    ->delete();
+            }
+        }
+    }
+
+    public function delete(int $rowId)
+    {
+        DB::connection('tbd')
+            ->table('prod.conn_files')
+            ->where('well', $rowId)
+            ->delete();
+
+        DB::connection('tbd')
+            ->table('prod.lass_files')
+            ->where('well', $rowId)
+            ->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

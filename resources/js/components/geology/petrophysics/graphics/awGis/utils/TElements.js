@@ -1,15 +1,32 @@
+import {letMeProperty} from "../../../../js/utils";
+
 export default class TElements {
-    constructor() {
-    }
 
     #__elements = new Set();
     #__elementsOptions = new Map();
     #__elementsData = new Map();
+    #__old = {};
 
-    get getElements() {
-        return [...this.#__elements.keys()]
+    save(){
+        this.#__old = {
+            elements: new Set(this.#__elements),
+            elementsData: new Map(this.#__elementsData.entries()),
+            elementsOptions: new Map(this.#__elementsOptions.entries())
+        }
     }
 
+    reset(){
+        this.#__elements = new Set(this.#__old.elements);
+        this.#__elementsData = new Map(this.#__old.elementsData);
+        this.#__elementsOptions = new Map(this.#__old.elementsOptions);
+    }
+
+    get getElements() {
+        return Array.from(this.#__elements.keys());
+    }
+    get getElementsCount(){
+        return this.#__elements.size
+    }
     getElement(elementName) {
         if(this.#__elements.has(elementName)){
             return {
@@ -34,6 +51,10 @@ export default class TElements {
         return elementsList
     }
 
+    hasElement(elementName) {
+        return this.#__elements.has(elementName)
+    }
+
     addElement(elementName, data = {}, options = {}) {
         this.#mapAction(elementName, 'set', data, options);
     }
@@ -48,6 +69,21 @@ export default class TElements {
 
     editElementOptions(elementName, options = {}, force) {
         this.#propertyEdit(elementName, options, force, 'options')
+    }
+
+    editPropertyElementData(elementName, editableMapName, path, value, force = false) {
+        let editableMap = {
+            "options": this.#__elementsOptions,
+            "data": this.#__elementsData
+        }[editableMapName];
+        let dataOrOptions = editableMap.get(elementName);
+        if (typeof dataOrOptions === "object" && !Array.isArray(dataOrOptions)) {
+            dataOrOptions = JSON.parse(JSON.stringify(dataOrOptions));
+            letMeProperty(dataOrOptions, path, value);
+            this.#propertyEdit(elementName, dataOrOptions, force, editableMapName);
+        } else {
+            console.error("Не тот тип данных элемента");
+        }
     }
 
     #propertyEdit = (elementName, dataOrOptions, force, propName) => {

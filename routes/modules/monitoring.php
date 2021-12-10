@@ -72,6 +72,9 @@ Route::group(
 
                 Route::get('omgngdu/list', 'ComplicationMonitoring\OmgNGDUController@list')->name('omgngdu.list');
                 Route::get('omgngdu/export', 'ComplicationMonitoring\OmgNGDUController@export')->name('omgngdu.export');
+                Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name(
+                    'omgngdu.history'
+                );
 
                 Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
                     'omgngdu.get-omg-ngdu'
@@ -147,6 +150,8 @@ Route::group(
                 Route::get('/tech-map/pressure', 'ComplicationMonitoring\TechMapController@getPressure')->name('tech-map.pressure');
                 Route::get('/tech-map/temperature', 'ComplicationMonitoring\TechMapController@getTemperature')->name('tech-map.temperature');
 
+                Route::post('/tech-map/calculate', 'ComplicationMonitoring\TechMapController@calculate')->name('tech-map.calculate');
+
                 Route::post('/tech-map/gu', 'ComplicationMonitoring\TechMapController@storeGu')->name('tech-map.store_gu');
                 Route::post('/tech-map/zu', 'ComplicationMonitoring\TechMapController@storeZu')->name('tech-map.store_zu');
                 Route::post('/tech-map/well', 'ComplicationMonitoring\TechMapController@storeWell')->name('tech-map.store_well');
@@ -199,6 +204,7 @@ Route::group(
                 Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
 
                 Route::get('/manual-hydro-calc/list', 'ComplicationMonitoring\ManualHydroCalc@list')->name('manual_hydro_calculation.list');
+                Route::get('/manual-hydro-calc/export', 'ComplicationMonitoring\ManualHydroCalc@export')->name('manual_hydro_calculation.export');
                 Route::get('/manual-hydro-calc', 'ComplicationMonitoring\ManualHydroCalc@index')->name('manual_hydro_calculation.index');
                 Route::get('/manual-hydro-calc/calculate', 'ComplicationMonitoring\ManualHydroCalc@calculate')->name('manual_hydro_calculation.calculate');
                 Route::get('/manual-hydro-calc/test', 'ComplicationMonitoring\ManualHydroCalc@getPrepairedData');

@@ -127,6 +127,19 @@ class OmgNGDUController extends CrudController
         return response()->json(json_decode(OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OmgNGDU $omgngdu)
+    {
+        $omgngdu->load('history');
+        return view('omgngdu.history', compact('omgngdu'));
+    }
+
+
     public function export(IndexTableRequest $request)
     {
         $job = new ExportOmgNGDUToExcel($request->validated());
@@ -200,8 +213,9 @@ class OmgNGDUController extends CrudController
     {
         $validationParams = $this->getValidationParams('omgngdu');
         $omgngdu->editable = $request->session()->get('from_hydro_calc') ? 1 : 0;
+        $editable = env('OMG_NGDU_EDITABLE', 'false');
 
-        return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
+        return view('omgngdu.edit', compact('omgngdu', 'validationParams', 'editable'));
     }
 
     /**

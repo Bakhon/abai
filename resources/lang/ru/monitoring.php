@@ -247,6 +247,10 @@ return array (
       'temperature' => 'Температура',
     ),
     'referent_value' => 'Референтное значение',
+    'calculate-chain' => 'Расчитать цепь',
+    'calculate-hydro' => 'Расчет гидравлики',
+    'calculate' => 'Расчитать',
+    'calculate_error' => 'Ошибка в расчете',
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -393,8 +397,8 @@ return array (
     'fields' => 
     array (
       'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
+      'pressure_start' => 'Давление начальное, бар',
+      'pressure_end' => 'Давление конечное, бар',
       'temperature_start' => 'Температура начальная, °С',
       'temperature_end' => 'Температура конечная, °С',
       'start_point' => 'Начальная точка',
@@ -417,6 +421,7 @@ return array (
       'no-pressure-data' => 'нет данных по давлению !',
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
+      'no-pressure-on-gu-omgdu' => 'На задано давление на ГУ',
     ),
     'error' => 
     array (
@@ -580,4 +585,8 @@ return array (
     'no_date' => 'Не выбрана дата',
     'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
+  'gu-scheme' => 'Схема ГУ',
+  'water-well' => 'ПДД',
+  'map-params' => 'Параметры',
+  'legend' => 'Легенда',
 );

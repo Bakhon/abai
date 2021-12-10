@@ -53,7 +53,7 @@
                 {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
               </template>
               <template v-else-if="column.type === 'datetime'">
-                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:mm') }}
               </template>
               <template v-else>
                 {{ item[column.code].text }}
@@ -160,20 +160,23 @@ export default {
     initValues() {
       if (!this.values) return
 
-      if (this.params.form) {
-        this.items = this.values
-        return
-      }
-
       this.items = this.values.map(value => {
         let obj = {}
         for (let i in value) {
+          if (typeof value[i] === 'object') {
+            obj[i] = value[i]
+            continue
+          }
+
           obj[i] = {
-            value: value[i]
+            value: value[i],
+            text: value[i]
           }
         }
         return obj
       })
+
+      this.updateParentField()
 
     },
     openCreateForm() {
@@ -211,6 +214,9 @@ export default {
       this.params.columns.forEach(column => {
         formValues[column.code] = item[column.code]
       })
+      if (item.id) {
+        formValues.id = item.id
+      }
       this.formValues = formValues
 
     },
@@ -251,6 +257,12 @@ export default {
       this.formValues[column.code] = event
     },
     updateResults(event) {
+      //todo: hotfix, need to do it properly
+      if (this.params.form === 'well_document_short') {
+        event.values.filenames = event.values.file.map(file => {
+          return file.name
+        }).join(', ')
+      }
       this.items.push(event)
 
       this.$emit('change', this.items.map(row => row.id))

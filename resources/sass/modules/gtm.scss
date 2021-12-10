@@ -248,7 +248,7 @@
 }
 
 .tree-setting-block div {
-    min-width: 40rem !important;
+    min-width: 30rem !important;
 }
 
 .title-node-name {
@@ -293,18 +293,15 @@
     cursor: pointer;
 }
 
-.tree-setting-block div {
-    min-width: 40rem !important;
-}
-
 .title-block-tree {
     display: flex;
     justify-content: flex-start;
 }
 
 .tree-setting-block {
-    right: 100%;
+    right: 25%;
     bottom: 22%;
+    z-index: 1;
 
     div {
         min-width: 20rem;
@@ -351,6 +348,21 @@
         }
     }
 
+}
+
+.paegtm-gtm-table {
+    overflow-y: scroll;
+    display: block;
+
+    th {
+        width: 100%;
+    }
+
+    tr{
+        td:first-child {
+            cursor: default;
+        }
+    }
 }
 
 .distribution-table {

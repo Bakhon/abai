@@ -1,100 +1,182 @@
 <template>
   <div class="data-analysis-study">
-    <div class="study-title">
-      <div class="icon-title">
-        <img src="/img/PlastFluids/tableIcon.png" alt=""/>
+    <div class="study-table-title-holder">
+      <div class="study-table-title">
+        <div>
+          <img
+            src="/img/PlastFluids/tableIcon.png"
+            alt="detailed research statistics"
+          />
+          <p>{{ trans("plast_fluids.analysis_study_table_title") }}</p>
+        </div>
+        <button @click="handleTableDownload">
+          <img src="/img/PlastFluids/data_upload.svg" alt="download table" />
+        </button>
       </div>
-      <span>Детальная статистика изученности по видам исследований</span>
     </div>
-    <BaseTable :items="items" :fields="fields" />
+    <div class="study-table-holder">
+      <BaseTable tableType="study" :fields="tableFields" :items="tableRows" />
+    </div>
   </div>
 </template>
 
 <script>
 import BaseTable from "../BaseTable.vue";
+import { mapState, mapMutations, mapActions } from "vuex";
+import { getTemplateFile, getHorizonBlocks } from "../../services/templateService";
+import { convertToFormData, downloadExcelFile } from "../../helpers";
 
 export default {
   name: "DataAnalysisStudy",
   components: {
     BaseTable,
   },
-  data() {
-    return {
-      fields: [
-        "№ исследования",
-        "Скважина",
-        "Дата отбора проб",
-        "Вид пробы",
-        "Давление насыщения при ТПЛ",
-        "Зависимость давления насыщения от температуры",
-        "PV-соотношение при Тпл",
-        "Стандартная сепарация",
-        "Ступенчатая сепарация",
-        "Дивверенциальное разгазирование",
-        "Определение состава флюидов",
-        "Вязкость пластовой нефти при Рпл",
-        "Зависимость вязкости пластовой нефти от давления выше Ps",
-        "Зависимость вязкости пластовой нефти от давления выше Ps",
-        "Зависимость вязкости пластовой нефти от температуры",
-      ],
-      items: [],
-    };
+  inject: {
+    userID: {
+      default: "",
+    },
+  },
+  computed: {
+    ...mapState("plastFluids", [
+      "currentSubsoilField",
+      "currentSubsoilHorizon",
+    ]),
+    ...mapState("plastFluidsLocal", [
+      "currentTemplate",
+      "currentBlocks",
+      "tableFields",
+      "tableRows",
+    ]),
+  },
+  watch: {
+    currentSubsoilField: {
+      handler() {
+        this.handleTableData({
+          user_id: this.userID,
+          report_id: this.currentTemplate.id,
+          type: "analysis",
+        });
+      },
+      deep: true,
+    },
+    currentSubsoilHorizon(value) {
+      this.handleTableData({
+        user_id: this.userID,
+        report_id: this.currentTemplate.id,
+        type: "analysis",
+      });
+      this.setBlocks(value);
+    },
+    currentBlocks() {
+      this.handleTableData({
+        user_id: this.userID,
+        report_id: this.currentTemplate.id,
+        type: "analysis",
+      });
+    },
   },
   methods: {
-    pushData() {
-      for (let i = 0; i < 40; i++) {
-        this.items.push([
-          i,
-          "КТ-I",
-          "18.07.06",
-          "Pgor",
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          50.3,
-        ]);
+    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS"]),
+    ...mapActions("plastFluidsLocal", ["handleTableData"]),
+    async handleTableDownload() {
+      let horizonIDs = "None";
+      let blockIDs = "None";
+      if (this.currentSubsoilHorizon.length)
+        horizonIDs = this.currentSubsoilHorizon.map(
+          (horizon) => horizon.horizon_id
+        );
+      if (this.currentBlocks.length)
+        blockIDs = this.currentBlocks.map((block) => block.block_id);
+
+      const postData = convertToFormData({
+        user_id: this.userID,
+        field_id: this.currentSubsoilField[0].field_id,
+        report_id: this.currentTemplate.id,
+        horizons: horizonIDs,
+        blocks: blockIDs,
+      });
+
+      const file = await getTemplateFile(postData);
+      downloadExcelFile(this.currentTemplate["name_" + this.currentLang], file);
+    },
+    async setBlocks(horizons) {
+      if (horizons.length) {
+        const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
+        const payload = convertToFormData({ horizons: horizonIDs });
+        const blocks = await getHorizonBlocks(payload);
+        this.SET_BLOCKS(blocks);
+      } else {
+        this.SET_BLOCKS([]);
       }
     },
   },
   mounted() {
-    this.pushData();
+    if (this.currentSubsoilHorizon.length)
+      this.setBlocks(this.currentSubsoilHorizon);
   },
 };
 </script>
 
 <style scoped>
 .data-analysis-study {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
   height: 100%;
 }
 
-.icon-title {
-  margin-right: 8px;
+.study-table-title-holder {
+  border: 6px solid #272953;
+  border-bottom: none;
+  width: 100%;
+  height: 40px;
 }
 
-.icon-title > img {
-  width: 18px;
-  height: 14px;
-}
-
-.study-title {
+.study-table-title {
+  width: 100%;
+  height: 100%;
+  background: #323370;
+  border: 1px solid #545580;
+  padding: 8px 11px;
   display: flex;
   align-items: center;
-  color: #fff;
-  width: 100%;
-  background-color: #323370;
-  border: 1px solid #545580;
-  height: 47px;
-  padding: 4px;
+  justify-content: space-between;
 }
 
-.study-table {
-  height: calc(100% - 30px);
+.study-table-title > div {
+  display: flex;
+  align-items: center;
+}
+
+.study-table-title > div > img {
+  width: 18px;
+  height: 14px;
+  margin-right: 9px;
+}
+
+.study-table-title > div > p {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.study-table-title > button {
+  border: none;
+  background-color: unset;
+  width: 18px;
+  height: 18px;
+  display: flex;
+}
+
+.study-table-title > button > img {
+  width: 100%;
+  height: 100%;
+}
+
+.study-table-holder {
+  border: 6px solid #272953;
+  padding: 4px;
+  width: 100%;
+  max-height: calc(100% - 40px);
 }
 </style>

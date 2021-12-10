@@ -8,8 +8,12 @@ use App\Http\Requests\Economic\Log\EconomicDataLogRequest;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
+use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
+use App\Models\Refs\TechnicalDataForecast;
+use App\Models\Refs\TechnicalWellForecast;
+use App\Models\Refs\TechnicalWellForecastKit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -44,10 +48,30 @@ class EconomicDataLogController extends Controller
                 case EconomicDataLogType::GTM:
                     EcoRefsGtm::query()->whereLogId($log->id)->delete();
 
+                    break;
+                case EconomicDataLogType::WELL_FORECAST:
+                    TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->delete();
+
+                    TechnicalWellForecast::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::ANALYSIS_PARAM:
+                    TechnicalWellForecastKit::query()->whereEconomicLogId($log->id)->delete();
+
+                    EcoRefsAnalysisParam::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::DATA_FORECAST:
+                    TechnicalDataForecast::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::GTM_VALUE:
                     EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
 
                     break;
             }
+
+            $log->delete();
         });
 
         return redirect()
@@ -65,6 +89,10 @@ class EconomicDataLogController extends Controller
 
         if ($request->author_id) {
             $query->whereAuthorId($request->author_id);
+        }
+
+        if ($request->has('is_processed')) {
+            $query->whereIsProcessed($request->is_processed);
         }
 
         return $query

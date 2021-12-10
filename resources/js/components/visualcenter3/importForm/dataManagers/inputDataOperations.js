@@ -64,25 +64,39 @@ export default {
             this.isDataExist = true;
             this.isDataReady = false;
         },
+        beforeEdit(e) {
+            let cell = e.detail;
+            console.log(cell)
+            let rowIndex = cell.rowIndex;
+            let colIndex = cell.prop.replace(/\D/g, "") - 1;
+            let value = cell.val.replace(',','.');
+            value = parseFloat(value);
+            this.disableErrorHighlight(rowIndex,colIndex);
+            if (isNaN(value) || value < 0) {
+                this.setClassToElement($('#factGrid').find('div[data-row="' + rowIndex + '"][data-col="' + colIndex + '"]'),'cell__color-red');
+                this.isPlanValidateError = true;
+            }
+        },
         addListeners() {
             let self = this;
-            document.querySelector('revo-grid').addEventListener('keyup', function(e) {
+            document.querySelector('#factGrid').addEventListener('keyup', function(e) {
                 self.rows[self.currentCellOptions.rowIndex]['column' + self.currentCellOptions.columnIndex] = e.target.value;
                 self.refreshGridData();
                 self.isDataExist = true;
                 self.isDataReady = false;
             });
-            document.querySelector('revo-grid').addEventListener('dblclick', function(e) {
-                self.currentCellOptions.rowIndex = parseInt(e.target.dataset.row);
-                self.currentCellOptions.columnIndex = parseInt(e.target.dataset.col) + 1;
-            });
-            document.querySelector('revo-grid').addEventListener('click', function(e) {
-                self.currentCellOptions.rowIndex = parseInt(e.target.dataset.row);
-                self.currentCellOptions.columnIndex = parseInt(e.target.dataset.col) + 1;
-            });
+        },
+        beforeFocus(e) {
+            let cell = e.detail;
+            let rowIndex = cell.rowIndex;
+            let colIndex = cell.prop.replace(/\D/g, "");
+            this.currentCellOptions.rowIndex = rowIndex;
+            this.currentCellOptions.columnIndex = colIndex;
         },
         refreshGridData() {
-            document.querySelector('revo-grid').refresh('all');
+            if (document.querySelector('#factGrid')) {
+                document.querySelector('#factGrid').refresh('all');
+            }
         },
 
         formatCategoryByType(event,category,type) {

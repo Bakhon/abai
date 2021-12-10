@@ -1,12 +1,27 @@
 <template>
     <div class="page-wrapper">
         <div class="row pl-3 mr-0">
-            <div class="col-12 title pb-2">
+            <div class="col-11 title pb-2">
                 {{ trans('visualcenter.oilCondensateDynamic') }}
+            </div>
+            <div class="col-1 mt-2 text-left">
+                <label
+                        @mouseover="isHoverActive = true"
+                        @mouseout="isHoverActive = false"
+                        class="switch"
+                >
+                    <input type="checkbox" class="form-check-input" v-model="isCorrectedFactActive" @change="updateDailyView">
+                    <span class="slider round"></span>
+                </label>
+                <span v-show="isHoverActive" class="hovered-tooltip">
+                    <span v-if="isCorrectedFactActive">{{ trans('visualcenter.withoutCorrectedFact') }}</span>
+                    <span v-else>{{ trans('visualcenter.withCorrectedFact') }}</span>
+
+                </span>
             </div>
             <div class="col-4 p-0 ml-3">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-left"
                         @change="handleDzo($event.target.value)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
@@ -14,7 +29,7 @@
             </div>
             <div class="col-4">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-center"
                         v-model="selectedMonth"
                         @change="handleMonth($event.target.value)"
                 >
@@ -101,7 +116,7 @@ Vue.component('daily-chart', require('./dailyChart.vue').default);
 export default {
     data: function () {
         return {
-            dailyChartName: this.trans('visualcenter.oilDynamicDaily'),
+            dailyChartName: this.trans('visualcenter.oilDynamicDaily') + ' (' + this.trans('visualcenter.chemistryMetricTon') + ')',
             yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly') + ' (' + this.trans('visualcenter.dzoThousandTon') + ')',
             selectedMonth: moment().month() + 1,
             selectedDzo: {
@@ -111,19 +126,34 @@ export default {
             },
             dzoCompanies: [
                 {
+                    id: 17,
+                    ticker: 'НККМГ',
+                    name: this.trans('visualcenter.nkKmg'),
+                },
+                {
+                    id: 18,
+                    ticker: 'НККМГОП',
+                    name: this.trans('visualcenter.nkKmgOperating'),
+                },
+                {
+                    id: 7,
+                    ticker: 'ОМГ',
+                    name: this.trans('visualcenter.omg'),
+                },
+                {
+                    id: 8,
+                    ticker: 'ОМГК',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK') + ' (' + this.trans('visualcenter.condensate') + ')',
+                },
+                {
+                    id: 6,
+                    ticker: 'ММГ',
+                    name: this.trans('visualcenter.mmg'),
+                },
+                {
                     id: 1,
                     ticker: 'ЭМГ',
                     name: this.trans('visualcenter.emg'),
-                },
-                {
-                    id: 2,
-                    ticker: 'КОА',
-                    name: this.trans('visualcenter.koa'),
-                },
-                {
-                    id: 3,
-                    ticker: 'КТМ',
-                    name: this.trans('visualcenter.ktm'),
                 },
                 {
                     id: 4,
@@ -136,19 +166,14 @@ export default {
                     name: this.trans('visualcenter.kgm'),
                 },
                 {
-                    id: 6,
-                    ticker: 'ММГ',
-                    name: this.trans('visualcenter.mmg'),
+                    id: 3,
+                    ticker: 'КТМ',
+                    name: this.trans('visualcenter.ktm'),
                 },
                 {
-                    id: 7,
-                    ticker: 'ОМГ',
-                    name: this.trans('visualcenter.omg'),
-                },
-                {
-                    id: 8,
-                    ticker: 'ОМГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
+                    id: 2,
+                    ticker: 'КОА',
+                    name: this.trans('visualcenter.koa'),
                 },
                 {
                     id: 9,
@@ -156,9 +181,19 @@ export default {
                     name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.YO'),
                 },
                 {
-                    id: 10,
-                    ticker: 'АГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                    id: 16,
+                    ticker: 'ТШО',
+                    name: this.trans('visualcenter.tsho'),
+                },
+                {
+                    id: 15,
+                    ticker: 'НКО',
+                    name: this.trans('visualcenter.nko'),
+                },
+                {
+                    id: 14,
+                    ticker: 'КПО',
+                    name: this.trans('visualcenter.kpo'),
                 },
                 {
                     id: 11,
@@ -176,31 +211,10 @@ export default {
                     name: this.trans('visualcenter.tp'),
                 },
                 {
-                    id: 14,
-                    ticker: 'КПО',
-                    name: this.trans('visualcenter.kpo'),
-                },
-                {
-                    id: 15,
-                    ticker: 'НКО',
-                    name: this.trans('visualcenter.nko'),
-                },
-                {
-                    id: 16,
-                    ticker: 'ТШО',
-                    name: this.trans('visualcenter.tsho'),
-                },
-                {
-                    id: 17,
-                    ticker: 'НККМГ',
-                    name: this.trans('visualcenter.nkKmg'),
-                },
-                {
-                    id: 18,
-                    ticker: 'НККМГОП',
-                    name: this.trans('visualcenter.nkKmgOperating'),
-                },
-
+                    id: 10,
+                    ticker: 'АГ',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                }
             ],
             monthes: [],
             tableData: [],
@@ -227,9 +241,14 @@ export default {
                     this.trans("visualcenter.Fact"),
                 ]
             },
+            isCorrectedFactActive: true,
+            isHoverActive: false
         };
     },
     async mounted() {
+        if (moment().date() === 1) {
+            this.selectedMonth = this.selectedMonth - 1;
+        }
         this.fillMonthes();
         this.updateDailyView();
     },
@@ -238,7 +257,8 @@ export default {
             let uri = this.localeUrl("/oil-dynamic-daily");
             let queryOptions = {
                 'month': this.selectedMonth,
-                'type' : this.selectedDzo.ticker
+                'type' : this.selectedDzo.ticker,
+                'isCorrectedFactActive': this.isCorrectedFactActive
             };
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {
@@ -408,7 +428,6 @@ export default {
 .dropdown_list {
     background-color: #333975;
     height: 40px;
-    text-align: center;
     color: #9ea4c9;
     border: none;
     width: 100%;
@@ -440,12 +459,81 @@ export default {
     margin-top: 30px;
 }
 .growth-indicator-production-data {
-    border-bottom: 16px solid #009846;
+    border-top: 16px solid #009846;
 }
 .fall-indicator-production-data {
     border-top: 16px solid #e31e24;
 }
 .daily-chart {
     margin-bottom: -5px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+.hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    margin-left: -200px;
+    margin-top: 40px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
 }
 </style>

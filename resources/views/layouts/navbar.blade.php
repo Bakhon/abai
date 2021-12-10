@@ -46,7 +46,10 @@
                         @endif
                     </div>
                     @if(Route::current()->getName() == 'proactiveFactors')
-                        <div class="header__subtitle"> - Упреждающие факторы</div>
+                        <div class="header__subtitle"> - {{ trans('economy_pf.proactiveFactors') }} </div>
+                    @endif
+                    @if(Route::current()->getName() == 'companyValuation')
+                        <div class="header__subtitle"> - {{ trans('economy_pf.valuationOfTheCompany') }} </div>
                     @endif
                 @endif
             @endif
@@ -119,7 +122,8 @@
     });
 
     function SidebarCollapse() {
-        $('.menu-collapsed').toggleClass('d-none');
+        // $('.menu-collapsed').toggleClass('d-none');
+        $('.nav-left-panel').toggleClass('show');
         $('.sidebar-submenu').toggleClass('d-none');
         $('.submenu-icon').toggleClass('d-none');
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');

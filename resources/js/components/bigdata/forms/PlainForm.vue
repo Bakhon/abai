@@ -41,6 +41,7 @@
                         :error="errors[item.code]"
                         :form="params"
                         :item="item"
+                        :editable="item.hasOwnProperty('editable') ? item.editable : true"
                         v-on:change="validateField($event, item)"
                         v-on:input="callback($event, item)"
                     >
@@ -85,6 +86,10 @@ export default {
     },
     wellId: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     values: {
@@ -132,6 +137,7 @@ export default {
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
         if (field && field.type === 'file') continue
+        if (field && field.submit_value === false) continue
         if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
@@ -161,7 +167,13 @@ export default {
       this.activeTab = 0
 
       if (this.values) {
-        this.formValues = this.values
+        this.formValues = Object.assign({}, this.values)
+        for (let i in this.formValues) {
+          let value = this.formValues[i]
+          if (value && typeof value === 'object' && value.value) {
+            this.formValues[i] = value.value
+          }
+        }
       }
 
       this.updateForm(this.params.code)
@@ -215,7 +227,7 @@ export default {
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = [...JSON.parse(data.files), ...existedFiles]
+            files[key] = [...data.files, ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })
@@ -226,9 +238,13 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
+            type: this.type,
             values: {...this.formValuesToSubmit, ...files}
           })
           .then(response => {
+
+            this.SET_LOADING(false)
+
             this.errors = []
             this.$refs.form.reset()
             this.$notifySuccess('Ваша форма успешно отправлена')
@@ -240,6 +256,8 @@ export default {
             this.formValues = {}
           })
           .catch(error => {
+
+            this.SET_LOADING(false)
 
             if (error.response.status === 500) {
               this.$notifyError(error.response.data.message)
@@ -266,9 +284,6 @@ export default {
               }
             }
           })
-          .finally(() => {
-            this.SET_LOADING(false)
-          })
     },
     submitForm(params) {
       return axios.post(this.localeUrl(`/api/bigdata/forms/${params.code}`), {
@@ -283,14 +298,16 @@ export default {
     changeTab(index) {
       this.activeTab = index
     },
-    callback(e, formItem) {
-      if (typeof formItem.callbacks === 'undefined') return
+    callback: _.debounce(function (e, formItem) {
+      this.$nextTick(() => {
+        if (typeof formItem.callbacks === 'undefined') return
 
-      for (let callback in formItem.callbacks) {
-        if (typeof this[callback] === 'undefined') continue
-        this[callback](formItem.code, formItem.callbacks[callback])
-      }
-    },
+        for (let callback in formItem.callbacks) {
+          if (typeof this[callback] === 'undefined') continue
+          this[callback](formItem.code, formItem.callbacks[callback])
+        }
+      })
+    }, 350),
     fillCalculatedFields() {
       this.SET_LOADING(true)
       axios.post(
@@ -303,6 +320,7 @@ export default {
         for (let key in data) {
           this.formValues[key] = data[key]
         }
+        this.$forceUpdate()
       }).finally(() => {
         this.SET_LOADING(false)
       })
@@ -381,6 +399,10 @@ export default {
 
       let isShowField = true
       field.depends_on.forEach(dependency => {
+        if (dependency.value === false && !this.formValues[dependency.field]) {
+          return;
+        }
+
         if (this.formValues[dependency.field] !== dependency.value) {
           isShowField = false
         }

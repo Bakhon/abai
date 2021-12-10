@@ -26,7 +26,7 @@ class Nko extends Dzo {
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodEnd)
     {
         $summary = array();
         $summaryByOil = $this->getOilCondensateCalculated($companySummary,$periodType);
@@ -34,18 +34,20 @@ class Nko extends Dzo {
         return $summary;
     }
 
-    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$periodType,$periodEnd)
     {
         $summary = array();
         array_push($summary,$companySummary);
         return $summary;
     }
 
-    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField,$isSummary)
     {
-       $daySummary['fact'] *= $this->oilCondensateMultiplier;
-       $daySummary['plan'] *= $this->oilCondensateMultiplier;
-       $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       if ($isSummary) {
+           $daySummary['fact'] *= $this->oilCondensateMultiplier;
+           $daySummary['plan'] *= $this->oilCondensateMultiplier;
+           $daySummary['opek'] *= $this->oilCondensateMultiplier;
+       }
        $summary = array();
        array_push($summary,$daySummary);
        return $summary;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\bd;
 
 use App\Http\Controllers\Controller;
-use App\Models\DZO\DZOdaily;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\DZO\DZOdaily;
 use App\Models\ReportTemplate;
 use Illuminate\Http\Request;
 
@@ -67,11 +67,6 @@ class DBController extends Controller
     public function dob()
     {
         return view('reports.dob');
-    }
-
-    public function form()
-    {
-        return view('protodb.form');
     }
 
     public function mobileForm()

@@ -1,5 +1,7 @@
 {
   "type": "table",
+  "new": true,
+  "show_history": false,
   "columns": [
   ]
 }

@@ -23,6 +23,125 @@ export default {
             },
             chartOutput: [],
             oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
+            chartNameMapping: {
+                'oilCondensateProduction': {
+                    'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                    'name': this.trans('visualcenter.oilCondensateProduction'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateProductionWithoutKMG': {
+                    'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                    'name': this.trans('visualcenter.oilCondensateProduction'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateProductionCondensateOnly': {
+                    'head': this.trans('visualcenter.dynamicCondensateProduction'),
+                    'name': this.trans('visualcenter.getgk'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDelivery': {
+                    'head': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                    'name': this.trans('visualcenter.oilCondensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryWithoutKMG': {
+                    'head': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                    'name': this.trans('visualcenter.oilCondensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryOilResidue': {
+                    'head': this.trans('visualcenter.stockOfGoodsDynamic'),
+                    'name': this.trans('visualcenter.ostatokNefti'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryCondensateOnly': {
+                    'head': this.trans('visualcenter.dynamicCondensateDelivery'),
+                    'name': this.trans('visualcenter.condensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'gasProduction': {
+                    'head': this.trans('visualcenter.dynamicGasProduction'),
+                    'name': this.trans('visualcenter.getgaz'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'naturalGasProduction': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasProduction'),
+                    'name': this.trans('visualcenter.productionNaturalGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasProduction': {
+                    'head': this.trans('visualcenter.dynamicAssociatedlGasProduction'),
+                    'name': this.trans('visualcenter.productionAssociatedGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasFlaring': {
+                    'head': this.trans('visualcenter.dynamicAssociatedlGasFlaring'),
+                    'name': this.trans('visualcenter.flaringAssociatedGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'naturalGasDelivery': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasDelivery'),
+                    'name': this.trans('visualcenter.prirodGazdlv'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'expensesForOwnNaturalGas': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasExpenses'),
+                    'name': this.trans('visualcenter.naturalGasExpenses'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasDelivery': {
+                    'head': this.trans('visualcenter.dynamicAssociatedGasDelivery'),
+                    'name': this.trans('visualcenter.poputGazdlv'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'expensesForOwnAssociatedGas': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasExpenses'),
+                    'name': this.trans('visualcenter.associatedGasExpenses'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'processingAssociatedGas': {
+                    'head': this.trans('visualcenter.pererabotkapoputGazDynamic'),
+                    'name': this.trans('visualcenter.pererabotkapoputGaz'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'waterInjection': {
+                    'head': this.trans('visualcenter.injectionWaterChartName'),
+                    'name': this.trans('visualcenter.liq'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'seaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicSeaInjection'),
+                    'name': this.trans('visualcenter.liqOcean'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'wasteWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicWasteInjection'),
+                    'name': this.trans('visualcenter.liqStochnaya'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'artezianWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicArtesianWater'),
+                    'name': this.trans('visualcenter.injectionArtesianWater'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'streamWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicStreamInjection'),
+                    'name': this.trans('visualcenter.streamInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'volgaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicVolgaWater'),
+                    'name': this.trans('visualcenter.volgaWaterInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+            },
+            selectedChartCategory: {
+                'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                'name': this.trans('visualcenter.oilCondensateProduction'),
+                'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+            },
+            isDecreaseReasonActive: false,
+            previousMonthDifference: 0
         };
     },
     methods: {
@@ -62,7 +181,6 @@ export default {
             let currentYear = moment().year();
             var currentPeriodDate = moment().startOf('year');
             var monthlyPlansInYear = [];
-
             while (currentPeriodDate.year() === currentYear) {
                 monthlyPlansInYear.push(this.getInitialSummaryForMonth(currentPeriodDate,summaryForChart,dzoGroupedMonthlyPlans,dzoName));
                 currentPeriodDate = currentPeriodDate.add(1, 'M');
@@ -94,26 +212,32 @@ export default {
         },
 
         getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans,dzoName) {
-            let monthlyPlan = dzoGroupedMonthlyPlans[date.month()]['monthlyPlan'];
-            let monthlyFact = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
-            let monthlyOpecPlan = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
             let initialSummary = _.cloneDeep(this.initialYearlySummary);
             initialSummary.time = date.valueOf();
-            initialSummary.productionPlanForChart = monthlyPlan;
-            if (monthlyFact > 0 && date.month() < moment().month()) {
-                initialSummary.productionFactForChart = monthlyFact;
+            initialSummary.productionPlanForChart = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart');
+            initialSummary.productionFactForChart = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
+            initialSummary.productionPlanForChart2 = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
+
+            if (date.month() === 0) {
+                initialSummary.monthlyPlan = initialSummary.productionPlanForChart;
+            } else if (date.month() >= moment().month() && initialSummary.productionFactForChart === 0) {
+                initialSummary.monthlyPlan = this.previousMonthDifference;
+                initialSummary.productionPlanForChart = null;
+                initialSummary.productionFactForChart = null;
+                initialSummary.productionPlanForChart2 = null;
+            } else {
+                let previousDifference = this.getPreviousDifference(date,summaryForChart);
+                initialSummary.monthlyPlan = initialSummary.productionPlanForChart + previousDifference;
+                this.previousMonthDifference = initialSummary.monthlyPlan;
             }
-            if (date.month() === moment().month() && dzoName) {
-                let initialMonthlyPlan = monthlyPlan / this.getDaysCountInMonth(date.format("YYYY-MM"));
-                let currentDatePlan = initialMonthlyPlan *= moment().date();
-                initialSummary.monthlyPlan = (currentDatePlan - monthlyFact);
-                return initialSummary;
-            }
-            if (monthlyOpecPlan > 0 && date.month() < moment().month()) {
-                initialSummary.productionPlanForChart2 = monthlyOpecPlan;
-            }
-            initialSummary.monthlyPlan = this.getDzoMonthlyPlan(date,monthlyFact);
+
             return initialSummary;
+        },
+
+        getPreviousDifference(date,summary) {
+            let plan = this.getMonthlyFact(date,summary,'productionPlanForChart');
+            let fact = this.getMonthlyFact(date,summary,'productionFactForChart');
+            return plan - fact;
         },
 
         getMonthlyFact(date,summaryForChart,fieldName) {
@@ -148,5 +272,12 @@ export default {
         setTotalFact(monthlyFact) {
             this.dzoYearlyData.totallyFact += monthlyFact;
         },
+
+        switchDecreaseReasonExplanations() {
+            this.isDecreaseReasonActive = !this.isDecreaseReasonActive;
+            if (this.isDecreaseReasonActive) {
+                this.switchView('year');
+            }
+        }
     }
 }

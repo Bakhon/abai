@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "new": true,
   "table_type": "wells",
   "edit": {
     "active": true,
@@ -25,8 +26,8 @@
       "is_editable": false
     },
     {
-      "code": "well_status_type",
-      "dict":"well_statuses",
+      "code": "work_status",
+      "dict": "work_status",
       "type": "dict",
       "title": "well_status_type",
       "is_editable": false

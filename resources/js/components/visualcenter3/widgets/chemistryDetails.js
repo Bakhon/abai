@@ -91,6 +91,10 @@ export default {
             this[buttonType] = this.highlightedButton;
             this.chemistryPeriodStartMonth = this.chemistryPeriodMapping[buttonType][0];
             this.chemistryPeriodEndMonth = this.chemistryPeriodMapping[buttonType][1];
+            if (buttonType === 'chemistryMonthlyPeriod' && moment().date() < 11) {
+                this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            }
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();

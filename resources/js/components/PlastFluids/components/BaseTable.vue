@@ -1,5 +1,10 @@
 <template>
-  <div class="table-container" :style="isAnalysisTable ? 'height: 100%;' : ''">
+  <div
+    class="table-container"
+    :style="
+      tableType === 'analysis' || tableType === 'study' ? 'height: 100%;' : ''
+    "
+  >
     <div class="table-div" :style="!pagination ? 'height: 100%' : ''">
       <div>
         <table>
@@ -41,19 +46,49 @@
                 </div>
                 <p v-else>{{ isObjectArray ? heading.name : heading }}</p>
               </th>
+              <th
+                v-if="tableType === 'upload'"
+                style="padding: 13px 10px 13px 22px"
+                :style="sticky ? 'position: sticky; top: -1px;' : ''"
+              >
+                {{ trans("plast_fluids.actions") }}
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="tableBody">
             <template v-if="isObjectArray">
               <tr v-for="item in items" :key="item.id">
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
                   {{ item[fieldKey] }}
                 </td>
+                <td v-if="tableType === 'upload'">
+                  <button @click="handleReportDownload(item)">
+                    <img
+                      src="/img/PlastFluids/downloadTableIcon.svg"
+                      alt="download"
+                    />
+                    <p>{{ trans("plast_fluids.download") }}</p>
+                  </button>
+                </td>
               </tr>
             </template>
-            <template v-else-if="isAnalysisTable">
-              <tr v-for="(item, index) in items" :key="index">
-                <td v-for="(itemTD, ind) in item.table_data" :key="ind">
+            <template v-else-if="tableType === 'analysis'">
+              <tr
+                tabindex="0"
+                v-for="(item, index) in items"
+                :key="index"
+                :style="
+                  isPaintRow(item, index) ? 'background-color: #009000;' : ''
+                "
+                style="cursor: pointer"
+                @click="$emit('select-row', { item, index })"
+              >
+                <td
+                  v-for="(itemTD, ind) in item.table_data
+                    ? item.table_data
+                    : item"
+                  :key="ind"
+                >
                   {{ itemTD }}
                 </td>
               </tr>
@@ -61,7 +96,7 @@
             <template v-else>
               <tr v-for="(item, index) in items" :key="index">
                 <template v-if="typeof item === 'string'">
-                  <td style="background-color: #272953;">
+                  <td style="background-color: #272953">
                     {{ item }}
                   </td>
                 </template>
@@ -107,6 +142,10 @@
 </template>
 
 <script>
+import { downloadUserReport } from "../services/templateService";
+import { mapMutations } from "vuex";
+import { downloadExcelFile } from "../helpers";
+
 export default {
   name: "BaseTable",
   props: {
@@ -118,7 +157,9 @@ export default {
     fields: Array,
     items: Array,
     handlePageChange: Function,
-    isAnalysisTable: Boolean,
+    tableType: String,
+    currentRoute: String,
+    currentSelectedRow: [Object, Array],
   },
   data() {
     return {
@@ -131,10 +172,43 @@ export default {
         this.$emit("show-items-per-page", Number(val));
       },
     },
+    currentSelectedRow(value) {
+      if (value.length && this.currentRoute === "graphs-and-tables") {
+        this.$refs.tableBody.children[value[value.length - 1]].focus();
+      }
+    },
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_LOADING"]),
     emitArrowFilter(key, type) {
       this.$emit("sort-by-arrow-filter", { key, type });
+    },
+    async handleReportDownload(item) {
+      try {
+        this.SET_LOADING(true);
+        const postData = new FormData();
+        postData.append("file_id", item.file_id);
+        const report = await downloadUserReport(postData);
+        downloadExcelFile(item.file_name, report.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.SET_LOADING(false);
+      }
+    },
+    isPaintRow(row, index) {
+      let condition = false;
+      switch (this.currentRoute) {
+        case "graphs-and-tables":
+          condition = this.currentSelectedRow?.includes(index);
+          break;
+        case "maps-and-tables":
+          condition =
+            this.currentSelectedRow.id === row.key &&
+            this.currentSelectedRow.index === index;
+          break;
+      }
+      return condition;
     },
   },
   computed: {

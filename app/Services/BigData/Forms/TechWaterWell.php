@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class TechWaterWell extends TableForm
+class TechWaterWell extends TechModeForm
 {
     protected $configurationFileName = 'tech_water_well';
     protected $waterMeasurements;
@@ -23,14 +23,14 @@ class TechWaterWell extends TableForm
         $rowData = $this->fetchRowData(
             $tables,
             $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
+            Carbon::parse($filter->date, 'Asia/Almaty')
         );
 
         $this->waterMeasurements = DB::connection('tbd')
             ->table('prod.meas_water_prod')
             ->whereIn('well', $wells->pluck('id')->toArray())
-            ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
-            ->where('dbeg', '>=', Carbon::parse($this->request->get('date'))->subYears(10))
+            ->where('dbeg', '>=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->startOfMonth())
+            ->where('dbeg', '<=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->endOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($measurements) {
@@ -84,37 +84,4 @@ class TechWaterWell extends TableForm
         }
     }
 
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
-        }
-    }
 }

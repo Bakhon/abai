@@ -24,6 +24,5 @@
 @endsection
 @section('module_title', 'Прототип БД')
 @section('sidebar_menu_additional')
-    @include('partials.sidebar.bigdata_menu')
 @endsection
 @section('module_support_email', config('support.db_email'))

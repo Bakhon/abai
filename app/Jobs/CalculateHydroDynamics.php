@@ -6,7 +6,10 @@ use App\Exports\PipeLineCalcExport;
 use App\Imports\HydroCalcResultImport;
 use App\Models\ComplicationMonitoring\HydroCalcLong;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\Ngdu;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -34,7 +37,7 @@ class CalculateHydroDynamics implements ShouldQueue
     protected $input;
 
     protected $columnNames = [
-        '№',
+        'ID',
         'out_dia',
         'wall_thick',
         'length',
@@ -57,38 +60,39 @@ class CalculateHydroDynamics implements ShouldQueue
         'height_drop'
     ];
 
-    const ID = 0;
+    const SHORT_ID = 0;
+    const LONG_ID = 1;
     const POINTS_OR_SEGMENT = 0;
 
     protected $hydroCalcLongSchema = [
-        'distance' => 1,
-        'dout' => 2,
-        'wt' => 3,
-        'liq_rate' => 4,
-        'gor' => 5,
-        'wc' => 6,
-        'pin' => 7,
-        'pout' => 8,
-        'tin' => 9,
-        'tout' => 10,
-        'flow_pattern' => 11,
-        'vliq' => 12,
-        'vgas' => 13,
-        'vm' => 14,
-        'pressure_gradient' => 15,
-        'ohtc' => 16,
-        'nre' => 17,
-        'holdup' => 18,
-        'lambda' => 19,
-        'h_soil' => 20,
-        'h_f' => 21,
-        'npr' => 22,
-        'nnu' => 23,
-        'f_f_ratio' => 24,
-        'rs' => 25,
-        'rsw' => 26,
-        'ev' => 27,
-        'comment' => 28
+        'distance' => 2,
+        'dout' => 3,
+        'wt' => 4,
+        'liq_rate' => 5,
+        'gor' => 6,
+        'wc' => 7,
+        'pin' => 8,
+        'pout' => 9,
+        'tin' => 10,
+        'tout' => 11,
+        'flow_pattern' => 12,
+        'vliq' => 13,
+        'vgas' => 14,
+        'vm' => 15,
+        'pressure_gradient' => 16,
+        'ohtc' => 17,
+        'nre' => 18,
+        'holdup' => 19,
+        'lambda' => 20,
+        'h_soil' => 21,
+        'h_f' => 22,
+        'npr' => 23,
+        'nnu' => 24,
+        'f_f_ratio' => 25,
+        'rs' => 26,
+        'rsw' => 27,
+        'ev' => 28,
+        'comment' => 29
     ];
 
     protected $hydroCalcShortSchema = [
@@ -130,47 +134,58 @@ class CalculateHydroDynamics implements ShouldQueue
      */
     public function handle()
     {
-        $points = TrunklinePoint::with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point')->get();
+        $ngdu_id = Ngdu::where('name', 'НГДУ-4')->first()->id;
+
+        $pipes = OilPipe::with(
+            'pipeType',
+            'firstCoords',
+            'lastCoords',
+            'gu'
+        )
+            ->where('ngdu_id', $ngdu_id)
+            ->where('trunkline', true)
+            ->get();
+
         $isErrors = false;
 
-        foreach ($points as $key => $point) {
-            if (!$points[$key]->gu) {
+        foreach ($pipes as $key => $pipe) {
+            if (!$pipe->gu) {
                 continue;
             }
 
-            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+            $query = OmgNGDU::where('gu_id', $pipe->gu->id)
                 ->orderBy('date', 'desc');
 
             if (isset($this->input['date'])) {
                 $query = $query->where('date', $this->input['date']);
             }
 
-            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+            $pipes[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
-            if (!$points[$key]->omgngdu) {
+            if (!$pipes[$key]->omgngdu) {
                 $isErrors = true;
                 break;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $pipe->omgngdu->heater_output_temperature ? $pipe->omgngdu->heater_output_temperature : $pipe->omgngdu->heater_inlet_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->omgngdu->heater_output_temperature = $temperature;
+            $pipes[$key]->omgngdu->heater_output_temperature = $temperature;
 
-            if (!$points[$key]->omgngdu->pump_discharge_pressure) {
-                unset($points[$key]);
+            if (!$pipe->omgngdu->pump_discharge_pressure) {
+                unset($pipes[$key]);
                 continue;
             }
 
-            if (!$points[$key]->omgngdu->pump_discharge_pressure ||
-                !$points[$key]->omgngdu->daily_fluid_production ||
-                !$points[$key]->omgngdu->bsw) {
+            if (is_null($pipe->omgngdu->pump_discharge_pressure) ||
+                is_null($pipe->omgngdu->daily_fluid_production) ||
+                is_null($pipe->omgngdu->bsw)) {
                 $isErrors = true;
                 break;
             }
         }
 
         if ($isErrors) {
-            if (isset($this->input['cron']) AND $this->input['cron']) {
+            if (isset($this->input['cron']) and $this->input['cron']) {
                 Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
             } else {
                 $this->setOutput(
@@ -184,7 +199,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         $data = [
-            'points' => $points,
+            'pipes' => $pipes,
             'columnNames' => $this->columnNames
         ];
 
@@ -193,46 +208,25 @@ class CalculateHydroDynamics implements ShouldQueue
         Excel::store(new PipeLineCalcExport($data), $filePath);
 
         if (!$isErrors and isset($this->input['date'])) {
+            $url = env('MANUAL_CALC_SERVICE_URL') . 'calculate?calculation_type=forward';
 
-            $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-            $url = env('HYDRO_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
-
-            $client = new \GuzzleHttp\Client();
-
-            try {
-                $request = $client->post(
-                    $url,
-                    [
-                        'content-type' => 'application/json'
-                    ]
-                );
-            } catch (GuzzleHttp\Exception\ClientException $e) {
-                $response = $e->getResponse();
-                $responseBodyAsString = $response->getBody()->getContents();
-
-                $this->setOutput(
-                    [
-                        'error' => $responseBodyAsString
-                    ]
-                );
-            }
+            $request = $this->calcRequest($url, $filePath, $fileName);
 
             $data = json_decode($request->getBody()->getContents());
             $short = $data->short->data;
-            $long = $data->long;
+            $long = $data->long->data;
 
             if ($short) {
                 $this->storeShortResult($short);
             }
 
             if ($long) {
-                array_unshift($long->data, $long->columns);
-                $this->storeLongResult($long->data);
+                $this->storeLongResult($long);
             }
         }
 
-        if (isset($this->input['cron']) AND $this->input['cron']) {
-            Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на '.$this->input['date'].' успешно завершен.');
+        if (isset($this->input['cron']) and $this->input['cron']) {
+            Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на ' . $this->input['date'] . ' успешно завершен.');
         }
 
         if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
@@ -244,16 +238,46 @@ class CalculateHydroDynamics implements ShouldQueue
         }
     }
 
+    public function calcRequest(string $url, string $filePath, string $fileName)
+    {
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            return $client->post(
+                $url,
+                [
+                    'content-type' => 'application/json',
+                    'multipart' => [
+                        [
+                            'name' => 'file',
+                            'contents' => Storage::disk('local')->get($filePath),
+                            'filename' => $fileName
+                        ]
+                    ]
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+
+            $this->setOutput(
+                [
+                    'error' => $responseBodyAsString
+                ]
+            );
+            return;
+        }
+    }
+
     protected function storeShortResult(array $data): void
     {
         foreach ($data as $row) {
-            $trunkline_point = TrunklinePoint::find($row[self::ID]);
+            $oilPipe = OilPipe::find($row[self::SHORT_ID]);
 
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
-                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
-                    'trunkline_point_id' => $trunkline_point->id,
+                    'oil_pipe_id' => $oilPipe->id
                 ]
             );
 
@@ -267,23 +291,21 @@ class CalculateHydroDynamics implements ShouldQueue
 
     protected function storeLongResult(array $data): void
     {
+        $pipe = null;
         foreach ($data as $row) {
             if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
-                $pointsNames = explode(' - ', $row[self::POINTS_OR_SEGMENT]);
-
-                $trunkline_point = TrunklinePoint::where('name', $pointsNames[0])
-                    ->whereHas('trunkline_end_point', function ($query) use ($pointsNames) {
-                        return $query->where('name', $pointsNames[1]);
-                    })
-                    ->first();
-
+                $pipe = null;
                 continue;
+            }
+
+            if (!$pipe) {
+                $pipe = OilPipe::find($row[self::LONG_ID]);
             }
 
             $hydroCalcLong = HydroCalcLong::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
-                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
+                    'oil_pipe_id' => $pipe->id,
                     'segment' => $row[self::POINTS_OR_SEGMENT]
                 ]
             );

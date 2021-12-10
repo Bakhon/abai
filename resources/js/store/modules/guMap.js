@@ -78,7 +78,7 @@ const guMap = {
                     latitude: response.data.center[1],
                     longitude: response.data.center[0]
                 });
-                return response.data.pipes;
+                return response.data;
             })
         },
 
@@ -195,7 +195,7 @@ const guMap = {
             });
         },
 
-        async getHydroReverseCalc ({commit}, date) {
+        async getHydroReverseCalc({commit}, date) {
             return await axios.get(this._vm.localeUrl("/tech-map/hydro-reverse-calc"), {params: {date: date}}).then((response) => {
                 return response.data.pipes;
             })

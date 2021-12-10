@@ -1,27 +1,99 @@
 #sidebar-container2{
+  .nav-left-panel {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%;
+  }
+  .padding.nav-left-panel.show {
+    position: fixed;
+    z-index: 93;
+    background-color: #20274f;
+    bottom: 0;
+    top: 77px;
+    left: 0;
+    height: auto;
+}
+  .nav_bottom {
+      margin-top: auto;
+  }
+  .nav-left-panel.show .nav_item_text {
+     display: block!important;
+  } 
+  .nav_item_text {
+    width: 150px;
+    color: #fff;
+    font-size: 18px!important;
+    line-height: 22px;
+    color: #FFFFFF;
+  }
+  .companyLogo {
+    width: 25px;
+    height: 25px;
+  }
   z-index: 99;
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
 
-  .left-panel{
+  ::-webkit-scrollbar-track {
+    background: #272953;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #656a8a;
+  }
+  .left-panel {
     min-height: calc(100vh - 78px);
     position: relative;
-
-    .dropdown-menu{
+    .dropdown-menu {
+      position: absolute;
       margin-left: 0;
+      padding: 0;
+      min-height: calc(100vh - 84px);
+      .move-menu div {
+          display: flex;
+          align-items: center;
+          width: 100%;
+      }
     }
-
-    .left-menu-li{
-      .dropdown-child{
-        background-color: $main1;
+    .left-menu-li {
+      .dropdown-child {
         display: none;
-        left: 15px;
+        left: 100%;
+        top: 0;
         margin: 0;
-        padding: 10px!important;
+        width: 300px;
+        height: calc(100vh - 84px);
+        background: #333975!important;
+        overflow-y: scroll;
+        border-left: 3px solid #20274f;
         ul{
-          padding-left: 10px;
+          margin: 0;
         }
-        .left-menu-li{
-          display: inline-block;
+        .left-menu-li {
+          display: block;
           margin-left: 0;
+          padding: 0;
+        
+          a {
+            width: 100%;
+            display: block;
+            &:hover {
+              background: #2E50E9;
+              cursor: pointer;
+              transition: 0.4s ease;
+            }
+          }
+         
+          ul {
+            .left-menu-li{
+              &:hover {
+                cursor: pointer;
+                background: #2E50E9;
+              }
+            }
+          }
         }
       }
       &:hover{
@@ -32,36 +104,88 @@
     }
 
   }
-
   .list-group-item {
-    padding: 15px 0px 15px 15px;
+    padding: 15px 0 15px 15px;
   }
 
-  .dropright:hover>.dropdown-menu {
-    display: block;
+  .dropright {
+    &:hover>.dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      color: white;
+      width: 300px;
+      background: #333975;
+      box-shadow: 5px 5px 40px 5px rgba(0, 0, 0, 0.5);
+      &__third {
+        top: -110px;
+      }
+      &__fourth {
+        top: -263%;
+      }
+      &__fifth {
+        top: -396%;
+      }
+      &__sixth {
+        top: -463%;
+      }
+      &__support {
+        width: 400px;
+        top: -52px;
+        min-height: auto;
+      }
+      a, div {
+        color: white;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      a:link {
+        color: white;
+        text-decoration: none;
+      }
+      a:visited {
+        color: white;
+
+      }
+    }
   }
 
-  .dropright .dropdown-menu {
-    background-color: #20274f;
-    color: white;
+  .vc3_min-width {
+    min-width: 180px;
+  }
+  
+  .menu-header {
+    display: flex;
+    padding: 10px 13px 10px 20px;
+    background: #46498E;
+    align-items: center;
+    height: 50px;
+    .btn {
+      background: #656A8A;
+      color: #FEFEFE;
+      font-weight: bold;
+      border-radius: 10px;
+    }
   }
 
-  .dropright .dropdown-menu a:link {
-    color: white;
+  .left-menu-li {
+    a {
+      padding: 15px;
+      display: block;
+    }
+    
+    &:hover  > a{
+      background: #2E50E9;
+      cursor: pointer;
+      transition: .4s ease;
+    }
   }
-
-  .dropright .dropdown-menu a {
-    color: white;
+  .menu-title {
+    background: #333975;
   }
-
-  .dropright .dropdown-menu a:visited {
-    color: white;
+  .no-route {
+    padding: 20px;
   }
-
-  .move-menu {
-    margin-left: 15px;
-  }
-
   .vc3_min-width {
     min-width: 190px;
   }

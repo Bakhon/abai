@@ -5,16 +5,33 @@ export default class AwGisClass {
     #__tGroup = new TGroup();
     #__tElements = new TElements();
 
+    save(){
+        this.#__tElements.save();
+        this.#__tGroup.save();
+    }
+
+    reset(){
+        this.#__tElements.reset();
+        this.#__tGroup.reset();
+    }
+
+    get getElementsCount(){
+        return this.#__tElements.getElementsCount
+    }
+
     get getGroupsWithData() {
         return this.#__tGroup.getGroupsWithData;
     }
-
     getGroupWithData(groupName) {
         return this.#__tGroup.getGroupWithData(groupName);
     }
 
     getElement(elName) {
         return this.#__tElements.getElement(elName);
+    }
+
+    getElementsWithData() {
+        return this.#__tElements.getElementsWithData;
     }
 
     get getGroupList() {
@@ -29,14 +46,15 @@ export default class AwGisClass {
         let elements = [];
         let groupElements = this.#__tGroup.getGroupElements(groupName);
 
-        groupElements.forEach((elName)=>{
+        groupElements.forEach((elName) => {
             let elData = this.#__tElements.getElement(elName);
             elements.push(elData)
         })
-
         return elements;
     }
-
+    addElement(elementName, data, options){
+        this.#__tElements.addElement(elementName, data, options)
+    }
     addGroup(groupName, settings) {
         this.#__tGroup.createGroup(groupName, settings);
     }
@@ -45,22 +63,33 @@ export default class AwGisClass {
         this.#__tGroup.editGroupOptions(groupName, settings);
     }
 
+    editElementData(elementName, data) {
+        this.#__tElements.editElementData(elementName, data)
+    }
+
+    editPropertyElementData(elementName, editableMapName, path, value, force = false) {
+        this.#__tElements.editPropertyElementData(elementName, editableMapName, path, value, force)
+    }
+
     editElementOptions(elementName, settings) {
         this.#__tElements.editElementOptions(elementName, settings)
     }
 
-    addElementToGroup(groupName, curveName, curve) {
-        let data = {
-            name: curveName,
-            curve
-        }
-
-        this.#__tElements.addElement(curveName, data)
+    addElementToGroup(groupName, curveName) {
         this.#__tGroup.editGroupElement(groupName, [curveName])
     }
-/*    addMultipleToGroup(groupName){
 
-    }*/
+    moveElement(elementName, fromGroup, toGroup, removeEmpty = true){
+        this.#__tGroup.removeGroupElements(fromGroup, [elementName]);
+        this.#__tGroup.editGroupElement(toGroup, [elementName]);
+        if(removeEmpty&&!this.#__tGroup.getGroupElements(fromGroup).length) this.#__tGroup.removeGroup(fromGroup)
+    }
+    hasElement(elName){
+        return this.#__tElements.hasElement(elName);
+    }
+    hasGroup(groupName){
+        return this.#__tGroup.hasGroup(groupName);
+    }
     hasElementInGroup(groupName, elementName) {
         return this.#__tGroup.hasElementInGroup(groupName, elementName);
     }

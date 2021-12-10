@@ -130,7 +130,7 @@ table {
   display: none;
   width: auto;
   position:absolute;
-  z-index:3060;
+  z-index:4500;
   text-align: Left;
   opacity: 0.4;
   transition: opacity 2s;
@@ -196,22 +196,27 @@ margin-left: 90px;
 .field_form_fil.field_form_fil {
 background: #333975;
 width: 165px;
+color: white;
 }
 .horizon_form_fil.horizon_form_fil {
 background: #333975;
 width: 123px;
+color: white;
 }
 .obj_form_fil {
 background: #333975;
 width: 85px;
+color: white;
 }
 .block_form_fil {
 background: #333975;
 width: 168px;
+color: white;
 }
 .exp_meth_form_fil {
 background: #333975;
 width: 108px;
+color: white;
 } 
 
 .well_type_form_fil.well_type_form_fil {
@@ -229,6 +234,7 @@ width: 192px;
   width: 165px;
   height: calc(100vh - 355px);
   overflow-y: scroll;
+  color: white;
 }
 .p_events_form_fil {
   background: #333975;
@@ -241,6 +247,7 @@ width: 192px;
   width: 150px;
   height: calc(100vh - 550px) !important;
   overflow-y: scroll;
+  color: white;
 }
 .modal_filter {
   width: 180px;

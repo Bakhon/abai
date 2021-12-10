@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-    <digital-rating></digital-rating>
+    <section-maps></section-maps>
 @endsection

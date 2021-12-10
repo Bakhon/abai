@@ -9,6 +9,7 @@
   display: flex;
   width: 100%;
   height: calc(100% - 50px);
+  padding-bottom: 10px;
 }
 
 .map-and-page-footer {
@@ -123,6 +124,10 @@
   max-height: 130px;
   overflow-y: auto;
   background: #1c1f4c;
+}
+
+.subsoil-secondary-tree-holder::-webkit-scrollbar {
+  width: 4px;
 }
 
 .subsoil-not-found {

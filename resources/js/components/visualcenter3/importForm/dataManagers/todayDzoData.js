@@ -67,7 +67,6 @@ export default {
                 this.changeDefaultDzo();
                 return;
             }
-            this.isDataExist = true;
             let self = this;
             _.forEach(Object.keys(this.cellsMapping), function (key) {
                 if (self.otherCategories.includes(key)) {
@@ -78,7 +77,7 @@ export default {
                     self.processDataBlock(self.cellsMapping[key]);
                 }
             });
-            document.querySelector('revo-grid').refresh('all');
+            document.querySelector('#factGrid').refresh('all');
         },
         processCategory(categoryBlock,categoryName) {
             let self = this;
@@ -92,7 +91,7 @@ export default {
             _.forEach(block.fields, function(fieldName, index) {
                 if (!categoryName && !formattedTodayData) {
                     self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 2));
-                } else {
+                } else if (formattedTodayData !== null) {
                     self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 2));
                 }
             });
@@ -109,7 +108,7 @@ export default {
         processFields(fieldsBlock,categoryName) {
             let self = this;
             _.forEach(Object.keys(fieldsBlock), function (key) {
-                if (self.todayData[categoryName].length > 0) {
+                if (Object.keys(self.todayData[categoryName]).length > 0) {
                     self.processDataBlock(fieldsBlock[key],categoryName,self.todayData[categoryName][key]);
                 }
             });

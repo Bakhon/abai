@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\Metric;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -21,47 +23,59 @@ class MeasLabResearch extends TableForm
 
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
-        $table = $this->getResearchTable($filter->research_type);
+        $columns = $this->getColumns($filter->research_type);
 
-        $columns = $this->getColumns($table);
-
-        $rowsData = DB::connection('tbd')
-            ->table('prod.lab_research as lr')
-            ->select('t.*', 'lr.id', 'lr.well', 'lr.research_date')
-            ->leftJoin($table . ' as t', 'lr.id', 't.well')
-            ->whereIn('lr.well', $wells->pluck('id')->toArray())
+        $researches = DB::connection('tbd')
+            ->table('prod.lab_research')
+            ->select('id', 'well', 'research_date')
+            ->whereIn('well', $wells->pluck('id')->toArray())
             ->whereDate('research_date', '<=', $filter->date)
             ->where('research_type', $filter->research_type)
-            ->orderBy('lr.well')
-            ->orderBy('lr.research_date', 'desc')
-            ->distinct('lr.well')
+            ->orderBy('well')
+            ->orderBy('research_date', 'desc')
+            ->get();
+
+        $researchValues = DB::connection('tbd')
+            ->table('prod.lab_research_value as lrv')
+            ->whereIn('lrv.research', $researches->pluck('id'))
+            ->leftJoin('dict.metric as m', 'm.id', 'lrv.param')
             ->get();
 
         $rows = $wells
             ->map(
-                function ($item) use ($rowsData, $columns) {
-                    $rowData = $rowsData->where('well', $item->id)->first();
-                    if (empty($rowData)) {
-                        return null;
+                function ($item) use ($filter, $researches, $researchValues, $columns) {
+                    $research = $researches->where('well', $item->id)->first();
+                    if ($research) {
+                        $rowData = $researchValues->where('research', $research->id);
                     }
+
                     $result = [
-                        'id' => $rowData->id
+                        'id' => $item->id
                     ];
 
                     foreach ($columns as $column) {
+                        $cellData = !empty($rowData) ? $rowData->where('code', $column['code'])->first() : null;
                         if ($column['type'] === 'link') {
-                            $value = [
+                            $cellValue = [
                                 'id' => $item->id,
                                 'name' => $item->uwi,
-                                'href' => '#'
+                                'href' => route('bigdata.well_card', ['wellId' => $item->id, 'wellName' => $item->uwi])
                             ];
                         } else {
-                            $value = [
-                                'date' => $rowData->research_date,
-                                'old_value' => $rowData->{$column['code']}
-                            ];
+                            $value = $cellData ? $cellData->{$column['column']} : null;
+                            $isSameDay = $cellData && Carbon::parse($filter->date, 'Asia/Almaty')
+                                    ->diffInDays(Carbon::parse($research->research_date, 'Asia/Almaty')) === 0;
+
+                            if ($isSameDay) {
+                                $cellValue = ['value' => $value];
+                            } else {
+                                $cellValue = [
+                                    'date' => $value ? $research->research_date : null,
+                                    'old_value' => $value
+                                ];
+                            }
                         }
-                        $result[$column['code']] = $value;
+                        $result[$column['code']] = $cellValue;
                     }
                     return $result;
                 }
@@ -76,28 +90,102 @@ class MeasLabResearch extends TableForm
         ];
     }
 
-    protected function getResearchTable(int $researchTypeId)
+    protected function getColumns(int $researchTypeId): Collection
     {
         $researchType = LabResearchType::find($researchTypeId);
-        try {
-            return ResearchLabResearch::TABLES_BY_TYPE[$researchType->code];
-        } catch (\Exception $e) {
-            throw new \Exception('Нет данных по исследованию');
-        }
-    }
-
-    protected function getColumns(string $table): Collection
-    {
         return $this->getFields()
-            ->filter(function ($field) use ($table) {
-                if (!isset($field['table'])) {
+            ->filter(function ($field) use ($researchType) {
+                if (!isset($field['depends_on'])) {
                     return true;
                 }
-                return $field['table'] === $table;
-            });
+                foreach ($field['depends_on'] as $dependency) {
+                    if ($dependency['field'] === 'research_type') {
+                        return $dependency['value']['code'] === $researchType->code;
+                    }
+                }
+                return false;
+            })->values();
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $fields, array $filter = []): array
     {
+        $researchIds = $this->getResearchIds(array_keys($fields), $filter);
+        $columns = $this->getColumns($filter['research_type']);
+
+        foreach ($fields as $wellId => $values) {
+            $researchId = $researchIds[$wellId];
+            foreach ($values as $code => $val) {
+                $researchValueId = $this->getResearchValueId($code, $researchId);
+                $column = $columns->where('code', $code)->first();
+
+                DB::connection('tbd')
+                    ->table('prod.lab_research_value')
+                    ->where('id', $researchValueId)
+                    ->update(
+                        [
+                            $column['column'] => $val['value']
+                        ]
+                    );
+            }
+        }
+        return [];
+    }
+
+    protected function getResearchIds(array $wellIds, array $filter)
+    {
+        $researchIds = [];
+
+        $researches = DB::connection('tbd')
+            ->table('prod.lab_research')
+            ->select('id', 'well')
+            ->whereIn('well', $wellIds)
+            ->whereDate('research_date', '=', $filter['date'])
+            ->where('research_type', $filter['research_type'])
+            ->get();
+
+        foreach ($wellIds as $wellId) {
+            $research = $researches->where('well', $wellId)->first();
+            if (!$research) {
+                $researchId = DB::connection('tbd')
+                    ->table('prod.lab_research')
+                    ->insertGetId(
+                        [
+                            'well' => $wellId,
+                            'research_date' => $filter['date'],
+                            'research_type' => $filter['research_type']
+                        ]
+                    );
+            } else {
+                $researchId = $research->id;
+            }
+            $researchIds[$wellId] = $researchId;
+        }
+
+        return $researchIds;
+    }
+
+    protected function getResearchValueId($field, $researchId)
+    {
+        $metric = Metric::where('code', $field)->first();
+
+        $researchValue = DB::connection('tbd')
+            ->table('prod.lab_research_value')
+            ->where('research', $researchId)
+            ->where('param', $metric->id)
+            ->first();
+
+        if (!$researchValue) {
+            $researchValueId = DB::connection('tbd')
+                ->table('prod.lab_research_value')
+                ->insertGetId(
+                    [
+                        'research' => $researchId,
+                        'param' => $metric->id
+                    ]
+                );
+        } else {
+            $researchValueId = $researchValue->id;
+        }
+        return $researchValueId;
     }
 }

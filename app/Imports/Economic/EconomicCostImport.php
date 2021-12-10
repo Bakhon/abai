@@ -49,11 +49,10 @@ class EconomicCostImport implements ToModel, WithBatchInserts, WithChunkReading
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::create([
-            'author_id' => $userId,
-            'name' => $fileName,
-            'type_id' => EconomicDataLogType::COST
-        ])->id;
+        $this->logId = EconomicDataLog::firstOrCreate(
+            ['name' => $fileName, 'type_id' => EconomicDataLogType::COST],
+            ['author_id' => $userId]
+        )->id;
 
         $this->scFaId = EcoRefsScFa::firstOrCreate([
             'name' => $fileName,

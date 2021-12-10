@@ -71,14 +71,6 @@ export default {
     files(val) {
       this.$emit('change', val)
     }
-  },
-  methods: {
-    addFile() {
-      this.$refs.upload.click()
-    },
-    uploadFile() {
-      this.files = this.$refs.upload.files
-    }
   }
 };
 </script>

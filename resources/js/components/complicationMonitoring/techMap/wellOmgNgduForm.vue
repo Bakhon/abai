@@ -5,7 +5,7 @@
       :formObject="well"
       @selectDate="getOmgNgduData"
       @submit="storeOmgNgdu"
-      @dailyProductionInput="calculateFluidParams"
+      @dailyProductionInput="calculateFluidParams(true)"
   />
 </template>
 
@@ -13,8 +13,7 @@
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
 import omgNgduWellformFields from '~/json/formFields/map_omg_ngdu_well.json'
-
-const averageOilDensity = 853;
+import calculateFluidParams from '~/mixins/calculateFluidParams';
 
 export default {
   name: "wellOmgNgduForm",
@@ -40,6 +39,7 @@ export default {
       }
     });
   },
+  mixins: [calculateFluidParams],
   methods: {
     ...globalloadingMutations([
       'SET_LOADING'
@@ -61,6 +61,7 @@ export default {
         if (!_.isEmpty(omgngdu_well)) {
           this.setOmgNgduParams(omgngdu_well);
           this.currentOmgngduWell = omgngdu_well;
+          this.calculateFluidParams(true);
         } else {
           let date = this.formFields.date.value;
           this.formFields = _.cloneDeep(omgNgduWellformFields);
@@ -106,13 +107,7 @@ export default {
 
         this.SET_LOADING(false);
       });
-    },
-    calculateFluidParams () {
-      if (this.formFields.daily_fluid_production.value && this.formFields.bsw.value) {
-        this.formFields.daily_water_production.value = (this.formFields.daily_fluid_production.value * this.formFields.bsw.value) / 100;
-        this.formFields.daily_oil_production.value = ((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000;
-      }
-    },
+    }
   }
 }
 </script>

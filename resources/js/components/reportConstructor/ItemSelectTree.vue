@@ -1,7 +1,7 @@
 <template>
-  <div class="bd-forms col-12 p-0 pl-2 h-100">
-    <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3" v-if="renderComponent">
+  <div class="bd-forms col-12 p-0  ">
+    <div class="blueblock m-0">
+      <div class="wells-select-block m-0 " v-if="renderComponent">
         <tree-view
             v-for="(treeData, index) in selectedObjects[currentOption.name]"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import moment from "moment";
-import axios from "axios";
 
 export default {
   data() {
@@ -145,13 +143,15 @@ export default {
       node.isChecked = !node.isChecked;
 
       content.isLoading = true;
+      node.level = content.level;
       content.updateChildren(node, content.level, node.isChecked)
+      .then(
+        content.updateParent(node.isChecked)
+      )
       .then(() => {
         content.updateThisComponent();
         content.isLoading = false;
       });
-
-      node.level = content.level;
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;

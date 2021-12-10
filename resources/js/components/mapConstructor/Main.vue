@@ -1,24 +1,16 @@
 <template>
     <div class="map-constructor">
-        <RightClickMenu
-                @openRightMap="openRightMap"
-                @closeMenu="closeMenu"
-                @openRightLayers="openRightLayers"
-                @closeMenuLayers="closeMenuLayers"
-                ref="rightClickMenu"
-                :right-map="rightMap"
-                :right-layers="rightLayers"
-                :top="top"
-                :left="left"
-                :viewMenu="viewMenu"
-                :viewMenuLayers="viewMenuLayers">
-        </RightClickMenu>
-        <TopMenu @addFile="addFile"></TopMenu>
-        <div class="col-lg-12 px-1 py-3">
+        <TopMenu
+            @importFile="importFile"
+            :buildNameModal="buildNameModal"
+            :buildMapModal="buildMapModal"
+            :buildMapSpecificModal="buildMapSpecificModal"
+        ></TopMenu>
+        <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">
                 <div class="tools">
                     <div class="left-tools" >
-                        <div class="tool" v-for="tool in leftTools">
+                        <div class="tool" v-for="tool in leftTools" @click="toolAction(tool.action)">
                             <div class="box">
                                 <i :class="tool.icon"></i>
                             </div>
@@ -26,79 +18,110 @@
                         </div>
                     </div>
                     <div class="right-tools">
-                        <div class="tool">
-                            <div class="box">
-                                <i v-if="!selectedMonth" class="far fa-calendar"></i>
-                                <span v-else>{{selectedMonth | dateFormat()}}</span>
-                                <datetime
+                        <div class="tool d-flex">
+                            <div v-if="selectedMonth" class="text-white" @click="monthDown"><</div>
+                            <div>
+                                <div class="box">
+                                    <i v-if="!selectedMonth" class="far fa-calendar"></i>
+                                    <span v-else>{{selectedMonth | dateFormat()}}</span>
+                                    <datetime
                                         type="date"
                                         v-model="selectedMonth"
                                         input-class="form-control filter-input calendar"
                                         format="MM/yy"
                                         :phrases="{ok: '', cancel: ''}"
-                                        :disabled="isLoading"
                                         auto
                                         :flow="['year', 'month']"
-                                >
-                                </datetime>
+                                        @input="changeDate"
+                                    >
+                                    </datetime>
+                                </div>
+                                <span>{{ trans('map_constructor.date_picker') }}</span>
                             </div>
-                            <span>{{ trans('map_constructor.date_picker') }}</span>
+                            <div v-if="selectedMonth" class="text-white" @click="monthUp">></div>
                         </div>
-                        <div class="tool" @click="accumulatedSelected = !accumulatedSelected">
-                            <div class="box" :class="{'is-active': accumulatedSelected === true}">
+                        <div class="tool">
+                            <div class="box">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <span>{{ trans('map_constructor.select_kno') }}</span>
                         </div>
-                        <div class="tool" @click="currentSelected = !currentSelected">
-                            <div class="box" :class="{'is-active': currentSelected === true}">
+                        <div class="tool">
+                            <div class="box">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <span>{{ trans('map_constructor.select_kto') }}</span>
                         </div>
-                        <div class="tool" @click="mapInit">
-                            <div class="box">
-                                <i class="fas fa-map"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.show') }}</span>
-                        </div>
                     </div>
                 </div>
-                <div class="main">
-                    <div class="layers" @contextmenu="openMenuLayers">
+                <div class="map-constructor-main">
+                    <div class="layers">
                         <div class="form-group has-search m-0">
                             <span class="fa fa-search form-control-feedback"></span>
                             <input type="text" class="form-control" placeholder="Поиск">
                         </div>
-                        <div class="layers-info" @click="showFiles">
-                            <i id="arrow" class="fas fa-caret-right ml-2"></i>
-                            <i class="fas fa-vector-square ml-2"></i>
-                            <span class="ml-2">Info</span>
-                        </div>
-                        <div id="files" class="files">
-                            <template v-for="file in files">
-                                <div class="single-file">
-                                    <i class="fas fa-file"></i>
-                                    <span class="ml-2 text-white">File</span>
-                                </div>
-                            </template>
+                        <div class="layers-info" v-for="(project, index) in projects"
+                             :key="'project_' + index"
+                             :class="{activeProject: index === activeProjectIndex}"
+                        >
+                            <div
+                                @click="activeProjectIndex = index"
+                                @contextmenu.prevent="openCtxMenu(index, 'project', index)">
+                                <i class="fas fa-caret-down ml-2"></i>
+                                <i class="fas fa-vector-square ml-2"></i>
+                                <span class="ml-2 h4"
+                                >{{ project.name }}</span>
+                            </div>
+                          <draggable class="ml-3 text-white" v-model="project.layerGroups" @change="layerGroupsChangeOrder(project.layerGroups)"
+                                     group="layers" @start="drag=true" @end="drag=false" >
+                              <div class="d-flex align-items-center"
+                                   v-for="(layerGroup, layerGroupIndex) in project.layerGroups"
+                                   :key="'layerGroup_' + layerGroupIndex">
+                                  <input class="mr-1" type="checkbox" checked="1"
+                                         @change="toggleOpacity($event, layerGroup.getLayers())">
+                                  <div @contextmenu.prevent="openCtxMenu(index, layerGroup.type, layerGroupIndex)">
+                                      {{ layerGroup.name }}
+                                  </div>
+                              </div>
+                          </draggable>
                         </div>
                     </div>
-                    <div v-if="mapInitialized" class="main-map" @contextmenu="openMenu">
-                        <div id="olmap" style="width: 100%; height: 100vh"></div>
-                        <div style="display: none;">
-                            <div id="marker" title="Marker"></div>
-                            <div id="popup" class="text-dark"></div>
-                        </div>
+                    <div class="d-flex flex-wrap" style="width: 80%;">
+                        <Project v-for="(project, index) in projects"
+                                 :ref="project.key"
+                                 :key="project.key"
+                                 :projectKey="project.key"
+                                 :data="project"
+                                 class="projectBlock"
+                        ></Project>
                     </div>
                 </div>
             </div>
         </div>
         <PrinterModal></PrinterModal>
-        <BuildMapModal></BuildMapModal>
-        <BuildMapSpecificModal></BuildMapSpecificModal>
         <ReportModal></ReportModal>
-        <ExportModal></ExportModal>    </div>
+        <ExportModal></ExportModal>
+
+        <context-menu class="right-click-menu" ref="ctxMenu" id="context-menu">
+            <li v-for="ctxMenuItem in ctxMenuItems"
+                @click="ctxMenuAction(ctxMenuItem.action)"
+                v-if="ctxMenuItem.visible"
+                class="d-flex justify-content-between"
+            >
+                <div>{{ ctxMenuItem.name }}</div>
+                <div v-if="ctxMenuItem.icon">
+                    <i :class="ctxMenuItem.icon"></i>
+                </div>
+            </li>
+        </context-menu>
+    </div>
 </template>
 <script src="./main.js"></script>
-
+<style scoped>
+.activeProject {
+    background-color: rgba(100, 100, 100, 0.4);
+}
+.projectBlock {
+    border: 1px groove;
+}
+</style>

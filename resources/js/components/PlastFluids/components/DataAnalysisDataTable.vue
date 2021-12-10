@@ -6,18 +6,18 @@
     <div class="data-analysis-table-header">
       <div>
         <div class="title-holder">
-          <img src="/img/PlastFluids/tableIcon.svg" />
+          <img :src="imagePath" />
           <p>{{ trans("plast_fluids." + tableTitle) }}</p>
         </div>
         <img src="/img/PlastFluids/settings.svg" alt="customize table" />
       </div>
       <div class="header-hide-expand-buttons">
-        <button @click="setTableState('common')">
+        <button @click="SET_TABLE_STATE('default')">
           <img
             src="/img/PlastFluids/tableArrow.svg"
             alt="expand table"
           /></button
-        ><button @click="setTableState('hidden')">
+        ><button @click="SET_TABLE_STATE('hidden')">
           <img src="/img/PlastFluids/tableArrow.svg" alt="hide table" />
         </button>
       </div>
@@ -28,8 +28,11 @@
         v-else
         :fields="fields"
         :items="items"
-        :isAnalysisTable="true"
+        tableType="analysis"
         :sticky="true"
+        :currentSelectedRow="handleRowSelectState"
+        @select-row="selectTableRow"
+        :currentRoute="reservoilOilInfo[1]"
       />
     </div>
   </div>
@@ -38,23 +41,63 @@
 <script>
 import BaseTable from "./BaseTable.vue";
 import SmallCatLoader from "./SmallCatLoader.vue";
-import { mapState } from "vuex";
-import { handleTableChange } from "../mixins";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "DataAnalysisDataTable",
-  mixins: [handleTableChange],
   props: {
+    imagePath: String,
     tableTitle: String,
     items: [Array, Object],
     fields: [Array, Object],
   },
+  inject: { reservoilOilInfo: { default: "template" } },
   components: {
     BaseTable,
     SmallCatLoader,
   },
   computed: {
-    ...mapState("plastFluidsLocal", ["loading"]),
+    ...mapState("plastFluidsLocal", [
+      "loading",
+      "tableState",
+      "currentSelectedSamples",
+      "currentModel",
+      "currentSelectedWell",
+    ]),
+    handleRowSelectState() {
+      let state = {};
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          state = this.currentSelectedSamples;
+          break;
+        case "maps-and-tables":
+          state = this.currentSelectedWell;
+          break;
+      }
+      return state;
+    },
+  },
+  methods: {
+    ...mapMutations("plastFluidsLocal", [
+      "SET_TABLE_STATE",
+      "SET_CURRENT_SELECTED_SAMPLES",
+      "SET_CURRENT_SELECTED_WELL",
+    ]),
+    selectTableRow(row) {
+      switch (this.reservoilOilInfo[1]) {
+        case "graphs-and-tables":
+          this.SET_CURRENT_SELECTED_SAMPLES(row.item.key);
+          break;
+        case "maps-and-tables":
+          !this.currentModel.id
+            ? ""
+            : this.SET_CURRENT_SELECTED_WELL({
+                id: row.item.key,
+                index: row.index,
+              });
+          break;
+      }
+    },
   },
 };
 </script>
@@ -62,7 +105,7 @@ export default {
 <style scoped>
 .data-analysis-data-table {
   margin-top: 10px;
-  height: 350px;
+  max-height: 350px;
   display: flex;
   flex-flow: column;
   transition: 0.2s ease-in;
@@ -93,6 +136,7 @@ export default {
 
 .title-holder {
   display: flex;
+  align-items: center;
 }
 
 .title-holder > img {

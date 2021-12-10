@@ -3,16 +3,15 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Models\BigData\Dictionaries\Org;
+
+use App\Services\BigData\StructureService;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 class Drilling extends TableForm
 {
     protected $configurationFileName = 'drilling';
-
-    protected function saveSingleFieldInDB(array $params): void
-    {
-    }
 
     public function getResults(): array
     {
@@ -21,28 +20,27 @@ class Drilling extends TableForm
             throw new \Exception(trans('bd.select_date'));
         }
 
-        if ($this->request->get('type') !== 'org') {
-            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        if ($this->request->get('type') !== 'tech') {
+            throw new \Exception(trans('bd.select_gu'));
         }
 
-        $orgIds = $this->getOrgIds();
+        $date = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
+        $wellIds = $this->getOrgWells((int)$this->request->get('id'), $date);
 
         $rows = DB::connection('tbd')
-            ->table('prod.report_org_daily_drill as rodd')
+            ->table('drill.well_daily_drill as wdd')
             ->select(
                 'wdd.id',
                 'w.id as well_id',
                 'w.uwi',
                 'wdd.daily_drill_progress',
-                'bh.depth',
-                'wdd.well_status_type',
+                'wdd.work_status',
                 'wdd.work_name'
             )
-            ->join('drill.well_daily_drill as wdd', 'rodd.drill', 'wdd.id')
-            ->join('prod.bottom_hole as bh', 'wdd.well', 'bh.well')
             ->join('dict.well as w', 'wdd.well', 'w.id')
-            ->whereIn('rodd.org', $orgIds)
-            ->where('rodd.report_date', $filter->date)
+            ->whereIn('w.id', $wellIds)
+            ->where('w.drill_start_date', '<=', $date->endOfDay())
+            ->where('w.drill_end_date', '>=', $date->startOfDay())
             ->get()
             ->map(function ($item) {
                 $result = [];
@@ -53,15 +51,25 @@ class Drilling extends TableForm
                     }
                     $result[$key] = ['value' => $value];
                 }
+
                 return $result;
             });
 
         return ['rows' => $rows];
     }
 
-    private function getOrgIds()
+    protected function getOrgWells($orgId, CarbonImmutable $date)
     {
-        $org = Org::find($this->request->get('id'));
-        return array_merge([$org->id], $org->children->pluck('id')->toArray());
+        $structureService = app()->make(StructureService::class);
+        $techIds = $structureService->getTechIds($orgId, 'tech');
+        return DB::connection('tbd')
+            ->table('prod.well_tech')
+            ->select('well')
+            ->whereIn('tech', $techIds)
+            ->where('dbeg', '<=', $date)
+            ->where('dend', '>=', $date)
+            ->get()
+            ->pluck('well')
+            ->toArray();
     }
 }

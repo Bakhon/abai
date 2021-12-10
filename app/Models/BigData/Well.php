@@ -15,6 +15,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
+
 class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
@@ -76,12 +77,12 @@ class Well extends TBDModel
 
     public function spatialObject()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
+        return $this->belongsTo(SpatialObject::class, 'whc');
     }
 
     public function spatialObjectBottom()
     {
-        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsTo(SpatialObject::class, 'bottom_coord');
     }
 
     public function bottomHole()
@@ -96,7 +97,17 @@ class Well extends TBDModel
 
     public function wellPerfActual()
     {
-        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+        return $this->hasMany(WellPerfActual::class, 'well', 'id');
+    }
+
+    public function wellPerf()
+    {
+        return $this->hasMany(WellPerf::class, 'well', 'id');
+    }
+
+    public function wellBlock()
+    {
+        return $this->hasMany(WellBlock::class, 'well', 'id');
     }
 
     public function techModeProdOil()
@@ -119,6 +130,41 @@ class Well extends TBDModel
         return $this->hasMany(MeasWaterCut::class, 'well', 'id');
     }
 
+    public function measLiqInjection()
+    {
+        return $this->hasMany(MeasLiqInjection::class, 'well', 'id');
+    }
+
+    public function measWell()
+    {
+        return $this->hasMany(MeasWell::class, 'well', 'id');
+    }
+
+    public function wellEquip()
+    {
+        return $this->hasMany(WellEquip::class, 'well', 'id');
+    }
+    
+    public function dmartDailyProd()
+    {
+        return $this->hasMany(DmartDailyProd::class, 'well', 'id');
+    }
+
+    public function dailyInjectionOil()
+    {
+        return $this->hasMany(DailyInjectionOil::class, 'well', 'id');
+    }
+
+        public function pzabWell()
+    {
+        return $this->hasMany(PzabTechMode::class, 'well', 'id');
+    }
+
+    public function wellDailyDrill()
+    {
+        return $this->hasMany(WellDailyDrill::class, 'well', 'id');
+    }
+    
     public function wellWorkover()
     {
         return $this->hasMany(WellWorkover::class, 'well', 'id');
@@ -154,6 +200,21 @@ class Well extends TBDModel
         return $this->hasMany(Gis::class, 'well', 'id');
     }
 
+    public function wellEquipParam()
+    {
+        return $this->belongsToMany(WellEquipParam::class, 'prod.well_equip', 'well', 'id', 'id', 'well_equip');
+    } 
+
+    public function wellExplDate()
+    {
+        return $this->hasMany(WellStatusProd::class, 'well', 'id');
+    }
+
+    public function wellPerfActualNew()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id', 'id', 'well_perf');
+    }
+
     public function zone()
     {
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
@@ -169,7 +230,6 @@ class Well extends TBDModel
         return $this->hasMany(Gtm::class, 'well', 'id');
     }
 
-
     public function scopeActive($query, $date)
     {
         $query->whereHas(
@@ -181,6 +241,121 @@ class Well extends TBDModel
             }
         );
 
+        return $query;
+    }
+
+    public function getRelationTech(string $date)
+    {
+       return $this->techs()
+                    ->wherePivot('dend', '>',$date)
+                    ->withPivot('dend', 'dbeg', 'tap as tap')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getRelationOrg(string $date)
+    {
+        return $this->orgs()
+                    ->wherePivot('dend', '>', $date)
+                    ->withPivot('dend', 'dbeg')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getGeo(string $date)
+    {
+       return  $this->geo()->wherePivot('dend', '>', $date)
+            ->wherePivot('dbeg', '<=', $date)
+            ->withPivot('dend', 'dbeg')
+            ->first();
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return array|null
+     */
+    public function wellData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'liquid',
+            'wcut',
+            'oil',
+            'hdin',
+            'activity',
+            'liquid_telemetry',
+            'pbuf',
+            'pzat',
+            'pbuf_before',
+            'pbuf_after',
+            'hdin',
+            'pzab',
+            'work_hours',
+            'well_status',
+            'well_expl',
+            'well_category',
+            'gdis_conclusion',
+            'reason_downtime',
+            'wcut_telemetry',
+            'oil_telemetry',
+            'gas_telemetry',
+            'park_indicator'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
+    public function getWellInjectionData(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id);
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select(
+            'date',
+            'pressure_inj',
+            'water_vol',
+            'activity'
+          )->orderBy('date')->get();
+        return $query;
+    }
+
+    /**
+     * @param int $well_id
+     * @param string|null $date
+     * @return object|null
+     */
+    public function eventsOfWell(int $well_id,?string $date) : ?object
+    {
+        $query = DailyProdOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
+        return $query;
+    }
+
+    public function getInjectionEvents(int $well_id,?string $date) : ?object
+    {
+        $query = DailyInjectionOil::where('well','=',$well_id)->whereNotNull('activity');
+        if($date)
+        {
+            $query = $query->where('date','>=',$date);
+        }
+
+        $query = $query->select('activity')
+            ->groupBy('activity')->get();
         return $query;
     }
 }

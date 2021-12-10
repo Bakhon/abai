@@ -1,19 +1,23 @@
 {
   "type": "table",
+  "new": true,
   "show_history": false,
-  "update_after_edit": false,
   "columns": [
     {
       "code": "uwi",
-      "type": "text",
+      "type": "link",
       "is_editable": false,
-      "title": "uwi"
+      "title": "uwi",
+      "freezed": true,
+      "width": 80
     },
     {
       "code": "indicator",
       "type": "text",
       "is_editable": false,
-      "title": "indicators"
+      "title": "indicators",
+      "freezed": true,
+      "width": 120
     },
     {
       "code": "tap",

@@ -1,4 +1,4 @@
-function convertTemplateData(dataset, lang) {
+export const convertTemplateData = (dataset, lang) => {
   const hash = {};
   dataset.forEach((template) => {
     hash[template["type_" + lang]] = {
@@ -12,19 +12,41 @@ function convertTemplateData(dataset, lang) {
 
   const dataTree = Object.values(hash);
   return dataTree;
-}
+};
 
-function handleSearch(arrayForSearch, query, type) {
-  let name = "owner_name";
-  if (type === "field") name = "field_name";
+export const handleSearch = (arrayForSearch, query, key) => {
   const filtered = arrayForSearch.filter((item) =>
-    item[name].toLowerCase().includes(query?.toLowerCase()) ? item : ""
+    item[key].toLowerCase().includes(query?.toLowerCase()) ? item : ""
   );
   return filtered;
-}
+};
 
-function compareNumbers(a, b) {
-  return a - b;
-}
+export const between = (x, min, max) => {
+  return x >= min && x <= max;
+};
 
-export { handleSearch, convertTemplateData, compareNumbers };
+export const convertToFormData = (convertObject) => {
+  const postData = new FormData();
+  for (let key in convertObject) {
+    if (!Array.isArray(convertObject[key])) {
+      postData.append(key, convertObject[key]);
+    } else {
+      convertObject[key].forEach((item) => postData.append(key, item));
+    }
+  }
+  return postData;
+};
+
+export const downloadExcelFile = (fileName, fileContent) => {
+  let link = document.createElement("a");
+
+  link.download = `${fileName}.xlsx`;
+  const blob = new Blob([fileContent], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  link.href = URL.createObjectURL(blob);
+  link.click();
+};
+
+export const compareNumbers = (a, b) => a - b;
