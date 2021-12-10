@@ -565,12 +565,12 @@ export default {
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
-            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1],factField)) {
+            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],factField)) {
                 return true;
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (await this.isYearlyDifferenceAbnormal(yearlyFact[0],yearlyFact[1])) {
+            if (await this.isYearlyDifferenceAbnormal(yearlyFact[0])) {
                 return true;
             }
 
@@ -596,27 +596,13 @@ export default {
 
             return isDailyAbnormal;
         },
-        isOilLossesNormal(fields,fact) {
-            let summ = 0;
-            _.forEach(fields, (field) => {
-                let parsed = parseFloat(this.excelData['decreaseReason'][field]);
-                if (!isNaN(parsed)) {
-                    summ += parsed;
-                }
-            });
-            if (fact === 0) {
-                return true;
-            }
-            let max = fact + fact * 0.05;
-            let min = fact - fact * 0.05;
-            return summ < max && summ > min;
-        },
-        async isMonthlyDifferenceAbnormal(monthlyFact,losses,factField) {
+        async isMonthlyDifferenceAbnormal(monthlyFact,factField) {
             if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.excelData['decreaseReason']['monthly_reason_1_losses'] !== '') {
                 return false;
             }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
+            let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
@@ -627,20 +613,20 @@ export default {
                 toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
                 let message = `Добыча за месяц меньше запланированного.
                     Ожидаемая месячная добыча: ${this.getFormattedNumberByThousand(monthlyPlan)} (т).
-                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(losses)} (т) за месяц.
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(difference)} (т) за месяц.
                     Заполните "Причины: С НАЧАЛА МЕСЯЦА!"`;
                 this.$bvToast.toast(message, toastOptions);
             }
 
             return isMonthlyPlanAbnormal;
         },
-        async isYearlyDifferenceAbnormal(yearlyFact,losses) {
+        async isYearlyDifferenceAbnormal(yearlyFact) {
             if (this.excelData['decreaseReason']['yearlyreason_1_explanation'] !== '' && this.excelData['decreaseReason']['yearly_reason_1_losses'] !== '') {
                 return false;
             }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let yearlyPlan = await this.getSummaryPlanByDzo('yearly');
-
+            let difference = Math.abs(yearlyPlan - yearlyFact);
             let isYearlyPlanAbnormal = yearlyFact < yearlyPlan;
             if (isYearlyPlanAbnormal) {
                 let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
@@ -651,7 +637,7 @@ export default {
                 toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
                 let message = `Добыча за год меньше запланированного.
                     Ожидаемая годовая добыча: ${this.getFormattedNumberByThousand(yearlyPlan)} (т).
-                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(losses)} (т) за год.
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(difference)} (т) за год.
                     Заполните "Причины: С НАЧАЛА ГОДА!"`;
                 this.$bvToast.toast(message, toastOptions);
             }
