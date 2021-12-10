@@ -26,9 +26,6 @@
             <p v-if="formError" class="table__message">
               {{ formError }}
             </p>
-            <p v-else-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
-              {{ trans('bd.select_ngdu') }}
-            </p>
             <p v-else-if="!id" class="table__message">
               {{ trans('bd.select_dzo') }}
             </p>
