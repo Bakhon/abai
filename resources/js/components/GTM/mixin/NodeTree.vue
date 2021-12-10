@@ -12,7 +12,7 @@
             </span>
         <span v-if="!nodeHasChildren && !node.value">
         <template>
-          <input v-if="checkable" type="checkbox">
+          <input v-if="checkable" type="checkbox" v-model="node.checked">
           <img v-else width="20" height="20" src='../img/file.svg'>
         </template>
       </span>
@@ -88,6 +88,10 @@ export default {
 }
 </script>
 <style lang="scss">
+.span {
+  font-size: 12px;
+}
+
 $border: #ddd;
 $ident: 10px;
 

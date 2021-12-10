@@ -15,7 +15,7 @@
                 <form action="{{ route('omgngdu.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omgngdu-form :validation-params='@json($validationParams)'></omgngdu-form>
+                        <omgngdu-form :is-editable="true" :validation-params='@json($validationParams)'></omgngdu-form>
                     </div>
                 </form>
             </div>

@@ -40,7 +40,7 @@
 
 <script>
 import Divider from "../../components/Divider";
-import EconomicTitle from "../../components/EconomicTitle";
+import EconomicTitle from "../../nrs/components/EconomicTitle";
 import Subtitle from "../../components/Subtitle";
 
 export default {

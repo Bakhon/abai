@@ -8,5 +8,5 @@
         </a>
     </div>
 
-    <economic-data-analysis-component></economic-data-analysis-component>
+    <economic-analysis-input-params></economic-analysis-input-params>
 @endsection

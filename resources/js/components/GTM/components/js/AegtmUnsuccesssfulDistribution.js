@@ -33,9 +33,24 @@ export default {
             donutChart1: {
                 chart: {
                     type: 'donut',
-                    foreColor: '#fff',
+                    foreColor: '#ffffff',
+                    background: '#2b2e5e',
+                    toolbar: {
+                        show: true
+                    }
                 },
                 labels: ['По жидкости', 'По обводненности'],
+                title: {
+                    text: this.trans('paegtm.distribution_of_unsuccessful_gtm'),
+                    align: 'center',
+                    style: {
+                        color: undefined,
+                        fontSize: '15px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 700,
+                        cssClass: 'apexcharts-yaxis-title',
+                    },
+                },
                 colors: ['#3f51b5', '#f0ad81', '#82baff', '#ef5350'],
                 stroke: {
                     show: false,
@@ -44,7 +59,22 @@ export default {
             donutChart2: {
                 chart: {
                     type: 'donut',
-                    foreColor: '#fff',
+                    foreColor: '#ffffff',
+                    background: '#2b2e5e',
+                    toolbar: {
+                        show: true
+                    }
+                },
+                title: {
+                    text: this.trans('paegtm.liquid_failure'),
+                    align: 'center',
+                    style: {
+                        color: undefined,
+                        fontSize: '15px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 700,
+                        cssClass: 'apexcharts-yaxis-title',
+                    },
                 },
                 labels: ['Рпл', 'Skin', 'KH/mb', 'Рзаб'],
                 colors: ['#3f51b5', '#f0ad81', '#82baff', '#ef5350'],
@@ -55,7 +85,11 @@ export default {
             donutChart3: {
                 chart: {
                     type: 'donut',
-                    foreColor: '#fff',
+                    foreColor: '#ffffff',
+                    background: '#2b2e5e',
+                    toolbar: {
+                        show: true
+                    }
                 },
                 labels: [
                     this.trans('paegtm.development_of_reserves'),
@@ -63,6 +97,17 @@ export default {
                     this.trans('paegtm.neck'),
                     this.trans('paegtm.zkts'),
                 ],
+                title: {
+                    text: this.trans('paegtm.failure_water_cut_achieve'),
+                    align: 'center',
+                    style: {
+                        color: undefined,
+                        fontSize: '15px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 700,
+                        cssClass: 'apexcharts-yaxis-title',
+                    },
+                },
                 colors: ['#3f51b4', '#ef5350', '#82baff', '#f0ad81'],
                 stroke: {
                     show: false,

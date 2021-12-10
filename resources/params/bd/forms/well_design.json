@@ -1,6 +1,9 @@
 {
   "type": "plain",
-  "table": "prod.well_constr",  
+  "table": "prod.well_constr",
+  "default_values": {
+    "project_drill": true
+  },
   "tabs": [
     {
       "title": "well_design_project",
@@ -28,7 +31,7 @@
                 "title": "side_barrel"
               },
               {
-                "code": "model",
+                "code": "casing_nom",
                 "type": "dict",
                 "title": "casing_type",
                 "dict": "casings",

@@ -528,7 +528,7 @@
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
                         >
-                          {{ trans("visualcenter.processingAssociatedGasForOwnExpenses") }}
+                          {{ trans("visualcenter.pererabotkapoputGaz") }}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
