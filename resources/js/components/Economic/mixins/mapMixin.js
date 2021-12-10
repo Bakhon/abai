@@ -19,6 +19,8 @@ export const profitabilityMapMixin = {
         },
 
         initPopup() {
+            this.hidePopup()
+
             this.popup = new mapboxgl.Popup({
                 closeButton: false,
                 closeOnClick: false
@@ -72,8 +74,6 @@ export const profitabilityMapMixin = {
                     'paint': {
                         'circle-color': color,
                         'circle-radius': 6,
-                        'circle-stroke-width': 2,
-                        'circle-stroke-color': '#ffffff'
                     }
                 },
                 'waterway-label'
@@ -96,6 +96,8 @@ export const profitabilityMapMixin = {
         },
 
         hidePopup() {
+            if (!this.popup) return
+
             this.map.getCanvas().style.cursor = ''
 
             this.popup.remove()
