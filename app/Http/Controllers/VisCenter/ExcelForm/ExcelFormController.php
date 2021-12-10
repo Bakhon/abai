@@ -55,6 +55,7 @@ class ExcelFormController extends Controller
         'daily_reason_4_losses',
         'daily_reason_5_losses'
     ];
+    private $condensateCompanies = ['АГ'];
 
     public function getDzoCurrentData(Request $request)
     {
@@ -499,8 +500,12 @@ class ExcelFormController extends Controller
 
     public function getMonthlyPlan($dzo,$date)
     {
+        $field = 'plan_oil';
+        if (in_array($dzo,$this->condensateCompanies)) {
+            $field = 'plan_kondensat';
+        }
         $dailyPlan = $this->getDailyPlan($dzo,$date);
-        return $dailyPlan->plan_oil * $date->day;
+        return $dailyPlan->$field * $date->day;
     }
 
     private function getYearlyPlan($dzo,$date)
@@ -514,9 +519,13 @@ class ExcelFormController extends Controller
             ->toArray();
 
         $summ = 0;
+        $field = 'plan_oil';
+        if (in_array($dzo,$this->condensateCompanies)) {
+            $field = 'plan_kondensat';
+        }
         foreach($plans as $plan) {
             $daysCount = Carbon::parse($plan['date'])->daysInMonth;
-            $summ += $plan['plan_oil'] * $daysCount;
+            $summ += $plan[$field] * $daysCount;
         }
 
         return $summ;
@@ -535,12 +544,16 @@ class ExcelFormController extends Controller
 
     private function getMonthlyFact($dzo,$date,$fields,$type)
     {
+        $field = 'oil_production_fact';
+        if (in_array($dzo,$this->condensateCompanies)) {
+            $field = 'condensate_production_fact';
+        }
         return DzoImportData::query()
             ->select($fields)
             ->whereMonth('date',$type,$date)
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
-            ->sum($fields[0]);
+            ->sum($field);
     }
 
     private function getOilLosses($dzo,$date,$fields,$type)

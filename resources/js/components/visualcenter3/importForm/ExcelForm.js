@@ -550,19 +550,22 @@ export default {
             }
         },
         async isFactBelowPlan() {
-            if (this.dzoListByCondensate.includes(this.excelData.dzo_name)) {
-                return false;
+            let planField = 'plan_oil';
+            let factField = 'oil';
+            if (this.dzoListByCondensate.includes(this.selectedDzo.ticker)) {
+                planField = 'plan_kondensat';
+                factField = 'condensate';
             }
             if (!this.excelData['decreaseReason']) {
                 this.excelData['decreaseReason'] = {};
             }
 
-            if (await this.isDailyDifferenceAbnormal()) {
+            if (await this.isDailyDifferenceAbnormal(planField,factField)) {
                 return true;
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
-            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1])) {
+            if (await this.isMonthlyDifferenceAbnormal(monthlyFact[0],monthlyFact[1],factField)) {
                 return true;
             }
 
@@ -573,10 +576,11 @@ export default {
 
             return false;
         },
-        async isDailyDifferenceAbnormal() {
+        async isDailyDifferenceAbnormal(planField,factField) {
             let toastOptions = _.cloneDeep(this.toastOptions);
             let dailyPlan = await this.getSummaryPlanByDzo('daily');
-            let isDailyAbnormal = this.excelData[this.factValidationMapping.oil] < dailyPlan['plan_oil'];
+            let isDailyAbnormal = this.excelData[this.factValidationMapping[factField]] < dailyPlan[planField];
+
             if (isDailyAbnormal) {
                 let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
                 for (let i=1;i<6;i++) {
@@ -585,7 +589,7 @@ export default {
                 toastOptions.variant = 'danger';
                 toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
                 let message = `Добыча за сутки меньше запланированного.
-                    Ожидаемая суточная добыча: ${this.getFormattedNumberByThousand(dailyPlan['plan_oil'])} (т).
+                    Ожидаемая суточная добыча: ${this.getFormattedNumberByThousand(dailyPlan[planField])} (т).
                     Заполните "Причины: СУТОЧНЫЕ"!`;
                 this.$bvToast.toast(message, toastOptions);
             }
@@ -607,13 +611,13 @@ export default {
             let min = fact - fact * 0.05;
             return summ < max && summ > min;
         },
-        async isMonthlyDifferenceAbnormal(monthlyFact,losses) {
+        async isMonthlyDifferenceAbnormal(monthlyFact,losses,factField) {
             if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.excelData['decreaseReason']['monthly_reason_1_losses'] !== '') {
                 return false;
             }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
-            let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping.oil]) < monthlyPlan;
+            let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 for (let i=1;i<6;i++) {
