@@ -120,7 +120,9 @@ export default {
 
     methods: {
         getData: function () {
-
+            if(typeof this.$refs.successfulFactorsIndicatorRef !== 'undefined') {
+                this.$refs.successfulFactorsIndicatorRef.onFilterChanged();
+            }
         },
     },
     computed: {
