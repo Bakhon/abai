@@ -69,15 +69,13 @@ class MapConstructorController extends Controller
         ]];
         $contourFiles = $request->file('contourFiles');
         if ($contourFiles) {
-            $contourFilesToSend = [];
             foreach ($contourFiles as $contourFile) {
-                $contourFilesToSend += [
+                $files[] = [
                     'name' => 'external_contours_files',
                     'contents' => Utils::tryFopen($contourFile->path(), 'r'),
                     'filename' => $contourFile->getClientOriginalName()
                 ];
             }
-            $files[] = $contourFilesToSend;
         }
         $params = (array)json_decode($request->get('params'));
 
