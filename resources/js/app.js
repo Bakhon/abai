@@ -255,7 +255,6 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
 Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
-Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
 Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
