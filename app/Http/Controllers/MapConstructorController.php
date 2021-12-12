@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BigData\DailyInjectionOil;
+use App\Models\BigData\DailyProdOil;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\OrgType;
@@ -133,7 +135,10 @@ class MapConstructorController extends Controller
 
     public function getWells(Request $request): array {
         $result = [];
+        $period = null;
         $geo = (int)$request->get('geo');
+        $date = $request->get('date');
+        $dataType = $request->get('dataType');
         $selectedDzo = (int)$request->get('selectedDzo');
         $dzoCode = Org::select('code')->where('id', $selectedDzo)->first()->code;
         $wells = DB::connection('tbd')->table('dict.well')
@@ -144,12 +149,29 @@ class MapConstructorController extends Controller
             ->get();
 
         $coords = [];
+        if ($dataType && $dataType === 'kto') {
+            $dateObj = $date ? new \DateTime($date) : new \DateTime();
+            $dateObj->modify('first day of this month');
+            $period = $dateObj->diff((new \DateTime($date))->modify('last day of this month'))->days + 1;
+            $date = (new \DateTime($date))->modify('last day of this month')->format('Y-m-d');
+        }
+        $wellIds = array_map(function($item) {
+            return $item->id;
+        }, $wells->toArray());
+        $pressureData = $this->getWellsPressure($wellIds, $period, $date);
+        $pressureMax = 0;
+        foreach ($pressureData as $pressureDataItem) {
+            $pressureMax = $pressureDataItem > $pressureMax ? $pressureDataItem : $pressureMax;
+        }
+        $oilWithWaterData = $this->getOilWithWaterData($wellIds, $period, $date);
         foreach ($wells as $well) {
             if ($well->coord_point) {
                 $result[] = [
                     'id' => $well->id,
                     'name' => $well->uwi,
-                    'data' => $this->wellCardGraphRepo->wellItems($well->id, 30),
+                    'oilWithWaterData' => isset($oilWithWaterData[$well->id]) ? $oilWithWaterData[$well->id] : [],
+                    'pressure' => isset($pressureData[$well->id]) ? $pressureData[$well->id] : null,
+                    'pressureMax' => $pressureMax,
                 ];
                 $coords[] = $well->coord_point;
             }
@@ -194,4 +216,69 @@ class MapConstructorController extends Controller
         }
     }
 
+    private function getWellsPressure(array $wellIds, $period, $date): array {
+        $result = [];
+        $dateFrom = $period ? (new \DateTime($date))
+            ->modify("-" . $period . " days")
+            ->modify("+1 day")
+            ->format('Y-m-d') : null;
+        $dateTo = $date ? (new \DateTime($date))
+            ->modify('last day of this month')
+            ->modify("+1 day")
+            ->format('Y-m-d') : null;
+        $query = DailyInjectionOil::whereIn('well', $wellIds);
+        if ($dateFrom) {
+            $query->where('date','>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query->where('date','<', $dateTo);
+        }
+        $pressures = $query->select([
+            'well',
+            'water_vol',
+        ])->groupBy(['well', 'water_vol'])->get()->toArray();
+        foreach ($pressures as $pressure) {
+            $result[$pressure['well']] = isset($result[$pressure['well']]) ?
+                $result[$pressure['well']] + $pressure['water_vol'] :
+                $pressure['water_vol'];
+        }
+        return $result;
+    }
+
+    private function getOilWithWaterData(array $wellIds, $period, $date): array {
+        $result = [];
+
+        $dateFrom = $period ? (new \DateTime($date))
+            ->modify("-" . $period . " days")
+            ->format('Y-m-d') : null;
+        $dateTo = $date ? (new \DateTime($date))
+            ->modify('last day of this month')
+            ->modify("+1 day")
+            ->format('Y-m-d') : null;
+
+        $query = DailyProdOil::select([
+            'well as id',
+            DB::raw('COUNT(well) as cnt'),
+            DB::raw('SUM(liquid) as liquid'),
+            DB::raw('AVG(wcut) as wcut'),
+            DB::raw('SUM(oil) as oil'),
+        ])
+            ->whereIn('well', $wellIds)
+            ->groupBy('well');
+        if ($dateFrom) {
+            $query = $query->where('date', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query = $query->where('date', '<', $dateTo);
+        }
+
+        $wellsData = $query->get();
+
+        foreach($wellsData as $item)
+        {
+            $result[$item->id] = $item;
+        }
+
+        return $result;
+    }
 }
