@@ -118,4 +118,5 @@ return array (
   'interval' => 'Интервал',
   'isolines_count' => 'Количество изолиний',
   'interpolation' => 'Интерполяция',
+  'map_constructor' => 'Картопостроитель',
 );
