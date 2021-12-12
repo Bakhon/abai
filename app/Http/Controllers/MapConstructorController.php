@@ -250,6 +250,7 @@ class MapConstructorController extends Controller
 
         $dateFrom = $period ? (new \DateTime($date))
             ->modify("-" . $period . " days")
+            ->modify("+1 day")
             ->format('Y-m-d') : null;
         $dateTo = $date ? (new \DateTime($date))
             ->modify('last day of this month')
