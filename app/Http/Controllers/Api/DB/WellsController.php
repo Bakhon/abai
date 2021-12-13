@@ -97,7 +97,7 @@ class WellsController extends Controller
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'tubeNom' => $this->tubeNom($well),
-            'tubeNomAdd' => $this->tubeNomAdditional($well),
+            'tubeNomAdd' => $this->tubeNomAdd($well),
             'well_type' => $this->wellType($well),
             'org' => $this->structureOrg($orgs),
             'main_org_code' => $this->orgCode($orgs),
@@ -268,7 +268,7 @@ class WellsController extends Controller
         return "";
     }
 
-    private function tubeNomAdditional(Well $well)
+    private function tubeNomAdd(Well $well)
     {
         $tubeNomAdditional = $well->tubeNom()
                 ->wherePivot('project_drill', '=', 'false')
