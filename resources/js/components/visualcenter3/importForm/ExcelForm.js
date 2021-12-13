@@ -391,7 +391,11 @@ export default {
                 'yearly_reason_3_losses',
                 'yearly_reason_4_losses',
                 'yearly_reason_5_losses'
-            ]
+            ],
+            yearlyUpdateLimit: {
+                'month': 0,
+                'day': 10
+            }
         };
     },
     props: ['userId'],
@@ -570,7 +574,7 @@ export default {
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (moment().month() !== 0 && moment().date() <= 10 && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
+            if (moment().month() !== this.yearlyUpdateLimit.month && moment().date() <= this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
                 return true;
             }
 
