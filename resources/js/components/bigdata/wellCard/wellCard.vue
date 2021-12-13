@@ -1019,7 +1019,8 @@ export default {
         {
           name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
-          type: ["all"],          
+          type: ["all"], 
+          codes: ["KTM"],         
         },
         {
           name: this.trans("well.type_gol"),
