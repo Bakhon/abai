@@ -159,4 +159,5 @@ return array (
   'research_study' => 'Изученность экспериментами',
   'sample_study' => 'Изученность пробами',
   '_function' => 'Функция',
+  'module_whole_pages' => 'Все страницы модуля',
 );
