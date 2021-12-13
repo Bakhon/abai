@@ -48,7 +48,7 @@
               dates[index] === currentDate ? 'bg-blue' : 'bg-grey',
               index ? 'ml-2' : ''
               ]"
-          class="btn text-white"
+          class="btn text-white text-nowrap px-2"
           @click="updateDate(dates[index])">
         {{ date }}
       </button>
@@ -63,43 +63,10 @@
         </button>
       </div>
 
-      <div class="ml-3 flex-grow-1 d-flex justify-content-end">
-        <div class="d-flex align-items-center form-check">
-          <input v-model="isVisibleProfitable"
-                 id="visible_profitable"
-                 type="checkbox"
-                 class="form-check-input mt-0"
-                 @change="plotMap()">
-          <label for="visible_profitable"
-                 class="form-check-label">
-            {{ trans('economic_reference.profitable') }}
-          </label>
-        </div>
-
-        <div class="d-flex align-items-center form-check ml-2">
-          <input v-model="isVisibleProfitlessCat1"
-                 id="visible_profitless_cat_1"
-                 type="checkbox"
-                 class="form-check-input mt-0"
-                 @change="plotMap()">
-          <label for="visible_profitless_cat_1"
-                 class="form-check-label">
-            {{ trans('economic_reference.profitless_cat_1') }}
-          </label>
-        </div>
-
-        <div class="d-flex align-items-center form-check ml-2">
-          <input v-model="isVisibleProfitlessCat2"
-                 id="visible_profitless_cat_2"
-                 type="checkbox"
-                 class="form-check-input mt-0"
-                 @change="plotMap()">
-          <label for="visible_profitless_cat_2"
-                 class="form-check-label">
-            {{ trans('economic_reference.profitless_cat_2') }}
-          </label>
-        </div>
-      </div>
+      <profitability-checkboxes
+          :visible-form="visibleForm"
+          class="ml-3 flex-grow-1"
+          @update="plotMap()"/>
     </div>
 
     <div :key="orgForm.isFullScreen"
@@ -120,7 +87,7 @@ import Subtitle from "../../components/Subtitle";
 export default {
   name: "ChartWellMap",
   components: {
-    Subtitle
+    Subtitle,
   },
   mixins: [profitabilityMapMixin],
   props: {
@@ -136,9 +103,6 @@ export default {
     },
     wells: [],
     currentDate: null,
-    isVisibleProfitable: true,
-    isVisibleProfitlessCat1: true,
-    isVisibleProfitlessCat2: true,
     isSlideshow: false,
     interval: null
   }),
@@ -212,8 +176,6 @@ export default {
       let color = this.getColor(profitability)
 
       this.map.addSource(profitability, this.getMapSource(profitability))
-
-      // this.addHeatLayer(profitability, color)
 
       this.addPointLayer(profitability, color)
 
@@ -318,24 +280,6 @@ export default {
           .filter(key => this.visibleProfitability.includes(key))
     },
 
-    visibleProfitability() {
-      let keys = []
-
-      if (this.isVisibleProfitable) {
-        keys.push('profitable')
-      }
-
-      if (this.isVisibleProfitlessCat1) {
-        keys.push('profitless_cat_1')
-      }
-
-      if (this.isVisibleProfitlessCat2) {
-        keys.push('profitless_cat_2')
-      }
-
-      return keys
-    },
-
     dates() {
       return Object.keys(this.wellsByDates)
     },
@@ -348,14 +292,6 @@ export default {
           year: 'numeric',
         })
       })
-    },
-
-    totalProfitability() {
-      return [
-        'profitable',
-        'profitless_cat_1',
-        'profitless_cat_2',
-      ]
     },
 
     totalWellsCount() {

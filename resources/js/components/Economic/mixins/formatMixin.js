@@ -46,7 +46,13 @@ export const formatValueMixin = {
                 value = Math.abs(value)
             }
 
-            return (+value.toFixed(fractionDigits)).toLocaleString()
+            let formatterValue = value.toFixed(fractionDigits)
+
+            if (fractionDigits === 0 && value < 1) {
+                formatterValue = +value.toFixed(2)
+            }
+
+            return (+formatterValue).toLocaleString()
         }
     }
 }

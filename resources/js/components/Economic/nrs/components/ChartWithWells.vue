@@ -101,6 +101,23 @@ export default {
           ? 0
           : 100 * (+liquid - +oil) / +liquid
     },
+
+    getChartMarkers(seriesIndex) {
+      return this.sortedUwis.map((uwi, uwiIndex) => ({
+        seriesIndex: seriesIndex,
+        dataPointIndex: uwiIndex,
+        fillColor: +this.wells[uwi].Operating_profit.sum > 0
+            ? '#F08537'
+            : '#E31F25',
+        strokeColor: +this.wells[uwi].Operating_profit.sum > 0
+            ? '#F08537'
+            : '#E31F25',
+        size: seriesIndex === 0 || +this.wells[uwi].Operating_profit.sum > 0
+            ? 0
+            : 1,
+        shape: "circle"
+      }))
+    },
   },
   computed: {
     url() {
@@ -131,7 +148,11 @@ export default {
           defaultLocale: 'ru'
         },
         markers: {
-          size: 0
+          size: 1,
+          discrete: [
+            ...this.getChartMarkers(0),
+            ...this.getChartMarkers(1)
+          ]
         },
         plotOptions: {
           bar: {

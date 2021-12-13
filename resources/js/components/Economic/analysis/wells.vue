@@ -175,6 +175,10 @@ export default {
     },
 
     getHeaderValue(header, rowIndex, value) {
+      if (header.key === 'profitability') {
+        return value ? this.trans(`economic_reference.${value}`) : ''
+      }
+
       if (header.isString) {
         return value
       }
@@ -277,7 +281,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'oil',
@@ -285,7 +290,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'liquid',
@@ -307,7 +313,8 @@ export default {
         },
         {
           name: `
-            ${this.trans('economic_reference.operating_profit')},
+            ${this.trans('economic_reference.operating_profit')}
+            (${this.trans('economic_reference.tenge')}),
             ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'operating_profit',
@@ -321,7 +328,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
           `,
           key: 'oil_forecast',
@@ -329,7 +337,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
           `,
           key: 'liquid_forecast',
@@ -344,7 +353,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
           `,
           key: 'oil_propose',
@@ -352,7 +362,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
           `,
           key: 'liquid_propose',
@@ -360,8 +371,9 @@ export default {
         },
         {
           name: `
-            ${this.trans('economic_reference.operating_profit')},
-            ${this.trans('economic_reference.proposed_short')},
+            ${this.trans('economic_reference.operating_profit')}
+            (${this.trans('economic_reference.tenge')}),
+            ${this.trans('economic_reference.proposed_short')}
           `,
           key: 'operating_profit_propose',
           width: 160,

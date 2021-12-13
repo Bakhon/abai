@@ -69,48 +69,84 @@
         </button>
       </div>
 
-      <h4> {{ trans('economic_reference.input_indicators') }} </h4>
+      <div>
+        <h4 class="mb-2">
+          {{ trans('economic_reference.input_indicators') }}
+        </h4>
 
-      <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
-        <div v-for="dailyKey in dailyKeys"
-             :key="dailyKey.prop"
-             class="d-flex flex-20 mr-2 mb-2 line-height-16px">
-          <div class="d-flex align-items-center form-check mr-2 flex-150px">
-            <input v-model="dailyKey.isVisible"
-                   :id="dailyKey.prop"
-                   type="checkbox"
-                   class="form-check-input mt-0">
-            <label :for="dailyKey.prop"
-                   class="form-check-label">
-              {{ dailyKey.name }}
-            </label>
+        <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
+          <div v-for="dailyKey in dailyKeys"
+               :key="dailyKey.prop"
+               class="d-flex flex-20 mr-2 mb-2 line-height-16px">
+            <div class="d-flex align-items-center form-check mr-2 flex-150px">
+              <input v-model="dailyKey.isVisible"
+                     :id="dailyKey.prop"
+                     type="checkbox"
+                     class="form-check-input mt-0">
+              <label :for="dailyKey.prop"
+                     class="form-check-label">
+                {{ dailyKey.name }}
+              </label>
+            </div>
           </div>
         </div>
       </div>
 
-      <h4> {{ trans('economic_reference.estimated_data') }} </h4>
+      <div>
+        <div class="d-flex align-items-center mb-2">
+          <h4 class="mb-0 mr-1">
+            {{ trans('economic_reference.estimated_data') }}
+          </h4>
 
-      <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
-        <div v-for="(wellKey, wellKeyIndex) in wellKeys"
-             :key="wellKey.prop"
-             class="d-flex flex-20 mr-2 mb-2 line-height-16px">
-          <div class="d-flex align-items-center form-check mr-2 flex-150px">
-            <input :checked="wellKeys[wellKeyIndex].isVisible"
-                   :id="wellKey.prop"
-                   type="checkbox"
-                   class="form-check-input mt-0"
-                   @change="updateWellKeyVisibility(wellKeyIndex)">
-            <label :for="wellKey.prop"
-                   class="form-check-label">
-              {{ wellKey.name }}
-            </label>
+          <div class="ml-3 flex-grow-1 d-flex">
+            <div class="d-flex align-items-center form-check">
+              <input v-model="isVisibleTechicalKeys"
+                     id="visible_technical_keys"
+                     type="checkbox"
+                     class="form-check-input mt-0"
+                     @change="updateGroupVisibility(true)">
+              <label for="visible_technical_keys"
+                     class="form-check-label">
+                {{ trans('economic_reference.technical_data') }}
+              </label>
+            </div>
+
+            <div class="ml-2 d-flex align-items-center form-check">
+              <input v-model="isVisibleEconomicKeys"
+                     id="visible_economic_keys"
+                     type="checkbox"
+                     class="form-check-input mt-0"
+                     @change="updateGroupVisibility(false)">
+              <label for="visible_economic_keys"
+                     class="form-check-label">
+                {{ trans('economic_reference.economic_data') }}
+              </label>
+            </div>
           </div>
+        </div>
 
-          <select-chart-type
-              v-if="isVisibleChartTotal"
-              :form="wellKey"
-              class="bg-dark-blue text-white mr-3"
-              style="flex: 0 0 100px"/>
+        <div class="bg-main1 p-4 mb-3 d-flex flex-wrap">
+          <div v-for="(wellKey, wellKeyIndex) in wellKeys"
+               :key="wellKey.prop"
+               class="d-flex flex-20 mr-2 mb-2 line-height-16px">
+            <div class="d-flex align-items-center form-check mr-2 flex-150px">
+              <input :checked="wellKeys[wellKeyIndex].isVisible"
+                     :id="wellKey.prop"
+                     type="checkbox"
+                     class="form-check-input mt-0"
+                     @change="updateWellKeyVisibility(wellKeyIndex)">
+              <label :for="wellKey.prop"
+                     class="form-check-label">
+                {{ wellKey.name }}
+              </label>
+            </div>
+
+            <select-chart-type
+                v-if="isVisibleChartTotal"
+                :form="wellKey"
+                class="bg-dark-blue text-white mr-3"
+                style="flex: 0 0 100px"/>
+          </div>
         </div>
       </div>
 
@@ -258,6 +294,8 @@ export default {
     isVisibleProfitless: true,
     isVisibleConditionallyProfitable: true,
     isVisibleChartTotal: false,
+    isVisibleTechicalKeys: false,
+    isVisibleEconomicKeys: false,
     form: {
       operatingProfit: 'Operating_profit',
       sortKey: null,
@@ -278,8 +316,13 @@ export default {
       }
 
       let uwis = Object.keys(this.wells.uwis).filter(uwi => {
-        return this.isVisibleProfitable && this.wells.uwis[uwi][this.form.operatingProfit].sum > 0
-            || this.isVisibleProfitless && this.wells.uwis[uwi][this.form.operatingProfit].sum <= 0
+        let well = this.wells.uwis[uwi]
+
+        return this.isVisibleProfitable && this.isProfitableWell(well, 'sum') ||
+            this.isVisibleProfitless && this.isProfitlessWell(well, 'sum') ||
+            this.isVisibleConditionallyProfitable &&
+            this.hasConditionallyProfitableWells &&
+            this.isConditionallyProfitableWell(well, 'sum')
       })
 
       if (!this.form.sortKey) {
@@ -685,11 +728,6 @@ export default {
             dimensionTitle: `${this.trans('economic_reference.units')}.`,
             dimension: 1000,
             calcValue: function (data, dateIndex, dateParams) {
-              if (dateParams) {
-                console.log(data.PRS_nopayroll_expenditures[dateIndex].value)
-                console.log(dateParams.cost_WR_nopayroll)
-              }
-
               return dateParams
                   ? data.PRS_nopayroll_expenditures[dateIndex].value / dateParams.cost_WR_nopayroll
                   : 0
@@ -914,36 +952,46 @@ export default {
         return well[this.form.operatingProfit].hasOwnProperty(date) ? 0 : 1
       }
 
-      if (key.isProfitable) {
+      if (key.isProfitable || key.isProfitless || key.isConditionallyProfitable) {
         if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
           return 0
         }
 
-        return +well[this.form.operatingProfit][date] > 0 ? 1 : 0
-      }
-
-      if (key.isProfitless || key.isConditionallyProfitable) {
-        if (!well[this.form.operatingProfit].hasOwnProperty(date) || +well[this.form.operatingProfit][date] > 0) {
-          return 0
+        if (key.isProfitable) {
+          return +this.isProfitableWell(well, date)
         }
 
-        if (!this.hasConditionallyProfitableWells) {
-          return 1
+        if (key.isProfitless) {
+          return +this.isProfitlessWell(well, date)
         }
 
         if (key.isConditionallyProfitable) {
-          return +well.Operating_profit_variable_prs_nopayrall[date] > 0 ? 1 : 0
+          return +this.isConditionallyProfitableWell(well, date)
         }
-
-        return 1
       }
 
       if (date === 'sum') {
-        if (this.isVisibleProfitable && !this.isVisibleProfitless && well[this.form.operatingProfit].sum <= 0) {
+        if (this.isVisibleProfitable &&
+            !this.isVisibleProfitless &&
+            !this.isVisibleConditionallyProfitable &&
+            !this.isProfitableWell(well, date)
+        ) {
           return 0
         }
 
-        if (this.isVisibleProfitless && !this.isVisibleProfitable && well[this.form.operatingProfit].sum > 0) {
+        if (this.isVisibleProfitless &&
+            !this.isVisibleProfitable &&
+            !this.isVisibleConditionallyProfitable &&
+            !this.isProfitlessWell(well, date)
+        ) {
+          return 0
+        }
+
+        if (this.isVisibleConditionallyProfitable &&
+            !this.isVisibleProfitable &&
+            !this.isVisibleProfitless &&
+            !this.isConditionallyProfitableWell(well, date)
+        ) {
           return 0
         }
       }
@@ -1421,6 +1469,42 @@ export default {
 
         this.SET_LOADING(false)
       })
+    },
+
+    updateGroupVisibility(isTechnical) {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.wellKeys.forEach(key => {
+          if (isTechnical && ['oil', 'liquid'].includes(key.prop)) {
+            return key.isVisible = this.isVisibleTechicalKeys
+          }
+
+          if (!isTechnical && !['oil', 'liquid'].includes(key.prop)) {
+            return key.isVisible = this.isVisibleEconomicKeys
+          }
+        })
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    isProfitableWell(well, date) {
+      return +well[this.form.operatingProfit][date] > 0
+    },
+
+    isProfitlessWell(well, date) {
+      if (this.isProfitableWell(well, date)) {
+        return false
+      }
+
+      return this.hasConditionallyProfitableWells
+          ? +well.Operating_profit_variable_prs_nopayrall[date] <= 0
+          : true
+    },
+
+    isConditionallyProfitableWell(well, date) {
+      return !this.isProfitableWell(well, date) && +well.Operating_profit_variable_prs_nopayrall[date] > 0
     },
   },
   watch: {
