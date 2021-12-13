@@ -560,7 +560,7 @@ export default {
                 this.excelData['decreaseReason'] = {};
             }
 
-            if (await this.isDailyDifferenceAbnormal(planField,factField)) {
+            if (!this.excelData['decreaseReason']['daily_reason_1_losses'] && await this.isDailyDifferenceAbnormal(planField,factField)) {
                 return true;
             }
 
