@@ -19,7 +19,12 @@
                         </div>
                         <div class="import-daily-body">
                             <div class="import-daily-body">
-                                <div class="file-input" @dragover="dragover" @dragleave="dragleave" @drop="drop">
+                                <div class="file-input"
+                                     @dragover="dragover"
+                                     @dragleave="dragleave"
+                                     @drop="drop"
+                                     :class="{error: uploadTrue && filelist.length==0}"
+                                >
                                     <input type="file" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
                                            class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                     <label for="assetsFieldHandle" v-if="!filelist.length">
@@ -44,12 +49,37 @@
                                 </div>
                             </div>
                             <div class="form">
-                                <input type="number" class="input" placeholder="Напишите номер скважины" v-model="form.well_num" @input="checkForm">
-                                <input type="date" class="input" placeholder="Дата" v-model="form.date" @input="checkForm">
+                                <div class="form-input">
+                                    <input type="text" class="input"
+                                           placeholder="Напишите код скважины"
+                                           v-model="form.well_num"
+                                           @input="checkForm"
+                                           :class="{error: uploadTrue && form.well_num=='', errorInput: error_text}"
+                                    >
+                                    <div class="error-text" v-if="error_text">
+                                        {{error_text}}
+                                    </div>
+                                </div>
+                               <div class="form-input">
+                                   <input type="number" class="input"
+                                          placeholder="Напишите ID отчета"
+                                          v-model="form.report_id"
+                                          @input="checkForm"
+                                          :class="{error: uploadTrue && form.report_id==''}"
+                                   >
+                               </div>
+                               <div class="form-input">
+                                   <input type="date" class="input"
+                                          placeholder="Дата"
+                                          v-model="form.date"
+                                          @input="checkForm"
+                                          :class="{error: uploadTrue && form.date==''}"
+                                   >
+                               </div>
                             </div>
                             <div class="import-daily-body-btns">
                                 <button :class="{disabled: !uploadTrue }" @click="importFile">{{ trans('digital_drilling.default.import') }}</button>
-                                <button>{{ trans('digital_drilling.default.reset') }}</button>
+                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.reset') }}</a>
                             </div>
                         </div>
                     </div>
@@ -69,8 +99,10 @@
                 form: {
                     well_num: "",
                     date: "",
+                    report_id: "",
                 },
-                uploadTrue: false
+                uploadTrue: false,
+                error_text: null
             }
         },
         methods: {
@@ -78,9 +110,35 @@
                 if (this.uploadTrue) {
                     let formData = new FormData();
                     formData.append('file', this.filelist[0]);
-                    formData.append('well_num', this.form.well_num);
-                    formData.append('file', this.form.date);
-                    console.log(formData)
+                    formData.append('uwi', this.form.well_num);
+                    formData.append('report_id', this.form.report_id);
+                    formData.append('report_date', this.form.date);
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/import_report/',
+                        formData).then((response) => {
+                        if (response) {
+                            this.filelist = [],
+                            this.error_text = null
+                            this.form = {
+                                well_num: "",
+                                date: "",
+                                report_id: "",
+                                filename: ""
+                            }
+                            this.uploadTrue = false
+                            this.$bvToast.toast("Файл успешно импортирован!!", {
+                                title: "Отчет",
+                                variant: "success",
+                                solid: true,
+                                toaster: "b-toaster-top-center",
+                                autoHideDelay: 8000,
+                            });
+                        } else {
+                            console.log("No data");
+                        }
+                    }).catch((error) =>{
+                        console.log(error)
+                        this.error_text = "Формат неправильный"
+                    })
                 }
             },
             onChange() {
@@ -88,11 +146,21 @@
                 this.checkForm()
             },
             checkForm(){
-                if (this.filelist.length>0 && this.form.date != "" && this.form.well_num != ""){
+                if (this.filelist.length>0 && this.check()){
                     this.uploadTrue = true
                 }else{
                     this.uploadTrue = false
                 }
+            },
+            check(){
+                let is_right = true
+                for (let prop in this.form) {
+                    if (this.form[prop] == ""){
+                        is_right = false
+                        break
+                    }
+                }
+                return is_right
             },
             remove(i) {
                 this.filelist = []
@@ -240,7 +308,7 @@
         align-items: center;
         margin: 50px auto 10px;
     }
-    .import-daily-body-btns button{
+    .import-daily-body-btns button, .import-daily-body-btns a{
         height: 42px;
         width: 162px;
         display: flex;
@@ -250,8 +318,9 @@
         border-radius: 10px;
         border: 0;
         color: #FFFFFF;
+        text-decoration: none;
     }
-    .import-daily-body-btns button:first-child{
+    .import-daily-body-btns button{
         background: #2E50E9;
         margin-right: 20px;
     }
@@ -282,10 +351,19 @@
     .form input[type='date']::-webkit-calendar-picker-indicator {
         filter: invert(1);
     }
+    .form-input{
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .errorInput{
+        border: 1px solid #F94A5B!important;
+    }
+    .error-text{
+        color: #F94A5B;
+    }
     .form input{
         display: block;
         width: 100%;
-        margin-bottom: 30px;
         background: #1F2142;
         border: 1px solid #454FA1;
         border-radius: 4px;
