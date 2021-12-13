@@ -2,7 +2,7 @@
   <div>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
-
+        <p v-if="params" class="table-container-header__title">{{ params.name }}</p>
         <template v-if="form && form.actions && form.actions.length > 0">
           <div class="dropdown">
             <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
@@ -174,6 +174,10 @@ export default {
     },
     wellId: {
       type: Number,
+      required: true
+    },
+    params: {
+      type: Object,
       required: true
     }
   },
@@ -450,9 +454,16 @@ export default {
   }
 
   &-header {
-    text-align: right;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
     padding: 14px 20px;
     background-color: #32346C;
+
+    &__title {
+      font-weight: bold;
+      margin-bottom: 0;
+    }
   }
 
   &-column-header {
