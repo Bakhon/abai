@@ -325,9 +325,40 @@
                 <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
                 <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-
-                <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_status_last_day')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectWellStatusLD.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectWellStatusLD"
+                                :options="wellStatusLDFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLSTATUSLD')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                </td>
                 <td @click="sortBy('planned_choke')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
                 <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
@@ -772,6 +803,7 @@ export default {
         expMethFilterData: Array,
         wellNameFilterData: Array,
         eventFilterData: Array,
+        wellStatusLDFilterData: Array,
     },
     computed: {
         selectHorizon: {
@@ -781,6 +813,14 @@ export default {
             set(newVal){
                 this.$store.commit("tr/SET_HORIZON", newVal);
             }, 
+        },
+        selectWellStatusLD: {
+          get(){
+            return this.$store.state.tr.wellStatusLD;
+          }, 
+          set(newVal){
+            this.$store.commit("tr/SET_WELLSTATUSLD", newVal);
+          }, 
         },
         selectObject: {
             get(){

@@ -646,6 +646,7 @@
             :expMethFilterData="expMethFilterData"
             :wellNameFilterData="wellNameFilterData"
             :eventFilterData="eventFilterData"
+            :wellStatusLDFilterData="wellStatusLDFilterData"
             @onSort="sortBy" 
             @filter="chooseFilter"
             @dropFilters="dropFilter"
@@ -1204,9 +1205,40 @@
                   <td @click="sortBy('gor')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}
                   </td>
-                  <td @click="sortBy('well_status_last_day')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_status_last_day')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectWellStatusLD.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectWellStatusLD"
+                                :options="wellStatusLDFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLSTATUSLD')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
