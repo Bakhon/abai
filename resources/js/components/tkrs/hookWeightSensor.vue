@@ -24,9 +24,9 @@
             </div>
           </div>
           <div class="dropdown-holder">
-            <b-form-select class="custom-dropdown-block" :options="archiveData" ></b-form-select>
+            <b-form-select class="custom-dropdown-block" :options="archiveData" ><img src="https://cdn4.buysellads.net/uu/1/21673/1538677471-digitalocean-260x200-light_1_.png" alt="" border="0" height="50" width="65" style="max-width: 130px;"></b-form-select>
             <div class="line-block"></div>
-            <div style="padding-left: 6px; overflow: scroll; height: 618px;" classv-if="currentTab == 1">
+            <div class="tab-archive-div" v-if="currentTab == 1">
                   <currentWorkHook v-for="template in wellsTree"
             :key="template.well_name" :template="template"></currentWorkHook>
               </div>
@@ -72,7 +72,7 @@
                   <div class="analyze-div">
                     <button class="calendar-form">
                       <a class="a-link" href="hookWeightSensorAnalyse">{{trans('tkrs.analyze_pv_npv')}}
-                      </a>
+          </a>
                     </button>
                   </div>
                   
@@ -196,7 +196,6 @@ export default {
           type: 'date',
           rangeslider: true,
           gridcolor: "#3C4270",
-        
         },
         yaxis: {
           color: "#FFFFFF",
@@ -479,7 +478,6 @@ table, th, td {
   margin-left: 4px;
   height: 100%;
 }
-
 .header-hide-expand-buttons > button {
   display: flex;
   justify-content: center;
@@ -489,7 +487,6 @@ table, th, td {
   border: 1px solid #545580;
   background-color: #333975;
 }
-
 .header-hide-expand-buttons > button:nth-of-type(2) > img {
   transform: rotate(180deg);
 }
@@ -572,5 +569,25 @@ table, th, td {
 }
 .back-a {
   margin-left: 10px
+}
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f315a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
+}
+::-webkit-scrollbar-corner {
+  background: #2f315a;
+}
+.tab-archive-div {
+  padding-left: 15%;
+  overflow: scroll; 
+  height: 618px;
 }
 </style>
