@@ -519,6 +519,7 @@ export default {
           value_double: null,
         },
         tubeNomDop: {od: null},
+        tubeNomAdd: {od: null},
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
@@ -555,6 +556,7 @@ export default {
         org: "org",
         geo: "geo",
         tubeNom: "tubeNom",
+        tubeNomAdd: "tubeNomAdd",
         dinzamer: "dinzamer",
         date_expl: "date_expl",
         measLiq: "measLiq",
@@ -1397,8 +1399,14 @@ export default {
       return "";
     },
     getTube(well){
+      if(this.well.tubeNom.od && this.well.tubeNomAdd.od){
+        return this.well.tubeNom.od + ' / ' + this.well.tubeNomAdd.od;
+      }
       if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
+        return this.well.tubeNom.od + ' / ' + '-';
+      }
+      if(this.well.tubeNomAdd.od){
+        return '-' + ' / ' + this.well.tubeNomAdd.od;
       }
       return "";
     },
