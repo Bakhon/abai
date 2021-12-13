@@ -136,22 +136,7 @@
           </div>
         </div>
         <div class="gtm-dark mt-2 row m-0 mb-2">
-          <div class="gtm-indicator-item flex-fill d-inline-block p-2">
-            <div class="bigNumber">356 <span class="units">{{ trans('paegtm.successful_events_count') }}</span></div>
-            <div class="title">{{ trans('paegtm.gtm_and_vns_count') }}</div>
-            <div class="progress gtm-progress mb-0">
-              <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 89%"
-              >
-              </div>
-            </div>
-            <div class="d-flex justify-content-between m-0 mt-1">
-              <div class="d-inline-block m-0 text-white dr-fw-700">89,25%</div>
-              <div class="progressMax d-inline-block m-0">291 167</div>
-            </div>
-          </div>
+          <successful-factors-indicator ref="successfulFactorsIndicatorRef"></successful-factors-indicator>
         </div>
       </div>
     </div>

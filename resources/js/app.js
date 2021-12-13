@@ -93,18 +93,17 @@ Vue.component('vertical-indicators', require('./components/visualcenter3/Vertica
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
-Vue.component('economic-data-cost-component', require('./components/Economic/data/cost.vue').default);
-Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
-Vue.component('economic-data-gtm-component', require('./components/Economic/data/gtm.vue').default);
-Vue.component('economic-data-analysis-component', require('./components/Economic/data/analysis.vue').default);
-Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
-
-Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
-Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
-Vue.component('economic-nrs-well', require('./components/Economic/well.vue').default);
-Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
+Vue.component('economic-cost', require('./components/Economic/cost.vue').default);
+Vue.component('economic-gtm', require('./components/Economic/gtm.vue').default);
+Vue.component('economic-nrs', require('./components/Economic/nrs/index.vue').default);
+Vue.component('economic-nrs-wells', require('./components/Economic/nrs/wells.vue').default);
+Vue.component('economic-nrs-well', require('./components/Economic/nrs/well.vue').default);
+Vue.component('economic-optimization', require('./components/Economic/optimization/index.vue').default);
+Vue.component('economic-optimization-input-params', require('./components/Economic/optimization/input_params.vue').default);
 Vue.component('economic-analysis', require('./components/Economic/analysis/index.vue').default);
 Vue.component('economic-analysis-wells', require('./components/Economic/analysis/wells.vue').default);
+Vue.component('economic-analysis-input-params', require('./components/Economic/analysis/input_params.vue').default);
+
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
 Vue.component('centralizers', require('./components/gno/modals/Centralizers.vue').default);
@@ -144,6 +143,8 @@ Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
 Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
+Vue.component('successful-factors-indicator', require('./components/GTM/components/helpers/SuccessfulFactorsIndicator.vue').default);
+Vue.component('gtm-aegtm-starting-parameters', require('./components/GTM/components/AegtmStartingParameters.vue').default);
 
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
@@ -256,7 +257,6 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
 Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
-Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
 Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);

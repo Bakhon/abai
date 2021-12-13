@@ -7,7 +7,7 @@
       "form": "underground_equipment_installation"
     },
     {
-      "action": "edit",
+      "action": "create",
       "title": "disassembling",
       "form": "underground_equipment_disassembling"
     },

@@ -454,7 +454,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: {od: null},
+        tubeNom: {nd: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -522,7 +522,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
-        diametr_stuzer: {prm: null, value_double: null}, 
+        diametr_stuzer: {prm: null, value_double: null}, value_text: null, 
         dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},   
         diameter_pump: {value_double: null},   
         well_block: {name_ru: null} 
@@ -875,9 +875,10 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well); 
+      let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1016,6 +1017,12 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
+          data: tube,
+          type: ["all"],   
+          codes: ["KGM"],       
+        },
+        {
+          name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],          
         },
@@ -1379,14 +1386,14 @@ export default {
       return value;
     },
     getTubeNom(well){
-      if(this.well.tubeNom.od && this.well.tubeNomDop.od){
-        return this.well.tubeNomOd + ' / ' + this.well.tubeNomDop.od;
-      }
       if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + '-';
+        return this.well.tubeNom.od;
       }
-      if(this.well.tubeNomDop.od){
-        return '-' + ' / ' + this.well.tubeNomDop.od;
+      return "";
+    },
+    getTube(well){
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
       }
       return "";
     },
@@ -1428,8 +1435,8 @@ export default {
     getTechmodeLiqiud(well){    
      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
-          this.well.techModeProdOil.liquid &&
-          this.well.dmart_daily_prod_oil
+          this.well.techModeProdOil.liquid != null &&
+          this.well.dmart_daily_prod_oil.liquid != null
         ) {
           return (
             this.well.techModeProdOil.liquid.toFixed(1) +
@@ -1437,10 +1444,10 @@ export default {
             this.well.dmart_daily_prod_oil.liquid.toFixed(1)
           );
         }
-        if (this.well.techModeProdOil.liquid) {
+        if (this.well.techModeProdOil.liquid != null) {
           return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
         }
-        if (this.well.dmart_daily_prod_oil.liquid) {
+        if (this.well.dmart_daily_prod_oil.liquid != null) {
           return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
         }
       }
@@ -1457,6 +1464,9 @@ export default {
             " / " +
             this.well.dailyInjectionOil.pressure_inj
           );
+        }
+        if (this.well.tech_mode_inj.inj_pressure === null && this.well.dailyInjectionOil.pressure_inj === null) {
+          return "- / -"; 
         }
         if (this.well.tech_mode_inj.inj_pressure === null) {
           return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;

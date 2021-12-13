@@ -73,6 +73,11 @@ export default {
       } else {
         this.isEmpty = true;
       }
+      if (this.type === "notify") {
+        e.stopPropagation();
+        this.$emit("modal-response");
+        this.$emit("close-modal");
+      }
     },
     handleDelete(e) {
       e.stopPropagation();

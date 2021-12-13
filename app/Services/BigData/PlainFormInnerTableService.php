@@ -39,7 +39,7 @@ class PlainFormInnerTableService
         $submittedData = [];
 
         foreach ($this->request->get($field['code']) as $data) {
-            if ($data['id']) {
+            if (!empty($data['id'])) {
                 $this->updateRow($field['table'], $data['id'], $data);
             } else {
                 $data[$field['parent_column']] = $parentId;
@@ -66,6 +66,7 @@ class PlainFormInnerTableService
         DB::connection('tbd')
             ->table($table)
             ->insert($data);
+        dd($table, $data);
     }
 
     private function removeDeletedRows(array $field, int $parentId)

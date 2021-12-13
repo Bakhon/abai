@@ -63,10 +63,10 @@ export default {
     setTableData() {
       if (this.currentSubsoilField[0])
         this.handleTableData({
-          field_id: this.currentSubsoilField[0].field_id,
           report_id: this.treeChild.id,
           user_id: this.userID,
           template: this.treeChild,
+          type: "upload",
         });
     },
   },

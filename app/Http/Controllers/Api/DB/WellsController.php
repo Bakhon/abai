@@ -13,7 +13,6 @@ use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\TechModeOil;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
-use App\Models\BigData\WellBlock;
 use App\Repositories\WellCardGraphRepository;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -33,7 +32,8 @@ class WellsController extends Controller
 
     public function getStructureTree(StructureService $service, Request $request)
     {
-        return $service->getTreeWithPermissions();
+        $types = array_filter(explode(',', $request->get('types')));
+        return $service->getFormTree($types);
     }
 
     public function wellInfo($well)
@@ -96,8 +96,7 @@ class WellsController extends Controller
             'well_expl_right' => $this->wellExplOnRight($well),
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
-            'tubeNom' => $this->tubeNom($well, 'BECS'),
-            'tubeNomDop' => $this->tubeNom($well, 'AECS'),
+            'tubeNom' => $this->tubeNom($well),
             'well_type' => $this->wellType($well),
             'org' => $this->structureOrg($orgs),
             'main_org_code' => $this->orgCode($orgs),
@@ -188,22 +187,34 @@ class WellsController extends Controller
         return "";
     }
 
-    private function tubeNom(Well $well, $code)
+    private function tubeNom(Well $well)
     {
-        $wellConstr = DB::connection('tbd')
-                        ->table('prod.well_constr as wc')
-                        ->join('dict.equip_type as d', 'wc.casing_type', '=', 'd.id')
-                        ->join('dict.tube_nom as dt', 'wc.casing_nom', '=', 'dt.id')
-                        ->where('wc.well', '=', $well->id)
-                        ->where('d.code', '=', $code)
-                        ->where('wc.project_drill', '=', 'false')
-                        ->get('dt.od')
+        $wellConstr = $well->tubeNom()
+                        ->wherePivot('project_drill', '=', 'false')
+                        ->wherePivot('casing_type', '=', '8')
+                        ->WherePivot('casing_type', '=', '9', 'or')
+                        ->wherePivot('od', '!=', null)
+                        ->get(['prod.well_constr.od'])
                         ->toArray();
 
         if($wellConstr){
-            return $wellConstr[0];
+        return $wellConstr[0];
+        }
+
+        if(!$wellConstr){
+        $wellConstrOd = DB::connection('tbd')
+                        ->table('prod.well_constr')
+                        ->where('well', '=', $well->id)
+                        ->where('od', '!=', null)      
+                        ->where('project_drill', 'false')                  
+                        ->orderBy('id', 'asc')
+                        ->get('od')
+                        ->toArray();   
+        if($wellConstrOd){
+        return $wellConstrOd[0];
         }
         return "";
+        }                   
     }
 
     private function date_expl(Well $well)
@@ -327,7 +338,10 @@ class WellsController extends Controller
                 ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
                 ->where('m.code', '=', 'BND')
                 ->where('e.code', '=', 'CHK')
-                ->get('efp.value_double')
+                ->where('wq.well', $well->id)
+                ->where('efp.value_text', '!=', null)
+                ->orderBy('wq.dbeg', 'desc')
+                ->get(['efp.value_double', 'efp.value_text'])
                 ->toArray();
 
         if($diametrstuzer){

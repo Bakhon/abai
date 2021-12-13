@@ -4,9 +4,9 @@
             <div class="form-group row w-100">
                 <label for="dataSelect" class="col-sm-4 col-form-label">{{ trans('map_constructor.select_data') }}</label>
                 <div class="col-sm-8">
-                    <select class="form-control" id="dataSelect">
-                        <option value="kno" disabled>{{ trans('map_constructor.select_kno') }}</option>
+                    <select class="form-control" id="dataSelect" v-model="dataType">
                         <option value="kto">{{ trans('map_constructor.select_kto') }}</option>
+                        <option value="kno">{{ trans('map_constructor.select_kno') }}</option>
                     </select>
                 </div>
             </div>
@@ -50,10 +50,10 @@
                     </div>
                 </div>
             </div>
-          <div class="mt-3 d-flex flex-row-reverse w-100">
-            <button type="button" class="btn btn-secondary" @click="$emit('close')"> {{ trans('map_constructor.cancel') }}</button>
-            <button type="button" class="btn btn-primary mr-1" @click="buildMapSpecificHandler"> {{ trans('map_constructor.build') }}</button>
-          </div>
+            <div class="mt-3 d-flex flex-row-reverse w-100">
+              <button type="button" class="btn btn-secondary" @click="$emit('close')"> {{ trans('map_constructor.cancel') }}</button>
+              <button type="button" class="btn btn-primary mr-1" @click="buildMapSpecificHandler"> {{ trans('map_constructor.build') }}</button>
+            </div>
         </div>
     </div>
 </template>
@@ -66,6 +66,7 @@
         },
         data() {
             return {
+                dataType : 'kto',
                 dateBuildMap : null,
                 selectedDzo: null,
                 selectedField: null,
@@ -86,6 +87,7 @@
         methods: {
             buildMapSpecificHandler() {
                 this.buildMapSpecific({
+                    dataType: this.dataType,
                     selectedDzo: this.selectedDzo,
                     selectedField: this.selectedField,
                     selectedHorizon: this.selectedHorizon,

@@ -500,7 +500,7 @@ return [
             'oil_production' => 'Добыча нефти (т)',
             'water_injection' => 'Закачка воды (м3)',
             'water_production' => 'Добыча воды (м3)',
-            'liquid_production' => 'Добыча жидкости (м3)',
+            'liquid_production' => 'Добыча жидкости (т)',
             'oil_injection' => 'Сдача нефти (т)',
             'gas_production' => 'Добыча газа (м3)',
             'steam_injection' => 'Закачка пара (м3)',
@@ -1342,11 +1342,18 @@ return [
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
         ],
         'plan_g_d_i_s' => [
-            'title'=> 'План по ГДИС',
+            'title' => 'План по ГДИС',
             'date' => 'Дата с',
             'date_to' => 'Дата по',
             'well' => 'скваж.',
             'measure' => 'замер.',
+            'flowing_wells' => 'Фонтанные скважины',
+            'depthpump_wells' => 'Глубинонасосные скважины',
+            'pumpjack' => 'ШГН',
+            'evn_ecn' => 'ЭВН, ЭЦН',
+            'inj_wells' => 'Нагнетательные скважины',
+            'obs_wells' => 'Пьезометрические и наблюдательные скважины',
+            'water_wells' => 'Водозаборные скважины',
         ],
         'plan_g_i_s' => [
             'title'=> 'План по ГИС',

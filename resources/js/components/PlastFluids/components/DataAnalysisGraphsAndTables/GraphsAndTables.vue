@@ -17,7 +17,7 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graphKey, index) in currentGraphics"
+            v-for="(graph, index) in sortedCurrentGraphics"
             :key="index"
             class="content-child"
             :style="
@@ -27,9 +27,10 @@
             "
           >
             <ScatterGraph
-              :series="graphData[graphKey]"
-              :title="trans(`plast_fluids.${graphType}_graph_${graphKey}`)"
-              :graphType="graphKey"
+              :series="graphData[graph.key]"
+              :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
+              :graphType="graph.key"
+              :currentGraphs="sortedCurrentGraphics"
             />
           </div>
         </div>
@@ -72,6 +73,7 @@ export default {
       "loading",
       "graphType",
       "currentGraphics",
+      "currentBlocks",
     ]),
     graphData() {
       const zeroX = ["Ps", "Bs", "Ds", "Ms"];
@@ -119,6 +121,9 @@ export default {
         !this.loading
       );
     },
+    sortedCurrentGraphics() {
+      return this.currentGraphics.sort((a, b) => a.order - b.order);
+    },
   },
   watch: {
     currentSubsoilField: {
@@ -130,13 +135,25 @@ export default {
       },
       deep: true,
     },
+    currentSubsoilHorizon(value) {
+      this.handleBlocksFilter(value);
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
+    currentBlocks() {
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
   },
   methods: {
     ...mapActions("plastFluidsLocal", [
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
-    setConfig() {},
     getMaxMin(arrayData) {
       const max = Math.max(...arrayData);
       const min = Math.min(...arrayData);
