@@ -372,7 +372,7 @@ class EconomicNrsController extends Controller
             ->groupBy('uwi');
 
         foreach ($wells as &$well) {
-            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject']['coord_point'] ?? null;
         }
 
         return $wells;

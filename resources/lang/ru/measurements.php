@@ -42,4 +42,5 @@ return array (
   'unit' => 'ед.',
   'thousand_tons' => 'тыс. тонн',
   'rods' => 'штанг',
+  'm3' => 'м³',
 );

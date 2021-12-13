@@ -37,5 +37,8 @@ export const paegtmMutations = {
     },
     CHANGE_TREE_STORE (state, value) {
         state.treeStore = value
-    }
+    },
+    CHANGE_SELECTED_GTM (state, value) {
+        state.selectedGtm = value
+    },
 }

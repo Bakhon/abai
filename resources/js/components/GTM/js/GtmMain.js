@@ -183,7 +183,9 @@ export default {
                 if (data) {
                     this.comparisonIndicators = data
                 }
-            });
+            }).catch(err => {
+                this.setNotify(this.trans('paegtm.no_gtm_info_data'), this.trans('app.error'), "danger")
+            }).finally(() => this.SET_LOADING(false));
         },
         getMainTableData() {
             this.axios.get(
@@ -194,7 +196,9 @@ export default {
                 if (data) {
                     this.mainTableData = JSON.parse(JSON.stringify(data));
                 }
-            });
+            }).catch(err => {
+                this.setNotify(this.trans('paegtm.no_main_table_data'), this.trans('app.error'), "danger")
+            }).finally(() => this.SET_LOADING(false));
 
         },
         getMainIndicatorData() {
@@ -206,7 +210,7 @@ export default {
                 if (data) {
                     this.mainIndicatorData = data
                 }
-            });
+            }).finally(() => this.SET_LOADING(false));
         },
         getAdditionalIndicatorData() {
             this.axios.get(
@@ -226,7 +230,18 @@ export default {
             ).then((response) => {
                 let data = response.data;
                 if (data) {
-                    this.chartData = data
+                    this.chartData = data;
+
+                    if(typeof this.$refs.newWellsDynamicsChart !== 'undefined') {
+                        this.$refs.newWellsDynamicsChart.updateOptions({ labels: data.months });
+                    }
+
+                    if(typeof this.$refs.gtmDynamicsChart !== 'undefined') {
+                        this.$refs.gtmDynamicsChart.updateOptions({ labels: data.months });
+                    }
+
+                    this.chartOptions.labels = data.months;
+                    this.chartOptions2.labels = data.months;
                 }
             }).finally(() => this.SET_LOADING(false));
         },
@@ -261,7 +276,16 @@ export default {
         changeChartOptions() {
             this.chartOptions2 = _.cloneDeep(this.chartOptions);
             this.chartOptions2.title.text = this.trans('paegtm.dynamicChartOil')
-        }
+        },
+        setNotify(message, title, type) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: type,
+                solid: true,
+                toaster: "b-toaster-top-center",
+                autoHideDelay: 8000,
+            });
+        },
 
     },
     computed: {
@@ -286,6 +310,6 @@ export default {
         this.changeChartOptions()
     },
     mounted() {
-        this.getData();
+
     }
 }

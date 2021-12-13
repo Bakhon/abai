@@ -5,6 +5,7 @@
             :buildNameModal="buildNameModal"
             :buildMapModal="buildMapModal"
             :buildMapSpecificModal="buildMapSpecificModal"
+            :interpolationModal="interpolationModal"
         ></TopMenu>
         <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">

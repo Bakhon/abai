@@ -50,7 +50,7 @@ class WellsController extends Controller
         )->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        } 
+        }
 
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')

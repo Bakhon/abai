@@ -180,13 +180,13 @@ export default {
           isParams: true
         },
         {
-          label: 'fixed_nopayrolls',
-          key: 'fixed_nopayrolls',
+          label: this.trans('economic_reference.salary_optimization'),
+          key: 'cost_wr_payrolls',
           isParams: true
         },
         {
-          label: 'cost_wr_payrolls',
-          key: 'cost_wr_payrolls',
+          label: this.trans('economic_reference.retention_percents'),
+          key: 'fixed_nopayrolls',
           isParams: true
         },
         {

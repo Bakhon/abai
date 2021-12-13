@@ -1,19 +1,19 @@
 <template>
-  <div :id="`pie_wrapper${_uid}`" class="pie-wrapper">
+  <div :id="`pie_wrapper${_uid}`" class="pie-wrapper" :class="type=='prod'? 'pie-wrapper__prod':''" >
     <v-style v-if="radiusWidth">
       #pie_wrapper{{_uid}}{
-          --radius-width: {{radiusWidth}}px;
+      --radius-width: {{radiusWidth}}px;
       }
     </v-style>
     <div class="csspie" :data-value="data_value">
     </div>
     <div class="pie__info">
       <div class="well__name">{{ wellName }}</div>
-      <div>92 - 70%</div>
+      <div class="well__value" v-if="data_value > 0"> {{ water_prod }} - {{ oil_prod }} - {{ data_value }}%</div>
+      <div class="well__value" v-if="water_cut > 0">{{ water_cut }}</div>
     </div>
   </div>
 </template>
-
 <script>
 import Vue from "vue";
 Vue.component('v-style', {
@@ -24,31 +24,40 @@ Vue.component('v-style', {
 export default {
   props :[
     'data_value',
+    'oil_prod',
+    'water_prod',
+    'water_cut',
     'wellName',
     'radiusWidth',
-    'type'
+    'type','zoom'
   ],
   data: function () {
     return {
       radius_width: 100
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
-
-.csspan{
-  height: 100px;
-  width: 100px;
-  background-color: red;
+.well__value{
+  width: 80px;
+  font-size: 10px;
+  text-align: center;
 }
+
 .pie-wrapper {
   height: var(--radius-width);
   width: var(--radius-width);
   display: inline-block;
   position: relative;
-  background: #1997c7;
+  //background: #87ceeb;\
+  border: 1px solid #000;
+  background: #87ceebbd;
   border-radius:calc(var(--radius-width) / 2);
+}
+.pie-wrapper__prod {
+  //background-color: #13af97!important;
+  background-color: #13af9782!important;
 }
 .csspie {
   position: absolute;
@@ -66,9 +75,10 @@ export default {
     transform-origin: right center;
   }
 }
-  .csspie:BEFORE,.csspie:AFTER {
-    background-color: #e88f1a;
-  }
+.csspie:BEFORE,.csspie:AFTER {
+  //background-color: #e88f1a;
+  background-color: #e88f1abd;
+}
 @for $i from 1 through 99 {
   .csspie[data-value="#{$i}"]:BEFORE {
     transform: (rotate(#{$i * 3.6}deg));
@@ -81,17 +91,17 @@ export default {
     height: var(--radius-width);
     transform-origin: (center, center);
 
-&:BEFORE {
-   left: 0px;
- }
+    &:BEFORE {
+      left: 0px;
+    }
     &:AFTER {
-              content: "";
-              position: absolute;
-              width: calc(var(--radius-width) / 2);
-              height: var(--radius-width);
-              left: calc(var(--radius-width) / 2);
-              border-radius: 0 calc(var(--radius-width) / 2) calc(var(--radius-width) / 2) 0;
-            }
+      content: "";
+      position: absolute;
+      width: calc(var(--radius-width) / 2);
+      height: var(--radius-width);
+      left: calc(var(--radius-width) / 2);
+      border-radius: 0 calc(var(--radius-width) / 2) calc(var(--radius-width) / 2) 0;
+    }
   }
 }
 @for $i from 0 through 49 {
@@ -101,6 +111,7 @@ export default {
 }
 .well__name{
   border-bottom: 1px solid ;
+  text-align: center;
 }
 .pie__info{
   position: absolute;

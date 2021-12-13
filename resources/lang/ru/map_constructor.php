@@ -117,4 +117,5 @@ return array (
   'max_value' => 'Максимальное значение',
   'interval' => 'Интервал',
   'isolines_count' => 'Количество изолиний',
+  'interpolation' => 'Интерполяция',
 );

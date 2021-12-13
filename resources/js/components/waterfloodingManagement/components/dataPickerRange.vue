@@ -24,11 +24,15 @@
   </div>
 </template>
 <script>
-import {waterfloodingManagementMapActions} from "../../store/helpers";
+import {waterfloodingManagementMapActions} from "../../../store/helpers";
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import moment from 'moment'
 import axios from "axios";
 
 export default {
+  components:{
+    DatePicker
+  },
   data: function () {
     return {
       isDatePickerShow: false,
