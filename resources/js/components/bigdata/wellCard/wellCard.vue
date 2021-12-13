@@ -769,10 +769,7 @@ export default {
       let artificialBottomHole = this.well.artificialBottomHole
         ? this.well.artificialBottomHole.depth
         : "";
-      let perfActual =
-        this.well.perfActual.top && this.well.perfActual.base
-          ? this.well.perfActual.top + " - " + this.well.perfActual.base
-          : ""; 
+      let perfActual = this.perfActual ? this.perfActual : "";
       let techModeProdOil = this.getTechmodeLiqiud(well);   
       let techModeProdOil_measWaterCut =
         this.well?.techModeProdOil?.wcut && this.well?.dmart_daily_prod_oil?.wcut
@@ -853,9 +850,7 @@ export default {
         " / " +
         this.well.dailyInjectionOil.water_inj_val.toFixed(1)
         : "";
-      let perfActualDate = this.well.perfActual
-        ? this.getFormatedDate(this.well.perfActual.perf_date)
-        : "";
+      let perfActualDate = this.perfActual ? this.getFormatedDate(this.perf_date) : "";
       let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
       this.selectedDzo = this.well_all_data.main_org_code;
@@ -1024,7 +1019,8 @@ export default {
         {
           name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
-          type: ["all"],          
+          type: ["all"], 
+          codes: ["KTM"],         
         },
         {
           name: this.trans("well.type_gol"),
@@ -1356,6 +1352,8 @@ export default {
                 "name_ru"
               );
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
+              this.perf_date = data.well_perf_actual[0].perf_date;
+              this.perfActual = this.getwellPerf(data.well_perf_actual, "top", "base");
               this.wellOrgName = this.getMultipleValues(
                 data.org.reverse(),
                 "name_ru"
@@ -1384,6 +1382,13 @@ export default {
         }
       }
       return value;
+    },
+    getwellPerf(objectName, objectKey, objectKey2){
+      let val = '';
+      for (let i = 0; i < Object.keys(objectName).length; i++) {
+          val += objectName[i][objectKey] + " - " + objectName[i][objectKey2]+'\r\n';
+      }
+      return val;
     },
     getTubeNom(well){
       if(this.well.tubeNom.od){
@@ -2343,6 +2348,7 @@ h4 {
     text-align: left;
     padding: 2px;
     font-size: 13px;
+    white-space:pre-line;
   }
 
 

@@ -165,9 +165,9 @@
                         <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
                         <thead>
                           <tr >
-                            <td scope="col">{{trans('tr.field')}}</td>
-                            <td scope="col">{{trans('tr.well_state')}}</td>
-                            <td scope="col">{{trans('tr.well_number_short')}}</td>
+                            <td class="fix-field-modal" scope="col">{{trans('tr.field')}}</td>
+                            <td class="fix-well-state-modal" scope="col">{{trans('tr.well_state')}}</td>
+                            <td class="fix-well-number-short" scope="col">{{trans('tr.well_number_short')}}</td>
                             <td scope="col">{{trans('tr.u_horizon')}}</td>
                             <td scope="col">{{trans('tr.u_object')}}</td>
                             <td scope="col">{{trans('tr.operation_method_short')}}</td>
@@ -193,9 +193,9 @@
                           <tr v-for="(row, row_index) in lonelywell" 
                             :key="row_index"
                             ref="editTable">
-                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
-                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
-                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
+                            <td class="fix-field-modal"><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
+                            <td class="fix-well-state-modal"><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td class="fix-well-number-short"><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
                             <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !isExpMethInput(row),'input_edit_modal': isExpMethInput(row)}"></td>
@@ -6938,6 +6938,22 @@ table::-webkit-scrollbar-corner {
 }
 .exit-div {
   padding-left: calc(100% - 378px);
+}
+.fix-field-modal {
+  left: -1px !important;
+  width: 27px !important;
+  z-index: 3002 !important;
+  position: sticky;
+}
+.fix-well-state-modal {
+  left: 134px !important;
+  width: 100px !important;
+  z-index: 3001 !important;
+}
+.fix-well-number-short {
+  left: 269px !important;
+  width: 55 !important;
+  z-index: 3000 !important;
 }
 
     .table-outer{

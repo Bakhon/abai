@@ -28,6 +28,8 @@ export default {
     methods: {
         async changeDate() {
             this.isDataSended = false;
+            this.currentDate = moment(this.period).format('DD-MM-YYYY');
+            this.currentDateDetailed = moment(this.period).format("YYYY-MM-DD HH:mm:ss");
             this.handleSwitchFilter();
         },
         async sendToApprove() {
@@ -55,6 +57,7 @@ export default {
            this.isDataReady = false;
            this.disableHighlightOnCells();
            this.turnOffErrorHighlight();
+           this.changeDateToToday();
            if (name === 'isPlanActive') {
                await this.sleep(100);
                for (let i=0; i <=12; i++) {
@@ -75,6 +78,7 @@ export default {
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
+            this.changeDateToToday();
             this.changeDefaultDzo();
             this.handleSwitchFilter();
             this.SET_LOADING(false);
@@ -90,6 +94,7 @@ export default {
                     self.processCurrentData(inputData,dataset);
                 }
             });
+
             let queryOptions = {
                 'dzoName': this.selectedDzo.ticker,
                 'isCorrected': true,
