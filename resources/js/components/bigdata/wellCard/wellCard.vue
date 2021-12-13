@@ -801,8 +801,8 @@ export default {
       let well_gdisCurrent = this.well.gdisCurrent.meas_date
         ? this.getFormatedDate(this.well.gdisCurrent.meas_date)
         : "";
-      let prsWellWorkover = this.well.prsWellWorkover.dend
-        ? this.getFormatedDate(this.well.prsWellWorkover.dend)
+      let prsWellWorkover = this.well.prsWellWorkover.dbeg
+        ? this.getFormatedDate(this.well.prsWellWorkover.dbeg)
         : "";
       let well_gis = this.well.gis.gis_date
         ? this.getFormatedDate(this.well.gis.gis_date)
