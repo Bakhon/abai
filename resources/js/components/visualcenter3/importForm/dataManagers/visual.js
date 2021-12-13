@@ -94,13 +94,22 @@ export default {
         };
     },
     created() {
-        let almatyCurrentDate = moment().tz('Asia/Almaty');
-        if (almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes) {
-            this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
-            this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
-        }
+        this.changeDateToToday();
     },
     methods: {
+        changeDateToToday() {
+            let almatyCurrentDate = moment().tz('Asia/Almaty');
+            if (this.isDateShouldBeChanged(almatyCurrentDate)) {
+                this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
+                this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
+            } else {
+                this.currentDate = moment().subtract(1, 'days').format('DD-MM-YYYY');
+                this.currentDateDetailed = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
+            }
+        },
+        isDateShouldBeChanged(almatyCurrentDate) {
+            return almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes && !this.bigDzo.includes(this.selectedDzo.ticker);
+        },
         changeButtonVisibility() {
             this.isChemistryNeeded = !this.isChemistryNeeded;
         },
