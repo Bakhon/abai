@@ -653,6 +653,7 @@ export default {
                                     }
                                     data.push({
                                         coords: [item[fileFieldNames.mouthX], item[fileFieldNames.mouthY]],
+                                        additionalCoords: [item[fileFieldNames.bottomholeX], item[fileFieldNames.bottomholeY]],
                                         name: item[fileFieldNames.wellName],
                                         icon: icon,
                                     });

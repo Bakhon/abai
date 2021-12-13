@@ -735,7 +735,7 @@ export default {
             }
             let wellLayers = [];
             data.forEach(item => {
-                const itemStyle = new Style({
+                const pointStyle = new Style({
                     image: new Icon({
                         crossOrigin: 'anonymous',
                         src: '/img/icons/map-constructor/' + item.icon,
@@ -750,6 +750,24 @@ export default {
                         text: item.name,
                     })
                 });
+                if (item.coords[0] !== item.additionalCoords[0] || item.coords[1] !== item.additionalCoords[1]) {
+                    wellLayers.push(
+                        new VectorLayer({
+                            source: new VectorSource({
+                                features: [
+                                    new Feature({
+                                        geometry: new LineString([item.coords, item.additionalCoords]),
+                                    })]
+                            }),
+                            style: [new Style({
+                                stroke: new Stroke({
+                                    color: '#fff',
+                                    width: 2,
+                                }),
+                            })],
+                        }),
+                    );
+                }
                 wellLayers.push(
                     new VectorLayer({
                         source: new VectorSource({
@@ -758,7 +776,7 @@ export default {
                                     geometry: new Point(item.coords),
                                 })]
                         }),
-                        style: [itemStyle],
+                        style: [pointStyle],
                     }),
                 );
             });
