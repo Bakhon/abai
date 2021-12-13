@@ -109,7 +109,7 @@ abstract class PlainForm extends BaseForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = $dbQuery->first()->toArray();
             $dbQuery->update($data);
 
             $this->submittedData['fields'] = $data;
@@ -193,10 +193,11 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory($id, \DateTimeInterface $date = null): array
+    public function getHistory($id, string $form, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)
+            ->where('form_name', $form)
             ->orderBy('created_at', 'desc')
             ->with('user')
             ->get();

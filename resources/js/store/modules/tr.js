@@ -26,6 +26,7 @@ const tr = {
     plannedEvents: [],
     pageNumber: 1,
     isFullVersion: false,
+    wellStatusLD: [],
   },
 
   mutations: {
@@ -100,7 +101,11 @@ const tr = {
     },
     SET_EVENT: (state, val) => {
       state.plannedEvents = val;
-    },  },
+    },
+    SET_WELLSTATUSLD: (state, val) => {
+      state.wellStatusLD = val;
+    },    
+  },
 
   actions: {
   },
@@ -126,6 +131,7 @@ const tr = {
         day_2: state.day_dyn_end,
         wellName: state.wellName,
         plannedEvents: state.plannedEvents,
+        wellStatusLD: state.wellStatusLD,
       };
     },
     notDynamic: (state) => {
@@ -145,6 +151,7 @@ const tr = {
         pageNum: state.pageNumber,
         wellName: state.wellName,
         plannedEvents: state.plannedEvents,
+        wellStatusLD: state.wellStatusLD,
       };
     },
   },
