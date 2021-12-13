@@ -157,10 +157,10 @@
   </div>
 </template>
 <script>
-import listTable from './list-table'
+import listTable from './components/list-table'
 import {MglMap, MglNavigationControl, MglMarker} from 'vue-mapbox'
 import {waterfloodingManagementMapGetters} from '@store/helpers';
-import MapPieChart from "./mapPieChart";
+import MapPieChart from "./components/mapPieChart";
 import VueApexCharts from 'vue-apexcharts'
 import axios from "axios";
 

@@ -3,7 +3,7 @@
     <input class="checkbox" type="checkbox" v-if="showCheckbox" />
     <input
       type="number"
-      v-model="computedInputData"
+      v-model.number="computedInputData"
       :id="'approximation-' + labelTransKey"
     />
     <label :for="'approximation-' + labelTransKey">{{
@@ -21,14 +21,14 @@ export default {
         return this.inputData;
       },
       set(value) {
-        this.$emit("update:inputData", Number(value));
+        this.$emit("update:inputData", value);
       },
     },
   },
   props: {
     showCheckbox: Boolean,
     labelTransKey: String,
-    inputData: Number,
+    inputData: [String, Number],
   },
 };
 </script>

@@ -143,6 +143,8 @@ Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
 Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpers/TreeDatePicker.vue').default);
+Vue.component('successful-factors-indicator', require('./components/GTM/components/helpers/SuccessfulFactorsIndicator.vue').default);
+Vue.component('gtm-aegtm-starting-parameters', require('./components/GTM/components/AegtmStartingParameters.vue').default);
 
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
@@ -255,7 +257,6 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
 Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
-Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
 Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);

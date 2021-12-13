@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\BigData\Dictionaries\Org;
 use App\Models\Paegtm\DzoAegtm;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
@@ -127,15 +128,52 @@ class PaegtmDzoAegtmImport implements ToModel, WithStartRow
         'idn_prod_plan' => 111,
         'idn_prod_fact' => 112,
 
-        'vns_prod_plan_chart'  => 113,
-        'vns_prod_fact_chart'  => 114,
-        'vns_plan_chart'  => 115,
-        'vns_fact_chart'  => 116,
-        'gtm_prod_plan_chart'  => 117,
-        'gtm_prod_fact_chart'  => 118,
-        'gtm_plan_chart'  => 119,
-        'gtm_fact_chart'  => 120,
+        'vns_prod_plan_chart' => 113,
+        'vns_prod_fact_chart' => 114,
+        'vns_plan_chart' => 115,
+        'vns_fact_chart' => 116,
+        'gtm_plan_chart' => 117,
+        'gtm_fact_chart' => 118,
+        'gtm_prod_plan_chart' => 119,
+        'gtm_prod_fact_chart' => 120,
+
+        'sko_plan' => 121,
+        'sko_fact' => 122,
+        'sko_prod_plan' => 123,
+        'sko_prod_fact' => 124,
+        'rir_plan' => 125,
+        'rir_fact' => 126,
+        'rir_prod_plan' => 127,
+        'rir_prod_fact' => 128,
+
+        'vns_increase_plan' => 129,
+        'vns_grp_increase_plan' => 130,
+        'nn_grp_increase_plan' => 131,
+        'nn_increase_plan' => 132,
+        'opl_increase_plan' => 133,
+        'grp_increase_plan' => 134,
+        'vbd_increase_plan' => 135,
+        'pvlg_increase_plan' => 136,
+        'pvr_dostrel_increase_plan' => 137,
+        'grp_skin_increase_plan' => 138,
+        'pvr_perestrel_increase_plan' => 139,
+        'transfer_to_oil_increase_plan' => 140,
+        'ugl_increase_plan' => 141,
+        'rir_increase_plan' => 142,
+        'pvr_increase_plan' => 143,
+        'zbs_increase_plan' => 144,
+        'vps_increase_plan' => 145,
+        'gs_grp_increase_plan' => 146,
+        'gs_increase_plan' => 147,
+        'zbgs_increase_plan' => 148,
     ];
+
+    private $_orgs;
+
+    public function __construct()
+    {
+        $this->_orgs = Org::all();
+    }
 
     /**
      * @return int
@@ -167,14 +205,18 @@ class PaegtmDzoAegtmImport implements ToModel, WithStartRow
     {
         $arFileds = [];
 
-        foreach (self::COLUMNS as $filed => $columnIndex) {
-            if ($filed == 'date') {
-                $arFileds[$filed] = $this->transformDate($row[$columnIndex]);
+        $org = $this->_orgs->where('name_short_ru', $row[self::COLUMNS['org_name_short']])->first();
+
+        foreach (self::COLUMNS as $field => $columnIndex) {
+            if ($field == 'date') {
+                $arFileds[$field] = $this->transformDate($row[$columnIndex]);
                 continue;
             }
 
-            $arFileds[$filed] =  $row[$columnIndex];
+            $arFileds[$field] =  $row[$columnIndex];
         }
+
+        $arFileds['org_id'] = $org ? $org->id : null;
 
         return new DzoAegtm($arFileds);
     }

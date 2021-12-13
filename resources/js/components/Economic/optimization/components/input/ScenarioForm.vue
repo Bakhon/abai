@@ -137,21 +137,21 @@ export default {
           minValue: 0
         },
         {
-          title: 'fixed_nopayrolls',
+          title: this.trans('economic_reference.salary_optimization'),
+          singleKey: 'cost_wr_payroll',
+          multipleKey: 'cost_wr_payrolls',
+          minValue: 0,
+          maxValue: 1,
+          step: 0.01
+        },
+        {
+          title: this.trans('economic_reference.retention_percents'),
           singleKey: 'fixed_nopayroll',
           multipleKey: 'fixed_nopayrolls',
           minValue: 0,
           maxValue: 1,
           step: 0.01
         },
-        {
-          title: 'cost_wr_payrolls',
-          singleKey: 'cost_wr_payroll',
-          multipleKey: 'cost_wr_payrolls',
-          minValue: 0,
-          maxValue: 1,
-          step: 0.01
-        }
       ]
     }
   }
