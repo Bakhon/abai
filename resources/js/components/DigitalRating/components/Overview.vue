@@ -33,18 +33,17 @@ export default {
   },
 
   async mounted() {
+    this.SET_LOADING(true);
     await this.fetchData();
+    this.SET_LOADING(false);
   },
 
   methods: {
     async fetchData() {
-      this.SET_LOADING(true);
-
       const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/sector-forecast/${this.sectorNumber}`);
       if (!res.error) {
         this.overviewData = res?.data;
       }
-      this.SET_LOADING(false);
     },
 
     ...globalloadingMutations([
