@@ -365,7 +365,7 @@ export default {
         } else {
             var month = today.getMonth() + 1;
             var year = today.getFullYear();
-            this.isEditable = true;
+            this.isEditable = false;
         }
         this.$store.commit("tr/SET_MONTH", month);
         this.$store.commit("tr/SET_YEAR", year);
