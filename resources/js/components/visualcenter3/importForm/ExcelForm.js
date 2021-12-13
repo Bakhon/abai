@@ -570,7 +570,7 @@ export default {
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (await this.isYearlyDifferenceAbnormal(yearlyFact)) {
+            if (moment().month() !== 0 && moment().date() <= 10 && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
                 return true;
             }
 
