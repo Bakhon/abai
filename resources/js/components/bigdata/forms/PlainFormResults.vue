@@ -317,7 +317,7 @@ export default {
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
       ) {
 
-        if (row[column.code].text) {
+        if (row[column.code] && row[column.code].text) {
           return row[column.code].text
         }
 
