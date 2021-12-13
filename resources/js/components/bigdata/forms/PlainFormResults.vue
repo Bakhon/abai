@@ -316,6 +316,11 @@ export default {
           typeof this.dictFields[column.code] !== 'undefined'
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
       ) {
+
+        if (row[column.code].text) {
+          return row[column.code].text
+        }
+
         let dict = this.getDictFlat(this.dictFields[column.code])
 
         if (column.multiple) {
