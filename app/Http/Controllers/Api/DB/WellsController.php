@@ -50,7 +50,7 @@ class WellsController extends Controller
         )->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }
+        } 
 
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
@@ -659,15 +659,23 @@ class WellsController extends Controller
 
     private function wellPerfActual(Well $well)
     {
-        $wellPerfActual = $well->wellPerfActualNew()
-            ->withPivot('perf_date')
-            ->orderBy('pivot_perf_date', 'desc')
-            ->select(['perf_date', 'top', 'base'])
-            ->get()
-            ->toArray();
+        $wellPerfActual = DB::connection('tbd')
+                            ->table('prod.well_perf as w')
+                            ->where('w.well', $well->id)
+                            ->orderBy('w.perf_date', 'desc')
+                            ->get('w.id')
+                            ->toArray();
 
         if ($wellPerfActual) {
-            return $wellPerfActual[0];
+            $wellPerf = DB::connection('tbd')
+                        ->table('prod.well_perf_actual as wp')
+                        ->join('prod.well_perf','wp.well_perf', '=', 'prod.well_perf.id')
+                        ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
+                        ->orderBy('wp.top','ASC')
+                        ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
+                        ->toArray();
+                      
+            return $wellPerf;            
         }
 
         return "";
