@@ -1,6 +1,6 @@
 {
   "rowsFormatMapping": {
-    "title": [0,7,14,21,28,35,67,77],
+    "title": [0,7,14,21,28,35,67,77,84,91],
     "subTitle": [36]
   },
   "columnsFormatMapping": {
@@ -8,6 +8,6 @@
     "threeColumns": [0,21,28,67],
     "fourColumns": [35,36,50],
     "fiveColumns": [],
-    "sixColumns": [14,77]
+    "sixColumns": [14,77,84,91]
   }
 }
