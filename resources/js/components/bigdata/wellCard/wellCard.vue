@@ -1353,7 +1353,6 @@ export default {
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
               this.perf_date = data.well_perf_actual[0].perf_date;
               this.perfActual = this.getwellPerf(data.well_perf_actual, "top", "base");
-              console.log(this.perfActual);
               this.wellOrgName = this.getMultipleValues(
                 data.org.reverse(),
                 "name_ru"
