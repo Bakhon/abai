@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 class ProductionProgram extends TableForm
 {
     protected $configurationFileName = 'production_program';
-    protected $plans = [];
+    protected $table = 'prod.production_plan';
+    protected $parentColumn = 'org';
 
     const FIELDS = [
         'oil_production',
@@ -23,19 +24,18 @@ class ProductionProgram extends TableForm
         'absorption'
     ];
 
-    const TABLE = 'prod.production_plan';
 
     public function getResults(): array
     {
-        if ($this->request->get('type') !== 'org') {
+        if ($this->request->get('type') !== $this->parentColumn) {
             return [];
         }
 
         $filter = json_decode($this->request->get('filter'));
 
         $plans = DB::connection('tbd')
-            ->table(self::TABLE)
-            ->where('org', $this->request->get('id'))
+            ->table($this->table)
+            ->where($this->parentColumn, $this->request->get('id'))
             ->whereRaw(
                 "TO_DATE(CONCAT(year,'-',month,'-','01'), 'YYYY-MM-DD') >= TO_DATE('" . Carbon::parse(
                     $filter->date
@@ -76,7 +76,7 @@ class ProductionProgram extends TableForm
                         'field' => $fieldName,
                         'year' => $currentDate->year,
                         'month' => $currentDate->month,
-                        'org_id' => $this->request->get('id')
+                        $this->parentColumn => $this->request->get('id')
                     ]
                 ];
 
@@ -99,7 +99,7 @@ class ProductionProgram extends TableForm
                 $planId = $this->getPlanId($field);
 
                 DB::connection('tbd')
-                    ->table(self::TABLE)
+                    ->table($this->table)
                     ->where('id', $planId)
                     ->update(
                         [
@@ -113,14 +113,15 @@ class ProductionProgram extends TableForm
 
     private function getPlanId(array $field)
     {
-        $key = implode('_', [$field['params']['org_id'], $field['params']['year'], $field['params']['month']]);
+        $key = implode('_', [$field['params'][$this->parentColumn], $field['params']['year'], $field['params']['month']]
+        );
         if (isset($this->plans[$key])) {
             return $this->plans[$key];
         }
 
         $plan = DB::connection('tbd')
-            ->table(self::TABLE)
-            ->where('org', $field['params']['org_id'])
+            ->table($this->table)
+            ->where($this->parentColumn, $field['params'][$this->parentColumn])
             ->where('year', $field['params']['year'])
             ->where('month', $field['params']['month'])
             ->first();
@@ -131,10 +132,10 @@ class ProductionProgram extends TableForm
         }
 
         $planId = DB::connection('tbd')
-            ->table(self::TABLE)
+            ->table($this->table)
             ->insertGetId(
                 [
-                    'org' => $field['params']['org_id'],
+                    $this->parentColumn => $field['params'][$this->parentColumn],
                     'month' => $field['params']['month'],
                     'year' => $field['params']['year']
                 ]
