@@ -17,6 +17,7 @@
           :children="category.children"
           :currentGraphicType.sync="currentGraphicType"
           :currentGraphics.sync="computedCurrentGraphics"
+          :availableGraphics="availableGraphics"
         />
       </div>
     </div>
@@ -156,6 +157,7 @@ export default {
     ...mapState("plastFluidsLocal", [
       "graphType",
       "currentGraphics",
+      "availableGraphics",
       "currentSelectedCorrelation_ps",
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",

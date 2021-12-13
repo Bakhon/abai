@@ -51,7 +51,7 @@
 import SmallCatLoader from "../SmallCatLoader.vue";
 import ScatterGraph from "../ScatterGraph.vue";
 import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "DataAnalysisGraphsAndTables",
@@ -125,6 +125,9 @@ export default {
     },
   },
   watch: {
+    graphData(value) {
+      this.SET_AVAILABLE_GRAPHICS(Object.keys(value));
+    },
     currentSubsoilField: {
       handler(value) {
         this.handleAnalysisTableData({
@@ -136,6 +139,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("plastFluidsLocal", ["SET_AVAILABLE_GRAPHICS"]),
     ...mapActions("plastFluidsLocal", [
       "handleAnalysisTableData",
       "handleBlocksFilter",
