@@ -7,13 +7,6 @@
     "rowIndex": 1,
     "rowLength": 2
   },
-  "associatedGasDzo": {
-    "fields": [
-      "associated_gas_production_fact"
-    ],
-    "rowIndex": 4,
-    "rowLength": 1
-  },
   "decreaseReason": {
     "daily_reason_1": {
       "fields": [
@@ -23,7 +16,7 @@
         "daily_reason_1_downtime",
         "daily_reason_1_losses"
       ],
-      "rowIndex": 7,
+      "rowIndex": 4,
       "rowLength": 5
     },
     "daily_reason_2": {
@@ -34,7 +27,7 @@
         "daily_reason_2_downtime",
         "daily_reason_2_losses"
       ],
-      "rowIndex": 8,
+      "rowIndex": 5,
       "rowLength": 5
     },
     "daily_reason_3": {
@@ -45,7 +38,7 @@
         "daily_reason_3_downtime",
         "daily_reason_3_losses"
       ],
-      "rowIndex": 9,
+      "rowIndex": 6,
       "rowLength": 5
     },
     "daily_reason_4": {
@@ -56,7 +49,7 @@
         "daily_reason_4_downtime",
         "daily_reason_4_losses"
       ],
-      "rowIndex": 10,
+      "rowIndex": 7,
       "rowLength": 5
     },
     "daily_reason_5": {
@@ -67,7 +60,7 @@
         "daily_reason_5_downtime",
         "daily_reason_5_losses"
       ],
-      "rowIndex": 11,
+      "rowIndex": 8,
       "rowLength": 5
     },
     "monthly_reason_1": {
@@ -78,7 +71,7 @@
         "monthly_reason_1_downtime",
         "monthly_reason_1_losses"
       ],
-      "rowIndex": 14,
+      "rowIndex": 11,
       "rowLength": 5
     },
     "monthly_reason_2": {
@@ -89,7 +82,7 @@
         "monthly_reason_2_downtime",
         "monthly_reason_2_losses"
       ],
-      "rowIndex": 15,
+      "rowIndex": 12,
       "rowLength": 5
     },
     "monthly_reason_3": {
@@ -100,7 +93,7 @@
         "monthly_reason_3_downtime",
         "monthly_reason_3_losses"
       ],
-      "rowIndex": 16,
+      "rowIndex": 13,
       "rowLength": 5
     },
     "monthly_reason_4": {
@@ -111,7 +104,7 @@
         "monthly_reason_4_downtime",
         "monthly_reason_4_losses"
       ],
-      "rowIndex": 17,
+      "rowIndex": 14,
       "rowLength": 5
     },
     "monthly_reason_5": {
@@ -122,7 +115,7 @@
         "monthly_reason_5_downtime",
         "monthly_reason_5_losses"
       ],
-      "rowIndex": 18,
+      "rowIndex": 15,
       "rowLength": 5
     },
     "yearly_reason_1": {
@@ -133,7 +126,7 @@
         "yearly_reason_1_downtime",
         "yearly_reason_1_losses"
       ],
-      "rowIndex": 21,
+      "rowIndex": 18,
       "rowLength": 5
     },
     "yearly_reason_2": {
@@ -144,7 +137,7 @@
         "yearly_reason_2_downtime",
         "yearly_reason_2_losses"
       ],
-      "rowIndex": 22,
+      "rowIndex": 19,
       "rowLength": 5
     },
     "yearly_reason_3": {
@@ -155,7 +148,7 @@
         "yearly_reason_3_downtime",
         "yearly_reason_3_losses"
       ],
-      "rowIndex": 23,
+      "rowIndex": 20,
       "rowLength": 5
     },
     "yearly_reason_4": {
@@ -166,7 +159,7 @@
         "yearly_reason_4_downtime",
         "yearly_reason_4_losses"
       ],
-      "rowIndex": 24,
+      "rowIndex": 21,
       "rowLength": 5
     },
     "yearly_reason_5": {
@@ -177,7 +170,7 @@
         "yearly_reason_5_downtime",
         "yearly_reason_5_losses"
       ],
-      "rowIndex": 25,
+      "rowIndex": 22,
       "rowLength": 5
     }
   }

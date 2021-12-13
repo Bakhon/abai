@@ -34,13 +34,11 @@ class WaterInjection {
         )
     );
     private $decreaseReasonFields = array (
-        'opec_explanation_reasons',
-        'impulse_explanation_reasons',
-        'shutdown_explanation_reasons',
-        'accident_explanation_reasons',
-        'restriction_kto_explanation_reasons',
-        'gas_restriction_explanation_reasons',
-        'other_explanation_reasons'
+        'daily_reason_1_explanation',
+        'daily_reason_2_explanation',
+        'daily_reason_3_explanation',
+        'daily_reason_4_explanation',
+        'daily_reason_5_explanation'
     );
 
     public function getDataByCategory($factData,$planData,$periodRange,$yearlyPlan,$periodType,$oneDzoSelected)

@@ -235,10 +235,17 @@ export default {
     },
     deleteItem(index) {
       if (index === null) return
-      this.items.splice(index, 1)
-      this.selectedRowIndex = null
+      this.$bvModal.msgBoxConfirm(this.trans('bd.confirm_delete'), {
+        okTitle: this.trans('app.yes'),
+        cancelTitle: this.trans('app.no'),
+      })
+          .then(result => {
+            if (!result) return
+            this.items.splice(index, 1)
+            this.selectedRowIndex = null
 
-      this.updateParentField()
+            this.updateParentField()
+          })
     },
     updateParentField() {
 
