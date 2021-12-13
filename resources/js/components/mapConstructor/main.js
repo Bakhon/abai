@@ -348,6 +348,12 @@ export default {
                         let geo = selectedData.selectedHorizon ? selectedData.selectedHorizon
                           : selectedData.selectedField ? selectedData.selectedField
                             : null;
+                        const daysFromMonthBegin = moment().date();
+                        const period = !$self.selectedMonth && selectedData.dataType === 'kto' ?
+                            daysFromMonthBegin : null;
+                        $self.selectedMonth = $self.selectedMonth ?
+                            moment($self.selectedMonth).format('YYYY-MM-DD') :
+                            moment(new Date()).format('YYYY-MM-DD')
                         if (!geo) {
                             this.$notifyError(this.trans('map_constructor.select_field_or_horizon'));
                             return;
@@ -356,6 +362,8 @@ export default {
                         axios.post(this.localeUrl('map-constructor/wells'), {
                             geo: geo,
                             selectedDzo: selectedData.selectedDzo,
+                            date: $self.selectedMonth,
+                            dataType: selectedData.dataType,
                         }).then((response) => {
                             if (response.data) {
                                 if (response.data.length === 0) {
@@ -363,6 +371,9 @@ export default {
                                     return;
                                 }
                                 const projectRef = $self.projects[$self.activeProjectIndex].key;
+                                response.data.dataType = selectedData.dataType;
+                                response.data.period = period;
+                                response.data.selectedMonth = moment($self.selectedMonth).format('MM.YYYY');
                                 $self.$refs[projectRef][0].showBubbles(response.data, 'oil_with_water');
                             }
                             this.$modal.hideAll();
