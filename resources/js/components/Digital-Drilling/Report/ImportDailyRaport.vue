@@ -137,7 +137,7 @@
                         }
                     }).catch((error) =>{
                         console.log(error)
-                        this.error_text = "Формат неправильный"
+                        this.error_text = "Формат неправильный(должно быть что-то вроде AIR_0001)"
                     })
                 }
             },

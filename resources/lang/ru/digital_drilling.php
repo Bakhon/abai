@@ -97,6 +97,7 @@ return array (
       'load_capacity_kN' => 'Грузо-подъёмность, т.',
       'nominal_drilling_depth' => 'Номинальная глубина бурения, м.',
       'rig_up_duration' => 'Продол-ть монтажа',
+      'days' => 'сут.',
       'rig_duration' => 'Продол-ть демонтажа',
       'schedule_planning' => 'График планирования',
       'rig_movement_scheme' => 'Схема перемещения',

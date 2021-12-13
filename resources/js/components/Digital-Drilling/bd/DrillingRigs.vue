@@ -95,11 +95,11 @@
                                     <th>{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
                                     <th>
                                         {{trans("digital_drilling.default.rig_up_duration")}}<br>
-                                        сут.
+                                        {{trans("digital_drilling.default.days")}}
                                     </th>
                                     <th>
                                         {{trans("digital_drilling.default.rig_duration")}}<br>
-                                        сут.
+                                        {{trans("digital_drilling.default.days")}}
                                     </th>
                                     <th>Технические характеристики</th>
                                     <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
