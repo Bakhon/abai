@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class GtmFactCost extends Model
 {
     protected $table = 'paegtm_refs_gtm_fact_costs';
+
     protected $fillable = [
         'org_id',
         'dzo_name',

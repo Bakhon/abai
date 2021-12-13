@@ -522,7 +522,7 @@ export default {
         type_sk: { value_double: null, value_string: null, equip_param: null, value_text: null },
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
-        diametr_stuzer: {prm: null, value_double: null}, 
+        diametr_stuzer: {prm: null, value_double: null}, value_text: null, 
         dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol : null},   
         diameter_pump: {value_double: null},   
         well_block: {name_ru: null} 
@@ -875,7 +875,7 @@ export default {
         : "";
       let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
       let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
-      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_double : "";      
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";      
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well); 
       let tube = this.getTube(well);
@@ -1386,14 +1386,14 @@ export default {
       return value;
     },
     getTubeNom(well){
-      if(this.well.tubeNom.nd){
-        return this.well.tubeNom.nd;
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od;
       }
       return "";
     },
     getTube(well){
-      if(this.well.tubeNom.nd){
-        return this.well.tubeNom.nd + ' / ' + this.well.tubeNom.nd;
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
       }
       return "";
     },
@@ -1464,6 +1464,9 @@ export default {
             " / " +
             this.well.dailyInjectionOil.pressure_inj
           );
+        }
+        if (this.well.tech_mode_inj.inj_pressure === null && this.well.dailyInjectionOil.pressure_inj === null) {
+          return "- / -"; 
         }
         if (this.well.tech_mode_inj.inj_pressure === null) {
           return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;

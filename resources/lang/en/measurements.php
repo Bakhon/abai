@@ -42,4 +42,5 @@ return array (
   'kNm' => 'kN*m',
   'thousand_tons' => 't. tons',
   'rods' => 'rods',
+  'm3' => 'm³',
 );

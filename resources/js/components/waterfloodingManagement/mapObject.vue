@@ -212,17 +212,17 @@
 import axios from "axios";
 import moment from "moment"
 import vSelect from 'vue-select'
-import mainMenu from './main_menu.json'
-import mapWaterFloodingDrawStyle from './mapWaterFloodingDrawStyle.json'
+import mainMenu from './mock-data/main_menu.json'
+import mapWaterFloodingDrawStyle from './mock-data/mapWaterFloodingDrawStyle.json'
 import WFM_modal from './modal'
-import dataPicker from './DatePicker'
-import dataPickerRange from "./dataPickerRange"
+import dataPicker from './components/DatePicker'
+import dataPickerRange from "./components/dataPickerRange"
 import VueApexCharts from 'vue-apexcharts'
 import {MglMap, MglNavigationControl, MglMarker} from 'vue-mapbox'
 import {waterfloodingManagementMapGetters, waterfloodingManagementMapActions} from '@store/helpers';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import MapPieChart from "./mapPieChart";
+import MapPieChart from "./components/mapPieChart";
 
 export default {
   components: {

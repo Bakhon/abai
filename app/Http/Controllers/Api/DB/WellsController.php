@@ -191,9 +191,10 @@ class WellsController extends Controller
     {
         $wellConstr = $well->tubeNom()
                         ->wherePivot('project_drill', '=', 'false')
-                        ->wherePivot('casing_type', '=', '8', 'or')
-                        ->WherePivot('casing_type', '=', '9')
-                        ->get(['prod.well_constr.nd'])
+                        ->wherePivot('casing_type', '=', '8')
+                        ->WherePivot('casing_type', '=', '9', 'or')
+                        ->wherePivot('od', '!=', null)
+                        ->get(['prod.well_constr.od'])
                         ->toArray();
 
         if($wellConstr){
@@ -204,9 +205,10 @@ class WellsController extends Controller
         $wellConstrOd = DB::connection('tbd')
                         ->table('prod.well_constr')
                         ->where('well', '=', $well->id)
-                        ->where('nd', '!=', null)                        
+                        ->where('od', '!=', null)      
+                        ->where('project_drill', 'false')                  
                         ->orderBy('id', 'asc')
-                        ->get('nd')
+                        ->get('od')
                         ->toArray();   
         if($wellConstrOd){
         return $wellConstrOd[0];
@@ -336,7 +338,10 @@ class WellsController extends Controller
                 ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
                 ->where('m.code', '=', 'BND')
                 ->where('e.code', '=', 'CHK')
-                ->get('efp.value_double')
+                ->where('wq.well', $well->id)
+                ->where('efp.value_text', '!=', null)
+                ->orderBy('wq.dbeg', 'desc')
+                ->get(['efp.value_double', 'efp.value_text'])
                 ->toArray();
 
         if($diametrstuzer){

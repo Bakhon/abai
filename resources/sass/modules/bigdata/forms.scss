@@ -333,7 +333,7 @@
   }
 
   &.active {
-    .asside-db-link-parent {
+    & > .asside-db-link-parent {
       color: #fff;
     }
   }

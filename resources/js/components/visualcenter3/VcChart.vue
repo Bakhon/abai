@@ -133,7 +133,7 @@
                 let planOpecChartOptions = {
                     label: chartLabels.opecPlan,
                     borderColor: chartColors.opecPlan,
-                    fill: 1,
+                    fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     pointRadius: 0,
@@ -149,13 +149,15 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointHitRadius: this.pointHitRadius
                 };
-                let datasets = [planOpecChartOptions,planChartOptions,factChartOptions];
+                let datasets = [planChartOptions,planOpecChartOptions,factChartOptions];
+
                 if (isNaN(summaryOpek)) {
                     datasets = [planOpecChartOptions,factChartOptions];
                 }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planOpecChartOptions,planChartOptions,factChartOptions,monthlyPlan];
                 }
+
                 this.datasets = datasets;
                 this.labels = formattedChartSummary.labels;
 

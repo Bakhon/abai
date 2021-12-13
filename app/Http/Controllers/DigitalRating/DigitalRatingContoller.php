@@ -45,7 +45,7 @@ class DigitalRatingContoller extends Controller
          select("SELECT *
          FROM tbdi.current_gdis_value cgv
          INNER JOIN (
-            SELECT well_id, param_gdis_id, max( dbeg)
+            SELECT well_id, param_gdis_id, max(dbeg)
             FROM tbdi.current_gdis_value 
             where 1=1
             and param_gdis_id in (".implode(',',self::PARAM_GDIS_HDIN_ID).")
