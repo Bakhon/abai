@@ -32,6 +32,7 @@ return [
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'documents' => 'Документы',
+    'confirm_delete' => 'Вы действительно хотите удалить информацию?',
     'forms' => [
         'title' => 'Формы ввода',
         'fluid_production' => [

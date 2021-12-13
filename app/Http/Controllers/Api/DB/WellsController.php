@@ -271,21 +271,21 @@ class WellsController extends Controller
     private function tubeNomAdd(Well $well)
     {
         $tubeNomAdditional = $well->tubeNom()
-                ->wherePivot('project_drill', '=', 'false')
-                ->WherePivot('casing_type', '=', '9', 'or')
-                ->wherePivot('od', '!=', null)
-                ->get(['prod.well_constr.od'])
-                ->toArray();  
+            ->wherePivot('project_drill', '=', 'false')
+            ->WherePivot('casing_type', '=', '9', 'or')
+            ->wherePivot('od', '!=', null)
+            ->get(['prod.well_constr.od'])
+            ->toArray();  
                 
         if(!$tubeNomAdditional){
-            $wellConstrAdd = DB::connection('tbd')
-                                ->table('prod.well_constr')
-                                ->where('well', '=', $well->id)
-                                ->where('od', '!=', null)      
-                                ->where('casing_type', '9')                
-                                ->orderBy('id', 'desc')
-                                ->get('od')
-                                ->toArray();   
+        $wellConstrAdd = DB::connection('tbd')
+                        ->table('prod.well_constr')
+                        ->where('well', '=', $well->id)
+                        ->where('od', '!=', null)      
+                        ->where('casing_type', '9')                
+                        ->orderBy('id', 'desc')
+                        ->get('od')
+                        ->toArray();   
         if($wellConstrAdd){
             return $wellConstrAdd[0];
         }
