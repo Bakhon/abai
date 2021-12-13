@@ -17,7 +17,7 @@ class WellHistoryController extends Controller
         if (Cache::has('well_history_' . $wellId)) {
             return Cache::get('well_history_' . $wellId);
         }
-                
+
         $measLiqs = DailyProdOil::where('well', $wellId)
             ->orderBy('date', 'asc')
             ->get();
