@@ -452,4 +452,5 @@ return array (
   'gtm_kit' => 'Набор ГТМ',
   'input_params_for_opt' => 'Входные параметры для ОПТ',
   'launch' => 'Запустить расчет',
+  'conditionally_profitable' => 'Условно-рентабельные',
 );

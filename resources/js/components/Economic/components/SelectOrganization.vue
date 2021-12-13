@@ -59,9 +59,9 @@ export default {
 
       this.organizations = data.organizations
 
-      if (!this.organizations.length) return
+      if (!this.organizations.length || this.form.org_id) return
 
-      this.form.org_id = this.organizations[0].id
+      this.form.org_id = this.organizations[3].id
 
       this.$emit('change')
     },

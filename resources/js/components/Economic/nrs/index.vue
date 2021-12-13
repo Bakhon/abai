@@ -1,8 +1,18 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div class="col-9">
-        <div class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
+      <div :class="form.isFullScreen ? 'col-12' : 'col-9'">
+        <div v-if="form.isFullScreen" class="row mb-10px">
+          <select-params
+              :form="form"
+              is-fullscreen
+              class="w-100"
+              @update="getData()"
+              @fullscreen="toggleFullscreen()"/>
+        </div>
+
+        <div v-else
+             class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
           <economic-col>
             <economic-title>
               <span>{{ res.lastMonth.uwiCount.last.toLocaleString() }}</span>
@@ -28,10 +38,10 @@
 
             <economic-title>
               <span>
-                {{ formatValue(res.lastYear.operatingProfit).value.toFixed(2) }}
+                {{ localeValue(res.lastYear.operatingProfit, 1000000, false, 0) }}
               </span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ formatValue(res.lastYear.operatingProfit).dimension }}
+                {{ trans('economic_reference.million') }}
               </span>
             </economic-title>
 
@@ -45,11 +55,11 @@
 
             <economic-title>
               <span>
-                {{ formatValue(res.lastMonth.operatingProfit.last).value.toFixed(2) }}
+                {{ localeValue(res.lastMonth.operatingProfit.last, 1000000, false, 0) }}
               </span>
 
               <span class="font-size-16px line-height-20px text-blue">
-                {{ formatValue(res.lastMonth.operatingProfit.last).dimension }}
+                 {{ trans('economic_reference.million') }}
               </span>
 
               <div class="d-flex align-items-center mt-2">
@@ -81,6 +91,7 @@
           </economic-col>
         </div>
 
+
         <charts
             v-if="res.charts.profitability"
             :charts="res.charts"
@@ -91,7 +102,7 @@
             :form="form"/>
       </div>
 
-      <div class="col-3 pr-0 pl-10px">
+      <div v-if="!form.isFullScreen" class="col-3 pr-0 pl-10px">
         <economic-block
             v-for="(block, index) in blocks"
             :key="index"
@@ -99,58 +110,10 @@
             class="mb-10px"
             style="min-height: 150px"/>
 
-        <div class="bg-main1 p-3 text-white text-wrap">
-          <div class="font-size-16px line-height-14px font-weight-bold mb-3">
-            {{ trans('economic_reference.select_data_display_options') }}
-          </div>
-
-          <select-interval
-              :form="form"
-              class="mb-2"
-              @change="getData"/>
-
-          <select-granularity
-              :form="form"
-              class="mb-2"
-              @change="getData"/>
-
-          <select-profitability
-              :form="form"
-              class="mb-2"
-              @change="getData"/>
-
-          <select-organization
-              :form="form"
-              class="mb-2"
-              hide-label
-              @change="getData"/>
-
-          <div class="d-flex">
-            <select-field
-                v-if="form.org_id"
-                :org_id="form.org_id"
-                :form="form"
-                @change="getData"/>
-
-            <input-exclude-uwis :form="form" class="ml-2"/>
-          </div>
-
-          <div class="d-flex align-items-center" style="margin-top: 10px;">
-            <button
-                class="btn btn-primary w-100 border-0 bg-export py-2">
-              {{ trans('economic_reference.export_excel') }}
-            </button>
-
-            <a :href="localeUrl('/economic/optimization')"
-               target="_blank"
-               class="ml-2">
-              <button
-                  class="btn btn-primary w-100 border-0 bg-export py-2">
-                {{ trans('economic_reference.optimization') }}
-              </button>
-            </a>
-          </div>
-        </div>
+        <select-params
+            :form="form"
+            @update="getData()"
+            @fullscreen="toggleFullscreen()"/>
       </div>
     </div>
   </div>
@@ -170,12 +133,9 @@ import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "../components/Subtitle";
 import PercentBadge from "../components/PercentBadge";
 import PercentProgress from "../components/PercentProgress";
-import SelectInterval from "./components/SelectInterval";
-import SelectGranularity, {GRANULARITY_DAY} from "../components/SelectGranularity";
-import SelectOrganization from "../components/SelectOrganization";
-import SelectField from "./components/SelectField";
-import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
-import InputExcludeUwis from "./components/InputExcludeUwis";
+import SelectParams from "./components/SelectParams";
+import {GRANULARITY_DAY} from "../components/SelectGranularity";
+import {PROFITABILITY_FULL} from "./components/SelectProfitability";
 import EconomicBlock from "./components/EconomicBlock";
 
 const economicRes = {
@@ -212,12 +172,7 @@ export default {
     Subtitle,
     PercentBadge,
     PercentProgress,
-    SelectInterval,
-    SelectGranularity,
-    SelectOrganization,
-    SelectField,
-    SelectProfitability,
-    InputExcludeUwis,
+    SelectParams,
     EconomicBlock,
   },
   mixins: [formatValueMixin],
@@ -229,12 +184,18 @@ export default {
       interval_end: '2021-09-30T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
-      exclude_uwis: null
+      exclude_uwis: null,
+      isFullScreen: false,
     },
+    isFullScreenUpdate: false,
     res: economicRes,
   }),
   computed: {
     ...globalloadingState(['loading']),
+
+    url() {
+      return this.localeUrl('/economic/nrs/get-data')
+    },
 
     blocks() {
       return [
@@ -287,7 +248,11 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
-      this.SET_LOADING(true);
+      if (this.isFullScreenUpdate) {
+        return this.isFullScreenUpdate = false
+      }
+
+      this.SET_LOADING(true)
 
       this.res = economicRes
 
@@ -298,14 +263,14 @@ export default {
       }
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: params})
+        const {data} = await this.axios.get(this.url, {params: params})
 
         this.res = data
       } catch (e) {
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
 
     async exportData() {
@@ -356,8 +321,14 @@ export default {
           ? (prev - last) * 100 / prev
           : (last - prev) * 100 / prev
 
-      return percent.toFixed(2)
+      return percent.toFixed(1)
     },
+
+    toggleFullscreen() {
+      this.form.isFullScreen = !this.form.isFullScreen
+
+      this.form.isFullScreenUpdate = true
+    }
   }
 };
 </script>
@@ -368,10 +339,6 @@ export default {
 
 .font-size-16px {
   font-size: 16px;
-}
-
-.line-height-14px {
-  line-height: 14px;
 }
 
 .line-height-18px {
@@ -386,19 +353,15 @@ export default {
   background: #2B2E5E;
 }
 
-.bg-export {
-  background: #213181;
-}
-
 .text-blue {
   color: #82BAFF;
 }
 
-.pl-10px {
-  padding-left: 10px;
-}
-
 .mb-10px {
   margin-bottom: 10px;
+}
+
+.pl-10px {
+  padding-left: 10px;
 }
 </style>

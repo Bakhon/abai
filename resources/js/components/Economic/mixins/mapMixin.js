@@ -70,10 +70,15 @@ export const profitabilityMapMixin = {
                     'id': `${layerId}-point`,
                     'type': 'circle',
                     'source': layerId,
-                    'minzoom': 11,
                     'paint': {
                         'circle-color': color,
-                        'circle-radius': 6,
+                        'circle-radius': {
+                            'base': 2,
+                            'stops': [
+                                [8, 2],
+                                [18, 200]
+                            ]
+                        },
                     }
                 },
                 'waterway-label'

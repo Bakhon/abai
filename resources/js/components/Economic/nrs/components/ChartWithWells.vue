@@ -3,7 +3,7 @@
     <apexchart
         :options="chartOptions"
         :series="chartSeries"
-        :height="285"/>
+        :height="chartHeight"/>
 
     <div class="mt-2 text-white">
       <div class="text-center border-grey d-flex bg-header">
@@ -141,9 +141,16 @@ export default {
         fill: {
           opacity: 0.9,
         },
+        xaxis: {
+          tickAmount: 20,
+        },
         yaxis: this.chartSeries.map((chart, index) => {
+          let max = Math.max(...chart.data.map(val => Math.abs(val)))
+
           return {
             show: true,
+            min: -max,
+            max: max,
             opposite: !!index,
             title: {
               text: chart.name
@@ -154,7 +161,7 @@ export default {
                   value /= chart.dimension
                 }
 
-                return +value.toFixed(2)
+                return (+value.toFixed(0)).toLocaleString()
               }
             },
           }
@@ -162,17 +169,15 @@ export default {
         tooltip: {
           shared: true,
           intersect: false,
-          y: this.chartSeries.map((chart) => {
-            return {
-              formatter: (value) => {
-                if (chart.dimension) {
-                  value /= chart.dimension
-                }
-
-                return `${(+value.toFixed(2)).toLocaleString()} ${chart.dimensionTitle}`
+          y: this.chartSeries.map((chart) => ({
+            formatter: (value) => {
+              if (chart.dimension) {
+                value /= chart.dimension
               }
+
+              return `${(+value.toFixed(2)).toLocaleString()} ${chart.dimensionTitle}`
             }
-          })
+          }))
         },
       }
     },
@@ -212,6 +217,10 @@ export default {
       )
 
       return series
+    },
+
+    chartHeight() {
+      return this.form.isFullScreen ? 460 : 320
     },
 
     tableKeys() {

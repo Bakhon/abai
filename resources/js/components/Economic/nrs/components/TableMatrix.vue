@@ -13,6 +13,18 @@
           </label>
         </div>
 
+        <div v-if="hasConditionallyProfitableWells"
+             class="form-check mr-2">
+          <input v-model="isVisibleConditionallyProfitable"
+                 id="visible_conditionally_profitable"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_conditionally_profitable"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.conditionally_profitable') }}
+          </label>
+        </div>
+
         <div class="form-check mr-2">
           <input v-model="isVisibleProfitless"
                  id="visible_profitless"
@@ -244,6 +256,7 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
+    isVisibleConditionallyProfitable: true,
     isVisibleChartTotal: false,
     form: {
       operatingProfit: 'Operating_profit',
@@ -629,7 +642,7 @@ export default {
     },
 
     prsKeys() {
-      return [
+      let keys = [
         {
           prop: 'profitable',
           name: this.trans('economic_reference.profitable'),
@@ -637,51 +650,72 @@ export default {
           isProfitable: true,
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
-        {
-          prop: 'profitless',
-          name: this.trans('economic_reference.profitless'),
+      ]
+
+      if (this.hasConditionallyProfitableWells) {
+        keys.push({
+          prop: 'profitless_cat_2',
+          name: this.trans('economic_reference.conditionally_profitable'),
           isTotal: true,
-          isProfitless: true,
+          isConditionallyProfitable: true,
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
-        },
-        {
-          prop: 'inactive',
-          name: this.trans('economic_reference.inactive_short'),
-          isTotal: true,
-          isInactive: true,
-          dimensionTitle: `${this.trans('economic_reference.units')}.`,
-        },
-        {
-          prop: 'prs1',
-          name: this.trans('economic_reference.prs_count'),
-          dimensionTitle: `${this.trans('economic_reference.units')}.`,
-          dimension: 1000,
-          calcValue: function (data, dateIndex, dateParams) {
-            return dateParams
-                ? data.PRS_nopayroll_expenditures[dateIndex].value / dateParams.cost_WR_nopayroll
-                : 0
+        })
+      }
+
+      return [
+        ...keys,
+        ...[
+          {
+            prop: 'profitless',
+            name: this.trans('economic_reference.profitless'),
+            isTotal: true,
+            isProfitless: true,
+            dimensionTitle: `${this.trans('economic_reference.units')}.`,
           },
-        },
-        {
-          prop: 'PRS_nopayroll_expenditures',
-          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
-          isTotal: true,
-          dimension: 1000,
-          dimensionTitle: `
+          {
+            prop: 'inactive',
+            name: this.trans('economic_reference.inactive_short'),
+            isTotal: true,
+            isInactive: true,
+            dimensionTitle: `${this.trans('economic_reference.units')}.`,
+          },
+          {
+            prop: 'prs1',
+            name: this.trans('economic_reference.prs_count'),
+            dimensionTitle: `${this.trans('economic_reference.units')}.`,
+            dimension: 1000,
+            calcValue: function (data, dateIndex, dateParams) {
+              if (dateParams) {
+                console.log(data.PRS_nopayroll_expenditures[dateIndex].value)
+                console.log(dateParams.cost_WR_nopayroll)
+              }
+
+              return dateParams
+                  ? data.PRS_nopayroll_expenditures[dateIndex].value / dateParams.cost_WR_nopayroll
+                  : 0
+            },
+          },
+          {
+            prop: 'PRS_nopayroll_expenditures',
+            name: this.trans('economic_reference.prs_nopayroll_expenditures'),
+            isTotal: true,
+            dimension: 1000,
+            dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')}
           `,
-        },
-        {
-          prop: 'PRS_expenditures',
-          name: this.trans('economic_reference.prs_expenditures'),
-          isTotal: true,
-          dimension: 1000,
-          dimensionTitle: `
+          },
+          {
+            prop: 'PRS_expenditures',
+            name: this.trans('economic_reference.prs_expenditures'),
+            isTotal: true,
+            dimension: 1000,
+            dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')}
           `,
-        },
+          },
+        ]
       ]
     },
 
@@ -847,6 +881,10 @@ export default {
         isString: true
       }))
     },
+
+    hasConditionallyProfitableWells() {
+      return this.form.operatingProfit === 'Operating_profit'
+    }
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -884,12 +922,20 @@ export default {
         return +well[this.form.operatingProfit][date] > 0 ? 1 : 0
       }
 
-      if (key.isProfitless) {
-        if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
+      if (key.isProfitless || key.isConditionallyProfitable) {
+        if (!well[this.form.operatingProfit].hasOwnProperty(date) || +well[this.form.operatingProfit][date] > 0) {
           return 0
         }
 
-        return +well[this.form.operatingProfit][date] > 0 ? 0 : 1
+        if (!this.hasConditionallyProfitableWells) {
+          return 1
+        }
+
+        if (key.isConditionallyProfitable) {
+          return +well.Operating_profit_variable_prs_nopayrall[date] > 0 ? 1 : 0
+        }
+
+        return 1
       }
 
       if (date === 'sum') {
@@ -1375,7 +1421,7 @@ export default {
 
         this.SET_LOADING(false)
       })
-    }
+    },
   },
   watch: {
     data() {
