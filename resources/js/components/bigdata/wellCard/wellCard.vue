@@ -6,7 +6,7 @@
           :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
         <div @click="handleSelectHistoryWell(well)">
-          {{ well.wellUwi }} {{ activeForm ? ' | ' + activeForm.name : '' }}
+          {{ well.wellUwi }} {{ well.lastFormInfo ? ' | ' + well.lastFormInfo.name : '' }}
         </div>
         <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"
               v-if="wellsHistory.length > 1"></span>
@@ -197,6 +197,7 @@
                     :code="activeForm.code"
                     :params="activeForm"
                     :well-id="this.well.id"
+                    :params="activeForm"
                     type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
@@ -877,7 +878,6 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well);
-     // let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1527,7 +1527,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
-        return moment(data).format("DD.MM.YYYY");
+        return moment(data).tz('Asia/Almaty').format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {
