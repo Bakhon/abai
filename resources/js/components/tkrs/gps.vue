@@ -13,7 +13,8 @@
             </div>
           </div>
           <div class="dropdown-holder">
-      
+            <b-button class="online-block" @click="isCurrent">{{trans('tkrs.current_work')}}</b-button>
+            <b-button class="online-block" @click="isArchive">{{trans('tkrs.archive')}}</b-button>
             <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
             <div class="line-block"></div>
 
@@ -264,7 +265,7 @@ import mainHeader from "./mainHeader.vue";
 import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
 import {globalloadingMutations} from '@store/helpers'
-
+import dailyReportCurrent from "./dailyReportCurrent.vue";
 
 export default {
   name: "gps",
@@ -275,6 +276,7 @@ export default {
     mainHeader,
     BaseTable,
     baseBlock,
+    dailyReportCurrent
   },
   computed: {
   },
@@ -323,6 +325,7 @@ export default {
       current_bottomhole: null,
       prod_casing_outer_d: null,
       wall_thickness: null,
+      isCurrent: true,
       
     }
   },
@@ -449,7 +452,12 @@ export default {
     selectTab(selectedTab) {
             this.currentTab = selectedTab
     },
-
+    isCurrent() {
+        this.isCurrent = true;
+    },
+    isArchive() {
+        this.isCurrent = false;
+    },
   },
 };
 </script>
