@@ -6,7 +6,7 @@
 import Projection from "ol/proj/Projection";
 import Map from "ol/Map";
 import View from "ol/View";
-import {Fill, Stroke, Style, Text} from "ol/style";
+import {Icon, Fill, Stroke, Style, Text} from "ol/style";
 import LayerGroup from "ol/layer/Group";
 import {Vector as VectorLayer} from "ol/layer";
 import {OSM, Vector as VectorSource, XYZ} from "ol/source";
@@ -21,11 +21,12 @@ import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
 import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
+import moment from 'moment';
 
 export default {
     props: {
         data: Object,
-        projectKey: 0,
+        projectKey: '',
     },
     data() {
         return {
@@ -47,6 +48,7 @@ export default {
             x2: 0,
             y1: 0,
             y2: 0,
+            polygonsType: null,
         }
     },
     methods: {
@@ -54,6 +56,7 @@ export default {
             'SET_LOADING'
         ]),
         importData(data, type) {
+            this.polygonsType = type;
             this.initMap(data, type).then(() => {
                 if (this.isGridMap(type)) {
                     this.base64Data = data;
@@ -87,6 +90,7 @@ export default {
                                 new ScaleLine({
                                     units: 'metric',
                                 }),
+                                new ExportMap(),
                             ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
@@ -127,7 +131,10 @@ export default {
                     color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
-            const isolinesShow = typeof data.show !== "undefined" ? data.show : true;;
+            let isolinesShow = typeof data.show !== "undefined" ? data.show : true;
+            if (this.polygonsType === 'grid_without_isolines') {
+                isolinesShow = false;
+            }
             let layerGroup = new LayerGroup();
             layerGroup.type = 'polygon';
             const polygonsCount = data.polygons_per_levels.length;
@@ -209,13 +216,13 @@ export default {
                 zIndex: this.data.layerGroups.length + 1,
             });
             let legendItems = [{
-                title: 'Контур',
+                title: 'Контур ' + this.data.layerGroups.length,
                 typeGeom: 'Line',
                 className: 'legend-item',
                 style: lineStyle,
             }]
             let layerGroup = new LayerGroup();
-            layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.name = 'Контур ' + this.data.layerGroups.length;
             layerGroup.type = 'border';
             layerGroup.legendItems = legendItems;
             layerGroup.getLayers().push(newLayer);
@@ -362,6 +369,7 @@ export default {
                 })
             }
             let bubbleLayers = [];
+            let waterBubbleLayers = [];
             const defaultRadius = 5;
             let legendBubbleStyle = null;
             let legendBubbleTitle = 'Нефть/Вода';
@@ -378,20 +386,21 @@ export default {
                     }),
                 });
                 data.forEach(item => {
-                    if (item.data.measLiq.data.length > 0) {
-                        const measLiqSum = item.data.measLiq.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0);
-                        const measLiqMean = measLiqSum / item.data.measLiq.data.length;
-                        const measWaterCutPercent = item.data.measWaterCut.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0) / item.data.measWaterCut.data.length;
-                        const oilSum = item.data.oil.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0);
+                    let dailyDivider = 1;
+                    let measLiqTitle = 'Жидкость, м3';
+                    let oilTitle = 'Нефть, т';
+                    if (data.dataType === 'kto') {
+                        measLiqTitle = 'Жидкость, м3/сут'
+                        oilTitle = 'Нефть, т/сут';
+                        dailyDivider = data.period ? data.period : moment(this.selectedMonth).daysInMonth();
+                    }
+                    if (item.oilWithWaterData.liquid) {
+                        const measLiqSum = item.oilWithWaterData.liquid / dailyDivider;
+                        const measWaterCutPercent = parseInt(item.oilWithWaterData.wcut);
+                        const oilSum = item.oilWithWaterData.oil / dailyDivider;
                         let oilWithWaterBubbleStyle = new Style({
                             image: new Chart({
-                                radius: defaultRadius + (20 / 100 * measLiqMean),
+                                radius: defaultRadius + (20 / 100 * (item.oilWithWaterData.liquid / item.oilWithWaterData.cnt)),
                                 type: "pie",
                                 data: [
                                     measWaterCutPercent,
@@ -400,7 +409,54 @@ export default {
                                 colors: [`rgba(10, 134, 145, 0.8)`, `rgba(222, 138, 11, 0.8)`],
                             }),
                         });
-                        bubbleLayers.push(
+                        if (measLiqSum > 0 || oilSum > 0) {
+                            bubbleLayers.push(
+                                new VectorLayer({
+                                    source: new VectorSource({
+                                        features: [new Feature({
+                                            geometry: new Point([item.coords[0], item.coords[1]]),
+                                            values: [
+                                                {
+                                                    key: 'Скважина',
+                                                    value: item.name,
+                                                },
+                                                {
+                                                    key: measLiqTitle,
+                                                    value: measLiqSum.toFixed(2),
+                                                },
+                                                {
+                                                    key: 'Обводненность, %',
+                                                    value: measWaterCutPercent.toFixed(2),
+                                                },
+                                                {
+                                                    key: oilTitle,
+                                                    value: oilSum.toFixed(2),
+                                                },
+                                            ],
+                                        })]
+                                    }),
+                                    style: [oilWithWaterBubbleStyle],
+                                    zIndex: this.data.layerGroups.length + 1,
+                                }),
+                            );
+                        }
+                    }
+                    if (item.pressure) {
+                        const pressure = item.pressure ?
+                            item.pressure / dailyDivider : null;
+                        let waterBubbleStyle = new Style({
+                            image: new CircleStyle({
+                                radius: defaultRadius + (20 * (item.pressure / item.pressureMax)),
+                                fill: new Fill({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                }),
+                                stroke: new Stroke({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                    width: 1,
+                                }),
+                            }),
+                        });
+                        waterBubbleLayers.push(
                             new VectorLayer({
                                 source: new VectorSource({
                                     features: [new Feature({
@@ -411,23 +467,15 @@ export default {
                                                 value: item.name,
                                             },
                                             {
-                                                key: 'Жидкость, м3',
-                                                value: measLiqSum.toFixed(2),
-                                            },
-                                            {
-                                                key: 'Обводненность, %',
-                                                value: measWaterCutPercent.toFixed(2),
-                                            },
-                                            {
-                                                key: 'Нефть, т',
-                                                value: oilSum.toFixed(2),
+                                                key: 'Закачка жидкости, м3',
+                                                value: pressure.toFixed(2),
                                             },
                                         ],
                                     })]
                                 }),
-                                style: [oilWithWaterBubbleStyle],
+                                style: [waterBubbleStyle],
                                 zIndex: this.data.layerGroups.length + 1,
-                            }),
+                            })
                         );
                     }
                 });
@@ -501,25 +549,61 @@ export default {
                     );
                 }
             }
-            let legendItems = [{
-                title: legendBubbleTitle,
-                feature: new Feature({
-                    geometry: new Point([0, 0]),
-                }),
-                className: 'legend-item',
-                style: legendBubbleStyle,
-            }];
-            if (bubbleLayers.length > 0) {
-                this.removeOldBubbleLayerGroupFromMap();
-                let layerGroup = new LayerGroup();
-                bubbleLayers.forEach(item => {
-                    layerGroup.getLayers().push(item);
-                })
-                layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Слой ' + this.data.layerGroups.length;
-                layerGroup.key = 'bubbles' + data.date;
-                layerGroup.type = 'bubbles';
-                layerGroup.legendItems = legendItems;
-                this.addLayerGroupToMap(layerGroup);
+            if (bubbleLayers.length > 0 || waterBubbleLayers.length > 0) {
+                if (type === 'ppm') {
+                    this.removeOldBubbleLayerGroupFromMap();
+                }
+                if (bubbleLayers.length > 0) {
+                    let layerGroup = new LayerGroup();
+                    bubbleLayers.forEach(item => {
+                        layerGroup.getLayers().push(item);
+                    })
+                    layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Добыча';
+                    layerGroup.name += typeof data.dataType === "undefined" ? '' :
+                        data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
+                    layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.key = 'bubbles' + data.date;
+                    layerGroup.type = 'bubbles';
+                    layerGroup.legendItems = [{
+                        title: legendBubbleTitle,
+                        feature: new Feature({
+                            geometry: new Point([0, 0]),
+                        }),
+                        className: 'legend-item',
+                        style: legendBubbleStyle,
+                    }];
+                    this.addLayerGroupToMap(layerGroup);
+                }
+                if (waterBubbleLayers.length > 0) {
+                    let layerGroup = new LayerGroup();
+                    waterBubbleLayers.forEach(item => {
+                        layerGroup.getLayers().push(item);
+                    })
+                    layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Нагнетение';
+                    layerGroup.name += typeof data.dataType === "undefined" ? '' :
+                        data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
+                    layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.legendItems = [{
+                        title: 'Закачка жидкости, м3',
+                        feature: new Feature({
+                            geometry: new Point([0, 0]),
+                        }),
+                        className: 'legend-item',
+                        style: new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                fill: new Fill({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                }),
+                                stroke: new Stroke({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                    width: 1,
+                                }),
+                            }),
+                        }),
+                    }];
+                    this.addLayerGroupToMap(layerGroup);
+                }
                 this.refreshLegend();
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
@@ -575,10 +659,11 @@ export default {
         },
         addMapOverlay() {
             let $self = this;
-            let popupDiv = document.getElementById('bubblePopup');
+            let popupDiv = document.getElementById("bubblePopup_" + this.projectKey);
             if (popupDiv === null) {
                 popupDiv = document.createElement('div');
-                popupDiv.setAttribute("id", "bubblePopup");
+                popupDiv.setAttribute("id", "bubblePopup_" + this.projectKey);
+                popupDiv.classList.add("bubblePopup");
             }
             this.mapOverlay = new Overlay({
                 element: popupDiv,
@@ -628,6 +713,84 @@ export default {
               })
             }
           });
+        },
+        showWells(data) {
+            if (this.map === null) {
+                let coords = {
+                    x: [],
+                    y: [],
+                };
+                data.forEach(item => {
+                    coords.x.push(item.coords[0]);
+                    coords.y.push(item.coords[1]);
+                });
+                const maxX = Math.max(...coords.x);
+                const minX = Math.min(...coords.x);
+                const maxY = Math.max(...coords.y);
+                const minY = Math.min(...coords.y);
+                this.initMap({
+                    top_left: [minX, minY],
+                    bottom_right: [maxX, maxY],
+                })
+            }
+            let wellLayers = [];
+            data.forEach(item => {
+                const pointStyle = new Style({
+                    image: new Icon({
+                        crossOrigin: 'anonymous',
+                        src: '/img/icons/map-constructor/' + item.icon,
+                        size: [20, 50],
+                        color: '#000',
+                        scale: 0.5,
+                    }),
+                    text: new Text({
+                        font: '10px bold Calibri,sans-serif',
+                        fill: new Fill({
+                            color: '#000',
+                        }),
+                        text: item.name,
+                    })
+                });
+                if (item.coords[0] !== item.additionalCoords[0] || item.coords[1] !== item.additionalCoords[1]) {
+                    wellLayers.push(
+                        new VectorLayer({
+                            source: new VectorSource({
+                                features: [
+                                    new Feature({
+                                        geometry: new LineString([item.coords, item.additionalCoords]),
+                                    })]
+                            }),
+                            style: [new Style({
+                                stroke: new Stroke({
+                                    color: '#000',
+                                    width: 2,
+                                }),
+                            })],
+                        }),
+                    );
+                }
+                wellLayers.push(
+                    new VectorLayer({
+                        source: new VectorSource({
+                            features: [
+                                new Feature({
+                                    geometry: new Point(item.coords),
+                                })]
+                        }),
+                        style: [pointStyle],
+                    }),
+                );
+            });
+            if (wellLayers.length > 0) {
+                let layerGroup = new LayerGroup();
+                wellLayers.forEach(item => {
+                    layerGroup.getLayers().push(item);
+                })
+                layerGroup.name = 'Скважины ' + this.data.layerGroups.length;
+                this.addLayerGroupToMap(layerGroup);
+            } else {
+                this.$notifyError(this.trans('map_constructor.empty_data'));
+            }
         }
     }
 }
@@ -673,7 +836,7 @@ class ExportMap extends Control {
         const options = opt_options || {};
 
         const exportButton = document.createElement('button');
-        exportButton.innerHTML = 'Экспорт';
+        exportButton.innerHTML = 'PDF';
         const exportElement = document.createElement('div');
         exportElement.className = 'export-map ol-unselectable ol-control';
         exportElement.appendChild(exportButton);
@@ -742,12 +905,12 @@ class ExportMap extends Control {
 }
 </script>
 <style>
-#bubblePopup {
+.bubblePopup {
     border-radius: 2px;
     color: white;
     background: rgba(0, 0, 0, 0.5);
 }
-#bubblePopup div {
+.bubblePopup div {
     padding: 0.1rem 0.5rem;
 }
 .activeBg {

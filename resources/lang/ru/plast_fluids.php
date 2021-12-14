@@ -158,4 +158,6 @@ return array (
   'analysis_study_table_title' => 'Детальная статистика изученности по видам исследований',
   'research_study' => 'Изученность экспериментами',
   'sample_study' => 'Изученность пробами',
+  '_function' => 'Функция',
+  'module_whole_pages' => 'Все страницы модуля',
 );

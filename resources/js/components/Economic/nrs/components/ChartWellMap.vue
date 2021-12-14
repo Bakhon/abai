@@ -3,9 +3,17 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
     <subtitle v-if="wells.length" class="text-white text-wrap">
-      {{ trans('economic_reference.total') }}
-      {{ filteredWells[currentDate].length }}
-      {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}
+      <span>
+        {{ trans('economic_reference.total') }}
+        {{ totalWellsCount }}
+        {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}.
+      </span>
+
+      <span v-for="profitability in wellsProfitability"
+            :key="profitability">
+        {{ trans(`economic_reference.wells_${profitability}`) }}:
+        {{ wellsByProfitability[profitability].length }}.
+      </span>
     </subtitle>
 
     <div class="d-flex align-items-center white-placeholder mt-2">
@@ -37,13 +45,51 @@
           v-for="(date, index) in formattedDates"
           :key="date"
           :class="[
-              filteredDates[index] === currentDate ? 'bg-blue' : 'bg-grey',
+              dates[index] === currentDate ? 'bg-blue' : 'bg-grey',
               index ? 'ml-2' : ''
               ]"
           class="btn text-white"
-          @click="updateDate(filteredDates[index])">
+          @click="updateDate(dates[index])">
         {{ date }}
       </button>
+
+      <div class="ml-3 flex-grow-1 d-flex justify-content-end">
+        <div class="d-flex align-items-center form-check">
+          <input v-model="isVisibleProfitable"
+                 id="visible_profitable"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitable"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitable') }}
+          </label>
+        </div>
+
+        <div class="d-flex align-items-center form-check ml-2">
+          <input v-model="isVisibleProfitlessCat1"
+                 id="visible_profitless_cat_1"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitless_cat_1"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitless_cat_1') }}
+          </label>
+        </div>
+
+        <div class="d-flex align-items-center form-check ml-2">
+          <input v-model="isVisibleProfitlessCat2"
+                 id="visible_profitless_cat_2"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="plotMap()">
+          <label for="visible_profitless_cat_2"
+                 class="form-check-label">
+            {{ trans('economic_reference.profitless_cat_2') }}
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="mt-2 well-map">
@@ -53,9 +99,9 @@
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
-
 import {globalloadingMutations} from '@store/helpers';
+
+import {profitabilityMapMixin} from "../../mixins/mapMixin";
 
 import Subtitle from "../../components/Subtitle";
 
@@ -64,6 +110,7 @@ export default {
   components: {
     Subtitle
   },
+  mixins: [profitabilityMapMixin],
   props: {
     orgForm: {
       required: true,
@@ -77,7 +124,9 @@ export default {
     },
     wells: [],
     currentDate: null,
-    map: null,
+    isVisibleProfitable: true,
+    isVisibleProfitlessCat1: true,
+    isVisibleProfitlessCat2: true,
   }),
   async created() {
     this.form.interval_start = this.orgForm.interval_start
@@ -89,66 +138,73 @@ export default {
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
-    getColor({profitability}) {
-      if (profitability === 'profitable') {
-        return '#387249'
-      }
-
-      return profitability === 'profitless_cat_1'
-          ? '#8D2540'
-          : '#F7BB2E'
-    },
-
-    getId({uwi}) {
-      return `well-map-circle-${uwi}`
-    },
-
     async getWells() {
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
 
       try {
         const {data} = await this.axios.get(this.url, {params: {...this.orgForm, ...this.form}})
 
         this.wells = data
 
-        this.plotMap()
+        this.currentDate = this.dates[0]
+
+        this.initMap(this.wellsByProfitability[this.wellsProfitability[0]][0].coordinates)
       } catch (e) {
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
+    },
+
+    getMapSource(profitability = null) {
+      return {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: this.wellsByProfitability[profitability].map(well => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [well.coordinates.lon, well.coordinates.lat]
+            },
+            properties: {
+              description: `<strong>${well.uwi}</strong>`
+            },
+          })),
+        }
+      }
     },
 
     plotMap() {
-      this.currentDate = this.filteredDates[0]
+      this.initPopup()
 
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-        center: this.filteredWells[this.currentDate][0].coordinates,
-        zoom: 11,
-        bearing: 0,
-        pitch: 30,
-        accessToken: process.env.MIX_MAPBOX_TOKEN
+      this.wellsProfitability.forEach(profitability => {
+        this.addMapSource(profitability)
       })
 
-      this.map.on('load', () => {
-        this.filteredWells[this.currentDate].forEach(well => {
-          let marker = document.createElement('div');
+      this.totalProfitability
+          .filter(profitability => !this.wellsProfitability.includes(profitability))
+          .forEach(profitability => this.removeMapSource(profitability))
+    },
 
-          marker.id = this.getId(well)
+    addMapSource(profitability) {
+      let source = this.map.getSource(profitability)
 
-          marker.style.backgroundColor = well.color;
+      if (source) {
+        return source.setData(this.getMapSource(profitability).data)
+      }
 
-          marker.className = 'well-map-circle';
+      let color = this.getColor(profitability)
 
-          new mapboxgl
-              .Marker(marker)
-              .setLngLat(well.coordinates)
-              .setPopup(new mapboxgl.Popup({closeButton: false}).setText(well.uwi))
-              .addTo(this.map)
-        })
-      })
+      this.map.addSource(profitability, this.getMapSource(profitability))
+
+      this.addHeatLayer(profitability, color)
+
+      this.addPointLayer(profitability, color)
+
+      this.map.on('mouseenter', `${profitability}-point`, (event) => this.showPopup(event))
+
+      this.map.on('mouseleave', profitability, () => this.hidePopup())
     },
 
     updateDate(date) {
@@ -156,14 +212,8 @@ export default {
 
       this.currentDate = date
 
-      this.filteredWells[this.currentDate].forEach(well => {
-        let marker = document.getElementById(this.getId(well))
-
-        if (!marker) return
-
-        marker.style.backgroundColor = well.color;
-      })
-    }
+      this.plotMap()
+    },
   },
   computed: {
     url() {
@@ -182,11 +232,11 @@ export default {
       return date.toISOString()
     },
 
-    filteredWells() {
-      let points = {}
+    wellsByDates() {
+      let wellsByDate = {}
 
       this.wells.forEach(well => {
-        if (!well.coordinates) return
+        if (!well.coordinates || !well.profitability) return
 
         let point = well.coordinates.split(',')
 
@@ -196,26 +246,57 @@ export default {
 
         if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
 
-        if (!points.hasOwnProperty(well.dt)) {
-          points[well.dt] = []
+        if (!wellsByDate.hasOwnProperty(well.dt)) {
+          wellsByDate[well.dt] = {}
         }
 
-        points[well.dt].push({
+        if (!wellsByDate[well.dt].hasOwnProperty(well.profitability)) {
+          wellsByDate[well.dt][well.profitability] = []
+        }
+
+        wellsByDate[well.dt][well.profitability].push({
           uwi: well.uwi,
-          color: this.getColor(well),
           coordinates: {lat: lat, lon: lon}
         })
       })
 
-      return points
+      return wellsByDate
     },
 
-    filteredDates() {
-      return Object.keys(this.filteredWells)
+    wellsByProfitability() {
+      return this.wellsByDates[this.currentDate] || []
+    },
+
+    wellsProfitability() {
+      return Object
+          .keys(this.wellsByProfitability)
+          .filter(key => this.visibleProfitability.includes(key))
+    },
+
+    visibleProfitability() {
+      let keys = []
+
+      if (this.isVisibleProfitable) {
+        keys.push('profitable')
+      }
+
+      if (this.isVisibleProfitlessCat1) {
+        keys.push('profitless_cat_1')
+      }
+
+      if (this.isVisibleProfitlessCat2) {
+        keys.push('profitless_cat_2')
+      }
+
+      return keys
+    },
+
+    dates() {
+      return Object.keys(this.wellsByDates)
     },
 
     formattedDates() {
-      return this.filteredDates.map(date => {
+      return this.dates.map(date => {
         return (new Date(date)).toLocaleDateString('ru', {
           day: '2-digit',
           month: 'short',
@@ -223,6 +304,24 @@ export default {
         })
       })
     },
+
+    totalProfitability() {
+      return [
+        'profitable',
+        'profitless_cat_1',
+        'profitless_cat_2',
+      ]
+    },
+
+    totalWellsCount() {
+      let count = 0
+
+      this.wellsProfitability.forEach(profitability => {
+        count += this.wellsByProfitability[profitability].length
+      })
+
+      return count
+    }
   }
 }
 </script>
@@ -234,10 +333,9 @@ export default {
   width: 100%;
 }
 
-.well-map >>> .well-map-circle {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
+.well-map >>> .mapboxgl-popup {
+  max-width: 400px;
+  font-size: 12px;
 }
 
 .bg-blue {

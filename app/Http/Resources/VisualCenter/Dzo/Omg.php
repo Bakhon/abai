@@ -28,6 +28,7 @@ class Omg extends Dzo {
             $condensateSummary['condensatePlan'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
             $condensateSummary['condensateOpek'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
         }
+        $condensateSummary['decreaseReasonExplanations'] = array();
         return $condensateSummary;
     }
 

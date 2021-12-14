@@ -39,6 +39,8 @@ class WellConstr extends PlainForm
 
     protected function getRows(): Collection
     {
+        $tubeTypeFields = ['od', 'wt', 'sg', 'st', 'vd', 'wpm', 'td', 'ys', 'nw', 'nd'];
+
         if ($this->request->get('type') && $this->request->get('type') !== 'well') {
             throw new \Exception(trans('bd.select_well'));
         }
@@ -50,7 +52,19 @@ class WellConstr extends PlainForm
             ->where('project_drill', $this->projectDrill)
             ->orderBy('id', 'desc');
 
-        $rows = $query->get();
+        $rows = $query->get()->map(function ($row) use ($tubeTypeFields) {
+            if (empty($row->casing_nom)) {
+                $casingNom = [];
+                foreach ($tubeTypeFields as $field) {
+                    if (empty($row->$field)) {
+                        continue;
+                    }
+                    $casingNom[] = trans('bd.forms.well_constr.' . $field) . ': ' . $row->$field;
+                }
+                $row->casing_nom = ['text' => implode(', ', $casingNom), 'value' => null];
+            }
+            return $row;
+        });
 
         if (!empty($this->params()['sort'])) {
             foreach ($this->params()['sort'] as $sort) {
@@ -63,5 +77,15 @@ class WellConstr extends PlainForm
         }
 
         return $this->formatRows($rows);
+    }
+
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        if (is_array($data['casing_nom'])) {
+            $data['casing_nom'] = null;
+        }
+        return $data;
     }
 }

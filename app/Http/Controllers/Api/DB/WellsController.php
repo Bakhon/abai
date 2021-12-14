@@ -191,9 +191,10 @@ class WellsController extends Controller
     {
         $wellConstr = $well->tubeNom()
                         ->wherePivot('project_drill', '=', 'false')
-                        ->wherePivot('casing_type', '=', '8', 'or')
-                        ->WherePivot('casing_type', '=', '9')
-                        ->get(['prod.well_constr.nd'])
+                        ->wherePivot('casing_type', '=', '8')
+                        ->WherePivot('casing_type', '=', '9', 'or')
+                        ->wherePivot('od', '!=', null)
+                        ->get(['prod.well_constr.od'])
                         ->toArray();
 
         if($wellConstr){
@@ -204,9 +205,10 @@ class WellsController extends Controller
         $wellConstrOd = DB::connection('tbd')
                         ->table('prod.well_constr')
                         ->where('well', '=', $well->id)
-                        ->where('nd', '!=', null)                        
+                        ->where('od', '!=', null)      
+                        ->where('project_drill', 'false')                  
                         ->orderBy('id', 'asc')
-                        ->get('nd')
+                        ->get('od')
                         ->toArray();   
         if($wellConstrOd){
         return $wellConstrOd[0];
@@ -337,8 +339,9 @@ class WellsController extends Controller
                 ->where('m.code', '=', 'BND')
                 ->where('e.code', '=', 'CHK')
                 ->where('wq.well', $well->id)
+                ->where('efp.value_text', '!=', null)
                 ->orderBy('wq.dbeg', 'desc')
-                ->get('efp.value_double')
+                ->get(['efp.value_double', 'efp.value_text'])
                 ->toArray();
 
         if($diametrstuzer){
@@ -656,15 +659,23 @@ class WellsController extends Controller
 
     private function wellPerfActual(Well $well)
     {
-        $wellPerfActual = $well->wellPerfActualNew()
-            ->withPivot('perf_date')
-            ->orderBy('pivot_perf_date', 'desc')
-            ->select(['perf_date', 'top', 'base'])
-            ->get()
-            ->toArray();
+        $wellPerfActual = DB::connection('tbd')
+                            ->table('prod.well_perf as w')
+                            ->where('w.well', $well->id)
+                            ->orderBy('w.perf_date', 'desc')
+                            ->get('w.id')
+                            ->toArray();
 
         if ($wellPerfActual) {
-            return $wellPerfActual[0];
+            $wellPerf = DB::connection('tbd')
+                        ->table('prod.well_perf_actual as wp')
+                        ->join('prod.well_perf','wp.well_perf', '=', 'prod.well_perf.id')
+                        ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
+                        ->orderBy('wp.top','ASC')
+                        ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
+                        ->toArray();
+                      
+            return $wellPerf;            
         }
 
         return "";

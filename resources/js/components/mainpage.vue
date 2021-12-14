@@ -102,6 +102,11 @@ export default {
           icon: "plastFluidsMain.svg",
           url: this.localeUrl("/pf"),
         },
+        {
+          name: this.trans("map_constructor.map_constructor"),
+          icon: "map-constructor.svg",
+          url: this.localeUrl("/map-constructor"),
+        },
       ],
     };
   },
