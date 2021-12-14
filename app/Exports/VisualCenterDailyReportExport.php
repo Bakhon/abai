@@ -141,11 +141,15 @@ class VisualCenterDailyReportExport implements FromView
 
     public function view(): View
     {
+        Carbon::setLocale('ru');
         return view('visualcenter.daily_report_export', [
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
             'yearly' => $this->yearlyParams,
-            'date' => Carbon::now()->format('d.m.Y')
+            'date' => Carbon::now()->format('d.m.Y'),
+            'monthName' => Carbon::now()->format('F'),
+            'monthId' => Carbon::now()->month,
+            'yearId' => Carbon::now()->year
         ]);
     }
 }
