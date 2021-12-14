@@ -118,11 +118,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td >
                                 {{trans('digital_drilling.daily_raport.project_depth')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.project_md_tvd">
+                            <td >
+                                <input type="text" v-model="report.general_data_daily.project_md">
+                            </td>
+                            <td >
+                                {{trans('digital_drilling.daily_raport.project_depth_vert')}}
+                            </td>
+                            <td >
+                                <input type="text" v-model="report.general_data_daily.project_tvd">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.pump_capacity')}}
@@ -202,7 +208,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.reaming_drilling">
+                                <input type="time" v-model="report.general_data_daily.reaming_drilling">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
@@ -212,7 +218,6 @@
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
-                            </td>
                             </td>
                             <td colspan="2">
                                 <input type="text" v-model="report.contractor_daily.drilling_mud_engineer">
@@ -343,13 +348,15 @@
                                         {{report.prod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.prod_time_daily[i-1].previous}}</td>
-                                    <td><input type="text" v-model="report.prod_time_daily[i-1].daily"></td>
+                                    <td>
+                                        <input type="number"  v-model="report.prod_time_daily[i-1].daily">
+                                    </td>
                                     <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
                                        {{report.unprod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.unprod_time_daily[i-1].previous}}</td>
-                                    <td><input type="text" v-model="report.unprod_time_daily[i-1].daily"></td>
+                                    <td><input type="number" v-model="report.unprod_time_daily[i-1].daily"></td>
                                     <td>{{sumValues(report.unprod_time_daily[i-1].previous, report.unprod_time_daily[i-1].daily)}}</td>
                                 </tr>
                                 <tr class="h-31">
@@ -703,10 +710,10 @@
                                         {{trans('digital_drilling.daily_raport.drilling_time_h')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].drilling_time" @input="changeOveralTime(0)">
+                                        <input type="number" v-model="report.bit_info_daily[0].drilling_time" @input="changeOveralTime(0)">
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].drilling_time" @input="changeOveralTime(1)">
+                                        <input type="number" v-model="report.bit_info_daily[1].drilling_time" @input="changeOveralTime(1)">
                                     </td>
                                 </tr>
                                 <tr>
@@ -755,31 +762,31 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.centrifuge_operating_hours')}}</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.centrifuge"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.centrifuge"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №1</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.vibrating_sieve1"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.vibrating_sieve1"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №2</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.vibrating_sieve2"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.vibrating_sieve2"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №3</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.vibrating_sieve3"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.vibrating_sieve3"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.sand_separator_work_hour')}}</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.sand_operator"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.sand_operator"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.sludge_separator_work_hour')}}</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.silt_separator"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.silt_separator"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">{{trans('digital_drilling.daily_raport.dispenser_hour')}}</td>
-                                    <td colspan="2"><input type="text" v-model="report.mcs_daily.degasser"></td>
+                                    <td colspan="2"><input type="time" v-model="report.mcs_daily.degasser"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -1769,7 +1776,12 @@
             </div>
         </div>
     </div>
-    <previous-daily-raport v-else :report="previousReport" @closePreviousReport="previous=false" @changePreviousReport="changePreviousReport"/>
+    <previous-daily-raport v-else :report="previousReport"
+                           :user="user"
+                           @closePreviousReport="previous=false"
+                           @changePreviousReport="changePreviousReport"
+                           @editReport = "editReport"
+    />
 </template>
 
 <script>
@@ -1787,7 +1799,7 @@
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-        props: ['report'],
+        props: ['report', 'user'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1929,6 +1941,11 @@
                             'XJ-550', 'XJ-750', 'XCMG XZ360E', 'XCMG XR150d', 'IRI IDECO-270', 'АРБ-100', 'VR-500'],
             }
         },
+        watch:{
+            report(){
+                this.reportDate = moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+            },
+        },
         mounted(){
             this.getRigType()
             this.getRig()
@@ -1958,6 +1975,20 @@
                 let date = new Date();
                 date.setDate(date.getDate() - 1);
                 return moment(date).format('YYYY-MM-DD') ;
+            },
+            editReport(id){
+                this.previous = false
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+id).then((response) => {
+                    if (response) {
+                        this.$emit('changeReport', response.data)
+                    } else {
+                        console.log("No data");
+                    }
+                })
+                    .catch((error) => {
+                        console.log(error)
+                        this.showToast('', 'No result', 'danger');
+                    })
             },
             changeDate(){
                 let date =  moment(this.reportDate, 'YYYY-MM-DD').format('DD-MM-YYYY')
@@ -2553,7 +2584,7 @@
                 if (!a && !b){
                     return ''
                 }
-                return parseInt(a) + parseInt(b)
+                return parseFloat(a) + parseFloat(b)
             },
             subtractValues(a, b){
                 if (!a){
@@ -2565,7 +2596,7 @@
                 if (!a && !b){
                     return ''
                 }
-                return parseInt(a) - parseInt(b)
+                return parseFloat(a) - parseFloat(b)
             },
             getAllProdTime(type){
                 let arr = []
@@ -2577,7 +2608,7 @@
                 let sum = 0
                 for (let i=0; i<arr.length; i++){
                     if (arr[i].previous && arr[i].daily) {
-                        sum += parseInt(arr[i].previous) + parseInt(arr[i].daily)
+                        sum += parseFloat(arr[i].previous) + parseFloat(arr[i].daily)
                     }
                 }
                 return sum
@@ -2967,5 +2998,15 @@
     }
     .max-829{
         max-width: calc(100% - 829px)!important;
+    }
+    .time-span{
+        display: flex;
+        align-items: center;
+    }
+    .time-span input{
+        appearance: auto;
+    }
+    .daily_raport_block-header-save{
+        width: 200px!important;
     }
 </style>

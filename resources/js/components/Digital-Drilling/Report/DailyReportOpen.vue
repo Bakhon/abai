@@ -1,6 +1,6 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" @changeReport="changeReport"/>
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -98,6 +98,7 @@
     export default {
         name: "DailyReportOpen",
         components: {DailyRaport, Dropdown},
+        props: ['user'],
         data(){
             return{
                 newWell: "new",
@@ -125,6 +126,9 @@
             changeCurrentWell(item){
                 this.currentWell = item
             },
+            changeReport(data){
+                this.report = data
+            },
             getDailyReport(){
                 if (this.newWell == 'new'){
                     if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
@@ -140,6 +144,7 @@
                             }).then((response) => {
                             if (response.data) {
                                 this.report = response.data
+                                this.report.report_daily.author = this.user.username
                                 this.created = true
                             } else {
                                 console.log("No data");
@@ -159,6 +164,7 @@
                         }).then((response) => {
                         if (response.data) {
                             this.report = response.data
+                            this.report.report_daily.author = this.user.username
                             this.created = true
                         } else {
                             console.log("No data");
