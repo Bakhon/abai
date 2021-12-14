@@ -189,48 +189,68 @@
             edit(){
                 if (this.catalogs[this.currentCatalogIndex].table_name == 'company'){
                     this.catalogForAction.bin = this.bin
+                    if (this.catalogForAction.name_ru != "" && this.bin.toString().length ==12){
+                        this.editForm()
+                    }else{
+                        this.error.text = 'ERROR'
+                    }
                 }
-               if (this.catalogForAction.name_ru != "" && this.bin.toString().length ==12){
-                   this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/' +
-                       this.catalogs[this.currentCatalogIndex].table_name + '/', this.catalogForAction).then((response) => {
-                       let data = response.data;
-                       console.log(data)
-                       this.getCatalogData()
-                   }).catch((e)=>{
-                       console.log(e)
-                   });
-                   this.catalogModalEdit = false
-                   this.catalogForAction = {
-                       id: null,
-                       name_ru: null
-                   }
-                   this.bin = ""
-               } else{
-                    this.error.text = 'ERROR'
-               }
+                else{
+                    if (this.catalogForAction.name_ru != "" ){
+                        this.editForm()
+                    }else{
+                        this.error.text = 'ERROR'
+                    }
+                }
+            },
+            editForm(){
+                this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/' +
+                    this.catalogs[this.currentCatalogIndex].table_name + '/', this.catalogForAction).then((response) => {
+                    let data = response.data;
+                    console.log(data)
+                    this.getCatalogData()
+                }).catch((e)=>{
+                    console.log(e)
+                });
+                this.catalogModalEdit = false
+                this.catalogForAction = {
+                    id: null,
+                    name_ru: null
+                }
+                this.bin = ""
             },
             upload(){
                 if (this.catalogs[this.currentCatalogIndex].table_name == 'company'){
                     this.catalogForAction.bin = this.bin
-                }
-                if (this.catalogForAction.name_ru != "" && this.bin.toString().length ==12){
-                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/' +
-                        this.catalogs[this.currentCatalogIndex].table_name + '/', this.catalogForAction).then((response) => {
-                        let data = response.data;
-                        console.log(data)
-                        this.getCatalogData()
-                    }).catch((e)=>{
-                        console.log(e)
-                    });
-                    this.catalogModal = false
-                    this.catalogForAction = {
-                        id: null,
-                        name_ru: null
+                    if (this.catalogForAction.name_ru != "" && this.bin.toString().length ==12){
+                        this.uploadForm()
+                    }else{
+                        this.error.text = 'ERROR'
                     }
-                    this.bin = ""
-                } else{
-                    this.error.text = 'ERROR'
                 }
+                else{
+                    if (this.catalogForAction.name_ru != "" ){
+                        this.uploadForm()
+                    }else{
+                        this.error.text = 'ERROR'
+                    }
+                }
+            },
+            uploadForm(){
+                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/' +
+                    this.catalogs[this.currentCatalogIndex].table_name + '/', this.catalogForAction).then((response) => {
+                    let data = response.data;
+                    console.log(data)
+                    this.getCatalogData()
+                }).catch((e)=>{
+                    console.log(e)
+                });
+                this.catalogModal = false
+                this.catalogForAction = {
+                    id: null,
+                    name_ru: null
+                }
+                this.bin = ""
             },
             deleteCatalogFrom(){
                 this.axios.delete(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/' +

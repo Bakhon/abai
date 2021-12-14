@@ -397,7 +397,8 @@ export default {
     showHistory(row) {
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}/history`), {
         params: {
-          id: row.id
+          id: row.id,
+          form: this.params.code
         }
       }).then(({data}) => {
         this.history = data
