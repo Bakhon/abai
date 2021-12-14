@@ -4,43 +4,35 @@
       {{ trans('economic_reference.table_porcupine_title') }}
     </subtitle>
 
-    <div class="d-flex">
+    <div class="mt-2 percent-block">
       <select
-          v-model="salaryPercents"
-          class="form-control"
-          multiple
-          @change="$emit('change')"
-      >
-        <option
-            v-for="salaryPercent in scenarioVariations.salary_percents"
-            :key="salaryPercent.value"
-            :value="salaryPercent.value">
-          {{ salaryPercent.label }}
+          v-model="selectedVariations"
+          :title="trans('economic_reference.select_params')"
+          data-style="text-white bg-main1 border-white"
+          data-size="5"
+          class="percent-variations"
+          multiple>
+        <option :value="null" disabled selected>
+          {{ trans('economic_reference.select_item') }}
         </option>
-      </select>
 
-      <select
-          v-model="retentionPercents"
-          class="form-control"
-          multiple
-          @change="$emit('change')"
-      >
         <option
-            v-for="retentionPercent in scenarioVariations.retention_percents"
-            :key="retentionPercent.value"
-            :value="retentionPercent.value">
-          {{ retentionPercent.label }}
+            v-for="(percentVariation, percentIndex) in percentVariations"
+            :key="percentIndex"
+            :value="percentIndex">
+          {{ trans('economic_reference.fot_optimization') }}:
+          {{ percentVariation.salaryPercent.label }},
+          {{ trans('economic_reference.non_optimizable_costs_share') }}:
+          {{ percentVariation.retentionPercent.label }}
         </option>
       </select>
     </div>
-
-
 
     <apexchart
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        :height="520"
+        :height="475"
         style="color: #000"/>
   </div>
 </template>
@@ -90,9 +82,11 @@ export default {
     },
   },
   data: () => ({
-    salaryPercents: [],
-    retentionPercents: [],
+    selectedVariations: [0],
   }),
+  mounted() {
+    $('.percent-variations').selectpicker()
+  },
   methods: {
     tooltipFormatter(value, index) {
       return `
@@ -124,59 +118,58 @@ export default {
     filteredData() {
       let data = []
 
-      this.scenarioVariations.salary_percents.forEach(salary_percent => {
-        let salaryScenarios = this.filteredScenarios.filter(scenario =>
-            +scenario.coef_cost_WR_payroll === +salary_percent.value
+      this.selectedVariations.forEach(variation => {
+        let salaryPercent = this.percentVariations[variation].salaryPercent
+
+        let retentionPercent = this.percentVariations[variation].retentionPercent
+
+        let scenarios = this.filteredScenarios.filter(scenario =>
+            +scenario.coef_cost_WR_payroll === +salaryPercent.value &&
+            +scenario.coef_Fixed_nopayroll === +retentionPercent.value
         )
 
-        this.scenarioVariations.retention_percents.forEach(retention_percent => {
-          let retentionScenarios = salaryScenarios.filter(scenario =>
-              +scenario.coef_Fixed_nopayroll === +retention_percent.value
-          ).reverse()
+        let series = []
 
-          let series = []
+        let seriesGtm = []
 
-          let seriesGtm = []
+        scenarios.forEach(scenario => {
+          let operatingProfit = +scenario.Operating_profit_optimize
 
-          retentionScenarios.forEach(scenario => {
-            let operatingProfit = +scenario.Operating_profit_optimize
+          let dimension = 1000000000
 
-            let dimension = 1000000000
+          series.push({
+            uwi_count: scenario.uwi_count_optimize,
+            cat_1: scenario.percent_stop_cat_1,
+            cat_2: scenario.percent_stop_cat_2,
+            oil: +scenario.oil_optimize,
+            operating_profit: (operatingProfit / dimension).toFixed(2),
+          })
 
-            series.push({
+          if (scenario.gtms) {
+            seriesGtm.push({
               uwi_count: scenario.uwi_count_optimize,
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
-              oil: +scenario.oil_optimize,
-              operating_profit: (operatingProfit / dimension).toFixed(2),
-            })
-
-            if (scenario.gtms) {
-              seriesGtm.push({
-                uwi_count: scenario.uwi_count_optimize,
-                cat_1: scenario.percent_stop_cat_1,
-                cat_2: scenario.percent_stop_cat_2,
-                oil: +scenario.oil_optimize + +scenario.gtm_oil,
-                operating_profit: ((operatingProfit + +scenario.gtm_operating_profit) / dimension).toFixed(2),
-              })
-            }
-          })
-
-          data.push({
-            salary_percent: salary_percent,
-            retention_percent: retention_percent,
-            series: series
-          })
-
-          if (seriesGtm.length) {
-            data.push({
-              salary_percent: salary_percent,
-              retention_percent: retention_percent,
-              series: seriesGtm,
-              is_gtm: true
+              oil: +scenario.oil_optimize + +scenario.gtm_oil,
+              operating_profit: ((operatingProfit + +scenario.gtm_operating_profit) / dimension).toFixed(2),
             })
           }
         })
+
+        data.push({
+          salary_percent: salaryPercent,
+          retention_percent: retentionPercent,
+          series: series
+        })
+
+        if (seriesGtm.length) {
+          data.push({
+            salary_percent: salaryPercent,
+            retention_percent: retentionPercent,
+            series: seriesGtm,
+            is_gtm: true
+          })
+        }
       })
 
       return data
@@ -242,6 +235,9 @@ export default {
             ${this.trans('economic_reference.tenge')}.
             `,
           },
+          labels: {
+            formatter: (value) => (+value.toFixed(0)).toLocaleString()
+          },
         },
         xaxis: {
           type: 'numeric',
@@ -281,9 +277,27 @@ export default {
         }
       }
     },
+
+    percentVariations() {
+      let variations = []
+
+      this.scenarioVariations.salary_percents.forEach(salaryPercent => {
+        this.scenarioVariations.retention_percents.forEach(retentionPercent => {
+          variations.push({
+            salaryPercent: salaryPercent,
+            retentionPercent: retentionPercent,
+          })
+        })
+      })
+
+      return variations
+    },
   }
 }
 </script>
 
 <style scoped>
+.percent-block >>> .percent-variations {
+  width: 460px !important;
+}
 </style>
