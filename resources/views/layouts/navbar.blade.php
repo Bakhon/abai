@@ -57,7 +57,7 @@
 
         <div class="form-inline my-2 my-lg-0">
             <div class="nav-icon-tech">
-                <span class="nav-icon-tech-work"><img class="blink" src="/img//tech_work.svg" >ИС ABAI не будет доступен с 16.12 до 19.12
+                <span class="nav-icon-tech-work"><img class="blink" src="/img//tech_work.svg" >ИС ABAI не будет доступна с 16.12 до 19.12
                 </span>
             </div>
             <li class="nav-item2 mr-2">
