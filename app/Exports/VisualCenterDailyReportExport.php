@@ -9,8 +9,14 @@ use Illuminate\Http\Request;
 
 class VisualCenterDailyReportExport implements FromView
 {
-    private $productionCategory;
-    private $formattedCategory = array();
+    private $dailyParams = array();
+    private $monthlyParams = array();
+    private $yearlyParams = array();
+    private $periodMapping = array(
+        'day' => 'dailyParams',
+        'month' => 'monthlyParams',
+        'year' => 'yearlyParams'
+    );
     private $skippingDzo = array ('ПККР','КГМКМГ','ТП');
     private $dzoMapping = array (
         'ТШО' => array (
@@ -99,12 +105,19 @@ class VisualCenterDailyReportExport implements FromView
         ),
     );
 
-    function __construct($params)
+    function __construct($dailyParams,$monthlyParams,$yearlyParams, Request $request)
     {
-        $allCategories = app()->call('App\Http\Controllers\VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory',$params);
-        $this->productionCategory = $allCategories['tableData']['current']['oilCondensateProduction'];
+        $this->processDzoByPeriod($dailyParams,$this->periodMapping['day'],$request);
+        $this->processDzoByPeriod($monthlyParams,$this->periodMapping['month'],$request);
+        $this->processDzoByPeriod($yearlyParams,$this->periodMapping['year'],$request);
+    }
 
-        foreach($this->productionCategory as  $dzo) {
+    private function processDzoByPeriod($params,$type,$request)
+    {
+        $request->replace($params);
+        $allDailyCategories = app()->call('App\Http\Controllers\VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory',$params);
+        $daily = $allDailyCategories['tableData']['current']['oilCondensateProduction'];
+        foreach($daily as  $dzo) {
             if (!in_array($dzo['name'],$this->skippingDzo)) {
                 $dzoDetails = array (
                     'id' => $this->dzoMapping[$dzo['name']]['id'],
@@ -118,18 +131,20 @@ class VisualCenterDailyReportExport implements FromView
                 if ($dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $dzo['decreaseReasonExplanations'];
                 }
-                array_push($this->formattedCategory,$dzoDetails);
+                array_push($this->$type,$dzoDetails);
             }
         }
 
-        $sortOrder = array_column($this->formattedCategory, 'orderId');
-        array_multisort($sortOrder, SORT_ASC, $this->formattedCategory);
+        $sortOrder = array_column($this->$type, 'orderId');
+        array_multisort($sortOrder, SORT_ASC, $this->$type);
     }
 
     public function view(): View
     {
         return view('visualcenter.daily_report_export', [
-            'daily' => $this->formattedCategory,
+            'daily' => $this->dailyParams,
+            'monthly' => $this->monthlyParams,
+            'yearly' => $this->yearlyParams,
             'date' => Carbon::now()->format('d.m.Y')
         ]);
     }

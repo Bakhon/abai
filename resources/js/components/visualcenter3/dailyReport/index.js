@@ -831,14 +831,7 @@ export default {
     },
     async mounted() {
         let queryOptions = {
-            'periodStart': moment().subtract(1,'days').startOf('day').format(),
-            'periodEnd': moment().subtract(1,'days').endOf('day').format(),
-            'historicalPeriodStart': moment().subtract(2,'days').startOf('day').format(),
-            'historicalPeriodEnd': moment().subtract(2,'days').endOf('day').format(),
-            'periodRange': 0,
-            'dzoName': null,
-            'category': 'oilCondensateProduction',
-            'periodType' : 'day'
+            'date': moment().subtract(1,'days').startOf('day').format()
         };
         let uri = this.localeUrl("/daily-report-export");
         const response = await axios.get(uri,{params:queryOptions,responseType:'arraybuffer'});
