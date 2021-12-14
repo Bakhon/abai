@@ -58,18 +58,18 @@
                 {{ mainTableItem.name_ru }}
                 <i class="fas fa-external-link-alt text-blue"></i>
               </td>
-              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_plan.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_difference.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_plan.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_difference.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.base_oil_prod_plan.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.base_oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.base_oil_prod_difference.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.oil_prod_plan.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.oil_prod_fact.toFixed(1) }}</td>
-              <td class="align-middle">{{ mainTableItem.oil_prod_difference.toFixed(1) }}</td>
+              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_plan }}</td>
+              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_fact }}</td>
+              <td class="align-middle" :class="{growth : mainTableItem.vns_additional_oil_prod_difference > 0,  fall : mainTableItem.vns_additional_oil_prod_difference < 0}">{{ mainTableItem.vns_additional_oil_prod_difference }}</td>
+              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_plan }}</td>
+              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_fact }}</td>
+              <td class="align-middle" :class="{growth : mainTableItem.gtm_additional_oil_prod_difference > 0,  fall : mainTableItem.gtm_additional_oil_prod_difference < 0}">{{ mainTableItem.gtm_additional_oil_prod_difference }}</td>
+              <td class="align-middle">{{ mainTableItem.base_oil_prod_plan }}</td>
+              <td class="align-middle">{{ mainTableItem.base_oil_prod_fact }}</td>
+              <td class="align-middle" :class="{growth : mainTableItem.base_oil_prod_difference > 0,  fall : mainTableItem.base_oil_prod_difference < 0}">{{ mainTableItem.base_oil_prod_difference }}</td>
+              <td class="align-middle">{{ mainTableItem.oil_prod_plan }}</td>
+              <td class="align-middle">{{ mainTableItem.oil_prod_fact }}</td>
+              <td class="align-middle" :class="{growth : mainTableItem.oil_prod_difference > 0,  fall : mainTableItem.oil_prod_difference < 0}">{{ mainTableItem.oil_prod_difference }}</td>
             </tr>
             </tbody>
           </table>
@@ -85,7 +85,7 @@
           <gtm-date-picker @dateChanged="getData" :showSettings="false" :showPeriodTitle="true"></gtm-date-picker>
         </div>
         <div class="gtm-dark h-360">
-          <table class="table text-center text-white podbor-middle-table paegtm-gtm-table h-100 mb-0">
+          <table class="table table-striped text-center text-white podbor-middle-table paegtm-gtm-table h-100 mb-0">
             <thead>
             <tr>
               <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
@@ -113,13 +113,13 @@
         <div class="svg-icon-chart-1 z-index-2" @click="showModal('chart1')">
           <img src="./img/maximize-chart.svg" alt="">
         </div>
-        <apexchart type="line" height="200" :options="chartOptions" :series="chartData.series_1"></apexchart>
+        <apexchart type="line" height="200" :options="chartOptions" ref="newWellsDynamicsChart" :series="chartData.series_1"></apexchart>
       </div>
       <div class="col-6 pr-0 pl-2 z-index-1">
         <div class="svg-icon-chart-2 z-index-2" @click="showModal('chart2')">
           <img src="./img/maximize-chart.svg" alt="">
         </div>
-        <apexchart type="line" height="200" :options="chartOptions2" :series="chartData.series_2"></apexchart>
+        <apexchart type="line" height="200" :options="chartOptions2" ref="gtmDynamicsChart" :series="chartData.series_2"></apexchart>
       </div>
       <div>
         <modal class="modal-bign-wrapper" name="chart1" draggable=".modal-bign-header" :width="1050" :height="500"
@@ -130,7 +130,7 @@
                 {{ trans('pgno.zakrit') }}
               </button>
             </div>
-            <apexchart type="line" height="400" width="1000" style="color: black" :options="chartOptions"
+            <apexchart type="line" height="400" width="1000" style="color: black" :options="chartOptions" ref="newWellsDynamicsChartModal"
                        :series="chartData.series_1"></apexchart>
           </div>
         </modal>
@@ -142,7 +142,7 @@
                 {{ trans('pgno.zakrit') }}
               </button>
             </div>
-            <apexchart type="line" height="400" width="1000" style="color: black" chart="chart" :options="chartOptions2"
+            <apexchart type="line" height="400" width="1000" style="color: black" ref="gtmDynamicsChartModal" chart="chart" :options="chartOptions2"
                        :series="chartData.series_2"></apexchart>
           </div>
         </modal>

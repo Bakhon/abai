@@ -135,15 +135,6 @@
                                                 </td>
                                                 <td>-</td>
                                             </tr>
-                                        <tr class="header-background_light">
-                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded && !summaryDisabledByDzo.includes(selectedDzo)">&nbsp;</td>
-                                            <td class="background__light">Мероприятия</td>
-                                            <td>{{periodItem.params.activity.length}}</td>
-                                        </tr>
                                         </tbody>
                                     </table>
                                     <div v-if="!summaryDisabledByDzo.includes(selectedDzo)" class="table-arrow">
@@ -251,7 +242,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                                 </td>
@@ -305,46 +296,33 @@
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="summaryDisabledByDzo.includes(selectedDzo) && !periodItem.params.techMode[5].isHide">
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gaz_factor.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
 
                                                 </td>
-                                                <td>-</td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'gaz_factor')}}</td>
+                                                <td>{{getSummary(periodItem.params.monthlyData,'gaz_factor')}}</td>
                                             </tr>
-                                            <tr>
-                                                <td
-                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                                >
-                                                    &nbsp;
-                                                </td>
-                                                <td v-else>
-                                                    &nbsp;
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                          
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pbuf.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pbuf')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -353,12 +331,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pzat.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pzat')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -367,12 +345,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].p_line.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'p_line')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -381,12 +359,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].temp_head.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'temp_head')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -395,31 +373,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_current.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr v-show="!periodItem.params.techMode[5].isHide">
-                                                <td v-for="dayNumber in getDaysCountInMonth(periodItem.id)"> &nbsp; </td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td
-                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
-                                                >
-                                                    &nbsp;
-                                                </td>
-                                                <td v-else>
-                                                    &nbsp;
-                                                </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_current')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -428,12 +387,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_freq.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_freq')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -442,12 +401,12 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                   {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_efficiency.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
-                                                <td>-</td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_efficiency')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -456,12 +415,42 @@
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
                                                         :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
-                                                    &nbsp;
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_temp.toFixed(1))}}
                                                 </td>
                                                 <td v-else>
                                                     &nbsp;
                                                 </td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_temp')}}</td>
                                                 <td>-</td>
+                                            </tr>
+                                            <tr v-show="!periodItem.params.techMode[5].isHide">
+                                                <td
+                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                >
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_intk_press.toFixed(1))}}
+                                                </td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_intk_press')}}</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr v-show="!periodItem.params.techMode[5].isHide">
+                                                <td
+                                                        v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                        v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                >
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_stroke.toFixed(1))}}
+                                                    /
+                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_spm.toFixed(1))}}
+                                                </td>
+                                                <td v-else>
+                                                    &nbsp;
+                                                </td>
+                                                <td>{{getMiddle(periodItem.params.monthlyData,'pump_stroke')}}/{{getMiddle(periodItem.params.monthlyData,'pump_spm')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             <tr v-show="!periodItem.params.techMode[5].isHide">
@@ -486,12 +475,12 @@
                     </div>
                     <div class="d-flex mt-1" v-if="periodItem.params.activity.length > 0">
                         <div class="col-3 form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
+                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="periodItem.isShow = !periodItem.isShow">
                             <label class="form-check-label" for="activityCheck">
                                 Показать мероприятия
                             </label>
                         </div>
-                        <div v-if="isActivityShown && periodItem.params.activity" class="col-9 p-0">
+                        <div v-if="periodItem.isShow && periodItem.params.activity" class="col-9 p-0">
                             <table class="table text-center text-white text-nowrap historical-table">
                                 <thead>
                                 <tr>
@@ -614,6 +603,7 @@ export default {
                     let monthSummary = {
                         'id': date.format('YYYY/MMM'),
                         'isExpanded': true,
+                        'isShow': false,
                         'isHorizontalExpanded': true,
                         'month': date.format('MMM'),
                         'year': date.format('YYYY'),
@@ -739,7 +729,7 @@ export default {
                                 },
 
                                 {
-                                    'label': 'Трубное давление (Ртр) атм',
+                                    'label': 'Буферное давление, атм',
                                     'value': '-',
                                     'isHide': this.isRowsHide,
                                     'disabledForDzo': []

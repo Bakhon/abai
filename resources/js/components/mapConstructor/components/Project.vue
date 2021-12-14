@@ -6,7 +6,7 @@
 import Projection from "ol/proj/Projection";
 import Map from "ol/Map";
 import View from "ol/View";
-import {Fill, Stroke, Style, Text} from "ol/style";
+import {Icon, Fill, Stroke, Style, Text} from "ol/style";
 import LayerGroup from "ol/layer/Group";
 import {Vector as VectorLayer} from "ol/layer";
 import {OSM, Vector as VectorSource, XYZ} from "ol/source";
@@ -14,26 +14,41 @@ import Feature from "ol/Feature";
 import {LineString, Point, Polygon} from "ol/geom";
 import {Overlay} from "ol";
 import Chart from "ol-ext/style/Chart";
+import LegendControl from "ol-ext/control/Legend";
+import Legend from "ol-ext/legend/Legend";
 import CircleStyle from "ol/style/Circle";
 import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
-import {Control, defaults as defaultControls} from 'ol/control';
+import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
+import moment from 'moment';
 
 export default {
     props: {
         data: Object,
-        projectKey: 0,
+        projectKey: '',
     },
     data() {
         return {
             base64Data: null,
             map: null,
             gridMapsValues: [],
+            legend: null,
+            legendControl: null,
+            mapOverlay: null,
+            overlayValues: {
+                grid: {
+                    html: '',
+                },
+                featureValues: {
+                    html: '',
+                },
+            },
             x1: 0,
             x2: 0,
             y1: 0,
             y2: 0,
+            polygonsType: null,
         }
     },
     methods: {
@@ -41,6 +56,7 @@ export default {
             'SET_LOADING'
         ]),
         importData(data, type) {
+            this.polygonsType = type;
             this.initMap(data, type).then(() => {
                 if (this.isGridMap(type)) {
                     this.base64Data = data;
@@ -48,6 +64,7 @@ export default {
                 } else {
                     this.drawLines(data);
                 }
+              this.refreshLegend();
             }, () => {});
         },
         initMap(data, type) {
@@ -63,11 +80,18 @@ export default {
                     if (this.map === null) {
                         const extent = [this.x1, this.y1, this.x2, this.y2];
                         const projection = new Projection({
-                            units: 'pixels',
+                            units: 'm',
+                            metersPerUnit: 20,
                             extent: extent,
                         });
                         const mapExtent = projection.getExtent();
                         this.map = new Map({
+                            controls: defaultControls().extend([
+                                new ScaleLine({
+                                    units: 'metric',
+                                }),
+                                new ExportMap(),
+                            ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
                             view: new View({
@@ -77,6 +101,8 @@ export default {
                                 zoom: 1,
                             }),
                         });
+                        this.addMapOverlay();
+                        this.addMapLegend();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -105,26 +131,48 @@ export default {
                     color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
-            const isolinesShow = typeof data.show !== "undefined" ? data.show : true;;
+            let isolinesShow = typeof data.show !== "undefined" ? data.show : true;
+            if (this.polygonsType === 'grid_without_isolines') {
+                isolinesShow = false;
+            }
             let layerGroup = new LayerGroup();
             layerGroup.type = 'polygon';
-            let redColor = 255;
-            let greenColor = 255;
+            const polygonsCount = data.polygons_per_levels.length;
+            const colorDivider = Math.ceil(polygonsCount / 3);
+            let colorIndex = 0;
+            let color = [255, 0, 0];
+            let legendItems = [];
             data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
-                levelIndex = levelIndex !== 0 ? levelIndex : 1;
-                const colorIndex = 255 - 255 / (levelIndex);
-                if (levelIndex % 2 === 0) {
-                    redColor = colorIndex;
-                } else {
-                    greenColor = colorIndex;
+                let correctDivider = levelIndex % colorDivider + 1;
+                if (levelIndex > 0 && levelIndex % colorDivider === 0) {
+                    colorIndex++;
+                    color = [0, 0, 0];
                 }
+                color[colorIndex] = (255 / correctDivider).toFixed();
+                if (correctDivider < 2) {
+                    color[colorIndex - 1] = (128 - 128 / correctDivider).toFixed();
+                }
+                legendItems.push({
+                    title: '> ' + polygonsPerLevel.lower_bound.toString(),
+                    typeGeom: 'Polygon',
+                    className: 'legend-item',
+                    style: new Style({
+                        stroke: new Stroke({
+                            color: `rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`
+                        }),
+                        fill: new Fill({
+                            color: `rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`
+                        }),
+                    }),
+                })
                 this.getPolygonsLayerGroup(layerGroup, polygonsPerLevel, {
                     'internal': internalStyle,
-                    'external': this.getExternalLayerStyle(`rgba(${redColor}, ${greenColor}, 0, 0.7)`,
+                    'external': this.getExternalLayerStyle(`rgba(${color[2]}, ${color[1]}, ${color[0]}, 0.7)`,
                         parseInt(polygonsPerLevel.lower_bound).toString(), isolinesShow),
                 });
             });
-            layerGroup.name = 'Грид карта  ' + this.data.layerGroups.length;
+            layerGroup.name = 'Грид карта  ' + (this.data.layerGroups.length + 1);
+            layerGroup.legendItems = legendItems;
             layerGroup.selectedFilterType = typeof data.selectedFilterType !== "undefined"
                 ? data.selectedFilterType : 0;
             layerGroup.selectedFilterValue = typeof data.selectedFilterValue !== "undefined"
@@ -153,22 +201,30 @@ export default {
                     }))
                 })
             });
+            const lineStyle = new Style({
+                stroke: new Stroke({
+                    color: '#3be7c5',
+                    width: 3,
+                }),
+            });
             const newLayer = new VectorLayer({
                 source: new VectorSource({
                     features: features,
                     wrapX: false,
                 }),
-                style: new Style({
-                    stroke: new Stroke({
-                        color: '#3be7c5',
-                        width: 3,
-                    }),
-                }),
+                style: lineStyle,
                 zIndex: this.data.layerGroups.length + 1,
             });
+            let legendItems = [{
+                title: 'Контур ' + this.data.layerGroups.length,
+                typeGeom: 'Line',
+                className: 'legend-item',
+                style: lineStyle,
+            }]
             let layerGroup = new LayerGroup();
-            layerGroup.name = 'Слой ' + this.data.layerGroups.length;
+            layerGroup.name = 'Контур ' + this.data.layerGroups.length;
             layerGroup.type = 'border';
+            layerGroup.legendItems = legendItems;
             layerGroup.getLayers().push(newLayer);
             this.addLayerGroupToMap(layerGroup);
             this.SET_LOADING(false);
@@ -253,13 +309,9 @@ export default {
                 resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
             }
             if (this.map) {
-                const self = this;
+                const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
                 this.gridMapsValues.push(resultArray);
-                let popupDiv = document.createElement('div');
-                let popupOverlay = new Overlay({
-                    element: popupDiv,
-                });
                 this.map.on('pointermove', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
@@ -268,22 +320,18 @@ export default {
                         || evt.coordinate[1] > mapExtent[3]
                         || evt.dragging
                     ) {
-                        popupDiv.classList.add('d-none');
                         return;
                     }
-                    if (self.gridMapsValues.length > 0) {
+                    if ($self.gridMapsValues.length > 0) {
                         const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
                         const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
-                        popupDiv.classList.remove('d-none');
-                        popupOverlay.setPosition(evt.coordinate);
                         let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
                         let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
-                        let value = self.gridMapsValues[0][x][y];
+                        let value = $self.gridMapsValues[0][x][y];
                         if (isNaN(value)) {
-                            popupDiv.classList.add('d-none');
                             return;
                         }
-                        popupDiv.innerHTML = '<div class="bg-white p-1"> Значение: ' + value.toFixed(2) + '</div>';
+                        $self.overlayValues.grid.html = '<div> Значение грид карты: ' + value.toFixed(2) + '</div>';
                     }
                 });
             }
@@ -321,23 +369,38 @@ export default {
                 })
             }
             let bubbleLayers = [];
+            let waterBubbleLayers = [];
             const defaultRadius = 5;
+            let legendBubbleStyle = null;
+            let legendBubbleTitle = 'Нефть/Вода';
             if (type === 'oil_with_water') {
+                legendBubbleStyle = new Style({
+                    image: new Chart({
+                        radius: 10,
+                        type: "pie",
+                        data: [
+                            50,
+                            50,
+                        ],
+                        colors: [`rgba(10, 134, 145, 0.8)`, `rgba(222, 138, 11, 0.8)`],
+                    }),
+                });
                 data.forEach(item => {
-                    if (item.data.measLiq.data.length > 0) {
-                        const measLiqSum = item.data.measLiq.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0);
-                        const measLiqMean = measLiqSum / item.data.measLiq.data.length;
-                        const measWaterCutPercent = item.data.measWaterCut.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0) / item.data.measWaterCut.data.length;
-                        const oilSum = item.data.oil.data.reduce((a, b) => {
-                            return parseInt(a) + parseInt(b);
-                        }, 0);
+                    let dailyDivider = 1;
+                    let measLiqTitle = 'Жидкость, м3';
+                    let oilTitle = 'Нефть, т';
+                    if (data.dataType === 'kto') {
+                        measLiqTitle = 'Жидкость, м3/сут'
+                        oilTitle = 'Нефть, т/сут';
+                        dailyDivider = data.period ? data.period : moment(this.selectedMonth).daysInMonth();
+                    }
+                    if (item.oilWithWaterData.liquid) {
+                        const measLiqSum = item.oilWithWaterData.liquid / dailyDivider;
+                        const measWaterCutPercent = parseInt(item.oilWithWaterData.wcut);
+                        const oilSum = item.oilWithWaterData.oil / dailyDivider;
                         let oilWithWaterBubbleStyle = new Style({
                             image: new Chart({
-                                radius: defaultRadius + (20 / 100 * measLiqMean),
+                                radius: defaultRadius + (20 / 100 * (item.oilWithWaterData.liquid / item.oilWithWaterData.cnt)),
                                 type: "pie",
                                 data: [
                                     measWaterCutPercent,
@@ -346,7 +409,54 @@ export default {
                                 colors: [`rgba(10, 134, 145, 0.8)`, `rgba(222, 138, 11, 0.8)`],
                             }),
                         });
-                        bubbleLayers.push(
+                        if (measLiqSum > 0 || oilSum > 0) {
+                            bubbleLayers.push(
+                                new VectorLayer({
+                                    source: new VectorSource({
+                                        features: [new Feature({
+                                            geometry: new Point([item.coords[0], item.coords[1]]),
+                                            values: [
+                                                {
+                                                    key: 'Скважина',
+                                                    value: item.name,
+                                                },
+                                                {
+                                                    key: measLiqTitle,
+                                                    value: measLiqSum.toFixed(2),
+                                                },
+                                                {
+                                                    key: 'Обводненность, %',
+                                                    value: measWaterCutPercent.toFixed(2),
+                                                },
+                                                {
+                                                    key: oilTitle,
+                                                    value: oilSum.toFixed(2),
+                                                },
+                                            ],
+                                        })]
+                                    }),
+                                    style: [oilWithWaterBubbleStyle],
+                                    zIndex: this.data.layerGroups.length + 1,
+                                }),
+                            );
+                        }
+                    }
+                    if (item.pressure) {
+                        const pressure = item.pressure ?
+                            item.pressure / dailyDivider : null;
+                        let waterBubbleStyle = new Style({
+                            image: new CircleStyle({
+                                radius: defaultRadius + (20 * (item.pressure / item.pressureMax)),
+                                fill: new Fill({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                }),
+                                stroke: new Stroke({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                    width: 1,
+                                }),
+                            }),
+                        });
+                        waterBubbleLayers.push(
                             new VectorLayer({
                                 source: new VectorSource({
                                     features: [new Feature({
@@ -357,23 +467,15 @@ export default {
                                                 value: item.name,
                                             },
                                             {
-                                                key: 'Жидкость, м3',
-                                                value: measLiqSum,
-                                            },
-                                            {
-                                                key: 'Обводненность, %',
-                                                value: measWaterCutPercent,
-                                            },
-                                            {
-                                                key: 'Нефть, т',
-                                                value: oilSum,
+                                                key: 'Закачка жидкости, м3',
+                                                value: pressure.toFixed(2),
                                             },
                                         ],
                                     })]
                                 }),
-                                style: [oilWithWaterBubbleStyle],
+                                style: [waterBubbleStyle],
                                 zIndex: this.data.layerGroups.length + 1,
-                            }),
+                            })
                         );
                     }
                 });
@@ -382,6 +484,19 @@ export default {
                 const ppmMax = Math.max(...bubbleData.map(function(item) {
                     return item.ppm;
                 }));
+                legendBubbleStyle = new Style({
+                    image: new CircleStyle({
+                        radius: 10,
+                        fill: new Fill({
+                            color: 'rgba(233,149,46, 0.6)',
+                        }),
+                        stroke: new Stroke({
+                            color: 'rgba(179,93,27, 0.8)',
+                            width: 1,
+                        }),
+                    }),
+                });
+                legendBubbleTitle = 'ppm';
                 bubbleData.forEach(item => {
                     let waterBubbleStyle = new Style({
                         image: new CircleStyle({
@@ -434,16 +549,62 @@ export default {
                     );
                 }
             }
-            if (bubbleLayers.length > 0) {
-                this.removeOldBubbleLayerGroupFromMap();
-                let layerGroup = new LayerGroup();
-                bubbleLayers.forEach(item => {
-                    layerGroup.getLayers().push(item);
-                })
-                layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Слой ' + this.data.layerGroups.length;
-                layerGroup.key = 'bubbles' + data.date;
-                layerGroup.type = 'bubbles';
-                this.addLayerGroupToMap(layerGroup);
+            if (bubbleLayers.length > 0 || waterBubbleLayers.length > 0) {
+                if (type === 'ppm') {
+                    this.removeOldBubbleLayerGroupFromMap();
+                }
+                if (bubbleLayers.length > 0) {
+                    let layerGroup = new LayerGroup();
+                    bubbleLayers.forEach(item => {
+                        layerGroup.getLayers().push(item);
+                    })
+                    layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Добыча';
+                    layerGroup.name += typeof data.dataType === "undefined" ? '' :
+                        data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
+                    layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.key = 'bubbles' + data.date;
+                    layerGroup.type = 'bubbles';
+                    layerGroup.legendItems = [{
+                        title: legendBubbleTitle,
+                        feature: new Feature({
+                            geometry: new Point([0, 0]),
+                        }),
+                        className: 'legend-item',
+                        style: legendBubbleStyle,
+                    }];
+                    this.addLayerGroupToMap(layerGroup);
+                }
+                if (waterBubbleLayers.length > 0) {
+                    let layerGroup = new LayerGroup();
+                    waterBubbleLayers.forEach(item => {
+                        layerGroup.getLayers().push(item);
+                    })
+                    layerGroup.name = typeof data.date !== "undefined" ? data.date : 'Нагнетение';
+                    layerGroup.name += typeof data.dataType === "undefined" ? '' :
+                        data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
+                    layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.legendItems = [{
+                        title: 'Закачка жидкости, м3',
+                        feature: new Feature({
+                            geometry: new Point([0, 0]),
+                        }),
+                        className: 'legend-item',
+                        style: new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                fill: new Fill({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                }),
+                                stroke: new Stroke({
+                                    color: 'rgba(0, 65, 248, 0.8)',
+                                    width: 1,
+                                }),
+                            }),
+                        }),
+                    }];
+                    this.addLayerGroupToMap(layerGroup);
+                }
+                this.refreshLegend();
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
@@ -475,6 +636,9 @@ export default {
             });
             this.map = new Map({
                 controls: defaultControls().extend([
+                    new ScaleLine({
+                        units: 'metric',
+                    }),
                     new ToggleMapStyle(),
                     new ExportMap(),
                 ]),
@@ -491,6 +655,142 @@ export default {
             layerGroup.getLayers().push(defaultMapLayer);
             layerGroup.getLayers().push(satelliteMapLayer);
             this.addLayerGroupToMap(layerGroup);
+            this.addMapLegend();
+        },
+        addMapOverlay() {
+            let $self = this;
+            let popupDiv = document.getElementById("bubblePopup_" + this.projectKey);
+            if (popupDiv === null) {
+                popupDiv = document.createElement('div');
+                popupDiv.setAttribute("id", "bubblePopup_" + this.projectKey);
+                popupDiv.classList.add("bubblePopup");
+            }
+            this.mapOverlay = new Overlay({
+                element: popupDiv,
+            });
+            this.map.addOverlay(this.mapOverlay);
+            this.map.on('pointermove', function (e) {
+                if (e.dragging) {
+                    return;
+                }
+                let values = [];
+                this.forEachFeatureAtPixel(e.pixel, function (f) {
+                    values = f.values_.values;
+                    $self.mapOverlay.setPosition(e.coordinate);
+                    return true;
+                });
+                $self.mapOverlay.getElement().innerHTML = '';
+                let valuesText = '';
+                if (typeof values !== "undefined" && values.length > 0) {
+                    values.forEach(item => {
+                        valuesText += `<div>${item.key}: ${item.value}</div>`
+                    });
+                }
+                $self.overlayValues.featureValues.html = valuesText;
+                for (const [key, item] of Object.entries($self.overlayValues)) {
+                    $self.mapOverlay.getElement().innerHTML += `${item.html}`;
+                }
+            });
+        },
+        addMapLegend() {
+            this.legend = new Legend({
+                title: 'Легенда',
+                margin: 2
+            });
+            this.legendControl = new LegendControl({
+              className: 'ol-legend mapLegend',
+              legend: this.legend,
+            });
+            this.map.addControl(this.legendControl);
+        },
+        refreshLegend() {
+          let $self = this;
+          this.legend.getItems().clear();
+          this.data.layerGroups.forEach(item => {
+            if (typeof item.legendItems !== "undefined" && item.legendItems) {
+              item.legendItems.forEach(legendItem => {
+                $self.legend.addItem(legendItem);
+              })
+            }
+          });
+        },
+        showWells(data) {
+            if (this.map === null) {
+                let coords = {
+                    x: [],
+                    y: [],
+                };
+                data.forEach(item => {
+                    coords.x.push(item.coords[0]);
+                    coords.y.push(item.coords[1]);
+                });
+                const maxX = Math.max(...coords.x);
+                const minX = Math.min(...coords.x);
+                const maxY = Math.max(...coords.y);
+                const minY = Math.min(...coords.y);
+                this.initMap({
+                    top_left: [minX, minY],
+                    bottom_right: [maxX, maxY],
+                })
+            }
+            let wellLayers = [];
+            data.forEach(item => {
+                const pointStyle = new Style({
+                    image: new Icon({
+                        crossOrigin: 'anonymous',
+                        src: '/img/icons/map-constructor/' + item.icon,
+                        size: [20, 50],
+                        color: '#000',
+                        scale: 0.5,
+                    }),
+                    text: new Text({
+                        font: '10px bold Calibri,sans-serif',
+                        fill: new Fill({
+                            color: '#000',
+                        }),
+                        text: item.name,
+                    })
+                });
+                if (item.coords[0] !== item.additionalCoords[0] || item.coords[1] !== item.additionalCoords[1]) {
+                    wellLayers.push(
+                        new VectorLayer({
+                            source: new VectorSource({
+                                features: [
+                                    new Feature({
+                                        geometry: new LineString([item.coords, item.additionalCoords]),
+                                    })]
+                            }),
+                            style: [new Style({
+                                stroke: new Stroke({
+                                    color: '#000',
+                                    width: 2,
+                                }),
+                            })],
+                        }),
+                    );
+                }
+                wellLayers.push(
+                    new VectorLayer({
+                        source: new VectorSource({
+                            features: [
+                                new Feature({
+                                    geometry: new Point(item.coords),
+                                })]
+                        }),
+                        style: [pointStyle],
+                    }),
+                );
+            });
+            if (wellLayers.length > 0) {
+                let layerGroup = new LayerGroup();
+                wellLayers.forEach(item => {
+                    layerGroup.getLayers().push(item);
+                })
+                layerGroup.name = 'Скважины ' + this.data.layerGroups.length;
+                this.addLayerGroupToMap(layerGroup);
+            } else {
+                this.$notifyError(this.trans('map_constructor.empty_data'));
+            }
         }
     }
 }
@@ -536,7 +836,7 @@ class ExportMap extends Control {
         const options = opt_options || {};
 
         const exportButton = document.createElement('button');
-        exportButton.innerHTML = 'Экспорт';
+        exportButton.innerHTML = 'PDF';
         const exportElement = document.createElement('div');
         exportElement.className = 'export-map ol-unselectable ol-control';
         exportElement.appendChild(exportButton);
@@ -609,7 +909,9 @@ class ExportMap extends Control {
     border-radius: 2px;
     color: white;
     background: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem;
+}
+.bubblePopup div {
+    padding: 0.1rem 0.5rem;
 }
 .activeBg {
     background-color: rgba(157, 255, 0, 0.6);
@@ -626,5 +928,8 @@ class ExportMap extends Control {
     margin: 0;
     padding: 0.2rem;
     width: 100%;
+}
+.ol-control.mapLegend {
+    bottom: 2.5em;
 }
 </style>

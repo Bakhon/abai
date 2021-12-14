@@ -36,14 +36,14 @@ export default {
             },
             sheetConfigurations: {
                 well_production: {
-                    mandatoryFields: ['prod.meas_liq.dbeg', 'prod.meas_liq.dend', 'dict.well.uwi'],
-                    dateField: 'prod.meas_liq.dbeg',
+                    mandatoryFields: ['prod.well_status_view.dbeg', 'prod.well_status_view.dend', 'dict.well.uwi'],
+                    dateField: 'prod.well_status_view.dbeg',
                     uniqueField: 'dict.well.uwi',
                     orderedDates: []
                 },
                 well_pump: {
-                    mandatoryFields: ['prod.meas_liq.dbeg', 'prod.meas_liq.dend', 'dict.well.uwi'],
-                    dateField: 'prod.meas_liq.dbeg',
+                    mandatoryFields: ['prod.well_status_view.dbeg', 'prod.well_status_view.dend', 'dict.well.uwi'],
+                    dateField: 'prod.well_status_view.dbeg',
                     uniqueField: 'dict.well.uwi',
                     orderedDates: []
                 }

@@ -1,6 +1,6 @@
 <template>
   <div class="correlation-scheme">
-    <AwGis />
+    <AwGis :stratigraphy="[]"/>
   </div>
 </template>
 

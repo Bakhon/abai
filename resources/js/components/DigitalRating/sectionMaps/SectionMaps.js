@@ -8,6 +8,7 @@ import mainMenu from "../../GTM/mock-data/main_menu.json";
 import { mapList, properties, horizons, fileActions, mapActions } from '../json/data';
 import { digitalRatingState, digitalRatingMutations,globalloadingMutations } from '@store/helpers';
 import maps from '../mixins/maps.js';
+import L from "leaflet";
 
 export default {
     name: "SectionMaps",
@@ -38,7 +39,7 @@ export default {
             startPoint: null,
             endPoint: null,
             isRulerActive: false,
-            selectedMaps: []
+            selectedMaps: [],
         };
     },
 
@@ -63,7 +64,7 @@ export default {
 
         async fetchMaps(horizonId) {
             try {
-                const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/${horizonId}`);
+                const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/${horizonId}`);
                 this.SET_LOADING(false);
                 return res.data;
             } catch (error) {
@@ -102,17 +103,45 @@ export default {
 
         async initCurrentProdOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/current-prod/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/current-prod/${horizonNumber}`);
         },
 
         async initCumulativeProdOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/cumulative-prod/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/cumulative-prod/${horizonNumber}`);
+            const cum_prod = res?.data?.cum_prod;
+            if (cum_prod?.length) {
+                function fakeData() {
+                    return [Math.random(), Math.random()];
+                }
+                console.log('fakeData', fakeData())
+                console.log('data', [cum_prod[0].oil, cum_prod[0].water])
+                // const myBarChart = L.minichart([85000, 52000], {
+                //     data: fakeData(),
+                //     type: 'pie',
+                //     width: 40,
+                //     height: 40,
+                //     labels: ['Test1', 'Test2']
+                // });
+                //
+                // this.map.addLayer(myBarChart);
+                // for (let i = 0; i < cum_prod.length; i++) {
+                //     let cumProdChart = L.minichart([cum_prod[i].x, cum_prod[i].y], {
+                //         // renderer: L.canvas({ padding: 0.5 }),
+                //         data: [cum_prod[i].oil, cum_prod[i].water],
+                //         type: 'pie',
+                //         width: cum_prod[i].r,
+                //         height: cum_prod[i].r,
+                //         labels: ['Test1', 'Test2']
+                //     });
+                //     this.map.addLayer(cumProdChart);
+                // }
+            }
         },
 
         async initDrilledOnMap() {
             const horizonNumber = this.horizonNumber;
-            const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/maps/drilled-fond/${horizonNumber}`);
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/drilled-fond/${horizonNumber}`);
             if (!res.data?.length) return;
 
             for (let i = 0; i < res.data.length; i++) {
@@ -189,7 +218,7 @@ export default {
 
         async getLegends() {
             try {
-                const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/legend`);
+                const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/legend`);
                 this.legends = res.data;
             } catch (error) {}
         }

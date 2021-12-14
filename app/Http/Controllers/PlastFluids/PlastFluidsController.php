@@ -7,18 +7,16 @@ use App\Http\Controllers\Controller;
 
 class PlastFluidsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:plastFluids view main')->only('pf', 'pfUploadMonitoring', 'pfDownloadMonitoring', 'pfDataAnalysis');
+    }
+
     public function pf()
     {
         $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
 
         return view('plastfluids.pf', compact('permissionNames'));
-    }
-
-    public function pfTmplPvtPlastOil()
-    {
-        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
-
-        return view('plastfluids.pf_template_pvt_plast_oil', compact('permissionNames'));
     }
 
     public function pfUploadMonitoring()

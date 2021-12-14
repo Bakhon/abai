@@ -1,6 +1,29 @@
-deploy_prod:
+deploy_test:
   stage: deploy
   only:
     - master
+  tags:
+    - master-tag
+  script:
+    - /home/ubuntu/.config/composer/vendor/bin/envoy run deploy
+
+deploy_dev:
+  stage: deploy
+  only:
+    - dev
+  tags:
+    - dev-tag
+  script:
+    - /home/ubuntu/.config/composer/vendor/bin/envoy run deploy
+
+deploy_stable:
+  stage: deploy
+  only:
+    - /^.*stable$/
+  only:
+    - stable
+  tags:
+    - stable-tag
   script:
     - /home/dash/.composer/vendor/bin/envoy run deploy
+

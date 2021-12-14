@@ -153,7 +153,15 @@
                         type: 'line',
                         background: '#2B2E5E',
                         toolbar: {
-                            show: true
+                            show: true,
+                            tools: {
+                                download: true,
+                                selection: true,
+                                zoom: true,
+                                zoomin: false,
+                                zoomout: false,
+                                pan: false,
+                            },
                         }
                     },
                     dataLabels: {
@@ -311,6 +319,32 @@
                     name: "Глубина по вертикали",
                         data: coordinates
                 }]
+                this.chartOptions.annotations = {
+                        points: [
+                            {
+                                x: this.inclino[0].HD,
+                                y: this.inclino[0].TVD,
+                                marker: {
+                                    size: 5,
+                                    fillColor: 'green',
+                                    strokeColor: 'green',
+                                    radius: 2,
+                                    cssClass: 'apexcharts-custom-class'
+                                },
+                            },
+                            {
+                                x: this.inclino[this.inclino.length-1].HD,
+                                y: this.inclino[this.inclino.length-1].TVD,
+                                marker: {
+                                    size: 5,
+                                    fillColor: 'red',
+                                    strokeColor: 'red',
+                                    radius: 2,
+                                    cssClass: 'apexcharts-custom-class'
+                                },
+                            }
+                        ]
+                }
             },
             setParametersChartAboveView(){
                 let coordinates = []
@@ -336,9 +370,13 @@
                 }else{
                     this.maxValue = last
                 }
+                let max = this.maxValue
+                let minX = this.getMinX()
+                let maxX = this.getMaxX()
+                let minY = this.getMinY()
                 this.seriesAbove = [{
                     name: "Север / Юг , м.",
-                        data: coordinates
+                    data: coordinates
                 }]
                 this.chartOptionsAbove = {
                     annotations: {
@@ -367,10 +405,47 @@
                                 text: '',
                             }
                         }],
+                        points: [
+                            {
+                                x: this.inclino[0].N_S,
+                                y: this.inclino[0].E_W,
+                                marker: {
+                                    size: 5,
+                                    fillColor: 'green',
+                                    strokeColor: 'green',
+                                    radius: 2,
+                                    cssClass: 'apexcharts-custom-class',
+                            },
+                            },
+                            {
+                                x: this.inclino[this.inclino.length-1].N_S,
+                                y: this.inclino[this.inclino.length-1].E_W,
+                                marker: {
+                                    size: 5,
+                                    fillColor: 'red',
+                                    strokeColor: 'red',
+                                    radius: 2,
+                                    cssClass: 'apexcharts-custom-class'
+                                },
+                            }
+                        ]
                     },
                     chart: {
-                        zoom:{
-                            enabled: false,
+                        zoom: {
+                            enabled: true,
+                            type: 'xy',
+                            autoScaleYaxis: true,
+                            zoomedArea: {
+                                fill: {
+                                    color: '#90CAF9',
+                                    opacity: 0.4
+                                },
+                                stroke: {
+                                    color: '#0D47A1',
+                                    opacity: 0.4,
+                                    width: 1
+                                }
+                            }
                         },
                         animations: {
                             enabled: false,
@@ -380,8 +455,150 @@
 
                         toolbar: {
                             show: true,
+                            tools: {
+                                download: true,
+                                selection: true,
+                                zoom: true,
+                                zoomin: false,
+                                zoomout: false,
+                                pan: false,
+                            },
                         },
                         background: '#2B2E5E',
+                        events: {
+                            beforeResetZoom: function(chartContext, opts) {
+                                return {
+                                    xaxis: {
+                                        min: -1.5 * max,
+                                        max: 1.5 * max
+                                    },
+                                    yaxis: {
+                                        opposite: true,
+                                        min: -1.5 * max,
+                                        max: 1.5 * max,
+                                        axisTicks: {show: true},
+                                        axisBorder: {show: true,},
+                                        title: {
+                                            text: 'Север / Юг , м.', style: {
+                                                color: '#FFFFFF',
+                                                fontSize: '15px',
+                                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                                fontWeight: 700,
+                                            },
+                                        },
+                                        labels: {
+                                            style: {
+                                                colors: '#FFFFFF'
+                                            },
+
+                                            formatter: function(val) {
+                                                if (val == null)
+                                                    return 0;
+                                                return val.toFixed(0);
+                                            },
+                                        }
+                                    }
+                                }
+                            },
+                            zoomed: function(chartContext, opts) {
+                                return {
+                                    yaxis: {
+                                        opposite: true,
+                                        axisTicks: {show: true},
+                                        axisBorder: {show: true,},
+                                        title: {
+                                            text: 'Север / Юг , м.', style: {
+                                                color: '#FFFFFF',
+                                                fontSize: '15px',
+                                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                                fontWeight: 700,
+                                            },
+                                        },
+                                        labels: {
+                                            style: {
+                                                colors: '#FFFFFF'
+                                            },
+
+                                            formatter: function(val) {
+                                                if (val == null)
+                                                    return 0;
+                                                return val.toFixed(0);
+                                            },
+                                        }
+                                    }
+                                }
+                            },
+                            beforeZoom: function(chartContext, { xaxis, yaxis }) {
+                                console.log(xaxis)
+                                console.log(yaxis)
+                                console.log(chartContext)
+                                maxX = maxX
+                                if (yaxis){
+                                    return {
+                                        xaxis: {
+                                            min: minX,
+                                            max: maxX
+                                        },
+                                        yaxis: {
+                                            opposite: true,
+                                            min: yaxis[0].min,
+                                            max: yaxis[0].max,
+                                            axisTicks: {show: true},
+                                            axisBorder: {show: true,},
+                                            title: {
+                                                text: 'Север / Юг , м.', style: {
+                                                    color: '#FFFFFF',
+                                                    fontSize: '15px',
+                                                    fontFamily: 'Helvetica, Arial, sans-serif',
+                                                    fontWeight: 700,
+                                                },
+                                            },
+                                            labels: {
+                                                style: {
+                                                    colors: '#FFFFFF'
+                                                },
+
+                                                formatter: function(val) {
+                                                    if (val == null)
+                                                        return 0;
+                                                    return val.toFixed(0);
+                                                },
+                                            }
+                                        }
+                                    }
+                                }
+                                return {
+                                    xaxis: {
+                                        min: minX,
+                                    },
+                                    yaxis: {
+                                        opposite: true,
+                                        min: minY,
+                                        axisTicks: {show: true},
+                                        axisBorder: {show: true,},
+                                        title: {
+                                            text: 'Север / Юг , м.', style: {
+                                                color: '#FFFFFF',
+                                                fontSize: '15px',
+                                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                                fontWeight: 700,
+                                            },
+                                        },
+                                        labels: {
+                                            style: {
+                                                colors: '#FFFFFF'
+                                            },
+
+                                            formatter: function(val) {
+                                                if (val == null)
+                                                    return 0;
+                                                return val.toFixed(0);
+                                            },
+                                        }
+                                    }
+                                }
+                            },
+                        }
 
                     },
                     dataLabels: {
@@ -431,8 +648,8 @@
                         },
                     },
                     xaxis: {
-                        max: 2* this.maxValue,
-                        min: -2 * this.maxValue,
+                        max: 1.5* this.maxValue,
+                        min: -1.5 * this.maxValue,
                         title: {
                             text: 'Восток / Запад , м.', style: {
                                 color: '#FFFFFF',
@@ -445,6 +662,11 @@
                             style: {
                                 colors: '#FFFFFF'
                             },
+                            formatter: function(val) {
+                                if (val == null)
+                                    return 0;
+                                return val.toFixed(0);
+                            },
                         },
                         tickAmount: 9,
                         position: 'bottom',
@@ -453,8 +675,8 @@
                     yaxis:[
                         {
                             opposite: true,
-                            max: 2*this.maxValue,
-                            min: -2 * this.maxValue,
+                            max: 1.5*this.maxValue,
+                            min: -1.5 * this.maxValue,
                             axisTicks: {show: true},
                             axisBorder: {show: true,},
                             title: {
@@ -511,6 +733,15 @@
                     }]
                 }
                 this.SET_LOADING(false);
+            },
+            getMinX(){
+                return Math.min.apply(Math, this.inclino.map(function(o) { return o.N_S; }))
+            },
+            getMaxX(){
+                return Math.max.apply(Math, this.inclino.map(function(o) { return o.N_S; }))
+            },
+            getMinY(){
+                return Math.min.apply(Math, this.inclino.map(function(o) { return o.E_W; }))
             },
 
         },

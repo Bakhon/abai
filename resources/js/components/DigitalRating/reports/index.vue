@@ -19,7 +19,12 @@
           </tr>
         </thead>
         <tbody v-if="reports && reports.length">
-          <tr v-for="(item, index) in reports" :key="index">
+          <tr
+            class="cursor-pointer"
+            v-for="(item, index) in reports"
+            :key="index"
+            @click="onTableClick(item)"
+          >
             <td v-for="(col, colIdx) in cols" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
@@ -30,16 +35,25 @@
         {{ trans('app.download') }}
       </button>
     </div>
+    <well-atlas-modal
+      ref="atlasModal"
+      @close="closeAtlasModal"
+    />
   </div>
 </template>
 
 <script>
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import axios from "axios";
-import { globalloadingMutations } from '@store/helpers';
+import { globalloadingMutations, digitalRatingMutations } from '@store/helpers';
+import WellAtlasModal from "../components/WellAtlasModal";
 
 export default {
   name: "DigitalRatingReport",
+
+  components: {
+    WellAtlasModal
+  },
 
   data() {
     return {
@@ -107,6 +121,10 @@ export default {
       'SET_LOADING'
     ]),
 
+    ...digitalRatingMutations([
+      'SET_SECTOR', 'SET_HORIZON'
+    ]),
+
     menuClick(data) {
       const path = window.location.pathname.slice(3);
       if (data?.url && data.url !== path) {
@@ -115,12 +133,23 @@ export default {
     },
 
     async fetchData() {
-      const res = await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/indicator/top?limit=50`);
+      const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/indicator/top?limit=50`);
 
       if (!res.error) {
         this.reports = res.data;
       }
-    }
+    },
+
+    onTableClick(item) {
+      const {sector, horizon} = item;
+      this.SET_SECTOR(sector);
+      this.SET_HORIZON(horizon);
+      this.$bvModal.show('modalAtlas');
+    },
+
+    closeAtlasModal() {
+      this.$bvModal.hide('modalAtlas');
+    },
   }
 }
 </script>

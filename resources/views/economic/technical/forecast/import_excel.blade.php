@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('economic.technical.forecast.index') }}"
+            <a href="{{ route('economic.optimization.input_params') }}"
                class="btn btn-info">
                 {{ __('economic_reference.return_menu') }}
             </a>

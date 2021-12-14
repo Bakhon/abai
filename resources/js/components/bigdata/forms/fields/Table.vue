@@ -235,10 +235,17 @@ export default {
     },
     deleteItem(index) {
       if (index === null) return
-      this.items.splice(index, 1)
-      this.selectedRowIndex = null
+      this.$bvModal.msgBoxConfirm(this.trans('bd.confirm_delete'), {
+        okTitle: this.trans('app.yes'),
+        cancelTitle: this.trans('app.no'),
+      })
+          .then(result => {
+            if (!result) return
+            this.items.splice(index, 1)
+            this.selectedRowIndex = null
 
-      this.updateParentField()
+            this.updateParentField()
+          })
     },
     updateParentField() {
 
@@ -257,6 +264,12 @@ export default {
       this.formValues[column.code] = event
     },
     updateResults(event) {
+      //todo: hotfix, need to do it properly
+      if (this.params.form === 'well_document_short') {
+        event.values.filenames = event.values.file.map(file => {
+          return file.name
+        }).join(', ')
+      }
       this.items.push(event)
 
       this.$emit('change', this.items.map(row => row.id))

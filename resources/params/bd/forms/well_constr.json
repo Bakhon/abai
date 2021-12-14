@@ -45,8 +45,7 @@
                 "code": "casing_nom",
                 "type": "dict",
                 "title": "casing_type",
-                "dict": "casings",
-                "validation": "required|exists:tbd.dict.tube_nom,id"
+                "dict": "casings"
               },
               {
                 "code": "tube_count",
