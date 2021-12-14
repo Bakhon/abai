@@ -53,6 +53,10 @@ class RolesController extends Controller
             'name' => 'plastFluids',
             'title' => 'Модуль Пластовые Флюиды'
         ],
+        [
+            'name' => 'mapConstructor',
+            'title' => 'Модуль Картопостроитель'
+        ],
     ];
 
     static protected $fieldCodes = [
