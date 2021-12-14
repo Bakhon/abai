@@ -585,8 +585,8 @@ table, th, td {
   background: #2f315a;
 }
 .tab-archive-div {
-  padding-left: 15%;
+  padding-left: 3%;
   overflow: scroll; 
-  height: 618px;
+  height: 824px;
 }
 </style>

@@ -13,8 +13,8 @@
             </div>
           </div>
           <div class="dropdown-holder">
-            <b-button class="online-block" @click="isCurrent">{{trans('tkrs.current_work')}}</b-button>
-            <b-button class="online-block" @click="isArchive">{{trans('tkrs.archive')}}</b-button>
+            <!-- <b-button class="online-block" @click="isCurrent">{{trans('tkrs.current_work')}}</b-button>
+            <b-button class="online-block" @click="isArchive">{{trans('tkrs.archive')}}</b-button> -->
             <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
             <div class="line-block"></div>
 
