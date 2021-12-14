@@ -501,9 +501,9 @@ export default {
 
     .element-position {
       padding: 9px 13px;
+      text-align: center;
 
       p {
-        float: right;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;
