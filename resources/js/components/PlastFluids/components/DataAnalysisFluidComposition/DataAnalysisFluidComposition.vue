@@ -4,13 +4,14 @@
       <div class="heading-title-wrapper">
         <div class="heading-title">
           <img src="/img/PlastFluids/graphs.svg" alt="graph" />
-          <p>График</p>
+          <p>{{ trans("plast_fluids.graph") }}</p>
         </div>
       </div>
       <div class="content">
-        <div class="graph-holder">
-          <LineGraph title="Углеводородная фракция" :series="series" />
-        </div>
+        <LineGraph
+          :title="trans('plast_fluids.hydrocarbon_fraction')"
+          :series="series"
+        />
       </div>
     </div>
     <DataAnalysisDataTable
@@ -34,7 +35,6 @@ export default {
   },
   data() {
     return {
-      cartFull: false,
       items: [],
       fields: [
         "Скважина",
@@ -54,37 +54,8 @@ export default {
         name: "Тест",
         type: "line",
         data: [
-          { x: 16.4, y: 5.4 },
-          { x: 21.7, y: 2 },
-          { x: 25.4, y: 3 },
-          { x: 19, y: 2 },
-          { x: 10.9, y: 1 },
-          { x: 13.6, y: 3.2 },
-          { x: 10.9, y: 7.4 },
-          { x: 10.9, y: 0 },
-          { x: 10.9, y: 8.2 },
-          { x: 16.4, y: 0 },
-          { x: 16.4, y: 1.8 },
-          { x: 13.6, y: 0.3 },
-          { x: 13.6, y: 0 },
-          { x: 29.9, y: 0 },
-          { x: 27.1, y: 2.3 },
-          { x: 16.4, y: 0 },
-          { x: 13.6, y: 3.7 },
-          { x: 10.9, y: 5.2 },
-          { x: 16.4, y: 6.5 },
-          { x: 10.9, y: 0 },
-          { x: 24.5, y: 7.1 },
-          { x: 10.9, y: 0 },
-          { x: 8.1, y: 4.7 },
-          { x: 19, y: 0 },
-          { x: 21.7, y: 1.8 },
-          { x: 27.1, y: 0 },
-          { x: 24.5, y: 0 },
-          { x: 27.1, y: 0 },
-          { x: 29.9, y: 1.5 },
-          { x: 27.1, y: 0.8 },
-          { x: 22.1, y: 2 },
+          { x: 2, y: 2 },
+          { x: 25, y: 8 },
         ],
       },
     };
@@ -169,11 +140,5 @@ export default {
   border: 6px solid #272953;
   padding: 4px;
   overflow: hidden;
-}
-
-.graph-holder {
-  flex: 1 1 auto;
-  overflow: auto;
-  padding: 0;
 }
 </style>

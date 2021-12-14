@@ -17,8 +17,8 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graph, index) in sortedCurrentGraphics"
-            :key="index"
+            v-for="graph in sortedCurrentGraphics"
+            :key="graph.order"
             class="content-child"
             :style="
               currentGraphics.length > 2
@@ -144,11 +144,6 @@ export default {
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
-    getMaxMin(arrayData) {
-      const max = Math.max(...arrayData);
-      const min = Math.min(...arrayData);
-      return [min, max];
-    },
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {

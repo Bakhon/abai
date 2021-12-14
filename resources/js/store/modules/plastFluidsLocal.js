@@ -249,7 +249,7 @@ const plastFluidsLocal = {
         );
         commit(
           "SET_TABLE_ROWS",
-          Array.isArray(data) ? data.slice(2) : data.table
+          Array.isArray(data) ? data.slice(3) : data.table
         );
       } catch (error) {
         console.log(error);

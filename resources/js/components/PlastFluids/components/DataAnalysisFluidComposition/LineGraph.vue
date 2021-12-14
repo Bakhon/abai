@@ -26,7 +26,7 @@
           :options="chartOptions"
           :series="graphSeries"
           :type="type"
-          height="100%"
+          :height="height"
         ></ApexCharts>
       </div>
     </div>
@@ -50,6 +50,7 @@ export default {
     return {
       maxX: 10,
       type: "line",
+      height: "300px",
       isFullScreen: false,
       graphSeries: [],
       chartOptions: {
@@ -102,7 +103,20 @@ export default {
             show: true,
           },
           min: 0,
+          max: 30,
           tickAmount: 6,
+        },
+        yaxis: {
+          seriesName: this.trans("plast_fluids.data"),
+          labels: {
+            formatter: this.labelFormatterY,
+          },
+          lines: {
+            show: true,
+          },
+          min: 0,
+          max: 10,
+          tickAmount: 4,
         },
       },
     };
@@ -125,7 +139,7 @@ export default {
       this.isFullScreen = false;
     },
     saveToPng() {
-      const exprt = new Export(this.$refs.scatterGraph.chart);
+      const exprt = new Export(this.$refs.lineGraph.chart);
       exprt.exportToPng();
     },
     getMaxMinInObjectArray(obj, property) {
@@ -144,15 +158,16 @@ export default {
           : ""
       );
     },
+    labelFormatterY(value) {
+      return value.toFixed(
+        Math.abs(this.maxYAxisBorder) < 4 && Math.abs(this.minYAxisBorder) < 4
+          ? 1
+          : ""
+      );
+    },
   },
   mounted() {
-    this.chartOptions = {
-      ...this.chartOptions,
-      xaxis: {
-        ...this.chartOptions.xaxis,
-        max: this.maxX,
-      },
-    };
+    this.$nextTick(() => (this.height = "100%"));
   },
 };
 </script>
@@ -194,7 +209,6 @@ export default {
   width: 100%;
   height: calc(100% - 30px);
   display: block;
-  overflow: hidden;
 }
 
 .line-graph-header {

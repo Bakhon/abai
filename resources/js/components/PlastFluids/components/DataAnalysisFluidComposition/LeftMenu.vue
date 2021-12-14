@@ -6,7 +6,7 @@
           src="/img/PlastFluids/tableCustomization.svg"
           alt="table settings"
         />
-        <p>Таблица составов</p>
+        <p>{{ trans("plast_fluids.composition_table") }}</p>
       </div>
       <div class="content">
         <div class="table-content">
@@ -38,11 +38,11 @@
       </div>
       <div class="content">
         <div class="settings-input-holder">
-          <p>Вид сепарации</p>
+          <p>{{ trans("plast_fluids.separation_type") }}</p>
           <Dropdown />
         </div>
         <div class="settings-input-holder">
-          <p>Единица</p>
+          <p>{{ trans("plast_fluids.unit") }}</p>
           <Dropdown />
         </div>
       </div>
@@ -53,7 +53,7 @@
           src="/img/PlastFluids/graphsCustomization.svg"
           alt="graphs customization"
         />
-        <p>График составов</p>
+        <p>{{ trans("plast_fluids.composition_schedule") }}</p>
       </div>
       <div class="content">
         <div class="graph-customization-input-holder">
@@ -61,10 +61,12 @@
             type="checkbox"
             v-model="isGraphCustomizationPf"
             id="graph-customization-plast-fluid"
-          /><label for="graph-customization-plast-fluid">Пластовый флюид</label>
+          /><label for="graph-customization-plast-fluid">{{
+            trans("plast_fluids.plast_fluid")
+          }}</label>
         </div>
         <div class="graph-customization-input-holder">
-          <p>Граница оси X (CN)</p>
+          <p>{{ trans("plast_fluids.x_axis_limit_cn") }}</p>
           <div><Dropdown style="margin-bottom: 0;" /></div>
         </div>
       </div>
@@ -85,15 +87,15 @@ export default {
       selectedCompositions: ["plastFluid"],
       compositionTable: [
         {
-          label: "Пластовый флюид",
+          label: this.trans("plast_fluids.plast_fluid"),
           key: "plastFluid",
         },
         {
-          label: "Жидкость сепарации",
+          label: this.trans("plast_fluids.separation_fluid"),
           key: "separationFluid",
         },
         {
-          label: "Газа сепарации",
+          label: this.trans("plast_fluids.separation_gas"),
           key: "gasSeparation",
         },
       ],
