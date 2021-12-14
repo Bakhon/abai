@@ -231,7 +231,7 @@ export default {
             data: operatingProfit,
             dimension: 1000000,
             dimensionTitle: `
-              ${this.trans('economic_reference.million')}.
+              ${this.trans('economic_reference.million')}
               ${this.trans('economic_reference.tenge')}
             `,
           },

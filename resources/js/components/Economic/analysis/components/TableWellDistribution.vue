@@ -230,7 +230,7 @@ export default {
             color: '#009847',
             data: operatingProfit,
             dimensionTitle: `
-              ${this.trans('economic_reference.million')}.
+              ${this.trans('economic_reference.million')}
               ${this.trans('economic_reference.tenge')}
             `,
           },

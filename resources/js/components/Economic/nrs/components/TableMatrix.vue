@@ -724,7 +724,7 @@ export default {
           },
           {
             prop: 'prs1',
-            name: this.trans('economic_reference.prs_count'),
+            name: this.trans('economic_reference.prs_count') + ' (от обратного)',
             dimensionTitle: `${this.trans('economic_reference.units')}.`,
             dimension: 1000,
             calcValue: function (data, dateIndex, dateParams) {

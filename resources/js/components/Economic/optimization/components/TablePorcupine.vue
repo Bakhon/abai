@@ -4,6 +4,38 @@
       {{ trans('economic_reference.table_porcupine_title') }}
     </subtitle>
 
+    <div class="d-flex">
+      <select
+          v-model="salaryPercents"
+          class="form-control"
+          multiple
+          @change="$emit('change')"
+      >
+        <option
+            v-for="salaryPercent in scenarioVariations.salary_percents"
+            :key="salaryPercent.value"
+            :value="salaryPercent.value">
+          {{ salaryPercent.label }}
+        </option>
+      </select>
+
+      <select
+          v-model="retentionPercents"
+          class="form-control"
+          multiple
+          @change="$emit('change')"
+      >
+        <option
+            v-for="retentionPercent in scenarioVariations.retention_percents"
+            :key="retentionPercent.value"
+            :value="retentionPercent.value">
+          {{ retentionPercent.label }}
+        </option>
+      </select>
+    </div>
+
+
+
     <apexchart
         ref="chart"
         :options="chartOptions"
@@ -57,10 +89,14 @@ export default {
       type: Object
     },
   },
+  data: () => ({
+    salaryPercents: [],
+    retentionPercents: [],
+  }),
   methods: {
     tooltipFormatter(value, index) {
       return `
-        ${value} ${this.trans('economic_reference.billion')}. ${this.trans('economic_reference.tenge')}.
+        ${value} ${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}.
         ${this.trans('economic_reference.cat_1_trips')}: ${this.filteredData[0].series[index].cat_1 * 100}%,
         ${this.trans('economic_reference.cat_2_trips')}: ${this.filteredData[0].series[index].cat_2 * 100}%
       `
@@ -147,22 +183,18 @@ export default {
     },
 
     chartSeries() {
-      return this.filteredData.map(item => {
-        return {
-          name: `
+      return this.filteredData.map(item => ({
+        name: `
           ${this.trans('economic_reference.fot_optimization')} - ${+item.salary_percent.value * 100}%,
           ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+item.retention_percent.value * 100}%
           ${item.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
           `,
-          type: 'line',
-          data: item.series.map(item => {
-            return {
-              y: item.operating_profit,
-              x: item.oil
-            }
-          })
-        }
-      })
+        type: 'line',
+        data: item.series.map(item => ({
+          y: item.operating_profit,
+          x: item.oil
+        }))
+      }))
     },
 
     chartColors() {
@@ -188,27 +220,25 @@ export default {
         markers: {
           size: 5,
           strokeOpacity: 0.1,
-          discrete: this.chartSeries.map((series, seriesIndex) => {
-            return {
-              seriesIndex: seriesIndex,
-              dataPointIndex: series.data.reduce(
-                  (bestIndex, value, currentIndex, data) => +value.y > +data[bestIndex].y
-                      ? currentIndex
-                      : bestIndex
-                  , 0
-              ),
-              fillColor: '#fff',
-              strokeColor: '#fff',
-              size: 10,
-              shape: "circle"
-            }
-          })
+          discrete: this.chartSeries.map((series, seriesIndex) => ({
+            seriesIndex: seriesIndex,
+            dataPointIndex: series.data.reduce(
+                (bestIndex, value, currentIndex, data) => +value.y > +data[bestIndex].y
+                    ? currentIndex
+                    : bestIndex
+                , 0
+            ),
+            fillColor: '#fff',
+            strokeColor: '#fff',
+            size: 10,
+            shape: "circle"
+          }))
         },
         yaxis: {
           title: {
             text: `
             ${this.trans('economic_reference.enterprise_income_loss')},
-            ${this.trans('economic_reference.billion')}.
+            ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}.
             `,
           },
