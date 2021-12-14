@@ -6,7 +6,7 @@
           :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
         <div @click="handleSelectHistoryWell(well)">
-          {{ well.wellUwi }} {{ well.lastFormInfo ? ' | ' + well.lastFormInfo.name : '' }}
+          {{ well.wellUwi }} {{ activeForm ? ' | ' + activeForm.name : '' }}
         </div>
         <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"
               v-if="wellsHistory.length > 1"></span>
@@ -522,7 +522,6 @@ export default {
           value_double: null,
         },
         tubeNomDop: {od: null},
-        tubeNomAdd: {od: null},
         type_sk: {value_double: null, value_string: null, equip_param: null, value_text: null},
         wellDailyDrill: {dbeg: null, dend: null},
         meas_well: {dbeg: null, value_double: null},
@@ -559,7 +558,6 @@ export default {
         org: "org",
         geo: "geo",
         tubeNom: "tubeNom",
-        tubeNomAdd: "tubeNomAdd",
         dinzamer: "dinzamer",
         date_expl: "date_expl",
         measLiq: "measLiq",
@@ -878,7 +876,7 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well);
-      let tube = this.getTube(well);
+     // let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1017,15 +1015,14 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
-          data: tube,
+          data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],
-          codes: ["KTM"],
         },
         {
           name: this.trans("well.type_gol"),
@@ -1401,18 +1398,6 @@ export default {
       }
       return "";
     },
-    getTube(well){
-      if(this.well.tubeNom.od && this.well.tubeNomAdd.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNomAdd.od;
-      }
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + '-';
-      }
-      if(this.well.tubeNomAdd.od){
-        return '-' + ' / ' + this.well.tubeNomAdd.od;
-      }
-      return "";
-    },
     getTechmodeOil(well) {
       if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
         if (
@@ -1541,7 +1526,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
-        return moment(data).tz('Asia/Almaty').format("DD.MM.YYYY");
+        return moment(data).format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {

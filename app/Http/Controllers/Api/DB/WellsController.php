@@ -97,7 +97,6 @@ class WellsController extends Controller
             'techs' => $this->techs($well),
             'tap' => $this->tap($well),
             'tubeNom' => $this->tubeNom($well),
-            'tubeNomAdd' => $this->tubeNomAdd($well),
             'well_type' => $this->wellType($well),
             'org' => $this->structureOrg($orgs),
             'main_org_code' => $this->orgCode($orgs),
@@ -266,35 +265,6 @@ class WellsController extends Controller
         }
 
         return "";
-    }
-
-    private function tubeNomAdd(Well $well)
-    {
-        $tubeNomAdditional = $well->tubeNom()
-            ->wherePivot('project_drill', '=', 'false')
-            ->WherePivot('casing_type', '=', '9', 'or')
-            ->wherePivot('od', '!=', null)
-            ->get(['prod.well_constr.od'])
-            ->toArray();
-        
-        if($tubeNomAdditional){
-                return $tubeNomAdditional[0];
-        }
-                
-        if(!$tubeNomAdditional){
-            $wellConstrAdd = DB::connection('tbd')
-                            ->table('prod.well_constr')
-                            ->where('well', '=', $well->id)
-                            ->where('od', '!=', null)      
-                            ->where('casing_type', '9')                
-                            ->orderBy('id', 'desc')
-                            ->get('od')
-                            ->toArray();   
-            if($wellConstrAdd){
-                return $wellConstrAdd[0];
-            }
-                return "";
-        }  
     }
 
     private function wellExpl(Well $well)
