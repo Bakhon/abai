@@ -76,6 +76,8 @@ export default {
        },
         async switchCompany(e) {
             this.SET_LOADING(true);
+            this.disableHighlightOnCells();
+            this.turnOffErrorHighlight();
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
