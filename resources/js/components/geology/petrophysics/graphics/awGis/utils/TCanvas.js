@@ -4,6 +4,14 @@ export default class TCanvas {
     #__canvas = null;
     #__context = null;
     #tCoords = new TCoords();
+    #settings = {
+        scaleY: 1
+    };
+
+    set settings(settings){
+        this.#settings = settings;
+        this.#tCoords.setScaleY = this.#settings.scaleY;
+    }
 
     set setCanvas(canvas) {
         this.#__canvas = canvas;
@@ -23,14 +31,14 @@ export default class TCanvas {
     drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
         let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
         let coord = this.#tCoords;
-        console.log(options)
         let colorPalette = options.colorPalette;
         for (const lithology of lithologyData) {
             if (lithology !== lastLithology) {
-                if (lithology !== null) {
+                if (lastLithology !== null) {
+
                     let difference = Math.abs(y - startPolygonPosition);
                     ctx.save();
-                    ctx.fillStyle = colorPalette[lithology].color;
+                    ctx.fillStyle = colorPalette[lastLithology].color;
                     ctx.globalCompositeOperation = "destination-over";
                     ctx.beginPath();
                     ctx.moveTo(0, coord.positionY(startPolygonPosition));
@@ -46,9 +54,9 @@ export default class TCanvas {
                     ctx.font = "13px Harmonia-sans";
                     ctx.textBaseline = "middle";
                     ctx.textAlign = "center";
-                    ctx.fillStyle = colorPalette[lithology].textColor&&"black";
-                    if(difference>25){
-                        ctx.fillText(colorPalette[lithology].name, ctx.canvas.width/2, coord.positionY(y-(difference/2)));
+                    ctx.fillStyle = colorPalette[lastLithology].textColor && "black";
+                    if (difference > 25) {
+                        ctx.fillText(colorPalette[lastLithology].name, ctx.canvas.width / 2, coord.positionY(y - (difference / 2)));
                     }
                     ctx.restore();
                 }

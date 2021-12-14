@@ -2,7 +2,7 @@
   <div>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
-        <p v-if="params" class="table-container-header__title">{{ params.name }}</p>
+        <p v-show="params" class="table-container-header__title">{{ params.name }}</p>
         <template v-if="form && form.actions && form.actions.length > 0">
           <div class="dropdown">
             <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
@@ -501,9 +501,9 @@ export default {
 
     .element-position {
       padding: 9px 13px;
+      text-align: center;
 
       p {
-        float: right;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;

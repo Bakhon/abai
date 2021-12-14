@@ -4,10 +4,11 @@
       <AwIcon name="arrowLeft" />
     </button>
     <transition-group name="aw-scale-fade-side" tag="div">
-      <div key="first" class="page-side__top w-100 mb-2" v-show="getSidesState">
+      <div ref="top" key="first" class="page-side__top w-100 mb-2" v-show="getSidesState">
         <slot name="top" />
       </div>
-      <div key="second" v-show="getSidesState">
+      <div ref="content" class="page-side__content" key="second"
+           v-show="getSidesState">
         <slot />
       </div>
     </transition-group>
@@ -53,7 +54,7 @@ export default {
       SET_TOGGLE_LEFT_SIDE,
       SET_TOGGLE_RIGHT_SIDE
     ]),
-    toggleSide(){
+    toggleSide() {
       this[this.getSideDirection.set]('toggle')
     }
   }
