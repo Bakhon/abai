@@ -13,28 +13,37 @@
         style="color: #3366FF; margin-right: 8px;"
         class="fa fa-folder light-blue"
       ></i
-      >{{ template.well_name}}
+      >{{ type === 'year' ? template.year : template.well_name}}
     </label>
-    <ul>
+    <ul v-if="type === 'year'">
+      <currentWorkHook
+        
+      v-for="well in template.wells"
+            :key="well.well_name" type="well" :template="well"/>
+    </ul>
+    <ul v-else>
       <currentWorkHookTreeMenuChiild
         
       v-for="date in template.date"
-            :key="date.field_name" :date="date"/>
+            :key="date.date_name" :date="date"/>
     </ul>
   </li>
 </template>
 
 <script>
 import currentWorkHookTreeMenuChiild from "./currentWorkHookTreeMenuChiild.vue";
+import currentWorkHook from "./currentWorkHook.vue";
 
 export default {
   name: "currentWorkHook",
   props: {
     template: Object,
     isOpenedTrees: Array,
+    type: String
   },
   components: {
     currentWorkHookTreeMenuChiild,
+    currentWorkHook
   },
   computed: {
     computedIsOpenedTrees: {

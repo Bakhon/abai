@@ -28,7 +28,7 @@
             <div class="line-block"></div>
             <div class="tab-archive-div" v-if="currentTab == 1">
                   <currentWorkHook v-for="template in wellsTree"
-            :key="template.well_name" :template="template"></currentWorkHook>
+            :key="template.year" type="year" :template="template"></currentWorkHook>
               </div>
 
               <div v-if="currentTab == 2">
@@ -363,13 +363,12 @@ export default {
       
       this.axios
           .get(
-               `http://172.20.103.203:8090/wellNameDate1/`,
+               `http://172.20.103.203:8090/wellTreeName/`,
               
           )
           .then((response) => {
               let data = response.data;
               if (data) {
-                // this.table_work = data
                 this.wellsTree = data
                 console.log(this.wellsTree)
 
