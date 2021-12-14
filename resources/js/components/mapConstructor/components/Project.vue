@@ -740,12 +740,13 @@ export default {
                         crossOrigin: 'anonymous',
                         src: '/img/icons/map-constructor/' + item.icon,
                         size: [20, 50],
-                        color: '#fff',
+                        color: '#000',
+                        scale: 0.5,
                     }),
                     text: new Text({
                         font: '10px bold Calibri,sans-serif',
                         fill: new Fill({
-                            color: '#fff',
+                            color: '#000',
                         }),
                         text: item.name,
                     })
@@ -761,7 +762,7 @@ export default {
                             }),
                             style: [new Style({
                                 stroke: new Stroke({
-                                    color: '#fff',
+                                    color: '#000',
                                     width: 2,
                                 }),
                             })],
