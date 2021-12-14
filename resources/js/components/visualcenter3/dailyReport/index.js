@@ -830,6 +830,25 @@ export default {
         ]),
     },
     async mounted() {
+        let queryOptions = {
+            'periodStart': moment().subtract(1,'days').startOf('day').format(),
+            'periodEnd': moment().subtract(1,'days').endOf('day').format(),
+            'historicalPeriodStart': moment().subtract(2,'days').startOf('day').format(),
+            'historicalPeriodEnd': moment().subtract(2,'days').endOf('day').format(),
+            'periodRange': 0,
+            'dzoName': null,
+            'category': 'oilCondensateProduction',
+            'periodType' : 'day'
+        };
+        let uri = this.localeUrl("/daily-report-export");
+        const response = await axios.get(uri,{params:queryOptions,responseType:'arraybuffer'});
+        console.log(response);
+        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'test.xlsx');
+        document.body.appendChild(fileLink);
+        fileLink.click();
         this.SET_LOADING(true);
         if (moment().date() === 1) {
             this.period.monthStart = this.period.monthStart.subtract(1,'month').startOf('month');
