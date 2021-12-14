@@ -48,7 +48,7 @@ export const formatValueMixin = {
 
             let formatterValue = value.toFixed(fractionDigits)
 
-            if (fractionDigits === 0 && value < 1) {
+            if (fractionDigits === 0 && value < 1 && value > -1) {
                 formatterValue = +value.toFixed(2)
             }
 

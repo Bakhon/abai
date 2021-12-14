@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-white">
-      <div class="d-flex align-items-center mb-3 bg-main1 p-4">
+      <div class="d-flex align-items-center mb-3 bg-main1 px-4 py-3">
         <div class="form-check mr-2">
           <input v-model="isVisibleProfitable"
                  id="visible_profitable"
@@ -70,15 +70,25 @@
       </div>
 
       <div>
-        <h4 class="mb-2">
-          {{ trans('economic_reference.input_indicators') }}
-        </h4>
+        <div class="mb-2 d-flex align-items-center">
+          <h4 class="mb-0">
+            {{ trans('economic_reference.input_indicators') }}
+          </h4>
 
-        <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
+          <div class="ml-2 form-check d-flex align-items-center">
+            <input v-model="isVisibleDailyKeys"
+                   id="visible_daily_keys"
+                   type="checkbox"
+                   class="form-check-input mt-0"
+                   @change="updateDailyGroupVisibility()">
+          </div>
+        </div>
+
+        <div class="d-flex mb-3 bg-main1 px-4 py-3">
           <div v-for="dailyKey in dailyKeys"
                :key="dailyKey.prop"
-               class="d-flex flex-20 mr-2 mb-2 line-height-16px">
-            <div class="d-flex align-items-center form-check mr-2 flex-150px">
+               class="d-flex mr-2 line-height-16px">
+            <div class="d-flex align-items-center form-check mr-2">
               <input v-model="dailyKey.isVisible"
                      :id="dailyKey.prop"
                      type="checkbox"
@@ -92,60 +102,84 @@
         </div>
       </div>
 
-      <div>
-        <div class="d-flex align-items-center mb-2">
-          <h4 class="mb-0 mr-1">
-            {{ trans('economic_reference.estimated_data') }}
-          </h4>
+      <div class="mb-3 d-flex">
+        <div class="flex-shrink-0 d-flex flex-column">
+          <div class="mb-2 d-flex align-items-center">
+            <h4 class="mb-0">
+              {{ trans('economic_reference.technical_data') }}
+            </h4>
 
-          <div class="ml-3 flex-grow-1 d-flex">
-            <div class="d-flex align-items-center form-check">
-              <input v-model="isVisibleTechicalKeys"
+            <div class="ml-2 form-check d-flex align-items-center">
+              <input v-model="isVisibleTechnicalKeys"
                      id="visible_technical_keys"
                      type="checkbox"
                      class="form-check-input mt-0"
                      @change="updateGroupVisibility(true)">
-              <label for="visible_technical_keys"
-                     class="form-check-label">
-                {{ trans('economic_reference.technical_data') }}
-              </label>
             </div>
+          </div>
 
-            <div class="ml-2 d-flex align-items-center form-check">
+          <div class="flex-grow-1 bg-main1 pt-3 px-4 pb-2">
+            <div v-for="wellKey in technicalKeys"
+                 :key="wellKey.prop"
+                 class="d-flex flex-22 mr-2 mb-2 line-height-16px">
+              <div class="d-flex align-items-center form-check mr-2 flex-150px">
+                <input :checked="wellKey.isVisible"
+                       :id="wellKey.prop"
+                       type="checkbox"
+                       class="form-check-input mt-0"
+                       @change="updateWellKeyVisibility(wellKey.prop)">
+                <label :for="wellKey.prop"
+                       class="form-check-label">
+                  {{ wellKey.name }}
+                </label>
+              </div>
+
+              <select-chart-type
+                  v-if="isVisibleChartTotal"
+                  :form="wellKey"
+                  class="bg-dark-blue text-white mr-3"
+                  style="flex: 0 0 100px"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="ml-4 flex-grow-1">
+          <div class="mb-2 d-flex align-items-center">
+            <h4 class="mb-0">
+              {{ trans('economic_reference.economic_data') }}
+            </h4>
+
+            <div class="ml-2 form-check d-flex align-items-center">
               <input v-model="isVisibleEconomicKeys"
                      id="visible_economic_keys"
                      type="checkbox"
                      class="form-check-input mt-0"
                      @change="updateGroupVisibility(false)">
-              <label for="visible_economic_keys"
-                     class="form-check-label">
-                {{ trans('economic_reference.economic_data') }}
-              </label>
             </div>
           </div>
-        </div>
 
-        <div class="bg-main1 p-4 mb-3 d-flex flex-wrap">
-          <div v-for="(wellKey, wellKeyIndex) in wellKeys"
-               :key="wellKey.prop"
-               class="d-flex flex-20 mr-2 mb-2 line-height-16px">
-            <div class="d-flex align-items-center form-check mr-2 flex-150px">
-              <input :checked="wellKeys[wellKeyIndex].isVisible"
-                     :id="wellKey.prop"
-                     type="checkbox"
-                     class="form-check-input mt-0"
-                     @change="updateWellKeyVisibility(wellKeyIndex)">
-              <label :for="wellKey.prop"
-                     class="form-check-label">
-                {{ wellKey.name }}
-              </label>
+          <div class="bg-main1 pt-3 px-4 pb-2 d-flex flex-wrap">
+            <div v-for="wellKey in economicKeys"
+                 :key="wellKey.prop"
+                 class="d-flex flex-22 mr-2 mb-2 line-height-16px">
+              <div class="d-flex align-items-center form-check mr-2 flex-150px">
+                <input :checked="wellKey.isVisible"
+                       :id="wellKey.prop"
+                       type="checkbox"
+                       class="form-check-input mt-0"
+                       @change="updateWellKeyVisibility(wellKey.prop)">
+                <label :for="wellKey.prop"
+                       class="form-check-label">
+                  {{ wellKey.name }}
+                </label>
+              </div>
+
+              <select-chart-type
+                  v-if="isVisibleChartTotal"
+                  :form="wellKey"
+                  class="bg-dark-blue text-white mr-3"
+                  style="flex: 0 0 100px"/>
             </div>
-
-            <select-chart-type
-                v-if="isVisibleChartTotal"
-                :form="wellKey"
-                class="bg-dark-blue text-white mr-3"
-                style="flex: 0 0 100px"/>
           </div>
         </div>
       </div>
@@ -294,8 +328,9 @@ export default {
     isVisibleProfitless: true,
     isVisibleConditionallyProfitable: true,
     isVisibleChartTotal: false,
-    isVisibleTechicalKeys: false,
+    isVisibleTechnicalKeys: false,
     isVisibleEconomicKeys: false,
+    isVisibleDailyKeys: false,
     form: {
       operatingProfit: 'Operating_profit',
       sortKey: null,
@@ -724,7 +759,10 @@ export default {
           },
           {
             prop: 'prs1',
-            name: this.trans('economic_reference.prs_count') + ' (от обратного)',
+            name: `
+              ${this.trans('economic_reference.prs_count')}
+              (${this.trans('economic_reference.from_opposite').toLocaleLowerCase()})
+            `,
             dimensionTitle: `${this.trans('economic_reference.units')}.`,
             dimension: 1000,
             calcValue: function (data, dateIndex, dateParams) {
@@ -922,6 +960,14 @@ export default {
 
     hasConditionallyProfitableWells() {
       return this.form.operatingProfit === 'Operating_profit'
+    },
+
+    technicalKeys() {
+      return this.wellKeys.filter(key => key.isTechnical)
+    },
+
+    economicKeys() {
+      return this.wellKeys.filter(key => !key.isTechnical)
     }
   },
   methods: {
@@ -1060,6 +1106,7 @@ export default {
           chartType: 'line',
           dimensionTitle: this.trans('economic_reference.tons'),
           fractionDigits: 1,
+          isTechnical: true,
         },
         {
           prop: 'liquid',
@@ -1068,6 +1115,15 @@ export default {
           chartType: 'line',
           dimensionTitle: this.trans('economic_reference.cubic_meter'),
           fractionDigits: 1,
+          isTechnical: true,
+        },
+        {
+          prop: 'prs1',
+          name: this.trans('economic_reference.prs_count'),
+          isVisible: true,
+          chartType: 'column',
+          dimensionTitle: this.trans('economic_reference.units'),
+          isTechnical: true,
         },
         {
           prop: 'Revenue_export',
@@ -1461,7 +1517,11 @@ export default {
       })
     },
 
-    updateWellKeyVisibility(index) {
+    updateWellKeyVisibility(prop) {
+      let index = this.wellKeys.find(key => key.prop === prop)
+
+      if (index === -1) return
+
       this.SET_LOADING(true)
 
       setTimeout(() => {
@@ -1476,14 +1536,24 @@ export default {
 
       setTimeout(() => {
         this.wellKeys.forEach(key => {
-          if (isTechnical && ['oil', 'liquid'].includes(key.prop)) {
-            return key.isVisible = this.isVisibleTechicalKeys
+          if (isTechnical && key.isTechnical) {
+            return key.isVisible = this.isVisibleTechnicalKeys
           }
 
-          if (!isTechnical && !['oil', 'liquid'].includes(key.prop)) {
+          if (!isTechnical && !key.isTechnical) {
             return key.isVisible = this.isVisibleEconomicKeys
           }
         })
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    updateDailyGroupVisibility() {
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.dailyKeys.forEach(key => key.isVisible = this.isVisibleDailyKeys)
 
         this.SET_LOADING(false)
       })
@@ -1553,8 +1623,8 @@ export default {
   line-height: 16px;
 }
 
-.flex-20 {
-  flex: 0 0 20%;
+.flex-22 {
+  flex: 0 0 22%;
 }
 
 .flex-150px {
