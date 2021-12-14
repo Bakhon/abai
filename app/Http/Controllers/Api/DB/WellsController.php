@@ -278,18 +278,18 @@ class WellsController extends Controller
             ->toArray();  
                 
         if(!$tubeNomAdditional){
-        $wellConstrAdd = DB::connection('tbd')
-                        ->table('prod.well_constr')
-                        ->where('well', '=', $well->id)
-                        ->where('od', '!=', null)      
-                        ->where('casing_type', '9')                
-                        ->orderBy('id', 'desc')
-                        ->get('od')
-                        ->toArray();   
-        if($wellConstrAdd){
-            return $wellConstrAdd[0];
-        }
-            return "";
+            $wellConstrAdd = DB::connection('tbd')
+                            ->table('prod.well_constr')
+                            ->where('well', '=', $well->id)
+                            ->where('od', '!=', null)      
+                            ->where('casing_type', '9')                
+                            ->orderBy('id', 'desc')
+                            ->get('od')
+                            ->toArray();   
+            if($wellConstrAdd){
+                    return $wellConstrAdd[0];
+            }
+                    return "";
         }  
     }
 
