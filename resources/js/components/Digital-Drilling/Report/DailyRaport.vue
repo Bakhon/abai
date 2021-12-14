@@ -2128,6 +2128,13 @@
                     this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.report_daily.id,
                         this.report).then((response) => {
                         if (response) {
+                            this.$bvToast.toast("Отчет создан!!", {
+                                title: "Отчет",
+                                variant: "success",
+                                solid: true,
+                                toaster: "b-toaster-top-center",
+                                autoHideDelay: 8000,
+                            });
                             window.location.href = this.localeUrl('/digital-drilling');
                         } else {
                             console.log("No data");
