@@ -15,7 +15,7 @@ class PlainFormHistory
     public function saveHistory(
         string $formName,
         Collection $formFields,
-        ?\stdClass $originalData,
+        ?array $originalData,
         array $submittedData
     ) {
         if (empty($submittedData) || empty($submittedData['id'])) {
@@ -46,7 +46,7 @@ class PlainFormHistory
         }
     }
 
-    private function getFieldsPayload(Collection $formFields, ?\stdClass $originalData, array $fields)
+    private function getFieldsPayload(Collection $formFields, ?array $originalData, array $fields)
     {
         $dictService = app()->make(DictionaryService::class);
 
@@ -57,7 +57,7 @@ class PlainFormHistory
             }
             $formField = $formFields->where('code', $key)->first();
 
-            $oldValue = $originalData->$key ?? '';
+            $oldValue = $originalData[$key] ?? '';
 
             if ($value && $formField['type'] === 'dict') {
                 $oldValue = !empty($oldValue) ? $dictService->getDictValueById(

@@ -287,9 +287,9 @@ class WellsController extends Controller
                             ->get('od')
                             ->toArray();   
             if($wellConstrAdd){
-                    return $wellConstrAdd[0];
+                return $wellConstrAdd[0];
             }
-                    return "";
+                return "";
         }  
     }
 

@@ -78,4 +78,14 @@ class WellConstr extends PlainForm
 
         return $this->formatRows($rows);
     }
+
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        if (is_array($data['casing_nom'])) {
+            $data['casing_nom'] = null;
+        }
+        return $data;
+    }
 }
