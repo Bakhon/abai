@@ -21,7 +21,7 @@ export default {
   mixins: [inputProps, inputComputed, inputMethods],
   inheritAttrs: false,
   props: {
-    type: String
+    type: String,
   },
   data() {
     return {

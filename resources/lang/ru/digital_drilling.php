@@ -252,6 +252,7 @@ return array (
   'project_data' => [
       'title' => 'Проектные данные',
       'technical_task' => 'Техническое задание',
+      'technical_project' => 'Технический проект',
       'geology' => 'Геология',
       'well_design' => 'Конструкция скважины',
       'barrel_profile' => 'Профиль ствола',
@@ -465,7 +466,8 @@ return array (
         'field' => 'Месторождение:',
         'rotation_torque' => 'Момент при вращении, кН*м:',
         'total_drilling_days' => 'Всего дней бурения:',
-        'project_depth' => 'Проект. глуб., по ств./верт., м.:',
+        'project_depth' => 'Проект. глуб. По ств. м.:',
+        'project_depth_vert' => 'Проект. глуб. По верт. м.:',
         'pump_capacity' => 'Производительность насосов, л/с:',
         'air_temperature' => 'Температура воздуха:',
         'previous_face' => 'Предыдущий забой, м.:',

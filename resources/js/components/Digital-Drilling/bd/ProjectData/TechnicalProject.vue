@@ -2,33 +2,26 @@
     <div class="DailyDrillingReport">
         <table class="table defaultTable">
             <tbody>
-                <tr>
-                    <th>{{ trans('digital_drilling.default.daily_report_number') }}</th>
-                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
-                    <th class="raport">{{ trans('digital_drilling.default.daily_report') }}</th>
-                    <th></th>
-                </tr>
-                <tr v-for="report in reports" v-if="reports.length>0">
-                    <td>
-                        №{{ report.document_num }}
-                    </td>
-                    <td>
-                        {{ report.document_date }}
-                    </td>
-                    <td>
-                        {{ report.document_name}}
-                    </td>
-                    <td>
-                        <a :href="DIGITAL_DRILLING_URL + currentWell.well_id + '/?file_id=' + report.file_id" target="_blank" class="download" @click="downloadFile()" style="color: #ffffff; text-decoration: none;">
-                            Скачать
-                        </a>
-                    </td>
-                </tr>
-                <tr v-if="reports.length==0">
-                    <td colspan="3">
-                        no result
-                    </td>
-                </tr>
+            <tr>
+                <th>Месторождение</th>
+                <th>№ скважины</th>
+                <th class="raport">Полное название технического проекта</th>
+                <th></th>
+            </tr>
+            <tr v-for="project in projects" v-if="projects.length>0">
+                <td>
+                    {{ currentWell.field_name }}
+                </td>
+                <td>
+                    {{ currentWell.well_num }}
+                </td>
+                <td>
+                    {{ project.document_name}}
+                </td>
+                <td>
+                    <a class="download" :href="DIGITAL_DRILLING_FILE_URL + '/?file_id='+ project.file_id" target="_blank">Скачать</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -38,11 +31,12 @@
     import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
 
     export default {
-        name: "DailyDrillingReport",
+        name: "TechnicalTask",
         data(){
             return{
-                reports: [],
-                DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/',
+                projects: [],
+                DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/',
+                DIGITAL_DRILLING_FILE_URL: 'http://172.20.103.203:8089/get/',
             }
         },
         computed: {
@@ -50,7 +44,7 @@
                 'currentWell'
             ]),
         },
-        mounted() {
+        mounted(){
             this.getReportsByWell()
         },
         watch: {
@@ -59,7 +53,8 @@
             }
         },
         methods:{
-            downloadFile(){
+            downloadFile(link){
+                window.location.href = link;
             },
             ...globalloadingMutations([
                 'SET_LOADING'
@@ -67,11 +62,12 @@
             async getReportsByWell(){
                 this.SET_LOADING(true);
                 try{
-                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/' +
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/' +
                         this.currentWell.well_id).then((response) => {
                         let data = response.data;
                         if (data) {
-                            this.reports = data;
+                            this.projects = data;
+                            console.log(data)
                         } else {
                             console.log('No data');
                         }
@@ -87,11 +83,11 @@
 </script>
 
 <style scoped>
-.DailyDrillingReport{
-    width: 100%;
-    height: 100%;
-    background: #272953;
-}
+    .DailyDrillingReport{
+        width: 100%;
+        height: 100%;
+        background: #272953;
+    }
     .DailyDrillingReport .raport{
         min-width: 700px;
     }
@@ -106,6 +102,8 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto;
+        color: #FFFFFF!important;
+        text-decoration: none;
     }
 
 </style>
