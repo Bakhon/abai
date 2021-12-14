@@ -1,6 +1,5 @@
 <template>
     <div >
-        <daily-raport class="daily-raport"/>
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily-raport-block">
@@ -15,12 +14,17 @@
                                 </div>
                             </div>
                             <div class="header-close">
-                                <a href="daily-report">{{ trans('digital_drilling.default.close') }}</a>
+                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.close') }}</a>
                             </div>
                         </div>
                         <div class="import-daily-body">
                             <div class="import-daily-body">
-                                <div class="file-input" @dragover="dragover" @dragleave="dragleave" @drop="drop">
+                                <div class="file-input"
+                                     @dragover="dragover"
+                                     @dragleave="dragleave"
+                                     @drop="drop"
+                                     :class="{error: uploadTrue && filelist.length==0}"
+                                >
                                     <input type="file" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
                                            class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                     <label for="assetsFieldHandle" v-if="!filelist.length">
@@ -34,15 +38,48 @@
                                         </div>
                                     </label>
                                     <ul v-if="filelist.length" v-cloak>
-                                        <li class="text-sm p-1" v-for="file in filelist">
-                                            {{file.name}}<button class="ml-2" type="button" @click="remove(filelist.indexOf(file))" title="Remove file">remove</button>
+                                        <li class="text-sm p-1">
+                                            <span class="file-name">
+                                                {{filelist[0].name}}
+                                            </span>
+
+                                            <button class="ml-2 remove-file" type="button" @click="remove(0)" title="Remove file">Удалить</button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
+                            <div class="form">
+                                <div class="form-input">
+                                    <input type="text" class="input"
+                                           placeholder="Напишите код скважины"
+                                           v-model="form.well_num"
+                                           @input="checkForm"
+                                           :class="{error: uploadTrue && form.well_num=='', errorInput: error_text}"
+                                    >
+                                    <div class="error-text" v-if="error_text">
+                                        {{error_text}}
+                                    </div>
+                                </div>
+                               <div class="form-input">
+                                   <input type="number" class="input"
+                                          placeholder="Напишите ID отчета"
+                                          v-model="form.report_id"
+                                          @input="checkForm"
+                                          :class="{error: uploadTrue && form.report_id==''}"
+                                   >
+                               </div>
+                               <div class="form-input">
+                                   <input type="date" class="input"
+                                          placeholder="Дата"
+                                          v-model="form.date"
+                                          @input="checkForm"
+                                          :class="{error: uploadTrue && form.date==''}"
+                                   >
+                               </div>
+                            </div>
                             <div class="import-daily-body-btns">
-                                <button :class="{disabled: !filelist.length}">{{ trans('digital_drilling.default.import') }}</button>
-                                <button>{{ trans('digital_drilling.default.reset') }}</button>
+                                <button :class="{disabled: !uploadTrue }" @click="importFile">{{ trans('digital_drilling.default.import') }}</button>
+                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.reset') }}</a>
                             </div>
                         </div>
                     </div>
@@ -58,15 +95,77 @@
         name: "ImportDailyRaport",
         data(){
             return{
-                filelist: []
+                filelist: [],
+                form: {
+                    well_num: "",
+                    date: "",
+                    report_id: "",
+                },
+                uploadTrue: false,
+                error_text: null
             }
         },
         methods: {
+            importFile(){
+                if (this.uploadTrue) {
+                    let formData = new FormData();
+                    formData.append('file', this.filelist[0]);
+                    formData.append('uwi', this.form.well_num);
+                    formData.append('report_id', this.form.report_id);
+                    formData.append('report_date', this.form.date);
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/import_report/',
+                        formData).then((response) => {
+                        if (response) {
+                            this.filelist = [],
+                            this.error_text = null
+                            this.form = {
+                                well_num: "",
+                                date: "",
+                                report_id: "",
+                                filename: ""
+                            }
+                            this.uploadTrue = false
+                            this.$bvToast.toast("Файл успешно импортирован!!", {
+                                title: "Отчет",
+                                variant: "success",
+                                solid: true,
+                                toaster: "b-toaster-top-center",
+                                autoHideDelay: 8000,
+                            });
+                        } else {
+                            console.log("No data");
+                        }
+                    }).catch((error) =>{
+                        console.log(error)
+                        this.error_text = "Формат неправильный(должно быть что-то вроде AIR_0001)"
+                    })
+                }
+            },
             onChange() {
                 this.filelist = [...this.$refs.file.files];
+                this.checkForm()
+            },
+            checkForm(){
+                if (this.filelist.length>0 && this.check()){
+                    this.uploadTrue = true
+                }else{
+                    this.uploadTrue = false
+                }
+            },
+            check(){
+                let is_right = true
+                for (let prop in this.form) {
+                    if (this.form[prop] == ""){
+                        is_right = false
+                        break
+                    }
+                }
+                return is_right
             },
             remove(i) {
-                this.filelist.splice(i, 1);
+                this.filelist = []
+                this.checkForm()
+                // this.filelist.splice(i, 1);
             },
             dragover(event) {
                 event.preventDefault();
@@ -86,7 +185,7 @@
             addDeleteClass(){
                 event.currentTarget.classList.add('bg-gray-100');
                 event.currentTarget.classList.remove('bg-green-300');
-            }
+            },
         }
     }
 </script>
@@ -111,6 +210,7 @@
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
     }
     .import-daily-raport{
         background: #272953;
@@ -208,7 +308,7 @@
         align-items: center;
         margin: 50px auto 10px;
     }
-    .import-daily-body-btns button{
+    .import-daily-body-btns button, .import-daily-body-btns a{
         height: 42px;
         width: 162px;
         display: flex;
@@ -218,8 +318,9 @@
         border-radius: 10px;
         border: 0;
         color: #FFFFFF;
+        text-decoration: none;
     }
-    .import-daily-body-btns button:first-child{
+    .import-daily-body-btns button{
         background: #2E50E9;
         margin-right: 20px;
     }
@@ -228,6 +329,64 @@
         background-color: #cccccc;
         color: #666666;
         cursor: default;
+    }
+    .text-sm{
+        display: flex;
+        align-items: center;
+    }
+    .text-sm .file-name{
+        margin-right: 12px;
+        max-width: 250px;
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        position: relative;
+    }
+    .text-sm .file-name:hover {
+        text-overflow: clip;
+        white-space: normal;
+        word-break: break-all;
+    }
+    .form input[type='date']::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
+    .form-input{
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .errorInput{
+        border: 1px solid #F94A5B!important;
+    }
+    .error-text{
+        color: #F94A5B;
+    }
+    .form input{
+        display: block;
+        width: 100%;
+        background: #1F2142;
+        border: 1px solid #454FA1;
+        border-radius: 4px;
+        padding: 7px;
+        color: #ffffff;
+    }
+    .form input::placeholder{
+        color: #ffffffa3;
+    }
+    .form input.error{
+        border-color: red;
+    }
+    .form input:focus{
+        outline: none;
+    }
+    .remove-file{
+        padding: 5px;
+        line-height: 1;
+        border: 0;
+        color: #ffffff;
+        background: #c63e4b;
+        border-radius: 5px;
+        font-weight: 600;
     }
 
 </style>

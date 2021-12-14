@@ -2,7 +2,7 @@
   <div>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
-
+        <p v-if="params" class="table-container-header__title">{{ params.name }}</p>
         <template v-if="form && form.actions && form.actions.length > 0">
           <div class="dropdown">
             <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
@@ -175,6 +175,10 @@ export default {
     wellId: {
       type: Number,
       required: true
+    },
+    params: {
+      type: Object,
+      required: true
     }
   },
   components: {
@@ -317,7 +321,7 @@ export default {
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
       ) {
 
-        if (row[column.code].text) {
+        if (row[column.code] && row[column.code].text) {
           return row[column.code].text
         }
 
@@ -393,7 +397,8 @@ export default {
     showHistory(row) {
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}/history`), {
         params: {
-          id: row.id
+          id: row.id,
+          form: this.params.code
         }
       }).then(({data}) => {
         this.history = data
@@ -450,9 +455,16 @@ export default {
   }
 
   &-header {
-    text-align: right;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
     padding: 14px 20px;
     background-color: #32346C;
+
+    &__title {
+      font-weight: bold;
+      margin-bottom: 0;
+    }
   }
 
   &-column-header {

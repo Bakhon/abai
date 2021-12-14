@@ -391,7 +391,11 @@ export default {
                 'yearly_reason_3_losses',
                 'yearly_reason_4_losses',
                 'yearly_reason_5_losses'
-            ]
+            ],
+            yearlyUpdateLimit: {
+                'month': 0,
+                'day': 10
+            }
         };
     },
     props: ['userId'],
@@ -570,7 +574,7 @@ export default {
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (await this.isYearlyDifferenceAbnormal(yearlyFact)) {
+            if (moment().month() !== this.yearlyUpdateLimit.month && moment().date() <= this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
                 return true;
             }
 
@@ -597,12 +601,13 @@ export default {
             return isDailyAbnormal;
         },
         async isMonthlyDifferenceAbnormal(monthlyFact,factField) {
-            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.excelData['decreaseReason']['monthly_reason_1_losses'] !== '') {
-                return false;
-            }
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
             let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
+            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
+                return false;
+            }
+
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
@@ -621,12 +626,13 @@ export default {
             return isMonthlyPlanAbnormal;
         },
         async isYearlyDifferenceAbnormal(yearlyFact) {
-            if (this.excelData['decreaseReason']['yearlyreason_1_explanation'] !== '' && this.excelData['decreaseReason']['yearly_reason_1_losses'] !== '') {
-                return false;
-            }
+
             let toastOptions = _.cloneDeep(this.toastOptions);
             let yearlyPlan = await this.getSummaryPlanByDzo('yearly');
             let difference = Math.abs(yearlyPlan - yearlyFact);
+            if (this.excelData['decreaseReason']['yearly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.yearlyLossesField,difference)) {
+                return false;
+            }
             let isYearlyPlanAbnormal = yearlyFact < yearlyPlan;
             if (isYearlyPlanAbnormal) {
                 let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
@@ -642,6 +648,17 @@ export default {
                 this.$bvToast.toast(message, toastOptions);
             }
             return isYearlyPlanAbnormal;
+        },
+
+        isReasonSumCorrect(fields,difference) {
+            let sum = 0;
+            _.forEach(fields, (field) => {
+               sum += this.excelData['decreaseReason'][field];
+            });
+            let min = difference - (difference * 0.05);
+            let max = difference + (difference * 0.05);
+
+            return sum >= min && sum <= max;
         },
         getFormattedNumberByThousand(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))

@@ -100,6 +100,9 @@ export default {
                 'isCorrected': true,
                 'date': this.period
             };
+            if (this.category.isFactActive && this.bigDzo.includes(this.selectedDzo.ticker)) {
+                queryOptions.isCorrected = false;
+            }
             this.todayData = await this.getDzoTodayData(queryOptions);
             this.processTodayData();
             this.SET_LOADING(false);
