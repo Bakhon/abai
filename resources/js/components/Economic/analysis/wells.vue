@@ -51,7 +51,7 @@
             class="well-search"
             @change="getData()">
           <option :value="null" disabled selected>
-            {{ trans('economic_reference.select_item') }}
+            {{ trans('economic_reference.select_well') }}
           </option>
 
           <option v-for="uwi in uwis" :key="uwi">
