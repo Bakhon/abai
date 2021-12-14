@@ -1,6 +1,6 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report" :user="user.username" @changeReport="changeReport"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" @changeReport="changeReport"/>
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -114,6 +114,7 @@
                 created: false,
                 report: {},
                 error: false,
+                isEdit: false,
             }
         },
         mounted(){
@@ -127,6 +128,7 @@
                 this.currentWell = item
             },
             changeReport(data){
+                this.isEdit = true
                 this.report = data
             },
             getDailyReport(){

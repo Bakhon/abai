@@ -1799,7 +1799,7 @@
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-        props: ['report', 'user'],
+        props: ['report', 'user', 'isEdit'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -2124,16 +2124,29 @@
                 this.report.material_cons_daily.splice(index, 1);
             },
             saveReport(){
-                this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report',
-                    this.report).then((response) => {
-                    if (response) {
-                        window.location.href = this.localeUrl('/digital-drilling');
-                    } else {
-                        console.log("No data");
-                    }
-                }).catch((error) =>{
-                    console.log(error)
-                })
+                if (this.isEdit){
+                    this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.report_daily.id,
+                        this.report).then((response) => {
+                        if (response) {
+                            window.location.href = this.localeUrl('/digital-drilling');
+                        } else {
+                            console.log("No data");
+                        }
+                    }).catch((error) =>{
+                        console.log(error)
+                    })
+                } else{
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report',
+                        this.report).then((response) => {
+                        if (response) {
+                            window.location.href = this.localeUrl('/digital-drilling');
+                        } else {
+                            console.log("No data");
+                        }
+                    }).catch((error) =>{
+                        console.log(error)
+                    })
+                }
             },
             saveCatalog(){
                 if (this.catalog != '') {
