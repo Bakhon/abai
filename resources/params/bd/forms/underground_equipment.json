@@ -53,8 +53,9 @@
               },
               {
                 "code": "dbeg",
-                "type": "text",
-                "title": "equip_date"
+                "type": "date",
+                "title": "equip_date",
+                "validation": "date|date_format:d.m.Y"
               }
             ]
           }
