@@ -196,6 +196,7 @@
                     v-if="activeForm.type === 'plain'"
                     :code="activeForm.code"
                     :well-id="this.well.id"
+                    :params="activeForm"
                     type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
