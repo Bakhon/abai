@@ -275,7 +275,11 @@ class WellsController extends Controller
             ->WherePivot('casing_type', '=', '9', 'or')
             ->wherePivot('od', '!=', null)
             ->get(['prod.well_constr.od'])
-            ->toArray();  
+            ->toArray();
+        
+        if($tubeNomAdditional){
+                return $tubeNomAdditional[0];
+        }
                 
         if(!$tubeNomAdditional){
             $wellConstrAdd = DB::connection('tbd')

@@ -539,9 +539,11 @@ export default {
             this.turnOffErrorHighlight();
             this.disableHightLightForReasons();
             this.processTableData();
+            let isError = false;
             if (await this.isFactBelowPlan()) {
-                return;
-            } else if (!this.isValidateError) {
+                isError = true;
+            }
+            if (!this.isValidateError && !isError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
@@ -564,21 +566,21 @@ export default {
                 this.excelData['decreaseReason'] = {};
             }
 
+            let isError = false;
             if (!this.excelData['decreaseReason']['daily_reason_1_losses'] && await this.isDailyDifferenceAbnormal(planField,factField)) {
-                return true;
+                isError = true;
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
             if (await this.isMonthlyDifferenceAbnormal(monthlyFact,factField)) {
-                return true;
+                isError = true;
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
             if (moment().month() !== this.yearlyUpdateLimit.month && moment().date() <= this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
-                return true;
+                isError = true;
             }
-
-            return false;
+            return isError;
         },
         async isDailyDifferenceAbnormal(planField,factField) {
             let toastOptions = _.cloneDeep(this.toastOptions);

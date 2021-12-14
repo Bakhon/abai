@@ -1541,7 +1541,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
-        return moment(data).format("DD.MM.YYYY");
+        return moment(data).tz('Asia/Almaty').format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {

@@ -139,6 +139,15 @@
                     </ul>
                 </li>
             @endif
+
+            @if(auth()->user()->can('mapConstructor view'))
+                <li class="left-menu-li">
+                    <a href="{{route('map_constructor_index')}}">
+                        <img src="/img/icons/map-constructor_grey.svg" class="companyLogo">
+                        {{ trans('map_constructor.map_constructor') }}
+                    </a>
+                </li>
+            @endif
         </div>
     </div>
 </div>
