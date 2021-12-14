@@ -97,9 +97,9 @@ import {calcPercentMixin} from "../mixins/percentMixin";
 
 import SelectOrganization from "../components/SelectOrganization";
 import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
-import SelectTechnicalWellForecastKit from "../components/SelectTechnicalWellForecastKit";
+import SelectTechnicalWellForecastKit from "./components/SelectTechnicalWellForecastKit";
 import CalculatedHeader from "./components/CalculatedHeader";
-import RemoteHeader from "../components/RemoteHeader";
+import RemoteHeader from "../optimization/components/RemoteHeader";
 import EconomicBlock from "./components/EconomicBlock";
 import AnalysisBlock from "./components/AnalysisBlock";
 import Tables from "./components/Tables";

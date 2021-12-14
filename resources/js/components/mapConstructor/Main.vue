@@ -5,6 +5,7 @@
             :buildNameModal="buildNameModal"
             :buildMapModal="buildMapModal"
             :buildMapSpecificModal="buildMapSpecificModal"
+            :interpolationModal="interpolationModal"
         ></TopMenu>
         <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">
@@ -54,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main">
+                <div class="map-constructor-main">
                     <div class="layers">
                         <div class="form-group has-search m-0">
                             <span class="fa fa-search form-control-feedback"></span>

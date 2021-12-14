@@ -26,9 +26,6 @@
             <p v-if="formError" class="table__message">
               {{ formError }}
             </p>
-            <p v-else-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
-              {{ trans('bd.select_ngdu') }}
-            </p>
             <p v-else-if="!id" class="table__message">
               {{ trans('bd.select_dzo') }}
             </p>
@@ -110,7 +107,7 @@
                   </template>
                   </thead>
                   <tbody>
-                  <template v-if="formParams && formParams.new && formParams.new === true">
+                  <template v-if="formParams">
                     <tr v-for="(row, rowIndex) in rows">
                       <td v-if="formParams.edit">
                         <a href="#" @click.prevent="editForm(row)">Редактировать</a>
@@ -151,7 +148,7 @@
                         }}</span>
                             <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
                                   class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
                       </span>
                           </a>
                         </template>
@@ -227,7 +224,7 @@
                         }}</span>
                             <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
                                   class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
                       </span>
                           </template>
                         </template>
@@ -248,141 +245,6 @@
                         >
                           {{ showError(errors[row.id][column.code]) }}
                         </span>
-                      </td>
-                    </tr>
-                  </template>
-                  <template v-else>
-                    <tr v-for="(row, rowIndex) in rows">
-                      <td v-if="formParams.edit">
-                        <a href="#" @click.prevent="editForm(row)">Редактировать</a>
-                      </td>
-                      <td
-                          v-for="column in visibleColumns"
-                          :class="{
-                        'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column),
-                        'freezed': column.freezed
-                      }"
-                          :style="getCellStyles(column)"
-                          @dblclick="editCell(row, column)"
-                      >
-                        <template v-if="getCellType(row, column) === 'form'">
-                          <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'link'">
-                          <a class="well_link_color" v-if="row[column.code]" :href="row[column.code].href"
-                             target="_blank">{{ row[column.code].name }}</a>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'label'">
-                          <label v-html="row[column.code].name || ''"></label>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'calc'">
-                          <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'copy'">
-                          <input
-                              v-model="row[column.code].value"
-                              :disabled="row[column.code].value"
-                              type="checkbox"
-                              @change="copyValues(row, column, rowIndex)">
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'history_graph'">
-                          <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
-                      <span v-if="row[column.code]" class="value">{{
-                          row[column.code].date ? row[column.code].old_value : row[column.code].value
-                        }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
-                      </span>
-                          </a>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'history'">
-                          <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'date'">
-                          <div v-if="isCellEdited(row, column)" class="input-wrap">
-                            <datetime
-                                v-model="row[column.code].value"
-                                :flow="['year', 'month', 'date']"
-                                :phrases="{ok: '', cancel: ''}"
-                                auto
-                                format="dd LLLL yyyy"
-                                input-class="form-control"
-                                type="date"
-                                value-zone="Asia/Almaty"
-                                zone="Asia/Almaty"
-                            >
-                            </datetime>
-                            <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                          </div>
-                          <template v-else-if="row[column.code]">
-                      <span class="value">
-                        {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
-                      </span>
-                          </template>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'dict'">
-                          <bigdata-form-field
-                              v-if="row[column.code]"
-                              :id="row.id"
-                              :key="`field_${column.code}_${row.id}`"
-                              v-model="row[column.code].value"
-                              :item="getFieldParams(row, column)"
-                              @change="saveCell(row, column)"
-                          >
-                          </bigdata-form-field>
-                        </template>
-                        <template v-else-if="getCellType(row, column) === 'file'">
-                          <template v-if="row[column.code].value && row[column.code].value.length > 0">
-                            <span v-html="formatFiles(row[column.code].value)"></span>
-                            <a href="#" @click="deleteFile(row, column)">x</a>
-                          </template>
-                          <template v-else>
-                            <vue-upload-component
-                                v-model="row[column.code].value"
-                                :multiple="false"
-                                :name="`file_${column.code}_${row.id}`"
-                                @input="saveCell(row, column)"
-                            >
-                            </vue-upload-component>
-                            <label
-                                :for="`file_${column.code}_${row.id}`"
-                                class="btn btn-primary"
-                            >
-                              {{ trans('app.upload') }}
-                            </label>
-                          </template>
-                        </template>
-                        <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
-                          <div v-if="isCellEdited(row, column)" class="input-wrap">
-                            <input
-                                v-model="row[column.code].value"
-                                class="form-control"
-                                type="text"
-                                @keyup.enter.stop.prevent="saveCell(row, column)">
-                            <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                            <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                          </div>
-                          <template v-else-if="row[column.code]">
-                      <span class="value">{{
-                          row[column.code].date ? row[column.code].old_value : row[column.code].value
-                        }}</span>
-                            <span v-if="row[column.code] && row[column.code].date" class="date">
-                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
-                      </span>
-                          </template>
-                        </template>
-                        <template
-                            v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
-                          <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
-                          <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
-                                     placement="top" triggers="hover">
-                            <div v-for="(value, time) in history[row.id][column.code]">
-                              <em>{{ time }}</em><br>
-                              <b>{{ value.value }}</b> ({{ value.user }})
-                            </div>
-                          </b-popover>
-                        </template>
                       </td>
                     </tr>
                   </template>
@@ -700,6 +562,7 @@ export default {
       this.rows.map((row, index) => {
         if (!difference[index]) return
         fields[row.id] = difference[index]
+
         for (let code in fields[row.id]) {
           if (row[code].id) {
             fields[row.id][code].id = row[code].id
@@ -708,6 +571,18 @@ export default {
             fields[row.id][code].params = row[code].params
           }
         }
+
+        this.visibleColumns.forEach(column => {
+          if (this.isColumnRequired(column) && !fields[row.id][column.code]) {
+            fields[row.id][column.code] = {value: row[column.code].value}
+            if (row[column.code].id) {
+              fields[row.id][column.code].id = row[column.code].id
+            }
+            if (row[column.code].params) {
+              fields[row.id][column.code].params = row[column.code].params
+            }
+          }
+        })
       })
 
       let data = {
@@ -735,6 +610,10 @@ export default {
             }
             this.errors = error.response.data.errors
           })
+    },
+    isColumnRequired(column) {
+      if (!column.validation) return false
+      return column.validation.indexOf('required') !== -1
     },
     async saveCell(row, column) {
       //todo: переделать отправку по аналогии с submitFile
@@ -977,9 +856,11 @@ export default {
 body.fixed {
   overflow: hidden;
 }
-.well_link_color{
+
+.well_link_color {
   color: #fff;
 }
+
 .bd-main-block {
 
   &__tabs {

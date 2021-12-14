@@ -8,14 +8,16 @@
               <div class="block-header pb-0 pl-2 pt-2 pb-2">
                 {{ trans('paegtm.accumulatedOilProdTitle') }}
               </div>
-              <div class="p-1 pl-2 mh-370">
+              <div class="chart-wrapper p-1 pl-2 mh-370">
                 <apexchart
                     v-if="loaded"
                     type="line"
                     height="350"
                     :options="lineChartOptions"
-                    :series="[{name: this.trans('paegtm.plan'),data: this.accumOilProdPlanData},{name: this.trans('paegtm.fact'),data: this.accumOilProdFactData}]"
-                    :height="360">
+                    :series="accumOilProdPlanData"
+                    :height="360"
+                    ref="accumOilProdChart"
+                >
                 </apexchart>
               </div>
             </div>
@@ -30,7 +32,7 @@
                   <thead>
                   <tr>
                     <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
-                    <th class="align-middle" rowspan="2">{{ trans('paegtm.countTh') }}</th>
+                    <th colspan="2">{{ trans('paegtm.countTh') }}</th>
                     <th colspan="2">{{ trans('paegtm.avgDebitTh') }}</th>
                     <th colspan="2">{{ trans('paegtm.additionalMiningTh') }}</th>
                   </tr>
@@ -39,12 +41,19 @@
                     <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                     <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
                     <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                    <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                    <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
-                    <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
-                  </tr>
+                  <tbody v-if="gtmIndicators.length">
+                    <tr v-for="comparisonIndicatorsItem in gtmIndicators">
+                      <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7">{{ trans('app.thereIsNoData')}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -154,22 +163,7 @@
           </div>
         </div>
         <div class="gtm-dark mt-2 row m-0 mb-2">
-          <div class="gtm-indicator-item flex-fill d-inline-block p-2">
-            <div class="bigNumber">356 <span class="units">{{ trans('paegtm.successful_events_count') }}</span></div>
-            <div class="title">{{ trans('paegtm.gtm_and_vns_count') }}</div>
-            <div class="progress gtm-progress mb-0">
-              <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 89%"
-              >
-              </div>
-            </div>
-            <div class="d-flex justify-content-between m-0 mt-1">
-              <div class="d-inline-block m-0 text-white dr-fw-700">89,25%</div>
-              <div class="progressMax d-inline-block m-0">291 167</div>
-            </div>
-          </div>
+          <successful-factors-indicator ref="successfulFactorsIndicatorRef"></successful-factors-indicator>
         </div>
       </div>
     </div>

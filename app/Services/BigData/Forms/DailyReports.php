@@ -2,7 +2,6 @@
 
 namespace App\Services\BigData\Forms;
 
-use App\Helpers\WorktimeHelper;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
@@ -308,45 +307,4 @@ abstract class DailyReports extends TableForm
             ->pluck('well')
             ->toArray();
     }
-
-    protected function getWorkTime(array $wellIds, CarbonImmutable $date): array
-    {
-        $result = [];
-
-        $wellStatuses = DB::connection('tbd')
-            ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend', 's.well')
-            ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dend', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->whereIn('well', $wellIds)
-            ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
-            ->get()
-            ->map(
-                function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
-                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
-                    return $item;
-                }
-            );
-
-        $currentDate = $date->startOfYear();
-        while ($currentDate <= $date) {
-            $startOfDay = $currentDate->startOfDay();
-            $endOfDay = $currentDate->endOfDay();
-            foreach ($wellIds as $wellId) {
-                $result[$wellId][$currentDate->format('d.m.Y')] = WorktimeHelper::getHoursForOneDay(
-                        $wellStatuses,
-                        $startOfDay,
-                        $endOfDay,
-                        $wellId
-                    ) / 24;
-            }
-
-            $currentDate = $currentDate->addDay();
-        }
-
-        return $result;
-    }
-
 }

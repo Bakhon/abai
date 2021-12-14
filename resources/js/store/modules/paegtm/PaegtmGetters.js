@@ -8,4 +8,5 @@ export const paegtmGetters = {
     dzoName: (state) => state.dzoName,
     clickableTable: (state) => state.clickableTable,
     treeStore: (state) => state.treeStore,
+    getSelectedGtm: (state) => state.selectedGtm,
 }

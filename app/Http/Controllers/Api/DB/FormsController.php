@@ -128,7 +128,11 @@ class FormsController extends Controller
     public function getHistory(string $formName, Request $request): array
     {
         $form = $this->getForm($formName);
-        return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
+        return $form->getHistory(
+            $request->get('id'),
+            $request->get('form'),
+            Carbon::parse($request->get('date'))
+        );
     }
 
     public function copyFieldValue(string $formName, Request $request): JsonResponse

@@ -15,7 +15,7 @@ class PlainFormHistory
     public function saveHistory(
         string $formName,
         Collection $formFields,
-        ?\stdClass $originalData,
+        ?array $originalData,
         array $submittedData
     ) {
         if (empty($submittedData) || empty($submittedData['id'])) {
@@ -46,7 +46,7 @@ class PlainFormHistory
         }
     }
 
-    private function getFieldsPayload(Collection $formFields, ?\stdClass $originalData, array $fields)
+    private function getFieldsPayload(Collection $formFields, ?array $originalData, array $fields)
     {
         $dictService = app()->make(DictionaryService::class);
 
@@ -57,7 +57,7 @@ class PlainFormHistory
             }
             $formField = $formFields->where('code', $key)->first();
 
-            $oldValue = $originalData->$key ?? '';
+            $oldValue = $originalData[$key] ?? '';
 
             if ($value && $formField['type'] === 'dict') {
                 $oldValue = !empty($oldValue) ? $dictService->getDictValueById(
@@ -74,13 +74,13 @@ class PlainFormHistory
             }
 
             if ($formField['type'] === 'date') {
-                $oldValue = Carbon::parse($oldValue)->format('Y-m-d');
-                $value = Carbon::parse($value)->format('Y-m-d');
+                $oldValue = Carbon::parse($oldValue)->format('d.m.Y');
+                $value = Carbon::parse($value)->format('d.m.Y');
             }
 
             if ($formField['type'] === 'datetime') {
-                $oldValue = Carbon::parse($oldValue)->format('Y-m-d H:i');
-                $value = Carbon::parse($value)->format('Y-m-d H:i');
+                $oldValue = Carbon::parse($oldValue)->format('d.m.Y H:i');
+                $value = Carbon::parse($value)->format('d.m.Y H:i');
             }
 
             $result[] = [

@@ -10,6 +10,7 @@ use App\Models\BigData\Well;
 use App\Models\Paegtm\DzoAegtm;
 use App\Services\DruidService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -203,21 +204,21 @@ class GTMController extends Controller
             $result[$key] = [
                 'name_ru' => $key,
 
-                'vns_additional_oil_prod_plan' => $vnsAdditionalOilProdPlan,
-                'vns_additional_oil_prod_fact' => $vnsAdditionalOilProdFact,
-                'vns_additional_oil_prod_difference' => $vnsAdditionalOilProdFact - $vnsAdditionalOilProdPlan,
+                'vns_additional_oil_prod_plan' => round($vnsAdditionalOilProdPlan, 1),
+                'vns_additional_oil_prod_fact' => round($vnsAdditionalOilProdFact, 1),
+                'vns_additional_oil_prod_difference' => round($vnsAdditionalOilProdFact - $vnsAdditionalOilProdPlan, 1),
 
-                'gtm_additional_oil_prod_plan' => $gtmAdditionalOilProdPlan,
-                'gtm_additional_oil_prod_fact' => $gtmAdditionalOilProdFact,
-                'gtm_additional_oil_prod_difference' => $gtmAdditionalOilProdFact - $gtmAdditionalOilProdPlan,
+                'gtm_additional_oil_prod_plan' => round($gtmAdditionalOilProdPlan, 2),
+                'gtm_additional_oil_prod_fact' => round($gtmAdditionalOilProdFact, 2),
+                'gtm_additional_oil_prod_difference' => round($gtmAdditionalOilProdFact - $gtmAdditionalOilProdPlan, 2),
 
-                'base_oil_prod_plan' => $baseOilProdPlan,
-                'base_oil_prod_fact' => $baseOilProdFact,
-                'base_oil_prod_difference' => $baseOilProdFact - $baseOilProdPlan,
+                'base_oil_prod_plan' => round($baseOilProdPlan, 2),
+                'base_oil_prod_fact' => round($baseOilProdFact, 2),
+                'base_oil_prod_difference' => round($baseOilProdFact - $baseOilProdPlan, 2),
 
-                'oil_prod_plan' => $oilProdPlan,
-                'oil_prod_fact' => $oilProdFact,
-                'oil_prod_difference' => $oilProdFact - $oilProdPlan,
+                'oil_prod_plan' => round($oilProdPlan, 2),
+                'oil_prod_fact' => round($oilProdFact, 2),
+                'oil_prod_difference' => round($oilProdFact - $oilProdPlan, 2),
 
                 'org_name_short' => $orgNameShort,
                 'selected' => $request->selectedDdzoName == $orgNameShort ? true : false,
@@ -317,7 +318,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.number_of_gtm_and_vns'),
             'progressValue' => $gtmAndVnsCountFact,
             'progressMax' => $gtmAndVnsCountPlan,
-            'progressPercents' => $gtmAndVnsCountPlan ? $gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100 : 0,
+            'progressPercents' => $gtmAndVnsCountPlan ? round($gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -326,7 +327,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_vns'),
             'progressValue' => $vnsAdditionalOilProdFact,
             'progressMax' => $vnsAdditionalOilProdPlan,
-            'progressPercents' => $vnsAdditionalOilProdPlan ? $vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100 : 0,
+            'progressPercents' => $vnsAdditionalOilProdPlan ? round($vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -335,7 +336,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_gtm'),
             'progressValue' => $gtmAdditionalOilProdFact,
             'progressMax' => $gtmAdditionalOilProdPlan,
-            'progressPercents' => $gtmAdditionalOilProdPlan ? $gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100 : 0,
+            'progressPercents' => $gtmAdditionalOilProdPlan ? round($gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100, 1) : 0,
         ];
 
         $result[] = [
@@ -344,7 +345,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.basic_oil_production'),
             'progressValue' => $baseOilProdFact,
             'progressMax' => $baseOilProdPlan,
-            'progressPercents' => $baseOilProdPlan ? $baseOilProdFact / $baseOilProdPlan * 100 : 0,
+            'progressPercents' => $baseOilProdPlan ? round($baseOilProdFact / $baseOilProdPlan * 100, 1) : 0,
         ];
 
         return response()->json($result);
@@ -374,7 +375,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.oil_production'),
             'progressValue' => $oilProdFact,
             'progressMax' => $oilProdPlan,
-            'progressPercents' => $oilProdFact / $oilProdPlan * 100,
+            'progressPercents' => $oilProdPlan ? $oilProdFact / $oilProdPlan * 100 : 0,
         ];
 
         return response()->json($result);
@@ -483,7 +484,7 @@ class GTMController extends Controller
         }
 
         $result[] = [
-            'ВНС',
+            __('paegtm.gtm_vns'),
             $vnsPlan,
             $vnsFact,
             0,
@@ -491,7 +492,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС ГРП',
+            __('paegtm.gtm_vns_grp'),
             $vnsGrpPlan,
             $vnsGrpFact,
             0,
@@ -499,7 +500,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГС',
+            __('paegtm.gtm_gs'),
             $gsPlan,
             $gsFact,
             0,
@@ -507,7 +508,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ЗБС',
+            __('paegtm.gtm_zbs'),
             $zbsPlan,
             $zbsFact,
             0,
@@ -515,7 +516,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ЗБГС',
+            __('paegtm.gtm_zbgs'),
             $zbgsPlan,
             $zbgsFact,
             0,
@@ -523,7 +524,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГРП',
+            __('paegtm.gtm_grp'),
             $grpPlan,
             $grpFact,
             0,
@@ -531,7 +532,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВЛГ',
+            __('paegtm.gtm_pvlg'),
             $pvlgPlan,
             $pvlgFact,
             0,
@@ -539,7 +540,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВР',
+            __('paegtm.gtm_pvr'),
             $pvrPlan,
             $pvrFact,
             0,
@@ -547,7 +548,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ГС+ГРП',
+            __('paegtm.gtm_gs_grp'),
             $gsGrpPlan,
             $gsGrpFact,
             0,
@@ -555,7 +556,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Углубление',
+            __('paegtm.gtm_deepening'),
             $deepeningPlan,
             $deepeningFact,
             0,
@@ -563,7 +564,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Скин ГРП',
+            __('paegtm.gtm_skin_grp'),
             $grpSkinPlan,
             $grpSkinFact,
             0,
@@ -571,7 +572,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Перестрел',
+            __('paegtm.gtm_perestrel'),
             $perestrelPlan,
             $perestrelFact,
             0,
@@ -579,7 +580,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Дострел',
+            __('paegtm.gtm_dostrel'),
             $dostrelPlan,
             $dostrelFact,
             0,
@@ -587,7 +588,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВБД',
+            __('paegtm.gtm_vbd'),
             $vbdPlan,
             $vbdFact,
             0,
@@ -595,7 +596,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ОПЛ',
+            __('paegtm.gtm_opl'),
             $oplPlan,
             $oplFact,
             0,
@@ -603,7 +604,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'Перевод под нефть',
+            __('paegtm.gtm_transfer_to_oil'),
             $transferToOilPlan,
             $transferToOilFact,
             0,
@@ -611,7 +612,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'УЭЦН',
+            __('paegtm.gtm_uecn'),
             $uecnPlan,
             $uecnFact,
             0,
@@ -619,7 +620,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПВЛГ при ПРС',
+            __('paegtm.gtm_pvlg_pri_prs'),
             $pvlgPriPrsPlan,
             $pvlgPriPrsFact,
             0,
@@ -627,7 +628,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВПП',
+            __('paegtm.gtm_vpp'),
             $vppPlan,
             $vppFact,
             0,
@@ -635,7 +636,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ПФП',
+            __('paegtm.gtm_pfp'),
             $pfpPlan,
             $pfpFact,
             0,
@@ -643,7 +644,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ТГРП',
+            __('paegtm.gtm_tgrp'),
             $tgrpPlan,
             $tgrpFact,
             0,
@@ -651,7 +652,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС опер.',
+            __('paegtm.gtm_vns_oper'),
             $vnsOperPlan,
             $vnsOperFact,
             0,
@@ -659,7 +660,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС НН',
+            __('paegtm.gtm_vns_nn'),
             $vnsNnPlan,
             $vnsNnFact,
             0,
@@ -667,7 +668,7 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ВНС НН опер.',
+            __('paegtm.gtm_vns_nn_oper'),
             $vnsNnOperPlan,
             $vnsNnOperFact,
             0,
@@ -675,12 +676,17 @@ class GTMController extends Controller
         ];
 
         $result[] = [
-            'ИДН',
+            __('paegtm.gtm_idn'),
             $idnPlan,
             $idnFact,
             0,
             0
         ];
+
+        $gtmPlan  = array_column($result, 1);
+        $gtmFact  = array_column($result, 2);
+
+        array_multisort($gtmPlan, SORT_DESC, $gtmFact, SORT_DESC, $result);
 
         return response()->json($result);
     }
@@ -691,6 +697,14 @@ class GTMController extends Controller
      */
     public function getChartData(Request $request): JsonResponse
     {
+        $result = [];
+
+        $period = CarbonPeriod::create($request->dateStart, '1 month', $request->dateEnd);
+
+        foreach ($period as $dt) {
+            $result['months'][] =  $dt->format("m.y");
+        }
+
         $data = $this->getMainData($request, true)
             ->select(
                 'date',
@@ -708,7 +722,7 @@ class GTMController extends Controller
             ->orderBy('date')
             ->get();
 
-        $result = [];
+
 
         $vnsPlan = $vnsFact = $vnsProdPlan = $vnsProdFact =  [];
         $gtmPlan = $gtmFact = $gtmProdPlan = $gtmProdFact =  [];

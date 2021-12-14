@@ -745,13 +745,12 @@ class DictionaryService
         return $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
-            ->where(
+            ->whereIn(
                 'parent',
                 function ($query) {
                     return $query->select('id')
                         ->from('dict.equip_type')
-                        ->where('code', 'CASC')
-                        ->limit(1);
+                        ->whereIn('code', ['CASC', 'ECS']);
                 }
             )
             ->orderBy('name', 'asc')

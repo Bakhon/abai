@@ -307,11 +307,10 @@
                 }
             }
         }
-        .main {
+        .map-constructor-main {
             display: flex;
             .layers {
                 width: 20%;
-                height: 100vh;
                 background: #272953;
                 .layers-info {
                     padding: 9px;
@@ -421,6 +420,18 @@
 
 
 /*mobile*/
+
+@media screen and (max-width : 1920px) {
+    .map-constructor-main {
+        height: 80vh;
+    }
+}
+
+@media screen and (max-width : 1440px) {
+    .map-constructor-main {
+        height: 73vh;
+    }
+}
 
 @media screen and (max-width : 1200px) {
 

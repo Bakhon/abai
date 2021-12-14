@@ -10,6 +10,9 @@ import initialRowsEMG from './dzoData/initial_rows_emg.json';
 import initialRowsTSHO from './dzoData/initial_rows_tsho.json';
 import initialRowsNKO from './dzoData/initial_rows_nko.json';
 import initialRowsKPO from './dzoData/initial_rows_kpo.json';
+import initialRowsPKK from './dzoData/initial_rows_pkk.json';
+import initialRowsTP from './dzoData/initial_rows_tp.json';
+import initialRowsAG from './dzoData/initial_rows_ag.json';
 import formatMappingKOA from './dzoData/format_mapping_koa.json';
 import formatMappingKTM from './dzoData/format_mapping_ktm.json';
 import formatMappingKBM from './dzoData/format_mapping_kbm.json';
@@ -21,6 +24,9 @@ import formatMappingEMG from './dzoData/format_mapping_emg.json';
 import formatMappingTSHO from './dzoData/format_mapping_tsho.json';
 import formatMappingKPO from './dzoData/format_mapping_kpo.json';
 import formatMappingNKO from './dzoData/format_mapping_nko.json';
+import formatMappingPKK from './dzoData/format_mapping_pkk.json';
+import formatMappingTP from './dzoData/format_mapping_tp.json';
+import formatMappingAG from './dzoData/format_mapping_ag.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
 import cellsMappingKBM from './dzoData/cells_mapping_kbm.json';
@@ -32,6 +38,9 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import cellsMappingTSHO from './dzoData/cells_mapping_tsho.json';
 import cellsMappingNKO from './dzoData/cells_mapping_nko.json';
 import cellsMappingKPO from './dzoData/cells_mapping_kpo.json';
+import cellsMappingPKK from './dzoData/cells_mapping_pkk.json';
+import cellsMappingTP from './dzoData/cells_mapping_tp.json';
+import cellsMappingAG from './dzoData/cells_mapping_ag.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
@@ -59,7 +68,10 @@ export default {
                         11: 1,
                         16: 1,
                         21: 1,
-                    }
+                    },
+                    dailyReasonRow: 73,
+                    monthlyReasonRow: 80,
+                    yearlyReasonRow: 87,
                 },
                 "КТМ" : {
                     rows: initialRowsKTM,
@@ -72,7 +84,10 @@ export default {
                         6: 1,
                         11: 1,
                         16: 1
-                    }
+                    },
+                    dailyReasonRow: 68,
+                    monthlyReasonRow: 75,
+                    yearlyReasonRow: 82,
                 },
                 "КБМ" : {
                     rows: initialRowsKBM,
@@ -86,7 +101,10 @@ export default {
                         7: 1,
                         10: 1,
                         10: 3,
-                    }
+                    },
+                    dailyReasonRow: 58,
+                    monthlyReasonRow: 65,
+                    yearlyReasonRow: 72,
                 },
                 "ММГ" : {
                     rows: initialRowsMMG,
@@ -100,7 +118,10 @@ export default {
                         11: 1,
                         15: 1,
                         20: 1,
-                    }
+                    },
+                    dailyReasonRow: 72,
+                    monthlyReasonRow: 79,
+                    yearlyReasonRow: 86,
                 },
                 "ОМГ" : {
                     rows: initialRowsOMG,
@@ -115,7 +136,10 @@ export default {
                         10: 1,
                         13: 1,
                         16: 1,
-                    }
+                    },
+                    dailyReasonRow: 64,
+                    monthlyReasonRow: 71,
+                    yearlyReasonRow: 78,
                 },
                 "УО" : {
                     rows: initialRowsYO,
@@ -127,7 +151,10 @@ export default {
                         1: 1,
                         7: 1,
                         12: 1
-                    }
+                    },
+                    dailyReasonRow: 67,
+                    monthlyReasonRow: 74,
+                    yearlyReasonRow: 81,
                 },
                 "ЭМГ" : {
                     rows: initialRowsEMG,
@@ -140,7 +167,10 @@ export default {
                         8: 1,
                         15: 1,
                         22: 1
-                    }
+                    },
+                    dailyReasonRow: 78,
+                    monthlyReasonRow: 85,
+                    yearlyReasonRow: 92,
                 },
                 "ТШО" : {
                     rows: initialRowsTSHO,
@@ -150,7 +180,10 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
                 },
                 "НКО" : {
                     rows: initialRowsNKO,
@@ -160,7 +193,10 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
                 },
                 "КПО" : {
                     rows: initialRowsKPO,
@@ -170,7 +206,58 @@ export default {
                     requiredRows: [1,4],
                     isNotNull: {
                         1: 1,
-                    }
+                    },
+                    dailyReasonRow: 7,
+                    monthlyReasonRow: 14,
+                    yearlyReasonRow: 21,
+                },
+                "КГМ" : {
+                    rows: initialRowsKGM,
+                    format: formatMappingKGM,
+                    cells: cellsMappingKGM,
+                    id: 108,
+                    requiredRows: [1,4,10],
+                    isNotNull: {
+                        1: 1,
+                        4: 1,
+                        10: 1
+                    },
+                    dailyReasonRow: 61,
+                    monthlyReasonRow: 68,
+                    yearlyReasonRow: 75,
+                },
+                "ПКК" : {
+                    rows: initialRowsPKK,
+                    format: formatMappingPKK,
+                    cells: cellsMappingPKK,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
+                },
+                "ТП" : {
+                    rows: initialRowsTP,
+                    format: formatMappingTP,
+                    cells: cellsMappingTP,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
+                },
+                "АГ" : {
+                    rows: initialRowsAG,
+                    format: formatMappingAG,
+                    cells: cellsMappingAG,
+                    id: 0,
+                    requiredRows: [],
+                    isNotNull: {},
+                    dailyReasonRow: 4,
+                    monthlyReasonRow: 11,
+                    yearlyReasonRow: 18,
                 },
             },
             dzoCompanies: [
@@ -195,6 +282,10 @@ export default {
                     name: 'АО "Мангистаумунайгаз"'
                 },
                 {
+                    ticker: 'КГМ',
+                    name: 'ТОО "СП "Казгермунай"'
+                },
+                {
                     ticker: 'ОМГ',
                     name: 'АО "Озенмунайгаз"'
                 },
@@ -213,6 +304,18 @@ export default {
                 {
                     ticker: 'КПО',
                     name: 'Карачаганак Петролеум Оперейтинг б.в.'
+                },
+                {
+                    ticker: 'ПКК',
+                    name: 'АО "ПетроКазахстан Кумколь Ресорсиз"'
+                },
+                {
+                    ticker: 'ТП',
+                    name: 'АО "Тургай-Петролеум"'
+                },
+                {
+                    ticker: 'АГ',
+                    name: 'ТОО "Амангельды Газ"'
                 },
             ],
             selectedDzo: {
@@ -263,7 +366,36 @@ export default {
             dzoUsers: [],
             requiredRows: 0,
             isNotNullRows: {},
-            bigDzo: ['ТШО','КПО','НКО']
+            bigDzo: ['ТШО','КПО','НКО','ПКК','АГ','ТП','КГМ'],
+            dzoListByCondensate: ['АГ'],
+            factValidationMapping: {
+                'oil': 'oil_production_fact',
+                'condensate': 'condensate_production_fact'
+            },
+            toastOptions: {
+                title: '',
+                variant: '',
+                solid: true,
+                noAutoHide: true,
+            },
+            monthlyLossesField: [
+                'monthly_reason_1_losses',
+                'monthly_reason_2_losses',
+                'monthly_reason_3_losses',
+                'monthly_reason_4_losses',
+                'monthly_reason_5_losses'
+            ],
+            yearlyLossesField: [
+                'yearly_reason_1_losses',
+                'yearly_reason_2_losses',
+                'yearly_reason_3_losses',
+                'yearly_reason_4_losses',
+                'yearly_reason_5_losses'
+            ],
+            yearlyUpdateLimit: {
+                'month': 0,
+                'day': 10
+            }
         };
     },
     props: ['userId'],
@@ -401,12 +533,15 @@ export default {
             }
             return [];
         },
-        handleValidate() {
+        async handleValidate() {
             this.isValidateError = false;
             this.isDataReady = false;
             this.turnOffErrorHighlight();
+            this.disableHightLightForReasons();
             this.processTableData();
-            if (!this.isValidateError) {
+            if (await this.isFactBelowPlan()) {
+                return;
+            } else if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
@@ -417,6 +552,155 @@ export default {
             if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
                 this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
+        },
+        async isFactBelowPlan() {
+            let planField = 'plan_oil';
+            let factField = 'oil';
+            if (this.dzoListByCondensate.includes(this.selectedDzo.ticker)) {
+                planField = 'plan_kondensat';
+                factField = 'condensate';
+            }
+            if (!this.excelData['decreaseReason']) {
+                this.excelData['decreaseReason'] = {};
+            }
+
+            if (!this.excelData['decreaseReason']['daily_reason_1_losses'] && await this.isDailyDifferenceAbnormal(planField,factField)) {
+                return true;
+            }
+
+            let monthlyFact = await this.getSummaryFactByDzo('monthly');
+            if (await this.isMonthlyDifferenceAbnormal(monthlyFact,factField)) {
+                return true;
+            }
+
+            let yearlyFact = await this.getSummaryFactByDzo('yearly');
+            if (moment().month() !== this.yearlyUpdateLimit.month && moment().date() <= this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
+                return true;
+            }
+
+            return false;
+        },
+        async isDailyDifferenceAbnormal(planField,factField) {
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let dailyPlan = await this.getSummaryPlanByDzo('daily');
+            let isDailyAbnormal = this.excelData[this.factValidationMapping[factField]] < dailyPlan[planField];
+
+            if (isDailyAbnormal) {
+                let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + dailyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за сутки меньше запланированного.
+                    Ожидаемая суточная добыча: ${this.getFormattedNumberByThousand(dailyPlan[planField])} (т).
+                    Заполните "Причины: СУТОЧНЫЕ"!`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+
+            return isDailyAbnormal;
+        },
+        async isMonthlyDifferenceAbnormal(monthlyFact,factField) {
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
+            let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
+            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
+                return false;
+            }
+
+            let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
+            if (isMonthlyPlanAbnormal) {
+                let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + monthlyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за месяц меньше запланированного.
+                    Ожидаемая месячная добыча: ${this.getFormattedNumberByThousand(monthlyPlan)} (т).
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(difference)} (т) за месяц.
+                    Заполните "Причины: С НАЧАЛА МЕСЯЦА!"`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+
+            return isMonthlyPlanAbnormal;
+        },
+        async isYearlyDifferenceAbnormal(yearlyFact) {
+
+            let toastOptions = _.cloneDeep(this.toastOptions);
+            let yearlyPlan = await this.getSummaryPlanByDzo('yearly');
+            let difference = Math.abs(yearlyPlan - yearlyFact);
+            if (this.excelData['decreaseReason']['yearly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.yearlyLossesField,difference)) {
+                return false;
+            }
+            let isYearlyPlanAbnormal = yearlyFact < yearlyPlan;
+            if (isYearlyPlanAbnormal) {
+                let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
+                for (let i=1;i<6;i++) {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + yearlyRow + '"][data-col="' + i + '"]'),'cell__color-red');
+                }
+                toastOptions.variant = 'danger';
+                toastOptions.title = this.trans("visualcenter.excelFormPlans.factBelowPlanTitle");
+                let message = `Добыча за год меньше запланированного.
+                    Ожидаемая годовая добыча: ${this.getFormattedNumberByThousand(yearlyPlan)} (т).
+                    Ожидаемые потери по нефти: ${this.getFormattedNumberByThousand(difference)} (т) за год.
+                    Заполните "Причины: С НАЧАЛА ГОДА!"`;
+                this.$bvToast.toast(message, toastOptions);
+            }
+            return isYearlyPlanAbnormal;
+        },
+
+        isReasonSumCorrect(fields,difference) {
+            let sum = 0;
+            _.forEach(fields, (field) => {
+               sum += this.excelData['decreaseReason'][field];
+            });
+            let min = difference - (difference * 0.05);
+            let max = difference + (difference * 0.05);
+
+            return sum >= min && sum <= max;
+        },
+        getFormattedNumberByThousand(num) {
+            return (new Intl.NumberFormat("ru-RU").format(num))
+        },
+        disableHightLightForReasons() {
+            for (let i=1;i<6;i++) {
+                let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
+                let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
+                let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
+                let dailySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + dailyRow + '"]');
+                let monthlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + monthlyRow + '"]');
+                let yearlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + yearlyRow + '"]');
+                this.removeClassFromElement(dailySelector,'cell__color-red');
+                this.removeClassFromElement(monthlySelector,'cell__color-red');
+                this.removeClassFromElement(yearlySelector,'cell__color-red');
+            }
+        },
+        async getSummaryPlanByDzo(type) {
+            let uri = this.localeUrl("/get-plan-by-import-form");
+            let queryParams = {
+                'date': this.currentDateDetailed,
+                'dzo': this.selectedDzo.ticker,
+                'type': type
+            };
+            const response = await axios.get(uri,{params: queryParams});
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
+        },
+        async getSummaryFactByDzo(type) {
+            let uri = this.localeUrl("/get-fact-by-import-form");
+            let queryParams = {
+                'date': this.currentDateDetailed,
+                'dzo': this.selectedDzo.ticker,
+                'type': type
+            };
+            const response = await axios.get(uri,{params: queryParams});
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         },
         processTableData() {
             let self = this;

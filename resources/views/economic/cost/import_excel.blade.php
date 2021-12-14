@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container text-center">
-        <a href="{{ route('economic.cost.index', ['is_forecast'=> $isForecast])}}"
+        <a href="{{ $isForecast
+                    ? route('economic.optimization.input_params')
+                    : route('economic.cost.index', ['is_forecast'=> $isForecast])}}"
            class="btn btn-info">
             {{ __('economic_reference.return_menu') }}
         </a>

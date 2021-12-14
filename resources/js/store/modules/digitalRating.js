@@ -61,17 +61,16 @@ const digitalRating = {
       const { sectorNumber, horizonNumber } = {...state};
       try {
         commit('globalloading/SET_LOADING', true, { root: true });
-        await axios.get(`${process.env.MIX_TEST_MICROSERVICE}/graphs/${horizonNumber}/${sectorNumber}`)
+        await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/graphs/${horizonNumber}/${sectorNumber}`)
           .then(res => {
             commit('SET_INDICATORS', res.data);
             commit('SET_INJ_DIAGRAM', res.data?.inj_graph?.injection);
             commit('SET_PROD_DIAGRAM', res.data?.prod_graph);
-          }).finally(() => {
-            commit('globalloading/SET_LOADING', false, { root: true });
-          })
-
+          });
       } catch(e) {
         throw new Error(e);
+      } finally {
+        commit('globalloading/SET_LOADING', false, { root: true });
       }
     }
   }

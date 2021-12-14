@@ -76,13 +76,11 @@ class Dzo {
     );
 
     protected $decreaseReasonFields = array (
-        'opec_explanation_reasons' => 'opec_oil_losses',
-        'impulse_explanation_reasons' => 'impulse_oil_losses',
-        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
-        'accident_explanation_reasons' => 'accident_oil_losses',
-        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
-        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
-        'other_explanation_reasons' => 'other_oil_losses'
+        'daily_reason_1_explanation' => 'daily_reason_1_losses',
+        'daily_reason_2_explanation' => 'daily_reason_2_losses',
+        'daily_reason_3_explanation' => 'daily_reason_3_losses',
+        'daily_reason_4_explanation' => 'daily_reason_4_losses',
+        'daily_reason_5_explanation' => 'daily_reason_5_losses'
     );
 
     protected $dzoName;
@@ -121,8 +119,7 @@ class Dzo {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }
-
-        if ($periodType === 'period') {
+        if ($periodType === 'period' && $dzoFact->count() > 1) {
             $companySummary['plan'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'],$periodEnd);
             $companySummary['opek'] = $this->getPlanByYear($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek'],$periodEnd);
         }

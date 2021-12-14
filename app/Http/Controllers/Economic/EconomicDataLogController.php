@@ -11,6 +11,7 @@ use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
+use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellForecastKit;
 use Illuminate\Http\RedirectResponse;
@@ -47,8 +48,6 @@ class EconomicDataLogController extends Controller
                 case EconomicDataLogType::GTM:
                     EcoRefsGtm::query()->whereLogId($log->id)->delete();
 
-                    EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
-
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
                     TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->delete();
@@ -60,6 +59,14 @@ class EconomicDataLogController extends Controller
                     TechnicalWellForecastKit::query()->whereEconomicLogId($log->id)->delete();
 
                     EcoRefsAnalysisParam::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::DATA_FORECAST:
+                    TechnicalDataForecast::query()->whereLogId($log->id)->delete();
+
+                    break;
+                case EconomicDataLogType::GTM_VALUE:
+                    EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
 
                     break;
             }
