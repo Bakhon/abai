@@ -109,7 +109,7 @@ abstract class PlainForm extends BaseForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first()->toArray();
+            $this->originalData = (array)$dbQuery->first();
             $dbQuery->update($data);
 
             $this->submittedData['fields'] = $data;

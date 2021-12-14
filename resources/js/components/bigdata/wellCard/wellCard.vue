@@ -195,6 +195,7 @@
                 <BigDataPlainFormResult
                     v-if="activeForm.type === 'plain'"
                     :code="activeForm.code"
+                    :params="activeForm"
                     :well-id="this.well.id"
                     type="well"
                 ></BigDataPlainFormResult>
