@@ -28,7 +28,7 @@ class VisualCenterDailyReportExport implements FromView
         'ОМГК' => array (
             'id' => '',
             'sortId' => 3,
-            'name' => '                  (конденсат)',
+            'name' => '(конденсат)',
             'part' => null
         ),
         'ММГ' => array (
@@ -106,16 +106,19 @@ class VisualCenterDailyReportExport implements FromView
 
         foreach($this->productionCategory as  $dzo) {
             if (!in_array($dzo['name'],$this->skippingDzo)) {
-                array_push($this->formattedCategory,
-                    array (
-                        'id' => $this->dzoMapping[$dzo['name']]['id'],
-                        'orderId' => $this->dzoMapping[$dzo['name']]['sortId'],
-                        'name' => $this->dzoMapping[$dzo['name']]['name'],
-                        'part' => $this->dzoMapping[$dzo['name']]['part'],
-                        'plan' => $dzo['plan'],
-                        'fact' => $dzo['fact']
-                    )
+                $dzoDetails = array (
+                    'id' => $this->dzoMapping[$dzo['name']]['id'],
+                    'orderId' => $this->dzoMapping[$dzo['name']]['sortId'],
+                    'name' => $this->dzoMapping[$dzo['name']]['name'],
+                    'part' => $this->dzoMapping[$dzo['name']]['part'],
+                    'plan' => $dzo['plan'],
+                    'fact' => $dzo['fact'],
+                    'reasons' => array()
                 );
+                if ($dzo['name'] !== 'ОМГК') {
+                    $dzoDetails['reasons'] = $dzo['decreaseReasonExplanations'];
+                }
+                array_push($this->formattedCategory,$dzoDetails);
             }
         }
 
@@ -126,7 +129,7 @@ class VisualCenterDailyReportExport implements FromView
     public function view(): View
     {
         return view('visualcenter.daily_report_export', [
-            'data' => $this->formattedCategory,
+            'daily' => $this->formattedCategory,
             'date' => Carbon::now()->format('d.m.Y')
         ]);
     }

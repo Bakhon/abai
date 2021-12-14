@@ -842,11 +842,11 @@ export default {
         };
         let uri = this.localeUrl("/daily-report-export");
         const response = await axios.get(uri,{params:queryOptions,responseType:'arraybuffer'});
-        console.log(response);
+        let fileName = `Суточная информация по добыче нефти и конденсата НК КМГ_${moment().format('DD MM YY')} г.xlsx`;
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
         var fileLink = document.createElement('a');
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', 'test.xlsx');
+        fileLink.setAttribute('download', fileName);
         document.body.appendChild(fileLink);
         fileLink.click();
         this.SET_LOADING(true);
