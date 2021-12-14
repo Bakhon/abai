@@ -91,17 +91,17 @@
                                     <th>{{trans("digital_drilling.default.company_name")}}</th>
                                     <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
                                     <th>{{trans("digital_drilling.default.companyman")}}</th>
-                                    <th>{{trans("digital_drilling.default.load_capacity_kN")}}</th>
-                                    <th>{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
-                                    <th>
+                                    <th class="width-100">{{trans("digital_drilling.default.load_capacity_kN")}}</th>
+                                    <th class="width-100">{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
+                                    <th class="width-100">
                                         {{trans("digital_drilling.default.rig_up_duration")}}<br>
                                         {{trans("digital_drilling.default.days")}}
                                     </th>
-                                    <th>
+                                    <th class="width-100">
                                         {{trans("digital_drilling.default.rig_duration")}}<br>
                                         {{trans("digital_drilling.default.days")}}
                                     </th>
-                                    <th>Технические характеристики</th>
+                                    <th>Технические <br> характеристики</th>
                                     <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
                                     <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
                                 </tr>
@@ -667,5 +667,8 @@
     }
     button{
         color: #FFFFFF;
+    }
+    .width-100{
+        width: 100px!important;
     }
 </style>

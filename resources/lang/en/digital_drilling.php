@@ -245,6 +245,7 @@ return array (
     'project_data' => [
         'title' => 'Project data',
         'technical_task' => 'Technical specifications',
+        'technical_project' => 'Technical project',
         'geology' => 'Geology',
         'well_design' => 'Well design',
         'barrel_profile' => 'Hole profile',
@@ -458,7 +459,8 @@ return array (
         'field' => 'Месторождение:',
         'rotation_torque' => 'Момент при вращении, кН*м:',
         'total_drilling_days' => 'Всего дней бурения:',
-        'project_depth' => 'Проект. глуб., по ств./верт., м.:',
+        'project_depth' => 'Проект. глуб. м.:',
+        'project_depth_vert' => 'По ств./верт., м.:',
         'pump_capacity' => 'Производительность насосов, л/с:',
         'air_temperature' => 'Температура воздуха:',
         'previous_face' => 'Предыдущий забой, м.:',
