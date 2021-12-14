@@ -58,6 +58,30 @@
     </div>
 
     <div class="mx-auto max-width-88vw bg-main1 pt-4 px-4 pb-2">
+      <div class="mb-3 d-flex align-items-center">
+        <i :class="sort.isAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
+           class="fas text-white cursor-pointer mr-3"
+           style="font-size: 22px"
+           @click="toggleSortKey('isAsc')"></i>
+
+        <select
+            :value="sort.key"
+            class="form-control bg-dark-blue text-white"
+            style="width: 280px"
+            @change="updateSortKey">
+          <option :value="null" disabled selected>
+            {{ trans('economic_reference.select_sort') }}
+          </option>
+
+          <option
+              v-for="header in tableHeaders.filter(header => !header.isString)"
+              :key="header.key"
+              :value="header.key">
+            {{ header.name }}
+          </option>
+        </select>
+      </div>
+
       <vue-table-dynamic
           :params="tableParams"
           class="matrix-table">
@@ -103,7 +127,9 @@ export default {
     },
     wells: null,
     sort: {
-      isGroup: true
+      isGroup: true,
+      isAsc: true,
+      key: null,
     },
     uwis: []
   }),
@@ -202,11 +228,11 @@ export default {
       this.uwis = Object.keys(uwis)
     },
 
-    toggleSortKey(sortKey) {
+    toggleSortKey(key) {
       this.SET_LOADING(true)
 
       setTimeout(() => {
-        this.sort[sortKey] = !this.sort[sortKey]
+        this.sort[key] = !this.sort[key]
 
         this.SET_LOADING(false)
       })
@@ -226,7 +252,29 @@ export default {
 
         $('.well-search').selectpicker('destroy')
       }
-    }
+    },
+
+    updateSortKey(event) {
+      let key = event.target.value
+
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.sort.key = key
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    sortRows(rows) {
+      let headerIndex = this.tableHeaders.findIndex(header => header.key === this.sort.key)
+
+      rows.sort((prev, next) => this.sort.isAsc
+          ? (+prev[headerIndex] - +next[headerIndex])
+          : (+next[headerIndex] - +prev[headerIndex])
+      )
+    },
+
   },
   computed: {
     url() {
@@ -410,6 +458,10 @@ export default {
         rows.push(row)
       })
 
+      if (this.sort.key) {
+        this.sortRows(rows)
+      }
+
       rows.unshift(sumRow)
 
       return rows
@@ -474,6 +526,10 @@ export default {
         rows.push(this.getTableRow(currentWell))
       }
 
+      if (this.sort.key) {
+        this.sortRows(rows)
+      }
+
       rows.unshift(sumRow)
 
       return rows
@@ -525,5 +581,9 @@ export default {
 
 .pt-35px {
   padding-top: 35px;
+}
+
+.bg-dark-blue {
+  background-color: #333975;
 }
 </style>

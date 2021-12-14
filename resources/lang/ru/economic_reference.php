@@ -453,4 +453,6 @@ return array (
   'input_params_for_opt' => 'Входные параметры для ОПТ',
   'launch' => 'Запустить расчет',
   'conditionally_profitable' => 'Условно-рентабельные',
+  'from_opposite' => 'От обратного',
+  'netback_fact' => 'Нетбэк факт',
 );
