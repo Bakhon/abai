@@ -54,6 +54,11 @@ class WellStatus extends PlainForm
         return parent::submitForm();
     }
 
+    protected function afterSubmit(int $id)
+    {
+        dd($this->request->all());
+    }
+
     private function updatePreviousState(CarbonImmutable $date)
     {
         $previousState = DB::connection('tbd')
