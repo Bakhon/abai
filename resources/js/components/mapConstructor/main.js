@@ -16,6 +16,7 @@ import InterpolationModal from './modals/InterpolationModal';
 import ContextMenu from 'vue-context-menu';
 import moment from 'moment';
 import IsolinesMenu from "./modals/IsolinesMenu";
+import XLSX from 'xlsx';
 
 export default {
     data() {
@@ -130,7 +131,7 @@ export default {
         },
         importFile(file) {
             this.SET_LOADING(true);
-            const extensions = ['irap', 'zmap', 'shp', 'txt'];
+            const extensions = ['irap', 'zmap', 'shp', 'txt', 'xlsx'];
             let fileType = '';
             extensions.forEach(extension => {
                   if (fileType === '' && file.name.indexOf(extension) !== -1) {
@@ -141,6 +142,14 @@ export default {
             if (fileType === '') {
                 this.$notifyError(this.trans('map_constructor.file_extension_error'));
                 this.SET_LOADING(false);
+                return false;
+            }
+            if (fileType === 'xlsx') {
+                this.addWellsFromXlsx(file).then(() => {
+                    this.SET_LOADING(false);
+                }, () => {
+                    this.$notifyError(this.trans('map_constructor.import_error'));
+                });
                 return false;
             }
             if (this.projects.length === 0) {
@@ -578,7 +587,88 @@ export default {
             this.rightClickTargetProjectIndex = null;
             this.rightClickTargetIndex = null;
             this.rightClickTargetType = 'project';
-        }
+        },
+        addWellsFromXlsx(file) {
+            const selectedMonthObj = this.selectedMonth ? moment(this.selectedMonth) : moment();
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            const $self = this;
+            return new Promise((resolve, reject) => {
+                const wellTypeIcons = {
+                    mining: 'Добывающая',
+                    discharge: 'Нагнетательная',
+                };
+                const wellStatusIcons = {
+                    inWork: 'В работе',
+                    inLiquidation: 'В ликвидации',
+                    transferred: 'Переведена на другой горизонт',
+                    observational: 'Наблюдательная',
+                    inConservation: 'В консервации',
+                    inInaction: 'В бездействии',
+                    inMastering: 'В освоении',
+                };
+                const fileFieldNames = {
+                    wellName: 'Имя скважины',
+                    bottomholeX: 'Координата забоя X',
+                    bottomholeY: 'Координата забоя Y',
+                    mouthX: 'Координаты устья X',
+                    mouthY: 'Координаты устья Y',
+                    date: 'Дата окончания бурения',
+                    status: 'Статус',
+                    type: 'Тип скважины',
+                };
+                try {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        const data = e.target.result;
+                        const workbook = XLSX.read(data, {
+                            type: 'binary'
+                        });
+                        workbook.SheetNames.forEach(function(sheetName) {
+                            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {raw: false});
+                            let data = [];
+                            jsonData.forEach(item => {
+                                const date = moment(item[fileFieldNames.date], 'MM/DD/YYYY');
+                                if (date < selectedMonthObj) {
+                                    let icon = item[fileFieldNames.type] === wellTypeIcons.mining ?
+                                        'mining-' : 'discharge-';
+                                    switch (item[fileFieldNames.status]) {
+                                        case wellStatusIcons.inWork:
+                                            icon += 'filled.svg';
+                                            break;
+                                        case wellStatusIcons.inLiquidation:
+                                            icon += 'x.svg';
+                                            break;
+                                        case wellStatusIcons.observational:
+                                            icon += 'observational.svg';
+                                            break;
+                                        case wellStatusIcons.inConservation:
+                                            icon += 'conservation.svg';
+                                            break;
+                                        case wellStatusIcons.inMastering:
+                                            icon += 'mastering.svg';
+                                            break;
+                                        default:
+                                            icon += 'empty.svg';
+                                            break;
+                                    }
+                                    data.push({
+                                        coords: [item[fileFieldNames.mouthX], item[fileFieldNames.mouthY]],
+                                        additionalCoords: [item[fileFieldNames.bottomholeX], item[fileFieldNames.bottomholeY]],
+                                        name: item[fileFieldNames.wellName],
+                                        icon: icon,
+                                    });
+                                }
+                            });
+                            $self.$refs[projectRef][0].showWells(data);
+                        });
+                    };
+                    reader.readAsBinaryString(file);
+                } catch (e) {
+                    reject();
+                }
+                resolve();
+            });
+        },
     },
     mounted() {
         this.getGeoList('dzo');

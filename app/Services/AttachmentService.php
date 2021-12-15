@@ -34,7 +34,7 @@ class AttachmentService
             ->whereIn('id', $fileIds)
             ->get()
             ->map(function ($file) {
-                $file->file_size = $this->formatFilesize($file->file_size);
+                $file->file_size = self::formatFilesize($file->file_size);
                 return $file;
             });
     }
@@ -93,7 +93,7 @@ class AttachmentService
         return $this->client->request($method, $route, $options);
     }
 
-    private function formatFilesize(int $bytes)
+    public static function formatFilesize(int $bytes)
     {
         $size = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
         $factor = floor((strlen($bytes) - 1) / 3);

@@ -250,8 +250,10 @@ const geologyGis = {
                             }
                         );
                     }
-                    state.tHorizon.editPropertyElementData(el.name, "toWells", (prop) => ({...prop, [wellName]: el}));
-                    state.tHorizon.editPropertyElementData(el.name, "wells", (prop) => (!prop.includes(wellName) && prop.push(wellName), prop));
+                    state.tHorizon.editPropertyElementData(el.name, [
+                        ["toWells", (prop) => ({...prop, [wellName]: el})],
+                        ["wells", (prop) => (!prop.includes(wellName) && prop.push(wellName), prop)]
+                    ]);
                 }
             }
             state.WELLS_HORIZONS = horizons;

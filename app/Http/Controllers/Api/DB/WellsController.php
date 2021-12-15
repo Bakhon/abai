@@ -192,7 +192,6 @@ class WellsController extends Controller
         $wellConstr = $well->tubeNom()
                         ->wherePivot('project_drill', '=', 'false')
                         ->wherePivot('casing_type', '=', '8')
-                        ->WherePivot('casing_type', '=', '9', 'or')
                         ->wherePivot('od', '!=', null)
                         ->get(['prod.well_constr.od'])
                         ->toArray();
@@ -206,8 +205,8 @@ class WellsController extends Controller
                         ->table('prod.well_constr')
                         ->where('well', '=', $well->id)
                         ->where('od', '!=', null)      
-                        ->where('project_drill', 'false')                  
-                        ->orderBy('id', 'asc')
+                        ->where('casing_type', '8')                   
+                        ->orderBy('id', 'desc')
                         ->get('od')
                         ->toArray();   
         if($wellConstrOd){
@@ -659,15 +658,23 @@ class WellsController extends Controller
 
     private function wellPerfActual(Well $well)
     {
-        $wellPerfActual = $well->wellPerfActualNew()
-            ->withPivot('perf_date')
-            ->orderBy('pivot_perf_date', 'desc')
-            ->select(['perf_date', 'top', 'base'])
-            ->get()
-            ->toArray();
+        $wellPerfActual = DB::connection('tbd')
+                            ->table('prod.well_perf as w')
+                            ->where('w.well', $well->id)
+                            ->orderBy('w.perf_date', 'desc')
+                            ->get('w.id')
+                            ->toArray();
 
         if ($wellPerfActual) {
-            return $wellPerfActual[0];
+            $wellPerf = DB::connection('tbd')
+                        ->table('prod.well_perf_actual as wp')
+                        ->join('prod.well_perf','wp.well_perf', '=', 'prod.well_perf.id')
+                        ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
+                        ->orderBy('wp.top','ASC')
+                        ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
+                        ->toArray();
+                      
+            return $wellPerf;            
         }
 
         return "";

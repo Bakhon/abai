@@ -6,7 +6,7 @@
 import Projection from "ol/proj/Projection";
 import Map from "ol/Map";
 import View from "ol/View";
-import {Fill, Stroke, Style, Text} from "ol/style";
+import {Icon, Fill, Stroke, Style, Text} from "ol/style";
 import LayerGroup from "ol/layer/Group";
 import {Vector as VectorLayer} from "ol/layer";
 import {OSM, Vector as VectorSource, XYZ} from "ol/source";
@@ -90,6 +90,7 @@ export default {
                                 new ScaleLine({
                                     units: 'metric',
                                 }),
+                                new ExportMap(),
                             ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
@@ -712,6 +713,84 @@ export default {
               })
             }
           });
+        },
+        showWells(data) {
+            if (this.map === null) {
+                let coords = {
+                    x: [],
+                    y: [],
+                };
+                data.forEach(item => {
+                    coords.x.push(item.coords[0]);
+                    coords.y.push(item.coords[1]);
+                });
+                const maxX = Math.max(...coords.x);
+                const minX = Math.min(...coords.x);
+                const maxY = Math.max(...coords.y);
+                const minY = Math.min(...coords.y);
+                this.initMap({
+                    top_left: [minX, minY],
+                    bottom_right: [maxX, maxY],
+                })
+            }
+            let wellLayers = [];
+            data.forEach(item => {
+                const pointStyle = new Style({
+                    image: new Icon({
+                        crossOrigin: 'anonymous',
+                        src: '/img/icons/map-constructor/' + item.icon,
+                        size: [20, 50],
+                        color: '#000',
+                        scale: 0.5,
+                    }),
+                    text: new Text({
+                        font: '10px bold Calibri,sans-serif',
+                        fill: new Fill({
+                            color: '#000',
+                        }),
+                        text: item.name,
+                    })
+                });
+                if (item.coords[0] !== item.additionalCoords[0] || item.coords[1] !== item.additionalCoords[1]) {
+                    wellLayers.push(
+                        new VectorLayer({
+                            source: new VectorSource({
+                                features: [
+                                    new Feature({
+                                        geometry: new LineString([item.coords, item.additionalCoords]),
+                                    })]
+                            }),
+                            style: [new Style({
+                                stroke: new Stroke({
+                                    color: '#000',
+                                    width: 2,
+                                }),
+                            })],
+                        }),
+                    );
+                }
+                wellLayers.push(
+                    new VectorLayer({
+                        source: new VectorSource({
+                            features: [
+                                new Feature({
+                                    geometry: new Point(item.coords),
+                                })]
+                        }),
+                        style: [pointStyle],
+                    }),
+                );
+            });
+            if (wellLayers.length > 0) {
+                let layerGroup = new LayerGroup();
+                wellLayers.forEach(item => {
+                    layerGroup.getLayers().push(item);
+                })
+                layerGroup.name = 'Скважины ' + this.data.layerGroups.length;
+                this.addLayerGroupToMap(layerGroup);
+            } else {
+                this.$notifyError(this.trans('map_constructor.empty_data'));
+            }
         }
     }
 }
@@ -757,7 +836,7 @@ class ExportMap extends Control {
         const options = opt_options || {};
 
         const exportButton = document.createElement('button');
-        exportButton.innerHTML = 'Экспорт';
+        exportButton.innerHTML = 'PDF';
         const exportElement = document.createElement('div');
         exportElement.className = 'export-map ol-unselectable ol-control';
         exportElement.appendChild(exportButton);
