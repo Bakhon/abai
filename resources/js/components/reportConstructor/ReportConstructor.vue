@@ -703,8 +703,8 @@
 </template>
 
 <script src="./ReportConstructor.js"></script>
-<style >
 
+<style scoped lang="scss">
 .opened-arrow {
   transform: rotate(0deg);
 }
@@ -736,8 +736,6 @@
     width: 22px;
     height: 15px;
 }
-</style>
-<style scoped lang="scss">
 .table-params-container {
   padding: 10px 0;
 }
@@ -756,6 +754,7 @@
       background: #334296;
     }
 }
+
 .search-report {
     display: flex;
     align-items: center;
@@ -856,6 +855,7 @@
       border-radius: 10px;
       border: 3px solid #181837;
     }
+    
 }
 .date {
   display: flex;
