@@ -303,7 +303,7 @@
               <div class="heading">
                 <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
               </div>
-              <div v-if="wellUwi" class="sheare-icon">
+              <div v-if="wellUwi" class="sheare-icon" @click="getFile()">
                 <svg
                   width="20"
                   height="20"
@@ -337,7 +337,7 @@
             <div v-if="isRightColumnFolded" class="rotate">
               {{ this.trans("well.well_passport") }}
             </div>
-            <div class="info-element">
+            <div class="info-element" id="info-element">
 
               <table v-if="wellUwi">
                 <tr v-for="(item, index) in this.tableData">

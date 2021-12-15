@@ -9,13 +9,13 @@ use Spatie\Permission\Models\Permission;
 class AddPermissionsForMapConstructor extends Migration
 {
     public $permissions = [
-        'mapConstructor view',
-        'mapConstructor list',
-        'mapConstructor create',
-        'mapConstructor read',
-        'mapConstructor update',
-        'mapConstructor delete',
-        'mapConstructor export'
+        'mapConstructor view main',
+        'mapConstructor list main',
+        'mapConstructor create main',
+        'mapConstructor read main',
+        'mapConstructor update main',
+        'mapConstructor delete main',
+        'mapConstructor export main'
     ];
     /**
      * Run the migrations.
