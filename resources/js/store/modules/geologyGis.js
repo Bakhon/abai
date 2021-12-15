@@ -176,24 +176,7 @@ const geologyGis = {
         },
 
         [SET_WELLS](state, data) {
-            state.WELLS = data.filter((item) => [
-                'UZN_1428',
-                'UZN_0144',
-                'UZN_1027',
-                'UZN_9093',
-                "UZN_1291",
-                "UZN_3313",
-                "UZN_3314",
-                "UZN_3505",
-                "UZN_4140",
-                "UZN_4439",
-                "UZN_7272",
-                "UZN_7296",
-                "UZN_7934",
-                "UZN_9133",
-                "UZN_4439",
-                "UZN_5617",
-            ].includes(item.name));
+            state.WELLS = data;
         },
 
         [SET_SCROLL_BLOCK_Y](state, y) {
