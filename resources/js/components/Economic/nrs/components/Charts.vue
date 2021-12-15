@@ -1,6 +1,6 @@
 <template>
   <div class="row px-3 py-2 bg-main1">
-    <div class="d-flex">
+    <div class="d-flex mb-2">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
           :key="index"
@@ -16,11 +16,7 @@
           @click.native="openMatrix"/>
     </div>
 
-    <div class="w-100 mt-2">
-      <subtitle class="text-wrap text-white">
-        {{ tabs[activeTab] }}
-      </subtitle>
-
+    <div class="w-100">
       <chart-with-profitability
           v-if="activeTab === 'profitability'"
           :data="charts.profitability.active"
@@ -30,7 +26,8 @@
           :title="trans('economic_reference.count_well')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart mt-2"/>
+          :form="form"
+          class="bg-economic-chart"/>
 
       <chart-with-oil-production
           v-if="activeTab === 'oil_production'"
@@ -40,7 +37,8 @@
           :title="trans('economic_reference.oil_production')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart mt-2"/>
+          :form="form"
+          class="bg-economic-chart"/>
 
       <chart-with-well-top
           v-else-if="activeTab === 'well_top'"
@@ -49,8 +47,8 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          :org_id="form.org_id"
-          class="bg-economic-chart mt-2"/>
+          :form="form"
+          class="mt-2"/>
 
       <chart-with-liquid-production
           v-else-if="activeTab === 'liquid_production'"
@@ -59,7 +57,8 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart mt-2"/>
+          :form="form"
+          class="bg-economic-chart"/>
 
       <chart-well-map
           v-else-if="activeTab === 'well_map'"
@@ -74,12 +73,13 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart mt-2"/>
+          :form="form"
+          class="bg-economic-chart"/>
 
       <chart-with-wells
           v-else-if="activeTab === 'analysis'"
           :form="form"
-          class="bg-economic-chart mt-2"/>
+          class="bg-economic-chart"/>
     </div>
   </div>
 </template>

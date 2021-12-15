@@ -337,7 +337,7 @@
             <div v-if="isRightColumnFolded" class="rotate">
               {{ this.trans("well.well_passport") }}
             </div>
-            <div class="info-element" id="info-element">
+            <div class="info-element">
 
               <table v-if="wellUwi">
                 <tr v-for="(item, index) in this.tableData">
