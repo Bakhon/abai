@@ -170,5 +170,9 @@ return array (
   'x_axis_limit_cn' => 'Граница оси X (CN)',
   'separation_fluid' => 'Жидкость сепарации',
   'separation_gas' => 'Газ сепарации',
-  'module_whole_pages' => 'Все страницы модуля',
+  'standart' => 'Стандартная',
+  'stepped' => 'Ступенчатая',
+  'differential' => 'Дифференциальное',
+  'mole' => 'мол',
+  'mass' => 'мас',
 );

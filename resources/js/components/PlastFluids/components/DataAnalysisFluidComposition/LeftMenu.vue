@@ -17,8 +17,8 @@
           >
             <input
               :value="property.key"
-              v-model="selectedCompositions"
-              type="checkbox"
+              v-model="selectedComposition"
+              type="radio"
               :id="'composition-table-' + property.key"
             />
             <label :for="'composition-table-' + property.key">{{
@@ -39,11 +39,21 @@
       <div class="content">
         <div class="settings-input-holder">
           <p>{{ trans("plast_fluids.separation_type") }}</p>
-          <Dropdown />
+          <Dropdown
+            :items="separationTypes"
+            :dropKey="['name']"
+            :selectedValue="selectedSeparation.name"
+            @dropdown-select="updateSelectedSeparation"
+          />
         </div>
         <div class="settings-input-holder">
           <p>{{ trans("plast_fluids.unit") }}</p>
-          <Dropdown />
+          <Dropdown
+            :items="units"
+            :dropKey="['name']"
+            :selectedValue="selectedUnit.name"
+            @dropdown-select="updateSelectedUnit"
+          />
         </div>
       </div>
     </div>
@@ -67,7 +77,7 @@
         </div>
         <div class="graph-customization-input-holder">
           <p>{{ trans("plast_fluids.x_axis_limit_cn") }}</p>
-          <div><Dropdown style="margin-bottom: 0;" /></div>
+          <div><Dropdown style="margin-bottom: 0" /></div>
         </div>
       </div>
     </div>
@@ -84,7 +94,7 @@ export default {
   },
   data() {
     return {
-      selectedCompositions: ["plastFluid"],
+      selectedComposition: "plastFluid",
       compositionTable: [
         {
           label: this.trans("plast_fluids.plast_fluid"),
@@ -99,8 +109,29 @@ export default {
           key: "gasSeparation",
         },
       ],
+      separationTypes: [
+        {
+          name: this.trans("plast_fluids.standart"),
+        },
+        { name: this.trans("plast_fluids.stepped") },
+        { name: this.trans("plast_fluids.differential") },
+      ],
+      selectedSeparation: { name: this.trans("plast_fluids.standart") },
+      units: [
+        { name: this.trans("plast_fluids.mole") + ".%" },
+        { name: this.trans("plast_fluids.mass") + ".%" },
+      ],
+      selectedUnit: { name: this.trans("plast_fluids.mole") + ".%" },
       isGraphCustomizationPf: false,
     };
+  },
+  methods: {
+    updateSelectedSeparation(value) {
+      this.selectedSeparation = value;
+    },
+    updateSelectedUnit(value) {
+      this.selectedUnit = value;
+    },
   },
 };
 </script>
