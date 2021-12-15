@@ -105,7 +105,7 @@
                 @else
                     <td style="text-indent: 14px;">{{ $dzo['name']}}</td>
                 @endif
-                <td>план</td>
+                <td style="text-align:right">{{ number_format($dzo['monthlyPlan'],0,',', ' ') }}</td>
                 <td style="text-align:right">{{ number_format($dzo['plan'],0,',', ' ')}}</td>
                 <td style="text-align:right">{{ number_format($dzo['fact'],0,',', ' ')}}</td>
                 @if ($dzo['plan'] - $dzo['fact'] < 0)
@@ -161,7 +161,7 @@
                 @else
                     <td style="text-indent: 14px;">{{ $dzo['name']}}</td>
                 @endif
-                <td>план</td>
+                <td style="text-align:right">{{ number_format($dzo['yearlyPlan'],0,',', ' ') }}</td>
                 <td style="text-align:right">{{ number_format($dzo['plan'],0,',', ' ')}}</td>
                 <td style="text-align:right">{{ number_format($dzo['fact'],0,',', ' ')}}</td>
                 @if ($dzo['plan'] - $dzo['fact'] < 0)

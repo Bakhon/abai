@@ -4,7 +4,16 @@ import {globalloadingMutations} from '@store/helpers';
 export default {
     data: function () {
         return {
-            productionByPeriods: {}
+            productionByPeriods: {},
+            previousMonth: moment().month() - 1,
+            currentDate: moment().format('DD.MM.YYYY'),
+            previousMonthName: moment().subtract(1,'months').format('MMM'),
+            currentYear: moment().year,
+            menu: {
+                'daily': true,
+                'monthly': false,
+                'yearly': false
+            }
         }
     },
     methods: {
@@ -31,6 +40,19 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        getFormattedNumber(num) {
+            return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
+        },
+        getColorBy(index) {
+           if (index % 2 === 0) {
+               return 'dzo-row__light';
+           }
+            return 'dzo-row__dark';
+        },
+        switchView(name) {
+           this.menu = _.mapValues(this.menu, () => false);
+           this.menu[name] = true;
+        }
     },
     async mounted() {
         this.SET_LOADING(true);

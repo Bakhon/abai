@@ -10,6 +10,8 @@ use App\Exports\VisualCenterDailyReportExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
+use App\Models\VisCenter\ExcelForm\DzoPlan;
+use App\Models\VisCenter\ImportForms\DZOyear;
 
 class DailyReport extends Controller
 {
@@ -18,6 +20,7 @@ class DailyReport extends Controller
     private $monthlyReasons = array();
     private $yearlyParams = array();
     private $yearlyReasons = array();
+    private $yearlyPlans = array();
     private $periodMapping = array(
         'day' => 'dailyParams',
         'month' => 'monthlyParams',
@@ -135,6 +138,7 @@ class DailyReport extends Controller
         $this->processDzoByPeriod($daily,$this->periodMapping['day'],$request);
         $this->processDzoByPeriod($monthly,$this->periodMapping['month'],$request);
         $this->processDzoByPeriod($yearly,$this->periodMapping['year'],$request);
+
         return [
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
@@ -183,6 +187,7 @@ class DailyReport extends Controller
         $yearStart = $date->copy()->startOf('year');
         $yearlyDiff = $yearStart->diff($yearEnd)->days;
 
+        $this->yearlyPlans = $this->getYearPlan();
         $this->yearlyReasons = $this->getReasonsByPeriod($yearStart,$yearEnd,$this->yearlyDecreaseReasonFields);
         return array (
             'periodStart' => $yearStart->format('Y-m-d'),
@@ -222,6 +227,26 @@ class DailyReport extends Controller
         return $formatted;
     }
 
+    private function getYearPlan()
+    {
+        $plans = DZOyear::query()
+            ->select(['dzo','oil_plan','gk_plan'])
+            ->where('date', Carbon::now()->year)
+            ->get();
+
+        $formatted = array();
+        foreach($plans as $year) {
+            $formatted[$year['dzo']] = $year['oil_plan'];
+            if ($year['dzo'] === 'ОМГ') {
+                $formatted['ОМГК'] = $year['gk_plan'];
+            }
+            if ($year['dzo'] === 'АГ') {
+                $formatted[$year['dzo']] = $year['gk_plan'];
+            }
+        }
+        return $formatted;
+    }
+
     private function isAlreadyExist($dzoReasons,$name)
     {
         foreach($dzoReasons as $reason) {
@@ -247,10 +272,16 @@ class DailyReport extends Controller
                     'part' => $this->dzoMapping[$dzo['name']]['part'],
                     'plan' => $dzo['plan'],
                     'fact' => $dzo['fact'],
-                    'reasons' => array()
+                    'reasons' => array(),
                 );
                 if ($dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $dzo['decreaseReasonExplanations'];
+                }
+                if ($params['periodType'] === 'month') {
+                    $dzoDetails['monthlyPlan'] = $dzo['monthlyPlan'];
+                }
+                if ($params['periodType'] === 'year') {
+                    $dzoDetails['yearlyPlan'] = $this->yearlyPlans[$dzo['name']];
                 }
                 if ($params['periodType'] === 'month' && $dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $this->monthlyReasons[$dzo['name']];
@@ -265,5 +296,4 @@ class DailyReport extends Controller
         $sortOrder = array_column($this->$type, 'orderId');
         array_multisort($sortOrder, SORT_ASC, $this->$type);
     }
-
 }

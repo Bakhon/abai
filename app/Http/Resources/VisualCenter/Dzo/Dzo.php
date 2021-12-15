@@ -341,7 +341,10 @@ class Dzo {
     protected function getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth)
     {
         $summary = $companySummary;
-        $summary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
+        $summary['monthlyPlan'] = $filteredPlan->first()->getOriginal()[$this->consolidatedFieldsMapping[$type]['plan']] * $daysInMonth;
+        if ($filteredPlan->first()['dzo'] === 'ОМГ' || $filteredPlan->first()['dzo'] === 'АГ') {
+            $summary['monthlyPlanCondensate'] = $filteredPlan->first()->getOriginal()['plan_kondensat'] * $daysInMonth;
+        }
         return $summary;
     }
 
