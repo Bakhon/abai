@@ -75,12 +75,33 @@ class Dzo {
         'НКО' => ((1 - 0.019) * 241 / 1428) / 2
     );
 
-    protected $decreaseReasonFields = array (
+    protected $reasonFieldsMapping = array(
+        'day' => 'dailyDecreaseReasonFields',
+        'month' => 'monthlyDecreaseReasonFields',
+        'year' => 'yearlyDecreaseReasonFields',
+        'period' => 'dailyDecreaseReasonFields'
+    );
+
+    protected $dailyDecreaseReasonFields = array (
         'daily_reason_1_explanation' => 'daily_reason_1_losses',
         'daily_reason_2_explanation' => 'daily_reason_2_losses',
         'daily_reason_3_explanation' => 'daily_reason_3_losses',
         'daily_reason_4_explanation' => 'daily_reason_4_losses',
         'daily_reason_5_explanation' => 'daily_reason_5_losses'
+    );
+    protected $monthlyDecreaseReasonFields = array (
+        'monthly_reason_1_explanation' => 'monthly_reason_1_losses',
+        'monthly_reason_2_explanation' => 'monthly_reason_2_losses',
+        'monthly_reason_3_explanation' => 'monthly_reason_3_losses',
+        'monthly_reason_4_explanation' => 'monthly_reason_4_losses',
+        'monthly_reason_5_explanation' => 'monthly_reason_5_losses',
+    );
+    protected $yearlyDecreaseReasonFields = array (
+        'yearly_reason_1_explanation' => 'yearly_reason_1_losses',
+        'yearly_reason_2_explanation' => 'yearly_reason_2_losses',
+        'yearly_reason_3_explanation' => 'yearly_reason_3_losses',
+        'yearly_reason_4_explanation' => 'yearly_reason_4_losses',
+        'yearly_reason_5_explanation' => 'yearly_reason_5_losses',
     );
 
     protected $dzoName;
@@ -108,9 +129,8 @@ class Dzo {
         $companySummary['condensateOpek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensateOpek']);
         $companySummary['opek'] = $this->getOpekUpdatedByPlan($companySummary['plan'],$companySummary['opek']);
         $companySummary['condensateOpek'] = $this->getOpekUpdatedByPlan($companySummary['condensatePlan'],$companySummary['condensateOpek']);
-        if ($periodType === 'day' || $periodType === 'period') {
-            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact);
-        }
+        $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact,$periodType);
+
         if ($periodType === 'month') {
             $companySummary = $this->getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth);
         }
@@ -181,7 +201,7 @@ class Dzo {
         $companySummary['condensateOpek'] = $this->getOpekUpdatedByPlan($companySummary['condensatePlan'],$companySummary['condensateOpek']);
 
         if ($periodType === 'day') {
-            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact);
+            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact,$periodType);
         }
         if ($periodType === 'month') {
             $companySummary = $this->getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth);
@@ -304,11 +324,13 @@ class Dzo {
 
     }
 
-    protected function getAccidentDescription($dzoFact)
+    protected function getAccidentDescription($dzoFact,$periodType)
     {
         $accidents = array();
         $dzoFactData = $dzoFact[0];
-        foreach($this->decreaseReasonFields as $fieldName => $key) {
+        $reasonFields = $this->reasonFieldsMapping[$periodType];
+
+        foreach($this->$reasonFields as $fieldName => $key) {
             if (!is_null($dzoFactData['importDecreaseReason']) && !is_null($dzoFactData['importDecreaseReason'][$fieldName])) {
                array_push($accidents,array($dzoFactData['importDecreaseReason'][$fieldName],$dzoFactData['importDecreaseReason'][$key]));
             }
@@ -319,7 +341,10 @@ class Dzo {
     protected function getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth)
     {
         $summary = $companySummary;
-        $summary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
+        $summary['monthlyPlan'] = $filteredPlan->first()->getOriginal()[$this->consolidatedFieldsMapping[$type]['plan']] * $daysInMonth;
+        if ($filteredPlan->first()['dzo'] === 'ОМГ' || $filteredPlan->first()['dzo'] === 'АГ') {
+            $summary['monthlyPlanCondensate'] = $filteredPlan->first()->getOriginal()['plan_kondensat'] * $daysInMonth;
+        }
         return $summary;
     }
 

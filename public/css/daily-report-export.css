@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "HarmoniaSansProCyr-Regular";
+    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Bold";
+    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Bold.ttf") format("truetype");
+}
+
+.table-title {
+    text-align: center;
+    font-size: 24px;
+    color: red;
+}
