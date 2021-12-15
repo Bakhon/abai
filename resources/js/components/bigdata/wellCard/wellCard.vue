@@ -197,7 +197,6 @@
                     :code="activeForm.code"
                     :params="activeForm"
                     :well-id="this.well.id"
-                    :params="activeForm"
                     type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
