@@ -7,7 +7,6 @@ use App\Exceptions\DictionaryNotFound;
 use App\Models\BigData\Dictionaries\Block;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
-use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\CoordSystem;
@@ -97,10 +96,6 @@ class DictionaryService
         'equip_type' => [
             'class' => EquipType::class,
             'name_field' => 'name_ru'
-        ],
-        'casings' => [
-            'class' => CasingType::class,
-            'name_field' => 'description'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -464,6 +459,9 @@ class DictionaryService
                     break;
                 case 'repair_type_prs_ktm':
                     $dict = $this->getRepairTypeDictKrsPrs("WLO");
+                    break;
+                case 'casings':
+                    $dict = $this->getCasingTypes();
                     break;
                 default:
                     throw new DictionaryNotFound();
@@ -924,7 +922,7 @@ class DictionaryService
             ->leftJoin('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')   
             ->leftJoin('prod.rwt_to_org as pr', 'p.repair_work_type', 'pr.rwt')  
             ->distinct()
-            ->orderBy('name', 'asc') 
+            ->orderBy('name', 'asc')
             ->get()
             ->map(
                 function ($item) {
@@ -934,6 +932,23 @@ class DictionaryService
             ->toArray();
 
 
+        return $items;
+    }
+
+    private function getCasingTypes()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.tube_nom as tn')
+            ->selectRaw('tn.id, tn.description as name, otn.org as org')
+            ->leftJoin('prod.org_tube_nom as otn', 'tn.id', 'otn.tube_nom')
+            ->orderBy('name')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
         return $items;
     }
 }    
