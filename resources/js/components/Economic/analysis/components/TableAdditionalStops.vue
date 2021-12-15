@@ -58,7 +58,7 @@
                :key="headerIndex"
                :style="header.style"
                class="p-3 border-grey d-flex align-items-center justify-content-center">
-            {{ header.isString ? row[header.key] : localeValue(row[header.key]) }}
+            {{ header.isString ? row[header.key] : localeValue(row[header.key], null, false, 0) }}
           </div>
         </div>
       </div>

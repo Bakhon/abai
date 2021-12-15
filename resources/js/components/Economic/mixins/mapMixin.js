@@ -1,9 +1,17 @@
 import mapboxgl from "mapbox-gl";
 
+import ProfitabilityCheckboxes from "../nrs/components/ProfitabilityCheckboxes";
+
 export const profitabilityMapMixin = {
+    components: {ProfitabilityCheckboxes},
     data: () => ({
         map: null,
-        popup: null
+        popup: null,
+        visibleForm: {
+            profitable: true,
+            profitless: true,
+            conditionallyProfitable: true
+        },
     }),
     methods: {
         initMap(centerCoordinates) {
@@ -70,10 +78,15 @@ export const profitabilityMapMixin = {
                     'id': `${layerId}-point`,
                     'type': 'circle',
                     'source': layerId,
-                    'minzoom': 11,
                     'paint': {
                         'circle-color': color,
-                        'circle-radius': 6,
+                        'circle-radius': {
+                            'base': 2,
+                            'stops': [
+                                [8, 2],
+                                [18, 200]
+                            ]
+                        },
                     }
                 },
                 'waterway-label'
@@ -140,12 +153,29 @@ export const profitabilityMapMixin = {
             if (!this.map.getSource(layerId)) return
 
             this.map
-                .removeLayer(`${layerId}-heat`)
                 .removeLayer(`${layerId}-point`)
                 .removeSource(layerId)
         },
     },
     computed: {
+        visibleProfitability() {
+            let keys = []
+
+            if (this.visibleForm.profitable) {
+                keys.push('profitable')
+            }
+
+            if (this.visibleForm.profitless) {
+                keys.push('profitless_cat_1')
+            }
+
+            if (this.visibleForm.conditionallyProfitable) {
+                keys.push('profitless_cat_2')
+            }
+
+            return keys
+        },
+
         totalProfitability() {
             return [
                 'profitable',
