@@ -30,8 +30,8 @@ return array (
   'upload_excel' => 'Добавить данные в Excel',
   'upload' => 'Загрузить данные',
   'net_back' => 'NetBack',
-  'million' => 'млн',
-  'billion' => 'млрд',
+  'million' => 'млн.',
+  'billion' => 'млрд.',
   'thousand_tons' => 'тыс. тонн',
   'well' => 'Скважина',
   'oil_production' => 'Добыча нефти',
@@ -452,4 +452,7 @@ return array (
   'gtm_kit' => 'Набор ГТМ',
   'input_params_for_opt' => 'Входные параметры для ОПТ',
   'launch' => 'Запустить расчет',
+  'conditionally_profitable' => 'Условно-рентабельные',
+  'from_opposite' => 'От обратного',
+  'netback_fact' => 'Нетбэк факт',
 );

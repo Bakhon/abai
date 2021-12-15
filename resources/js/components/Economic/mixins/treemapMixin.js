@@ -1,3 +1,6 @@
+import {formatValueMixin} from "./formatMixin";
+import {waterCutMixin} from "./wellMixin";
+
 export async function loadScript(path) {
     return new Promise((resolve) => {
         let script = document.createElement('script')
@@ -15,6 +18,10 @@ export async function loadScript(path) {
 export const SELECTED_COLOR = "#8125B0"
 
 export const treemapMixin = {
+    mixins: [
+        formatValueMixin,
+        waterCutMixin
+    ],
     data: () => ({
         chartTrees: [],
         loadingTreemap: true
@@ -67,13 +74,19 @@ export const treemapMixin = {
             let chartWaterCut = this.charts.find(chart => chart.key === this.waterCutKey)
 
             if (chartWaterCut && chartWaterCut.hasSubtitle) {
-                sum[chartWaterCut.title].profitable = sum[chartWaterCut.title].profitableCount > 0
-                    ? (sum[chartWaterCut.title].profitable / sum[chartWaterCut.title].profitableCount).toFixed(2)
-                    : 0
+                let chartLiquid = this.charts.find(chart => chart.key === 'liquid')
 
-                sum[chartWaterCut.title].profitless = sum[chartWaterCut.title].profitlessCount > 0
-                    ? (sum[chartWaterCut.title].profitless / sum[chartWaterCut.title].profitlessCount).toFixed(2)
-                    : 0
+                let chartOil = this.charts.find(chart => chart.key === 'oil')
+
+                sum[chartWaterCut.title].profitable = this.calcWaterCut(
+                    sum[chartLiquid.title].profitable,
+                    sum[chartOil.title].profitable
+                )
+
+                sum[chartWaterCut.title].profitless = this.calcWaterCut(
+                    sum[chartLiquid.title].profitless,
+                    sum[chartOil.title].profitless
+                )
             }
 
             return sum
@@ -160,38 +173,37 @@ export const treemapMixin = {
             return +well[this.profitabilityKey] > 0 ? '#13B062' : '#AB130E'
         },
 
-        getChartSubtitle({title, hasSubtitle, isShowCount}) {
+        getChartSubtitle({title, isShowCount, hasSubtitle, hasPercent, dimension, dimensionTitle}) {
             if (!hasSubtitle || !this.chartsSum[title]) {
                 return ''
             }
 
             let name = ''
 
-            let subtitleKey = 'profitable'
+            let subTitles = ['profitable', 'profitless']
 
-            if (isShowCount) {
-                subtitleKey += 'Count'
-            }
+            subTitles.forEach(profitability => {
+                let text = this.trans(`economic_reference.${profitability}`)
 
-            if (this.chartsSum[title][subtitleKey]) {
-                name += `<br>
-                ${this.trans('economic_reference.profitable')}: 
-                ${this.chartsSum[title][subtitleKey].toLocaleString()}
-                `
-            }
+                if (isShowCount) {
+                    profitability += 'Count'
+                }
 
-            subtitleKey = 'profitless'
+                let value = this.localeValue(
+                    +this.chartsSum[title][profitability],
+                    dimension,
+                    false,
+                    0
+                )
 
-            if (isShowCount) {
-                subtitleKey += 'Count'
-            }
+                if (this.chartsSum[title][profitability]) {
+                    name += `<br> ${text}: ${value} `
 
-            if (this.chartsSum[title][subtitleKey]) {
-                name += `<br>
-                ${this.trans('economic_reference.profitless')}: 
-                ${this.chartsSum[title][subtitleKey].toLocaleString()}
-                `
-            }
+                    if (dimensionTitle) {
+                        name += dimensionTitle
+                    }
+                }
+            })
 
             return name
         },
@@ -199,10 +211,10 @@ export const treemapMixin = {
         getChartTitle(chart) {
             let subtitle = this.getChartSubtitle(chart)
 
-            let title = `<div> ${chart.title} </div>`
+            let title = `<div style="font-size: 20px"> ${chart.title} </div>`
 
             if (subtitle) {
-                title += `<div style="font-size: 14px">${subtitle}</div>`
+                title += `<div style="font-size: 16px">${subtitle}</div>`
             }
 
             return title

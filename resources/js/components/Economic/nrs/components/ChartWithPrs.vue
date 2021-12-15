@@ -95,7 +95,7 @@ export default {
   methods: {
     fillSeries(series, dataKey) {
       this.chartKeys.forEach(chartKey => {
-        series.push(this.chartArea(chartKey, this[dataKey]))
+        series.push(this.chartArea(chartKey, this[dataKey], null, 'column'))
       })
 
       return series
