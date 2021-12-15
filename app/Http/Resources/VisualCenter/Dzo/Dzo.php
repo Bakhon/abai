@@ -129,9 +129,8 @@ class Dzo {
         $companySummary['condensateOpek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensateOpek']);
         $companySummary['opek'] = $this->getOpekUpdatedByPlan($companySummary['plan'],$companySummary['opek']);
         $companySummary['condensateOpek'] = $this->getOpekUpdatedByPlan($companySummary['condensatePlan'],$companySummary['condensateOpek']);
-        if ($periodType === 'day' || $periodType === 'period') {
-            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact,$periodType);
-        }
+        $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact,$periodType);
+
         if ($periodType === 'month') {
             $companySummary = $this->getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth);
         }
@@ -330,6 +329,7 @@ class Dzo {
         $accidents = array();
         $dzoFactData = $dzoFact[0];
         $reasonFields = $this->reasonFieldsMapping[$periodType];
+
         foreach($this->$reasonFields as $fieldName => $key) {
             if (!is_null($dzoFactData['importDecreaseReason']) && !is_null($dzoFactData['importDecreaseReason'][$fieldName])) {
                array_push($accidents,array($dzoFactData['importDecreaseReason'][$fieldName],$dzoFactData['importDecreaseReason'][$key]));

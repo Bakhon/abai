@@ -551,46 +551,7 @@ class ExcelFormController extends Controller
 
     public function dailyReportExcelExport(Request $request)
     {
-        $date = Carbon::parse($request->date);
-        $daily = array (
-            'periodStart' => $date->copy()->startOf('day')->format('Y-m-d'),
-            'periodEnd' => $date->copy()->endOf('day')->format('Y-m-d'),
-            'historicalPeriodStart' => $date->copy()->sub(1,'days')->startOf('day')->format('Y-m-d'),
-            'historicalPeriodEnd' => $date->copy()->sub(1,'days')->endOf('day')->format('Y-m-d'),
-            'periodRange' => 0,
-            'category' => 'oilCondensateProduction',
-            'periodType' => 'day'
-        );
-        $monthlyDate = $date->copy();
-        if (Carbon::now()->day < 3) {
-            $monthlyDate = $monthlyDate->sub(3,'days');
-        }
-        $monthlyEndPeriod = $monthlyDate->copy()->endOf('day');
-        $monthStart =  $monthlyDate->copy()->startOf('month');
-        $monthlyDiff = $monthStart->diff($monthlyEndPeriod)->days;
-        $monthly = array (
-            'periodStart' => $monthStart->format('Y-m-d'),
-            'periodEnd' => $monthlyEndPeriod->format('Y-m-d'),
-            'historicalPeriodStart' => $monthStart->copy()->sub($monthlyDiff,'days')->format('Y-m-d'),
-            'historicalPeriodEnd' => $monthlyDate->copy()->sub(1,'days')->format('Y-m-d'),
-            'periodRange' => $monthlyDiff,
-            'category' => 'oilCondensateProduction',
-            'periodType' => 'month'
-        );
-        $yearEnd = Carbon::now()->sub(1,'month')->endOf('month')->endOf('day');
-        $yearStart = $date->copy()->startOf('year');
-        $yearlyDiff = $yearStart->diff($yearEnd)->days;
-        $yearly = array (
-            'periodStart' => $yearStart->format('Y-m-d'),
-            'periodEnd' => $yearEnd->format('Y-m-d'),
-            'historicalPeriodStart' => $yearStart->copy()->sub($yearlyDiff,'days')->format('Y-m-d'),
-            'historicalPeriodEnd' => $date->copy()->sub(1,'days')->format('Y-m-d'),
-            'periodRange' => $yearlyDiff,
-            'category' => 'oilCondensateProduction',
-            'periodType' => 'year'
-        );
-
         $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
-        return Excel::download(new VisualCenterDailyReportExport($daily,$monthly,$yearly,$request), $fileName . '.xlsx');
+        return Excel::download(new VisualCenterDailyReportExport($request->get('daily'),$request->get('monthly'),$request->get('yearly')), $fileName . '.xlsx');
     }
 }

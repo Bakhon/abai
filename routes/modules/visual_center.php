@@ -105,6 +105,7 @@ Route::group(
                 Route::get('/get-plan-by-import-form', 'VisCenter\ExcelForm\ExcelFormController@getPlanForReasons');
                 Route::get('/get-fact-by-import-form', 'VisCenter\ExcelForm\ExcelFormController@getFactForReason');
                 Route::get('/daily-report-export', 'VisCenter\ExcelForm\ExcelFormController@dailyReportExcelExport');
+                Route::get('/get-daily-report-production', 'VisCenter\DailyReport@getDailyProduction');
             }
         );
     }
