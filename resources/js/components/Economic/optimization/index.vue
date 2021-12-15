@@ -1,7 +1,7 @@
 <template>
   <div :style="isVisibleWellChanges ? 'padding-right: 75px !important' : 'padding-right: 0'"
        class="position-relative row">
-    <div class="col-12 px-3 mb-10px">
+    <div v-show="!scenarioVariation.isFullScreen" class="col-12 px-3 mb-10px">
       <div class="row text-white text-wrap flex-nowrap ">
         <calculated-header
             v-for="(header, index) in calculatedHeaders"
@@ -36,6 +36,7 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :res="res"
+          :is-fullscreen="scenarioVariation.isFullScreen"
           @updateTab="updateTab"/>
     </div>
 

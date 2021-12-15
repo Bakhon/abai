@@ -12,6 +12,10 @@ export const paletteMixin = {
             required: true,
             type: Array,
         },
+        isFullscreen: {
+            required: false,
+            type: Boolean
+        }
     },
     computed: {
         reverseOilPrices() {

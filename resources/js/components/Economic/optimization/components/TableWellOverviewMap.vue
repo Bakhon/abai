@@ -39,6 +39,10 @@ export default {
       required: true,
       type: Array
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     visibleForm: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white" style="height: 555px;">
+  <div class="text-white" :style="`height: ${tableHeight};`">
     <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.production_wells_fund') }}
     </subtitle>
@@ -157,6 +157,10 @@ export default {
         },
       ]
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '705px' : '555px'
+    }
   }
 }
 </script>

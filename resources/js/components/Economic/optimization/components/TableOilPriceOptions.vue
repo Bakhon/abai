@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 535px">
+  <div :style="`height: ${tableHeight}`">
     <subtitle>
       <div class="font-size-16px line-height-18px">
         {{ trans('economic_reference.table_oil_price_options_title') }}
@@ -91,6 +91,10 @@ export default {
       required: true,
       type: Object
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   methods: {
     calcPrsPerUwi(prs, uwi_count) {
@@ -399,6 +403,10 @@ export default {
         },
       ]
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '685px' : '535px'
+    }
   },
 }
 </script>
