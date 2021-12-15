@@ -303,7 +303,7 @@
               <div class="heading">
                 <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
               </div>
-              <div v-if="wellUwi" class="sheare-icon" @click="getFile()">
+              <div v-if="wellUwi" class="sheare-icon">
                 <svg
                   width="20"
                   height="20"
