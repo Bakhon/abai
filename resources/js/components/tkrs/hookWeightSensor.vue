@@ -10,12 +10,12 @@
                 <div style="display:flex; width: 249px;">
                   <li class="nav-item">
                       <a class="nav-link active tab-lblock-header" 
-                      @click="selectTab(1)" href="#">
+                      @click="selectBlockTab(1)" href="#">
                       <a>{{trans('tkrs.current_work')}}</a></a>
                   </li>
                   <li class="nav-item" style="width: 107px;">
                       <a class="nav-link tab-lblock-header" 
-                      @click="selectTab(2)" href="#">
+                      @click="selectBlockTab(2)" href="#">
                       <a>{{trans('tkrs.archive')}}</a></a>
                   </li>
                 </div>
@@ -26,13 +26,14 @@
           <div class="dropdown-holder">
             <b-form-select class="custom-dropdown-block" :options="archiveData" ><img src="https://cdn4.buysellads.net/uu/1/21673/1538677471-digitalocean-260x200-light_1_.png" alt="" border="0" height="50" width="65" style="max-width: 130px;"></b-form-select>
             <div class="line-block"></div>
-            <div class="tab-archive-div" v-if="currentTab == 1">
+            <div class="tab-archive-div" v-if="currentBlockTab == 1">
                   <currentWorkHook v-for="template in wellsTree"
             :key="template.year" type="year" :template="template"></currentWorkHook>
               </div>
 
-              <div v-if="currentTab == 2">
-                  <archive></archive>
+              <div class="tab-archive-div" v-if="currentBlockTab == 2">
+                  <archiveWorkHook v-for="template in wellsTree"
+            :key="template.year" type="year" :template="template"></archiveWorkHook>
               </div>
             
           </div>
@@ -153,7 +154,7 @@ import BaseTable from './BaseTable.vue';
 import event from './tabs/event.vue';
 import excess from './tabs/excess.vue';
 import currentWorkHook from './tabs/currentWorkHook.vue';
-import archive from './tabs/archive.vue';
+import archiveWorkHook from './tabs/archiveWorkHook.vue';
 import { Plotly } from 'vue-plotly'
 
 
@@ -169,7 +170,7 @@ export default {
     event,
     excess,
     currentWorkHook,
-    archive,
+    archiveWorkHook,
     Plotly,
   },
   computed: {
@@ -210,6 +211,7 @@ export default {
   data(){
     return {
       currentTab: 1,
+      currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
       areaChartData: [],
@@ -233,6 +235,7 @@ export default {
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWorkTable: "dayliWork1/",
       wellsTree: {},
+      wellsTreeArchive: {},
       archiveData: ['Бригада', 'Скважина'],
       
     }
@@ -261,7 +264,7 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
       });
       this.getListWell();
-      this.getDataTree();
+      this.getDataTreeArchive();
       
     },
   
@@ -341,6 +344,9 @@ export default {
     selectTab(selectedTab) {
       this.currentTab = selectedTab
     },
+    selectBlockTab(selectedBlockTab) {
+      this.currentBlockTab = selectedBlockTab
+    },
     getTableWork() {
       
       this.axios
@@ -359,7 +365,7 @@ export default {
           });
     },
 
-    getDataTree() {
+    getDataTreeArchive() {
       
       this.axios
           .get(
@@ -370,7 +376,23 @@ export default {
               let data = response.data;
               if (data) {
                 this.wellsTree = data
-                console.log(this.wellsTree)
+
+              } else {
+                  console.log("No data");
+              }
+          });
+    },
+    getDataTreeCurrent() {
+      
+      this.axios
+          .get(
+               `http://172.20.103.203:8090/wellNameDate1/`,
+              
+          )
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.wellsTreeArchive = data
 
               } else {
                   console.log("No data");
