@@ -71,7 +71,7 @@
 
           <div class="border-grey flex-20 p-1 d-flex align-items-center justify-content-center">
             {{
-              localeValue(row[wellsKey][dateIndex][profitability].paused_hours, 24)
+              localeValue(row[wellsKey][dateIndex][profitability].paused_hours, 24, false, 0)
             }}
           </div>
         </div>
