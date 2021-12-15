@@ -243,10 +243,14 @@ const plastFluidsLocal = {
           "SET_LOCAL_HORIZONS",
           Array.isArray(data) ? data[1].filter_data : data.filter_data
         );
-        commit(
-          "SET_TABLE_ROWS",
-          Array.isArray(data) ? data.slice(3) : data.table
-        );
+        if (Array.isArray(data)) {
+          commit(
+            "SET_TABLE_ROWS",
+            state.graphType === "ps_bs_ds_ms" ? data.slice(3) : data.slice(2)
+          );
+        } else {
+          commit("SET_TABLE_ROWS", data.table);
+        }
       } catch (error) {
         console.log(error);
       } finally {

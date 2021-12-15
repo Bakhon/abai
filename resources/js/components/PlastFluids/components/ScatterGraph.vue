@@ -8,18 +8,22 @@
         <p>{{ title }}</p>
         <div class="scatter-graph-toolbar">
           <img
-            @click.stop="isApproximationOpen = true"
+            @click.stop="
+              graphSeries[0].data.length ? (isApproximationOpen = true) : ''
+            "
             src="/img/PlastFluids/settings.svg"
             alt="customize graph"
           />
           <img
             src="/img/PlastFluids/download.svg"
-            @click.stop="saveToPng"
+            @click.stop="graphSeries[0].data.length ? saveToPng : ''"
             width="14"
             height="14"
           />
           <img
-            @click.stop="isFullScreen = true"
+            @click.stop="
+              graphSeries[0].data.length ? (isFullScreen = true) : ''
+            "
             src="/img/PlastFluids/openModal.svg"
             width="14"
           />
