@@ -17,7 +17,6 @@
           :children="category.children"
           :currentGraphicType.sync="currentGraphicType"
           :currentGraphics.sync="computedCurrentGraphics"
-          :availableGraphics="availableGraphics"
         />
       </div>
     </div>
@@ -106,12 +105,12 @@ export default {
           key: "all_depth",
           children: [
             { key: "pi_ps", Label: "Ps", order: 0 },
-            { key: "Rs", Label: "Rs", order: 1 },
+            { key: "rs", Label: "Rs", order: 1 },
             { key: "volume_coefficient", Label: "Bo", order: 2 },
-            { key: "Do", Label: "Do", order: 3 },
+            { key: "do", Label: "Do", order: 3 },
             { key: "viscosity_reservoir_oil", Label: "mo", order: 4 },
             { key: "density_separated_oil", Label: "po", order: 5 },
-            { key: "Mod", Label: "mod", order: 6 },
+            { key: "mod", Label: "mod", order: 6 },
           ],
         },
         {
@@ -157,7 +156,6 @@ export default {
     ...mapState("plastFluidsLocal", [
       "graphType",
       "currentGraphics",
-      "availableGraphics",
       "currentSelectedCorrelation_ps",
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",

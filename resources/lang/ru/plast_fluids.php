@@ -159,7 +159,6 @@ return array (
   'structural_map_saturation_pressure' => 'Ps',
   'structural_map_reservoir_fluid_viscosity' => 'μos',
   'no_report_content' => 'Нет данных для этого шаблона',
-  'module_whole_pages' => 'Все страницы модуля',
   'oil_composition_quality' => 'Качество состава нефти',
   'graph' => 'График',
   'hydrocarbon_fraction' => 'Углеводородная фракция',
@@ -176,5 +175,7 @@ return array (
   'differential' => 'Дифференциальное',
   'mole' => 'мол',
   'mass' => 'мас',
-
+  'all_depth_graph_mod' => 'Вязкость дегазированной нефти от глубины притока',
+  'all_depth_graph_do' => 'Плотность пластовой нефти от глубины притока',
+  'all_depth_graph_rs' => 'Газосодержание пластовой нефти от глубины притока',
 );

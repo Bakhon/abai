@@ -29,7 +29,6 @@ const plastFluidsLocal = {
       { key: "Ds", order: 2 },
       { key: "Ms", order: 3 },
     ],
-    availableGraphics: [],
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
@@ -81,9 +80,6 @@ const plastFluidsLocal = {
     },
     SET_CURRENT_GRAPHICS(state, payload) {
       state.currentGraphics = payload;
-    },
-    SET_AVAILABLE_GRAPHICS(state, payload) {
-      state.availableGraphics = payload;
     },
     SET_LOCAL_HORIZONS(state, payload) {
       state.localHorizons = payload;

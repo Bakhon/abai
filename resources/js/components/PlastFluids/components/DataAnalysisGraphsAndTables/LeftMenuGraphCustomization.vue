@@ -25,25 +25,18 @@
       >
         <input
           :class="{
-            disabled:
-              (currentGraphics.length === 4 && !arrayIncludes(child.key)) ||
-              !availableGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           type="checkbox"
           :id="'customization-' + child.key"
           :value="{ key: child.key, order: child.order }"
-          :disabled="
-            (currentGraphics.length === 4 && !arrayIncludes(child.key)) ||
-              !availableGraphics.includes(child.key)
-          "
+          :disabled="currentGraphics.length === 4 && !arrayIncludes(child.key)"
           v-model="computedCurrentGraphics"
         />
         <label
           :for="'customization-' + child.key"
           :class="{
-            disabled:
-              (currentGraphics.length === 4 && !arrayIncludes(child.key)) ||
-              !availableGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           >{{ child.Label }}</label
         >
@@ -61,7 +54,6 @@ export default {
     children: Array,
     currentGraphicType: String,
     currentGraphics: Array,
-    availableGraphics: Array,
   },
   computed: {
     computedCurrentGraphicType: {

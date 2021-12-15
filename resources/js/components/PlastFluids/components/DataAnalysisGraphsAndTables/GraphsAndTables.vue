@@ -27,7 +27,9 @@
             "
           >
             <ScatterGraph
-              :series="graphData[graph.key]"
+              :series="
+                graphData[graph.key] ? graphData[graph.key] : emptySeriesObject
+              "
               :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
               :graphType="graph.key"
               :currentGraphs="sortedCurrentGraphics"
@@ -51,7 +53,7 @@
 import SmallCatLoader from "../SmallCatLoader.vue";
 import ScatterGraph from "../ScatterGraph.vue";
 import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "DataAnalysisGraphsAndTables",
@@ -59,6 +61,17 @@ export default {
     ScatterGraph,
     DataAnalysisDataTable,
     SmallCatLoader,
+  },
+  data() {
+    return {
+      emptySeriesObject: {
+        name: "Данные",
+        data: [],
+        data2: [],
+        type: "scatter",
+        config: { minX: "auto", maxX: "auto", minY: "auto", maxY: "auto" },
+      },
+    };
   },
   computed: {
     ...mapState("plastFluids", [
@@ -126,9 +139,6 @@ export default {
     },
   },
   watch: {
-    graphData(value) {
-      this.SET_AVAILABLE_GRAPHICS(Object.keys(value));
-    },
     currentSubsoilField: {
       handler(value) {
         this.handleAnalysisTableData({
@@ -153,7 +163,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_AVAILABLE_GRAPHICS"]),
     ...mapActions("plastFluidsLocal", [
       "handleAnalysisTableData",
       "handleBlocksFilter",

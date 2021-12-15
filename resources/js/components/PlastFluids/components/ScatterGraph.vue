@@ -142,6 +142,7 @@ export default {
         },
         noData: {
           text: this.trans("plast_fluids.no_data"),
+          verticalAlign: "top",
         },
         grid: {
           show: true,
@@ -197,7 +198,7 @@ export default {
         const correlationType =
           this.graphType === "Ds" ? "bs" : this.graphType.toLowerCase();
         this.unwatch = this.$watch(
-          function() {
+          function () {
             return this["currentSelectedCorrelation_" + correlationType];
           },
           () => this.handleCorrelationAdd(correlationType)
@@ -554,12 +555,10 @@ export default {
             larger = true;
           }
           if (larger) {
-            point.label.borderColor = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
-            point.label.style.background = this.chartOptions.colors[
-              this.currentAnnotationColorIndex - 1
-            ];
+            point.label.borderColor =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
+            point.label.style.background =
+              this.chartOptions.colors[this.currentAnnotationColorIndex - 1];
             point.x = this.r2AndEquationHelper(
               this.currentAnnotationColorIndex - 1,
               1
@@ -624,7 +623,8 @@ export default {
       exprt.exportToPng();
     },
     setEvents() {
-      this.chartOptions.chart.events.dataPointSelection = this.handleDataPointSelection;
+      this.chartOptions.chart.events.dataPointSelection =
+        this.handleDataPointSelection;
       this.chartOptions.chart.events.legendClick = this.openRemoveModal;
     },
     async handleCorrelationAdd(correlationType) {
