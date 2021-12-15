@@ -705,37 +705,8 @@
 <script src="./ReportConstructor.js"></script>
 
 <style scoped lang="scss">
-.opened-arrow {
-  transform: rotate(0deg);
-}
 
-.closed-arrow {
-  transform: rotate(-90deg);
-}
-.wells-select-block .centered{
-    width: 14px;
-    height: 14px;
-    transform: translate(-50%, 0%);
-}
-.treeUl li:after {
-    position: absolute;
-    content: "";
-    top: 12px;
-    left: 2px;
-    border-left: 1px dotted #ddd;
-    width: 10px;
-    height: 100%;
-}
-.treeUl li:before {
-    content: "";
-    position: absolute;
-    top: -3px;
-    left: 2px;
-    border-left: 1px dotted #ddd;
-    border-bottom: 1px dotted #ddd;
-    width: 22px;
-    height: 15px;
-}
+
 .table-params-container {
   padding: 10px 0;
 }
@@ -797,20 +768,6 @@
     }
 }
 
-.wells-select-block .centered{
-    width: 14px;
-    height: 14px;
-    transform: translate(-50%, 0%);
-}
-.treeUl li:after {
-    position: absolute;
-    content: "";
-    top: 12px;
-    left: 2px;
-    border-left: 1px dotted #ddd;
-    width: 10px;
-    height: 100%;
-}
 .top-drop-down-asside {
     display: flex;
     align-items: center;
