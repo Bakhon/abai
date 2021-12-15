@@ -316,6 +316,11 @@ export default {
           })
     },
     getCellValue(row, column) {
+
+      if (row[column.code] && typeof row[column.code] === 'object' && row[column.code].formated_value) {
+        return row[column.code].formated_value
+      }
+
       if (
           typeof this.dictFields[column.code] !== 'undefined'
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
@@ -386,10 +391,6 @@ export default {
             return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.file_name} (${file.info.file_size})</a>`
           }).join('<br>')
         }).join('<br>')
-      }
-
-      if (row[column.code] && typeof row[column.code] === 'object') {
-        return row[column.code].formated_value
       }
 
       return row[column.code]
