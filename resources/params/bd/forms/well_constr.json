@@ -45,7 +45,8 @@
                 "code": "casing_nom",
                 "type": "dict",
                 "title": "casing_type",
-                "dict": "casings"
+                "dict": "casings",
+                "filter_by_well_orgs": true
               },
               {
                 "code": "tube_count",

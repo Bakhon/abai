@@ -2,9 +2,16 @@
   <div>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
-    <subtitle font-size="16" class="mb-2 text-white" style="line-height: 18px">
-      {{ trans('economic_reference.table_well_overview_map') }}
-    </subtitle>
+    <div class="d-flex mb-1">
+      <subtitle font-size="16" class="mb-0 text-white" style="line-height: 18px">
+        {{ trans('economic_reference.table_well_overview_map') }}
+      </subtitle>
+
+      <profitability-checkboxes
+          :visible-form="visibleForm"
+          class="ml-3 flex-grow-1"
+          @update="plotMap()"/>
+    </div>
 
     <div class="well-map">
       <div id="map"></div>
@@ -20,7 +27,7 @@ import {profitabilityMapMixin} from "../../mixins/mapMixin";
 export default {
   name: "TableWellOverviewMap",
   components: {
-    Subtitle
+    Subtitle,
   },
   mixins: [profitabilityMapMixin],
   props: {
@@ -33,6 +40,13 @@ export default {
       type: Array
     },
   },
+  data: () => ({
+    visibleForm: {
+      profitable: true,
+      profitless: true,
+      conditionallyProfitable: true
+    },
+  }),
   async mounted() {
     this.initMap(this.scenarioWells.active[this.wellsProfitability[0]][0].coordinates)
   },
@@ -49,6 +63,10 @@ export default {
       })
 
       this.plotStoppedWells()
+
+      this.totalProfitability
+          .filter(profitability => !this.wellsProfitability.includes(profitability))
+          .forEach(profitability => this.removeMapSource(profitability))
     },
 
     plotStoppedWells() {
@@ -72,21 +90,11 @@ export default {
 
       this.map.addSource(sourceId, this.getMapSource(wells))
 
-      this.addHeatLayer(sourceId, color)
-
       this.addPointLayer(sourceId, color)
 
       this.map.on('mouseenter', `${sourceId}-point`, (event) => this.showPopup(event))
 
       this.map.on('mouseleave', sourceId, () => this.hidePopup())
-    },
-
-    updateMap() {
-      this.plotMap()
-
-      this.totalProfitability
-          .filter(profitability => !this.wellsProfitability.includes(profitability))
-          .forEach(profitability => this.removeMapSource(profitability))
     },
   },
   computed: {
@@ -136,13 +144,15 @@ export default {
     },
 
     wellsProfitability() {
-      return Object.keys(this.scenarioWells.active)
-    }
+      return Object
+          .keys(this.scenarioWells.active)
+          .filter(key => this.visibleProfitability.includes(key))
+    },
   },
   watch: {
     scenario: {
       handler(val) {
-        this.updateMap()
+        this.plotMap()
       },
       deep: true
     }

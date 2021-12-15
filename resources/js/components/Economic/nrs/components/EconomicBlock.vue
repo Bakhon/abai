@@ -8,11 +8,11 @@
       <divider v-if="subBlockIndex % 2 === 1"/>
 
       <div class="font-weight-bold font-size-26px">
-        {{ formatValue(subBlock.value.last).value.toFixed(2) }}
+        {{ localeValue(subBlock.value.last, 1000000, true, 0) }}
       </div>
 
       <div class="text-blue font-size-12px line-height-14px">
-        {{ formatValue(subBlock.value.last).dimension }}
+        {{ trans('economic_reference.million') }}
       </div>
 
       <div class="flex-grow-1 mt-2 font-weight-bold font-size-14px line-height-18px">
@@ -23,10 +23,12 @@
 
       <div class="d-flex font-size-12px line-height-14px mb-2">
         <div class="flex-grow-1 text-blue">
-          {{ (100 + +subBlock.percent).toFixed(2) }} %
+          {{ (100 + +subBlock.percent).toFixed(1) }} %
         </div>
 
-        <div>{{ formatValue(subBlock.value.prev).value.toFixed(2) }}</div>
+        <div>
+          {{ localeValue(subBlock.value.prev, 1000000, true, 0) }}
+        </div>
       </div>
 
       <percent-badge
