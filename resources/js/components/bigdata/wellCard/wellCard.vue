@@ -195,6 +195,7 @@
                 <BigDataPlainFormResult
                     v-if="activeForm.type === 'plain'"
                     :code="activeForm.code"
+                    :params="activeForm"
                     :well-id="this.well.id"
                     :params="activeForm"
                     type="well"
@@ -877,7 +878,6 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well);
-      let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1016,15 +1016,14 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
-          data: tube,
+          data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],
-          codes: ["KTM"],
         },
         {
           name: this.trans("well.type_gol"),
@@ -1397,12 +1396,6 @@ export default {
     getTubeNom(well){
       if(this.well.tubeNom.od){
         return this.well.tubeNom.od;
-      }
-      return "";
-    },
-    getTube(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
       }
       return "";
     },
