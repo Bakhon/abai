@@ -90,6 +90,8 @@ return array (
     'management' => 'Управление',
     'calc_result' => 'Расчитать результат',
     'calc_result_export' => 'Выгрузить результаты',
+    'show-errors' => 'Показать ошибки',
+    'collapse-errors' => 'Свернуть ошибки',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 

@@ -117,9 +117,10 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             ],
         ];
 
-        $pipes = OilPipe::with('gu, pipeType', 'firstCoords', 'lastCoords', 'well.omgngdu_well')->whereHas('gu', function($q) use ($guNames){
-            $q->whereIn('name', $guNames);
-        })->get();
+        $pipes = OilPipe::with('gu, pipeType', 'firstCoords', 'lastCoords', 'well.omgngdu_well')
+            ->whereHas('gu', function ($q) use ($guNames) {
+                $q->whereIn('name', $guNames);
+            })->get();
 
         $isErrors = false;
 

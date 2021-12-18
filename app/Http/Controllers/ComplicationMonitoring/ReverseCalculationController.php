@@ -7,7 +7,13 @@ use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ReverseCalculationResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\ReverseCalculation;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 
 class ReverseCalculationController extends CrudController
@@ -122,13 +128,111 @@ class ReverseCalculationController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = ReverseCalculation::with('oilPipe.pipeType');
+        $input = $request->validated();
+        $prepairedData = $this->getPreparedAndCalculatedPipes($input);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
 
-        $reverse_calculations = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->paginate(25);
+        $pipes = $this->paginate($pipes, 25, (int)$input['page']);
+        $list = json_decode(ReverseCalculationResource::collection($pipes)->toJson());
 
-        return response()->json(json_decode(ReverseCalculationResource::collection($reverse_calculations)->toJson()));
+        if (count($alerts)) {
+            $list->alerts = $alerts;
+        }
+
+        return response()->json($list);
+    }
+
+    public function getPreparedAndCalculatedPipes(array $input): array
+    {
+        $calculatedPipes = null;
+        $calculatedPipesIds = [];
+
+        if (isset($input['date'])) {
+            $calculatedPipes = $this->getCalculatedData($input['date']);
+
+            if ($calculatedPipes) {
+                $calculatedPipesIds = $calculatedPipes->pluck('oil_pipe_id')->toArray();
+            }
+        }
+
+        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
+
+        if ($calculatedPipes) {
+            $pipes = $calculatedPipes->merge($pipes);
+        }
+
+        return ['pipes' => $pipes, 'alerts' => $alerts];
+    }
+
+    public function getCalculatedData(string $date)
+    {
+        return ReverseCalculation::with('oilPipe.pipeType', 'oilPipe.gu')
+            ->where('date', $date)
+            ->orderBy('id')
+            ->get();
+    }
+
+
+    public function getPrepairedData(array $input = [],  array $calculatedPipesIds): array
+    {
+        $guNames = [
+            'ГУ-107',
+            'ГУ-24',
+            'ГУ-22'
+        ];
+
+        $gu_ids = Gu::whereIn('name', $guNames)->get()->pluck('id');
+        $query = OilPipe::query()
+            ->with('firstCoords', 'lastCoords');
+
+        $pipes = $this
+            ->getFilteredQuery($input, $query)
+            ->whereNotNull('start_point')
+            ->whereIn('between_points', ['well-zu', 'zu-gu'])
+            ->whereNotNull('end_point')
+            ->whereNotIn('id', $calculatedPipesIds)
+            ->whereIn('gu_id', $gu_ids)
+            ->orderBy('gu_id')
+            ->get();
+
+        $pipes->load('pipeType', 'gu');
+        $alerts = [];
+
+        foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
+            if ($pipe->between_points == 'well-zu') {
+                $query = OmgNGDUWell::where('well_id', $pipe->well_id);
+
+                if (isset($input['date'])) {
+                    $query = $query->where('date', $input['date']);
+                }
+
+                $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
+
+                if ($pipe->between_points == 'well-zu' && !$pipe->omgngdu) {
+                    $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
+
+                    if (isset($input['date'])) {
+                        $message .= ' на ' . $input['date'];
+                    }
+
+                    $alerts[] = [
+                        'message' => $message . ' !',
+                        'variant' => 'danger'
+                    ];
+                    continue;
+                }
+            }
+        }
+
+        return ['pipes' => $pipes, 'alerts' => $alerts];
     }
 
     protected function getFilteredQuery($filter, $query = null)
@@ -146,5 +250,19 @@ class ReverseCalculationController extends CrudController
                 'id' => $job->getJobStatusId()
             ]
         );
+    }
+
+    /**
+     * Generates the pagination of items in an array or collection.
+     *
+     * @param array|Collection $items
+     */
+    protected function paginate($items, int $perPage = 15, int $page = null, array $options = []): LengthAwarePaginator
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
