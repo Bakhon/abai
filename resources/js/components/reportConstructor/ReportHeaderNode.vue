@@ -17,6 +17,7 @@
     <ul class="hierarchy" v-if="isOpen">
       <draggable
           :headerNode="headerNode.children"
+          :list="headerNode.children"
           ghost-class="ghost"
           @input="updateNode"
           :group="group"
