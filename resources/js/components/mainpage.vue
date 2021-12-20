@@ -102,6 +102,11 @@ export default {
           icon: "plastFluidsMain.svg",
           url: this.localeUrl("/pf"),
         },
+        {
+          name: this.trans("prod-plan.module-title"),
+          icon: "prod-planning.svg",
+          url: this.localeUrl("/prod-planning/mon-plan-fact"),
+        },
       ],
     };
   },

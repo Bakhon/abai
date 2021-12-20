@@ -1,0 +1,293 @@
+.main-block-nav {
+  display: flex;
+  width: 100%;
+}
+
+.mt-6 {
+  margin-top: 6px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.h-150 {
+  height: 150px;
+}
+
+.block-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.nav-item {
+  background: #333975;
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: #2C44BD;;
+}
+
+.nav-title {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.left-block{
+  background-color: #0c2e5a;
+  width: 300px;
+  height: 936px;
+  gap: 10px;
+  flex: 1;
+}
+
+.main-block {
+  gap: 10px;
+  width: 100%;
+  color: white;
+}
+
+.right-block {
+  background-color: #272953;
+  width: 100%;
+  height: 936px;
+
+}
+
+.period-well {
+  width: 300px;
+  height: 74px;
+  background-color: #363B68;
+}
+
+.period-date {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.begin-date, .end-date {
+  width: 116px;
+  height: 30px;
+  background: #5D5F7F;
+  border: 0.4px solid #454FA1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.period-icon {
+  width: 32px;
+  height: 30px;
+  background: #5D5F7F;
+  border: 0.4px solid #454FA1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.select-well-block {
+  width: 300px;
+  height: 186px;
+  background-color: #30325A;
+}
+
+.selection-well {
+  width: 288px;
+  background: #323370;
+  border: 1px solid #272953;
+  outline: none;
+  height: 30px;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.index-title, .find-well-title {
+  display: flex;
+  width: 300px;
+  height: 30px;
+  background-color: #323370;
+  border: 0.5px solid #545580;
+  flex-direction: row;
+}
+
+.index-block {
+  background-color: #30325A;
+  padding: 6px;
+  width: 300px;
+  height: 306px;
+}
+
+.index-block-select, .find-well-block-select {
+  width: 288px;
+  height: 69px;
+  background-color: #363B68;
+}
+
+.index-selection-well {
+  width: 276px;
+  background: #24264A;
+  border: 1px solid #454FA1;
+  outline: none;
+  height: 30px;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.find-well-block-select {
+  width: 300px;
+  height: 52px;
+  padding: 6px;
+  background-color: #30325A
+}
+
+.find-well-select {
+  width: 288px;
+  height: 40px;
+  background-color: #363B68;
+}
+
+.find-well-title {
+
+}
+
+.well-indicator-block {
+  width: 300px;
+  height: 102px;
+  background-color: #30325A;
+}
+
+.percent-indicator {
+  width: 73px;
+  height: 40px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.percent-unit {
+  color: #82BAFF;
+  font-size: 16.4px;
+  font-weight: 700;
+}
+
+.additional-percent {
+  color: #82BAFF;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+//base prod forecast
+.forecast-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+}
+
+.forecast-nav {
+  background-color: #272953;
+  width: 100%;
+  height: 42px;
+  margin-bottom: 10px;
+  gap: 6px;
+  display: flex;
+  padding: 6px;
+}
+
+.forecast-nav-item {
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #333975;
+  padding-top: 5px;
+  text-align: center;
+}
+
+.forecast-container-block {
+  display: flex;
+  flex-direction: column;
+  flex: 100%;
+  gap: 6px;
+}
+
+.top-block {
+  display: flex;
+  flex: 100%;
+  gap: 6px;
+}
+
+.bottom-block {
+  display: flex;
+  flex: 100%;
+  gap: 6px;
+}
+
+.main-border-block {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 6px solid #272953;
+  padding: 4px;
+}
+
+/**/
+.plan-block {
+  flex: 50%;
+  background-color: #1A214A;
+}
+
+.factor-plan-block {
+  flex: 50%;
+  background-color: #1A214A;
+}
+
+.debit-plan-block {
+  flex: 50%;
+  background-color: #1A214A;
+}
+
+.gtm-vns-block {
+  flex: 50%;
+  background-color: #1A214A;
+}
+
+/* block-of-forth */
+.block-header {
+  height: 8%;
+}
+
+.border-block-out {
+  height: 92%;
+  border: 8px solid #363B68;
+}
+
+.border-block-in {
+  height: 100%;
+  border: 8px solid #1A214A;
+}
+
+.border-color {
+  background-color: #323370
+}
+
+.data-block {
+  height: 100%;
+}
+
+.active {
+  background: #2C44BD;
+}
+
+
+.not-active {
+  background: #333975;
+}
