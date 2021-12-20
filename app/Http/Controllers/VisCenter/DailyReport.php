@@ -219,10 +219,18 @@ class DailyReport extends Controller
                 continue;
             }
             foreach($fields as $key => $value) {
-                if (!is_null($day['importDecreaseReason'][$key]) && !$this->isAlreadyExist($formatted[$day['dzo_name']],$day['importDecreaseReason'][$value])) {
-                    array_push($formatted[$day['dzo_name']],array($day['importDecreaseReason'][$key],$day['importDecreaseReason'][$value]));
+                if (!is_null($day['importDecreaseReason'][$key])) {
+                    $formatted[$day['dzo_name']][$key] = array(
+                        $day['importDecreaseReason'][$key],
+                        $day['importDecreaseReason'][$value]
+                    );
                 }
             }
+            //foreach($fields as $key => $value) {
+            //    if (!is_null($day['importDecreaseReason'][$key]) && !$this->isAlreadyExist($formatted[$day['dzo_name']],$day['importDecreaseReason'][$value])) {
+             //       array_push($formatted[$day['dzo_name']],array($day['importDecreaseReason'][$key],$day['importDecreaseReason'][$value]));
+            //    }
+           // }
         }
         return $formatted;
     }
