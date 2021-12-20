@@ -42,7 +42,7 @@
 
       <table-well-changes
           v-else-if="activeTab === 'well_changes'"
-          :key="res.scenario.id"
+          :key="`${res.scenario.id}_${isFullscreen}`"
           :scenario="scenario"
           :scenarios="res.scenario.results"
           :oil-prices="scenarioVariations.oil_prices"

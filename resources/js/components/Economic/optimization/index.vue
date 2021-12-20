@@ -430,6 +430,18 @@ export default {
     mrpPercent() {
       return (this.mrpValue() - this.mrpValue(false)).toFixed(2)
     },
+
+    dollarRatePercent() {
+      return this.scenario.dollar_rate
+          ? (+this.res.dollarRate.value - +this.scenario.dollar_rate).toFixed(2)
+          : 0
+    },
+
+    oilPricePercent() {
+      return this.scenario.oil_price
+          ? (+this.res.oilPrice.value - +this.scenario.oil_price).toFixed(2)
+          : 0
+    },
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),

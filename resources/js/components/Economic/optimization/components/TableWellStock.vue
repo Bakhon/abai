@@ -4,7 +4,8 @@
       {{ trans('economic_reference.production_wells_fund') }}
     </subtitle>
 
-    <div class="mt-2 text-center border-grey">
+    <div :style="`height: ${isFullscreen ? 295 : 245}px`"
+         class="mt-2 text-center border-grey d-flex flex-column">
       <div class="d-flex bg-header font-weight-600">
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}
@@ -27,10 +28,12 @@
           :index="index"
           :row="row"
           :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-          :style="row.color ? `color: ${row.color}` : ''"/>
+          :style="row.color ? `color: ${row.color}` : ''"
+          class="flex-grow-1"/>
     </div>
 
-    <div class="mt-3 text-center border-grey">
+    <div :style="`height: ${isFullscreen ? 295 : 245}px`"
+         class="mt-3 text-center border-grey d-flex flex-column">
       <div class="d-flex bg-header font-weight-600">
         <div class="px-3 py-2 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.optimized') }}
@@ -43,7 +46,8 @@
           :index="index"
           :row="row"
           :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-          :style="row.color ? `color: ${row.color}` : ''"/>
+          :style="row.color ? `color: ${row.color}` : ''"
+          class="flex-grow-1"/>
     </div>
   </div>
 </template>
