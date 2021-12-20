@@ -13,7 +13,9 @@
           @update="plotMap()"/>
     </div>
 
-    <div class="well-map">
+    <div :key="isFullscreen"
+         :style="`height: ${mapHeight}px`"
+         class="mt-2 well-map">
       <div id="map"></div>
     </div>
   </div>
@@ -39,6 +41,10 @@ export default {
       required: true,
       type: Array
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     visibleForm: {
@@ -148,6 +154,10 @@ export default {
           .keys(this.scenarioWells.active)
           .filter(key => this.visibleProfitability.includes(key))
     },
+
+    mapHeight() {
+      return this.isFullscreen ? 660 : 500
+    }
   },
   watch: {
     scenario: {
@@ -155,6 +165,13 @@ export default {
         this.plotMap()
       },
       deep: true
+    },
+    isFullscreen: {
+      handler() {
+        this.$nextTick(() => {
+          this.initMap(this.scenarioWells.active[this.wellsProfitability[0]][0].coordinates)
+        })
+      },
     }
   }
 }

@@ -77,6 +77,7 @@ class WellHistoryController extends Controller
         }
 
         $measLiqs = DailyInjectionOil::where('well', $wellId)
+            ->join('dict.inj_agent_type', 'dmart.daily_inj.agent_type', '=', 'dict.inj_agent_type.id')
             ->orderBy('date', 'asc')
             ->get();
 
@@ -109,7 +110,8 @@ class WellHistoryController extends Controller
                         'water_vol' => round($day['water_vol'], 1),
                         'hdin' => round($day['hdin'], 1),
                         'battery' => round($day['battery'], 1),
-                        'workHours' => round($day['work_hours'], 1)
+                        'workHours' => round($day['work_hours'], 1),
+                        'name_short_ru' => $day['name_short_ru'],
                     ));
                 }
             }

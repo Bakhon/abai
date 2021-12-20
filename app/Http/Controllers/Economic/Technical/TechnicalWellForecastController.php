@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastDataRequest;
 use App\Http\Requests\Economic\Technical\WellForecast\TechnicalWellForecastImportExcelRequest;
 use App\Imports\Economic\Technical\TechnicalWellForecastImport;
-use App\Jobs\Economic\Technical\TechnicalWellForecastSuccessImportJob;
 use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\TechnicalWellForecast;
@@ -74,11 +73,7 @@ class TechnicalWellForecastController extends Controller
             'is_processed' => false
         ]);
 
-        (new TechnicalWellForecastImport($userId, $log->id))
-            ->queue($request->file)
-            ->chain([
-                new TechnicalWellForecastSuccessImportJob($log->id),
-            ]);
+        (new TechnicalWellForecastImport($userId, $log->id))->queue($request->file);
 
         return back()->with('success', __('app.success'));
     }
