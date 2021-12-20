@@ -32,8 +32,8 @@
         </div>
       </div>
 
-      <div class="customScroll d-flex flex-column"
-           style="overflow-y: scroll; height: 395px">
+      <div :style="`overflow-y: scroll; height: ${tableHeight}`"
+           class="customScroll d-flex flex-column">
         <div v-for="(row, index) in tableData"
              :key="index"
              :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
@@ -183,6 +183,10 @@ export default {
         ...this.operatingProfitByOilPrice
       ]
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '545px' : '395px'
+    }
   },
 }
 </script>

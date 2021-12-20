@@ -79,6 +79,10 @@ export default {
       required: true,
       type: Array,
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     dollarRate: 0,
@@ -211,7 +215,7 @@ export default {
     },
 
     chunkStep() {
-      return 21
+      return this.isFullscreen ? 27 : 21
     },
 
     columnWidth() {

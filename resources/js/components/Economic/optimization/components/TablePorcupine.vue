@@ -32,7 +32,7 @@
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        :height="475"
+        :height="chartHeight"
         style="color: #000"/>
   </div>
 </template>
@@ -80,6 +80,10 @@ export default {
       required: true,
       type: Object
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     selectedVariations: [0],
@@ -176,26 +180,22 @@ export default {
     },
 
     chartSeries() {
-      return this.filteredData.map(item => ({
+      return this.filteredData.map((chart, chartIndex) => ({
         name: `
-          ${this.trans('economic_reference.fot_optimization')} - ${+item.salary_percent.value * 100}%,
-          ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+item.retention_percent.value * 100}%
-          ${item.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
+          ${this.trans('economic_reference.fot_optimization')} - ${+chart.salary_percent.value * 100}%,
+          ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+chart.retention_percent.value * 100}%
+          ${chart.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
           `,
         type: 'line',
-        data: item.series.map(item => ({
+        data: chart.series.map(item => ({
           y: item.operating_profit,
           x: item.oil
-        }))
+        })),
+        is_gtm: !!chart.is_gtm,
+        color: chart.is_gtm
+            ? COLORS[(chartIndex - 1) % COLORS.length]
+            : COLORS[chartIndex % COLORS.length],
       }))
-    },
-
-    chartColors() {
-      let result = []
-
-      COLORS.forEach(color => result.push(color, color))
-
-      return result
     },
 
     chartOptions() {
@@ -203,7 +203,7 @@ export default {
         stroke: {
           width: 4,
           curve: 'straight',
-          dashArray: this.chartSeries.map((item, index) => index % 2 === 0 ? 0 : 5)
+          dashArray: this.chartSeries.map(chart => chart.is_gtm ? 5 : 0)
         },
         chart: {
           foreColor: '#FFFFFF',
@@ -271,7 +271,6 @@ export default {
             colors: ['#fff']
           },
         },
-        colors: this.chartColors,
         legend: {
           height: 50
         }
@@ -292,12 +291,21 @@ export default {
 
       return variations
     },
+
+    chartHeight() {
+      return this.isFullscreen ? 625 : 475
+    }
   }
 }
 </script>
 
 <style scoped>
 .percent-block >>> .percent-variations {
-  width: 460px !important;
+  width: 375px !important;
+}
+
+.percent-block >>> .percent-variations button,
+.percent-block >>> .percent-variations li {
+  font-size: 12px !important;
 }
 </style>

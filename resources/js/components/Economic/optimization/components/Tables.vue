@@ -20,6 +20,7 @@
           :data="res.specificIndicator"
           :dollar-rates="scenarioVariations.dollar_rates"
           :gtms="res.gtms"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-technical-economic-indicators
@@ -28,6 +29,7 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-oil-price-options
@@ -35,14 +37,16 @@
           :org="res.org"
           :scenarios="res.scenario.results"
           :scenario="scenario"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-well-changes
           v-else-if="activeTab === 'well_changes'"
-          :key="res.scenario.id"
+          :key="`${res.scenario.id}_${isFullscreen}`"
           :scenario="scenario"
           :scenarios="res.scenario.results"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -50,13 +54,16 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-porcupine
           v-else-if="activeTab === 'porcupine'"
+          :key="res.scenario.id"
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-technological-indicators
@@ -64,6 +71,7 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-chess
@@ -71,6 +79,7 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-palette
@@ -78,6 +87,7 @@
           :scenarios="res.scenario.results"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-well-tree-map
@@ -85,19 +95,22 @@
           :key="scenarioUniqueKey"
           :scenario="scenario"
           :scenarios="res.scenario.results"
+          :is-fullscreen="isFullscreen"
           class="text-white"/>
 
       <table-well-overview-map
           v-else-if="activeTab === 'well_overview_map'"
           :key="res.scenario.id"
           :scenario="scenario"
-          :scenarios="res.scenario.results"/>
+          :scenarios="res.scenario.results"
+          :is-fullscreen="isFullscreen"/>
 
       <table-well-stock
           v-else-if="activeTab === 'well_stock'"
           :scenarios="res.scenario.results"
           :scenario="scenario"
-          :oil-prices="scenarioVariations.oil_prices"/>
+          :oil-prices="scenarioVariations.oil_prices"
+          :is-fullscreen="isFullscreen"/>
     </div>
   </div>
 </template>
@@ -147,6 +160,10 @@ export default {
       required: true,
       type: Object
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     activeTab: 'specific_indicators',
