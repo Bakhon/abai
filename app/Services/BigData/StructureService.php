@@ -157,7 +157,7 @@ class StructureService
         }
 
         $orgStructures = $this->getOrgStructure($types);
-        if ($this->hasType('tech', $types) || in_array('well', $types)) {
+        if (empty($types) || $this->hasType('tech', $types) || in_array('well', $types)) {
             $techStructure = $this->getTechStructure($date, $showWells, $types);
 
             $orgTechs = DB::connection('tbd')
