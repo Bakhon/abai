@@ -147,7 +147,7 @@
                     if (this.newWell == 'new'){
                         if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
                             this.error = false
-                            this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                            this.axios.post('http://172.20.103.68:8630' + '/digital_drilling/daily_report/empty_report',
                                 {
                                     "is_new_well": true,
                                     "uwi": this.newWellNumber,
@@ -170,7 +170,7 @@
                         }
                     }
                     else{
-                        this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                        this.axios.post('http://172.20.103.68:8630' + '/digital_drilling/daily_report/empty_report',
                             {
                                 "is_new_well": this.currentWell.is_new_well,
                                 "well": this.currentWell.well_id,

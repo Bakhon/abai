@@ -63,7 +63,7 @@
                                 {{trans('digital_drilling.daily_raport.bit_load')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.wob">
+                                <input type="text" v-model="report.drilling_parameters_daily.wob" :class="{error: validationError && report.drilling_parameters_daily.wob == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
@@ -85,7 +85,7 @@
                                 {{trans('digital_drilling.daily_raport.rotation_speed')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.rotation_speed">
+                                <input type="text" v-model="report.drilling_parameters_daily.rotation_speed" :class="{error: validationError && report.drilling_parameters_daily.rotation_speed == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_start_date')}}
@@ -94,7 +94,7 @@
                                 <span v-if="report.contractor_daily.dbeg != ''">
                                     {{report.contractor_daily.dbeg}}
                                 </span>
-                                <input type="text" v-model="report.contractor_daily.dbeg" v-else>
+                                <input type="text" v-model="report.contractor_daily.dbeg" v-else :class="{error: validationError && report.contractor_daily.dbeg == ''}">
                             </td>
                         </tr>
                         <tr>
@@ -108,13 +108,13 @@
                                 {{trans('digital_drilling.daily_raport.rotation_torque')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.torque">
+                                <input type="text" v-model="report.drilling_parameters_daily.torque" :class="{error: validationError && report.drilling_parameters_daily.torque == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.total_drilling_days')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.total_drilling_days">
+                                <input type="text" v-model="report.contractor_daily.total_drilling_days" :class="{error: validationError && report.contractor_daily.total_drilling_days == ''}" >
                             </td>
                         </tr>
                         <tr>
@@ -122,39 +122,51 @@
                                 {{trans('digital_drilling.daily_raport.project_depth')}}
                             </td>
                             <td >
-                                <input type="text" v-model="report.general_data_daily.project_md">
+                                <input type="number"
+                                       v-model="report.general_data_daily.project_md"
+                                       :class="{
+                                       error: validationError && report.general_data_daily.project_md == '',
+                                       errorValidate:!checkMinMaxLengthVar(report.general_data_daily.project_md, 0, 10000)}"
+                                       @input="checkMinMaxLength(report.general_data_daily.project_md, 0, 10000, 'project_md')"
+                                >
                             </td>
+                            <!--:class="{error: validationError && checkMinMaxLength($event, 0, 10000)}"-->
                             <td >
                                 {{trans('digital_drilling.daily_raport.project_depth_vert')}}
                             </td>
                             <td >
-                                <input type="text" v-model="report.general_data_daily.project_tvd">
+                                <input type="number" v-model="report.general_data_daily.project_tvd"
+                                       :class="{
+                                       error: validationError && report.general_data_daily.project_tvd == '',
+                                       errorValidate: !checkMinMaxLengthVar(report.general_data_daily.project_tvd, 0, 10000)}"
+                                       @input="checkMinMaxLength(report.general_data_daily.project_tvd, 0, 10000, 'project_tvd')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.pump_capacity')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.pump_eff">
+                                <input type="text" v-model="report.drilling_parameters_daily.pump_eff" :class="{error: validationError && report.drilling_parameters_daily.pump_eff == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.air_temperature')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.air_temp">
+                                <input type="text" v-model="report.contractor_daily.air_temp" :class="{error: validationError && report.contractor_daily.air_temp == ''}">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.previous_face')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.previous_bhd">
+                            <td colspan="2" class="text-left">
+                                <span>{{report.general_data_daily.previous_bhd}}</span>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.riser_pressure')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.p_standpipe">
+                                <input type="text" v-model="report.drilling_parameters_daily.p_standpipe" :class="{error: validationError && report.drilling_parameters_daily.p_standpipe == ''}">
                             </td>
                             <td colspan="2">
 
@@ -168,19 +180,19 @@
                                 {{trans('digital_drilling.daily_raport.slaughter_at')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.bhd_24">
+                                <input type="text" v-model="report.general_data_daily.bhd_24" :class="{error: validationError && report.general_data_daily.bhd_24 == 0}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh" :class="{error: validationError && report.drilling_parameters_daily.woh == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_supervisor')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.supervisor">
+                                <input type="text" v-model="report.contractor_daily.supervisor" :class="{error: validationError && report.contractor_daily.supervisor == ''}">
                             </td>
                         </tr>
                         <tr>
@@ -194,13 +206,13 @@
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_lifting')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh_pooh">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh_pooh" :class="{error: validationError && report.drilling_parameters_daily.woh_pooh == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_foreman')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.drilling_engineer">
+                                <input type="text" v-model="report.contractor_daily.drilling_engineer" :class="{error: validationError && report.contractor_daily.drilling_engineer == ''}">
                             </td>
                         </tr>
                         <tr>
@@ -208,19 +220,19 @@
                                 {{trans('digital_drilling.daily_raport.drilling_reaming_time')}}
                             </td>
                             <td colspan="2">
-                                <input type="time" v-model="report.general_data_daily.reaming_drilling">
+                                <input type="time" v-model="report.general_data_daily.reaming_drilling" :class="{error: validationError && report.general_data_daily.reaming_drilling == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh_rih">
+                                <input type="text" v-model="report.drilling_parameters_daily.woh_rih" :class="{error: validationError && report.drilling_parameters_daily.woh_rih == ''}">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.drilling_mud_engineer">
+                                <input type="text" v-model="report.contractor_daily.drilling_mud_engineer" :class="{error: validationError && report.contractor_daily.drilling_mud_engineer == ''}">
                             </td>
                         </tr>
                         </tbody>
@@ -1803,6 +1815,10 @@
         props: ['report', 'user', 'isEdit', 'show'],
         data(){
             return{
+                validationError: false,
+                validationErrorMinMax: [
+                    {name: '', check: true}
+                ],
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                 saveModal: false,
                 previous: false,
@@ -2138,36 +2154,105 @@
                 this.report.material_cons_daily.splice(index, 1);
             },
             saveReport(){
-                if (this.isEdit){
-                    this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.report_daily.id,
-                        this.report).then((response) => {
-                        if (response) {
-                            this.$bvToast.toast("Отчет создан!!", {
-                                title: "Отчет",
-                                variant: "success",
-                                solid: true,
-                                toaster: "b-toaster-top-center",
-                                autoHideDelay: 8000,
-                            });
-                            window.location.href = this.localeUrl('/digital-drilling');
-                        } else {
-                            console.log("No data");
-                        }
-                    }).catch((error) =>{
-                        console.log(error)
-                    })
-                } else{
-                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report',
-                        this.report).then((response) => {
-                        if (response) {
-                            window.location.href = this.localeUrl('/digital-drilling');
-                        } else {
-                            console.log("No data");
-                        }
-                    }).catch((error) =>{
-                        console.log(error)
-                    })
+                if (this.checkRequiredValue() == true) {
+                    this.validationError = false
+                    if (this.isEdit){
+                        this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.report_daily.id,
+                            this.report).then((response) => {
+                            if (response) {
+                                this.$bvToast.toast("Отчет создан!!", {
+                                    title: "Отчет",
+                                    variant: "success",
+                                    solid: true,
+                                    toaster: "b-toaster-top-center",
+                                    autoHideDelay: 8000,
+                                });
+                                window.location.href = this.localeUrl('/digital-drilling');
+                            } else {
+                                console.log("No data");
+                            }
+                        }).catch((error) =>{
+                            console.log(error)
+                        })
+                    } else{
+                        this.axios.post('http://172.20.103.68:8630' + '/digital_drilling/daily_report/report',
+                            this.report).then((response) => {
+                            if (response) {
+                                window.location.href = this.localeUrl('/digital-drilling');
+                            } else {
+                                console.log("No data");
+                            }
+                        }).catch((error) =>{
+                            console.log(error)
+                        })
+                    }
+                }else{
+                    this.validationError = true
+                    this.saveModal = false
                 }
+
+
+            },
+            checkRequiredValue(){
+                let check = true
+                for (let prop in this.report.general_data_daily) {
+                  if (this.report.general_data_daily[prop] == '' && prop!= 'previous_bhd') {
+                      check =  false
+                      break
+                  }
+                }
+                if (check){
+                    for (let prop in this.report.drilling_parameters_daily) {
+                        if (this.report.drilling_parameters_daily[prop] == '') {
+                            check =  false
+                            break
+                        }
+                    }
+                }
+                if (check){
+                    for (let prop in this.report.contractor_daily) {
+                        if (this.report.contractor_daily[prop] == '') {
+                            check =  false
+                            break
+                        }
+                    }
+                }
+                return check
+            },
+
+            checkMinMaxLength(value, min, max, name){
+                let check = true
+                if (value != ""){
+                    if (value>=min && value<=max){
+                        check = true
+                    } else {
+                        check = false
+                    }
+                    for (let i=0; i<this.validationErrorMinMax.length; i++) {
+                        console.log(this.validationErrorMinMax[i].name)
+                        console.log(name)
+                        if(this.validationErrorMinMax[i].name == name){
+                            this.validationErrorMinMax[i].check = check
+                        }else{
+                            this.validationErrorMinMax.push({
+                                name: name,
+                                check: check
+                            })
+                        }
+                    }
+                }
+                console.log(name)
+            },
+            checkMinMaxLengthVar(value, min, max){
+                let check = true
+                if (value != ""){
+                    if (value>=min && value<=max){
+                        check = true
+                    } else {
+                        check = false
+                    }
+                }
+                return check
             },
             saveCatalog(){
                 if (this.catalog != '') {
@@ -3042,5 +3127,8 @@
     }
     .daily_raport_block-header-save{
         width: 200px!important;
+    }
+    .errorValidate{
+        border: 1px solid red!important;
     }
 </style>
