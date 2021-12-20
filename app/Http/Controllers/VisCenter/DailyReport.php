@@ -128,6 +128,11 @@ class DailyReport extends Controller
         'yearly_reason_4_explanation' => 'yearly_reason_4_losses',
         'yearly_reason_5_explanation' => 'yearly_reason_5_losses',
     );
+    private $summary = array (
+        'daily' => array(),
+        'monthly' => array(),
+        'yearly' => array()
+    );
 
     public function getDailyProduction(Request $request)
     {
@@ -138,11 +143,12 @@ class DailyReport extends Controller
         $this->processDzoByPeriod($daily,$this->periodMapping['day'],$request);
         $this->processDzoByPeriod($monthly,$this->periodMapping['month'],$request);
         $this->processDzoByPeriod($yearly,$this->periodMapping['year'],$request);
-
+        $this->fillSummary();
         return [
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
-            'yearly' => $this->yearlyParams
+            'yearly' => $this->yearlyParams,
+            'summary' => $this->summary
         ];
     }
 
@@ -226,11 +232,6 @@ class DailyReport extends Controller
                     );
                 }
             }
-            //foreach($fields as $key => $value) {
-            //    if (!is_null($day['importDecreaseReason'][$key]) && !$this->isAlreadyExist($formatted[$day['dzo_name']],$day['importDecreaseReason'][$value])) {
-             //       array_push($formatted[$day['dzo_name']],array($day['importDecreaseReason'][$key],$day['importDecreaseReason'][$value]));
-            //    }
-           // }
         }
         return $formatted;
     }
@@ -313,5 +314,17 @@ class DailyReport extends Controller
 
         $sortOrder = array_column($this->$type, 'orderId');
         array_multisort($sortOrder, SORT_ASC, $this->$type);
+    }
+
+    private function fillSummary()
+    {
+        $this->summary['daily']['fact'] = array_sum(array_column( $this->dailyParams, 'fact'));
+        $this->summary['daily']['plan'] = array_sum(array_column( $this->dailyParams, 'plan'));
+        $this->summary['monthly']['fact'] = array_sum(array_column( $this->monthlyParams, 'fact'));
+        $this->summary['monthly']['plan'] = array_sum(array_column( $this->monthlyParams, 'plan'));
+        $this->summary['monthly']['monthlyPlan'] = array_sum(array_column( $this->monthlyParams, 'monthlyPlan'));
+        $this->summary['yearly']['fact'] = array_sum(array_column( $this->yearlyParams, 'fact'));
+        $this->summary['yearly']['plan'] = array_sum(array_column( $this->yearlyParams, 'plan'));
+        $this->summary['yearly']['yearlyPlan'] = array_sum(array_column( $this->yearlyParams, 'yearlyPlan'));
     }
 }

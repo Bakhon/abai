@@ -11,6 +11,7 @@ class VisualCenterDailyReportExport implements FromView
     private $dailyParams = array();
     private $monthlyParams = array();
     private $yearlyParams = array();
+    private $summary = array();
     private $monthMapping = array(
         1 => 'Январь',
         2 => 'Февраль',
@@ -26,11 +27,12 @@ class VisualCenterDailyReportExport implements FromView
         12 => 'Декабрь'
     );
 
-    function __construct($dailyParams,$monthlyParams,$yearlyParams)
+    function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary)
     {
         $this->dailyParams = $this->getDecoded($dailyParams);
         $this->monthlyParams = $this->getDecoded($monthlyParams);
         $this->yearlyParams = $this->getDecoded($yearlyParams);
+        $this->summary = json_decode($summary,true);
     }
 
     private function getDecoded($data)
@@ -51,7 +53,8 @@ class VisualCenterDailyReportExport implements FromView
             'date' => Carbon::now()->format('d.m.Y'),
             'monthName' => $this->monthMapping[Carbon::now()->month],
             'monthId' => Carbon::now()->month-1,
-            'yearId' => Carbon::now()->year
+            'yearId' => Carbon::now()->year,
+            'summary' => $this->summary
         ]);
     }
 }

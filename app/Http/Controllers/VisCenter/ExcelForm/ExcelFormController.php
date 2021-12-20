@@ -552,6 +552,6 @@ class ExcelFormController extends Controller
     public function dailyReportExcelExport(Request $request)
     {
         $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
-        return Excel::download(new VisualCenterDailyReportExport($request->get('daily'),$request->get('monthly'),$request->get('yearly')), $fileName . '.xlsx');
+        return Excel::download(new VisualCenterDailyReportExport($request->get('daily'),$request->get('monthly'),$request->get('yearly'),$request->get('summary')), $fileName . '.xlsx');
     }
 }

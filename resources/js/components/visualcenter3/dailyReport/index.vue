@@ -29,6 +29,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr v-if="productionByPeriods.summary" :class="getColorBy(0)">
+                            <td colspan="2">ВСЕГО</td>
+                            <td></td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['daily']['plan'])}}</td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['daily']['fact'])}}</td>
+                            <td
+                                    v-if="productionByPeriods.summary['daily']['fact'] - productionByPeriods.summary['daily']['plan'] < 0"
+                                    class="color__red p-2 text-right"
+                            >
+                                {{ getFormattedNumber(productionByPeriods.summary['daily']['fact'] - productionByPeriods.summary['daily']['plan']) }}
+                            </td>
+                            <td class="p-2 text-right" v-else>
+                                {{ getFormattedNumber(productionByPeriods.summary['daily']['fact'] - productionByPeriods.summary['daily']['plan']) }}
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr v-for="(dzo, index) in productionByPeriods.daily" :class="getColorBy(index)">
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
@@ -71,28 +87,45 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(dzo, index) in productionByPeriods.monthly" :class="getColorBy(index)">
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
-                        <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
-                        <td v-else class="p-2">{{ dzo['id'] }}</td>
-                        <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
-                        <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
-                        <td v-else class="p-2">{{ dzo['part'] }}%</td>
-                        <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
-                        <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
-                        <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
-                        <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
-                        <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
-                        <td v-if="Object.keys(dzo['reasons']).length > 0 && dzo['fact'] - dzo['plan'] < 0" colspan="2" class="p-2">
-                            <div v-for="(reason, index) in dzo['reasons']" class="text-left">
-                                <span>{{ reason[0] }}</span>
-                                <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
-                                <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
-                            </div>
-                        </td>
-                        <td v-else colspan="2"></td>
-                    </tr>
+                        <tr v-if="productionByPeriods.summary" :class="getColorBy(0)">
+                            <td colspan="2">ВСЕГО</td>
+                            <td></td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['monthly']['monthlyPlan'])}}</td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['monthly']['plan'])}}</td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['monthly']['fact'])}}</td>
+                            <td
+                                    v-if="productionByPeriods.summary['monthly']['fact'] - productionByPeriods.summary['monthly']['plan'] < 0"
+                                    class="color__red p-2 text-right"
+                            >
+                                {{ getFormattedNumber(productionByPeriods.summary['monthly']['fact'] - productionByPeriods.summary['monthly']['plan']) }}
+                            </td>
+                            <td class="p-2 text-right" v-else>
+                                {{ getFormattedNumber(productionByPeriods.summary['monthly']['fact'] - productionByPeriods.summary['monthly']['plan']) }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="(dzo, index) in productionByPeriods.monthly" :class="getColorBy(index)">
+                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
+                            <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
+                            <td v-else class="p-2">{{ dzo['id'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
+                            <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
+                            <td v-else class="p-2">{{ dzo['part'] }}%</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
+                            <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
+                            <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
+                            <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
+                            <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
+                            <td v-if="Object.keys(dzo['reasons']).length > 0 && dzo['fact'] - dzo['plan'] < 0" colspan="2" class="p-2">
+                                <div v-for="(reason, index) in dzo['reasons']" class="text-left">
+                                    <span>{{ reason[0] }}</span>
+                                    <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
+                                    <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
+                                </div>
+                            </td>
+                            <td v-else colspan="2"></td>
+                        </tr>
                     </tbody>
                 </table>
                 <table v-if="menu.yearly" class="monthly-table">
@@ -112,28 +145,45 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(dzo, index) in productionByPeriods.yearly" :class="getColorBy(index)">
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
-                        <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
-                        <td v-else class="p-2">{{ dzo['id'] }}</td>
-                        <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
-                        <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
-                        <td v-else class="p-2">{{ dzo['part'] }}%</td>
-                        <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
-                        <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
-                        <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
-                        <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
-                        <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
-                        <td v-if="Object.keys(dzo['reasons']).length > 0" colspan="2" class="p-2">
-                            <div v-for="(reason, index) in dzo['reasons']" class="text-left">
-                                <span>{{ reason[0] }}</span>
-                                <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
-                                <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
-                            </div>
-                        </td>
-                        <td v-else colspan="2"></td>
-                    </tr>
+                        <tr v-if="productionByPeriods.summary" :class="getColorBy(0)">
+                            <td colspan="2">ВСЕГО</td>
+                            <td></td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['yearly']['yearlyPlan'])}}</td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['yearly']['plan'])}}</td>
+                            <td class="p-2 text-right">{{getFormattedNumber(productionByPeriods.summary['yearly']['fact'])}}</td>
+                            <td
+                                    v-if="productionByPeriods.summary['yearly']['fact'] - productionByPeriods.summary['yearly']['plan'] < 0"
+                                    class="color__red p-2 text-right"
+                            >
+                                {{ getFormattedNumber(productionByPeriods.summary['yearly']['fact'] - productionByPeriods.summary['yearly']['plan']) }}
+                            </td>
+                            <td class="p-2 text-right" v-else>
+                                {{ getFormattedNumber(productionByPeriods.summary['yearly']['fact'] - productionByPeriods.summary['yearly']['plan']) }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="(dzo, index) in productionByPeriods.yearly" :class="getColorBy(index)">
+                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
+                            <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
+                            <td v-else class="p-2">{{ dzo['id'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
+                            <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
+                            <td v-else class="p-2">{{ dzo['part'] }}%</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
+                            <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
+                            <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
+                            <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
+                            <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
+                            <td v-if="Object.keys(dzo['reasons']).length > 0" colspan="2" class="p-2">
+                                <div v-for="(reason, index) in dzo['reasons']" class="text-left">
+                                    <span>{{ reason[0] }}</span>
+                                    <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
+                                    <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
+                                </div>
+                            </td>
+                            <td v-else colspan="2"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -190,6 +240,9 @@
     width: 100%;
     border-collapse: collapse;
     text-align: right;
+    tr:first-child {
+        font-weight: bold;
+    }
     tr:nth-child(1)  {
         th:first-child {
             width: 62px;
@@ -233,6 +286,9 @@
     width: 100%;
     border-collapse: collapse;
     text-align: right;
+    tr:first-child {
+        font-weight: bold;
+    }
     tr:nth-child(1)  {
         th:first-child {
             width: 62px;
