@@ -27,6 +27,7 @@ export default {
             attributeDescriptions: null,
             attributesForObject: null,
             attributesByHeader: null,
+            attributesByHeaderAtRequest: null,
             sheetTypesDescription: {
                 "well_production": "добывающие скважины",
                 "well_pump": "нагнетающие скважины",
@@ -225,6 +226,7 @@ export default {
             this.SET_LOADING(true)
             this.statistics = null;
             let wellTypeSelectedAtRequest = this.copyString(this.wellTypeSelected)
+            this.attributesByHeaderAtRequest = JSON.parse(JSON.stringify(this.attributesByHeader))
 
             try {
                 this.validateStatisticsParams()
@@ -279,8 +281,8 @@ export default {
         },
         getSelectedAttributes() {
             let allSelectedAttributes = {}
-            for (let sheetType in this.attributesByHeader) {
-                let selectedAttributes = this._getAllSelectedAttributes(this.attributesByHeader[sheetType])
+            for (let sheetType in this.attributesByHeaderAtRequest) {
+                let selectedAttributes = this._getAllSelectedAttributes(this.attributesByHeaderAtRequest[sheetType])
                 selectedAttributes = this._cleanEmptyHeadersOfAttributes(selectedAttributes)
                 allSelectedAttributes[sheetType] = selectedAttributes
             }
