@@ -1,308 +1,310 @@
 <template>
-  <div class="text-white">
-    <div class="d-flex align-items-center mb-3 bg-main1 px-4 py-3">
-      <div class="form-check mr-2">
-        <input v-model="isVisibleProfitable"
-               id="visible_profitable"
-               type="checkbox"
-               class="form-check-input">
-        <label for="visible_profitable"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.profitable') }}
-        </label>
-      </div>
-
-      <div v-if="hasConditionallyProfitableWells"
-           class="form-check mr-2">
-        <input v-model="isVisibleConditionallyProfitable"
-               id="visible_conditionally_profitable"
-               type="checkbox"
-               class="form-check-input">
-        <label for="visible_conditionally_profitable"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.conditionally_profitable') }}
-        </label>
-      </div>
-
-      <div class="form-check mr-2">
-        <input v-model="isVisibleKeys"
-               id="visible_keys"
-               type="checkbox"
-               class="form-check-input">
-        <label for="visible_keys"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.show_params') }}
-        </label>
-      </div>
-
-      <div class="form-check mr-2">
-        <input v-model="isVisibleProfitless"
-               id="visible_profitless"
-               type="checkbox"
-               class="form-check-input">
-        <label for="visible_profitable"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.profitless') }}
-        </label>
-      </div>
-
-      <div class="form-check mr-2">
-        <input :checked="isVisibleWells"
-               id="visible_wells"
-               type="checkbox"
-               class="form-check-input"
-               @change="updateWellsVisibility()">
-        <label for="visible_wells"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.show_wells') }}
-        </label>
-      </div>
-
-      <div class="form-check mr-2">
-        <input v-model="isVisibleChartTotal"
-               id="visible_total"
-               type="checkbox"
-               class="form-check-input">
-        <label for="visible_total"
-               class="form-check-label text-blue">
-          {{ trans('economic_reference.show_charts') }}
-        </label>
-      </div>
-
-      <select-operating-profit
-          :form="form"
-          class="mr-2 bg-dark-blue text-blue"
-          style="width: 200px"/>
-
-      <button class="btn btn-primary ml-auto" @click="exportTablesToExcel()">
-        {{ trans('economic_reference.export_excel') }}
-      </button>
-    </div>
-
-    <div v-if="isVisibleKeys">
-      <div>
-        <div class="mb-2 d-flex align-items-center">
-          <h4 class="mb-0">
-            {{ trans('economic_reference.input_indicators') }}
-          </h4>
-
-          <div class="ml-2 form-check d-flex align-items-center">
-            <input v-model="isVisibleDailyKeys"
-                   id="visible_daily_keys"
-                   type="checkbox"
-                   class="form-check-input mt-0"
-                   @change="updateDailyGroupVisibility()">
-          </div>
+  <div>
+    <div class="text-white">
+      <div class="d-flex align-items-center mb-3 bg-main1 px-4 py-3">
+        <div class="form-check mr-2">
+          <input v-model="isVisibleProfitable"
+                 id="visible_profitable"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_profitable"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.profitable') }}
+          </label>
         </div>
 
-        <div class="d-flex mb-3 bg-main1 px-4 py-3">
-          <div v-for="dailyKey in dailyKeys"
-               :key="dailyKey.prop"
-               class="d-flex mr-2 line-height-16px">
-            <div class="d-flex align-items-center form-check mr-2">
-              <input v-model="dailyKey.isVisible"
-                     :id="dailyKey.prop"
-                     type="checkbox"
-                     class="form-check-input mt-0">
-              <label :for="dailyKey.prop"
-                     class="form-check-label">
-                {{ dailyKey.name }}
-              </label>
-            </div>
-          </div>
+        <div v-if="hasConditionallyProfitableWells"
+             class="form-check mr-2">
+          <input v-model="isVisibleConditionallyProfitable"
+                 id="visible_conditionally_profitable"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_conditionally_profitable"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.conditionally_profitable') }}
+          </label>
         </div>
+
+        <div class="form-check mr-2">
+          <input v-model="isVisibleKeys"
+                 id="visible_keys"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_keys"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.show_params') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
+          <input v-model="isVisibleProfitless"
+                 id="visible_profitless"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_profitable"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.profitless') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
+          <input :checked="isVisibleWells"
+                 id="visible_wells"
+                 type="checkbox"
+                 class="form-check-input"
+                 @change="updateWellsVisibility()">
+          <label for="visible_wells"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.show_wells') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
+          <input v-model="isVisibleChartTotal"
+                 id="visible_total"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_total"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.show_charts') }}
+          </label>
+        </div>
+
+        <select-operating-profit
+            :form="form"
+            class="mr-2 bg-dark-blue text-blue"
+            style="width: 200px"/>
+
+        <button class="btn btn-primary ml-auto" @click="exportTablesToExcel()">
+          {{ trans('economic_reference.export_excel') }}
+        </button>
       </div>
 
-      <div class="mb-3 d-flex">
-        <div class="flex-shrink-0 d-flex flex-column">
+      <div v-if="isVisibleKeys">
+        <div>
           <div class="mb-2 d-flex align-items-center">
             <h4 class="mb-0">
-              {{ trans('economic_reference.technical_data') }}
+              {{ trans('economic_reference.input_indicators') }}
             </h4>
 
             <div class="ml-2 form-check d-flex align-items-center">
-              <input v-model="isVisibleTechnicalKeys"
-                     id="visible_technical_keys"
+              <input v-model="isVisibleDailyKeys"
+                     id="visible_daily_keys"
                      type="checkbox"
                      class="form-check-input mt-0"
-                     @change="updateGroupVisibility(true)">
+                     @change="updateDailyGroupVisibility()">
             </div>
           </div>
 
-          <div class="flex-grow-1 bg-main1 pt-3 px-4 pb-2">
-            <div v-for="wellKey in technicalKeys"
-                 :key="wellKey.prop"
-                 class="d-flex flex-22 mr-2 mb-2 line-height-16px">
-              <div class="d-flex align-items-center form-check mr-2 flex-150px">
-                <input :checked="wellKey.isVisible"
-                       :id="wellKey.prop"
+          <div class="d-flex mb-3 bg-main1 px-4 py-3">
+            <div v-for="dailyKey in dailyKeys"
+                 :key="dailyKey.prop"
+                 class="d-flex mr-2 line-height-16px">
+              <div class="d-flex align-items-center form-check mr-2">
+                <input v-model="dailyKey.isVisible"
+                       :id="dailyKey.prop"
                        type="checkbox"
-                       class="form-check-input mt-0"
-                       @change="updateWellKeyVisibility(wellKey.prop)">
-                <label :for="wellKey.prop"
+                       class="form-check-input mt-0">
+                <label :for="dailyKey.prop"
                        class="form-check-label">
-                  {{ wellKey.name }}
+                  {{ dailyKey.name }}
                 </label>
               </div>
-
-              <select-chart-type
-                  v-if="isVisibleChartTotal"
-                  :form="wellKey"
-                  class="bg-dark-blue text-white mr-3"
-                  style="flex: 0 0 100px"/>
             </div>
           </div>
         </div>
 
-        <div class="ml-4 flex-grow-1">
-          <div class="mb-2 d-flex align-items-center">
-            <h4 class="mb-0">
-              {{ trans('economic_reference.economic_data') }}
-            </h4>
+        <div class="mb-3 d-flex">
+          <div class="flex-shrink-0 d-flex flex-column">
+            <div class="mb-2 d-flex align-items-center">
+              <h4 class="mb-0">
+                {{ trans('economic_reference.technical_data') }}
+              </h4>
 
-            <div class="ml-2 form-check d-flex align-items-center">
-              <input v-model="isVisibleEconomicKeys"
-                     id="visible_economic_keys"
-                     type="checkbox"
-                     class="form-check-input mt-0"
-                     @change="updateGroupVisibility(false)">
+              <div class="ml-2 form-check d-flex align-items-center">
+                <input v-model="isVisibleTechnicalKeys"
+                       id="visible_technical_keys"
+                       type="checkbox"
+                       class="form-check-input mt-0"
+                       @change="updateGroupVisibility(true)">
+              </div>
+            </div>
+
+            <div class="flex-grow-1 bg-main1 pt-3 px-4 pb-2">
+              <div v-for="wellKey in technicalKeys"
+                   :key="wellKey.prop"
+                   class="d-flex flex-22 mr-2 mb-2 line-height-16px">
+                <div class="d-flex align-items-center form-check mr-2 flex-150px">
+                  <input :checked="wellKey.isVisible"
+                         :id="wellKey.prop"
+                         type="checkbox"
+                         class="form-check-input mt-0"
+                         @change="updateWellKeyVisibility(wellKey.prop)">
+                  <label :for="wellKey.prop"
+                         class="form-check-label">
+                    {{ wellKey.name }}
+                  </label>
+                </div>
+
+                <select-chart-type
+                    v-if="isVisibleChartTotal"
+                    :form="wellKey"
+                    class="bg-dark-blue text-white mr-3"
+                    style="flex: 0 0 100px"/>
+              </div>
             </div>
           </div>
 
-          <div class="bg-main1 pt-3 px-4 pb-2 d-flex flex-wrap">
-            <div v-for="wellKey in economicKeys"
-                 :key="wellKey.prop"
-                 class="d-flex flex-22 mr-2 mb-2 line-height-16px">
-              <div class="d-flex align-items-center form-check mr-2 flex-150px">
-                <input :checked="wellKey.isVisible"
-                       :id="wellKey.prop"
+          <div class="ml-4 flex-grow-1">
+            <div class="mb-2 d-flex align-items-center">
+              <h4 class="mb-0">
+                {{ trans('economic_reference.economic_data') }}
+              </h4>
+
+              <div class="ml-2 form-check d-flex align-items-center">
+                <input v-model="isVisibleEconomicKeys"
+                       id="visible_economic_keys"
                        type="checkbox"
                        class="form-check-input mt-0"
-                       @change="updateWellKeyVisibility(wellKey.prop)">
-                <label :for="wellKey.prop"
-                       class="form-check-label">
-                  {{ wellKey.name }}
-                </label>
+                       @change="updateGroupVisibility(false)">
               </div>
+            </div>
 
-              <select-chart-type
-                  v-if="isVisibleChartTotal"
-                  :form="wellKey"
-                  class="bg-dark-blue text-white mr-3"
-                  style="flex: 0 0 100px"/>
+            <div class="bg-main1 pt-3 px-4 pb-2 d-flex flex-wrap">
+              <div v-for="wellKey in economicKeys"
+                   :key="wellKey.prop"
+                   class="d-flex flex-22 mr-2 mb-2 line-height-16px">
+                <div class="d-flex align-items-center form-check mr-2 flex-150px">
+                  <input :checked="wellKey.isVisible"
+                         :id="wellKey.prop"
+                         type="checkbox"
+                         class="form-check-input mt-0"
+                         @change="updateWellKeyVisibility(wellKey.prop)">
+                  <label :for="wellKey.prop"
+                         class="form-check-label">
+                    {{ wellKey.name }}
+                  </label>
+                </div>
+
+                <select-chart-type
+                    v-if="isVisibleChartTotal"
+                    :form="wellKey"
+                    class="bg-dark-blue text-white mr-3"
+                    style="flex: 0 0 100px"/>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <chart-matrix-total
-        v-if="isVisibleChartTotal"
-        :dates="dates"
-        :well-sum="tableData.wellsSum"
-        :well-keys="visibleWellKeys"
-        :prs-sum="tableData.prsSum"
-        :prs-keys="prsKeys"
-        :date-offset="tableTotalTitlesLength"
-        class="text-white container-fluid bg-main1 pt-2 px-4"/>
+      <chart-matrix-total
+          v-if="isVisibleChartTotal"
+          :dates="dates"
+          :well-sum="tableData.wellsSum"
+          :well-keys="visibleWellKeys"
+          :prs-sum="tableData.prsSum"
+          :prs-keys="prsKeys"
+          :date-offset="tableTotalTitlesLength"
+          class="text-white container-fluid bg-main1 pt-2 px-4"/>
 
-    <vue-table-dynamic
-        v-for="(key, index) in visibleDailyKeys"
-        :key="key.prop"
-        :params="tableDailyParams(key)"
-        :class="index ? 'pt-2' : 'pt-4'"
-        class="matrix-table bg-main1 px-4">
-      <template
-          v-for="(header, headerIndex) in tableHeaders"
-          :slot="`column-${headerIndex}`" slot-scope="{ props }">
-        <div class="d-flex align-items-center w-100">
-          {{ props.cellData.label }}
-        </div>
-      </template>
-    </vue-table-dynamic>
-
-    <vue-table-dynamic
-        :params="tablePrsParams"
-        :class="visibleDailyKeys.length ? 'py-2' : 'pt-4'"
-        class="matrix-table bg-main1 px-4">
-      <template
-          v-for="(header, index) in tableTotalHeaders"
-          :slot="`column-${index}`" slot-scope="{ props }">
-        <div class="d-flex align-items-center w-100">
-          {{ props.cellData.label }}
-        </div>
-      </template>
-    </vue-table-dynamic>
-
-    <vue-table-dynamic
-        :params="tableSumParams"
-        class="matrix-table bg-main1 px-4 py-2">
-      <template
-          v-for="(header, index) in tableTotalHeaders"
-          :slot="`column-${index}`" slot-scope="{ props }">
-        <div class="d-flex align-items-center w-100">
-          {{ props.cellData.label }}
-        </div>
-      </template>
-    </vue-table-dynamic>
-
-    <chart-matrix-well
-        v-for="uwi in chartUwis"
-        :key="uwi"
-        :uwi="uwi"
-        :well="wells.uwis[uwi]"
-        :dates="dates"
-        class="text-white container-fluid bg-main1 p-4 mt-3"/>
-
-    <div v-if="isVisibleWells" class="mt-3 bg-main1 px-4 pt-4 pb-2">
-      <div class="mb-3 d-flex align-items-center">
-        <i :class="form.isSortAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
-           class="fas text-white cursor-pointer mr-3"
-           style="font-size: 22px"
-           @click="updateSortOrder()"></i>
-
-        <select
-            :value="form.sortKey"
-            class="form-control bg-dark-blue text-white"
-            style="width: 280px"
-            @change="updateSortKey">
-          <option :value="null" disabled selected>
-            {{ trans('economic_reference.select_sort') }}
-          </option>
-
-          <option
-              v-for="key in visibleWellKeys"
-              :key="key.prop"
-              :value="key.prop">
-            {{ key.name }}
-          </option>
-        </select>
-      </div>
-
-      <vue-table-dynamic :params="tableParams" class="matrix-table">
-        <template :slot="`column-0`" slot-scope="{ props }">
-          <div class="d-flex align-items-center w-100">
-            <div> {{ props.cellData.label }}</div>
-
-            <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
-              <input
-                  v-model="selectedUwis[props.cellData.label]"
-                  type="checkbox"
-                  class="form-check-input m-0"
-                  @change="toggleUwi(props.cellData.label)">
-            </div>
-          </div>
-        </template>
-
+      <vue-table-dynamic
+          v-for="(key, index) in visibleDailyKeys"
+          :key="key.prop"
+          :params="tableDailyParams(key)"
+          :class="index ? 'pt-2' : 'pt-4'"
+          class="matrix-table bg-main1 px-4">
         <template
-            v-for="(header, index) in tableTotalHeaders.slice(1)"
-            :slot="`column-${index+1}`" slot-scope="{ props }">
-          <div :style="`color: ${props.cellData.color}`"
-               class="d-flex align-items-center w-100">
+            v-for="(header, headerIndex) in tableHeaders"
+            :slot="`column-${headerIndex}`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
           </div>
         </template>
       </vue-table-dynamic>
+
+      <vue-table-dynamic
+          :params="tablePrsParams"
+          :class="visibleDailyKeys.length ? 'py-2' : 'pt-4'"
+          class="matrix-table bg-main1 px-4">
+        <template
+            v-for="(header, index) in tableTotalHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+
+      <vue-table-dynamic
+          :params="tableSumParams"
+          class="matrix-table bg-main1 px-4 py-2">
+        <template
+            v-for="(header, index) in tableTotalHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+
+      <chart-matrix-well
+          v-for="uwi in chartUwis"
+          :key="uwi"
+          :uwi="uwi"
+          :well="wells.uwis[uwi]"
+          :dates="dates"
+          class="text-white container-fluid bg-main1 p-4 mt-3"/>
+
+      <div v-if="isVisibleWells" class="mt-3 bg-main1 px-4 pt-4 pb-2">
+        <div class="mb-3 d-flex align-items-center">
+          <i :class="form.isSortAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
+             class="fas text-white cursor-pointer mr-3"
+             style="font-size: 22px"
+             @click="updateSortOrder()"></i>
+
+          <select
+              :value="form.sortKey"
+              class="form-control bg-dark-blue text-white"
+              style="width: 280px"
+              @change="updateSortKey">
+            <option :value="null" disabled selected>
+              {{ trans('economic_reference.select_sort') }}
+            </option>
+
+            <option
+                v-for="key in visibleWellKeys"
+                :key="key.prop"
+                :value="key.prop">
+              {{ key.name }}
+            </option>
+          </select>
+        </div>
+
+        <vue-table-dynamic :params="tableParams" class="matrix-table">
+          <template :slot="`column-0`" slot-scope="{ props }">
+            <div class="d-flex align-items-center w-100">
+              <div> {{ props.cellData.label }}</div>
+
+              <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
+                <input
+                    v-model="selectedUwis[props.cellData.label]"
+                    type="checkbox"
+                    class="form-check-input m-0"
+                    @change="toggleUwi(props.cellData.label)">
+              </div>
+            </div>
+          </template>
+
+          <template
+              v-for="(header, index) in tableTotalHeaders.slice(1)"
+              :slot="`column-${index+1}`" slot-scope="{ props }">
+            <div :style="`color: ${props.cellData.color}`"
+                 class="d-flex align-items-center w-100">
+              {{ props.cellData.label }}
+            </div>
+          </template>
+        </vue-table-dynamic>
+      </div>
     </div>
   </div>
 </template>
