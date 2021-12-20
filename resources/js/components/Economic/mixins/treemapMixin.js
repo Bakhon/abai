@@ -255,7 +255,7 @@ export const treemapMixin = {
 
                         let percent = +this.chartsSum[title][profitability] * 100 / sum
 
-                        subTitle += `, ${percent.toFixed(2)}%`
+                        subTitle += `, ${percent.toFixed(0)}%`
                     }
                 }
             })
