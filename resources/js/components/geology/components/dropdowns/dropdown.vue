@@ -77,15 +77,18 @@ export default {
     cSelected: {
       get() {
         if(this.multiple){
-          return this.selectedLocal;
+          return (this.selectedValue??this.selectedLocal).reduce((acc, opt)=>{
+            acc += (opt.label||opt.value||opt)+', ';
+            return acc
+          }, "").trim().replace(/,\s*$/, "");
         }
         return this.cOptions.find(({value}) => value === (this.selectedValue??this.selectedLocal))||{};
       },
       set(option) {
-        this.selectedLocal = option.value;
-        this.$emit('update:selected-value', option.value)
-        this.$emit('update:selected-object', option)
-        this.$emit('selected', option.value)
+          this.selectedLocal = option.value;
+          this.$emit('update:selected-value', option.value)
+          this.$emit('update:selected-object', option)
+          this.$emit('selected', option.value)
       }
     }
   },
@@ -109,10 +112,7 @@ export default {
         else a.push(option);
         this.$emit('change', a, e, option)
         this.$emit('update:selected-value', a, e, option)
-        this.selectedLocal = a.reduce((acc, opt)=>{
-          acc += (opt.label||opt.value||opt)+', ';
-          return acc
-        }, "").trim().replace(/,\s*$/, "");
+        this.selectedLocal = a;
       }else{
         if(this.cSelected.value !== option.value) this.$emit('change', option.value, e, option)
         this.cSelected = option;

@@ -46,7 +46,7 @@
 
     <Button class="mb-2 w-100" color="primary" align="center">Старт</Button>
 
-    <dropdown multiple block class="w-100 mb-2" button-text="Результаты" :options="[
+    <dropdown multiple :selected-value.sync="multipleSelect" block class="w-100 mb-2" button-text="Результаты" :options="[
         {label: 'Option 0'},
         {label: 'Option 1'},
         {label: 'Option 2'},
