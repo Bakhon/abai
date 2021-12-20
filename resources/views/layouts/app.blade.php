@@ -24,7 +24,7 @@
 
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ route('assets.lang') }}"></script>
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="{{ asset('js/xlsx.full.min.js') }}"></script>
 </head>
 
 <body class="@yield('body_class')">
