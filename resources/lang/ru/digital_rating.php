@@ -72,5 +72,9 @@ return array (
   'thousandTons' => 'тыс. т',
   'project' => 'Проект',
   'fact' => 'Факт',
-  'deviation' => 'Отклонение'
+  'deviation' => 'Отклонение',
+  'searchRadius' => 'Радиус поиска',
+  'factorAnalysis' => 'Факторный анализ',
+  'oilProductionLossDistribution' => 'Распределение потери добычи нефти',
+  'rating' => 'Рейтинг'
 );

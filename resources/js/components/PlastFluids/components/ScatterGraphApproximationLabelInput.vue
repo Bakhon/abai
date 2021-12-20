@@ -8,7 +8,7 @@
       step="0.1"
       :id="'approximation-' + labelTransKey + graphType"
       placeholder="0,0"
-      v-model="computedInputText"
+      v-model.number="computedInputText"
       :style="isAxisInput ? 'width: 70px;' : ''"
     />
     <template v-if="isAxisInput">

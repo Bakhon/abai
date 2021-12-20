@@ -2,7 +2,6 @@
 
 namespace App\Services\BigData\Forms;
 
-use App\Helpers\WorktimeHelper;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
@@ -10,6 +9,7 @@ use App\Services\BigData\FieldLimitsService;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -56,37 +56,47 @@ abstract class DailyReports extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $column = $this->getFieldByCode($params['field']);
         $metric = Metric::query()
             ->select('id')
             ->where('code', $this->metricCode)
             ->first();
         if (!$metric) {
-            return;
+            throw new Exception('Something went wrong');
         }
-        $item = ReportOrgDailyCits::where('org', $params['wellId'])
-            ->where('metric', $metric->id)
-            ->whereDate('report_date', '>=', $params['date']->toDateTimeString())
-            ->whereDate('report_date', '<=', $params['date']->toDateTimeString())
-            ->distinct()
-            ->first();
-        if (!$item) {
-            ReportOrgDailyCits::insert(
-                [
-                    'org' => $params['wellId'],
-                    'metric' => $metric->id,
-                    'report_date' => $params['date']->toDateTimeString(),
-                    'plan' => 0,
-                    $column['code'] => $params['value'],
-                ]
-            );
-        } else {
-            $field = $column['code'];
-            $item->$field = $params['value'];
-            $item->save();
+
+        foreach ($rows as $orgId => $row) {
+            $item = ReportOrgDailyCits::where('org', $orgId)
+                ->where('metric', $metric->id)
+                ->whereDate('report_date', '>=', $filter['date'])
+                ->whereDate('report_date', '<=', $filter['date'])
+                ->distinct()
+                ->first();
+
+            $fields = [];
+            foreach ($row as $fieldCode => $field) {
+                $fields[$fieldCode] = $field['value'];
+            }
+
+            if (!$item) {
+                ReportOrgDailyCits::insert(
+                    array_merge(
+                        [
+                            'org' => $orgId,
+                            'metric' => $metric->id,
+                            'report_date' => $filter['date'],
+                            'plan' => 0
+                        ],
+                        $fields
+                    )
+                );
+            } else {
+                $item->update($fields);
+            }
         }
+
+        return [];
     }
 
     protected function getReports(\stdClass $filter): Collection
@@ -297,45 +307,4 @@ abstract class DailyReports extends TableForm
             ->pluck('well')
             ->toArray();
     }
-
-    protected function getWorkTime(array $wellIds, CarbonImmutable $date): array
-    {
-        $result = [];
-
-        $wellStatuses = DB::connection('tbd')
-            ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend', 's.well')
-            ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dend', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->whereIn('well', $wellIds)
-            ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
-            ->get()
-            ->map(
-                function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
-                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
-                    return $item;
-                }
-            );
-
-        $currentDate = $date->startOfYear();
-        while ($currentDate <= $date) {
-            $startOfDay = $currentDate->startOfDay();
-            $endOfDay = $currentDate->endOfDay();
-            foreach ($wellIds as $wellId) {
-                $result[$wellId][$currentDate->format('d.m.Y')] = WorktimeHelper::getHoursForOneDay(
-                        $wellStatuses,
-                        $startOfDay,
-                        $endOfDay,
-                        $wellId
-                    ) / 24;
-            }
-
-            $currentDate = $currentDate->addDay();
-        }
-
-        return $result;
-    }
-
 }

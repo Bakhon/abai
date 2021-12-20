@@ -1,7 +1,13 @@
 import translation from "../../VueTranslation/Translation";
-import { getTemplateData } from "../../components/PlastFluids/services/templateService";
-import { getTableGraphData } from "../../components/PlastFluids/services/graphService";
-import { convertToFormData } from "../../components/PlastFluids/helpers";
+import {
+  getTemplateData,
+  getUploadTemplates,
+} from "../../components/PlastFluids/services/templateService";
+import { getTableData } from "../../components/PlastFluids/services/mapService";
+import {
+  convertToFormData,
+  convertTemplateData,
+} from "../../components/PlastFluids/helpers";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -12,11 +18,17 @@ const plastFluidsLocal = {
     downloadFileData: {},
     tableFields: [],
     tableRows: [],
+    templates: [],
     currentTemplate: {},
     tableState: "default",
     loading: false,
     graphType: "ps_bs_ds_ms",
-    currentGraphics: ["Ps", "Bs", "Ds", "Ms"],
+    currentGraphics: [
+      { key: "Ps", order: 0 },
+      { key: "Bs", order: 1 },
+      { key: "Ds", order: 2 },
+      { key: "Ms", order: 3 },
+    ],
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
@@ -24,6 +36,15 @@ const plastFluidsLocal = {
     currentSelectedCorrelation_bs: "",
     currentSelectedCorrelation_ms: "",
     currentSelectedSamples: [],
+    models: [],
+    currentModel: {},
+    depthMultiplier: 5,
+    maxDepthMultiplier: 0,
+    isIsohypsShown: true,
+    isTileLayerShown: true,
+    selectedWellsType: [],
+    selectedFluidProperty: [],
+    currentSelectedWell: {},
   },
 
   mutations: {
@@ -41,6 +62,9 @@ const plastFluidsLocal = {
     },
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
+    },
+    SET_TEMPLATES(state, payload) {
+      state.templates = payload;
     },
     SET_CURRENT_TEMPLATE(state, payload) {
       state.currentTemplate = payload;
@@ -89,6 +113,42 @@ const plastFluidsLocal = {
       }
       state.currentSelectedSamples.push(payload);
     },
+    SET_MODELS(state, payload) {
+      state.models = payload;
+    },
+    SET_CURRENT_MODEL(state, payload) {
+      state.currentModel = payload;
+    },
+    SET_DEPTH_MULTIPLIER(state, payload) {
+      state.depthMultiplier = payload;
+    },
+    SET_MAX_DEPTH_MULTIPLIER(state, payload) {
+      state.maxDepthMultiplier = payload;
+    },
+    SET_IS_ISOHYPS_SHOWN(state, payload) {
+      state.isIsohypsShown = payload;
+    },
+    SET_IS_TILE_LAYER_SHOWN(state, payload) {
+      state.isTileLayerShown = payload;
+    },
+    SET_SELECTED_WELLS_TYPE(state, payload) {
+      state.selectedWellsType = payload;
+    },
+    SET_SELECTED_FLUID_PROPERTY(state, payload) {
+      const last = payload.pop();
+      state.selectedFluidProperty = [];
+      last ? state.selectedFluidProperty.push(last) : "";
+    },
+    SET_CURRENT_SELECTED_WELL(state, payload) {
+      if (
+        state.currentSelectedWell.id === payload.id &&
+        state.currentSelectedWell.index === payload.index
+      ) {
+        state.currentSelectedWell = {};
+        return;
+      }
+      state.currentSelectedWell = payload;
+    },
   },
 
   actions: {
@@ -104,39 +164,56 @@ const plastFluidsLocal = {
       });
       commit("SET_FILE_LOG", entries);
     },
-    async getTableData({}, obj) {
-      const payload = new FormData();
-      for (let key in obj.mutatedData) {
-        payload.append(key, obj.mutatedData[key]);
-      }
-      const data = await getTemplateData(payload, obj.url);
+    async getTableData({}, postData) {
+      const payload = convertToFormData(postData);
+      const data = await getTemplateData(payload);
       return data;
     },
-    async handleTableData({ commit, state, dispatch }, incomeData) {
+    async getTemplates({ commit }, payload) {
+      const postData = new FormData();
+      postData.append("user_id", payload.userID);
+      const data = await getUploadTemplates(postData);
+      commit("SET_TEMPLATES", convertTemplateData(data, payload.lang));
+      const template = data.find(
+        (template) => template.id === payload.templateID
+      );
+      commit("SET_CURRENT_TEMPLATE", template);
+    },
+    async handleTableData({ state, rootState, commit, dispatch }, incomeData) {
       try {
+        const { template, type, ...rest } = incomeData;
         commit("SET_LOADING", true);
+        let horizonIDs = "None";
+        let blockIDs = "None";
+        if (type === "analysis") {
+          if (rootState.plastFluids.currentSubsoilHorizon.length)
+            horizonIDs = rootState.plastFluids.currentSubsoilHorizon.map(
+              (horizon) => horizon.horizon_id
+            );
+          if (state.currentBlocks.length)
+            blockIDs = state.currentBlocks.map((block) => block.block_id);
+        }
         const postDataMock = {
-          horizons: "None",
-          blocks: "None",
+          field_id: rootState.plastFluids.currentSubsoilField[0].field_id,
+          horizons: horizonIDs,
+          blocks: blockIDs,
           row_on_page: 30,
           page_number: 1,
+          report_id: 1,
         };
-        let merged = { ...postDataMock, ...incomeData };
-        const url = state.currentTemplate.api_url ?? undefined;
-        const data = await dispatch("getTableData", {
-          mutatedData: merged,
-          url,
-        });
-        commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
-        commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
-        commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
+        let merged = { ...postDataMock, ...rest };
+        const data = await dispatch("getTableData", merged);
+        template ? commit("SET_CURRENT_TEMPLATE", template) : "";
+        commit("SET_TABLE_FIELDS", data.header[0]);
+        commit("SET_TABLE_ROWS", data.table.rows);
       } catch (error) {
         alert(error);
       } finally {
         commit("SET_LOADING", false);
       }
     },
-    async handleTableGraphData({ commit, state, rootState }, dataToPost) {
+    async handleAnalysisTableData({ commit, state, rootState }, dataToPost) {
+      const { postUrl, ...rest } = dataToPost;
       try {
         commit("SET_LOADING", true);
         const horizons = rootState.plastFluids.currentSubsoilHorizon;
@@ -155,12 +232,25 @@ const plastFluidsLocal = {
           data_end: "None",
           graph_type: state.graphType,
         };
-        let merged = { ...postDataMock, ...dataToPost };
+        let merged = { ...postDataMock, ...rest };
         const postData = convertToFormData(merged);
-        const data = await getTableGraphData(postData);
-        commit("SET_TABLE_FIELDS", data[0].table_header);
-        commit("SET_LOCAL_HORIZONS", data[1].filter_data);
-        commit("SET_TABLE_ROWS", data.slice(2));
+        const data = await getTableData(postData, postUrl);
+        commit(
+          "SET_TABLE_FIELDS",
+          Array.isArray(data) ? data[0].table_header : data.header
+        );
+        commit(
+          "SET_LOCAL_HORIZONS",
+          Array.isArray(data) ? data[1].filter_data : data.filter_data
+        );
+        if (Array.isArray(data)) {
+          commit(
+            "SET_TABLE_ROWS",
+            state.graphType === "ps_bs_ds_ms" ? data.slice(3) : data.slice(2)
+          );
+        } else {
+          commit("SET_TABLE_ROWS", data.table);
+        }
       } catch (error) {
         console.log(error);
       } finally {

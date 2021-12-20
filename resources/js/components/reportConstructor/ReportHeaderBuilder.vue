@@ -2,7 +2,7 @@
   <draggable
       :headerNode="localValue"
       :group="group"
-      v-model="treeData"
+      :list="treeData"
       class="cmp-tree"
       ghost-class="ghost"
       @input="updateValue"
@@ -11,13 +11,15 @@
       @end="isDraggable = false"
   >
     <ReportHeaderNode
-        v-for="item, index in treeData"
+        v-for="(item, index) in treeData"
         :key="index"
         :headerNode="item"
         :translateAttribute="translateAttribute"
         :group="group"
         @input="updateItem"
         :rowKey="rowKey"
+        :renderComponent="renderComponent"
+        :updateThisComponent="updateThisComponent"
     >
 
     </ReportHeaderNode>
@@ -53,7 +55,8 @@ export default {
   data() {
     return {
       isDraggable: false,
-      localValue: [...this.data]
+      localValue: [...this.data],
+      renderComponent: 1,
     };
   },
   computed: {
@@ -94,7 +97,10 @@ export default {
       const index = this.localValue.findIndex(v => v[this.rowKey] === itemValue[this.rowKey]);
       this.$set(this.localValue, index, itemValue);
       this.$emit("input", this.localValue);
-    }
+    },
+    updateThisComponent() {
+      this.renderComponent += 1;
+    },
   }
 };
 </script>

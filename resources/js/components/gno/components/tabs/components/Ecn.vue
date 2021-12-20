@@ -5,7 +5,7 @@
         <div class="title__block">{{ trans('pgno.current_frequency') }}</div>
         <div class="title__block__min__1">
           <span class="pr-17 pl-2">{{ trans('pgno.selection_to_perform_for') }}</span>
-          <input class="shgn-input" type="text">
+          <input class="shgn-input" v-model="settings.freq" type="text">
           {{ trans('measurements.gc') }}
         </div>
         <div class="title__block__max__1">
@@ -24,14 +24,14 @@
         </div>
         <div class="title__block__max__1">
           <span class="pr-8 pl-2">{{ trans('pgno.length_at_surface') }}</span>
-          <input class="shgn-input" type="text"> {{ trans('measurements.mm') }}
+          <input class="shgn-input" v-model="settings.lengthOnSurface" type="text"> {{ trans('measurements.mm') }}
         </div>
       </div>
 
       <div class="flex__item__block__1">
         <div class="title__block">{{ trans('pgno.prim_komponovka') }}</div>
         <div class="title__block__min__1">
-          <input class="checkbox__block__1 pl-2" type="checkbox"/>
+          <input class="checkbox__block__1 pl-2" v-model="settings.paker" type="checkbox"/>
           <label class="label-kpod">{{ trans('pgno.paker_only') }}</label>
         </div>
         <div class="title__block__max__1">
@@ -52,7 +52,7 @@
 
           <div class="pt-5px ml-61">
             <span class="pl-2"><u>{{ trans('pgno.wear_factor') }}</u> <img src="/img/gno/info-shgn.svg" alt=""></span>
-            <input class="shgn-input" type="text">
+            <input class="shgn-input" v-model="settings.pumpWear" type="text">
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
 
           <div class="pt-5px ml-61">
             <span class="pl-2"><u>{{ trans('pgno.safety_factor') }}</u> <img src="/img/gno/info-shgn.svg" alt=""></span>
-            <input class="shgn-input" type="text">
+            <input class="shgn-input" v-model="settings.engineSafety" type="text">
           </div>
         </div>
       </div>
@@ -125,9 +125,7 @@
   </div>
 </template>
 
-<script>
-export default {}
-</script>
+<script src="./js/Ecn.js"></script>
 
 <style scoped>
 .flex-container-3 {

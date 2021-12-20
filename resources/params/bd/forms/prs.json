@@ -38,7 +38,7 @@
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type,id",
-                "dict": "repair_type_prs"
+                "dict": "repair_type_prs_ktm"
               },
               {
                 "code": "work_plan",
@@ -153,13 +153,13 @@
                 "code": "cnl_new",
                 "type": "numeric",
                 "title": "nkt_new",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "cnl_used",
                 "type": "numeric",
                 "title": "nkt_used",
-                "validation": "nullable|gte:0"
+                "validation": "nullable|gte:0|lte:500"
               },
               {
                 "code": "td",

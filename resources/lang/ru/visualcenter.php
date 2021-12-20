@@ -199,7 +199,7 @@ return array (
   'dzoRestrictions' => 'Ограничения КТО',
   'dzoOthers' => 'Прочие',
   'dzoAllCompany' => 'Все компании',
-  'summaryAssets' => 'Итого по всем активам:',
+  'summaryAssets' => 'Итого по всем компаниям:',
   'summaryOperatingAssets' => 'Итого по операционным активам:',
   'summaryNonOperatingAssets' => 'Итого по неоперационным активам:',
   'otmMetricSystem' => 'м.',
@@ -472,7 +472,8 @@ return array (
     'saveTitle' => 'Сохранено!',
     'validateTitle' => 'Проверено!',
     'errorTitle' => 'Ошибка!',
-    'selectYear' => 'Выберите год'
+    'selectYear' => 'Выберите год',
+    'factBelowPlanTitle' => 'Найдено отклонение!',
   ),
   'processingAssociatedGasForOwnExpenses' => 'Переработка попутного газа на собственные нужды',
   'associatedGasFlaring' => 'Сжигание попутного газа на факелах',
@@ -482,6 +483,10 @@ return array (
   'closeMonth' => 'Закрытие месяца',
   'selectMonth' => 'Выберите месяц',
   'factLowerCase' => 'факт',
-  'correctedOpec' => 'Корр. план ОПЕК+',
-  'losses' => 'Потери'
+  'correctedOpec' => 'Скорр. план ОПЕК+',
+  'losses' => 'Потери',
+  'opekEnabled' => 'Действуют ограничения',
+  'oldFact' => 'Данные обновляются',
+  'withCorrectedFact' => 'Переключить на откорректированные показатели',
+  'withoutCorrectedFact' => 'Переключить на замерные показатели',
 );

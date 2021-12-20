@@ -34,13 +34,11 @@ class VisualCenterController extends Controller
 {
     private $allCompanies = array('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','ПКИ','КПО','ПКК','ТП','АГ');
     private $reasonFields = array(
-        'opec_explanation_reasons' => 'opec_oil_losses',
-        'impulse_explanation_reasons' => 'impulse_oil_losses',
-        'shutdown_explanation_reasons' => 'shutdown_oil_losses',
-        'accident_explanation_reasons' => 'accident_oil_losses',
-        'restriction_kto_explanation_reasons' => 'restriction_kto_oil_losses',
-        'gas_restriction_explanation_reasons' => 'gas_restriction_oil_losses',
-        'other_explanation_reasons' => 'other_oil_losses'
+        'daily_reason_1_explanation' => 'daily_reason_1_losses',
+        'daily_reason_2_explanation' => 'daily_reason_2_losses',
+        'daily_reason_3_explanation' => 'daily_reason_3_losses',
+        'daily_reason_4_explanation' => 'daily_reason_4_losses',
+        'daily_reason_5_explanation' => 'daily_reason_5_losses'
     );
 
     public function __construct()
@@ -461,6 +459,7 @@ class VisualCenterController extends Controller
             ->whereNull('is_corrected')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->orderBy('date')
             ->get()
             ->toArray();
     }
@@ -520,13 +519,11 @@ class VisualCenterController extends Controller
                $decreaseReason->select(
                   [
                      'dzo_import_data_id',
-                     'accident_explanation_reasons',
-                     'gas_restriction_explanation_reasons',
-                     'impulse_explanation_reasons',
-                     'opec_explanation_reasons',
-                     'other_explanation_reasons',
-                     'restriction_kto_explanation_reasons',
-                     'shutdown_explanation_reasons'
+                     'daily_reason_1_explanation',
+                     'daily_reason_2_explanation',
+                     'daily_reason_3_explanation',
+                     'daily_reason_4_explanation',
+                     'daily_reason_5_explanation'
                   ]
                 )
                 ->get();

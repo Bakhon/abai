@@ -1,9 +1,14 @@
 <template>
   <li
-      :class="{'active': isShowChildren}"
+      :class="{'is-opened': isShowChildren, 'active': active(node)}"
       class="asside-db-list__item asside-db-list__item-parent"
   >
-    <span v-if="!isWell(node)" class="cursor-pointer" @click="showChildren()"></span>
+    <span
+        v-if="!isWell(node) && (loadWells() || node.children)"
+        class="cursor-pointer"
+        @click="showChildren()"
+    >
+    </span>
     <span
         :class="[
             isWell(node) ? 'asside-db-link-file' : 'asside-db-link-parent',
@@ -32,6 +37,9 @@
           :parent="node"
           :renderComponent="renderComponent"
           :updateThisComponent="updateThisComponent"
+          :active="active"
+          :load-wells="loadWells"
+          :structure-types="structureTypes"
       ></node>
       <li v-if="isShowChildren && isLoading" class="centered mx-auto mt-3">
         <div class="blob-1"></div>
@@ -41,11 +49,16 @@
   </li>
 </template>
 <script>
-import treeview from "../common/mixins/treeview";
+import treeview from '../common/mixins/treeview'
 
 export default {
   name: "node",
-  mixins: [treeview]
+  mixins: [treeview],
+  props: {
+    loadWells: Function,
+    active: Function,
+    structureTypes: Array
+  }
 }
 </script>
 <style lang="scss" scoped>

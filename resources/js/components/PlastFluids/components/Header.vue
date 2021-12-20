@@ -56,7 +56,7 @@ export default {
         origin +
         this.localeUrl(
           url === "/pf-data-analysis"
-            ? "pf-data-analysis/pressure-and-temperature"
+            ? "pf-data-analysis/reservoir-oil-samples-analysis/oil/graphs-and-tables"
             : url
         );
     },

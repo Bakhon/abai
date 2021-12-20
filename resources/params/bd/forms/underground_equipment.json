@@ -14,17 +14,17 @@
     {
       "action": "edit",
       "title": "change_equipment",
-      "form": "underground_equipment_installation"
+      "form": "underground_equipment_element"
     },
     {
       "action": "edit",
       "title": "change_params",
-      "form": "underground_equipment_installation"
+      "form": "underground_equipment_params"
     },
     {
       "action": "edit",
       "title": "repair_equipment",
-      "form": "underground_equipment_installation"
+      "form": "underground_equipment_repair"
     }
   ],
   "table": "prod.well_equip",
@@ -38,14 +38,12 @@
             "items": [
               {
                 "code": "equip_type",
-                "type": "dict",
-                "dict": "underground_equip_type",
+                "type": "text",
                 "title": "equip_type"
               },
               {
-                "code": "equip_element",
-                "type": "dict",
-                "dict": "underground_equip_element",
+                "code": "equip",
+                "type": "text",
                 "title": "equip_element"
               },
               {
@@ -54,9 +52,10 @@
                 "title": "equip_params"
               },
               {
-                "code": "equip_date",
-                "type": "text",
-                "title": "equip_date"
+                "code": "dbeg",
+                "type": "date",
+                "title": "equip_date",
+                "validation": "date|date_format:d.m.Y"
               }
             ]
           }

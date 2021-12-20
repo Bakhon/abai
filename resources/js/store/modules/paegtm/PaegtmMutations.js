@@ -34,5 +34,11 @@ export const paegtmMutations = {
     },
     CHANGE_CLICKABLE_TABLE (state, value) {
         state.clickableTable = value
-    }
+    },
+    CHANGE_TREE_STORE (state, value) {
+        state.treeStore = value
+    },
+    CHANGE_SELECTED_GTM (state, value) {
+        state.selectedGtm = value
+    },
 }

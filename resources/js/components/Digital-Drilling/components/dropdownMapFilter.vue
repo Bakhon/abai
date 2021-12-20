@@ -77,6 +77,9 @@
 </script>
 
 <style scoped>
+    .dropdown *{
+        color: #ffffff;
+    }
     .dropdown:not(:focus) .dropdown__body{
         height: 0;
     }

@@ -97,7 +97,7 @@
                                     <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
-                                  {{trans('tr.add')}}</a>
+                                  {{trans('tr.show')}}</a>
 
                                   <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
@@ -165,9 +165,9 @@
                         <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
                         <thead>
                           <tr >
-                            <td scope="col">{{trans('tr.field')}}</td>
-                            <td scope="col">{{trans('tr.well_state')}}</td>
-                            <td scope="col">{{trans('tr.well_number_short')}}</td>
+                            <td class="fix-field-modal" scope="col">{{trans('tr.field')}}</td>
+                            <td class="fix-well-state-modal" scope="col">{{trans('tr.well_state')}}</td>
+                            <td class="fix-well-number-short" scope="col">{{trans('tr.well_number_short')}}</td>
                             <td scope="col">{{trans('tr.u_horizon')}}</td>
                             <td scope="col">{{trans('tr.u_object')}}</td>
                             <td scope="col">{{trans('tr.operation_method_short')}}</td>
@@ -193,9 +193,9 @@
                           <tr v-for="(row, row_index) in lonelywell" 
                             :key="row_index"
                             ref="editTable">
-                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
-                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
-                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
+                            <td class="fix-field-modal"><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
+                            <td class="fix-well-state-modal"><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td class="fix-well-number-short"><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
                             <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !isExpMethInput(row),'input_edit_modal': isExpMethInput(row)}"></td>
@@ -222,7 +222,20 @@
                       </table>
                   </div>
                 </div>
-              </modal>
+    </modal>
+    <modal name="total_modal" :width="700" :height="850"  :adaptive="true" style="z-index:9900000; ">
+      <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
+        <div class="header-total-div">
+          <div class="total-modal-header">{{trans('tr.total_prod_well')}}</div>
+          <div class="exit-div">
+            <button type="button" class="modal-bign-button" @click="closeTotalModal('total_modal')">
+              {{ trans('pgno.zakrit') }}
+            </button>
+          </div>
+        </div>
+        <totalTable :all_summary_total= all_summary_total />
+      </div>
+    </modal>
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -355,9 +368,9 @@
             aria-labelledby="dropdownMenuLink"
           >
               
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label" >{{trans('tr.start_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
+                <label for="inputDate" class="input-date-label">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
                   <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
@@ -404,10 +417,22 @@
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 </svg>{{trans('tr.reset_filters')}}</button>
-              
-
+    
               <button
                 v-if="isPermission"
+                type="button" 
+                data-toggle="modal" 
+                data-target="#exampleModalCenter" 
+                @click="totalModal()"
+                @click.prevent="summaryTotalModal"
+                style="background: #272953; border: none; margin-left: 10px;"
+                v-bind:title="trans('tr.add_well')"
+                >
+                <img class="cursor-pointer" src="/img/tr/total_report.svg" alt="">
+
+              </button>
+              <button
+                v-if="isPermission && isEditable"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
@@ -533,7 +558,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission && isMaxDate"
+                v-if="!isEdit && isPermission && isMaxDate && isEditable"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -621,6 +646,7 @@
             :expMethFilterData="expMethFilterData"
             :wellNameFilterData="wellNameFilterData"
             :eventFilterData="eventFilterData"
+            :wellStatusLDFilterData="wellStatusLDFilterData"
             @onSort="sortBy" 
             @filter="chooseFilter"
             @dropFilters="dropFilter"
@@ -1179,9 +1205,40 @@
                   <td @click="sortBy('gor')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}
                   </td>
-                  <td @click="sortBy('well_status_last_day')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_status_last_day')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectWellStatusLD.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectWellStatusLD"
+                                :options="wellStatusLDFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLSTATUSLD')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
@@ -6476,7 +6533,7 @@
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </paginate>
-            <div>
+            <div class="pagination-div">
                     <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
@@ -6679,7 +6736,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
@@ -6774,7 +6830,6 @@ tr:nth-child(even) td {
   color: black;
 }
 .input_edit_modal {
-
   color: black;
   font-size: 12px;
   height: 31px;
@@ -6793,7 +6848,6 @@ tr:nth-child(even) td {
   border: none;
   margin-left: 11px;
 }
-
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -6897,8 +6951,41 @@ table::-webkit-scrollbar-corner {
   font-size: 12px;
   height: 31px;
 }
+.input-date-label {
+  margin-left: 8px;
+  color:#fff;
+}
 .modal_table {
   height: 240px !important;
+}
+.total-modal-header {
+  color: #fff;
+  font-size: 16px;
+  padding-left: 10px;
+
+}
+.header-total-div {
+  display: flex;
+  padding-top: 9px;
+}
+.exit-div {
+  padding-left: calc(100% - 378px);
+}
+.fix-field-modal {
+  left: -1px !important;
+  width: 27px !important;
+  z-index: 3002 !important;
+  position: sticky;
+}
+.fix-well-state-modal {
+  left: 134px !important;
+  width: 100px !important;
+  z-index: 3001 !important;
+}
+.fix-well-number-short {
+  left: 269px !important;
+  width: 55 !important;
+  z-index: 3000 !important;
 }
 
     .table-outer{

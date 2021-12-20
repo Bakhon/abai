@@ -75,17 +75,21 @@ class MeasWaterInj extends MeasLogByMonth
         array $workTimes
     ) {
         $pressureRow = [
-            'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
+            'id' => $well->id . '_pressure',
+            'uwi' => [
+                'id' => $well->id,
+                'name' => $well->uwi,
+                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+            ],
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure')],
             'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->inj_pressure : 0]
         ];
         $workTimeRow = [
-            'id' => $well->id,
+            'id' => $well->id . '_worktime',
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.worktime')]
         ];
         $waterInjRow = [
-            'id' => $well->id,
+            'id' => $well->id . '_water_inj',
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure_sum')],
             'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->agent_vol : 0]
         ];
@@ -100,6 +104,7 @@ class MeasWaterInj extends MeasLogByMonth
                 'value' => $waterInj ? $waterInj['pressure'] : 0,
                 'is_editable' => true,
                 'params' => [
+                    'well_id' => $well->id,
                     'field' => 'pressure_inj',
                     'date' => $monthDay->format('d.m.Y')
                 ]
@@ -108,6 +113,7 @@ class MeasWaterInj extends MeasLogByMonth
                 'value' => $waterInj ? $waterInj['water_inj'] : 0,
                 'is_editable' => true,
                 'params' => [
+                    'well_id' => $well->id,
                     'field' => 'water_inj_val',
                     'date' => $monthDay->format('d.m.Y')
                 ]
@@ -138,39 +144,23 @@ class MeasWaterInj extends MeasLogByMonth
         return $columns;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $field = $this->request->get('params')['field'];
-        $date = Carbon::parse($this->request->get('params')['date'], 'Asia/Almaty')->toImmutable();
-        if (in_array($field, ['pressure_inj', 'water_inj_val'])) {
-            $pressure = DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('well', $this->request->get('well_id'))
-                ->where('dbeg', $date->startOfDay())
-                ->first();
-
-            if (empty($pressure)) {
-                DB::connection('tbd')
-                    ->table('prod.meas_water_inj')
-                    ->insert(
-                        [
-                            'dbeg' => $date->startOfDay(),
-                            'dend' => $date->endOfDay(),
-                            'well' => $this->request->get('well_id'),
-                            $field => $params['value']
-                        ]
+        foreach ($rows as $row) {
+            foreach ($row as $date => $field) {
+                $date = Carbon::parse($date, 'Asia/Almaty')->startOfDay()->toImmutable();
+                if (in_array($field['params']['field'], ['pressure_inj', 'water_inj_val'])) {
+                    $this->insertValueInCell(
+                        'prod.meas_water_inj',
+                        $field['params']['field'],
+                        null,
+                        $field['params']['well_id'],
+                        $date,
+                        $field['value']
                     );
-                return;
+                }
             }
-
-            DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('id', $pressure->id)
-                ->update(
-                    [
-                        $field => $params['value']
-                    ]
-                );
         }
+        return [];
     }
 }

@@ -41,7 +41,7 @@
         "name": "main-table",
         "template": "<structure></structure>"
       },
-      "accordion": true,
+      "accordion": false,
       "parent": "bd",
       "child": [
         {
@@ -84,6 +84,16 @@
           "component": {
             "name": "main-table",
             "template": "<daily-drilling-report></daily-drilling-report>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name":  "digital_drilling.project_data.technical_project",
+          "id": 31,
+          "checked": null,
+          "component": {
+            "name": "main-table",
+            "template": "<technical-project></technical-project>"
           },
           "parent": "bd"
         },

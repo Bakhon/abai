@@ -37,6 +37,7 @@ class VisualCenterController extends Controller
             'oilCondensateProductionWithoutKMG' => array(),
             'oilCondensateDelivery' => array(),
             'oilCondensateDeliveryWithoutKMG' => array(),
+            'oilCondensateDeliveryOilResidue' => array(),
         )
     );
     private $isOpek = false;
@@ -98,7 +99,7 @@ class VisualCenterController extends Controller
             $query->where('dzo', $this->dzoName);
         }
         $result = $query->orderBy('date', 'asc')->get();
-        if ($this->periodType !== 'year') {
+        if ($this->periodType !== 'year' && $this->periodType !== 'period') {
             foreach ($result as $dzoItem) {
                 foreach($dzoItem->getAttributes() as $key => $item) {
                     if (is_numeric($item)) {
@@ -119,7 +120,7 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category,$this->periodRange + 1,$this->periodType);
         }
-        if ($this->periodType === 'month' && Carbon::now()->day < 3) {
+        if ($this->periodType === 'month' && Carbon::now()->day < 3 && Carbon::now()->day !== 1) {
             $this->periodRange = 0;
             $plan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
             $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
@@ -149,6 +150,7 @@ class VisualCenterController extends Controller
         $tableData['historical'] = array_merge($tableData['historical'],$factory->makeCategory('gasProduction')->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         if ($this->category === 'oilCondensateDeliveryOilResidue') {
             $tableData['current']['oilCondensateDeliveryOilResidue'] = $factory->makeCategory('oilCondensateDeliveryOilResidue')->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
+            $tableData['historical']['oilCondensateDeliveryOilResidue'] = $factory->makeCategory('oilCondensateDeliveryOilResidue')->getDataByOilResidueCategory($historicalFact,$this->periodRange,$this->dzoName);
         }
         if (str_contains(strtolower($this->category), 'water')) {
             $tableData['current'] = array_merge($tableData['current'], $factory->makeCategory('waterInjection')->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));

@@ -24,7 +24,7 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v8';
+    const DATA_SOURCE = 'economic_nrs_total_v10';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
@@ -372,7 +372,7 @@ class EconomicNrsController extends Controller
             ->groupBy('uwi');
 
         foreach ($wells as &$well) {
-            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject']['coord_point'] ?? null;
         }
 
         return $wells;

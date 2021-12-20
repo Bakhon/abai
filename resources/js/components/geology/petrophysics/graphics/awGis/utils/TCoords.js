@@ -1,5 +1,6 @@
 export default class TCoords {
     #canvas = null;
+    #svg = null;
     #__settings = {
         width: 0,
         height: 0,
@@ -18,6 +19,11 @@ export default class TCoords {
         this.setParams();
     }
 
+    set setSvg(svg){
+        this.#svg = svg
+        this.setParams();
+    }
+
     get getCanvas() {
         return this.#canvas;
     }
@@ -29,6 +35,10 @@ export default class TCoords {
 
     set setOffsetY(offsetY) {
         this.#__settings.offsetY = offsetY;
+    }
+
+    get getOffsetY() {
+        return this.#__settings.offsetY;
     }
 
     set setOffsetX(offsetX) {
@@ -44,8 +54,8 @@ export default class TCoords {
     }
 
     setParams() {
-        this.#__settings.width = this.#canvas.width;
-        this.#__settings.height = this.#canvas.height;
+        this.#__settings.width = this.#svg ? this.#svg.width.baseVal.value : this.#canvas.width;
+        this.#__settings.height = this.#svg ? this.#svg.height.baseVal.value : this.#canvas.height;
         this.#__settings.centerX = this.#__settings.width / 2;
         this.#__settings.centerY = this.#__settings.height / 2;
     }
@@ -81,4 +91,11 @@ export default class TCoords {
     scaleY(s) {
         return s * this.#__settings.scaleY
     }
+
+    cm2px(cm, dpi) {
+        dpi = dpi === undefined ? document.getElementById("dpi").offsetHeight : dpi;
+        if (dpi) return 2.54 / cm * dpi;
+        return cm
+    }
+
 }

@@ -128,6 +128,7 @@
     Vue.component('complications', require('./bd/complications').default);
     Vue.component('drilling-rigs', require('./bd/DrillingRigs').default);
     Vue.component('technical-task', require('./bd/ProjectData/TechnicalTask').default);
+    Vue.component('technical-project', require('./bd/ProjectData/TechnicalProject').default);
     Vue.component('geology', require('./bd/ProjectData/Geology').default);
     Vue.component('well-design', require('./bd/ProjectData/WellDesign').default);
     Vue.component('barrel-profile', require('./bd/ProjectData/BarrelProfile').default);
@@ -150,5 +151,7 @@
 </script>
 
 <style scoped>
-
+.digital_drilling{
+    color: #ffffff;
+}
 </style>

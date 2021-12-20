@@ -9,14 +9,6 @@
                        class="list-group-item list-group-item-action">
                         {{ __('forecast.mapping_company_tbd') }}
                     </a>
-                    <a href="{{ route('economic.technical.forecast.index') }}"
-                       class="list-group-item list-group-item-action">
-                        {{ __('forecast.forecast_data_production') }}
-                    </a>
-                    <a href="{{ route('economic.gtm.index') }}"
-                       class="list-group-item list-group-item-action">
-                        {{__('economic_reference.eco_refs_gtm')}}
-                    </a>
                 </div>
             </div>
         </div>

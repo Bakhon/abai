@@ -1,6 +1,9 @@
 <template>
   <div class="customization-category">
-    <div class="category-header">
+    <div
+      class="category-header"
+      :class="{ active: currentGraphicType === valueKey }"
+    >
       <input
         :disabled="
           valueKey === 'temperature' || valueKey === 'density' ? true : false
@@ -14,7 +17,7 @@
         trans("plast_fluids." + categoryName)
       }}</label>
     </div>
-    <div class="category-content">
+    <div class="category-content" v-show="currentGraphicType === valueKey">
       <div
         class="category-content-child"
         v-for="(child, index) in children"
@@ -22,26 +25,18 @@
       >
         <input
           :class="{
-            disabled:
-              currentGraphics.length === 4 &&
-              !computedCurrentGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           type="checkbox"
           :id="'customization-' + child.key"
-          :value="child.key"
-          :disabled="
-            valueKey !== currentGraphicType ||
-            (currentGraphics.length === 4 &&
-              !computedCurrentGraphics.includes(child.key))
-          "
+          :value="{ key: child.key, order: child.order }"
+          :disabled="currentGraphics.length === 4 && !arrayIncludes(child.key)"
           v-model="computedCurrentGraphics"
         />
         <label
           :for="'customization-' + child.key"
           :class="{
-            disabled:
-              currentGraphics.length === 4 &&
-              !computedCurrentGraphics.includes(child.key),
+            disabled: currentGraphics.length === 4 && !arrayIncludes(child.key),
           }"
           >{{ child.Label }}</label
         >
@@ -80,6 +75,11 @@ export default {
       },
     },
   },
+  methods: {
+    arrayIncludes(key) {
+      return this.computedCurrentGraphics.some((el) => el.key === key);
+    },
+  },
 };
 </script>
 
@@ -95,22 +95,26 @@ input {
 }
 
 .customization-category {
-  width: calc(50% - 2px);
-  background: #363b68;
-  border: 1px solid #545580;
+  width: 100%;
+  border-bottom: 1px solid #545580;
+}
+
+.customization-category > div {
+  width: 100%;
 }
 
 .category-header {
   display: flex;
   align-items: center;
   padding: 8px 10px;
-  border-bottom: 1px solid #545580;
   width: 100%;
+  background: #243473;
 }
 
 .category-content {
-  padding: 8px 10px;
+  padding: 8px 24px;
   width: 100%;
+  background: #28326a;
 }
 
 .category-content-child {
@@ -122,6 +126,10 @@ input {
 
 .disabled {
   cursor: not-allowed;
+}
+
+.active {
+  border-bottom: 1px solid #545580;
 }
 
 ::-webkit-scrollbar {

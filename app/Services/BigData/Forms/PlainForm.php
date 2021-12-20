@@ -75,6 +75,9 @@ abstract class PlainForm extends BaseForm
         try {
             $result = $this->submitForm();
             DB::connection('tbd')->commit();
+            if (isset($result['well'])) {
+                Cache::forget("well_{$result['well']}");
+            }
             return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
@@ -106,18 +109,20 @@ abstract class PlainForm extends BaseForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = (array)$dbQuery->first();
             $dbQuery->update($data);
-
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
         } else {
             $this->checkFormPermission('create');
 
+            $this->originalData = [];
             $id = $dbQuery->insertGetId($data);
         }
 
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $id;
+
         $this->submitInnerTable($id);
+        $this->afterSubmit($id);
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
@@ -189,10 +194,11 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory($id, \DateTimeInterface $date = null): array
+    public function getHistory($id, string $form, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)
+            ->where('form_name', $form)
             ->orderBy('created_at', 'desc')
             ->with('user')
             ->get();
@@ -282,12 +288,16 @@ abstract class PlainForm extends BaseForm
         return $params;
     }
 
-    protected function submitInnerTable(int $parentParentId)
+    protected function submitInnerTable(int $parentId)
     {
-        $insertedTableFields = $this->innerTableService->submitTables($parentParentId, $this->tableFields);
+        $insertedTableFields = $this->innerTableService->submitTables($parentId, $this->tableFields);
         if (!empty($insertedTableFields)) {
             $this->submittedData['table_fields'] = $insertedTableFields;
         }
+    }
+
+    protected function afterSubmit(int $id)
+    {
     }
 
     protected function formatRows(Collection $rows): Collection
@@ -315,6 +325,10 @@ abstract class PlainForm extends BaseForm
 
     protected function getRows(): Collection
     {
+        if ($this->request->get('type') && $this->request->get('type') !== 'well') {
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $wellId = $this->request->get('well_id');
         $query = DB::connection('tbd')
             ->table($this->params()['table'])

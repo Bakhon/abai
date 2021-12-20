@@ -19,9 +19,9 @@
                         {{ report.document_name}}
                     </td>
                     <td>
-                        <button class="download" @click="downloadFile(DIGITAL_DRILLING_URL + currentWell.id +'/?file_id='+ report.file_id)">
+                        <a :href="DIGITAL_DRILLING_URL + currentWell.well_id + '/?file_id=' + report.file_id" target="_blank" class="download" style="color: #ffffff; text-decoration: none;">
                             Скачать
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 <tr v-if="reports.length==0">
@@ -59,8 +59,7 @@
             }
         },
         methods:{
-            downloadFile(link){
-                window.location.href = link;
+            downloadFile(){
             },
             ...globalloadingMutations([
                 'SET_LOADING'
@@ -69,7 +68,7 @@
                 this.SET_LOADING(true);
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/excel_loader/' +
-                        this.currentWell.id).then((response) => {
+                        this.currentWell.well_id).then((response) => {
                         let data = response.data;
                         if (data) {
                             this.reports = data;

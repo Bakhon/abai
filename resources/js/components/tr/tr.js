@@ -12,7 +12,7 @@ import Paginate from 'vuejs-paginate';
 import moment from 'moment';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-
+import totalTable from "./totalTable.vue";
 Vue.component('paginate', Paginate);
 Vue.component('v-select', vSelect)
 
@@ -29,6 +29,7 @@ export default {
     SearchFormRefresh,
     TrMultiselect,
     Multiselect,
+    totalTable,
   },
   computed: {
     isExpMethButton() {
@@ -71,6 +72,14 @@ export default {
       }, 
       set(newVal){
         this.$store.commit("tr/SET_FIELD", newVal);
+      }, 
+    },
+    selectWellStatusLD: {
+      get(){
+        return this.$store.state.tr.wellStatusLD;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_WELLSTATUSLD", newVal);
       }, 
     },
     selectExpMeth: {
@@ -270,6 +279,7 @@ export default {
               fields: [...fields],
           },
       ],
+      all_summary_total: [],
       rowExpMeth: null,
       dt: null,
       editedWells: [],
@@ -310,6 +320,7 @@ export default {
       expMethFilterData: [],
       wellNameFilterData: [],
       eventFilterData: [],
+      wellStatusLDFilterData: [],
       perPage: 3,
       currentPage: 1,
       isAscSort: "",
@@ -327,8 +338,8 @@ export default {
       isMaxDate: true,
       isActiveHorizonFilterr: false,
       editedAddWells: [],
-      filterList: ['field','horizon','wellType', 'object','block', 'expMeth','plannedEvents'],
-
+      filterList: ['field','horizon','wellType', 'object','block', 'expMeth','plannedEvents', 'wellStatusLD'],
+      isEditable: true,
     };
   },
   methods: {
@@ -346,12 +357,15 @@ export default {
         if (day > 25 && mm < 12) {
             var month = today.getMonth() + 2;
             var year = today.getFullYear();
+            this.isEditable = true;
         } else if (day > 25 && mm === 12) {
             var month = 1;
             var year = today.getFullYear() + 1;
+            this.isEditable = true;
         } else {
             var month = today.getMonth() + 1;
             var year = today.getFullYear();
+            this.isEditable = false;
         }
         this.$store.commit("tr/SET_MONTH", month);
         this.$store.commit("tr/SET_YEAR", year);
@@ -365,6 +379,7 @@ export default {
         this.$store.commit("tr/SET_EXPMETH", []);
         this.$store.commit("tr/SET_WELLNAME", []);
         this.$store.commit("tr/SET_EVENT", []);
+        this.$store.commit("tr/SET_WELLSTATUSLD", []);
         this.axios
             .post(
                 this.postApiUrl + this.searchLink,
@@ -417,6 +432,7 @@ export default {
       this.$store.commit("tr/SET_WELLNAME", []);
       this.$store.commit("tr/SET_EVENT", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
+      this.$store.commit("tr/SET_WELLSTATUSLD", []);
       this.pageNumber = 1;
       this.pushChooseParameter();
     },
@@ -437,6 +453,8 @@ export default {
             this.$store.commit(x, []);
         } else if (x === 'tr/SET_EVENT') {
             this.$store.commit(x, []);            
+        } else if (x === 'tr/SET_WELLSTATUSLD') {
+          this.$store.commit(x, []);            
         } else {
             this.$store.commit("tr/SET_WELLNAME", []);
         };
@@ -460,7 +478,6 @@ export default {
       } else {
         this.requestFilter();
       }
-      this.checkFilter();
       this.getFilter();
     },
     axiosEdit() {
@@ -516,6 +533,7 @@ export default {
                     this.expMethFilterData = data.exp_meth;
                     this.wellNameFilterData = data.rus_wellname;
                     this.eventFilterData = data.planned_events;
+                    this.wellStatusLDFilterData = data.well_status_last_day;
                 } else {
                     console.log("No data");
                 }
@@ -828,6 +846,7 @@ export default {
             return true
         }
     },
+    
 
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
@@ -845,10 +864,15 @@ export default {
         this.loadPage();
         this.reRender();
     },
+    closeTotalModal(modalName) {
+      this.$modal.hide(modalName)
+  },
     addpush() {
         this.$modal.show('add_well')
     },
-
+    totalModal() {
+      this.$modal.show('total_modal')
+  },
     handlerSearch(search) {
         this.searchString = search;
     },
@@ -901,6 +925,23 @@ export default {
                 this.reRender();
             })
     },
+    summaryTotalModal() {
+      this.axios
+      .get(
+          this.postApiUrl + "techmode/pivot_table/" +
+        this.$store.state.tr.year + '/' +
+        this.$store.state.tr.month +'/',
+      )
+      .then((response) => {
+          let data = response.data;
+          if (data) {
+              this.all_summary_total = data.data;
+          } else {
+              console.log("No data");
+          }
+
+      });
+  },
     searchWell() {
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("globalloading/SET_LOADING", true);

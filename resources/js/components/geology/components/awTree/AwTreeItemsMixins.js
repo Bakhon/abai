@@ -4,7 +4,6 @@ export default {
     inject: [
         "selectItem",
         "settings",
-        "selected",
         "clickItem",
         "clickItemFn",
     ],

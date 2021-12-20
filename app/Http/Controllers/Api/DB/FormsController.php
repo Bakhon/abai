@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\DB;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Exceptions\JsonException;
 use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
@@ -76,6 +77,12 @@ class FormsController extends Controller
         $form->validateSingleTableField($parent, $field);
     }
 
+    public function uploadField(string $formName, string $field): void
+    {
+        $form = $this->getForm($formName);
+        $form->uploadSingleField($field);
+    }
+
     public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
@@ -87,6 +94,8 @@ class FormsController extends Controller
         $form = $this->getForm($formName);
         try {
             return $form->send();
+        } catch (JsonException $exception) {
+            return response()->json(['errors' => $exception->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (SubmitFormException $exception) {
             return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -119,7 +128,11 @@ class FormsController extends Controller
     public function getHistory(string $formName, Request $request): array
     {
         $form = $this->getForm($formName);
-        return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
+        return $form->getHistory(
+            $request->get('id'),
+            $request->get('form'),
+            Carbon::parse($request->get('date'))
+        );
     }
 
     public function copyFieldValue(string $formName, Request $request): JsonResponse

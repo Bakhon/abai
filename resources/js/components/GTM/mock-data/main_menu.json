@@ -25,7 +25,7 @@
         "url": "/paegtm"
       },
       {
-        "name": "Смежные графики",
+        "name": "Распределение неуспешных ГТМ",
         "component": {
           "name": "child-component",
           "template": "<div><gtm-aegtm-unsuccessful-distribution></gtm-aegtm-unsuccessful-distribution></div>",
@@ -33,6 +33,21 @@
         },
         "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
         "url": "/paegtm"
+      },
+      {
+        "name": "Анализ запускных параметров",
+        "component": {
+          "name": "child-component",
+          "template": "<div><gtm-aegtm-starting-parameters></gtm-aegtm-starting-parameters></div>",
+          "parentType": "aegtm"
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
+        "url": "/paegtm"
+      },
+      {
+        "name": "Смежные графики",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg"
       },
       {
         "name": "Выгрузка отчетности",
@@ -67,16 +82,6 @@
         "icon": "/img/GTM/icon_menu_forecast.svg"
       },
       {
-        "name": "Ранжирование кандидатов",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
-      {
-        "name": "Программа ГТМ",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
-      },
-      {
         "name": "Выгрузка отчетности",
         "component": null,
         "icon": "/img/GTM/icon_menu_export.svg"
@@ -84,64 +89,7 @@
     ]
   },
   {
-    "name": "Цифровой рейтинг новых скважин",
-    "icon": "/img/GTM/new_wells_rating.svg",
-    "parentType": "digitalRating",
-    "children": [
-      {
-        "name": "Прогноз эффективности (методика)",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_forecast.svg"
-      },
-      {
-        "name": "Ранжирование кандидатов",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
-      {
-        "name": "Программа бурения",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
-      },
-      {
-        "name": "Выгрузка отчетности",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_export.svg"
-      },
-      {
-        "name": "Отчет",
-        "component": {
-          "name": "child-component",
-          "template": "<div><digital-rating-report></digital-rating-report></div>",
-          "parentType": "digitalRating"
-        },
-        "icon": "/img/GTM/report_icon.svg",
-        "url": "/digital-rating/reports"
-      },
-      {
-        "name": "Карта секторов",
-        "component": {
-          "name": "child-component",
-          "template": "<div><section-maps></section-maps></div>",
-          "parentType": "digitalRating"
-        },
-        "icon": "/img/GTM/sector_icon.svg",
-        "url": "/digital-rating"
-      },
-      {
-        "name": "Сравнение фактических точек бурения с ПТД",
-        "component": {
-          "name": "child-component",
-          "template": "<div><compare-drilling></compare-drilling></div>",
-          "parentType": "digitalRating"
-        },
-        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
-        "url": "/digital-rating/compare-drilling"
-      }
-    ]
-  },
-  {
-    "name": "Планирование добычи и мониторинг",
+    "name": "Планирование программы ГТМ",
     "icon": "/img/GTM/production_planning.svg",
     "parentType": "productionPlanningAndMonitoring",
     "children": [
@@ -171,6 +119,52 @@
         "icon": "/img/GTM/icon_menu_export.svg"
       }
     ]
+  },
+  {
+    "name": "Цифровой рейтинг новых скважин",
+    "icon": "/img/GTM/new_wells_rating.svg",
+    "parentType": "digitalRating",
+    "children": [
+      {
+        "name": "Карта секторов",
+        "component": {
+          "name": "child-component",
+          "template": "<div><section-maps></section-maps></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/sector_icon.svg",
+        "url": "/digital-rating"
+      },
+      {
+        "name": "Сравнение фактических точек бурения с ПТД",
+        "component": {
+          "name": "child-component",
+          "template": "<div><compare-drilling></compare-drilling></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
+        "url": "/digital-rating/compare-drilling"
+      },
+      {
+        "name": "Отчет",
+        "component": {
+          "name": "child-component",
+          "template": "<div><digital-rating-report></digital-rating-report></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/report_icon.svg",
+        "url": "/digital-rating/reports"
+      },
+      {
+        "name": "Факторный анализ",
+        "component": {
+          "name": "child-component",
+          "template": "<div><factor-analysis></factor-analysis></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
+        "url": "/digital-rating/factor-analysis"
+      }
+    ]
   }
-
 ]

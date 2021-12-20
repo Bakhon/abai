@@ -1,6 +1,9 @@
 <template>
   <div
-      :class="`bd-form-field bd-form-field_${item.type}`"
+      :class="[
+        formatedValue.value && editable ? 'can-delete' : '',
+        `bd-form-field bd-form-field_${item.type}`
+      ]"
   >
     <template v-if="['text', 'numeric'].indexOf(item.type) > -1">
       <input
@@ -27,21 +30,26 @@
       </textarea>
     </template>
     <template v-else-if="item.type === 'list'">
-      <v-select
-          :value="value"
-          :options="item.values"
-          :name="item.code"
-          v-on:input="updateValue($event)"
-          label="name"
-      >
-        <template #open-indicator="{ attributes }">
-          <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                  stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </template>
-      </v-select>
-      <a v-if="formatedValue.value" class="clear-value" href="#" @click="updateValue(null)">x</a>
+      <template v-if="!editable">
+        <span>{{ formatedValue.value ? formatedValue.value.name : '' }}</span>
+      </template>
+      <template v-else>
+        <v-select
+            :name="item.code"
+            :options="item.values"
+            :value="value"
+            label="name"
+            v-on:input="updateValue($event)"
+        >
+          <template #open-indicator="{ attributes }">
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </template>
+        </v-select>
+        <a v-if="formatedValue.value" class="clear-value" href="#" @click="updateValue(null)">x</a>
+      </template>
     </template>
     <template v-else-if="item.type === 'radio'">
       <div class="radio-wrap" v-for="value in item.values">
@@ -66,7 +74,10 @@
       >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <template v-if="item.multiple">
+      <template v-if="!editable">
+        <span>{{ formatedValue.text }}</span>
+      </template>
+      <template v-else-if="item.multiple">
         <template v-if="item.is_editable === false">
           <span>{{ formatedValue ? formatedValue.map(value => value.text).join(',') : '' }}</span>
         </template>
@@ -152,7 +163,7 @@
           :id="id"
           :form="form"
           :params="item"
-          :values="value.value || value || null"
+          :values="typeof value !== 'undefined' ? (value.value || value) : null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>
@@ -195,13 +206,19 @@ export default {
     BigdataFileUploadField,
     BigdataCheckboxTableField
   },
-  props: [
-    'id',
-    'item',
-    'value',
-    'error',
-    'form'
-  ],
+  props: {
+    id: {
+      required: true
+    },
+    item: {},
+    value: {},
+    error: {},
+    form: {},
+    editable: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: function () {
     return {
       formatedValue: {
@@ -234,7 +251,11 @@ export default {
         return this.dict
       }
 
-      return this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      let result = this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      if (result.length === 0) {
+        result = this.dict.filter(item => item.org === null)
+      }
+      return result
     }
   },
   mounted() {
@@ -308,7 +329,7 @@ export default {
       if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
-          text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
+          text: value ? moment(value).format('DD.MM.YYYY HH:mm:ss') : null,
           value: value ? moment(value).format() : null
         }
       }
@@ -339,6 +360,10 @@ export default {
 .bd-form-field {
   max-width: 600px;
   position: relative;
+
+  &.can-delete {
+    margin-right: 25px;
+  }
 
   &_table {
     max-width: 100%;

@@ -133,7 +133,7 @@
                 let planOpecChartOptions = {
                     label: chartLabels.opecPlan,
                     borderColor: chartColors.opecPlan,
-                    fill: 1,
+                    fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     pointRadius: 0,
@@ -149,13 +149,15 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointHitRadius: this.pointHitRadius
                 };
-                let datasets = [planOpecChartOptions,planChartOptions,factChartOptions];
+                let datasets = [planChartOptions,planOpecChartOptions,factChartOptions];
+
                 if (isNaN(summaryOpek)) {
                     datasets = [planOpecChartOptions,factChartOptions];
                 }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planOpecChartOptions,planChartOptions,factChartOptions,monthlyPlan];
                 }
+
                 this.datasets = datasets;
                 this.labels = formattedChartSummary.labels;
 
@@ -222,9 +224,6 @@
                 if (item && this.isDecreaseReasonActive) {
                     let tickDate = moment(this.labels[item._index],'DD / MMM / YYYY');
                     this.reasons = await this.getDecreaseReasons(tickDate.format('DD.MM.YYYY'),this.selectedCompanies);
-                    if (tickDate < this.opecEndDate) {
-                        this.reasons = this.getUpdatedByOpekRestrictionReasons(this.reasons);
-                    }
                     this.$emit('chartReasons', this.reasons);
                 }
             },
@@ -246,9 +245,9 @@
                 let presentCompanies = Object.keys(this.reasons);
                 _.forEach(this.dzoWithOpekRestriction, (dzo) => {
                     if (presentCompanies.includes(dzo)) {
-                        this.reasons[dzo].push(this.trans('visualcenter.opekExplanationReason'));
+                        this.reasons[dzo].push([this.trans('visualcenter.opekExplanationReason'),null]);
                     } else {
-                        this.reasons[dzo] = [this.trans('visualcenter.opekExplanationReason')];
+                        this.reasons[dzo] = [[this.trans('visualcenter.opekExplanationReason'),null]];
                     }
                 });
                 return reasons;

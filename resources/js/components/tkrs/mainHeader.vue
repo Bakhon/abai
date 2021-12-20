@@ -2,7 +2,6 @@
   <div class="data-analysis-header">
     <MultiLevelDropdown
       v-for="heading in headerMenu"
-      :class="{ activeLink: heading.activeKey === headingKey }"
       :key="heading.name"
       :item="heading"
       :hover="hover"
@@ -35,6 +34,7 @@ export default {
               imagePath: "/img/tkrs/brigada_header.svg",
               showArrow: false,
               position: "right",
+              url: "tkrsMain",
             },
           ],
         },
@@ -51,6 +51,7 @@ export default {
               imagePath: "/img/tkrs/search_header.svg",
               showArrow: false,
               position: "right",
+              url: "hookWeightSensorAnalyse",
             },
           ],
         },

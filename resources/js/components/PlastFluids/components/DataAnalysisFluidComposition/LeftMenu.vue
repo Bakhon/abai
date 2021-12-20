@@ -1,67 +1,85 @@
 <template>
   <div class="data-analysis-panel">
-    <div class="main-content-holder">
-      <div class="settings-holder">
-        <div class="data-analysis-panel__title">
-          <i class="fas fa-cog" />
-          <span>Настройка</span>
-        </div>
-        <div class="data-analysis-panel__area">
+    <div class="content-holder">
+      <div class="content-heading">
+        <img
+          src="/img/PlastFluids/tableCustomization.svg"
+          alt="table settings"
+        />
+        <p>{{ trans("plast_fluids.composition_table") }}</p>
+      </div>
+      <div class="content">
+        <div class="table-content">
           <div
-            class="data-analysis-panel__area-setting map__table-area-settings"
+            class="table-input-holder"
+            v-for="property in compositionTable"
+            :key="property.key"
           >
-            <input type="radio" />
-            <label for="">Все по месторождению</label>
+            <input
+              :value="property.key"
+              v-model="selectedComposition"
+              type="radio"
+              :id="'composition-table-' + property.key"
+            />
+            <label :for="'composition-table-' + property.key">{{
+              property.label
+            }}</label>
           </div>
-          <div
-            class="data-analysis-panel__area-setting map__table-area-settings"
-          >
-            <input type="radio" />
-            <label for="">По Горизонту</label>
-          </div>
-        </div>
-      </div>
-      <div class="data-analysis-panel__title">
-        <i><img src="/img/PlastFluids/tableSettings.svg" alt=""/></i>
-        <span>Настройка таблицы</span>
-      </div>
-      <div class="data-analysis-panel__area">
-        <div class="data-analysis-panel__area-setting">
-          <input type="radio" checked />
-          <span>Состав пластовой нефти</span>
-        </div>
-        <div class="data-analysis-panel__area-setting">
-          <input type="radio" checked />
-          <span>Состав дегазированной нефти</span>
-        </div>
-      </div>
-      <div class="data-analysis-panel__area">
-        <div class="data-analysis-panel__area-setting">
-          <span>Единица измерения</span>
-          <Dropdown :items="pressures" dropKey="name" />
-        </div>
-      </div>
-      <div class="data-analysis-panel__area">
-        <div class="data-analysis-panel__area-header">
-          Вид таблицы
-        </div>
-        <div class="data-analysis-panel__area-setting type">
-          <input type="checkbox" />
-          <span class="ml-1">CN-Ln</span>
-        </div>
-        <div class="data-analysis-panel__area-setting">
-          <input type="checkbox" checked />
-          <span class="ml-1">XXK</span>
         </div>
       </div>
     </div>
-    <div
-      class="d-flex justify-content-around pb-10px data-analysis-panel__btns"
-    >
-      <button class="btn-button btn-button--thm-dark-blue">
-        <i class="fas fa-download pr-5px" />
-        <span>Выгрузить данные</span>
-      </button>
+    <div class="content-holder">
+      <div class="content-heading">
+        <img
+          src="/img/PlastFluids/mapsAndTablesSettings.svg"
+          alt="map settings"
+        />
+        <p>{{ trans("plast_fluids.settings") }}</p>
+      </div>
+      <div class="content">
+        <div class="settings-input-holder">
+          <p>{{ trans("plast_fluids.separation_type") }}</p>
+          <Dropdown
+            :items="separationTypes"
+            :dropKey="['name']"
+            :selectedValue="selectedSeparation.name"
+            @dropdown-select="updateSelectedSeparation"
+          />
+        </div>
+        <div class="settings-input-holder">
+          <p>{{ trans("plast_fluids.unit") }}</p>
+          <Dropdown
+            :items="units"
+            :dropKey="['name']"
+            :selectedValue="selectedUnit.name"
+            @dropdown-select="updateSelectedUnit"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="content-holder">
+      <div class="content-heading">
+        <img
+          src="/img/PlastFluids/graphsCustomization.svg"
+          alt="graphs customization"
+        />
+        <p>{{ trans("plast_fluids.composition_schedule") }}</p>
+      </div>
+      <div class="content">
+        <div class="graph-customization-input-holder">
+          <input
+            type="checkbox"
+            v-model="isGraphCustomizationPf"
+            id="graph-customization-plast-fluid"
+          /><label for="graph-customization-plast-fluid">{{
+            trans("plast_fluids.plast_fluid")
+          }}</label>
+        </div>
+        <div class="graph-customization-input-holder">
+          <p>{{ trans("plast_fluids.x_axis_limit_cn") }}</p>
+          <div><Dropdown style="margin-bottom: 0" /></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -70,148 +88,169 @@
 import Dropdown from "../Dropdown.vue";
 
 export default {
-  name: "DataAnalysisFluidCompositionPanel",
+  name: "DataAnalysisFluidCompositionLeftMenu",
   components: {
     Dropdown,
   },
-
   data() {
     return {
-      pressures: [
-        { name: "Инфо1" },
-        { name: "Инфо2" },
-        { name: "Инфо3" },
-        { name: "Инфо4" },
+      selectedComposition: "plastFluid",
+      compositionTable: [
+        {
+          label: this.trans("plast_fluids.plast_fluid"),
+          key: "plastFluid",
+        },
+        {
+          label: this.trans("plast_fluids.separation_fluid"),
+          key: "separationFluid",
+        },
+        {
+          label: this.trans("plast_fluids.separation_gas"),
+          key: "gasSeparation",
+        },
       ],
+      separationTypes: [
+        {
+          name: this.trans("plast_fluids.standart"),
+        },
+        { name: this.trans("plast_fluids.stepped") },
+        { name: this.trans("plast_fluids.differential") },
+      ],
+      selectedSeparation: { name: this.trans("plast_fluids.standart") },
+      units: [
+        { name: this.trans("plast_fluids.mole") + ".%" },
+        { name: this.trans("plast_fluids.mass") + ".%" },
+      ],
+      selectedUnit: { name: this.trans("plast_fluids.mole") + ".%" },
+      isGraphCustomizationPf: false,
     };
+  },
+  methods: {
+    updateSelectedSeparation(value) {
+      this.selectedSeparation = value;
+    },
+    updateSelectedUnit(value) {
+      this.selectedUnit = value;
+    },
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .data-analysis-panel {
   display: flex;
   flex-flow: column;
-  justify-content: space-between;
   background: #272953;
   width: 100%;
   height: 100%;
 }
-.data-analysis-panel__title {
-  font-size: 16px;
-  padding: 7px 15px;
-  background: #323370;
-  i {
-    color: #868bb2;
-    margin-right: 8px;
-  }
-  .fa-sliders-h {
-    transform: rotate(90deg);
-  }
-}
 
-.settings-holder {
+.content-holder {
+  width: 100%;
   margin-bottom: 10px;
 }
 
-.data-analysis-panel__area {
-  padding: 4px 8px;
+.content-heading {
+  width: 100%;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  background-color: #323370;
 }
 
-.data-analysis-panel__area-setting {
+.content-heading > img {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.content-heading > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.content {
+  padding: 6px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.table-content {
+  width: 100%;
+  border: 1px solid #545580;
   background: #363b68;
-  padding: 8px;
+  padding: 8px 10px;
 }
 
-input[type="checkbox"] {
-  transform: scale(1.4);
+.table-input-holder {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.table-input-holder:last-of-type {
+  margin-bottom: 0;
+}
+
+.table-input-holder > input {
+  margin-right: 10px;
   cursor: pointer;
 }
 
-.list {
-  margin-bottom: 0;
-  li {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    line-height: 2;
-    label {
-      margin-bottom: 0;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-  }
+.table-input-holder > label {
+  margin: 0;
+  font-size: 12px;
 }
 
-.data-analysis__input {
-  background: rgba(31, 33, 66, 0.4);
-  border: 0.5px solid #454fa1;
-  border-radius: 2px;
-  outline: none;
-  min-width: 186px;
-  padding: 4px 8px;
-  color: #fff;
+.settings-input-holder {
+  padding: 8px 6px;
+  background: #363b68;
+  border: 1px solid #545580;
 }
 
-.data-analysis-panel__btns {
-  width: 100%;
-  padding: 0 6px;
+.settings-input-holder:nth-of-type(1) {
+  margin-bottom: 6px;
 }
 
-.data-analysis-panel__btns > button {
+.settings-input-holder > p {
   font-size: 14px;
-  padding: 10px 7px;
-  width: 100%;
+  color: #fff;
+  margin: 0 0 6px 4px;
 }
 
-.data-analysis-dropdown__body {
-  padding: 0 !important;
-}
-
-.pressure__dropdown ul li:hover {
-  background-color: #3366ff;
-}
-
-.data-analysis-panel__area-header {
-  padding: 8px 10px;
-  background: rgba(50, 51, 112, 0.4);
-  border: 1px solid #545580;
-}
-
-.data-analysis-panel__area-setting:first-child {
-  border: 1px solid #545580;
-  border-bottom: 0;
-}
-
-.data-analysis-panel__area-setting:last-child {
-  border: 1px solid #545580;
-  border-top: 0;
-}
-
-.data-analysis-panel__area-setting.type {
-  border-right: 1px solid #545580;
-  border-left: 1px solid #545580;
-}
-
-.map__table-area-settings {
+.graph-customization-input-holder {
   display: flex;
   align-items: center;
-  background: #1d3583;
-  border: 1px solid #545580;
+  border: 0.5px solid #545580;
+  background: #363b68;
 }
 
-.map__table-area-settings label {
-  margin: 0 0 0 7px;
-  display: block;
+.graph-customization-input-holder:nth-of-type(1) {
+  padding: 8px 10px;
+  margin-bottom: 4px;
 }
 
-.data-analysis__input {
-  background: rgba(31, 33, 66, 0.4);
-  border: 0.5px solid #454fa1;
-  border-radius: 2px;
-  outline: none;
-  min-width: 186px;
-  padding: 4px 8px;
-  color: #fff;
+.graph-customization-input-holder:nth-of-type(2) {
+  padding: 6px 8px;
+  justify-content: space-between;
+}
+
+.graph-customization-input-holder:nth-of-type(2) > p {
+  margin: 0;
+  margin-left: 2px;
+}
+
+.graph-customization-input-holder > input {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.graph-customization-input-holder > label {
+  margin: 0;
+  font-size: 12px;
+}
+
+.graph-customization-input-holder > div {
+  width: 120px;
 }
 </style>

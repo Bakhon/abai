@@ -5,6 +5,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Http\UploadedFile;
 
 class PolygonsService
@@ -46,4 +47,43 @@ class PolygonsService
         ])->getBody()->getContents();
     }
 
+    public function convertCoords(array $coords, string $dzoCode, string $conversionType): array {
+        return json_decode($this->client->request('POST', '/coordinates/conversion', [
+            RequestOptions::BODY => json_encode($coords),
+            'query' => http_build_query([
+                'dzo' => $dzoCode,
+                'conversion_type' => $conversionType,
+            ]),
+        ])->getBody()->getContents());
+    }
+
+    public function getDataFromExcel(UploadedFile $file): array {
+        return json_decode($this->client->request('POST', '/bubblemaps/data_from_excel', [
+            'multipart' => [[
+                'name' => 'file',
+                'contents' => Utils::tryFopen($file->path(), 'r'),
+                'filename' => $file->getClientOriginalName()
+            ]],
+        ])->getBody()->getContents());
+    }
+
+    public function getInterpolationData(array $files, array $params): array {
+        return json_decode($this->client->request('POST', '/polygons/interpolator', [
+            'multipart' => $files,
+            'query' => http_build_query($params),
+        ])->getBody()->getContents(), true);
+    }
+
+    public function getGridByBase64($base64Data, $selectedFilterType, $selectedFilterValue): array {
+        $type = 'number_of_levels';
+        if ((int)$selectedFilterType === 1) {
+            $type = 'step';
+        }
+        return json_decode($this->client->request('POST', '/polygons/base64gridmap', [
+            RequestOptions::BODY => json_encode($base64Data),
+            'query' => http_build_query([
+                $type => (int)$selectedFilterValue,
+            ]),
+        ])->getBody()->getContents(), true);
+    }
 }

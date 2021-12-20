@@ -1,14 +1,15 @@
 <template>
   <div class="all-contents">
     <div class="well-card_tab-head d-flex" :style="{ width: tabWidth + 'px' }" >
-      <div class="wells-history-title col-2">История скважин:</div>
       <div
-              v-for="(well,index) in wellsHistory"
-              :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
-              @click="handleSelectHistoryWell(well)"
+          v-for="(well,index) in wellsHistory"
+          :class="wellUwi === well.wellUwi ? 'well-card_tab-head__item selected-well col-2' : 'well-card_tab-head__item col-2'"
       >
-          {{well.wellUwi}}
-          <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"></span>
+        <div @click="handleSelectHistoryWell(well)">
+          {{ well.wellUwi }} {{ well.lastFormInfo ? ' | ' + well.lastFormInfo.name : '' }}
+        </div>
+        <span class="well-card_tab-head__item--close" @click="handleDeleteWell(index)"
+              v-if="wellsHistory.length > 1"></span>
       </div>
     </div>
     <div class="well-card__wrapper">
@@ -17,27 +18,8 @@
         class="left-column"
       >
         <div class="well-deal__header">
-          {{ this.trans("well.well_passport") }}
+          {{ this.trans("well.case_well") }}
         </div>
-        <form action="" class="search-bd">
-          <button class="search-btn-bd">
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 11 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z"
-                fill="#9EA4C9"
-              />
-            </svg>
-          </button>
-          <input type="text" class="search-input-bd" placeholder="Поиск" />
-        </form>
         <div class="directory text-white bg-dark">
           <ul id="myUL">
             <well-card-tree
@@ -101,71 +83,109 @@
           }"
         >
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
-            <div class="row">
-              <div class="middle-block-head">
-                <div class="transparent-select">
-                  {{ this.trans("well.well") }}:
-                  <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+            <div
+                    :class="[getWidthByColumns(),'middle-block-head d-flex well-info_header bg-dark-transparent']"
+            >
+              <div class="transparent-select">
+                {{ this.trans("well.well") }}:
+                <span v-if="wellUwi">{{ wellUwi }}</span>
+                <svg data-v-5d3113ed="" fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path data-v-5d3113ed="" d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+              </div>
+              <form class="search-form d-flex align-items-center">
+                <select
+                  class="select-dzo mr-2"
+                  v-if="dzoSelectOptions.length > 0"
+                  @change="dzoSelectChange($event)"
+                >
+                  <option value="0" selected>
+                    {{ this.trans("well.all_dzo") }}
+                  </option>
+                  <option
+                    v-for="(dzoSelectOption, index) in dzoSelectOptions"
+                    :value="dzoSelectOption['id']"
+                  >
+                    {{ dzoSelectOption["name"] }}
+                  </option>
+                </select>
+                <v-select
+                  class="flex-fill"
+                  :filterable="false"
+                  :options="options"
+                  :placeholder="this.trans('well.number_well')"
+                  @input="selectWell"
+                  @search="onSearch"
+                >
+                  <template slot="option" slot-scope="option">
+                    <span>{{ option.name }}</span>
+                  </template>
+                </v-select>
+              </form>
+              <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/help.svg" alt="">
+                  <a class="text-white cursor-pointer">Легенда</a>
                 </div>
-                <form class="search-form d-flex align-items-center">
-                  <select
-                    class="select-dzo mr-2"
-                    v-if="dzoSelectOptions.length > 0"
-                    @change="dzoSelectChange($event)"
-                  >
-                    <option value="0" selected>
-                      {{ this.trans("well.all_dzo") }}
-                    </option>
-                    <option
-                      v-for="(dzoSelectOption, index) in dzoSelectOptions"
-                      :value="dzoSelectOption['id']"
-                    >
-                      {{ dzoSelectOption["name"] }}
-                    </option>
-                  </select>
-                  <v-select
-                    class="flex-fill"
-                    :filterable="false"
-                    :options="options"
-                    :placeholder="this.trans('well.number_well')"
-                    @input="selectWell"
-                    @search="onSearch"
-                  >
-                    <template slot="option" slot-scope="option">
-                      <span>{{ option.name }}</span>
-                    </template>
-                  </v-select>
-                </form>
-                <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block">
-                  <div class="button-block__item">
-                    Легенда
-                  </div>
-                  <div class="button-block__item">
-                    График
-                  </div>
-                  <div
-                          v-if="isProductionWellsHistoricalVisible || isInjectionWellsHistoricalVisible"
-                          class="button-block__item"
-                  >
-                          Сформировать
-                  </div>
-                  <div
-                          v-else
-                          class="button-block__item"
+                <div class="p-1 ml-2 d-flex align-items-center">
+                  <img class="pr-1" src="/img/icons/chart.svg" alt="">
+                  <a class="text-white cursor-pointer"
+                     @click="$refs.childForm.switchChartVisibility()">Показать график
+                  </a>
+                </div>
+                <div
+                        v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
+                        class="p-1 ml-2 d-flex align-items-center"
+                >
+                  <img class="pr-1" src="/img/bd/historical_icon.svg" alt="">
+                  <a
+                          class="text-white cursor-pointer"
                           @click="[activeFormComponentName === 'ProductionWellsScheduleMain' ? SET_VISIBLE_PRODUCTION(true) : SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)]"
                   >
                     Исторические сведения
-                  </div>
+                  </a>
+                </div>
+                <button
+                        type="button"
+                        data-toggle="dropdown"
+                        class="icon-filter"
+                ></button>
+                <div>
+                  <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1 p-1">
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                        <img class="pr-1" src="/img/bd/hide-column.svg" alt="">
+                        <a class="text-white cursor-pointer ml-1"
+                           @click="$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',false)">Скрыть столбцы замеров
+                        </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/hide-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="$refs.childForm.switchColumnsVisibility('isExpanded',false)">Скрыть месяца замеров
+                      </a>
+                    </li>
+                    <li
+                            class="p-1 ml-2 d-flex align-items-center"
+                    >
+                      <img class="pr-1" src="/img/bd/show-all.svg" alt="">
+                      <a class="text-white cursor-pointer ml-1"
+                         @click="[$refs.childForm.switchColumnsVisibility('isExpanded',true),$refs.childForm.switchColumnsVisibility('isHorizontalExpanded',true)]">Показать все
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-            <div v-if="wellUwi" class="mid-col__main_row">
+            <div v-if="wellUwi" class="mid-col__main_row pt__40">
               <div v-if="activeFormComponentName">
                 <div
                   :is="activeFormComponentName"
                   :well="well"
                   :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  :selectedDzo="selectedDzo"
+                  ref="childForm"
                 ></div>
               </div>
               <div
@@ -173,9 +193,11 @@
                 class="col table-wrapper"
               >
                 <BigDataPlainFormResult
-                  v-if="activeForm.type === 'plain'"
-                  :code="activeForm.code"
-                  :well-id="this.well.id"
+                    v-if="activeForm.type === 'plain'"
+                    :code="activeForm.code"
+                    :params="activeForm"
+                    :well-id="this.well.id"
+                    type="well"
                 ></BigDataPlainFormResult>
                 <BigDataTableFormWrapper
                   v-else-if="activeForm.type === 'table'"
@@ -225,7 +247,7 @@
                       <p>
                         {{ this.trans("well.category_well") }}:
                         <span v-if="well.category">
-                          {{ well.category.name_ru }}
+                          {{ well.category_last.name_ru }}
                         </span>
                       </p>
                       <div class="title">{{ this.trans("well.binding") }}</div>
@@ -281,7 +303,7 @@
               <div class="heading">
                 <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
               </div>
-              <div v-if="wellUwi" class="sheare-icon">
+              <div v-if="wellUwi" class="sheare-icon" @click="ExportToExcel('xlsx')">
                 <svg
                   width="20"
                   height="20"
@@ -316,8 +338,8 @@
               {{ this.trans("well.well_passport") }}
             </div>
             <div class="info-element">
-            
-              <table v-if="wellUwi">
+
+              <table v-if="wellUwi" id="tbl_exporttable_to_xls">
                 <tr v-for="(item, index) in this.tableData">
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.name }}</td>
@@ -350,10 +372,12 @@
       <InjectionHistoricalData
         v-if="isInjectionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
         v-if="isProductionWellsHistoricalVisible"
         :changeColumnsVisible="changeColumnsVisible()"
+        :wellExplDate="this.well.date_expl.dbeg"
       ></ProductionHistoricalData>
     </div>
   </div>
@@ -369,11 +393,7 @@ import moment from "moment";
 import WellCardTree from "./WellCardTree";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
-import {
-  bigdatahistoricalVisibleState,
-  globalloadingMutations,
-  bigdatahistoricalVisibleMutations
-} from "@store/helpers";
+import {bigdatahistoricalVisibleMutations, bigdatahistoricalVisibleState, globalloadingMutations} from "@store/helpers";
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
@@ -423,10 +443,11 @@ export default {
       wellUwi: null,
       well: {
         id: null,
+        depthLow: {value_double: null},
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
-        categoryLast: { name_ru: null },
+        category_last: { name_ru: null },
         expl: { dbeg: null, name_ru: null },
         expl_right: { dbeg: null, name_ru: null },
         techs: null,
@@ -437,7 +458,7 @@ export default {
         whc_alt: null,
         org: null,
         geo: { name_ru: null },
-        tubeNom: null,
+        tubeNom: {nd: null},
         measLiq: null,
         meas_water_inj: null,
         tech_mode_inj: null,
@@ -450,29 +471,30 @@ export default {
         treatmentDate: { treat_date: null },
         actualBottomHole: null,
         artificialBottomHole: null,
-        perfActual: { top: null, base: null, dbeg: null },
+        perfActual: { top: null, base: null, perf_date: null },
         wellInfo: { rte: null },
         date_expl: { dbeg: null, name_ru: null },
         treatmentSko: { treat_date: null },
-        dmart_daily_prod_oil: { oil: null },
-        dinzamer: { value_double: null },
-        gdisCurrent: { meas_date: null, note: null },
-        gdisConclusion: { name_ru: null },
-        gdisCurrentValue: { value_double: null },
-        gdisCurrentValuePmpr: { value_double: null },
-        gdisCurrentValueFlvl: { value_double: null },
-        gdisCurrentValueStatic: { value_double: null },
-        gdisCurrentValueRp: { value_double: null, meas_date: null },
-        gdisComplex: { value_double: null, dbeg: null, value_string: null },
-        gis: { gis_date: null },
-        gdisCurrentValueBhp: { value_double: null, meas_date: null },
-        zone: { name_ru: null },
-        wellReactInfl: { well_reacting: null, well_influencing: null },
-        gtm: { dbeg: null },
-        rzatrStat: { value_double: null },
-        rzatrAtm: { value_double: null },
-        gu: { name_ru: null },
-        agms: { name_ru: null },
+        dmart_daily_prod_oil: {oil: null},
+        dinzamer: {value_double: null},
+        gdisCurrent: {meas_date: null, note: null},
+        gdisConclusion: {name_ru: null},
+        gdisCurrentValue: {value_double: null},
+        gdisCurrentValuePmpr: {value_double: null},
+        gdisCurrentValueFlvl: {value_double: null},
+        gdisCurrentValueStatic: {value_double: null},
+        gdisCurrentValueRp: {value_double: null, meas_date: null},
+        gdisComplex: {value_double: null, dbeg: null, value_string: null},
+        techmode: {well: null, date: null, bhp: null, p_res: null},
+        gis: {gis_date: null},
+        gdisCurrentValueBhp: {value_double: null, meas_date: null},
+        zone: {name_ru: null},
+        wellReactInfl: {well_reacting: null, well_influencing: null},
+        gtm: {dbeg: null},
+        rzatrStat: {value_double: null},
+        rzatrAtm: {value_double: null},
+        gu: {name_ru: null},
+        agms: {name_ru: null},
         well_equip_param: {
           value_double: null,
           value_string: null,
@@ -482,6 +504,7 @@ export default {
           value_double: null,
           value_string: null,
           equip_param: null,
+          value_text: null,
         },
         diametr_pump: {
           value_double: null,
@@ -493,11 +516,22 @@ export default {
           value_string: null,
           equip_param: null,
         },
-        type_sk: { value_double: null, value_string: null, equip_param: null },
+        depth_paker: {
+          value_double: null,
+        },
+        pump_capacity: {
+          value_double: null,
+        },
+        tubeNomDop: {od: null},
+        type_sk: {value_double: null, value_string: null, equip_param: null, value_text: null},
         wellDailyDrill: {dbeg: null, dend: null},
+        meas_well: {dbeg: null, value_double: null},
+        diametr_stuzer: {prm: null, value_double: null}, value_text: null,
+        dailyInjectionOil: {water_inj_val: null, pressure_inj: null, pump_stroke: null, choke: null, water_vol: null},
+        diameter_pump: {value_double: null},
+        well_block: {name_ru: null}
       },
       wellParent: null,
-      tubeNomOd: null,
       wellTechs: null,
       wellTechsName: null,
       wellTechsTap: null,
@@ -508,12 +542,13 @@ export default {
       wellSaptialObjectBottomY: null,
       wellTransform: {
         name: "wellInfo.uwi",
+        depthLow: "depthLow",
         wellInfo: "wellInfo",
         whc_alt: "whc_alt",
         measWaterCut: "meas_water_cut",
         status: "status",
         category: "category",
-        categoryLast: "category_last",
+        category_last: "category_last",
         expl: "well_expl",
         expl_right: "well_expl_right",
         techs: "techs",
@@ -523,10 +558,11 @@ export default {
         dmart_daily_prod_oil: "dmart_daily_prod_oil",
         org: "org",
         geo: "geo",
-        tubeNom: "tube_nom",
+        tubeNom: "tubeNom",
         dinzamer: "dinzamer",
         date_expl: "date_expl",
         measLiq: "measLiq",
+        pump_capacity: "pump_capacity",
         meas_water_inj: "meas_water_inj",
         tech_mode_inj: "tech_mode_inj",
         techModeProdOil: "techModeProdOil",
@@ -560,9 +596,17 @@ export default {
         well_equip_param: "well_equip_param",
         pump_code: "pump_code",
         diametr_pump: "diametr_pump",
-        depth_nkt: "depth_nkt",
+        depth_paker: "depth_paker",
         type_sk: "type_sk",
         wellDailyDrill: "wellDailyDrill",
+        meas_well: "meas_well",
+        techmode: "techmode",
+        diametr_stuzer: "diametr_stuzer",
+        dailyInjectionOil: "dailyInjectionOil",
+        diameter_pump: "diameter_pump",
+        well_block: "well_block",
+        depth_nkt: "depth_nkt",
+        tubeNomDop: "tubeNomDop",
       },
       formsStructure: {},
       dzoSelectOptions: [],
@@ -587,7 +631,9 @@ export default {
       },
       wellsHistory: [],
       tabWidth:0,
-      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain']
+      measurementScheduleForms: ['ProductionWellsScheduleMain','InjectionWellsScheduleMain'],
+      maximumWellsCount: 10,
+      selectedDzo: null
     };
   },
   mounted() {
@@ -609,6 +655,12 @@ export default {
           this.dzoSelectOptions = data.organizations;
         }
       });
+      let urlParams = new URLSearchParams(window.location.search);
+      let wellId = urlParams.get('wellId');
+      let wellUwi = urlParams.get('wellName');
+      if (wellId !== null && wellUwi !== null) {
+        this.selectWell({'id':wellId,'name':wellUwi})
+      }
   },
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
@@ -627,6 +679,13 @@ export default {
         this.isBothColumnFolded = false;
       }
     },
+    ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('tbl_exporttable_to_xls');
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('WellCard.' + (type || 'xlsx')));
+        },
     onSearch(search, loading) {
       if (search.length) {
         loading(true);
@@ -652,18 +711,14 @@ export default {
       let wellGeoFields = this.wellGeoFields ? this.wellGeoFields.name_ru : "";
       let neighbors =
         this.wellGeo.name_ru && this.well.labResearchValue.value_double
-          ? this.wellGeo.name_ru + "/" + this.well.labResearchValue.value_double
+          ? this.wellGeo.name_ru + "/ " + (this.well.labResearchValue.value_double * 9.869).toFixed(1)
           : this.wellGeo
           ? this.wellGeo.name_ru + " / " + "-"
           : this.well.labResearchValue
           ? this.well.labResearchValue
           : "";
       let wellInfo = this.well.wellInfo ? this.well.wellInfo.rte : "";
-      let wellrot = this.well.wellInfo && (this.well.wellInfo.whc_alt || this.well.wellInfo.whc_h)
-        ? this.well.wellInfo.whc_alt.toFixed(1) +
-          " / " +
-          this.well.wellInfo.whc_h.toFixed(1)
-        : "";
+      let wellrot = this.getHrotor(well);
       let wellTechsName = this.wellTechsName ? this.wellTechsName : "";
       let tap = this.well.tap ? this.well.tap.tap : "";
       let gu_agsu =
@@ -674,6 +729,7 @@ export default {
           : this.well.agms.name_ru
           ? this.well.agms.name_ru
           : "";
+      let horizont = this.wellGeo.name_ru ? this.wellGeo.name_ru : "";
       let wellOrgName = this.wellOrgName ? this.wellOrgName : "";
       let well_zone = this.well.zone ? this.well.zone.name_ru : "";
       let wellReactReacting = this.well.wellReactInfl.well_reacting
@@ -695,60 +751,47 @@ export default {
         ? this.wellSaptialObjectBottomY
         : "";
       let well_category = this.well.category ? this.well.category.name_ru : "";
-      let categoryLast = this.well.categoryLast
-        ? this.well.categoryLast.name_ru
-        : "";
-      let period_bur = this.well.wellDailyDrill.dbeg && this.well.wellDailyDrill.dend
-          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg) +
-            " - " +
-            this.getFormatedDate(this.well.wellDailyDrill.dend)
-          : this.well.wellDailyDrill.dbeg
-          ? this.getFormatedDate(this.well.wellDailyDrill.dbeg)
-          : this.well.wellDailyDrill.dend
-          ? this.getFormatedDate(this.well.wellDailyDrill.dend)
-          : "";         
+      let categoryLast = this.well.category_last
+          ? this.well.category_last.name_ru
+          : "";
+      let period_bur = this.well.wellInfo.drill_start_date && this.well.wellInfo.drill_end_date
+          ? this.getFormatedDate(this.well.wellInfo.drill_start_date) +
+          " - " +
+          this.getFormatedDate(this.well.wellInfo.drill_end_date)
+          : this.well.wellInfo.drill_start_date
+              ? this.getFormatedDate(this.well.wellInfo.drill_start_date)
+              : this.well.wellInfo.drill_end_date
+                  ? this.getFormatedDate(this.well.wellInfo.drill_end_date)
+                  : "";
       let wellExpl = this.well.expl
-        ? this.getFormatedDate(this.well.expl.dbeg)
-        : "";
+          ? this.getFormatedDate(this.well.expl.dbeg)
+          : "";
       let wellDateExpl = this.well.date_expl
         ? this.getFormatedDate(this.well.date_expl.dbeg)
         : "";
       let well_status = this.well.status ? this.well.status.name_ru : "";
       let well_expl_name = this.well.expl_right ? this.well.expl_right.name_ru : "";
-      let tubeNomOd = this.tubeNomOd ? this.tubeNomOd : "";
       let actualBottomHole = this.well.actualBottomHole
-        ? this.well.actualBottomHole.depth +
+          ? this.well.actualBottomHole.depth +
           " / (" +
           this.getFormatedDate(this.well.actualBottomHole.data) +
           ")"
-        : "";
+          : "";
       let artificialBottomHole = this.well.artificialBottomHole
         ? this.well.artificialBottomHole.depth
         : "";
-      let perfActual =
-        this.well.perfActual.top && this.well.perfActual.base
-          ? this.well.perfActual.top + " - " + this.well.perfActual.base
-          : ""; 
-      let techModeProdOil =
-        this.well.techModeProdOil && this.well.measLiq
-          ? this.well.techModeProdOil.liquid +
-            " / " +
-            this.well.measLiq.liquid.toFixed(1)
-          : this.well.techModeProdOil
-          ? this.well.techModeProdOil.liquid
-          : this.well.measLiq
-          ? this.well.measLiq
-          : "";
+      let perfActual = this.perfActual ? this.perfActual : "";
+      let techModeProdOil = this.getTechmodeLiqiud(well);
       let techModeProdOil_measWaterCut =
-        this.well?.techModeProdOil?.wcut && this.well?.measWaterCut?.water_cut
-          ? this.well.techModeProdOil.wcut +
-            " / " +
-            this.well.measWaterCut.water_cut
-          : this.well?.techModeProdOil?.wcut
-          ? this.well.techModeProdOil.wcut
-          : this.well?.measWaterCut?.water_cut
-          ? this.well.measWaterCut.water_cut
-          : "";
+          this.well?.techModeProdOil?.wcut && this.well?.dmart_daily_prod_oil?.wcut
+              ? this.well.techModeProdOil.wcut +
+              " / " +
+              this.well.dmart_daily_prod_oil.wcut
+              : this.well?.techModeProdOil?.wcut
+                  ? this.well.techModeProdOil.wcut
+                  : this.well?.dmart_daily_prod_oil?.wcut
+                      ? this.well.dmart_daily_prod_oil.wcut
+                      : "";
       let krsWorkover = this.well.krsWorkover.dbeg
         ? this.getFormatedDate(this.well.krsWorkover.dbeg)
         : "";
@@ -770,8 +813,8 @@ export default {
       let well_gis = this.well.gis.gis_date
         ? this.getFormatedDate(this.well.gis.gis_date)
         : "";
-      let well_gdisCurrent2 = this.well.gdisCurrent.meas_date
-        ? this.getFormatedDate(this.well.gdisCurrent.meas_date)
+      let well_gdisCurrent2 = this.well.gis.gis_date
+        ? this.getFormatedDate(this.well.gis.gis_date)
         : "";
       let gdisConclusion = this.well.gdisConclusion.name_ru
         ? this.well.gdisConclusion.name_ru
@@ -782,75 +825,68 @@ export default {
       let gdisCurrentValuePmpr = this.well.gdisCurrentValuePmpr.value_double
         ? this.well.gdisCurrentValuePmpr.value_double
         : "";
-      let gdisCurrentValueFlvl = this.well.dinzamer.value_double
-        ? this.well.dinzamer.value_double
-        : "";
-      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double
-        ? this.well.gdisCurrentValueStatic.value_double
-        : "";
+      let gdisCurrentValueFlvl = this.well.dmart_daily_prod_oil.hdin && this.well.dmart_daily_prod_oil.date
+          ? this.well.dmart_daily_prod_oil.hdin + " / " + this.getFormatedDate(this.well.dmart_daily_prod_oil.date)
+          : "";
+      let gdisCurrentValueStatic = this.well.gdisCurrentValueStatic.value_double + this.well.gdisCurrentValueStatic.meas_date
+          ? this.well.gdisCurrentValueStatic.value_double + this.getFormatedDate(this.well.gdisCurrentValueStatic.meas_date)
+          : "";
       let gdisCurrentValueRp = this.well.gdisCurrentValueRp.value_double
-        ? this.well.gdisCurrentValueRp.value_double +
+          ? this.well.gdisCurrentValueRp.value_double +
           "/" +
           this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date)
-        : "";
+          : "";
       let gdisComplex =
         this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg
           ? this.well.gdisComplex.value_string.toFixed(1) +
             " / " +
             this.getFormatedDate(this.well.gdisComplex.dbeg)
-          : this.well.gdisComplex.value_string
-          ? this.well.gdisComplex.value_string.toFixed(1)
-          : this.well.gdisComplex.dbeg
-          ? this.getFormatedDate(this.well.gdisComplex.dbeg)
-          : "";
-      let rzatrAtm = this.well.rzatrAtm ? this.well.rzatrAtm.value_double : "";
+            : this.well.gdisComplex.value_string
+                ? this.well.gdisComplex.value_string.toFixed(1)
+                : this.well.gdisComplex.dbeg
+                    ? this.getFormatedDate(this.well.gdisComplex.dbeg)
+                    : "";
+      let rzatrAtm = this.well.dmart_daily_prod_oil ? this.well.dmart_daily_prod_oil.pzat : "";
       let gdisCurrent_note = this.well.gdisCurrent.note
-        ? this.well.gdisCurrent.note
-        : "";
-      let gdisCurrentValueBhp =
-        this.well.gdisCurrentValueBhp.value_double &&
-        this.well.gdisCurrentValueBhp.meas_date
-          ? this.well.gdisCurrentValueBhp.value_double +
-            "/" +
-            "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
-          : this.well.gdisCurrentValueBhp.value_double
-          ? this.well.gdisCurrentValueBhp.value_double
-          : this.well.gdisCurrentValueBhp.meas_date
-          ? "(" +
-            this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) +
-            ")"
+          ? this.well.gdisCurrent.note
           : "";
-
+      let gdisCurrentValueBhp = this.well.techmode.value_string && this.well.techmode.dbeg
+          ? this.well.techmode.value_string.toFixed(1) + ' / ' + this.getFormatedDate(this.well.techmode.dbeg) : "";
       let rzatrStat = this.well.rzatrStat.value_double
-        ? this.well.rzatrStat.value_double
-        : "";
+          ? this.well.rzatrStat.value_double
+          : "";
       let injPressure = this.getInjPressure(well);
-      let agentVol = (this.well.tech_mode_inj || this.well.meas_water_inj) && this.well.meas_water_inj.water_inj_val
-        ? this.well.tech_mode_inj.agent_vol +
-        " / " +
-        this.well.meas_water_inj.water_inj_val.toFixed(1)
-        : "";
-      let perfActualDate = this.well.perfActual
-        ? this.getFormatedDate(this.well.perfActual.dbeg)
-        : "";
-      let category_id = this.well.categoryLast.pivot ? this.well.categoryLast.pivot.category : '';
+      let agentVol = (this.well.tech_mode_inj || this.well.dailyInjectionOil) && this.well.dailyInjectionOil.water_inj_val
+          ? this.well.tech_mode_inj.agent_vol +
+          " / " +
+          this.well.dailyInjectionOil.water_inj_val.toFixed(1)
+          : "";
+      let perfActualDate = this.perfActual ? this.getFormatedDate(this.perf_date) : "";
+      let category_id = this.well.category_last.pivot ? this.well.category_last.pivot.category : '';
       let main_org_code = this.well_all_data.main_org_code;
+      this.selectedDzo = this.well_all_data.main_org_code;
       let techModeProdOil_measWaterCut2 = this.getTechmodeOil(well);
       let well_equip_param = this.well.well_equip_param
         ? this.well.well_equip_param.value_string
         : "";
+      let depthLow = this.well.depthLow ? this.well.depthLow.value_double : "";
       let pump_code = this.well.pump_code
-        ? this.well.pump_code.value_string
+        ? this.well.pump_code.value_text
         : "";
-      let diameter_pump = this.well.diametr_pump
-        ? this.well.diametr_pump.value_string
+      let diameter_pump = this.well.diameter_pump
+        ? this.well.diameter_pump.value_double
         : "";
-      let depth_nkt = this.well.depth_nkt
-        ? this.well.depth_nkt.value_string
+      let depth_paker = this.well.depth_paker
+        ? this.well.depth_paker.value_double
         : "";
-      let type_sk = this.well.type_sk ? this.well.type_sk.value_string : "";
+      let type_sk = this.well.type_sk ? this.well.type_sk.value_text : "";
+      let meas_well = this.well.meas_well ? this.well.meas_well.value_double : "";
+      let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";
+      let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
+      let tubeNomOd = this.getTubeNom(well);
+      let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
+      let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
+      let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
       this.well_passport = [
         {
           name: this.trans("well.well"),
@@ -870,7 +906,18 @@ export default {
         {
           name: this.trans("well.horizont_rnas"),
           data: neighbors,
+          type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.block"),
+          data: well_block,
           type: ["all"],
+          codes: ["KGM"]
+        },
+        {
+          name: this.trans("well.horizont"),
+          data: horizont,
+          type: ["nag"],
         },
         {
           name: this.trans("well.h_rotor"),
@@ -886,12 +933,13 @@ export default {
           name: this.trans("well.otvod"),
           data: tap,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.gu_zu"),
           data: gu_agsu,
-          type: ["all"],
+          type: ["dob_oil"],
+          codes: ["KTM"],
         },
         {
           name: this.trans("well.org_struct"),
@@ -902,19 +950,19 @@ export default {
           name: this.trans("well.zone_well"),
           data: well_zone,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.reactive_wells"),
           data: wellReactReacting,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.influence_well"),
           data: wellReactInfl,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.coord_x_outfall"),
@@ -970,10 +1018,16 @@ export default {
           name: this.trans("well.uo_bolt"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr"),
+          data: "",
+          type: ["all"],
+          codes: ["KGM", "KTM"],
+        },
+        {
+          name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],
         },
@@ -981,7 +1035,7 @@ export default {
           name: this.trans("well.type_gol"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.type_pump"),
@@ -989,24 +1043,36 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.diametr_stuzer"),
+          data: diametr_stuzer,
+          type: ["nag"],
+        },
+        {
           name: this.trans("well.diameter_pump"),
           data: diameter_pump,
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.pump_capacity"),
+          data: pump_capacity,
+          type: ["dob_oil"],
+          temp: 2,
+          codes: ["KGM"],
+        },
+        {
           name: this.trans("well.pump_depth"),
-          data: well_equip_param,
+          data: depthLow,
           type: ["dob_oil"],
         },
         {
           name: this.trans("well.packer_running_depth"),
-          data: "",
+          data: depth_paker,
           type: ["nag"],
         },
         {
           name: this.trans("well.sk"),
           data: type_sk,
-          type: ["dob_oil"],
+          type: ["all"],
           exp: 1, // шгн
         },
         {
@@ -1024,8 +1090,9 @@ export default {
         {
           name: this.trans("well.fact_zaboi"),
           data: actualBottomHole,
-          type: ["all"],
+          type: ["dob_oil"],
           codes: ["KGM"],
+          exp: 0,
         },
         {
           name: this.trans("well.synthetic_zaboi"),
@@ -1036,7 +1103,7 @@ export default {
           name: this.trans("well.broken_zaboi"),
           data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.depth_down"),
@@ -1047,7 +1114,7 @@ export default {
           name: this.trans("well.kshd"),
           data: "",
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.progress_interval_perforation"),
@@ -1085,6 +1152,16 @@ export default {
           type: ["dob_oil"],
         },
         {
+          name: this.trans("well.gas_production"),
+          data: gas_production,
+          type: ["dob_oil"],
+        },
+        {
+          name: this.trans("well.gaz_factor"),
+          data: meas_well,
+          type: ["dob_oil"],
+        },
+        {
           name: this.trans("well.date_krs"),
           data: krsWorkover,
           type: ["all"],
@@ -1093,19 +1170,19 @@ export default {
           name: this.trans("well.date_pfp"),
           data: treatmentDate,
           type: ["nag"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_krp"),
           data: well_gtm,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_sko"),
           data: treatmentSko,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.date_kpd"),
@@ -1126,19 +1203,19 @@ export default {
           name: this.trans("well.result_gdm"),
           data: gdisConclusion,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.length_hod_gdm"),
           data: gdisCurrentValue,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.count_swing"),
           data: gdisCurrentValuePmpr,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.dynamic_level"),
@@ -1155,7 +1232,7 @@ export default {
           name: this.trans("well.rpl_date"),
           data: gdisCurrentValueRp,
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.rpl_sl_gdis"),
@@ -1165,7 +1242,7 @@ export default {
         {
           name: this.trans("well.rzab"),
           data: gdisCurrentValueBhp,
-          type: ["dob_oil"],
+          type: ["all"],
         },
         {
           name: this.trans("well.rzatr"),
@@ -1176,34 +1253,39 @@ export default {
           name: this.trans("well.rzatr_stat"),
           data: rzatrStat,
           type: ["dob_oil"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.note"),
           data: gdisCurrent_note,
           type: ["all"],
+          codes: ["KGM", "KTM"],
         },
       ];
       this.well_passport = this.rebuildRightSidebar(
-        this.well_passport,
-        category_id,
-        well_expl_name,
-        main_org_code
+          this.well_passport,
+          category_id,
+          well_expl_name,
+          main_org_code
       );
     },
     rebuildRightSidebar(data, category_id, well_expl_name, main_org_code) {
       let well_passport_data = [];
-
       data.forEach(function (item) {
         let type = item.type;
         let exp = item.exp;
         let codes = item.codes;
-        let types = { 13: "dob_oil", 9: "nabl", 5: "nag" };
+        let temp = item.temp;
+        let types = {13: "dob_oil", 9: "nabl", 5: "nag"};
         if (
-          type.indexOf(types[category_id]) != -1 ||
-          type.indexOf("all") != -1
+            type.indexOf(types[category_id]) != -1 ||
+            type.indexOf("all") != -1
         ) {
           if (exp == 1 && well_expl_name != "УШГН") {
+            return;
+          }
+
+          if (temp == 2 && well_expl_name != 'УЭЦН') {
             return;
           }
 
@@ -1218,31 +1300,54 @@ export default {
     selectWell(well) {
       this.activeFormComponentName = null;
       this.activeForm = null;
+      this.SET_VISIBLE_PRODUCTION(false)
       if (well) {
         this.SET_LOADING(true);
         this.axios
-          .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
-          .then(({ data }) => {
-            try {
-              this.well_all_data = data;
-              this.well.id = data.wellInfo.id;
-              this.wellUwi = data.wellInfo.uwi;
-              if (data.geo[Object.keys(data.geo).length - 1] != null) {
-                this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
-              }
-              if (data.geo[0] != null) {
-                this.wellGeo = data.geo[0];
-              }
-              if (data.spatial_object.coord_point != null) {
-                let spatialObject;
-                spatialObject = data.spatial_object.coord_point
-                  .replace("(", "")
+            .get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`))
+            .then(({data}) => {
+              try {
+                this.well_all_data = data;
+                this.well.id = data.wellInfo.id;
+                this.wellUwi = data.wellInfo.uwi;
+
+                for (let j = 0; j < Object.keys(this.well).length; j++) {
+                  let keys = Object.keys(this.well)[j];
+                  if (keys != 'id') {
+                    this.well[keys] = ' ';
+                  }
+                  this.wellOrgName = ' ';
+                  this.wellTechsName = ' ';
+                  this.wellSaptialObjectBottomX = ' ';
+                  this.wellSaptialObjectBottomY = ' ';
+                  this.wellGeoFields = ' ';
+                  this.gas_production = ' ';
+                  this.dmart_daily_prod_oil = ' ';
+                  this.wellGeo.name_ru = '';
+                }
+                if (data.geo[Object.keys(data.geo).length - 1] != null) {
+                  this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3];
+                }
+                if (data.geo[0] != null) {
+                  this.wellGeo = data.geo[0];
+                }
+                for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+                  this.setWellObjectData(
+                      Object.keys(this.wellTransform)[i],
+                      Object.values(this.wellTransform)[i],
+                      data
+                  );
+                }
+                if (data.spatial_object && data.spatial_object.coord_point) {
+                  let spatialObject;
+                  spatialObject = data.spatial_object.coord_point
+                      .replace("(", "")
                   .replace(")", "");
                 spatialObject = spatialObject.split(",");
                 this.wellSaptialObjectX = spatialObject[0];
                 this.wellSaptialObjectY = spatialObject[1];
               }
-              if (data.spatial_object_bottom.coord_point != null) {
+              if (data.spatial_object_bottom && data.spatial_object_bottom.coord_point) {
                 let spatialObjectBottom;
                 spatialObjectBottom = data.spatial_object_bottom.coord_point
                   .replace("(", "")
@@ -1251,28 +1356,21 @@ export default {
                 this.wellSaptialObjectBottomX = spatialObjectBottom[0];
                 this.wellSaptialObjectBottomY = spatialObjectBottom[1];
               }
-              for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
-                this.setWellObjectData(
-                  Object.keys(this.wellTransform)[i],
-                  Object.values(this.wellTransform)[i],
-                  data
-                );
-              }
-
               this.wellTechsName = this.getMultipleValues(
                 data.techs,
                 "name_ru"
               );
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
-              this.wellOrgName = this.getMultipleValues(
-                data.org.reverse(),
-                "name_ru"
-              );
-              this.tubeNomOd = this.getMultipleValues(data.tube_nom, "od");
+              this.perf_date = data.well_perf_actual[0].perf_date;
+                this.perfActual = this.getwellPerf(data.well_perf_actual, "top", "base");
+                this.wellOrgName = this.getMultipleValues(
+                    data.org.reverse(),
+                    "name_ru"
+                );
             } catch (e) {
-              this.SET_LOADING(false);
+                this.SET_LOADING(false);
             }
-            this.setWellPassport();
+              this.setWellPassport();
             let historyRecord = _.find(this.wellsHistory, {wellUwi:this.wellUwi});
             if (!historyRecord) {
               this.storeWellToHistory();
@@ -1293,6 +1391,19 @@ export default {
         }
       }
       return value;
+    },
+    getwellPerf(objectName, objectKey, objectKey2){
+      let val = '';
+      for (let i = 0; i < Object.keys(objectName).length; i++) {
+          val += objectName[i][objectKey] + " - " + objectName[i][objectKey2]+'\r\n';
+      }
+      return val;
+    },
+    getTubeNom(well){
+      if(this.well.tubeNom.od){
+        return this.well.tubeNom.od;
+      }
+      return "";
     },
     getTechmodeOil(well) {
       if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
@@ -1315,22 +1426,60 @@ export default {
       }
       return "";
     },
+    getHrotor(well){
+      if(this.well.wellInfo){
+         if(this.well.wellInfo.whc_alt && this.well.wellInfo.whc_h ){
+             return this.well.wellInfo.whc_alt.toFixed(1) + " / " + this.well.wellInfo.whc_h.toFixed(1);
+         }
+         if(this.well.wellInfo.whc_alt){
+           return this.well.wellInfo.whc_alt.toFixed(1) + " / " + "-";
+         }
+         if(this.well.wellInfo.whc_h){
+           return this.well.wellInfo.whc_h.toFixed(1) + " / " + "-";
+         }
+      }
+      return "";
+    },
+    getTechmodeLiqiud(well) {
+      if (this.well.techModeProdOil && this.well.dmart_daily_prod_oil) {
+        if (
+            this.well.techModeProdOil.liquid != null &&
+            this.well.dmart_daily_prod_oil.liquid != null
+        ) {
+          return (
+              this.well.techModeProdOil.liquid.toFixed(1) +
+              " / " +
+              this.well.dmart_daily_prod_oil.liquid.toFixed(1)
+          );
+        }
+        if (this.well.techModeProdOil.liquid != null) {
+          return this.well.techModeProdOil.liquid.toFixed(1) + " / " + "-";
+        }
+        if (this.well.dmart_daily_prod_oil.liquid != null) {
+          return "-" + " / " + this.well.dmart_daily_prod_oil.liquid.toFixed(1)
+        }
+      }
+      return "";
+    },
     getInjPressure(well) {
-      if (this.well.tech_mode_inj && this.well.meas_water_inj) {
+      if (this.well.tech_mode_inj && this.well.dailyInjectionOil) {
         if (
           this.well.tech_mode_inj.inj_pressure != null &&
-          this.well.meas_water_inj.pressure_inj != null
+          this.well.dailyInjectionOil.pressure_inj != null
         ) {
           return (
             this.well.tech_mode_inj.inj_pressure +
             " / " +
-            this.well.meas_water_inj.pressure_inj
+            this.well.dailyInjectionOil.pressure_inj
           );
         }
-        if (this.well.tech_mode_inj.inj_pressure === null) {
-          return "-" + " / " + this.well.meas_water_inj.pressure_inj;
+        if (this.well.tech_mode_inj.inj_pressure === null && this.well.dailyInjectionOil.pressure_inj === null) {
+          return "- / -";
         }
-        if (this.well.meas_water_inj.pressure_inj === null) {
+        if (this.well.tech_mode_inj.inj_pressure === null) {
+          return "-" + " / " + this.well.dailyInjectionOil.pressure_inj;
+        }
+        if (this.well.dailyInjectionOil.pressure_inj === null) {
           return this.well.tech_mode_inj.inj_pressure + " / " + "-";
         }
         return "";
@@ -1356,20 +1505,24 @@ export default {
         } else {
           variable = null;
         }
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     switchFormByCode(data) {
-      this.SET_VISIBLE_PRODUCTION(false);
-      this.SET_VISIBLE_INJECTION(false);
-      this.activeForm = data;
-      let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
-        return e.wellUwi == this.wellUwi;
-      }, 0);
-      this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
-      this.activeFormComponentName = data.component_name;
-      this.activeFormComponentName
-        ? this.activeFormComponentName
-        : "ProductionWellsScheduleMain";
+      if (data) {
+        this.SET_VISIBLE_PRODUCTION(false);
+        this.SET_VISIBLE_INJECTION(false);
+        this.activeForm = data;
+        let currentWellIndex = _.findIndex(this.wellsHistory, (e) => {
+          return e.wellUwi == this.wellUwi;
+        }, 0);
+        this.wellsHistory[currentWellIndex]['lastFormInfo'] = data;
+        this.activeFormComponentName = '';
+        this.activeFormComponentName = data.component_name;
+        this.activeFormComponentName
+            ? this.activeFormComponentName
+            : "ProductionWellsScheduleMain";
+      }
       if (this.activeFormComponentName === 'ProductionWellsScheduleMain') {
         this.SET_VISIBLE_PRODUCTION(true);
         this.changeColumnsVisible(false);
@@ -1380,7 +1533,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
-        return moment(data).format("DD.MM.YYYY");
+        return moment(data).tz('Asia/Almaty').format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {
@@ -1410,20 +1563,31 @@ export default {
       });
       summaryWellInfo['lastFormInfo'] = this.activeForm;
       this.wellsHistory.push(summaryWellInfo);
-      if (this.wellsHistory.length > 5) {
+      if (this.wellsHistory.length > this.maximumWellsCount) {
           this.wellsHistory.shift();
       }
     },
     handleDeleteWell(index) {
       this.wellsHistory.splice(index, 1);
+      if (this.wellsHistory.length === 0) {
+        this.activeForm = null;
+        this.activeFormComponentName = null;
+        this.isBothColumnFolded = false;
+        this.isLeftColumnFolded = false;
+        this.isRightColumnFolded = false;
+        this.wellUwi = null;
+      } else {
+        let lastWell = this.wellsHistory.at(-1);
+        this.selectWell({'id':lastWell.id,'name':lastWell.wellUwi})
+      }
     },
     handleSelectHistoryWell(well) {
       this.activeForm = null;
       this.activeFormComponentName = null;
       _.forEach(Object.keys(well), (key) => {
-          this[key] = well[key];
+        this[key] = well[key];
       });
-      this.selectWell({'id':well.id,'name':well.wellUwi})
+      this.selectWell({'id': well.id, 'name': well.wellUwi})
       this.SET_VISIBLE_PRODUCTION(false);
       this.SET_VISIBLE_INJECTION(false);
       this.isBothColumnFolded = false;
@@ -1437,6 +1601,18 @@ export default {
       'SET_VISIBLE_INJECTION',
       'SET_VISIBLE_PRODUCTION'
     ]),
+    getWidthByColumns() {
+      if ((this.isRightColumnFolded || this.isLeftColumnFolded) && !this.isBothColumnFolded) {
+        return 'width__1469';
+      }
+      if (this.isProductionWellsHistoricalVisible || this.isInjectionWellsHistoricalVisible) {
+        return 'width__1159';
+      }
+      if (this.isBothColumnFolded) {
+        return 'width__1700';
+      }
+      return 'width__1219';
+    }
   },
   computed: {
     ...bigdatahistoricalVisibleState([
@@ -1451,7 +1627,7 @@ export default {
     window.addEventListener('resize', this.updateWidth);
     this.updateWidth();
   },
-  
+
 };
 </script>
 <style lang="scss" scoped>
@@ -1535,18 +1711,6 @@ $rightColumnFoldedWidth: 50px;
     left: 0;
     border-radius: 0px 5px 5px 0px;
   }
-}
-.search-bd {
-  display: flex;
-  background: #121227;
-  border: 1px solid #363b68;
-  margin-bottom: 2px;
-}
-.search-btn-bd {
-  border: none;
-  background: none;
-  width: 27px;
-  height: 27px;
 }
 .search-input-bd {
   width: 100%;
@@ -1873,7 +2037,7 @@ h4 {
   display: block;
   width: 100%;
   padding: 10px 17px 10px 7px;
-  height: calc(100% - 67px);
+  height: calc(100% - 38px);
   overflow-y: auto;
   ul {
     list-style: none;
@@ -1922,8 +2086,7 @@ h4 {
 }
 
 .search-form {
-  
-  
+
 
   .v-select {
     background: url(/img/bd/search.svg) 15px 12px
@@ -2052,7 +2215,6 @@ h4 {
 .middle-block-head {
     display: flex;
     padding: 0 10px;
-    width: 100%;
     align-items: center;
 }
 .transparent-select{
@@ -2178,7 +2340,7 @@ h4 {
   overflow-x: hidden;
 
   table {
-    background: #ffff99;
+    background: #B5D9ED;
     color: #000;
     font-size: 14px;
   }
@@ -2189,6 +2351,7 @@ h4 {
     text-align: left;
     padding: 2px;
     font-size: 13px;
+    white-space:pre-line;
   }
 
 
@@ -2276,8 +2439,6 @@ h4 {
 .dropdown-menu.show {
   background: #40467e;
   color: white;
-  width: 100%;
-  padding: 0 7px 0 16px;
   border: 1px solid #2e50e9;
   border-radius: 8px;
   margin-top: 7px;
@@ -2413,6 +2574,10 @@ h4 {
   margin-top: auto;
   margin-bottom: auto;
   display: inline-flex;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .sheare-text {
@@ -2580,8 +2745,7 @@ h4 {
 
     .title,
     .directory,
-    .well-deal__header,
-    .search-bd {
+    .well-deal__header {
       display: none;
     }
 
@@ -2716,6 +2880,11 @@ h4 {
 .button-block {
     display: flex;
     margin-left: auto;
+    div:not(:last-child) {
+      background: #293688;
+      border: 1px solid #3366FF;
+      border-radius: 5px;
+    }
 }
 @media (max-width: 1640px) {
 .button-block__item[data-v-b1a5f7e2] {
@@ -2795,4 +2964,35 @@ h4 {
   color: #fff;
   padding-top: 5px;
 }
+.well-info_header {
+  position: fixed;
+  z-index: 5;
+  margin-left: -15px;
+}
+.pt__40 {
+  padding-top: 40px;
+}
+.width__1219 {
+  width: 1219px;
+}
+.width__1700 {
+  width: 1720px;
+}
+.width__1469 {
+  width: 1469px;
+}
+.width__1159 {
+  width: 1159px;
+}
+.icon-filter {
+  width: 20px;
+  background: url(/img/bd/filter.svg) no-repeat;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: none;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
 </style>

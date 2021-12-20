@@ -12,11 +12,13 @@ export const paegtmState = {
               end_date: Date,
             },
         dzoId: 112,
+        treeStore: null,
         dzoName: '',
         clickable: null,
         clickableTable: {
             header: null,
             data: null
-        }
+        },
+        selectedGtm: []
     }
 }

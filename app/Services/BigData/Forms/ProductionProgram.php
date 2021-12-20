@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ProductionProgram extends TableForm
 {
     protected $configurationFileName = 'production_program';
+    protected $table = 'prod.production_plan';
+    protected $parentColumn = 'org';
 
     const FIELDS = [
         'oil_production',
@@ -23,19 +24,18 @@ class ProductionProgram extends TableForm
         'absorption'
     ];
 
-    const TABLE = 'prod.production_plan';
 
     public function getResults(): array
     {
-        if ($this->request->get('type') !== 'org') {
+        if ($this->request->get('type') !== $this->parentColumn) {
             return [];
         }
 
         $filter = json_decode($this->request->get('filter'));
 
         $plans = DB::connection('tbd')
-            ->table(self::TABLE)
-            ->where('org', $this->request->get('id'))
+            ->table($this->table)
+            ->where($this->parentColumn, $this->request->get('id'))
             ->whereRaw(
                 "TO_DATE(CONCAT(year,'-',month,'-','01'), 'YYYY-MM-DD') >= TO_DATE('" . Carbon::parse(
                     $filter->date
@@ -76,7 +76,7 @@ class ProductionProgram extends TableForm
                         'field' => $fieldName,
                         'year' => $currentDate->year,
                         'month' => $currentDate->month,
-                        'org_id' => $this->request->get('id')
+                        $this->parentColumn => $this->request->get('id')
                     ]
                 ];
 
@@ -92,38 +92,57 @@ class ProductionProgram extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $request = $this->request->all();
+        foreach ($rows as $row) {
+            foreach ($row as $field) {
+                $planId = $this->getPlanId($field);
 
-        $item = DB::connection('tbd')
-            ->table(self::TABLE)
-            ->where('org', $request['params']['org_id'])
-            ->where('year', $request['params']['year'])
-            ->where('month', $request['params']['month'])
+                DB::connection('tbd')
+                    ->table($this->table)
+                    ->where('id', $planId)
+                    ->update(
+                        [
+                            $field['params']['field'] => $field['value']
+                        ]
+                    );
+            }
+        }
+        return [];
+    }
+
+    private function getPlanId(array $field)
+    {
+        $key = implode('_', [$field['params'][$this->parentColumn], $field['params']['year'], $field['params']['month']]
+        );
+        if (isset($this->plans[$key])) {
+            return $this->plans[$key];
+        }
+
+        $plan = DB::connection('tbd')
+            ->table($this->table)
+            ->where($this->parentColumn, $field['params'][$this->parentColumn])
+            ->where('year', $field['params']['year'])
+            ->where('month', $field['params']['month'])
             ->first();
 
-        if (empty($item)) {
-            $data = [
-                'org' => $request['params']['org_id'],
-                'month' => $request['params']['month'],
-                'year' => $request['params']['year'],
-                $request['params']['field'] => $params['value']
-            ];
-
-            DB::connection('tbd')
-                ->table(self::TABLE)
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table(self::TABLE)
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $request['params']['field'] => $params['value']
-                    ]
-                );
+        if (!empty($plan)) {
+            $this->plans[$key] = $plan->id;
+            return $plan->id;
         }
+
+        $planId = DB::connection('tbd')
+            ->table($this->table)
+            ->insertGetId(
+                [
+                    $this->parentColumn => $field['params'][$this->parentColumn],
+                    'month' => $field['params']['month'],
+                    'year' => $field['params']['year']
+                ]
+            );
+
+        $this->plans[$key] = $planId;
+        return $planId;
     }
 
     private function getColumns(): array
@@ -156,56 +175,5 @@ class ProductionProgram extends TableForm
         }
 
         return $columns;
-    }
-
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-        $request = $this->request->all();
-
-        if ($request['params']['field']) {
-            $date = Carbon::parse($request['params']['year'] . '-' . $request['params']['month'] . '-01');
-            $value = (int)$this->request->get($date->format('d.m.Y'));
-
-            if ($value <= 0) {
-                $errors[$field][] = trans('bd.validation.gt', ['value' => 0]);
-            }
-        }
-        return $errors;
-    }
-
-    private function isValidLimits(int $value, array $limits): bool
-    {
-        if (empty($limits)) {
-            return true;
-        }
-
-        if ($limits['min'] === $limits['max']) {
-            return true;
-        }
-
-        return $limits['min'] <= $value && $limits['max'] >= $value;
-    }
-
-    private function calculateLimits(Carbon $date): array
-    {
-        $request = $this->request->all();
-
-        $items = DB::connection('tbd')
-            ->table(self::TABLE)
-            ->select($request['params']['field'])
-            ->where('org', $request['params']['org_id'])
-            ->whereRaw(
-                "TO_DATE(CONCAT(year,'-',month,'-','01'), 'YYYY-MM-DD') < TO_DATE('" . $date->format(
-                    'Y-m-d'
-                ) . "', 'YYYY-MM-DD')"
-            )
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->limit(30)
-            ->get();
-
-        $fieldLimitsService = app()->make(FieldLimitsService::class);
-        return $fieldLimitsService->calculateColumnLimits($request['params']['field'], $items);
     }
 }

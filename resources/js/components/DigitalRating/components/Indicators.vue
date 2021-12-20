@@ -10,7 +10,7 @@
           </tr>
         </thead>
         <tbody v-if="getProdIndicators">
-          <tr v-for="(item, index) in indicators.df_prod_sum_well" :key="index">
+          <tr v-for="(item, index) in indicators.prod_table" :key="index">
             <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
@@ -21,7 +21,7 @@
         </div>
       </table>
       <Plotly
-        :data="this.prodDiagramIndicators"
+        :data="[this.liguidDiagramIndicators, this.oilProdDiagramIndicators]"
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
@@ -38,7 +38,7 @@
           </tr>
         </thead>
         <tbody v-if="getInjIndicators">
-          <tr v-for="(item, index) in indicators.df_inj_sum_well" :key="index">
+          <tr v-for="(item, index) in indicators.inj_table" :key="index">
             <td v-for="(col, colIdx) in secondColsIndicators" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
@@ -49,8 +49,8 @@
         </div>
       </table>
       <Plotly
-        :data="this.injDiagramIndicators"
-        :layout="layout"
+        :data="[this.injDiagramIndicators]"
+        :layout="layoutInj"
         :display-mode-bar="false"
         :displaylogo="false"
         style="width: 45%"
@@ -73,29 +73,15 @@
       return {
         dataInj: [],
         dataProd: [],
-        layout: {
+        generalSettings: {
           height: 320,
           showlegend: true,
           margin: {
             pad: 10
           },
-          xaxis: {
-            title: "",
-            zeroline: false,
-            gridcolor: "#3C4270",
-          },
-          yaxis: {
-            title: "Добыча жидкости,м3.Добыча нефти, т",
-            showlegend: true,
-            zeroline: false,
-            gridcolor: "#3C4270",
-            rangemode: 'tozero'
-          },
-
           paper_bgcolor: "#2B2E5E",
           plot_bgcolor: "#2B2E5E",
           font: { color: "#fff" },
-
           legend: {
             orientation: "h",
             y: -0.3,
@@ -103,6 +89,11 @@
               size: 9.3,
               color: "#fff",
             },
+          },
+          xaxis: {
+            title: "",
+            zeroline: false,
+            gridcolor: "#3C4270",
           },
         },
       }
@@ -127,13 +118,14 @@
       ]),
       ...digitalRatingGetters([
         'injDiagramIndicators',
-        'prodDiagramIndicators'
+        'liguidDiagramIndicators',
+        'oilProdDiagramIndicators'
       ]),
       getInjIndicators() {
-        return this.indicators?.df_inj_sum_well?.length;
+        return this.indicators?.inj_table?.length;
       },
       getProdIndicators() {
-        return this.indicators?.df_prod_sum_well?.length
+        return this.indicators?.prod_table?.length
       },
       colsIndicator() {
         return [
@@ -143,7 +135,7 @@
           },
           {
             title: this.trans('digital_rating.liquidFlowRate'),
-            name: 'avg_liquid_rate'
+            name: 'avg_liq'
           },
           {
             title: `${this.trans('digital_rating.waterCut')}, %`,
@@ -151,11 +143,15 @@
           },
           {
             title: `${this.trans('digital_rating.oilFlowRate')}, ${this.trans('digital_rating.tonDay')}`,
-            name: 'avg_oil_rate'
+            name: 'avg_oil'
           },
           {
             title: `${this.trans('digital_rating.dynamicLevel')}, м`,
             name: 'h_dyn'
+          },
+          {
+            title: `${this.trans('digital_rating.distance')}, м`,
+            name: 'dist'
           }
         ]
       },
@@ -167,17 +163,45 @@
           },
           {
             title: `${this.trans('digital_rating.throttleResponse')}, ${this.trans('digital_rating.cubeDay')}`,
-            name: 'avg_injection'
+            name: 'avg_inj'
           },
           {
             title: `${this.trans('digital_rating.injectionPressure')}, атм`,
-            name: 'pressure'
+            name: 'injection_pressure'
           },
           {
             title: `${this.trans('digital_rating.distance')}, м`,
-            name: 'distance'
+            name: 'dist'
           },
         ]
+      },
+
+      layout() {
+        return {
+          ...this.generalSettings,
+          yaxis: {
+            title: "Добыча жидкости,м3",
+          },
+          yaxis2: {
+            title: 'Добыча нефти, т',
+            anchor: 'x',
+            overlaying: 'y',
+            side: 'right',
+          }
+        }
+      },
+
+      layoutInj() {
+        return {
+          ...this.generalSettings,
+          yaxis: {
+            title: "Приемистость, м3",
+            showlegend: true,
+            zeroline: false,
+            gridcolor: "#3C4270",
+            rangemode: 'tozero'
+          },
+        }
       }
     }
   }
@@ -199,5 +223,8 @@
     width: 50%;
     margin-top: 20px;
     font-size: 20px;
+  }
+  .rating-table {
+    height: 320px;
   }
 </style>

@@ -1,4 +1,32 @@
 #sidebar-container2{
+  .nav-left-panel {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%;
+  }
+  .padding.nav-left-panel.show {
+    position: fixed;
+    z-index: 93;
+    background-color: #20274f;
+    bottom: 0;
+    top: 77px;
+    left: 0;
+    height: auto;
+}
+  .nav_bottom {
+      margin-top: auto;
+  }
+  .nav-left-panel.show .nav_item_text {
+     display: block!important;
+  } 
+  .nav_item_text {
+    width: 150px;
+    color: #fff;
+    font-size: 18px!important;
+    line-height: 22px;
+    color: #FFFFFF;
+  }
   .companyLogo {
     width: 25px;
     height: 25px;
@@ -22,7 +50,12 @@
       position: absolute;
       margin-left: 0;
       padding: 0;
-      min-height: calc(100vh - 118px);
+      min-height: calc(100vh - 84px);
+      .move-menu div {
+          display: flex;
+          align-items: center;
+          width: 100%;
+      }
     }
     .left-menu-li {
       .dropdown-child {
@@ -30,22 +63,29 @@
         left: 100%;
         top: 0;
         margin: 0;
-        width: 519px;
-        height: calc(100vh - 120px);
-        background: rgba(46, 80, 233, 0.05);;
+        width: 300px;
+        height: calc(100vh - 84px);
+        background: #333975!important;
         overflow-y: scroll;
+        border-left: 3px solid #20274f;
+        ul{
+          margin: 0;
+        }
         .left-menu-li {
           display: block;
           margin-left: 0;
           padding: 0;
+        
           a {
-            padding: 22.5px 20px 22.5px 40px;
+            width: 100%;
             display: block;
+            &:hover {
+              background: #2E50E9;
+              cursor: pointer;
+              transition: 0.4s ease;
+            }
           }
-          &:hover{
-            cursor: auto;
-            background: #333975;
-          }
+         
           ul {
             .left-menu-li{
               &:hover {
@@ -74,11 +114,11 @@
     }
     .dropdown-menu {
       color: white;
-      width: 525px;
+      width: 300px;
       background: #333975;
       box-shadow: 5px 5px 40px 5px rgba(0, 0, 0, 0.5);
       &__third {
-        top: -163%;
+        top: -110px;
       }
       &__fourth {
         top: -263%;
@@ -89,10 +129,15 @@
       &__sixth {
         top: -463%;
       }
+      &__support {
+        width: 400px;
+        top: -52px;
+        min-height: auto;
+      }
       a, div {
         color: white;
-        font-size: 20px;
-        line-height: 24px;
+        font-size: 14px;
+        line-height: 1.4;
       }
       a:link {
         color: white;
@@ -108,7 +153,7 @@
   .vc3_min-width {
     min-width: 180px;
   }
-
+  
   .menu-header {
     display: flex;
     padding: 10px 13px 10px 20px;
@@ -125,18 +170,11 @@
 
   .left-menu-li {
     a {
-      padding: 20px;
+      padding: 15px;
       display: block;
     }
-    &:nth-child(odd) {
-      background: rgba(46, 80, 233, 0.1);
-
-    }
-    &:nth-child(even) {
-      background: rgba(46, 80, 233, 0.2);
-
-    }
-    &:hover {
+    
+    &:hover  > a{
       background: #2E50E9;
       cursor: pointer;
       transition: .4s ease;

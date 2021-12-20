@@ -1,8 +1,15 @@
-import {globalloadingMutations, paegtmMapActions} from "../../../../store/helpers";
+import {globalloadingMutations, paegtmMapActions, paegtmMapState} from "../../../../store/helpers";
+import {
+    createExcelBody,
+    createTreeBody,
+    downloadExcel,
+    getTableWell,
+    getTreeData,
+    postTreeData
+} from "../api/podborGTM";
 import VueApexCharts from "vue-apexcharts";
-import {paegtmMapState} from "@store/helpers";
 import moment from "moment"
-import {createTreeBody, getTableWell, getTreeData, postTreeData} from "../api/podborGTM";
+import fileDownload from "js-file-download";
 
 export default {
     components: {
@@ -40,7 +47,28 @@ export default {
                 chart: {
                     height: 320,
                     type: 'rangeBar',
-                    foreColor: '#fff'
+                    foreColor: '#ffffff',
+                    background: '#20274f',
+                    toolbar: {
+                        show: true,
+                        export: {
+                            png: {
+                                filename: ''
+                            }
+                        }
+                    }
+                },
+                title: {
+                    text: this.wellNumber,
+                    align: 'center',
+
+                    style: {
+                        color: undefined,
+                        fontSize: '15px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 700,
+                        cssClass: 'apexcharts-yaxis-title',
+                    },
                 },
                 stroke: {
                     show: true,
@@ -48,6 +76,18 @@ export default {
                     colors: ['#808080'],
                     curve: 'smooth',
                 },
+                yaxis: [
+                    {
+                        title: {
+                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.m3')}`, style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },],
                 plotOptions: {
                     bar: {
                         horizontal: false
@@ -64,7 +104,22 @@ export default {
                 chart: {
                     height: 350,
                     type: 'area',
-                    foreColor: '#fff'
+                    foreColor: '#ffffff',
+                    background: '#20274f',
+                    toolbar: {
+                        show: true
+                    }
+                },
+                title: {
+                    text: '',
+                    align: 'center',
+                    style: {
+                        color: undefined,
+                        fontSize: '15px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 700,
+                        cssClass: 'apexcharts-yaxis-title',
+                    },
                 },
                 options: {
                     legend: {
@@ -77,8 +132,6 @@ export default {
                     enabled: false
                 },
                 stroke: {
-                    // lineCap: 'butt',
-                    // width: [5, 7, 5],
                     curve: 'straight',
                     dashArray: [0, 0, 2]
                 },
@@ -113,11 +166,11 @@ export default {
                         }
                     },
                     {
-                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
+                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.m3/day')}`,
                         axisTicks: {show: true},
                         axisBorder: {show: true,},
                         title: {
-                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
+                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.m3/day')}`, style: {
                                 color: undefined,
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -158,12 +211,15 @@ export default {
             oilFieldsForFilter: [],
             horizontsForFilter: [],
             objectsForFilter: [],
+            showShadow: false,
+            activeItem: 0
         };
     },
     computed: {
         ...paegtmMapState([
             'clickable',
             'treeDate',
+            'treeStore',
             'clickableTable'
         ]),
     },
@@ -174,8 +230,8 @@ export default {
         ]),
         ...paegtmMapActions([
             'changeTreeDate',
-            'getTreeDataStore',
-            'onGetTableByClickableValue'
+            'onGetTableByClickableValue',
+            'changeTreeStore'
         ]),
         setNotify(message, title, type) {
             this.$bvToast.toast(message, {
@@ -189,7 +245,8 @@ export default {
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
         },
-        onClickWell(v) {
+        onClickWell(v, idx) {
+            this.activeItem = idx
             this.wellNumber = v
             this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
             let params = {action_type: 'well_name_clicked', main_data: v, distance: 500}
@@ -221,52 +278,68 @@ export default {
                         data: [
                             {
                                 x: res.fa_plot.labels.pbeg_oil_prod,
-                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pbeg_oil_prod.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.pbeg_oil_prod.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWC,
-                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWC.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.influenceWC.color,
                             }, {
                                 x: res.fa_plot.labels.influencePres,
-                                y: res.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influencePres.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.influencePres.color,
                             }, {
                                 x: res.fa_plot.labels.influenceLiquidPI,
-                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceLiquidPI.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.influenceLiquidPI.color,
                             }, {
                                 x: res.fa_plot.labels.influenceBHP,
-                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceBHP.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.influenceBHP.color,
                             }, {
                                 x: res.fa_plot.labels.influenceWorkDay,
-                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.influenceWorkDay.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.influenceWorkDay.color,
                             }, {
                                 x: res.fa_plot.labels.pend_oil_prod,
-                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(2)),
+                                y: res.fa_plot.pend_oil_prod.values.map(a => parseFloat(a).toFixed(0)),
                                 fillColor: res.fa_plot.pend_oil_prod.color,
                             }
                         ]
                     }]
-            }).finally(() => {this.SET_LOADING(false);})
+            }).finally(() => {
+                this.SET_LOADING(false);
+                this.$refs.lineChartOptionsRef.updateOptions({title: {text: v}})
+                this.$refs.waterFallChartOptionsRef.updateOptions({title: {text: v}})
+            })
         },
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
+            this.showShadow = false
+        },
+        onHoverTree() {
+            this.showShadow = true
         },
         async onGetTreeData() {
-            let body = { url: this.url, body: this.body }
+            let body = {url: this.url, body: this.body}
             this.SET_LOADING(true);
             await getTreeData(body).then((res) => {
                 this.dataRangeInfo = res.date_range_model;
-                this.treeData = res.finder_model.children;
+                this.changeTreeStore(res.finder_model.children)
                 this.fieldName = res.org_struct;
             }).finally(() => {
                 this.SET_LOADING(false);
             })
             this.changeTreeDate(this.dataRangeInfo);
+        },
+        async onDownloadExcel() {
+            let bodyExcel = createExcelBody("table_export_clicked", this.clickable)
+            let filename = this.clickable + ".xlsx"
+            let body = {url: this.url, body: bodyExcel, responseType: 'blob'}
+            await downloadExcel(body).then((response) => {
+                fileDownload(response.data, filename);
+            })
         },
         onChangeDays(e) {
             this.dataRangeInfo.days = e.target.value
@@ -275,12 +348,16 @@ export default {
             this.isHidden = !this.isHidden
         },
         async onPostTreeData(v) {
+            this.changeTreeStore(v)
             this.dataRangeInfo = _.clone(this.treeDate)
             this.dataRangeInfo.begin_date = moment(this.treeDate.begin_date).format('YYYY-MM-DD').toString()
             this.dataRangeInfo.end_date = moment(this.treeDate.end_date).format('YYYY-MM-DD').toString()
             this.changeTreeDate(this.dataRangeInfo);
-            const c = createTreeBody('calc_button_pressed',this.dataRangeInfo, this.fieldName, {name: 'root', children: v})
-            let body = {url: this.url, body: c}
+            const bodyTree = createTreeBody('calc_button_pressed', this.dataRangeInfo, this.fieldName, {
+                name: 'root',
+                children: v
+            })
+            let body = {url: this.url, body: bodyTree}
             this.SET_LOADING(true);
             await postTreeData(body).then((res) => {
             }).finally(() => {
@@ -289,6 +366,7 @@ export default {
         },
         nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
+            this.showShadow = true
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
                 data: function () {

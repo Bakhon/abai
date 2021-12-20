@@ -3,7 +3,7 @@
     <div class="span">
       <div
           v-if="node.name"
-          v-bind:class="{ 'cursor-pointer': pointerClass }"
+          v-bind:class="{ 'cursor-pointer': pointerClass, 'activated': node.selected === true}"
           @click.stop="handleClick(node)">
             <span v-if="nodeHasChildren" @click="toggleUl(1)">
               <span class="asd">
@@ -12,13 +12,13 @@
             </span>
         <span v-if="!nodeHasChildren && !node.value">
         <template>
-          <input v-if="checkable" type="checkbox">
+          <input v-if="checkable" type="checkbox" v-model="node.checked">
           <img v-else width="20" height="20" src='../img/file.svg'>
         </template>
       </span>
         <span v-if="checkable !== undefined"></span>
         <span class="margin-input" @click="toggleCheckState(node)">{{ node.name }} </span>
-        <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
+        <input class="input-tree pl-2" v-if="node.value || node.value === ''" type="text" v-model="node.value">
       </div>
       <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
         <node
@@ -32,7 +32,8 @@
   </li>
 </template>
 <script>
-import {paegtmMapActions} from "../../../store/helpers";
+import {paegtmMapActions, paegtmMapState} from "../../../store/helpers";
+import {crossTree} from "../components/helpers/changeSelected";
 
 export default {
   name: "node",
@@ -47,8 +48,10 @@ export default {
     toggleUl: function (el) {
       this.showChildren = !this.showChildren;
     },
-    toggleCheckState: function () {
-      let clickable = this.node.clickable
+    toggleCheckState: function (node) {
+      let clickable = node.clickable
+      crossTree(this.treeStore)
+      node.selected = !node.selected
       if (this.node.clickable) {
         this.changeClickable(clickable)
         this.$emit('emitValue', clickable)
@@ -64,23 +67,17 @@ export default {
       showChildren: showChildren,
       checkState: this.node.check_state,
       checkable: this.node.checkable,
-      active: '',
     };
   },
   computed: {
+    ...paegtmMapState([
+      'treeStore'
+    ]),
     pointerClass: function () {
-      return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
-    },
-    activeClass: function () {
       return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
     },
     nodeHasChildren: function () {
       return this.node.children && this.node.children.length;
-    },
-    selected() {
-      if (!this.active.length) return undefined;
-      const id = this.active[0];
-      return this.users.find(user => user.id === id);
     },
     isLeaf: function (node) {
       if (node.hasOwnProperty('value')) {
@@ -91,11 +88,20 @@ export default {
 }
 </script>
 <style lang="scss">
+.span {
+  font-size: 12px;
+}
+
 $border: #ddd;
 $ident: 10px;
 
 ul {
   margin-left: $ident;
+}
+
+.activated {
+  background-color: #394675;
+  font-weight: 700;
 }
 
 .treeUl {

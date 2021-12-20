@@ -85,7 +85,11 @@ class WaterProductionMonth extends MeasLogByMonth
     ) {
         $waterRow = [
             'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
+            'uwi' => [
+                'id' => $well->id,
+                'name' => $well->uwi,
+                'href' => route('bigdata.well_card', ['wellId' => $well->id, 'wellName' => $well->uwi])
+            ],
             'indicator' => ['value' => trans('bd.forms.water_production_month.water_prod_val')]
         ];
         $workTimeRow = [
@@ -107,7 +111,8 @@ class WaterProductionMonth extends MeasLogByMonth
                 'value' => $water_prod_val,
                 'is_editable' => true,
                 'params' => [
-                    'field' => 'water_prod_val',
+                    'well_id' => $well->id,
+                    'indicator' => 'water_prod_val',
                     'date' => $monthDay->format('d.m.Y')
                 ]
             ];
@@ -138,40 +143,46 @@ class WaterProductionMonth extends MeasLogByMonth
         return $columns;
     }
 
-    protected function saveSingleFieldInDB(array $params): void
+    public function submitForm(array $rows, array $filter = []): array
     {
-        $field = $this->request->get('params')['field'];
-        $date = $this->request->get('params')['date'];
-        if ($field === 'water_prod_val') {
-            $pressure = DB::connection('tbd')
-                ->table('prod.meas_water_prod')
-                ->where('dbeg', Carbon::parse($date))
-                ->where('well', $this->request->get('well_id'))
-                ->first();
+        foreach ($rows as $row) {
+            foreach ($row as $date => $field) {
+                $date = Carbon::parse($date, 'Asia/Almaty')->toImmutable();
 
-            if (empty($pressure)) {
-                DB::connection('tbd')
-                    ->table('prod.meas_water_prod')
-                    ->insert(
-                        [
-                            'dbeg' => Carbon::parse($date),
-                            'dend' => Well::DEFAULT_END_DATE,
-                            'well' => $this->request->get('well_id'),
-                            'water_prod_val' => $params['value']
-                        ]
-                    );
-                return;
+                if ($field['params']['indicator'] === 'water_prod_val') {
+                    $pressure = DB::connection('tbd')
+                        ->table('prod.meas_water_prod')
+                        ->where('dbeg', $date)
+                        ->where('well', $field['params']['well_id'])
+                        ->first();
+
+                    if (empty($pressure)) {
+                        DB::connection('tbd')
+                            ->table('prod.meas_water_prod')
+                            ->insert(
+                                [
+                                    'dbeg' => Carbon::parse($date),
+                                    'dend' => Well::DEFAULT_END_DATE,
+                                    'well' => $field['params']['well_id'],
+                                    'water_prod_val' => $field['value']
+                                ]
+                            );
+                        continue;
+                    }
+
+                    DB::connection('tbd')
+                        ->table('prod.meas_water_prod')
+                        ->where('id', $pressure->id)
+                        ->update(
+                            [
+                                'water_prod_val' => $field['value']
+                            ]
+                        );
+                }
             }
-
-            DB::connection('tbd')
-                ->table('prod.meas_water_prod')
-                ->where('id', $pressure->id)
-                ->update(
-                    [
-                        'water_prod_val' => $params['value']
-                    ]
-                );
         }
+
+        return [];
     }
 
 }
