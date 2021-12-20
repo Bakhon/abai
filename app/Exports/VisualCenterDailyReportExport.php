@@ -31,10 +31,10 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
 
     function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary)
     {
-        $this->dailyParams = $this->getDecoded($dailyParams);
-        $this->monthlyParams = $this->getDecoded($monthlyParams);
-        $this->yearlyParams = $this->getDecoded($yearlyParams);
-        $this->summary = json_decode($summary,true);
+        $this->dailyParams = $dailyParams;
+        $this->monthlyParams = $monthlyParams;
+        $this->yearlyParams = $yearlyParams;
+        $this->summary = $summary;
     }
 
     public function styles(Worksheet $sheet)
@@ -95,15 +95,6 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         foreach(array('A22:H23','A42:H43') as $cell) {
             $sheet->getStyle($cell)->applyFromArray($noneBorderStyleArray);
         }
-    }
-
-    private function getDecoded($data)
-    {
-        $decoded = array();
-        foreach($data as $string) {
-            array_push($decoded,json_decode($string,true));
-        }
-        return $decoded;
     }
 
     public function view(): View
