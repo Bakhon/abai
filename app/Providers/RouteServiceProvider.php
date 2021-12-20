@@ -120,6 +120,9 @@ class RouteServiceProvider extends ServiceProvider
             'map_constructor',
             'waterflooding_management',
             'economic',
+            'prod_planning'
+//             'prod_planning',
+
         ];
 
         foreach ($modules as $module) {

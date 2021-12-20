@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <div class="customScroll d-flex flex-column"
-           style="overflow-y: scroll; height: 450px">
+      <div :style="`overflow-y: scroll; height: ${tableHeight}`"
+           class="customScroll d-flex flex-column">
         <div class="d-flex bg-blue">
           <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
             {{ trans('economic_reference.course_prices') }}
@@ -138,6 +138,10 @@ export default {
       required: true,
       type: Array
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   computed: {
     sumData() {
@@ -173,6 +177,10 @@ export default {
           dimension: this.trans('economic_reference.million_tenge_per_operation'),
         },
       ]
+    },
+
+    tableHeight() {
+      return this.isFullscreen ? '600px' : '450px'
     }
   }
 }

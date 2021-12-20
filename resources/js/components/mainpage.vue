@@ -112,6 +112,11 @@ export default {
           icon: "geology.svg",
           url: this.localeUrl("/geology/petrophysics"),
         },
+        {
+          name: this.trans("prod-plan.module-title"),
+          icon: "prod-planning.svg",
+          url: this.localeUrl("/prod-planning/mon-plan-fact"),
+        },
       ],
     };
   },

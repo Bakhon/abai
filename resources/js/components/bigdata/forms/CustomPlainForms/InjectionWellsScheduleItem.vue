@@ -185,7 +185,7 @@
             chartOptions() {
                 return {
                     title: {
-                        text: this.title
+                        text: this.title +  ' -> ' + 'График эксплутации скважины ' + this.title
                     },
                     labels: this.labels,
                     stroke: {

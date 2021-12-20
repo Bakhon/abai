@@ -23,7 +23,7 @@
             </th>
             <th>
               <p><b>{{ selectedItem.user }}</b></p>
-              <span>{{ getFormatedDate(selectedItem.created_at) }}</span>
+              <span>{{ getFormatedDate(selectedItem.updated_at) }}</span>
             </th>
           </tr>
           <tr v-for="(row, index) in selectedItem.payload" :key="index" :class="{'changed': row.changed}">
