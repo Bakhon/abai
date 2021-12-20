@@ -32,13 +32,13 @@ class DailyReport extends Controller
             'id' => 1,
             'sortId' => 1,
             'name' => 'ТОО "Тенгизшевройл"',
-            'part' => '20%'
+            'part' => 20
         ),
         'ОМГ' => array (
             'id' => 2,
             'sortId' => 2,
             'name' => 'АО "Озенмунайгаз" (нефть)',
-            'part' => '100%'
+            'part' => 100
         ),
         'ОМГК' => array (
             'id' => '',
@@ -50,67 +50,67 @@ class DailyReport extends Controller
             'id' => 3,
             'sortId' => 4,
             'name' => 'АО "Мангистаумунайгаз"',
-            'part' => '50%'
+            'part' => 50
         ),
         'ЭМГ' => array (
             'id' => 4,
             'sortId' => 5,
             'name' => 'АО "Эмбамунайгаз"',
-            'part' => '100%'
+            'part' => 100
         ),
         'НКО' => array (
             'id' => 5,
             'sortId' => 6,
             'name' => '"Норт Каспиан Оперейтинг Компани н.в."',
-            'part' => '8,44%'
+            'part' => 8,44
         ),
         'КПО' => array (
             'id' => 6,
             'sortId' => 7,
             'name' => '"Карачаганак Петролеум Оперейтинг б.в."',
-            'part' => '10%'
+            'part' => 10
         ),
         'КБМ' => array (
             'id' => 7,
             'sortId' => 8,
             'name' => 'АО "Каражанбасмунай"',
-            'part' => '50%'
+            'part' => 50
         ),
         'КГМ' => array (
             'id' => 8,
             'sortId' => 9,
             'name' => 'ТОО "СП "Казгермунай"',
-            'part' => '50%'
+            'part' => 50
         ),
         'ПКИ' => array (
             'id' => 9,
             'sortId' => 10,
             'name' => 'АО "ПетроКазахстан Инк"',
-            'part' => '33%'
+            'part' => 33
         ),
         'КТМ' => array (
             'id' => 10,
             'sortId' => 11,
             'name' => 'ТОО "Казахтуркмунай"',
-            'part' => '100%'
+            'part' => 100
         ),
         'КОА' => array (
             'id' => 11,
             'sortId' => 12,
             'name' => 'ТОО "Казахойл Актобе"',
-            'part' => '50%'
+            'part' => 50
         ),
         'УО' => array (
             'id' => 12,
             'sortId' => 13,
             'name' => 'ТОО "Урихтау Оперейтинг"',
-            'part' => '100%'
+            'part' => 100
         ),
         'АГ' => array (
             'id' => 13,
             'sortId' => 14,
             'name' => 'ТОО "Амангельды Газ" (конденсат)',
-            'part' => '100%'
+            'part' => 100
         ),
     );
 
@@ -243,6 +243,16 @@ class DailyReport extends Controller
             if ($year['dzo'] === 'АГ') {
                 $formatted[$year['dzo']] = $year['gk_plan'];
             }
+            $dzoList = array_keys($this->dzoMapping);
+            if (!in_array($year['dzo'],$dzoList)) {
+                continue;
+            }
+
+            $multiplier = $this->dzoMapping[$year['dzo']]['part'];
+            if (is_null($multiplier)) {
+                $multiplier = 100;
+            }
+            $formatted[$year['dzo']] = $formatted[$year['dzo']] / 100 * $multiplier;
         }
         return $formatted;
     }

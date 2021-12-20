@@ -5,10 +5,10 @@ export default {
     data: function () {
         return {
             productionByPeriods: {},
-            previousMonth: moment().month() - 1,
+            previousMonth: moment().month(),
             currentDate: moment().format('DD.MM.YYYY'),
             previousMonthName: moment().subtract(1,'months').format('MMM'),
-            currentYear: moment().year,
+            currentYear: moment().year(),
             menu: {
                 'daily': true,
                 'monthly': false,

@@ -39,11 +39,11 @@
                 @if ($dzo['orderId'] === 2)
                     <td rowspan="2">{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}</td>
+                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}%</td>
                 @elseif ($dzo['orderId'] !== 3)
                     <td>{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td style="text-align:right">{{ $dzo['part']}}</td>
+                    <td style="text-align:right">{{ $dzo['part']}}%</td>
                 @else
                     <td style="text-indent: 14px;">{{ $dzo['name']}}</td>
                 @endif
@@ -97,11 +97,11 @@
                 @if ($dzo['orderId'] === 2)
                     <td rowspan="2">{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}</td>
+                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}%</td>
                 @elseif ($dzo['orderId'] !== 3)
                     <td>{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td style="text-align:right">{{ $dzo['part']}}</td>
+                    <td style="text-align:right">{{ $dzo['part']}}%</td>
                 @else
                     <td style="text-indent: 14px;">{{ $dzo['name']}}</td>
                 @endif
@@ -153,11 +153,11 @@
                 @if ($dzo['orderId'] === 2)
                     <td rowspan="2">{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}</td>
+                    <td rowspan="2" style="text-align:right">{{ $dzo['part']}}%</td>
                 @elseif ($dzo['orderId'] !== 3)
                     <td>{{ $dzo['id'] }}</td>
                     <td>{{ $dzo['name']}}</td>
-                    <td style="text-align:right">{{ $dzo['part']}}</td>
+                    <td style="text-align:right">{{ $dzo['part']}}%</td>
                 @else
                     <td style="text-indent: 14px;">{{ $dzo['name']}}</td>
                 @endif

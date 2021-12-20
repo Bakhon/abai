@@ -34,9 +34,9 @@
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                             <td v-else class="p-2">{{ dzo['id'] }}</td>
                             <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
-                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}</td>
+                            <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                             <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
-                            <td v-else class="p-2">{{ dzo['part'] }}</td>
+                            <td v-else class="p-2">{{ dzo['part'] }}%</td>
                             <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                             <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
                             <td v-if="dzo['plan'] - dzo['fact'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
@@ -76,9 +76,9 @@
                         <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                         <td v-else class="p-2">{{ dzo['id'] }}</td>
                         <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}</td>
+                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                         <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
-                        <td v-else class="p-2">{{ dzo['part'] }}</td>
+                        <td v-else class="p-2">{{ dzo['part'] }}%</td>
                         <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
@@ -101,7 +101,7 @@
                             <th rowspan="2" class="p-2">№<br>п/п</th>
                             <th rowspan="2" class="p-2">Предприятия</th>
                             <th rowspan="2" class="p-2">Доля<br>КМГ</th>
-                            <th rowspan="2" class="p-2">Доля<br>КМГ</th>
+                            <th rowspan="2" class="p-2">План на<br>{{currentYear}} г.</th>
                             <th colspan="3" class="p-2">За {{previousMonth}} мес.</th>
                             <th rowspan="2" class="p-2">Причины отклонений</th>
                         </tr>
@@ -117,9 +117,9 @@
                         <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                         <td v-else class="p-2">{{ dzo['id'] }}</td>
                         <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
-                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}</td>
+                        <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                         <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
-                        <td v-else class="p-2">{{ dzo['part'] }}</td>
+                        <td v-else class="p-2">{{ dzo['part'] }}%</td>
                         <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
@@ -191,6 +191,12 @@
     border-collapse: collapse;
     text-align: right;
     tr:nth-child(1)  {
+        th:first-child {
+            width: 62px;
+        }
+        th:nth-child(3) {
+            width: 81px;
+        }
         th:nth-child(4) {
             width: 200px;
         }
@@ -228,6 +234,15 @@
     border-collapse: collapse;
     text-align: right;
     tr:nth-child(1)  {
+        th:first-child {
+            width: 62px;
+        }
+        th:nth-child(3) {
+            width: 81px;
+        }
+        th:nth-child(4) {
+            width: 116px;
+        }
         th:nth-child(5) {
             width: 200px;
         }
