@@ -3,7 +3,7 @@
         <div class="page-container row">
             <div class="col-12 mt-3 header">
                 <div class="header-title">
-                    Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз"
+                    Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз" (тонн)
                 </div>
                 <div class="img-download" @click="handleExcelDownload()"></div>
             </div>
@@ -59,8 +59,8 @@
                             <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td v-if="dzo['reasons'].length > 0" colspan="2" class="p-2">
                                 <div v-for="(reason, index) in dzo['reasons']" class="text-left">
-                                    <span>{{ reason[0] }}</span>
-                                    <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
+                                    <span>{{index+1}}. {{ reason[0] }}</span>
+                                    <span v-if="reason[1] !== null">, потери - {{ getFormattedNumber(reason[1]) }} т.</span>
                                     <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
                                 </div>
                             </td>
@@ -118,9 +118,9 @@
                             <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td v-if="Object.keys(dzo['reasons']).length > 0 && dzo['fact'] - dzo['plan'] < 0" colspan="2" class="p-2">
-                                <div v-for="(reason, index) in dzo['reasons']" class="text-left">
-                                    <span>{{ reason[0] }}</span>
-                                    <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
+                                <div v-for="(reason, key,index) in dzo['reasons']" class="text-left">
+                                    <span>{{index+1}}. {{ reason[0] }}</span>
+                                    <span v-if="reason[1] !== null">, потери - {{ getFormattedNumber(reason[1]) }} т.</span>
                                     <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
                                 </div>
                             </td>
@@ -176,9 +176,9 @@
                             <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td v-if="Object.keys(dzo['reasons']).length > 0" colspan="2" class="p-2">
-                                <div v-for="(reason, index) in dzo['reasons']" class="text-left">
-                                    <span>{{ reason[0] }}</span>
-                                    <span v-if="reason[1] !== null">, потери - {{ reason[1] }} т.</span>
+                                <div v-for="(reason, key, index) in dzo['reasons']" class="text-left">
+                                    <span>{{index+1}}. {{ reason[0] }}</span>
+                                    <span v-if="reason[1] !== null">, потери - {{ getFormattedNumber(reason[1]) }} т.</span>
                                     <span v-if="dzo['reasons'].length - 1 !== index"><br></span>
                                 </div>
                             </td>
@@ -252,6 +252,9 @@
         }
         th:nth-child(4) {
             width: 200px;
+        }
+        th:nth-child(4) {
+            width: 338px;
         }
         th:nth-child(2) {
             width: 400px;

@@ -71,7 +71,7 @@
                         @foreach($dzo['reasons'] as $index => $reason)
                             {{$reason[0]}}
                             @if ($reason[1] !== null)
-                                , потери - {{$reason[1]}} т.
+                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
                             @endif
                             @if (count($dzo['reasons']) - 1 !== $index)
                                 <br>
@@ -143,7 +143,7 @@
                         @foreach($dzo['reasons'] as $index => $reason)
                             {{$reason[0]}}
                             @if ($reason[1] !== null)
-                                , потери - {{$reason[1]}} т.
+                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
                             @endif
                             @if (count($dzo['reasons']) - 1 !== $index)
                                 <br>
@@ -212,7 +212,7 @@
                         @foreach($dzo['reasons'] as $index => $reason)
                             {{$reason[0]}}
                             @if ($reason[1] !== null)
-                                , потери - {{$reason[1]}} т.
+                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
                             @endif
                             @if (count($dzo['reasons']) - 1 !== $index)
                                 <br>

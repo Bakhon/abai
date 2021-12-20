@@ -7,7 +7,7 @@ export default {
             productionByPeriods: {},
             previousMonth: moment().month(),
             currentDate: moment().format('DD.MM.YYYY'),
-            previousMonthName: moment().subtract(1,'months').format('MMM'),
+            previousMonthName: moment().format('MMMM'),
             currentYear: moment().year(),
             menu: {
                 'daily': true,
