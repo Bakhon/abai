@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Jobs\RunPostgresqlProcedure;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,15 @@ class WellStatus extends PlainForm
 
     protected function afterSubmit(int $id)
     {
-        dd($this->request->all());
+        $date = Carbon::parse($this->request->get('dbeg'));
+        if ($date->startOfDay() >= Carbon::now()->startOfDay()) {
+            return;
+        }
+
+        RunPostgresqlProcedure::dispatch(
+            'dmart.sync_well_daily_prod_oil_abai',
+            [$this->request->get('well'), $date->format('Y-m-d')]
+        );
     }
 
     private function updatePreviousState(CarbonImmutable $date)
