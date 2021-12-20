@@ -28,6 +28,12 @@
     }
   ],
   "table": "prod.well_equip",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "",
