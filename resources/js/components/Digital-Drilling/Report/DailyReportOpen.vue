@@ -1,6 +1,6 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" @changeReport="changeReport"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open" @changeReport="changeReport"/>
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -79,11 +79,19 @@
                                           @updateList="changeCurrentWell"
                                           @search="filterWell"/>
                             </div>
+                            <div class="well_body-form-input last" v-if="newWell=='old'">
+                                <label>Редактировать отчет:</label>
+                                <div class="dropdown__area-edit">
+                                    <input type="checkbox" v-model="is_open">
+                                    <input type="date" class="date" :disabled="!is_open" v-model="dateOpen" :class="{error: is_open && error && dateOpen==''}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="well-create" @click="create">
-                    {{ trans('digital_drilling.default.create') }}
+                    <span v-if="!is_open">{{ trans('digital_drilling.default.create') }}</span>
+                    <span v-else>Открыть</span>
                 </div>
             </div>
         </div>
@@ -94,7 +102,7 @@
 <script>
     import DailyRaport from './DailyRaport'
     import Dropdown from '../components/dropdown'
-
+    import moment from "moment";
     export default {
         name: "DailyReportOpen",
         components: {DailyRaport, Dropdown},
@@ -115,6 +123,8 @@
                 report: {},
                 error: false,
                 isEdit: false,
+                is_open: false,
+                dateOpen: '',
             }
         },
         mounted(){
@@ -129,20 +139,43 @@
             },
             changeReport(data){
                 this.isEdit = true
+                this.is_open = false
                 this.report = data
             },
             getDailyReport(){
-                if (this.newWell == 'new'){
-                    if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
-                        this.error = false
+                if (!this.is_open){
+                    if (this.newWell == 'new'){
+                        if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
+                            this.error = false
+                            this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                                {
+                                    "is_new_well": true,
+                                    "uwi": this.newWellNumber,
+                                    "geo": this.currentField,
+                                    "org": this.currentDZO,
+                                    "whcx": this.whcx,
+                                    "whcy": this.whcy
+                                }).then((response) => {
+                                if (response.data) {
+                                    this.report = response.data
+                                    this.report.report_daily.author = this.user.username
+                                    this.created = true
+                                } else {
+                                    console.log("No data");
+                                }
+                            })
+                                .catch((error) => console.log(error))
+                        }else{
+                            this.error = true
+                        }
+                    }
+                    else{
                         this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
                             {
-                                "is_new_well": true,
-                                "uwi": this.newWellNumber,
+                                "is_new_well": this.currentWell.is_new_well,
+                                "well": this.currentWell.well_id,
                                 "geo": this.currentField,
-                                "org": this.currentDZO,
-                                "whcx": this.whcx,
-                                "whcy": this.whcy
+                                "org": this.currentDZO
                             }).then((response) => {
                             if (response.data) {
                                 this.report = response.data
@@ -153,26 +186,30 @@
                             }
                         })
                             .catch((error) => console.log(error))
-                    }else{
-                        this.error = true
                     }
-                } else{
-                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
-                        {
-                            "is_new_well": this.currentWell.is_new_well,
-                            "well": this.currentWell.well_id,
-                            "geo": this.currentField,
-                            "org": this.currentDZO
+                }else{
+                    if (this.dateOpen == ''){
+                        this.error = true
+                    }else{
+                        this.error = false
+                        let date =  moment(this.dateOpen, 'YYYY-MM-DD').format('DD-MM-YYYY')
+                        this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/well/date',{
+                            well:  this.currentWell.well_id,
+                            date: date
                         }).then((response) => {
-                        if (response.data) {
-                            this.report = response.data
-                            this.report.report_daily.author = this.user.username
-                            this.created = true
-                        } else {
-                            console.log("No data");
-                        }
-                    })
-                        .catch((error) => console.log(error))
+                            if (response) {
+                                this.report = response.data
+                                this.report.report_daily.author = this.user.username
+                                this.created = true
+                            } else {
+                                console.log("No data");
+                            }
+                        })
+                            .catch((error) => {
+                                console.log(error)
+                                this.showToast('', 'No result', 'danger');
+                            })
+                    }
                 }
 
             },
@@ -246,6 +283,29 @@
     }
     .error{
         border: 1px solid red!important;
+    }
+    label{
+        margin-bottom: 0;
+    }
+    .dropdown__area-edit{
+        width: 194px!important;
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+    .well_body-form-input.last{
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .date{
+        background: #334296!important;
+        border: 0.5px solid #454FA1;
+        box-sizing: border-box;
+        border-radius: 4px;
+        width: 224px;
+        height: 28px;
+        margin-left: 10px;
     }
 
 </style>

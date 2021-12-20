@@ -19,7 +19,7 @@
                         {{ report.document_name}}
                     </td>
                     <td>
-                        <a :href="DIGITAL_DRILLING_URL + currentWell.well_id + '/?file_id=' + report.file_id" target="_blank" class="download" @click="downloadFile()" style="color: #ffffff; text-decoration: none;">
+                        <a :href="DIGITAL_DRILLING_URL + currentWell.well_id + '/?file_id=' + report.file_id" target="_blank" class="download" style="color: #ffffff; text-decoration: none;">
                             Скачать
                         </a>
                     </td>
