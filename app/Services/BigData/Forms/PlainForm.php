@@ -111,14 +111,15 @@ abstract class PlainForm extends BaseForm
 
             $this->originalData = (array)$dbQuery->first();
             $dbQuery->update($data);
-
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
         } else {
             $this->checkFormPermission('create');
 
+            $this->originalData = [];
             $id = $dbQuery->insertGetId($data);
         }
+
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $id;
 
         $this->submitInnerTable($id);
         $this->afterSubmit($id);
