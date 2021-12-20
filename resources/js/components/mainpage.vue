@@ -107,6 +107,11 @@ export default {
           icon: "map-constructor.svg",
           url: this.localeUrl("/map-constructor"),
         },
+        {
+          name: this.trans("geology.geology_title"),
+          icon: "geology.svg",
+          url: this.localeUrl("/geology/petrophysics"),
+        },
       ],
     };
   },
