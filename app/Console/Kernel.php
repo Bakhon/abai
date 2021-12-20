@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
             ->timezone('Asia/Almaty');
         $schedule->command('create-emergency-chemistry-wells:cron')->monthlyOn(11, '10:00')->timezone('Asia/Almaty');
         $schedule->command('parse_omg_ngdu_temp_press_data:cron')
-            ->dailyAt('05:00')
+            ->dailyAt('02:00')
             ->timezone('Asia/Almaty');
     }
 
