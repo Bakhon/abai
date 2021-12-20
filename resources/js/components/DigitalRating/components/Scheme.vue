@@ -1,17 +1,32 @@
 <template>
   <div class="correlation-scheme">
+    <div class="well-list">
+      <ul>
+        <li
+          v-for="(well, wellIdx) in wells"
+          :key="wellIdx"
+          :class="getClass(well)"
+          @click="handleSelected(well, wellIdx)"
+        >
+          <span>{{ well.name }}</span>
+        </li>
+      </ul>
+      <button type="button" class="btn-button btn-button--thm-green minw-200">
+        <span>Применить</span>
+      </button>
+    </div>
     <AwGis :stratigraphy="[]"/>
   </div>
 </template>
 
 <script>
-import {globalloadingMutations} from "@store/helpers";
+import {globalloadingMutations, digitalRatingState} from "@store/helpers";
 import AwGis from '../../geology/petrophysics/graphics/awGis/AwGis';
 import {
   FETCH_WELLS_MNEMONICS,
   SET_WELLS_BLOCKS,
   SET_WELLS,
-  FETCH_WELLS_CURVES, SET_GIS_DATA_FOR_GRAPH, SET_SELECTED_WELL_CURVES_FORCE
+  FETCH_WELLS_CURVES, SET_GIS_DATA_FOR_GRAPH, SET_SELECTED_WELL_CURVES_FORCE, FETCH_WELLS_HORIZONS
 } from "../../../store/modules/geologyGis.const";
 
 export default {
@@ -22,64 +37,79 @@ export default {
   },
 
   async created() {
-    await this.fetchGraphs();
+    await this.fetchWells();
+    await this.fetchGraphs()
   },
 
   data() {
     return {
+      wells: [],
+      selectedWells: [],
       testWells: [
         {sort: 0, value: 'UZN_1428'},
         {sort: 1, value: 'UZN_0144'},
         {sort: 2, value: 'UZN_1027'},
         {sort: 3, value: 'UZN_9093'}
       ],
-      wellList: {
-        '9313': [
-          {sort: 0, value: 'UZN_1291'},
-          {sort: 1, value: 'UZN_3313'},
-          {sort: 2, value: 'UZN_3314'},
-          {sort: 3, value: 'UZN_3505'},
-          {sort: 4, value: 'UZN_4140'},
-          {sort: 5, value: 'UZN_4439'},
-          {sort: 6, value: 'UZN_7272'},
-          {sort: 7, value: 'UZN_7296'},
-          {sort: 8, value: 'UZN_7934'},
-          {sort: 9, value: 'UZN_9133'},
-        ],
-        '10252': [
-          {sort: 0, value: 'UZN_4439'},
-          {sort: 1, value: 'UZN_5617'},
-        ]
-      },
-      wells: {
-        '9313': [
-          {name: 'UZN_1291'},
-          {name: 'UZN_3313'},
-          {name: 'UZN_3314'},
-          {name: 'UZN_3505'},
-          {name: 'UZN_4140'},
-          {name: 'UZN_4439'},
-          {name: 'UZN_7272'},
-          {name: 'UZN_7296'},
-          {name: 'UZN_7934'},
-          {name: 'UZN_9133'},
-        ],
-        '10252': [
-          {name: 'UZN_4439'},
-          {name: 'UZN_5617'},
-        ]
-      }
     }
   },
 
   computed: {
+    getSelectedWells() {
+      return this.selectedWells.map((item) => {
+        return item.value
+      })
+    },
+
     getTestWells() {
       return this.testWells.map(el => el.value);
-    }
+    },
+
+    ...digitalRatingState([
+      'sectorNumber',
+      'horizonNumber'
+    ]),
   },
 
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
+
+    async fetchWells() {
+      const res = await axios.get(
+          `${process.env.MIX_TEST_MICROSERVICE}/las-list/${this.horizonNumber}/${this.sectorNumber}`
+      );
+      this.wells = this.getMapping(res?.data?.wells);
+    },
+
+    getMapping(arr) {
+      return arr.map((el, index) => {
+        return {
+          sort: index,
+          value: el,
+          name: el
+        }
+      });
+    },
+
+    async apply() {
+      let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
+      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      await this.$store.dispatch(FETCH_WELLS_HORIZONS, arr.map((el) => el.value));
+      this.$store.commit(SET_WELLS, arr.map((el) => { return { name: el.name } }));
+      this.$store.commit(SET_WELLS_BLOCKS, arr);
+      this.$store.commit(SET_SELECTED_WELL_CURVES_FORCE, ["GR", "LLD", "SP"]);
+      await this.fetchGraphs();
+    },
+
+    handleSelected(item) {
+      let index = this.selectedWells.findIndex(el => el.value === item.value);
+      if (~index) {
+        this.selectedWells.splice(index, 1)
+      } else {
+        this.selectedWells.push(item);
+      }
+    },
+
     async fetchGraphs() {
       this.SET_LOADING(true);
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getTestWells);
@@ -108,8 +138,11 @@ export default {
       this.$store.commit(SET_GIS_DATA_FOR_GRAPH);
       this.SET_LOADING(false);
     },
-    getWells(sector) {
-      return this.wellList[sector].map(item => item.value);
+
+    getClass(well) {
+      return {
+        'active': this.selectedWells.some(el => el.value === well.value)
+      }
     }
   }
 }
@@ -118,8 +151,6 @@ export default {
 <style scoped lang="scss">
 .correlation-scheme {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 .correlation-scheme__item {
   width: calc(33% - 2px);
@@ -138,5 +169,34 @@ export default {
   img {
     width: 100%;
   }
+}
+
+.well-list {
+  margin: 0 20px 0 0;
+  width: 15%;
+  display: block;
+  padding: 10px 5px;
+
+  ul {
+    list-style: none;
+    margin-left: 0;
+
+    li {
+      cursor: pointer;
+      padding: 5px;
+
+      &.active {
+        background-color: #323370;
+      }
+    }
+  }
+}
+
+button {
+  width: 100%;
+}
+
+.aw-gis {
+  width: 85%;
 }
 </style>
