@@ -147,6 +147,8 @@ export default {
 .title-holder > p {
   margin: 0;
   margin-left: 8px;
+  color: #fff;
+  font-size: 16px;
 }
 
 .header-hide-expand-buttons {

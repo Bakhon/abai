@@ -251,7 +251,11 @@ export default {
         return this.dict
       }
 
-      return this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      let result = this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      if (result.length === 0) {
+        result = this.dict.filter(item => item.org === null)
+      }
+      return result
     }
   },
   mounted() {

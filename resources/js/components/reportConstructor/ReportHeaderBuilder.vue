@@ -2,7 +2,7 @@
   <draggable
       :headerNode="localValue"
       :group="group"
-      v-model="treeData"
+      :list="treeData"
       class="cmp-tree"
       ghost-class="ghost"
       @input="updateValue"
@@ -11,7 +11,7 @@
       @end="isDraggable = false"
   >
     <ReportHeaderNode
-        v-for="item, index in treeData"
+        v-for="(item, index) in treeData"
         :key="index"
         :headerNode="item"
         :translateAttribute="translateAttribute"
