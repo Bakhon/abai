@@ -491,7 +491,8 @@
         "type": "table",
         "isVisible": true,
         "structure_types": [
-            "org:ogpu"
+            "org:ogpu",
+            "org:ssfp"
         ]
     },
     {
@@ -501,7 +502,8 @@
         "type": "table",
         "isVisible": true,
         "structure_types": [
-            "org:ogpu"
+            "org:ogpu",
+            "org:ssfp"
         ]
     },
     {
@@ -511,7 +513,8 @@
         "type": "table",
         "isVisible": true,
         "structure_types": [
-            "org:ogpu"
+            "org:ogpu",
+            "org:ssfp"
         ]
     },
     {
