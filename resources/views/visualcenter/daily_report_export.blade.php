@@ -49,10 +49,10 @@
                 @endif
                 <td style="text-align:right">{{ number_format($dzo['plan'],0,',', ' ')}}</td>
                 <td style="text-align:right">{{ number_format($dzo['fact'],0,',', ' ')}}</td>
-                @if ($dzo['plan'] - $dzo['fact'] < 0)
+                @if ($dzo['fact'] - $dzo['plan'] < 0)
                     <td style="color: red; text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
                 @else
-                    <td style="text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
+                    <td style="text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @endif
                 @if (count($dzo['reasons']) > 0)
                     <td colspan="2" style="height:{{{count($dzo['reasons']) * 15}}}px">
@@ -108,8 +108,8 @@
                 <td style="text-align:right">{{ number_format($dzo['monthlyPlan'],0,',', ' ') }}</td>
                 <td style="text-align:right">{{ number_format($dzo['plan'],0,',', ' ')}}</td>
                 <td style="text-align:right">{{ number_format($dzo['fact'],0,',', ' ')}}</td>
-                @if ($dzo['plan'] - $dzo['fact'] < 0)
-                    <td style="color: red; text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
+                @if ($dzo['fact'] - $dzo['plan'] < 0)
+                    <td style="color: red; text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @else
                     <td style="text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
                 @endif
@@ -167,7 +167,7 @@
                 @if ($dzo['plan'] - $dzo['fact'] < 0)
                     <td style="color: red; text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
                 @else
-                    <td style="text-align:right">{{ number_format($dzo['plan'] - $dzo['fact'],0,',', ' ') }}</td>
+                    <td style="text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @endif
                 @if (count($dzo['reasons']) > 0)
                     <td>

@@ -39,7 +39,7 @@
                             <td v-else class="p-2">{{ dzo['part'] }}%</td>
                             <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                             <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
-                            <td v-if="dzo['plan'] - dzo['fact'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
+                            <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                             <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
                             <td v-if="dzo['reasons'].length > 0" colspan="2" class="p-2">
                                 <div v-for="(reason, index) in dzo['reasons']" class="text-left">
@@ -82,7 +82,7 @@
                         <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
-                        <td v-if="dzo['plan'] - dzo['fact'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
+                        <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                         <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
                         <td v-if="dzo['reasons'].length > 0" colspan="2" class="p-2">
                             <div v-for="(reason, index) in dzo['reasons']" class="text-left">
@@ -123,7 +123,7 @@
                         <td v-if="dzo.orderId !== 3" class="p-2 text-right">{{ getFormattedNumber(dzo['yearlyPlan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                         <td class="p-2 text-right">{{ getFormattedNumber(dzo['fact']) }}</td>
-                        <td v-if="dzo['plan'] - dzo['fact'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
+                        <td v-if="dzo['fact'] - dzo['plan'] < 0" class="color__red p-2 text-right">{{ getFormattedNumber(dzo['fact'] - dzo['plan']) }}</td>
                         <td class="p-2 text-right" v-else>{{ getFormattedNumber(dzo['plan'] - dzo['fact']) }}</td>
                         <td v-if="dzo['reasons'].length > 0" colspan="2" class="p-2">
                             <div v-for="(reason, index) in dzo['reasons']" class="text-left">
