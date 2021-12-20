@@ -44,7 +44,7 @@ class ParseOmgNgduTempPressData extends Command
         if (!Schema::hasTable('omg_n_g_d_u_s_temperature_pressure')) {
             return;
         }
-        
+
         $lastDays = Carbon::now()->subDays(4)->format('Y-m-d');
         $temp_press = DB::table('omg_n_g_d_u_s_temperature_pressure')
             ->where('date', '>=', $lastDays)
