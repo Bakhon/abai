@@ -16,13 +16,13 @@
       >{{ type === 'year' ? template.year : template.well_name}}
     </label>
     <ul v-if="type === 'year'">
-      <archiveWorkHook
+      <archWorkHook
         
       v-for="well in template.wells"
             :key="well.well_name" type="well" :template="well"/>
     </ul>
     <ul v-else>
-      <archiveWorkHookTreeMenuChiild
+      <archWorkHookTreeMenuChild
         
       v-for="date in template.date"
             :key="date.date_name" :date="date"/>
@@ -31,19 +31,19 @@
 </template>
 
 <script>
-import archiveWorkHookTreeMenuChiild from "./archiveWorkHookTreeMenuChiild.vue";
-import archiveWorkHook from "./archiveWorkHook.vue";
+import archWorkHookTreeMenuChild from "./archWorkHookTreeMenuChild.vue";
+import archWorkHook from "./archWorkHook.vue";
 
 export default {
-  name: "archiveWorkHook",
+  name: "archWorkHook",
   props: {
     template: Object,
     isOpenedTrees: Array,
     type: String
   },
   components: {
-    archiveWorkHookTreeMenuChiild,
-    archiveWorkHook
+    archWorkHookTreeMenuChild,
+    archWorkHook
   },
   computed: {
     computedIsOpenedTrees: {

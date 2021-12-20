@@ -6,7 +6,7 @@
   >
     <label>
       <i style="color: #999DC0; margin-right: 8px;" class="fa fa-file "></i
-      >{{ date.date_name }}
+      >{{ date.field_name }}
     </label>
     <img
       v-if="type === 'download'"

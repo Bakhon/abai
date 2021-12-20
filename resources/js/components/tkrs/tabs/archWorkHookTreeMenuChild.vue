@@ -21,7 +21,7 @@
 <script>
 
 export default {
-  name: "archiveWorkHookTreeMenuChiild",
+  name: "archWorkHookTreeMenuChild",
   props: {
     treeChild: Object,
     date: Object,

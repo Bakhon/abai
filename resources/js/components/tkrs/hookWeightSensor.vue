@@ -24,18 +24,30 @@
             </div>
           </div>
           <div class="dropdown-holder">
-            <b-form-select class="custom-dropdown-block" :options="archiveData" ><img src="https://cdn4.buysellads.net/uu/1/21673/1538677471-digitalocean-260x200-light_1_.png" alt="" border="0" height="50" width="65" style="max-width: 130px;"></b-form-select>
+            <b-dropdown>
+              <template #button-content>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 0C2.7 0 0 2.7 0 6C0 9.3 2.7 12 6 12C9.3 12 12 9.3 12 6C12 2.7 9.3 0 6 0ZM6 11.2714C3.08571 11.2714 0.771429 8.91429 0.771429 6C0.771429 3.08571 3.08571 0.771429 6 0.771429C8.91429 0.771429 11.2714 3.08571 11.2714 6C11.2714 8.91429 8.91429 11.2714 6 11.2714Z" fill="#868BB2"/>
+<path d="M5.99799 9.04286C6.42404 9.04286 6.76942 8.69748 6.76942 8.27143C6.76942 7.84538 6.42404 7.5 5.99799 7.5C5.57194 7.5 5.22656 7.84538 5.22656 8.27143C5.22656 8.69748 5.57194 9.04286 5.99799 9.04286Z" fill="#868BB2"/>
+<path d="M5.99799 4.54286C6.42404 4.54286 6.76942 4.19748 6.76942 3.77143C6.76942 3.34538 6.42404 3 5.99799 3C5.57194 3 5.22656 3.34538 5.22656 3.77143C5.22656 4.19748 5.57194 4.54286 5.99799 4.54286Z" fill="#868BB2"/>
+<path d="M5.99799 6.77137C6.42404 6.77137 6.76942 6.42599 6.76942 5.99994C6.76942 5.5739 6.42404 5.22852 5.99799 5.22852C5.57194 5.22852 5.22656 5.5739 5.22656 5.99994C5.22656 6.42599 5.57194 6.77137 5.99799 6.77137Z" fill="#868BB2"/>
+</svg>
+<a>Бригада/Скважина</a>
+              </template>
+              <b-dropdown-item href="#">Бригада</b-dropdown-item>
+              <b-dropdown-item href="#">Скважина</b-dropdown-item>
+            </b-dropdown>
             <div class="line-block"></div>
             <div class="tab-archive-div" v-if="currentBlockTab == 1">
-                  <currentWorkHook v-for="template in wellsTree"
-            :key="template.year" type="year" :template="template"></currentWorkHook>
+                  <currentWorkHook v-for="template in wellsTreeCurrent"
+            :key="template.well_name" :template="template"></currentWorkHook>
               </div>
 
               <div class="tab-archive-div" v-if="currentBlockTab == 2">
-                  <archiveWorkHook v-for="template in wellsTree"
-            :key="template.year" type="year" :template="template"></archiveWorkHook>
+                  <archWorkHook v-for="template in wellsTree"
+            :key="template.year" type="year" :template="template"></archWorkHook>
               </div>
-            
+         
           </div>
           
         </div>
@@ -154,7 +166,7 @@ import BaseTable from './BaseTable.vue';
 import event from './tabs/event.vue';
 import excess from './tabs/excess.vue';
 import currentWorkHook from './tabs/currentWorkHook.vue';
-import archiveWorkHook from './tabs/archiveWorkHook.vue';
+import archWorkHook from './tabs/archWorkHook.vue';
 import { Plotly } from 'vue-plotly'
 
 
@@ -170,7 +182,7 @@ export default {
     event,
     excess,
     currentWorkHook,
-    archiveWorkHook,
+    archWorkHook,
     Plotly,
   },
   computed: {
@@ -235,7 +247,7 @@ export default {
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWorkTable: "dayliWork1/",
       wellsTree: {},
-      wellsTreeArchive: {},
+      wellsTreeCurrent: {},
       archiveData: ['Бригада', 'Скважина'],
       
     }
@@ -244,7 +256,7 @@ export default {
     this.$store.commit("globalloading/SET_LOADING", true);
     await this.axios
       .get(
-          'http://172.20.103.203:8090/db1/'
+          'http://172.20.103.203:8090/chooseDate/AKH_0482/05.08.2020/'
         )
       .then((response) => {
         console.log("TEST2")  
@@ -265,6 +277,8 @@ export default {
       });
       this.getListWell();
       this.getDataTreeArchive();
+      this.getDataTreeCurrent();
+      this.getTableWork();
       
     },
   
@@ -351,7 +365,7 @@ export default {
       
       this.axios
           .get(
-              this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
+              this.postApiUrl + this.linkWorkTable + "AKH_0482/05.08.2020/",
               
           )
           .then((response) => {
@@ -392,7 +406,7 @@ export default {
           .then((response) => {
               let data = response.data;
               if (data) {
-                this.wellsTreeArchive = data
+                this.wellsTreeCurrent = data
 
               } else {
                   console.log("No data");
@@ -403,7 +417,13 @@ export default {
   },
 };
 </script>
-
+<style scoped>
+.btn-secondary {
+    color: #fff;
+    background-color: #20274F;
+    border-color: #20274F;
+}
+</style>
 <style  scoped lang='scss'>
 .data-analysis-left-block {
   width: 249px;
@@ -611,4 +631,5 @@ table, th, td {
   overflow: scroll; 
   height: 824px;
 }
+
 </style>
