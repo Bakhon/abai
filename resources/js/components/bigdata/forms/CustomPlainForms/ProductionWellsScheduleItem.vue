@@ -198,7 +198,7 @@
                     },
                 ],
                 activePeriod: 90,
-                colors: ['rgba(255, 0, 0, 1)', 'rgba(165, 42, 42, 1)', 'rgba(33, 186, 78, 1)', 'rgba(0, 0, 255, 1)', 'rgba(230, 230, 0, 1)'],
+                colors: ['rgba(255, 0, 0, 1)', 'rgb(139, 69, 19)', 'rgba(33, 186, 78, 1)', 'rgba(0, 0, 255, 1)', 'rgba(230, 230, 0, 1)'],
             }
         },
         methods: {
@@ -250,7 +250,7 @@
             chartOptions() {
                 return {
                     title: {
-                        text: this.title
+                        text: this.title +  ' -> ' + 'График эксплутации скважины ' + this.title
                     },
                     labels: this.labels,
                     stroke: {
