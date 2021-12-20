@@ -15,8 +15,8 @@ class GeoStructureService extends StructureService
             ->selectRaw('g.id, g.name_ru as name, gp.parent as parent_id, gt.code as sub_type')
             ->whereIn('gt.code', $this->getSubTypes('geo', $types))
             ->distinct()
-            ->orderBy('parent_id')
             ->orderBy('name')
+            ->orderBy('parent_id')
             ->leftJoin(
                 'dict.geo_parent as gp',
                 function ($join) {
@@ -31,12 +31,25 @@ class GeoStructureService extends StructureService
                 function ($item) {
                     $item = (array)$item;
                     $item['type'] = 'geo';
+                    if ($item['sub_type'] === 'FLD') {
+                        $item['parent_id'] = null;
+                    }
                     return $item;
                 }
             )
             ->toArray();
 
-        $tree = $this->generateTree($items);
+        $geoIds = [];
+        $result = [];
+        foreach ($items as $item) {
+            if (in_array($item['id'], $geoIds)) {
+                continue;
+            }
+            $geoIds[] = $item['id'];
+            $result[] = $item;
+        }
+
+        $tree = $this->generateTree($result);
         return $this->fillTreeWithFullNames($tree);
     }
 }
