@@ -178,7 +178,7 @@
                   </span>
               </div>
             </div>
-            <div class="top-parametrs-container row">
+            <div class="top-parameters-container row" v-if="isDisplayParameterBuilder">
               <div class="col table-wrapper col">
                   <div class="table-container">
                     <div class="table-container-column-header">
