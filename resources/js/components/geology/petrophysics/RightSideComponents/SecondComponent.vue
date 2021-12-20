@@ -1,135 +1,61 @@
 <template>
   <div>
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_1" class="mr-2" size="small">GRmin</Button>
-          <label class="align-self-center">
-            Линия песчаника
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <Switcher :active.sync="switcherActive" :items="[
+        {label: 'DTW'},
+        {label: 'PCA'},
+    ]" class="switcher mb-2" />
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_2" class="mr-2" size="small">GRmax</Button>
-          <label class="align-self-center">
-            Линия глин
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <dropdown block class="w-100 mb-2" button-text="Опорная скважина" :options="[
+        {label: 'Option 0'},
+        {label: 'Option 1'},
+        {label: 'Option 2'},
+        {label: 'Option 3'},
+    ]" />
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_3" class="mr-2" size="small">SPmax</Button>
-          <label class="align-self-center">
-            Макс. значения ПС
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <dropdown block class="w-100 mb-2" button-text="Выбор отбивок" :options="[
+        {label: 'Option 0'},
+        {label: 'Option 1'},
+        {label: 'Option 2'},
+        {label: 'Option 3'},
+    ]" />
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_4" class="mr-2" size="small">DTPGL</Button>
-          <label class="align-self-center">
-            Значения АК на глинах
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <dropdown multiple :selected-value.sync="multipleSelect" block class="w-100 mb-2" button-text="Корреляционные скважины" :options="[
+        {label: 'Option 0'},
+        {label: 'Option 1'},
+        {label: 'Option 2'},
+        {label: 'Option 3'},
+    ]" />
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_5" class="mr-2" size="small">DTPm</Button>
-          <label class="align-self-center">
-            Значения АК на матрице
-          </label>
+    <ToolBlock title="Выбор кривых">
+      <div class="p-2">
+        <div class="buttons-grid">
+          <Button color="accent" align="center">GR</Button>
+          <Button color="accent" align="center">NPHI</Button>
+          <Button color="accent" align="center">SP</Button>
+          <Button color="accent" align="center">RHOB</Button>
         </div>
-        <AwTextarea class="text"/>
       </div>
-    </div>
+    </ToolBlock>
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_6" class="mr-2" size="small">RHOBGL</Button>
-          <label class="align-self-center">
-            Значения ГГК на глинах
-          </label>
-        </div>
-        <AwTextarea class="text"/>
+    <ToolBlock class="mb-2">
+      <div class="p-2 grid__inputs">
+        <AwInput type="number" class="curve-inputs mb-2" label-direction="row" label="Интервал поиска" />
+        <AwInput type="number" class="curve-inputs" label-direction="row" label="Окно поиска" />
       </div>
-    </div>
+    </ToolBlock>
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_7" class="mr-2" size="small">RHOBm</Button>
-          <label class="align-self-center">
-            Значения ГГК на матрице
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <Button class="mb-2 w-100" color="primary" align="center">Старт</Button>
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_8" class="mr-2" size="small">NGK_Oxf</Button>
-          <label class="align-self-center">
-            Значения НГК на Оксфорде
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
+    <dropdown multiple block class="w-100 mb-2" button-text="Результаты" :options="[
+        {label: 'Option 0'},
+        {label: 'Option 1'},
+        {label: 'Option 2'},
+        {label: 'Option 3'},
+    ]" />
 
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_9" class="mr-2" size="small">NGK_val</Button>
-          <label class="align-self-center">
-            Значения НГК на валажине
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
-
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_10" class="mr-2" size="small">RW</Button>
-          <label class="align-self-center">
-            Сопротивление пластовой воды
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
-    </div>
-
-    <div class="rect mb-2">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex mr-2">
-          <Button align="center"  ref="button_11" class="mr-2" size="small">TEMP</Button>
-          <label class="align-self-center">
-            Температура пластовой воды
-          </label>
-        </div>
-        <AwTextarea class="text"/>
-      </div>
+    <div class="buttons-grid">
+      <Button color="accent-100" align="center">Сохранить</Button>
+      <Button color="gray" align="center">Отмена</Button>
     </div>
 
   </div>
@@ -137,26 +63,39 @@
 
 <script>
 import Button from "../../components/buttons/Button";
-import AwTextarea from "../../components/form/AwTextarea";
+import Switcher from "../../components/switcher/Switcher";
+import ToolBlock from "../../components/toolBlock/ToolBlock";
+import dropdown from "../../components/dropdowns/dropdown";
+import AwInput from "../../components/form/AwInput";
+
 export default {
   name: "SecondComponent",
-  components:{
+  components: {
     Button,
-    AwTextarea
+    Switcher,
+    ToolBlock,
+    dropdown,
+    AwInput
+  },
+  data() {
+    return {
+      switcherActive: "DTW",
+      multipleSelect: []
+    }
   },
 }
 </script>
-
 <style scoped lang="scss">
-    .rect{
-      border: 1px solid #545580;
-      background: #363B68;
-      padding: 6px;
-      button{
-        min-width: 55px;
-      }
-      .text {
-        width: 103px;
-      }
-    }
+.buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.grid__inputs {
+  .curve-inputs {
+    display: grid;
+    grid-template-columns: auto 130px;
+  }
+}
 </style>
