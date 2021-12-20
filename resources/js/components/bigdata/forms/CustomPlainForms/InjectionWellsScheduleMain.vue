@@ -362,9 +362,6 @@
             getDaysCountInMonth(monthYearString) {
                 return moment(monthYearString, 'YYYY/MMM').daysInMonth();
             },
-            getLastDayInMonth(monthYear){
-                return moment(monthYear).clone().endOf('month').format('DD');
-            },
             ...bigdatahistoricalVisibleMutations([
                 'SET_VISIBLE_INJECTION','SET_INJECTION_HISTORICAL'
             ]),
