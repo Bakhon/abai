@@ -91,4 +91,11 @@ export default class TCoords {
     scaleY(s) {
         return s * this.#__settings.scaleY
     }
+
+    cm2px(cm, dpi) {
+        dpi = dpi === undefined ? document.getElementById("dpi").offsetHeight : dpi;
+        if (dpi) return 2.54 / cm * dpi;
+        return cm
+    }
+
 }

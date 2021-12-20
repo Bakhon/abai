@@ -175,8 +175,7 @@ export default class THorizon {
         let data = this.getElement(elementName);
         if (typeof data === "object" && !Array.isArray(data)) {
             data = JSON.parse(JSON.stringify(data));
-            letMeProperty(data, path, value);
-            this.editDataElement(elementName, {...data}, force);
+            this.editDataElement(elementName, {...letMeProperty(data, path, value)}, force);
         } else {
             console.error("Не тот тип данных элемента");
         }
@@ -187,8 +186,7 @@ export default class THorizon {
         for (let well of this.#wells) {
             let e = [];
             for (let [key, element] of this.#elements) {
-                if (element.wells.includes(well))
-                    if (!e.includes(key)) e.push(key);
+                if (element.wells.includes(well) && !e.includes(key) ) e.push(key);
             }
             this.#maps.set(well, e);
         }
