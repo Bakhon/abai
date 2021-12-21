@@ -86,7 +86,6 @@
                                     <select name="" id="" v-model="dateOpen" class="date" :disabled="!is_open" :class="{error: is_open && error && dateOpen==''}">
                                         <option :value="report.id" v-for="report in reportData">{{report.date}}</option>
                                     </select>
-                                    <!--<input type="date" class="date" :disabled="!is_open" v-model="dateOpen" :class="{error: is_open && error && dateOpen==''}">-->
                                 </div>
                             </div>
                         </div>
