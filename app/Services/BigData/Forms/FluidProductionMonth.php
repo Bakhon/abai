@@ -24,9 +24,6 @@ class FluidProductionMonth extends MeasLogByMonth
 
     public function getResults(array $params = []): array
     {
-        if ($this->request->get('type') !== 'tech') {
-            throw new \Exception(trans('bd.select_gu'));
-        }
 
         $filter = json_decode($this->request->get('filter'));
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
