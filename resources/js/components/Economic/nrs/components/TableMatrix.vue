@@ -26,17 +26,6 @@
         </div>
 
         <div class="form-check mr-2">
-          <input v-model="isVisibleKeys"
-                 id="visible_keys"
-                 type="checkbox"
-                 class="form-check-input">
-          <label for="visible_keys"
-                 class="form-check-label text-blue">
-            {{ trans('economic_reference.show_params') }}
-          </label>
-        </div>
-
-        <div class="form-check mr-2">
           <input v-model="isVisibleProfitless"
                  id="visible_profitless"
                  type="checkbox"
