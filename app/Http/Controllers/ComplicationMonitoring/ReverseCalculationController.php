@@ -211,7 +211,7 @@ class ReverseCalculationController extends CrudController
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
                 if (isset($input['date'])) {
-                    $query = $query->where('date', $input['date']);
+                    $query = $query->where('date', $input['date'])->WithLastWellData($input['date']);
                 }
 
                 $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
