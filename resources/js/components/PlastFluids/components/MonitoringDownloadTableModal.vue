@@ -26,7 +26,9 @@
               :value="index"
               v-model="computedCheckedFields"
               :id="index + 'pf-upload-' + field"
-            /><label :for="index + 'pf-upload-' + field">{{ field }}</label>
+            /><label :title="field" :for="index + 'pf-upload-' + field">{{
+              field
+            }}</label>
           </div>
         </div>
       </div>
@@ -205,7 +207,7 @@ button {
   font-weight: 700;
   background: #293688;
   color: #fff;
-  border: 0.5px solid #3366FF;
+  border: 0.5px solid #3366ff;
 }
 
 .content-footer > button > img {
@@ -216,6 +218,6 @@ button {
   background-color: #656a8a !important;
   color: #fff;
   cursor: not-allowed;
-  border: 0.5px solid #656A8A !important;
+  border: 0.5px solid #656a8a !important;
 }
 </style>

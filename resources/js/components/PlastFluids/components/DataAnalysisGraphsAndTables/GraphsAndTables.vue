@@ -17,8 +17,8 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graphKey, index) in currentGraphics"
-            :key="index"
+            v-for="graph in sortedCurrentGraphics"
+            :key="graph.order"
             class="content-child"
             :style="
               currentGraphics.length > 2
@@ -27,9 +27,12 @@
             "
           >
             <ScatterGraph
-              :series="graphData[graphKey]"
-              :title="trans(`plast_fluids.${graphType}_graph_${graphKey}`)"
-              :graphType="graphKey"
+              :series="
+                graphData[graph.key] ? graphData[graph.key] : emptySeriesObject
+              "
+              :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
+              :graphType="graph.key"
+              :currentGraphs="sortedCurrentGraphics"
             />
           </div>
         </div>
@@ -58,6 +61,17 @@ export default {
     ScatterGraph,
     DataAnalysisDataTable,
     SmallCatLoader,
+  },
+  data() {
+    return {
+      emptySeriesObject: {
+        name: "Данные",
+        data: [],
+        data2: [],
+        type: "scatter",
+        config: { minX: "auto", maxX: "auto", minY: "auto", maxY: "auto" },
+      },
+    };
   },
   computed: {
     ...mapState("plastFluids", [
@@ -120,6 +134,9 @@ export default {
         !this.loading
       );
     },
+    sortedCurrentGraphics() {
+      return this.currentGraphics.sort((a, b) => a.order - b.order);
+    },
   },
   watch: {
     currentSubsoilField: {
@@ -150,12 +167,6 @@ export default {
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
-    setConfig() {},
-    getMaxMin(arrayData) {
-      const max = Math.max(...arrayData);
-      const min = Math.min(...arrayData);
-      return [min, max];
-    },
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {

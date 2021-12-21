@@ -1,4 +1,5 @@
 <template>
+<div class="cmp-tree-container">
   <div class="cmp-tree">
     <div class="cmp-node" @click="isOpen = !isOpen">
       <label>
@@ -16,6 +17,7 @@
     <ul class="hierarchy" v-if="isOpen">
       <draggable
           :headerNode="headerNode.children"
+          :list="headerNode.children"
           ghost-class="ghost"
           @input="updateNode"
           :group="group"
@@ -40,6 +42,7 @@
       </draggable>
     </ul>
   </div>
+</div>
 </template>
 
 <script>
@@ -168,12 +171,30 @@ export default {
 .cmp-node {
   display: flex;
   align-items: center;
+  font-size: 16px;
 }
-
-.cmp-node:hover {
-  background-color: #5d7980;
+.cmp-node input {
+      height: 14px;
+    width: 14px;
+    background-color: white;
+    border-radius: 3.5px;
+    border: 10px solid #237DEB;
+    margin-bottom: auto;
+    margin-top: auto;
+    outline: none;
 }
-
+.hierarchy .cmp-tree-container {
+    padding-left: 0;
+}
+.cmp-tree-container {
+    padding-left: 25px;
+}
+.cmp-node label {
+      margin-bottom: 0;
+      display: block;
+      height: auto;
+      margin-right: 30px;
+}
 .cmp-drag-node {
   background-color: #768487;
   opacity: 0.7;
@@ -203,7 +224,7 @@ export default {
 
 
 ul.hierarchy {
-  padding-left: 40px;
+  padding-left: 0;
 }
 
 @keyframes spin {

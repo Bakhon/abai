@@ -11,11 +11,13 @@ $transparent: transparent;
 
 $accent-darken: #1F2142;
 $accent-darken-400: #0F1430;
+$accent-darken-450: #181837;
 $accent-darken-300: #272953;
 $accent-darken-200: #1A214A;
 $accent-darken-150: #242953;
 $accent-darken-100: #323370;
 
+$accent-50: #37408B;
 $accent-100: #334296;
 $accent-200: #454FA1;
 $accent-300: #545580;
@@ -39,10 +41,12 @@ $colorsArray: (
         gray: ($gray, white),
         accent-darken: ($accent-darken, white),
         accent-darken-400: ($accent-darken-400, white),
+        accent-darken-450: ($accent-darken-450, white),
         accent-darken-300: ($accent-darken-300, white),
         accent-darken-200: ($accent-darken-200, white),
         accent-darken-100: ($accent-darken-100, white),
         accent-darken-150: ($accent-darken-150, white),
+        accent-50: ($accent-50, white),
         accent-100: ($accent-100, white),
         accent-200: ($accent-200, white),
         accent-300: ($accent-300, white),

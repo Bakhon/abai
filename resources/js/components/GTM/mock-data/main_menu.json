@@ -25,7 +25,7 @@
         "url": "/paegtm"
       },
       {
-        "name": "Смежные графики",
+        "name": "Распределение неуспешных ГТМ",
         "component": {
           "name": "child-component",
           "template": "<div><gtm-aegtm-unsuccessful-distribution></gtm-aegtm-unsuccessful-distribution></div>",
@@ -33,6 +33,21 @@
         },
         "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
         "url": "/paegtm"
+      },
+      {
+        "name": "Анализ запускных параметров",
+        "component": {
+          "name": "child-component",
+          "template": "<div><gtm-aegtm-starting-parameters></gtm-aegtm-starting-parameters></div>",
+          "parentType": "aegtm"
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg",
+        "url": "/paegtm"
+      },
+      {
+        "name": "Смежные графики",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg"
       },
       {
         "name": "Выгрузка отчетности",
@@ -74,19 +89,29 @@
     ]
   },
   {
-    "name": "Планирования программы ГТМ",
+    "name": "Планирование программы ГТМ",
     "icon": "/img/GTM/production_planning.svg",
     "parentType": "productionPlanningAndMonitoring",
     "children": [
       {
-        "name": "Программа ГТМ",
+        "name": "Критерии подбора",
         "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
+        "icon": "/img/GTM/icon_menu_criteria.svg"
+      },
+      {
+        "name": "Прогноз эффективности (методика)",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_forecast.svg"
       },
       {
         "name": "Ранжирование кандидатов",
         "component": null,
         "icon": "/img/GTM/icon_menu_raging.svg"
+      },
+      {
+        "name": "Программа бурения",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_programm.svg"
       },
       {
         "name": "Выгрузка отчетности",

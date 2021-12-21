@@ -1,3 +1,6 @@
+import {formatValueMixin} from "./formatMixin";
+import {waterCutMixin} from "./wellMixin";
+
 export async function loadScript(path) {
     return new Promise((resolve) => {
         let script = document.createElement('script')
@@ -15,6 +18,10 @@ export async function loadScript(path) {
 export const SELECTED_COLOR = "#8125B0"
 
 export const treemapMixin = {
+    mixins: [
+        formatValueMixin,
+        waterCutMixin
+    ],
     data: () => ({
         chartTrees: [],
         loadingTreemap: true
@@ -33,7 +40,50 @@ export const treemapMixin = {
         },
 
         charts() {
-            return []
+            return [
+                {
+                    title: `${this.trans('economic_reference.operating_profit')} +`,
+                    key: this.profitabilityKey,
+                    isPositive: true,
+                    hasSubtitle: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tenge'),
+                },
+                {
+                    title: `${this.trans('economic_reference.operating_profit')} -`,
+                    key: this.profitabilityKey,
+                    isNegative: true,
+                    sort: 'asc',
+                    hasSubtitle: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tenge'),
+                },
+                {
+                    title: this.trans('economic_reference.liquid_production'),
+                    key: 'liquid',
+                    hasSubtitle: true,
+                    hasPercent: true,
+                    dimension: 1000,
+                    dimensionTitle: `
+                        ${this.trans('economic_reference.thousand')} 
+                        ${this.trans('economic_reference.cubic_meter')}
+                    `,
+                },
+                {
+                    title: this.trans('economic_reference.oil_production'),
+                    key: 'oil',
+                    hasSubtitle: true,
+                    hasPercent: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tons'),
+                },
+                {
+                    title: this.trans('economic_reference.water_cut'),
+                    key: this.waterCutKey,
+                    hasSubtitle: true,
+                    dimensionTitle: '%',
+                },
+            ]
         },
 
         chartsSum() {
@@ -54,9 +104,9 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value <= 0) return
+                    if (chart.hasOwnProperty('isPositive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value > 0) return
+                    if (chart.hasOwnProperty('isNegative') && value > 0) return
 
                     sum[chart.title][sumKey] += value
 
@@ -67,13 +117,19 @@ export const treemapMixin = {
             let chartWaterCut = this.charts.find(chart => chart.key === this.waterCutKey)
 
             if (chartWaterCut && chartWaterCut.hasSubtitle) {
-                sum[chartWaterCut.title].profitable = sum[chartWaterCut.title].profitableCount > 0
-                    ? (sum[chartWaterCut.title].profitable / sum[chartWaterCut.title].profitableCount).toFixed(2)
-                    : 0
+                let chartLiquid = this.charts.find(chart => chart.key === 'liquid')
 
-                sum[chartWaterCut.title].profitless = sum[chartWaterCut.title].profitlessCount > 0
-                    ? (sum[chartWaterCut.title].profitless / sum[chartWaterCut.title].profitlessCount).toFixed(2)
-                    : 0
+                let chartOil = this.charts.find(chart => chart.key === 'oil')
+
+                sum[chartWaterCut.title].profitable = this.calcWaterCut(
+                    sum[chartLiquid.title].profitable,
+                    sum[chartOil.title].profitable
+                )
+
+                sum[chartWaterCut.title].profitless = this.calcWaterCut(
+                    sum[chartLiquid.title].profitless,
+                    sum[chartOil.title].profitless
+                )
             }
 
             return sum
@@ -88,9 +144,13 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value <= 0) return
+                    if (chart.hasOwnProperty('isPositive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value > 0) return
+                    if (chart.hasOwnProperty('isNegative') && value > 0) return
+
+                    if (chart.dimension) {
+                        value /= chart.dimension
+                    }
 
                     let color = this.getColor(well)
 
@@ -137,7 +197,7 @@ export const treemapMixin = {
                 });
 
                 treemap.tooltip().format(function () {
-                    return `${this.value.toLocaleString()}`
+                    return `${(+this.value.toFixed(2)).toLocaleString()} ${chart.dimensionTitle.replace(/\r?\n|\r/g, "")}`
                 });
 
                 treemap.container(chart.title)
@@ -160,49 +220,56 @@ export const treemapMixin = {
             return +well[this.profitabilityKey] > 0 ? '#13B062' : '#AB130E'
         },
 
-        getChartSubtitle({title, hasSubtitle, isShowCount}) {
+        getChartSubtitle({title, isShowCount, hasSubtitle, hasPercent, dimension, dimensionTitle}) {
             if (!hasSubtitle || !this.chartsSum[title]) {
                 return ''
             }
 
-            let name = ''
+            let subTitle = ''
 
-            let subtitleKey = 'profitable'
+            let subTitles = ['profitable', 'profitless']
 
-            if (isShowCount) {
-                subtitleKey += 'Count'
-            }
+            subTitles.forEach(profitability => {
+                let text = this.trans(`economic_reference.${profitability}`)
 
-            if (this.chartsSum[title][subtitleKey]) {
-                name += `<br>
-                ${this.trans('economic_reference.profitable')}: 
-                ${this.chartsSum[title][subtitleKey].toLocaleString()}
-                `
-            }
+                if (isShowCount) {
+                    profitability += 'Count'
+                }
 
-            subtitleKey = 'profitless'
+                let value = this.localeValue(
+                    +this.chartsSum[title][profitability],
+                    dimension,
+                    false,
+                    0
+                )
 
-            if (isShowCount) {
-                subtitleKey += 'Count'
-            }
+                if (this.chartsSum[title][profitability]) {
+                    subTitle += `<br> ${text}: ${value} `
 
-            if (this.chartsSum[title][subtitleKey]) {
-                name += `<br>
-                ${this.trans('economic_reference.profitless')}: 
-                ${this.chartsSum[title][subtitleKey].toLocaleString()}
-                `
-            }
+                    if (dimensionTitle) {
+                        subTitle += dimensionTitle
+                    }
 
-            return name
+                    if (hasPercent) {
+                        let sum = +this.chartsSum[title].profitable + +this.chartsSum[title].profitless
+
+                        let percent = +this.chartsSum[title][profitability] * 100 / sum
+
+                        subTitle += `, ${percent.toFixed(0)}%`
+                    }
+                }
+            })
+
+            return subTitle
         },
 
         getChartTitle(chart) {
             let subtitle = this.getChartSubtitle(chart)
 
-            let title = `<div> ${chart.title} </div>`
+            let title = `<div style="font-size: 20px"> ${chart.title} </div>`
 
             if (subtitle) {
-                title += `<div style="font-size: 14px">${subtitle}</div>`
+                title += `<div style="font-size: 16px">${subtitle}</div>`
             }
 
             return title

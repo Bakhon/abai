@@ -28,10 +28,12 @@ export default {
     methods: {
         async changeDate() {
             this.isDataSended = false;
+            this.currentDate = moment(this.period).format('DD-MM-YYYY');
+            this.currentDateDetailed = moment(this.period).format("YYYY-MM-DD HH:mm:ss");
             this.handleSwitchFilter();
         },
         async sendToApprove() {
-            this.handleValidate();
+            await this.handleValidate();
             if (this.isDataReady) {
                 this.isDataSended = true;
                 let uri = this.localeUrl("/store-corrected-production");
@@ -55,6 +57,13 @@ export default {
            this.isDataReady = false;
            this.disableHighlightOnCells();
            this.turnOffErrorHighlight();
+           if (name === 'isArchieveActive') {
+               this.currentDate = moment().subtract(1,'days').format('DD-MM-YYYY');
+               this.currentDateDetailed = moment().subtract(1,'days').format("YYYY-MM-DD HH:mm:ss");
+           } else {
+               this.changeDateToToday();
+           }
+
            if (name === 'isPlanActive') {
                await this.sleep(100);
                for (let i=0; i <=12; i++) {
@@ -73,6 +82,8 @@ export default {
        },
         async switchCompany(e) {
             this.SET_LOADING(true);
+            this.disableHighlightOnCells();
+            this.turnOffErrorHighlight();
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
@@ -90,11 +101,16 @@ export default {
                     self.processCurrentData(inputData,dataset);
                 }
             });
+
             let queryOptions = {
                 'dzoName': this.selectedDzo.ticker,
                 'isCorrected': true,
                 'date': this.period
             };
+
+            if (this.category.isFactActive && this.bigDzo.includes(this.selectedDzo.ticker)) {
+                queryOptions.isCorrected = false;
+            }
             this.todayData = await this.getDzoTodayData(queryOptions);
             this.processTodayData();
             this.SET_LOADING(false);

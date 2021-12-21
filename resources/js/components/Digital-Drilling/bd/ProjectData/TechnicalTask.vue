@@ -36,7 +36,7 @@
             return{
                 projects: [],
                 DIGITAL_DRILLING_URL: process.env.MIX_DIGITAL_DRILLING_URL+ '/digital_drilling/api/tech_projects/',
-                DIGITAL_DRILLING_FILE_URL: 'http://172.20.103.203:8089/get/',
+                DIGITAL_DRILLING_FILE_URL: process.env.MIX_DIGITAL_DRILLING_FILE_URL,
             }
         },
         computed: {

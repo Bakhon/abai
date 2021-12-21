@@ -7,7 +7,7 @@ const PROFITLESS_PROFITABILITIES = [
 ]
 
 import {GRANULARITY_DAY} from "../components/SelectGranularity";
-import {PROFITABILITY_FULL} from "../components/SelectProfitability";
+import {PROFITABILITY_FULL} from "../nrs/components/SelectProfitability";
 
 export const chartInitMixin = {
     props: {
@@ -31,7 +31,10 @@ export const chartInitMixin = {
             required: true,
             type: Array
         },
-
+        form: {
+            required: true,
+            type: Object
+        }
     },
     data: () => ({
         isVisibleDefaultSeries: true,
@@ -177,7 +180,7 @@ export const chartInitMixin = {
         },
 
         chartHeight() {
-            return 525
+            return this.form.isFullScreen ? 680 : 560
         },
 
         tooltipText() {
@@ -205,7 +208,12 @@ export const chartInitMixin = {
             return (+value.toFixed(0)).toLocaleString()
         },
 
-        chartArea(profitability, wells, pausedWells = null) {
+        chartArea(
+            profitability,
+            wells,
+            pausedWells = null,
+            chartType = 'area'
+        ) {
             let name = this.trans(`economic_reference.wells_${profitability}`)
 
             if (pausedWells) {
@@ -222,7 +230,7 @@ export const chartInitMixin = {
                 case "profitable":
                     return {
                         name: name,
-                        type: 'area',
+                        type: chartType,
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
                                 if (!this.isStacked) {
@@ -251,7 +259,7 @@ export const chartInitMixin = {
                     return {
                         name: name,
                         profitability: profitability,
-                        type: 'area',
+                        type: chartType,
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
                                 if (!this.isStacked) {
@@ -294,7 +302,7 @@ export const chartInitMixin = {
                     return {
                         name: name,
                         profitability: profitability,
-                        type: 'area',
+                        type: chartType,
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
                                 if (!this.isStacked) {

@@ -66,12 +66,11 @@ const digitalRating = {
             commit('SET_INDICATORS', res.data);
             commit('SET_INJ_DIAGRAM', res.data?.inj_graph?.injection);
             commit('SET_PROD_DIAGRAM', res.data?.prod_graph);
-          }).finally(() => {
-            commit('globalloading/SET_LOADING', false, { root: true });
-          })
-
+          });
       } catch(e) {
         throw new Error(e);
+      } finally {
+        commit('globalloading/SET_LOADING', false, { root: true });
       }
     }
   }

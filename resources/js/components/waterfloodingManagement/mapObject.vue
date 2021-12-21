@@ -28,12 +28,19 @@
       </div>
       <div class="map-block">
         <div class="map-images" style="position: relative">
+          <div class="map__legend">
+            <div>Текущие отборы:</div>
+            <div><span class="well__legend" style="background-color: #e88f1abd;"></span>Дебит нефти</div>
+            <div><span class="well__legend" style="background-color: #13af9782;"></span>Дебит воды</div>
+            <div><span class="well__legend" style="background-color: #87ceebbd;"></span>Приемистость</div>
+          </div>
           <MglMap
               ref="mgl-map"
               :accessToken="accessToken"
               :mapStyle ="mapStyle"
               :center="center"
               :boxZoom="true"
+              @load="onMapLoaded"
               :zoom=11>
             <mgl-navigation-control position="bottom-right" />
             <MglMarker  v-for="c in getWells"
@@ -43,6 +50,9 @@
               <div slot="marker">
                 <map-pie-chart
                     :data_value="c.value"
+                    :oil_prod="c.oil_prod"
+                    :water_prod="c.water_prod"
+                    :water_cut="c.water_cut"
                     :wellName="c.well"
                     :type="c.type"
                     :radiusWidth="c.radius"
@@ -150,7 +160,7 @@
           </div>
         </div>
       </div>
-      <button class="w-100 choose-object prediction-btn" @click="menuClick(menu[1].component)" >
+      <button class="w-100 choose-object prediction-btn prediction__btn" @click="menuClicks" >
         {{ trans('waterflooding_management.build_forecast') }}
       </button>
     </div>
@@ -161,7 +171,7 @@
             {{ trans('waterflooding_management.current_indicators') }}
           </p>
           <div class="calendar-date">
-            <dataPicker @dateChanged="getDate"></dataPicker>
+            <datePicker @dateChanged="getDate"></datePicker>
           </div>
         </div>
         <div class="choose-object-into2">
@@ -212,24 +222,26 @@
 import axios from "axios";
 import moment from "moment"
 import vSelect from 'vue-select'
-import mainMenu from './main_menu.json'
-import mapWaterFloodingDrawStyle from './mapWaterFloodingDrawStyle.json'
+import mainMenu from './mock-data/main_menu.json'
+import mapWaterFloodingDrawStyle from './mock-data/mapWaterFloodingDrawStyle.json'
 import WFM_modal from './modal'
-import dataPicker from './DatePicker'
-import dataPickerRange from "./dataPickerRange"
+import datePicker from './components/DatePicker'
+import dataPickerRange from "./components/dataPickerRange"
 import VueApexCharts from 'vue-apexcharts'
 import {MglMap, MglNavigationControl, MglMarker} from 'vue-mapbox'
 import {waterfloodingManagementMapGetters, waterfloodingManagementMapActions} from '@store/helpers';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import MapPieChart from "./mapPieChart";
+import MapPieChart from "./components/mapPieChart";
+import mapBoxStyle from "./mock-data/mapWaterFloodingDrawStyle.json";
 
 export default {
+  name: "mapObject",
   components: {
     MapPieChart,
     vSelect,
     WFM_modal,
-    dataPicker,
+    datePicker,
     dataPickerRange,
     "apexchart": VueApexCharts,
     MglMap,
@@ -239,7 +251,7 @@ export default {
   created() {
     this.map = null;
     this.getDzo();
-    this.getGraphic(1,1,1, '17.04.2021', '17.05.2021' )
+    this.getGraphic(1,1,1, '17.04.2021', '17.05.2021', [] )
     this.getRatingObject()
   },
   data: function () {
@@ -305,7 +317,6 @@ export default {
         },
         yaxis: [
           {
-            min: 1300,
             seriesName: 'Q жидкости, т/сут',
             showAlways: true,
             tickAmount: 6,
@@ -351,10 +362,7 @@ export default {
       defaultDzo: null,
       occurrence:[],
       defaultOccurrence: null,
-      object:[
-        { name: 'Объект I', id: 2},
-        { name: 'Объект III', id: 3},
-      ],
+      object: [],
       defaultObject: null,
       show_choose_object:[
         {title: "Добыча жидкости", count: 0, measure: "м3"},
@@ -367,7 +375,8 @@ export default {
       menu: mainMenu,
       mapWaterFlooding: null,
       mapWaterFloodingDraw: null,
-      polygon: []
+      polygon: [],
+      polygon_wells: [],
     }
   },
   mounted() {
@@ -383,6 +392,13 @@ export default {
       this.vSelectStyle();
     }, 2000);
     this.getWellList();
+    this.getLastSeries();
+    this.getClustersList();
+    this.rootEmitData();
+
+    if (this.polygon.length == 0){
+      this.polygon = this.polygonList
+    }
   },
   computed: {
     ...waterfloodingManagementMapGetters([
@@ -390,6 +406,10 @@ export default {
       'wellList',
       'graphicStartDate',
       'graphicEndDate',
+      'polygonFeatures',
+      'polygonWells',
+      'polygonList',
+      'choosePolygons',
     ]),
     getPolygon(){ return this.polygon },
     getWells(){ return this.wellList },
@@ -397,8 +417,16 @@ export default {
   methods: {
     ...waterfloodingManagementMapActions([
       'getKin',
-      'getWellList'
+      'getWellList',
+      'getLastSeries',
+      'changePolygonWells',
+      'getClustersList',
+      'changePolygonFeatures',
+      'changeChoosePolygons',
+      'changeChooseObject',
+      'changePolygonList',
     ]),
+    rootEmitData(){this.$root.$emit('global-excelData', {name: this.$options.name, data: this.$data});},
     vSelectStyle(){
       let elements = document.getElementsByClassName('vs__selected');
       for(let i=0;i<elements.length;i++){
@@ -407,12 +435,32 @@ export default {
     },
     choose__polygon(index){
       let polygon = this.polygon[index]
+      let dateStart = moment(this.graphicStartDate).format('DD.MM.YYYY');
+      let dateString = moment(this.chooseObjectDate).format('DD.MM.YYYY')
+      let dateEnd = moment(this.graphicEndDate).format('DD.MM.YYYY');
       polygon.isChoose = !polygon.isChoose;
-      if(polygon.isChoose)
+      if(polygon.isChoose){
+        for(let i=0;i<this.polygon.length;i++){
+          this.polygon[i].isChoose = false
+          this.mapWaterFloodingDraw.setFeatureProperty(this.polygon[i].id, 'portColor', 'transparent');
+          this.mapWaterFloodingDraw.add(this.mapWaterFloodingDraw.get(this.polygon[i].id))
+        }
+        polygon.isChoose = true
         this.mapWaterFloodingDraw.setFeatureProperty(polygon.id, 'portColor', '#2ab31c');
-      else
+        this.getChooseObject(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateString, polygon.wells )
+        this.getGraphic(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateStart, dateEnd, polygon.wells )
+        this.changePolygonWells(polygon.wells)
+        this.changeChoosePolygons(index + 1)
+      }
+      else {
         this.mapWaterFloodingDraw.setFeatureProperty(polygon.id, 'portColor', 'transparent');
+        this.getChooseObject(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateString, [] )
+        this.getGraphic(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateStart,  dateEnd,[] )
+        this.changePolygonWells([])
+        this.changeChoosePolygons(null)
+      }
       this.mapWaterFloodingDraw.add(this.mapWaterFloodingDraw.get(polygon.id))
+      this.rootEmitData();
     },
     trash(id, index){
       this.mapWaterFloodingDraw.delete(id)
@@ -424,6 +472,7 @@ export default {
           displayControlsDefault: false,
           defaultMode: 'draw_polygon',
           iconSize: ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5],
+          // controls: {polygon: true, trash: true},
           userProperties: true,
           controls: {
             'combine_features': false,
@@ -476,6 +525,7 @@ export default {
         let ptsWithin = turf.pointsWithinPolygon(points, data);
         let inj = 0
         let prod = 0
+        let wells = []
         for (let i = 0; i < ptsWithin.features.length; i++) {
           for (let j = 0; j < this.wellList.length; j++) {
             if (this.wellList[j].coordinate[0] == ptsWithin.features[i].geometry.coordinates[0]
@@ -485,11 +535,14 @@ export default {
               } else {
                 prod += 1
               }
+              wells.push(this.wellList[j])
             }
           }
         }
-        this.polygon.push({inj: inj, prod: prod, id: data.features[0].id, isChoose: false})
+        this.polygon.push({inj: inj, prod: prod, id: data.features[0].id, isChoose: false, wells: wells})
+        this.changePolygonList(this.polygon);
       }
+      this.changePolygonFeatures(this.mapWaterFloodingDraw.getAll());
     },
     updateArea(e) {
 
@@ -499,15 +552,19 @@ export default {
       axios.get(url)
           .then((response) =>{
             this.ratingObject = response.data
-          }).catch((error) => {
-        console.log(error)
-      })
+            this.rootEmitData();
+          }).catch((error) => { console.log(error) })
     },
-    getChooseObject(dzo, field, field_object, object_date){
+    getChooseObject(dzo, field, field_object, object_date, wells) {
+      let wells_query = ''
+      wells.forEach(function(part, index) {
+        wells_query += '&wells=' + part.well
+      });
       let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/prod-list/?dzo='+ dzo
           + '&field=' + field
           + '&field_object=' + field_object
-          + '&start_date=' + object_date;
+          + '&start_date=' + object_date
+          + wells_query;
       axios.get(url)
           .then((response) =>{
             if ( typeof response.data !== 'undefined' && response.data.length == 0){
@@ -521,6 +578,7 @@ export default {
                 part.count = data[index].count;
               })
             }
+            this.rootEmitData();
           }).catch((error) => {
         console.log(error)
       })
@@ -532,6 +590,7 @@ export default {
             this.dzo = response.data
             this.defaultDzo = this.dzo[0]
             this.getField(this.defaultDzo.id);
+            this.rootEmitData();
           }).catch((error) => {
         console.log(error)
       });
@@ -543,6 +602,7 @@ export default {
             this.occurrence = response.data
             this.defaultOccurrence = this.occurrence[0]
             this.getFieldObject(this.defaultOccurrence.id)
+            this.rootEmitData();
           }).catch((error) => {
         console.log(error)
       });
@@ -555,6 +615,8 @@ export default {
             this.defaultObject = this.object[0]
             this.getDate();
             this.dateRangeChanged()
+            this.rootEmitData();
+            this.changeChooseObject(this.defaultObject)
           }).catch((error) => {
         console.log(error)
       });
@@ -562,13 +624,20 @@ export default {
     changeFieldObject(){
       this.getDate()
       this.dateRangeChanged()
+      this.changeChooseObject(this.defaultObject)
     },
-    getGraphic(dzo, field, field_object, object_start_date, object_end_date){
+    getGraphic(dzo, field, field_object, object_start_date, object_end_date, wells){
+      let wells_query = ''
+      wells.forEach(function(el) {
+        wells_query += '&wells=' + el.well
+      });
       let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/graphic/?dzo='+ dzo
           + '&field=' + field
           + '&field_object=' + field_object
           + '&start_date=' + object_start_date
-          + '&end_date=' + object_end_date;
+          + '&end_date=' + object_end_date
+          + wells_query;
+
       axios.get(url)
           .then((response) =>{
             this.series = [
@@ -595,22 +664,23 @@ export default {
                 y: response.data.sum_water_cut_vol[i]
               })
             }
+            this.rootEmitData();
           }).catch((error) => {
         console.log(error)
       })
     },
     getDate: function () {
       let dateString = moment(this.chooseObjectDate).format('DD.MM.YYYY')
-      this.getChooseObject(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateString )
+      this.getChooseObject(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateString, [] )
     },
     dateRangeChanged: function(){
       let dateStart = moment(this.graphicStartDate).format('DD.MM.YYYY');
       let dateEnd = moment(this.graphicEndDate).format('DD.MM.YYYY');
       if (this.defaultObject != null)
-        this.getGraphic(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateStart, dateEnd);
+        this.getGraphic(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateStart, dateEnd, []);
     },
-    menuClick (childComponent) {
-      this.$emit('menuClick', childComponent);
+    menuClicks () {
+      this.$emit("menuClicks", 'choose_object_area');
     },
     modalClose() {
       this.modal_show = false;
@@ -623,15 +693,34 @@ export default {
     },
     width(s){
       width: s+'%';
+    },
+    onMapLoaded(event){
+      if (this.polygonFeatures != null) {
+        this.map = event.map
+        this.mapWaterFloodingDraw = new MapboxDraw({
+          displayControlsDefault: false,
+          defaultMode: 'draw_polygon',
+          iconSize: ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5],
+          userProperties: true,
+          controls: {
+            'combine_features': false,
+            'uncombine_features': false,
+          },
+          styles: mapBoxStyle
+        })
+        this.map.addControl(this.mapWaterFloodingDraw);
+        for (let i = 0; i < this.polygonFeatures.features.length; i++) {
+          this.mapWaterFloodingDraw.add(this.polygonFeatures.features[i])
+        }
+        let index = this.choosePolygons - 1
+        let choose_polygon = this.polygonFeatures.features[index]
+        this.mapWaterFloodingDraw.setFeatureProperty(choose_polygon.id, 'portColor', '#2ab31c');
+      }
     }
   },
 }
 </script>
 <style scoped>
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-.map{
-  margin: 0;
-}
 .tr__click{
   background-color: #2ab31c;
 }
@@ -670,8 +759,6 @@ export default {
   border: 1px solid #454D7D;
   border-top: none;
   border-left: none;
-
-
 }
 .t_polygon_elemnt{
   display: flex;
@@ -869,5 +956,8 @@ export default {
 }
 .t_well__count{
   width: 165px;
+}
+.prediction__btn:hover{
+  background: rgba(44,68,189,1);
 }
 </style>

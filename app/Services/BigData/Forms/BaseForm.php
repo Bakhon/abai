@@ -31,7 +31,7 @@ abstract class BaseForm
 
     abstract public function getResults(): array;
 
-    public function getHistory($id, \DateTimeInterface $date = null): array
+    public function getHistory($id, string $form, \DateTimeInterface $date = null): array
     {
         if (!$date) {
             $date = Carbon::now();

@@ -375,81 +375,169 @@
     }
   },
   "decreaseReason": {
-    "opec": {
+    "daily_reason_1": {
       "fields": [
-        "opec_explanation_reasons",
-        "opec_measures_taken",
-        "opec_wells_number",
-        "opec_downtime",
-        "opec_oil_losses"
+        "daily_reason_1_explanation",
+        "daily_reason_1_measures_taken",
+        "daily_reason_1_wells",
+        "daily_reason_1_downtime",
+        "daily_reason_1_losses"
       ],
       "rowIndex": 73,
       "rowLength": 5
     },
-    "impulse": {
+    "daily_reason_2": {
       "fields": [
-        "impulse_explanation_reasons",
-        "impulse_measures_taken",
-        "impulse_wells_number",
-        "impulse_downtime",
-        "impulse_oil_losses"
+        "daily_reason_2_explanation",
+        "daily_reason_2_measures_taken",
+        "daily_reason_2_wells",
+        "daily_reason_2_downtime",
+        "daily_reason_2_losses"
       ],
       "rowIndex": 74,
       "rowLength": 5
     },
-    "shutdown": {
+    "daily_reason_3": {
       "fields": [
-        "shutdown_explanation_reasons",
-        "shutdown_measures_taken",
-        "shutdown_wells_number",
-        "shutdown_downtime",
-        "shutdown_oil_losses"
+        "daily_reason_3_explanation",
+        "daily_reason_3_measures_taken",
+        "daily_reason_3_wells",
+        "daily_reason_3_downtime",
+        "daily_reason_3_losses"
       ],
       "rowIndex": 75,
       "rowLength": 5
     },
-    "accident": {
+    "daily_reason_4": {
       "fields": [
-        "accident_explanation_reasons",
-        "accident_measures_taken",
-        "accident_wells_number",
-        "accident_downtime",
-        "accident_oil_losses"
+        "daily_reason_4_explanation",
+        "daily_reason_4_measures_taken",
+        "daily_reason_4_wells",
+        "daily_reason_4_downtime",
+        "daily_reason_4_losses"
       ],
       "rowIndex": 76,
       "rowLength": 5
     },
-    "restrictionKto": {
+    "daily_reason_5": {
       "fields": [
-        "restriction_kto_explanation_reasons",
-        "restriction_kto_measures_taken",
-        "restriction_kto_wells_number",
-        "restriction_kto_downtime",
-        "restriction_kto_oil_losses"
+        "daily_reason_5_explanation",
+        "daily_reason_5_measures_taken",
+        "daily_reason_5_wells",
+        "daily_reason_5_downtime",
+        "daily_reason_5_losses"
       ],
       "rowIndex": 77,
       "rowLength": 5
     },
-    "gasRestriction": {
+    "monthly_reason_1": {
       "fields": [
-        "gas_restriction_explanation_reasons",
-        "gas_restriction_measures_taken",
-        "gas_restriction_wells_number",
-        "gas_restriction_downtime",
-        "gas_restriction_oil_losses"
+        "monthly_reason_1_explanation",
+        "monthly_reason_1_measures_taken",
+        "monthly_reason_1_wells",
+        "monthly_reason_1_downtime",
+        "monthly_reason_1_losses"
       ],
-      "rowIndex": 78,
+      "rowIndex": 80,
       "rowLength": 5
     },
-    "other": {
+    "monthly_reason_2": {
       "fields": [
-        "other_explanation_reasons",
-        "other_measures_taken",
-        "other_wells_number",
-        "other_downtime",
-        "other_oil_losses"
+        "monthly_reason_2_explanation",
+        "monthly_reason_2_measures_taken",
+        "monthly_reason_2_wells",
+        "monthly_reason_2_downtime",
+        "monthly_reason_2_losses"
       ],
-      "rowIndex": 79,
+      "rowIndex": 81,
+      "rowLength": 5
+    },
+    "monthly_reason_3": {
+      "fields": [
+        "monthly_reason_3_explanation",
+        "monthly_reason_3_measures_taken",
+        "monthly_reason_3_wells",
+        "monthly_reason_3_downtime",
+        "monthly_reason_3_losses"
+      ],
+      "rowIndex": 82,
+      "rowLength": 5
+    },
+    "monthly_reason_4": {
+      "fields": [
+        "monthly_reason_4_explanation",
+        "monthly_reason_4_measures_taken",
+        "monthly_reason_4_wells",
+        "monthly_reason_4_downtime",
+        "monthly_reason_4_losses"
+      ],
+      "rowIndex": 83,
+      "rowLength": 5
+    },
+    "monthly_reason_5": {
+      "fields": [
+        "monthly_reason_5_explanation",
+        "monthly_reason_5_measures_taken",
+        "monthly_reason_5_wells",
+        "monthly_reason_5_downtime",
+        "monthly_reason_5_losses"
+      ],
+      "rowIndex": 84,
+      "rowLength": 5
+    },
+    "yearly_reason_1": {
+      "fields": [
+        "yearly_reason_1_explanation",
+        "yearly_reason_1_measures_taken",
+        "yearly_reason_1_wells",
+        "yearly_reason_1_downtime",
+        "yearly_reason_1_losses"
+      ],
+      "rowIndex": 87,
+      "rowLength": 5
+    },
+    "yearly_reason_2": {
+      "fields": [
+        "yearly_reason_2_explanation",
+        "yearly_reason_2_measures_taken",
+        "yearly_reason_2_wells",
+        "yearly_reason_2_downtime",
+        "yearly_reason_2_losses"
+      ],
+      "rowIndex": 88,
+      "rowLength": 5
+    },
+    "yearly_reason_3": {
+      "fields": [
+        "yearly_reason_3_explanation",
+        "yearly_reason_3_measures_taken",
+        "yearly_reason_3_wells",
+        "yearly_reason_3_downtime",
+        "yearly_reason_3_losses"
+      ],
+      "rowIndex": 89,
+      "rowLength": 5
+    },
+    "yearly_reason_4": {
+      "fields": [
+        "yearly_reason_4_explanation",
+        "yearly_reason_4_measures_taken",
+        "yearly_reason_4_wells",
+        "yearly_reason_4_downtime",
+        "yearly_reason_4_losses"
+      ],
+      "rowIndex": 90,
+      "rowLength": 5
+    },
+    "yearly_reason_5": {
+      "fields": [
+        "yearly_reason_5_explanation",
+        "yearly_reason_5_measures_taken",
+        "yearly_reason_5_wells",
+        "yearly_reason_5_downtime",
+        "yearly_reason_5_losses"
+      ],
+      "rowIndex": 91,
       "rowLength": 5
     }
   }

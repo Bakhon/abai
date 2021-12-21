@@ -3,6 +3,9 @@
     <div class="maps-development__wrapper">
       <div id="mapLeft"></div>
     </div>
+    <div class="maps-development__wrapper">
+      <div id="mapRight"></div>
+    </div>
   </div>
 </template>
 
@@ -21,20 +24,24 @@ export default {
     return {
       leftMap: null,
       rightMap: null,
-      rectangle: null,
-      zoom: -1,
+      zoomLeft: -1,
+      zoomRight: -1,
       mapList: [],
       currentProd: [],
       center: [83600, 52800],
-      bounds: [[0, 15000], [0, 15000]],
+      bounds: [[0, 12000], [0, 12000]],
+      rectangleLeft: null,
+      rectangleRight: null
     }
   },
 
   async mounted() {
     this.SET_LOADING(true);
     await this.fetchMapData();
-    await this.initMap('mapLeft', 'leftMap');
-    await this.initSectorsOnMap('leftMap');
+    await this.initLeftMap();
+    await this.initRightMap();
+    await this.initSectorsLeftOnMap();
+    await this.initSectorsRightOnMap();
     this.initCurrentProdOnMap();
     this.SET_LOADING(false);
   },
@@ -47,8 +54,8 @@ export default {
   },
 
   methods: {
-    initMap(id, property) {
-      this[property] = L.map(id, {
+    initLeftMap() {
+      this.leftMap = L.map('mapLeft', {
         crs: L.CRS.Simple,
         zoomControl: false,
         minZoom: this.minZoom,
@@ -58,32 +65,53 @@ export default {
 
       L.control.zoom({
         position: 'bottomright'
-      }).addTo(this[property]);
+      }).addTo(this.leftMap);
 
-      this[property].fitBounds(this.bounds);
-      this[property].setView( this.center, this.zoom);
+      this.leftMap.fitBounds(this.bounds);
+      this.leftMap.setView( this.center, this.zoomLeft);
+    },
+    initRightMap() {
+      this.rightMap = L.map('mapRight', {
+        crs: L.CRS.Simple,
+        zoomControl: false,
+        minZoom: this.minZoom,
+        maxZoom: this.maxZoom,
+        attributionControl: false
+      });
 
-      this[property].on('zoom', this.onMapZoom);
+      L.control.zoom({
+        position: 'bottomright'
+      }).addTo(this.rightMap);
+
+      this.rightMap.fitBounds(this.bounds);
+      this.rightMap.setView( this.center, this.zoomRight);
     },
 
-    async initSectorsOnMap(property) {
+    async initSectorsLeftOnMap() {
       if(this.mapList?.length === 0) return;
 
       for (let i = 0; i < this.mapList.length; i++) {
-        this.rectangle = L.rectangle(this.getBounds(this.mapList[i]), {
+        this.rectangleLeft = L.rectangle(this.getBounds(this.mapList[i]), {
           renderer: this.renderer,
           weight: 1,
           color: this.mapList[i]['color'],
           fillColor: this.mapList[i]['color'],
           fillOpacity: 1,
-        }).addTo(this[property]).bindPopup(this.mapList[i]['value'].toString());
+        }).addTo(this.leftMap).bindPopup(this.mapList[i]['value'].toString());
+      }
+    },
 
-        this.rectangle.on('mouseover', function (e) {
-          this.openPopup();
-        });
-        this.rectangle.on('mouseout', function (e) {
-          this.closePopup();
-        });
+    async initSectorsRightOnMap() {
+      if(this.mapList?.length === 0) return;
+
+      for (let i = 0; i < this.mapList.length; i++) {
+        this.rectangleRight = L.rectangle(this.getBounds(this.mapList[i]), {
+          renderer: this.renderer,
+          weight: 1,
+          color: this.mapList[i]['color'],
+          fillColor: this.mapList[i]['color'],
+          fillOpacity: 1,
+        }).addTo(this.rightMap).bindPopup(this.mapList[i]['value'].toString());
       }
     },
 
@@ -108,9 +136,6 @@ export default {
      if (!res.error) {
        this.mapList = res.data?.map;
        this.currentProd = res.data?.current_prod;
-       // this.center = this.bounds = [];
-       // this.center = [res.data?.center[0]?.x_c, res.data?.center[0]?.y_c];
-       // this.bounds = [[res.data?.borders[0]?.x_min, res.data?.borders[0]?.x_max], [res.data?.borders[0]?.y_min, res.data?.borders[0]?.y_max]];
      }
     },
 
@@ -138,14 +163,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  //background-image: url('/img/digital-rating/bgLine.svg');
-  //background-repeat: no-repeat;
-  //background-size: cover;
-  //background-color: #2B2E5E;
-  //border: 1px solid #545580;
-  width: 100%;
   height: calc(100vh - 400px);
-
+  border: 1px solid #545580;
+  width: 48%;
 }
 
 #mapLeft, #mapRight {

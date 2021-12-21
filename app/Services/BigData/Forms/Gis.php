@@ -159,6 +159,8 @@ class Gis extends PlainForm
 
         $fileTypes = $this->getFileTypes();
 
+        $this->originalData = $this->getCurrentFiles($fileTypes);
+
         $this->tableFields
             ->pluck('code')
             ->each(function ($code) use ($fileTypes) {
@@ -186,6 +188,9 @@ class Gis extends PlainForm
                 }
             });
 
+        $this->submittedData['id'] = $this->request->get('well');
+        $this->submittedData['fields'] = $this->getCurrentFiles($fileTypes);
+
         return [];
     }
 
@@ -212,8 +217,13 @@ class Gis extends PlainForm
 
         foreach ($existedFiles as $existedFile) {
             $value = array_filter($values, function ($item) use ($existedFile) {
-                if (is_array($item) && $item['id'] === $existedFile->document_id) {
-                    return true;
+                if (is_array($item)) {
+                    if (isset($item['id']) && $item['id'] === $existedFile->document_id) {
+                        return true;
+                    }
+                    if (isset($item['value']) && $item['value'] === $existedFile->document_id) {
+                        return true;
+                    }
                 }
                 return false;
             });
@@ -239,5 +249,25 @@ class Gis extends PlainForm
             ->delete();
 
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    private function getCurrentFiles(array $fileTypes)
+    {
+        return DB::connection('tbd')
+            ->table('prod.conn_files as cf')
+            ->select('cf.type_connect', 'fs.file_name', 'fs.file_size')
+            ->join('prod.document_file as df', 'cf.document_id', 'df.document')
+            ->join('prod.file_storage as fs', 'df.file', 'fs.id')
+            ->where('well', $this->request->get('well'))
+            ->get()
+            ->groupBy(function ($item) use ($fileTypes) {
+                return array_search($item->type_connect, $fileTypes);
+            })
+            ->map(function ($items) {
+                return $items->map(function ($item) {
+                    return $item->file_name . ' (' . AttachmentService::formatFilesize($item->file_size) . ')';
+                })->join(', ');
+            })
+            ->toArray();
     }
 }

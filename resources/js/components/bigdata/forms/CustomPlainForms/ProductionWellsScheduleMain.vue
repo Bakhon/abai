@@ -242,7 +242,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                                 </td>
@@ -475,12 +475,12 @@
                     </div>
                     <div class="d-flex mt-1" v-if="periodItem.params.activity.length > 0">
                         <div class="col-3 form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
+                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="periodItem.isShow = !periodItem.isShow">
                             <label class="form-check-label" for="activityCheck">
                                 Показать мероприятия
                             </label>
                         </div>
-                        <div v-if="isActivityShown && periodItem.params.activity" class="col-9 p-0">
+                        <div v-if="periodItem.isShow && periodItem.params.activity" class="col-9 p-0">
                             <table class="table text-center text-white text-nowrap historical-table">
                                 <thead>
                                 <tr>
@@ -603,6 +603,7 @@ export default {
                     let monthSummary = {
                         'id': date.format('YYYY/MMM'),
                         'isExpanded': true,
+                        'isShow': false,
                         'isHorizontalExpanded': true,
                         'month': date.format('MMM'),
                         'year': date.format('YYYY'),

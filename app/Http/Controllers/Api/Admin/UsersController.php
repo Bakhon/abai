@@ -13,7 +13,8 @@ class UsersController extends Controller
     {
         $user->update(
             [
-                'org_structure' => $request->orgs
+                'org_structure' => $request->orgs,
+                'check_org_permissions' => $request->check_org_permissions
             ]
         );
 

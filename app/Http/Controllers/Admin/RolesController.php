@@ -49,6 +49,14 @@ class RolesController extends Controller
             'name' => 'digitalDrilling',
             'title' => 'Модуль Цифровое бурение'
         ],
+        [
+            'name' => 'plastFluids',
+            'title' => 'Модуль Пластовые Флюиды'
+        ],
+        [
+            'name' => 'mapConstructor',
+            'title' => 'Модуль Картопостроитель'
+        ],
     ];
 
     static protected $fieldCodes = [

@@ -1,6 +1,9 @@
 <template>
   <div
-      :class="`bd-form-field bd-form-field_${item.type}`"
+      :class="[
+        formatedValue.value && editable ? 'can-delete' : '',
+        `bd-form-field bd-form-field_${item.type}`
+      ]"
   >
     <template v-if="['text', 'numeric'].indexOf(item.type) > -1">
       <input
@@ -248,7 +251,11 @@ export default {
         return this.dict
       }
 
-      return this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      let result = this.dict.filter(item => this.orgsToFilterBy.includes(item.org))
+      if (result.length === 0) {
+        result = this.dict.filter(item => item.org === null)
+      }
+      return result
     }
   },
   mounted() {
@@ -322,7 +329,7 @@ export default {
       if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
-          text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
+          text: value ? moment(value).format('DD.MM.YYYY HH:mm:ss') : null,
           value: value ? moment(value).format() : null
         }
       }
@@ -353,6 +360,10 @@ export default {
 .bd-form-field {
   max-width: 600px;
   position: relative;
+
+  &.can-delete {
+    margin-right: 25px;
+  }
 
   &_table {
     max-width: 100%;
