@@ -5,8 +5,8 @@
       --radius-width: {{radiusWidth}}px;
       }
     </v-style>
-    <div class="csspie" :data-value="data_value">
-    </div>
+    <div class="csspie" v-if="data_value > 0" :data-value="100 - data_value"></div>
+    <div class="csspie" v-if="data_value == 0" :data-value="data_value"></div>
     <div class="pie__info">
       <div class="well__name">{{ wellName }}</div>
       <div class="well__value" v-if="data_value > 0"> {{ water_prod }} - {{ oil_prod }} - {{ data_value }}%</div>
