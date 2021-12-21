@@ -551,7 +551,12 @@ class ExcelFormController extends Controller
 
     public function dailyReportExcelExport(Request $request)
     {
+        $params = array(
+            'date' => $request->get('date')
+        );
+        $dzoSummary = app()->call('App\Http\Controllers\VisCenter\DailyReport@getDailyProduction',$params);
+
         $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
-        return Excel::download(new VisualCenterDailyReportExport($request->get('daily'),$request->get('monthly'),$request->get('yearly')), $fileName . '.xlsx');
+        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary']), $fileName . '.xlsx');
     }
 }

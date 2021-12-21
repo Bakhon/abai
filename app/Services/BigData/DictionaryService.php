@@ -366,7 +366,7 @@ class DictionaryService
     public function fillTree($branch, $tree, $userSelectedTreeItems): array
     {
         foreach ($branch as $item) {
-            if (in_array($item['id'], $userSelectedTreeItems)) {
+            if (!auth()->user()->check_org_permissions || in_array($item['id'], $userSelectedTreeItems)) {
                 $tree[] = $item;
                 continue;
             }
