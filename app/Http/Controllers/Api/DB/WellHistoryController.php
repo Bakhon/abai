@@ -77,7 +77,7 @@ class WellHistoryController extends Controller
         }
 
         $measLiqs = DailyInjectionOil::where('well', $wellId)
-            ->join('dict.inj_agent_type', 'dmart.daily_inj.agent_type', '=', 'dict.inj_agent_type.id')
+            ->leftJoin('dict.inj_agent_type', 'dmart.daily_inj.agent_type', '=', 'dict.inj_agent_type.id')
             ->orderBy('date', 'asc')
             ->get();
 
