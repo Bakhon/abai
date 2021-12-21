@@ -51,6 +51,7 @@ class ExcelFormController extends Controller
     );
     private $systemFields = ['id','dzo_import_data_id'];
     private $condensateCompanies = ['АГ'];
+    private $dzoWithoutEmails = ['АГ','КПО','НКО','ПКИ','ПКК','ТП','ТШО','КГМ','ПКИ'];
 
     public function getDzoCurrentData(Request $request)
     {
@@ -288,11 +289,13 @@ class ExcelFormController extends Controller
     public function approveDailyCorrection(Request $request)
     {
         $this->deleteDuplicates($request->dzo_name,$request->date,$request->actualId);
-        $client = $this->getEmailClient();
         $updateOptions = array(
             $request->currentApproverField => true
         );
-        $this->sendApproveEmailToDzo($request->request,$client);
+        if (!in_array($request->dzo_name,$this->dzoWithoutEmails)) {
+            $client = $this->getEmailClient();
+            $this->sendApproveEmailToDzo($request->request,$client);
+        }
         DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
@@ -340,8 +343,11 @@ class ExcelFormController extends Controller
             <b>Дата:</b> {$request->date}<br />
             <b>Исполнитель:</b> {$request->user_name}<br />
             <b>Причина:</b> {$request->change_reason}</p>";
-        $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$request->dzo_name]);
-        $this->sendEmail($messageOptions,$client);
+        if (!in_array($request->dzo_name,$this->dzoWithoutEmails)) {
+            $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$request->dzo_name]);
+            $this->sendEmail($messageOptions,$client);
+        }
+
         DzoImportData::query()
             ->where('id', $request->currentId)
             ->update(
