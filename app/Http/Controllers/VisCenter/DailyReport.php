@@ -62,7 +62,7 @@ class DailyReport extends Controller
             'id' => 5,
             'sortId' => 6,
             'name' => '"Норт Каспиан Оперейтинг Компани н.в."',
-            'part' => 8,44
+            'part' => 8.44
         ),
         'КПО' => array (
             'id' => 6,
