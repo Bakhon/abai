@@ -333,8 +333,8 @@ class receiveNonOperatingAssets extends Command
         $oilFact = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction');
         $oilDelivery = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery');
         if (Carbon::now()->day === 2) {
-            $oilFact = $row[$columnMapping['KPOoilProduction']];
-            $oilDelivery = $row[$columnMapping['KPOoilDelivery']];
+            $oilFact = $row[$columnMapping['KPOoilProduction']] * 0.9;
+            $oilDelivery = $row[$columnMapping['KPOoilDelivery']] * 0.9;
         }
         return array (
             'oil_production_fact' => $oilFact,
