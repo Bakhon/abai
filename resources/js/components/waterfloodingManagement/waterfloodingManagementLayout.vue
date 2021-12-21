@@ -65,7 +65,7 @@ export default {
     prediction(data){
       let component = ""
       if (data == 'choose_object_area')
-        component = this.menu[1].component
+        component = this.forecasting
       else
         component = this.menu[2].component
       this.mainContent = component;
@@ -75,6 +75,31 @@ export default {
 }
 </script>
 <style >
+.map__legend {
+  background-color: #fff;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  z-index: 1;
+  color: #000;
+}
+
+.map__legend .well__legend {
+  display: inline-block;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+}
+.map__legend .line__legend {
+  display: inline-block;
+  height: 3px;
+  margin-right: 5px;
+  width: 25px;
+  background: red;
+}
 .wft__left__side{
   margin: 5px 0 0 5px;
   width: calc(21% - 5px);
@@ -115,7 +140,6 @@ export default {
   width: calc(100% - 0px);
   padding: 6px;
   margin: 5px;
-  /*margin-bottom: 10px;*/
   background-color: #272953;
 }
 .card-block .card-title{

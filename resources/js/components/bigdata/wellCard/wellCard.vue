@@ -134,9 +134,14 @@
                      @click="$refs.childForm.switchChartVisibility()">Показать график
                   </a>
                 </div>
-                <div class="modal-show" v-show="isOpen === true" >
-                      <div>
-                          <img class="" src="/img/bd/image1.png" alt="">
+                <div class="modal-show" v-show="isOpen === true" @mouseover="isOpen = true">
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/circle-red.png"/>
+                          <span class="legenda_text">Отклонение от тех. режима</span>
+                      </div>
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/orange-circle-icon.png">
+                          <span class="legenda_text">В простое</span>
                       </div>
                 </div>
                 <div
@@ -1370,9 +1375,9 @@ export default {
                 "name_ru"
               );
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
-              this.perf_date = data.well_perf_actual[0].perf_date;
-                this.perfActual = this.getwellPerf(data.well_perf_actual, "top", "base");
-                this.wellOrgName = this.getMultipleValues(
+              this.perf_date = data.well_perf_actual.length > 0 ? data.well_perf_actual[0].perf_date : '';
+              this.perfActual = data.well_perf_actual.length > 0 ? this.getwellPerf(data.well_perf_actual, "top", "base") : '';
+              this.wellOrgName = this.getMultipleValues(
                     data.org.reverse(),
                     "name_ru"
                 );
@@ -1640,11 +1645,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.modal-show{
-  z-index:1000;
-  position:absolute;
-  top:100%;
-}
 $leftColumnWidth: 300px;
 $leftColumnFoldedWidth: 50px;
 $rightColumnWidth: 300px;
@@ -3007,6 +3007,24 @@ h4 {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.modal-show{
+  z-index:1000;
+  position:absolute;
+  top:100%;
+  color: #fff;
+  margin-left: 9px;
+}
+.modal_show_item{
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+.modal_show_img{
+  width: 24px;
+}
+.legenda_text{
+  margin-left: 5px;
 }
 
 </style>

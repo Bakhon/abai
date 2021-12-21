@@ -1,4 +1,3 @@
-@import "../../colors";
 .___aw-modal__transition{
   transition: 300ms all;
 }
@@ -31,7 +30,7 @@
   &__background{
     @extend .___aw-modal__transition;
     @extend .customScroll;
-    background: rgba($black, .5);
+    background: rgba(var(--a-black), .5);
     padding-bottom: 80px;
   }
   &__header{

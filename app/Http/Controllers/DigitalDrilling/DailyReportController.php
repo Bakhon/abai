@@ -12,6 +12,8 @@ class DailyReportController extends Controller
         $this->middleware('can:digitalDrilling view main')->only([
             'index',
             'raport',
+        ]);
+        $this->middleware('can:digitalDrilling view catalog')->only([
             'catalog'
         ]);
     }
