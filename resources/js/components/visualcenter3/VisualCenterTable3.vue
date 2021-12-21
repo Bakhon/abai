@@ -838,7 +838,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
+                    <th
+                            :class="isConsolidatedCategoryActive() ? 'width__13' : ''"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                    >
                       <div v-if="periodEnd < opecEndDate">
                         {{ trans("visualcenter.plan") }}
                         {{ trans("visualcenter.dzoOpec") }},
@@ -2477,9 +2480,6 @@
         &:nth-child(1) {
           width: 350px;
         }
-        &:nth-child(3) {
-          width: 13%;
-        }
       }
     }
 
@@ -3103,6 +3103,9 @@
     border-radius: 5px;
     padding: 5px;
     text-align: center;
+  }
+  .width__13 {
+    width: 13%
   }
 
 </style>
