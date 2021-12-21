@@ -10,6 +10,7 @@ use App\Jobs\Economic\Technical\TechnicalWellForecastKitJob;
 use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellForecastKit;
+use App\Models\Refs\TechnicalWellForecastKitResult;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Illuminate\Database\Query\JoinClause;
@@ -79,7 +80,10 @@ class EconomicAnalysisController extends Controller
         ];
 
         foreach ($kits as $kit) {
-            $data['wellsByKits'][$kit->id] = $this->getWellsKit($kit);
+            $data['wellsByKits'][$kit->id] = $this->getWellsKit(
+                $kit,
+                $kit->results->first()
+            );
         }
 
         return $data;
@@ -99,6 +103,7 @@ class EconomicAnalysisController extends Controller
         foreach ($kits as $kit) {
             $wells[$kit->id] = $this->getWellsKitByGranularity(
                 $kit,
+                $kit->results->first(),
                 $request->granularity,
                 $request->uwi
             );
@@ -136,10 +141,11 @@ class EconomicAnalysisController extends Controller
         ];
     }
 
-    private function getWellsKit(TechnicalWellForecastKit $kit): array
+    private function getWellsKit(
+        TechnicalWellForecastKit $kit,
+        TechnicalWellForecastKitResult $result
+    ): array
     {
-        $result = $kit->results->first();
-
         return [
             'wellsSumByStatus' => $this->getWellsSumByStatus(
                 (new TechnicalWellStatus())->getTable(),
@@ -182,42 +188,48 @@ class EconomicAnalysisController extends Controller
 
     private function getWellsKitByGranularity(
         TechnicalWellForecastKit $kit,
+        TechnicalWellForecastKitResult $result,
         string $granularity,
         string $uwi = null
     ): array
     {
-        $permanentStopCoefficient = $kit->results->first()->permanent_stop_coefficient;
-        $enabledUwis = $kit->results->first()->enabled_uwis;
-        $stoppedUwis = $kit->results->first()->stopped_uwis;
-
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
 
         $tableWellStatus = (new TechnicalWellStatus())->getTable();
 
         $tableWellLossStatus = (new TechnicalWellLossStatus)->getTable();
 
-        $oilPropose = TechnicalWellForecastKitJob::sqlQueryOil($enabledUwis, $stoppedUwis);
+        $oilPropose = TechnicalWellForecastKitJob::sqlQueryOil(
+            $result->enabled_uwis,
+            $result->stopped_uwis
+        );
 
-        $liquidPropose = TechnicalWellForecastKitJob::sqlQueryLiquid($enabledUwis, $stoppedUwis);
+        $liquidPropose = TechnicalWellForecastKitJob::sqlQueryLiquid(
+            $result->enabled_uwis,
+            $result->stopped_uwis
+        );
 
         $netBack = TechnicalWellForecastKitJob::sqlQueryNetBack();
 
         $netBackPropose = TechnicalWellForecastKitJob::sqlQueryNetBack(
-            $enabledUwis,
-            $stoppedUwis
+            $result->enabled_uwis,
+            $result->stopped_uwis
         );
 
         $overallExpenditures = TechnicalWellForecastKitJob::sqlQueryOverallExpenditures(
-            $permanentStopCoefficient
+            $result->permanent_stop_coefficient
         );
 
         $overallExpendituresPropose = TechnicalWellForecastKitJob::sqlQueryOverallExpenditures(
-            $permanentStopCoefficient,
-            $enabledUwis,
-            $stoppedUwis
+            $result->permanent_stop_coefficient,
+            $result->enabled_uwis,
+            $result->stopped_uwis
         );
 
-        $changedStatus = $this->sqlQueryChangedStatus($enabledUwis, $stoppedUwis);
+        $changedStatus = $this->sqlQueryChangedStatus(
+            $result->enabled_uwis,
+            $result->stopped_uwis
+        );
 
         $profitability = TechnicalWellForecastKitJob::sqlQueryProfitability();
 
@@ -356,16 +368,13 @@ class EconomicAnalysisController extends Controller
 
         $tableWellForecast = (new TechnicalWellForecast())->getTable();
 
-        $query = DB::table("$tableWellForecast AS well_forecast")
+        $wells = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
-                well_forecast.date_month as date,  
-                well_forecast.uwi as uwi,              
-                analysis_param.netback_fact as netback_fact,    
-                analysis_param.variable_cost as variable_cost,    
-                analysis_param.permanent_cost as permanent_cost,    
-                analysis_param.avg_prs_cost as avg_prs_cost,    
-                analysis_param.oil_density as oil_density,    
+                well_forecast.uwi,              
+                well_forecast.date_month,  
                 SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,    
+                SUM(oil_forecast) as oil_forecast,
+                SUM(liquid_forecast) as liquid_forecast,
                 SUM($activeHours) as active_hours,
                 SUM($pausedHours) as paused_hours,
                 SUM($oil) as oil,
@@ -373,15 +382,49 @@ class EconomicAnalysisController extends Controller
                 SUM($liquid) as liquid,
                 SUM($liquidLoss) as liquid_loss,
                 SUM($prsPortion) as prs_portion,
-                SUM($netBack) as netback,
-                SUM($overallExpenditures) as overall_expenditures,
-                SUM($netBack - ($overallExpenditures)) as operating_profit,
                 SUM($lossStatusCount) as loss_status_count
             "))
             ->whereRaw(DB::raw("well_forecast.log_id = $technicalLogId"))
             ->groupBy([
                 "uwi",
-                "date",
+                "date_month"
+            ])
+            ->toSql();
+
+        $query = DB::table(DB::raw("($wells) AS well_forecast"))
+            ->addSelect(DB::raw("
+                analysis_param.netback_fact as netback_fact,    
+                analysis_param.variable_cost as variable_cost,    
+                analysis_param.permanent_cost as permanent_cost,    
+                analysis_param.avg_prs_cost as avg_prs_cost,    
+                analysis_param.oil_density as oil_density,    
+                well_forecast.uwi,              
+                well_forecast.date_month as date,  
+                well_forecast.total_hours,              
+                well_forecast.active_hours,              
+                well_forecast.paused_hours,              
+                well_forecast.oil,              
+                well_forecast.oil_loss,              
+                well_forecast.liquid,              
+                well_forecast.liquid_loss,              
+                well_forecast.prs_portion,              
+                well_forecast.loss_status_count,              
+                SUM($netBack) as netback,
+                SUM($overallExpenditures) as overall_expenditures,
+                SUM($netBack - ($overallExpenditures)) as operating_profit
+            "))
+            ->groupBy([
+                "uwi",
+                "date_month",
+                "total_hours",
+                "active_hours",
+                "paused_hours",
+                "oil",
+                "oil_loss",
+                "liquid",
+                "liquid_loss",
+                "prs_portion",
+                "loss_status_count",
                 "netback_fact",
                 "variable_cost",
                 "permanent_cost",
@@ -441,137 +484,6 @@ class EconomicAnalysisController extends Controller
             ->toArray();
     }
 
-//    private function getWellsSumByStatus(
-//        string $tableWellStatus,
-//        string $joinKey,
-//        int $economicLogId,
-//        int $technicalLogId,
-//        float $permanentStopCoefficient,
-//        array $enabledUwis = null,
-//        array $stoppedUwis = null
-//    ): array
-//    {
-//        $oil = TechnicalWellForecastKitJob::sqlQueryOil($enabledUwis, $stoppedUwis);
-//
-//        $oilLoss = $this->sqlQueryOilLoss($enabledUwis, $stoppedUwis);
-//
-//        $oilTechLoss = $this->sqlQueryOilTechLoss($enabledUwis, $stoppedUwis);
-//
-//        $liquid = TechnicalWellForecastKitJob::sqlQueryLiquid($enabledUwis, $stoppedUwis);
-//
-//        $liquidLoss = $this->sqlQueryLiquidLoss($enabledUwis, $stoppedUwis);
-//
-//        $liquidTechLoss = $this->sqlQueryLiquidTechLoss($enabledUwis, $stoppedUwis);
-//
-//        $prsPortion = TechnicalWellForecastKitJob::sqlQueryPrsPortion($stoppedUwis);
-//
-//        $activeHours = $this->sqlQueryActiveHours($enabledUwis, $stoppedUwis);
-//
-//        $pausedHours = $this->sqlQueryPausedHours($enabledUwis, $stoppedUwis);
-//
-//        $tableWellForecast = (new TechnicalWellForecast())->getTable();
-//
-//        $wells = DB::table("$tableWellForecast AS well_forecast")
-//            ->addSelect(DB::raw("
-//                analysis_param.avg_prs_cost,
-//                well_forecast.$joinKey,
-//                well_forecast.date_month,
-//                well_forecast.uwi,
-//                SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,
-//                SUM(well_forecast.oil_forecast) as oil_forecast,
-//                SUM($activeHours) as active_hours,
-//                SUM($pausedHours) as paused_hours,
-//                SUM($oil) as oil,
-//                SUM($oilLoss) as oil_loss,
-//                SUM($oilTechLoss) as oil_tech_loss,
-//                SUM($liquid) as liquid,
-//                SUM($liquidLoss) as liquid_loss,
-//                SUM($liquidTechLoss) as liquid_tech_loss,
-//                SUM($prsPortion) as prs_portion
-//            "))
-//            ->whereRaw(DB::raw("log_id = $technicalLogId AND has_$joinKey = 1"))
-//            ->groupBy([
-//                $joinKey,
-//                "date_month",
-//                "uwi",
-//            ])
-//            ->toSql();
-//
-//        $netBack = TechnicalWellForecastKitJob::sqlQueryNetBack(
-//            null,
-//            null,
-//            'wells',
-//            'well_profitability',
-//            'wells.oil'
-//        );
-//
-//        $netBackTechLoss = TechnicalWellForecastKitJob::sqlQueryNetBack(
-//            null,
-//            null,
-//            'wells',
-//            'well_profitability',
-//            'wells.oil_tech_loss'
-//        );
-//
-//        $overallExpenditures = TechnicalWellForecastKitJob::sqlQueryOverallExpenditures(
-//            $permanentStopCoefficient,
-//            null,
-//            null,
-//            'wells',
-//            'well_profitability',
-//            'wells.liquid',
-//            'wells.prs_portion'
-//        );
-//
-//        $query = DB::table(DB::raw("($wells) as wells"))
-//            ->addSelect(DB::raw("
-//                wells.$joinKey as status_id,
-//                wells.date_month,
-//                well_status.name as status_name,
-//                well_profitability.profitability_propose as profitability,
-//                COUNT(wells.uwi) AS uwi_count,
-//                SUM(wells.oil) AS oil,
-//                SUM(wells.oil_loss) AS oil_loss,
-//                SUM(wells.oil_tech_loss) AS oil_tech_loss,
-//                SUM(wells.oil_forecast) AS oil_forecast,
-//                SUM(wells.liquid) AS liquid,
-//                SUM(wells.liquid_loss) AS liquid_loss,
-//                SUM(wells.liquid_tech_loss) AS liquid_tech_loss,
-//                SUM(wells.active_hours) AS active_hours,
-//                SUM(wells.paused_hours) AS paused_hours,
-//                SUM(wells.total_hours) AS total_hours,
-//                SUM(wells.prs_portion) AS prs_portion,
-//                SUM(wells.prs_portion * well_profitability.avg_prs_cost) AS prs_cost,
-//                SUM($netBack - ($overallExpenditures)) as operating_profit,
-//                SUM(
-//                $netBackTechLoss -
-//                wells.liquid_tech_loss * well_profitability.variable_cost * well_profitability.oil_density / 1000
-//                ) as operating_profit_tech_loss
-//            "))
-//            ->leftjoin("$tableWellStatus AS well_status", function ($join) use ($joinKey) {
-//                /** @var JoinClause $join */
-//                $join->on("wells.$joinKey", '=', 'well_status.id');
-//            })
-//            ->groupByRaw(DB::raw("
-//                $joinKey,
-//                status_name,
-//                wells.date_month,
-//                well_profitability.profitability_propose
-//            "));
-//
-//        return TechnicalWellForecastKitJob::sqlJoinWellProfitability(
-//            $query,
-//            $economicLogId,
-//            $technicalLogId,
-//            $permanentStopCoefficient,
-//            'wells',
-//            'well_profitability',
-//            $enabledUwis,
-//            $stoppedUwis
-//        )
-//            ->get()
-//            ->toArray();
-//    }
     private function getWellsSumByStatus(
         string $tableWellStatus,
         string $joinKey,
@@ -604,11 +516,11 @@ class EconomicAnalysisController extends Controller
 
         $wells = DB::table("$tableWellForecast AS well_forecast")
             ->addSelect(DB::raw("
-                uwi,
-                date_month,
-                $joinKey,
-                SUM(active_hours + paused_hours) as total_hours,    
-                SUM(oil_forecast) as oil_forecast,
+                well_forecast.$joinKey,
+                well_forecast.date_month,
+                well_forecast.uwi,
+                SUM(well_forecast.active_hours + well_forecast.paused_hours) as total_hours,
+                SUM(well_forecast.oil_forecast) as oil_forecast,
                 SUM($activeHours) as active_hours,
                 SUM($pausedHours) as paused_hours,
                 SUM($oil) as oil,
@@ -621,32 +533,11 @@ class EconomicAnalysisController extends Controller
             "))
             ->whereRaw(DB::raw("log_id = $technicalLogId AND has_$joinKey = 1"))
             ->groupBy([
-                "uwi",
+                $joinKey,
                 "date_month",
-                $joinKey
+                "uwi",
             ])
             ->toSql();
-
-        $query = DB::table(DB::raw("($wells) AS well_forecast"))
-            ->addSelect(DB::raw("
-                analysis_param.avg_prs_cost,
-                well_forecast.uwi,
-                well_forecast.$joinKey as status_id,
-                well_forecast.date_month,
-                well_forecast.total_hours,
-                well_forecast.active_hours,
-                well_forecast.paused_hours,
-                well_forecast.oil,
-                well_forecast.oil_forecast,
-                well_forecast.oil_loss,
-                well_forecast.oil_tech_loss,
-                well_forecast.liquid,
-                well_forecast.liquid_loss,
-                well_forecast.liquid_tech_loss,
-                well_forecast.prs_portion
-            "));
-
-        $wells = TechnicalWellForecastKitJob::sqlJoinAnalysisParam($query, $economicLogId)->toSql();
 
         $netBack = TechnicalWellForecastKitJob::sqlQueryNetBack(
             null,
@@ -676,8 +567,9 @@ class EconomicAnalysisController extends Controller
 
         $query = DB::table(DB::raw("($wells) as wells"))
             ->addSelect(DB::raw("
-                wells.status_id,
+                wells.$joinKey as status_id,
                 wells.date_month,
+                well_status.name as status_name,
                 well_profitability.profitability_propose as profitability,
                 COUNT(wells.uwi) AS uwi_count,
                 SUM(wells.oil) AS oil,
@@ -691,16 +583,21 @@ class EconomicAnalysisController extends Controller
                 SUM(wells.paused_hours) AS paused_hours,
                 SUM(wells.total_hours) AS total_hours,
                 SUM(wells.prs_portion) AS prs_portion,
-                SUM(wells.prs_portion * wells.avg_prs_cost) AS prs_cost,
+                SUM(wells.prs_portion * well_profitability.avg_prs_cost) AS prs_cost,
                 SUM($netBack - ($overallExpenditures)) as operating_profit,
                 SUM(
-                $netBackTechLoss - 
+                $netBackTechLoss -
                 wells.liquid_tech_loss * well_profitability.variable_cost * well_profitability.oil_density / 1000
                 ) as operating_profit_tech_loss
             "))
+            ->leftjoin("$tableWellStatus AS well_status", function ($join) use ($joinKey) {
+                /** @var JoinClause $join */
+                $join->on("wells.$joinKey", '=', 'well_status.id');
+            })
             ->groupByRaw(DB::raw("
-                wells.status_id, 
-                wells.date_month, 
+                $joinKey,
+                status_name,
+                wells.date_month,
                 well_profitability.profitability_propose
             "));
 

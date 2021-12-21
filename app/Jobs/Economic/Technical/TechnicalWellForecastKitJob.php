@@ -424,7 +424,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
                 /** @var JoinClause $join */
                 $join
                     ->on("$wellProfitabilityAlias.uwi", "=", "$wellAlias.uwi")
-                    ->on("$wellProfitabilityAlias.date_month", "=", "$wellAlias.date_month");
+                    ->on("$wellProfitabilityAlias.date", "=", "$wellAlias.date_month");
             });
     }
 
@@ -492,21 +492,13 @@ class TechnicalWellForecastKitJob implements ShouldQueue
         $profitabilityWithoutPrs = self::sqlQueryProfitability('operating_profit_without_prs');
 
         $wells = DB::table((new TechnicalWellForecast())->getTable())
-            ->addSelect(DB::raw("
-                uwi,
-                date_month,
-                SUM(oil) as oil,
-                SUM(liquid) as liquid,
-                SUM(prs_portion) as prs_portion
-            "))
             ->whereRaw(DB::raw("log_id = $technicalLogId"))
-            ->groupBy(["uwi", "date_month"])
             ->toSql();
 
         $query = DB::table(DB::raw("($wells) AS well_forecast"))
             ->addSelect(DB::raw("
                 well_forecast.uwi,
-                well_forecast.date_month,
+                analysis_param.date,
                 analysis_param.netback_fact,
                 analysis_param.permanent_cost,
                 analysis_param.variable_cost,
@@ -519,7 +511,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
             "))
             ->groupByRaw(DB::raw("
                 well_forecast.uwi,
-                well_forecast.date_month,
+                analysis_param.date,
                 analysis_param.netback_fact,
                 analysis_param.permanent_cost,
                 analysis_param.variable_cost,
@@ -532,7 +524,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
         return DB::table(DB::raw("($wells) as wells"))
             ->addSelect(DB::raw("
                 wells.uwi,
-                wells.date_month,
+                wells.date,
                 wells.netback_fact,
                 wells.permanent_cost,
                 wells.variable_cost,
@@ -548,7 +540,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
             "))
             ->groupByRaw(DB::raw("
                 wells.uwi,
-                wells.date_month,
+                wells.date,
                 wells.netback_fact,
                 wells.permanent_cost,
                 wells.variable_cost,
