@@ -187,6 +187,7 @@ export default {
             this.SET_LOADING(true);
             this.SET_HORIZON(horizon?.id);
             this.map.remove();
+            this.selectedMaps = [];
             setTimeout(async() => {
                 this.initMap('map');
                 await this.initSectorOnMap();
@@ -194,15 +195,14 @@ export default {
         },
 
         handleSelectMap(map) {
-            if (!this.selectedMaps.includes(map.id)) {
-                this.selectedMaps.push(map.id);
-                if (map.id === 1) {
-                    this.initDrilledOnMap();
-                } else if (map.id === 2) {
-                    this.initCurrentProdOnMap();
-                } else {
-                    this.initCumulativeProdOnMap();
-                }
+            if (this.selectedMaps.includes(map.id)) return;
+            this.selectedMaps.push(map.id);
+            if (map.id === 1) {
+                this.initDrilledOnMap();
+            } else if (map.id === 2) {
+                this.initCurrentProdOnMap();
+            } else {
+                this.initCumulativeProdOnMap();
             }
         },
 
