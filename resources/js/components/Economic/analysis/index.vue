@@ -49,6 +49,7 @@
 
         <select-technical-well-forecast-kit
             :form="form"
+            :fetch-params="{is_processed: 1}"
             form-key="kit_ids"
             class="ml-2"
             is-multiple/>

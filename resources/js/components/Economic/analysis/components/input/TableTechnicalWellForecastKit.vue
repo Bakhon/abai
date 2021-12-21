@@ -3,7 +3,12 @@
       ref="table"
       :params="params"
       class="height-fit-content height-unset">
-    <div slot="column-5" slot-scope="{ props }" class="mx-auto">
+    <div slot="column-6" slot-scope="{ props }" class="mx-auto">
+      {{ props.cellData.calculated_variants }} /
+      {{ props.cellData.total_variants }}
+    </div>
+
+    <div slot="column-7" slot-scope="{ props }" class="mx-auto">
       <delete-button @click.native="deleteKit(props.rowData[0].data)"/>
     </div>
   </vue-table-dynamic>
@@ -45,6 +50,20 @@ export default {
 
           if (header.isRelationName) {
             return row.push(item[header.key] ? item[header.key].name : '')
+          }
+
+          if (header.isParams) {
+            let value = ''
+
+            item[header.key].forEach((param, paramIndex) => {
+              value += paramIndex ? `, ${param.value}` : param.value
+            })
+
+            return row.push(value)
+          }
+
+          if (header.isProgress) {
+            return row.push(item)
           }
 
           row.push(item[header.key])
@@ -91,6 +110,10 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
+        columnWidth: this.headers.map((header, index) => ({
+          column: index,
+          width: header.width || 220
+        }))
       }
     },
 
@@ -99,6 +122,7 @@ export default {
         {
           label: 'id',
           key: 'id',
+          width: 50
         },
         {
           label: this.trans('economic_reference.name'),
@@ -115,9 +139,19 @@ export default {
           isRelationName: true
         },
         {
+          label: this.trans('economic_reference.permanent_stop_coefficient'),
+          key: 'permanent_stop_coefficients',
+          isParams: true
+        },
+        {
           label: this.trans('economic_reference.added_date_author'),
           key: 'user',
           isUser: true
+        },
+        {
+          label: this.trans('economic_reference.progress'),
+          key: 'progress',
+          isProgress: true
         },
         {
           label: '',
