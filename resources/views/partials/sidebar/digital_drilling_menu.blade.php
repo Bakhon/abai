@@ -14,9 +14,6 @@
                     <a href="{{route('digital-drilling-daily-report')}}">{{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}</a>
                 </li>
                 <li class="left-menu-li">
-                    <a href="{{route('digital-drilling-import-daily-report')}}">{{trans('digital_drilling.daily_raport.IMPORT_DRILLING_REPORT')}}</a>
-                </li>
-                <li class="left-menu-li">
                     <a href="{{route('digital-drilling-catalog-daily-report')}}">Каталоги</a>
                 </li>
             </div>

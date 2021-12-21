@@ -40,7 +40,50 @@ export const treemapMixin = {
         },
 
         charts() {
-            return []
+            return [
+                {
+                    title: `${this.trans('economic_reference.operating_profit')} +`,
+                    key: this.profitabilityKey,
+                    isPositive: true,
+                    hasSubtitle: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tenge'),
+                },
+                {
+                    title: `${this.trans('economic_reference.operating_profit')} -`,
+                    key: this.profitabilityKey,
+                    isNegative: true,
+                    sort: 'asc',
+                    hasSubtitle: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tenge'),
+                },
+                {
+                    title: this.trans('economic_reference.liquid_production'),
+                    key: 'liquid',
+                    hasSubtitle: true,
+                    hasPercent: true,
+                    dimension: 1000,
+                    dimensionTitle: `
+                        ${this.trans('economic_reference.thousand')} 
+                        ${this.trans('economic_reference.cubic_meter')}
+                    `,
+                },
+                {
+                    title: this.trans('economic_reference.oil_production'),
+                    key: 'oil',
+                    hasSubtitle: true,
+                    hasPercent: true,
+                    dimension: 1000,
+                    dimensionTitle: this.trans('economic_reference.thousand_tons'),
+                },
+                {
+                    title: this.trans('economic_reference.water_cut'),
+                    key: this.waterCutKey,
+                    hasSubtitle: true,
+                    dimensionTitle: '%',
+                },
+            ]
         },
 
         chartsSum() {
@@ -61,9 +104,9 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value <= 0) return
+                    if (chart.hasOwnProperty('isPositive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value > 0) return
+                    if (chart.hasOwnProperty('isNegative') && value > 0) return
 
                     sum[chart.title][sumKey] += value
 
@@ -101,9 +144,13 @@ export const treemapMixin = {
                 this.charts.forEach(chart => {
                     let value = +well[chart.key]
 
-                    if (chart.hasOwnProperty('positive') && value <= 0) return
+                    if (chart.hasOwnProperty('isPositive') && value <= 0) return
 
-                    if (chart.hasOwnProperty('negative') && value > 0) return
+                    if (chart.hasOwnProperty('isNegative') && value > 0) return
+
+                    if (chart.dimension) {
+                        value /= chart.dimension
+                    }
 
                     let color = this.getColor(well)
 
@@ -150,7 +197,7 @@ export const treemapMixin = {
                 });
 
                 treemap.tooltip().format(function () {
-                    return `${this.value.toLocaleString()}`
+                    return `${(+this.value.toFixed(2)).toLocaleString()} ${chart.dimensionTitle.replace(/\r?\n|\r/g, "")}`
                 });
 
                 treemap.container(chart.title)
@@ -178,7 +225,7 @@ export const treemapMixin = {
                 return ''
             }
 
-            let name = ''
+            let subTitle = ''
 
             let subTitles = ['profitable', 'profitless']
 
@@ -197,15 +244,23 @@ export const treemapMixin = {
                 )
 
                 if (this.chartsSum[title][profitability]) {
-                    name += `<br> ${text}: ${value} `
+                    subTitle += `<br> ${text}: ${value} `
 
                     if (dimensionTitle) {
-                        name += dimensionTitle
+                        subTitle += dimensionTitle
+                    }
+
+                    if (hasPercent) {
+                        let sum = +this.chartsSum[title].profitable + +this.chartsSum[title].profitless
+
+                        let percent = +this.chartsSum[title][profitability] * 100 / sum
+
+                        subTitle += `, ${percent.toFixed(0)}%`
                     }
                 }
             })
 
-            return name
+            return subTitle
         },
 
         getChartTitle(chart) {

@@ -8,7 +8,7 @@
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        :height="520"
+        :height="chartHeight"
         class="apexcharts-custom-legend"
         style="color: #000"/>
   </div>
@@ -40,6 +40,10 @@ export default {
       required: true,
       type: Array
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   computed: {
     data() {
@@ -184,6 +188,10 @@ export default {
     chartData() {
       return [null, ...this.data, null]
     },
+
+    chartHeight() {
+      return this.isFullscreen ? 670 : 520
+    }
   }
 }
 </script>

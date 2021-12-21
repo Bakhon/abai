@@ -5,29 +5,33 @@ export default {
     data: function () {
         return {
             productionByPeriods: {},
-            previousMonth: moment().month() - 1,
+            previousMonth: moment().month(),
             currentDate: moment().format('DD.MM.YYYY'),
-            previousMonthName: moment().subtract(1,'months').format('MMM'),
-            currentYear: moment().year,
+            previousMonthName: moment().format('MMMM'),
+            currentYear: moment().year(),
             menu: {
                 'daily': true,
                 'monthly': false,
                 'yearly': false
-            }
+            },
+            selectedDate: moment().subtract(1,'days').startOf('day').format(),
         }
     },
     methods: {
        async getProductionForPeriods() {
             let queryOptions = {
-                'date': moment().subtract(1,'days').startOf('day').format()
+                'date': this.selectedDate
             };
            const response = await axios.get(this.localeUrl('get-daily-report-production'),{params:queryOptions});
             return response.data;
         },
         async handleExcelDownload() {
             this.SET_LOADING(true);
+            let queryOptions = {
+                'date': this.selectedDate
+            };
             let uri = this.localeUrl("/daily-report-export");
-            const response = await axios.get(uri,{'params': this.productionByPeriods,responseType:'arraybuffer'});
+            const response = await axios.get(uri,{'params': queryOptions,responseType:'arraybuffer'});
             this.SET_LOADING(false);
             let fileName = `Суточная информация по добыче нефти и конденсата НК КМГ_${moment().format('DD MM YY')} г.xlsx`;
             var fileURL = window.URL.createObjectURL(new Blob([response.data]));
