@@ -217,6 +217,9 @@ export default {
             this.productionFondSelectedCompany = oneDzoNameSelected;
             this.injectionFondSelectedCompany = oneDzoNameSelected;
             this.updateDzoMenu();
+            if (this.dzoWithoutAdditionalWidgets.includes(oneDzoNameSelected)) {
+                return;
+            }
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
