@@ -17,8 +17,8 @@
           :row="row"
           :class="row.styleClass"/>
 
-      <div class="customScroll d-flex flex-column"
-           style="overflow-y: scroll; height: 415px">
+      <div :style="`overflow-y: scroll; height: ${tableHeight}`"
+           class="customScroll d-flex flex-column">
         <table-chess-row
             v-for="(row, index) in tableData"
             :key="index"
@@ -105,6 +105,10 @@ export default {
         },
       ]
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '565px' : '415px'
+    }
   },
   methods: {
     getBgColor(index) {

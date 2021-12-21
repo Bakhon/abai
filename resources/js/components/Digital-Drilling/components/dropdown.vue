@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown" :class="{active: isOpen}">
+    <div class="dropdown" :class="{active: isOpen}" v-click-outside="outDropdown">
         <div class="dropdown__header" :class="{report: report}">
             <div class="dropdown__header-title">
                 <div class="cancel" v-if="cancelFilter && current.name" @click="cancelFilterItem">
@@ -41,6 +41,11 @@
             }
         },
         methods:{
+            outDropdown(){
+                if (this.isOpen) {
+                    this.isOpen = false
+                }
+            },
             changeCurrentItem(item){
                 this.isOpen = false
                 this.query = item.name
@@ -58,6 +63,10 @@
 </script>
 
 <style scoped>
+    .dropdown__search input{
+        color: #ffffff;
+        padding: 2px 7px;
+    }
     .dropdown:not(:focus) .dropdown__body{
         height: 0;
     }
@@ -70,7 +79,7 @@
         font-size: 15px;
         line-height: 19px;
         color: #FFFFFF;
-        width: 235px;
+        width: 100%;
         min-width: 200px;
         height: 23px;
         padding: 0 15px 0 10px;
@@ -131,8 +140,10 @@
     .dropdown__search input{
         width: 100%;
         height: 100%;
-        background-color: transparent;
-        border: 0;
+        background: #272953;
+        border: 2px solid #070a18!important;
+        border-radius: 6px;
+        padding: 5px 3px;
     }
     .dropdown__search input:focus{
         outline: none;
