@@ -602,16 +602,8 @@ export default {
                 let explanationField = field.replace('losses','explanation');
                 let currentRow = this.dzoMapping[this.selectedDzo.ticker][rows];
                 currentRow = currentRow + index;
-                console.log(field)
-                console.log(explanationField)
-                console.log(currentRow)
-                console.log(currentRow)
-                console.log(this.excelData['decreaseReason'][explanationField])
-                console.log(this.excelData['decreaseReason'][field])
-                console.log(this.excelData['decreaseReason'][explanationField] !== '' && this.excelData['decreaseReason'][field] === '')
                 if (this.excelData['decreaseReason'][explanationField] !== '' && this.excelData['decreaseReason'][field] === '') {
                     this.setClassToElement($('#factGrid').find('div[data-row="' + currentRow + '"][data-col="5"]'),'cell__color-red');
-                    console.log('set error')
                     isError = false;
                 }
             });
@@ -692,8 +684,8 @@ export default {
             _.forEach(fields, (field) => {
                sum += this.excelData['decreaseReason'][field];
             });
-            let min = difference - (difference * 0.05);
-            let max = difference + (difference * 0.05);
+            let min = difference + 5;
+            let max = difference + 5;
 
             return sum >= min && sum <= max;
         },

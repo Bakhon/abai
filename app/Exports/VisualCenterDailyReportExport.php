@@ -52,6 +52,7 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         $sheet->getStyle('H24')->getAlignment()->setVertical('center');
         $sheet->getStyle('B44')->getAlignment()->setVertical('center');
         $sheet->getStyle('H44')->getAlignment()->setVertical('center');
+        $sheet->getStyle('A5:H60')->getAlignment()->setVertical('center');
         $sheet->getStyle('A1:A60')->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A1:H60')->getAlignment()->setIndent(10);
         $sheet->getStyle('A5:A60')->getAlignment()->setVertical('center');
