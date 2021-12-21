@@ -93,7 +93,7 @@ class FinalizeEmergencySituation extends Command
             ->where('id', $situationId)
             ->update(
                 [
-                    'approve_date' => Carbon::parse($resolveDate)->addMonth(),
+                    'approve_date' => $resolveDate,
                     'approved' => true
                 ]
             );
