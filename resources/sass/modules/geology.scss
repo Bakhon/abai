@@ -125,6 +125,15 @@
       }
     }
   }
+  &.center{
+    thead, tbody{
+      tr{
+        td, th{
+          text-align: center;
+        }
+      }
+    }
+  }
 }
 
 .aw-scale-fade-side {

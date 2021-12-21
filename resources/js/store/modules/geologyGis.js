@@ -358,7 +358,12 @@ function mnemonicsSort(data, state) {
             wellID = datum.well;
             mnemonicsSort.apply(this, [datum.mnemonics, state]);
         } else {
-            let {name, curve_id} = datum;
+            let {
+                name,
+                curve_id,
+                depth_start,
+                depth_end,
+                step} = datum;
             let groupId = uuidv4();
 
             if (!groupsIds.has(name)) {
@@ -374,16 +379,28 @@ function mnemonicsSort(data, state) {
             }
 
             if (this.hasElement(name)) {
-                state.awGis.editPropertyElementData(name, 'data', 'curve_id', (elCurveIDS) => {
-                    if (!elCurveIDS[wellID.toString()]) elCurveIDS[wellID.toString()] = curve_id;
-                    return elCurveIDS;
-                });
-
-                state.awGis.editPropertyElementData(name, 'data', 'wellID', (wellIDS) => {
-                    if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
-                    return wellIDS;
-                });
-
+                state.awGis.editPropertyElementData(name, 'data', [
+                    ['wellID', (wellIDS) => {
+                        if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
+                        return wellIDS;
+                    }],
+                    ['curve_id', (elCurveIDS) => {
+                        if (!elCurveIDS.hasOwnProperty(wellID.toString())) elCurveIDS[wellID.toString()] = curve_id;
+                        return elCurveIDS;
+                    }],
+                    ['depth_start', (_d_start) => {
+                        if (!_d_start.hasOwnProperty(wellID.toString())) _d_start[wellID.toString()] = depth_start;
+                        return _d_start;
+                    }],
+                    ['depth_end', (_d_end) => {
+                        if (!_d_end.hasOwnProperty(wellID.toString())) _d_end[wellID.toString()] = depth_end;
+                        return _d_end;
+                    }],
+                    ['step', (_step) => {
+                        if (!_step.hasOwnProperty(wellID.toString())) _step[wellID.toString()] = step;
+                        return _step;
+                    }]
+                ]);
             } else {
                 let curveColor = COLOR_PALETTE.curves, hex;
 
@@ -407,6 +424,9 @@ function mnemonicsSort(data, state) {
                     wellID: [wellID],
                     isShow: true,
                     curve_id: {[wellID]: curve_id},
+                    depth_start: {[wellID]: depth_start},
+                    depth_end: {[wellID]: depth_end},
+                    step: {[wellID]: step},
                 }, JSON.parse(JSON.stringify(CURVE_ELEMENT_OPTIONS)))
             }
 

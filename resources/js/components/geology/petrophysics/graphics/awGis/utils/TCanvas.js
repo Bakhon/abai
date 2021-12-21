@@ -28,8 +28,8 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    drawLithology(lithologyData, {options, options: {customParams}, wellID}) {
-        let ctx = this.#__context, y = 0, lastLithology = null, startPolygonPosition = 0;
+    drawLithology(lithologyData, {data, options, options: {customParams}, wellID}) {
+        let ctx = this.#__context, y = data.depth_start[wellID], lastLithology = options.startX[wellID], startPolygonPosition = data.depth_start[wellID], step = data.step[wellID];
         let coord = this.#tCoords;
         let colorPalette = options.colorPalette;
         for (const lithology of lithologyData) {
@@ -64,12 +64,12 @@ export default class TCanvas {
                 lastLithology = lithology
                 startPolygonPosition = y
             }
-            y++
+            y += step;
         }
     }
 
-    drawCurve(curve, {options, options: {customParams}, wellID}) {
-        let ctx = this.#__context, y = 0, lastY = 0, lastX = options.startX[wellID];
+    drawCurve(curve, {data, options, options: {customParams}, wellID}) {
+        let ctx = this.#__context, y = data.depth_start[wellID], lastY = data.depth_start[wellID], lastX = options.startX[wellID], wellStep = data.step[wellID];
         let coord = this.#tCoords, max, min;
 
         let minValue = min = customParams?.min?.use ? +customParams.min?.value ?? options.min[wellID] : options.min[wellID];
@@ -97,14 +97,17 @@ export default class TCanvas {
         }
 
         for (const c of curve) {
-            if (c !== null) {
-                ctx.lineTo(coord.percentPositionX(c, max, min), coord.positionY(y));
-                lastX = c
-            } else {
-                ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(y));
+            if(this.#tCoords.getOffsetY <= y){
+                if (c !== null) {
+                    ctx.lineTo(coord.percentPositionX(c, max, min), coord.positionY(y));
+                    lastX = c
+                } else {
+                    ctx.moveTo(coord.percentPositionX(lastX, max, min), coord.positionY(y));
+                }
             }
             lastY = y
-            y++
+            y+=wellStep
+            if((ctx.canvas.height + this.#tCoords.getOffsetY) <= y) break;
         }
 
         ctx.stroke();
