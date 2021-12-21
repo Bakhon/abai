@@ -72,6 +72,12 @@ return [
             'level' => 'debug',
         ],
 
+        'parse_omg_ngdu_temp_press_data' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/parse_omg_ngdu_temp_press_data.log'),
+            'level' => 'debug',
+        ],
+
         'parse_omg_ngdu_well_data:cron' => [
             'driver' => 'single',
             'path' => storage_path('logs/parse_omg_ngdu_well.log'),
