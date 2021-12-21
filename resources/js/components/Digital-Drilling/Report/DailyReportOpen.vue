@@ -195,7 +195,7 @@
                         }
                     }
                     else{
-                        this.axios.post('http://172.20.103.68:8630' + '/digital_drilling/daily_report/empty_report',
+                        this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
                             {
                                 "is_new_well": this.currentWell.is_new_well,
                                 "well": this.currentWell.well_id,
@@ -227,8 +227,7 @@
                         this.error = true
                     }else{
                         this.error = false
-                        // let date =  moment(this.dateOpen, 'YYYY-MM-DD').format('DD-MM-YYYY')
-                        this.axios.get('http://172.20.103.68:8630' + '/digital_drilling/daily_report/report/'+this.dateOpen).then((response) => {
+                        this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.dateOpen).then((response) => {
                             if (response) {
                                 this.report = response.data
                                 this.created = true

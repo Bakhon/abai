@@ -10,9 +10,11 @@ class DailyReportController extends Controller
     public function __construct()
     {
         $this->middleware('can:digitalDrilling view main')->only([
-//            'index',
-//            'raport',
-//            'catalog'
+            'index',
+            'raport',
+        ]);
+        $this->middleware('can:digitalDrilling view catalog')->only([
+            'catalog'
         ]);
     }
 
@@ -28,4 +30,5 @@ class DailyReportController extends Controller
     {
         return view('digital_drilling.daily_report.catalog');
     }
+
 }
