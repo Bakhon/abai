@@ -164,7 +164,17 @@
                                     console.log("No data");
                                 }
                             })
-                                .catch((error) => console.log(error))
+                                .catch((error) => {
+                                    if (error.response.data){
+                                        this.$bvToast.toast(error.response.data.error_message, {
+                                            title: "Отчет",
+                                            variant: 'danger',
+                                            solid: true,
+                                            toaster: "b-toaster-top-center",
+                                            autoHideDelay: 8000,
+                                        });
+                                    }
+                                })
                         }else{
                             this.error = true
                         }

@@ -35,6 +35,7 @@
                                 <select-add :options="drillingRig" name="Unit_Name"  :header="report.general_data_daily.rig"
                                             @addItem="addItemRig"
                                             @selectOption="selectOption"
+                                            :class="{error: validationError && report.general_data_daily.rig.name_ru == ''}"
                                 />
                             </td>
                             <td colspan="2">
@@ -55,15 +56,29 @@
                                 {{trans('digital_drilling.daily_raport.drilling_rig_type')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="" v-model="report.general_data_daily.rig_type">
+                                <select name="" id="" v-model="report.general_data_daily.rig_type" :class="{error: validationError && report.general_data_daily.rig_type.name_ru == ''}">
                                     <option :value="rig" v-for="rig in drillingRigTypes">{{rig.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.bit_load')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.wob" :class="{error: validationError && report.drilling_parameters_daily.wob == ''}">
+                            <td colspan="2" class="validation">
+                                <input type="number" v-model="report.drilling_parameters_daily.wob"
+                                       :class="{error: validationError && report.drilling_parameters_daily.wob == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.wob , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.wob , 0, 500, 'wob')"
+                                >
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="error">
+                                        <path id="Path 5" d="M9 6V9.75" stroke="#F94A5B" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path id="Oval" fill-rule="evenodd" clip-rule="evenodd" d="M9 12.75C9.41421 12.75 9.75 12.4142 9.75 12C9.75 11.5858 9.41421 11.25 9 11.25C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75Z" fill="#F94A5B"/>
+                                        <path id="Oval_2" fill-rule="evenodd" clip-rule="evenodd" d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85787 13.1421 1.5 9 1.5C4.85787 1.5 1.5 4.85787 1.5 9C1.5 13.1421 4.85787 16.5 9 16.5Z" stroke="#F94A5B" stroke-width="1.5"/>
+                                    </g>
+                                </svg>
+                                <div class="info">
+                                    <span>min 0 max 15000</span>
+                                </div>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
@@ -71,7 +86,9 @@
                             <td colspan="2">
                                 <select-add :options="drillingContractors" name="drillingContractors" :header="report.contractor_daily.contractor"
                                             @selectOption="selectOption"
-                                            @addItem="openCatalog('Буровой подрядчик', 'company', 'companyName')"/>
+                                            @addItem="openCatalog('Буровой подрядчик', 'company', 'companyName')"
+                                            :class="{error: validationError && report.contractor_daily.contractor.name_ru == ''}"
+                                />
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +102,11 @@
                                 {{trans('digital_drilling.daily_raport.rotation_speed')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.rotation_speed" :class="{error: validationError && report.drilling_parameters_daily.rotation_speed == ''}">
+                                <input type="text" v-model="report.drilling_parameters_daily.rotation_speed"
+                                       :class="{error: validationError && report.drilling_parameters_daily.rotation_speed == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.rotation_speed , 0, 1000)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.rotation_speed , 0, 1000, 'rotation_speed')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_start_date')}}
@@ -108,7 +129,11 @@
                                 {{trans('digital_drilling.daily_raport.rotation_torque')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.torque" :class="{error: validationError && report.drilling_parameters_daily.torque == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.torque"
+                                       :class="{error: validationError && report.drilling_parameters_daily.torque == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.torque , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.torque , 0, 500, 'torque')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.total_drilling_days')}}
@@ -146,13 +171,21 @@
                                 {{trans('digital_drilling.daily_raport.pump_capacity')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.pump_eff" :class="{error: validationError && report.drilling_parameters_daily.pump_eff == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.pump_eff"
+                                       :class="{error: validationError && report.drilling_parameters_daily.pump_eff == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.pump_eff , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.pump_eff , 0, 500, 'pump_eff')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.air_temperature')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.contractor_daily.air_temp" :class="{error: validationError && report.contractor_daily.air_temp == ''}">
+                                <input type="number" v-model="report.contractor_daily.air_temp"
+                                       :class="{error: validationError && report.contractor_daily.air_temp == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.contractor_daily.air_temp , -50, 50)}"
+                                       @input="checkMinMaxLength(report.contractor_daily.air_temp , -50, 50, 'air_temp')"
+                                >
                             </td>
                         </tr>
                         <tr>
@@ -166,7 +199,12 @@
                                 {{trans('digital_drilling.daily_raport.riser_pressure')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.p_standpipe" :class="{error: validationError && report.drilling_parameters_daily.p_standpipe == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.p_standpipe"
+                                       :class="{
+                                       error: validationError && report.drilling_parameters_daily.p_standpipe == '',
+                                       errorValidate: !checkMinMaxLengthVar(report.drilling_parameters_daily.p_standpipe, 0, 1000)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.p_standpipe, 0, 1000, 'p_standpipe')"
+                                >
                             </td>
                             <td colspan="2">
 
@@ -180,13 +218,21 @@
                                 {{trans('digital_drilling.daily_raport.slaughter_at')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.bhd_24" :class="{error: validationError && report.general_data_daily.bhd_24 == 0}">
+                                <input type="number" v-model="report.general_data_daily.bhd_24"
+                                       :class="{error: validationError && report.general_data_daily.bhd_24 == 0,
+                                        errorValidate:!checkMinMaxLengthVar(report.general_data_daily.bhd_24, report.general_data_daily.previous_bhd, 10000)}"
+                                        @input="checkMinMaxLength(report.general_data_daily.bhd_24, report.general_data_daily.previous_bhd, 10000, 'bhd_24')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.hook_weight')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh" :class="{error: validationError && report.drilling_parameters_daily.woh == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.woh"
+                                       :class="{error: validationError && report.drilling_parameters_daily.woh == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.woh , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.woh , 0, 500, 'woh')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_supervisor')}}
@@ -206,7 +252,11 @@
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_lifting')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh_pooh" :class="{error: validationError && report.drilling_parameters_daily.woh_pooh == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.woh_pooh"
+                                       :class="{error: validationError && report.drilling_parameters_daily.woh_pooh == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.woh_pooh , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.woh_pooh , 0, 500, 'woh_pooh')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_foreman')}}
@@ -226,7 +276,11 @@
                                 {{trans('digital_drilling.daily_raport.hook_weight_when_descending')}}
                             </td>
                             <td colspan="2">
-                                <input type="text" v-model="report.drilling_parameters_daily.woh_rih" :class="{error: validationError && report.drilling_parameters_daily.woh_rih == ''}">
+                                <input type="number" v-model="report.drilling_parameters_daily.woh_rih"
+                                       :class="{error: validationError && report.drilling_parameters_daily.woh_rih == '',
+                                        errorValidate:!checkMinMaxLengthVar(report.drilling_parameters_daily.woh_rih , 0, 500)}"
+                                       @input="checkMinMaxLength(report.drilling_parameters_daily.woh_rih , 0, 500, 'woh_rih')"
+                                >
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_fluid_engineer')}}
@@ -261,16 +315,36 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="wellConstr in report.well_constr_daily">
+                                <tr v-for="(wellConstr, i) in report.well_constr_daily">
                                     <td colspan="2" class="w-10">
                                         <select name="" id="" v-model="wellConstr.constr_type">
                                             <option :value="constructor" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" v-model="wellConstr.project_tvd"></td>
-                                    <td><input type="text" v-model="wellConstr.project_md"></td>
-                                    <td><input type="text" v-model="wellConstr.fact_tvd"></td>
-                                    <td><input type="text" v-model="wellConstr.fact_md"></td>
+                                    <td>
+                                        <input type="number" v-model="wellConstr.project_tvd"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(wellConstr.project_tvd , 0, 15000)}"
+                                               @input="checkMinMaxLength(wellConstr.project_tvd , 0, 15000, 'project_tvd'+i)"
+                                        >
+                                    </td>
+                                    <td>
+                                        <input type="number" v-model="wellConstr.project_md"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(wellConstr.project_md , 0, 15000)}"
+                                               @input="checkMinMaxLength(wellConstr.project_md , 0, 15000, 'project_md'+i)"
+                                        >
+                                    </td>
+                                    <td>
+                                        <input type="number" v-model="wellConstr.fact_tvd"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(wellConstr.fact_tvd , 0, 15000)}"
+                                               @input="checkMinMaxLength(wellConstr.fact_tvd , 0, 15000, 'fact_tvd'+i)"
+                                        >
+                                    </td>
+                                    <td>
+                                        <input type="number" v-model="wellConstr.fact_md"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(wellConstr.fact_md , 0, 15000)}"
+                                               @input="checkMinMaxLength(wellConstr.fact_md , 0, 15000, 'fact_md'+i)"
+                                        >
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -312,15 +386,30 @@
                                        <tbody>
                                        <tr>
                                            <td>{{trans('digital_drilling.daily_raport.arrived')}}</td>
-                                           <td><input type="text" v-model="report.shifts_daily.arrived"></td>
+                                           <td>
+                                               <input type="number" v-model="report.shifts_daily.arrived"
+                                                      :class="{errorValidate:!checkMinMaxLengthVar(report.shifts_daily.arrived , 0, 20)}"
+                                                      @input="checkMinMaxLength(report.shifts_daily.arrived , 0, 20, 'shifts_daily-arrived')"
+                                               >
+                                           </td>
                                        </tr>
                                        <tr>
                                            <td>{{trans('digital_drilling.daily_raport.deleted')}}</td>
-                                           <td><input type="text" v-model="report.shifts_daily.departed"></td>
+                                           <td>
+                                               <input type="number" v-model="report.shifts_daily.departed"
+                                                      :class="{errorValidate:!checkMinMaxLengthVar(report.shifts_daily.departed , 0, 20)}"
+                                                      @input="checkMinMaxLength(report.shifts_daily.departed , 0, 20, 'shifts_daily-departed')"
+                                               >
+                                           </td>
                                        </tr>
                                        <tr>
                                            <td>{{trans('digital_drilling.daily_raport.left')}}</td>
-                                           <td><input type="text" v-model="report.shifts_daily.remain"></td>
+                                           <td>
+                                               <input type="number" v-model="report.shifts_daily.remain"
+                                                      :class="{errorValidate:!checkMinMaxLengthVar(report.shifts_daily.remain , 0, 20)}"
+                                                      @input="checkMinMaxLength(report.shifts_daily.remain , 0, 20, 'shifts_daily-remain')"
+                                               >
+                                           </td>
                                        </tr>
                                        <tr v-for="i in 12">
                                            <td class="h-31"></td>
@@ -361,14 +450,22 @@
                                     </td>
                                     <td>{{report.prod_time_daily[i-1].previous}}</td>
                                     <td>
-                                        <input type="number"  v-model="report.prod_time_daily[i-1].daily">
+                                        <input type="number"  v-model="report.prod_time_daily[i-1].daily"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.prod_time_daily[i-1].daily , 0, 24)}"
+                                               @input="checkMinMaxLength(report.prod_time_daily[i-1].daily , 0, 24, 'prod_time_daily'+i)"
+                                        >
                                     </td>
                                     <td>{{sumValues(report.prod_time_daily[i-1].previous, report.prod_time_daily[i-1].daily)}}</td>
                                     <td class="w-20">
                                        {{report.unprod_time_daily[i-1].operations_type}}
                                     </td>
                                     <td>{{report.unprod_time_daily[i-1].previous}}</td>
-                                    <td><input type="number" v-model="report.unprod_time_daily[i-1].daily"></td>
+                                    <td>
+                                        <input type="number" v-model="report.unprod_time_daily[i-1].daily"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.unprod_time_daily[i-1].daily , 0, 24)}"
+                                               @input="checkMinMaxLength(report.unprod_time_daily[i-1].daily , 0, 24, 'unprod_time_daily'+i)"
+                                        >
+                                    </td>
                                     <td>{{sumValues(report.unprod_time_daily[i-1].previous, report.unprod_time_daily[i-1].daily)}}</td>
                                 </tr>
                                 <tr class="h-31">
@@ -678,10 +775,16 @@
                                         {{trans('digital_drilling.daily_raport.drilling_sm')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].drilling_from">
+                                        <input type="number" v-model="report.bit_info_daily[0].drilling_from"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.bit_info_daily[0].drilling_from , 0, 15000)}"
+                                               @input="checkMinMaxLength(report.bit_info_daily[0].drilling_from , 0, 15000, 'drilling_from0')"
+                                        >
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].drilling_from">
+                                        <input type="number" v-model="report.bit_info_daily[1].drilling_from"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.bit_info_daily[1].drilling_from , 0, 15000)}"
+                                               @input="checkMinMaxLength(report.bit_info_daily[1].drilling_from , 0, 15000, 'drilling_from1')"
+                                        >
                                     </td>
                                 </tr>
                                 <tr>
@@ -689,10 +792,16 @@
                                         {{trans('digital_drilling.daily_raport.to_m')}}
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[0].drilling_to">
+                                        <input type="number" v-model="report.bit_info_daily[0].drilling_to"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.bit_info_daily[0].drilling_to , 0, 15000)}"
+                                               @input="checkMinMaxLength(report.bit_info_daily[0].drilling_to , 0, 15000, 'drilling_to0')"
+                                        >
                                     </td>
                                     <td colspan="2">
-                                        <input type="text" v-model="report.bit_info_daily[1].drilling_to">
+                                        <input type="number" v-model="report.bit_info_daily[1].drilling_to"
+                                               :class="{errorValidate:!checkMinMaxLengthVar(report.bit_info_daily[1].drilling_to , 0, 15000)}"
+                                               @input="checkMinMaxLength(report.bit_info_daily[1].drilling_to , 0, 15000, 'drilling_to1')"
+                                        >
                                     </td>
                                 </tr>
                                 <tr>
@@ -2154,7 +2263,14 @@
                 this.report.material_cons_daily.splice(index, 1);
             },
             saveReport(){
-                if (this.checkRequiredValue() == true) {
+                let validate = true
+                for (let i=0; i< this.validationErrorMinMax.length; i++){
+                    if (this.validationErrorMinMax[i].check == false){
+                        validate = false
+                        break
+                    }
+                }
+                if (this.checkRequiredValue() == true && validate) {
                     this.validationError = false
                     if (this.isEdit){
                         this.axios.put(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.report.report_daily.id,
@@ -2196,10 +2312,21 @@
             checkRequiredValue(){
                 let check = true
                 for (let prop in this.report.general_data_daily) {
-                  if (this.report.general_data_daily[prop] == '' && prop!= 'previous_bhd') {
+                    if (prop == 'rig'){
+                        if (this.report.general_data_daily[prop].name_ru == ''){
+                            check =  false
+                            break
+                        }
+                    }else if(prop == 'rig_type'){
+                        if (this.report.general_data_daily[prop].name_ru == ''){
+                            check =  false
+                            break
+                        }
+                    }
+                    else if (this.report.general_data_daily[prop] == '' && prop!= 'previous_bhd') {
                       check =  false
                       break
-                  }
+                    }
                 }
                 if (check){
                     for (let prop in this.report.drilling_parameters_daily) {
@@ -2211,7 +2338,12 @@
                 }
                 if (check){
                     for (let prop in this.report.contractor_daily) {
-                        if (this.report.contractor_daily[prop] == '') {
+                        if (prop == 'contractor'){
+                            if (this.report.contractor_daily[prop].name_ru == ''){
+                                check =  false
+                                break
+                            }
+                        } else if (this.report.contractor_daily[prop] == '') {
                             check =  false
                             break
                         }
@@ -2228,20 +2360,22 @@
                     } else {
                         check = false
                     }
-                    for (let i=0; i<this.validationErrorMinMax.length; i++) {
-                        console.log(this.validationErrorMinMax[i].name)
-                        console.log(name)
-                        if(this.validationErrorMinMax[i].name == name){
-                            this.validationErrorMinMax[i].check = check
-                        }else{
-                            this.validationErrorMinMax.push({
-                                name: name,
-                                check: check
-                            })
-                        }
+                }
+                let isHas = false
+                for (let i=0; i<this.validationErrorMinMax.length; i++) {
+                    console.log(this.validationErrorMinMax[i].name)
+                    console.log(name)
+                    if(this.validationErrorMinMax[i].name == name){
+                        isHas = true
+                        this.validationErrorMinMax[i].check = check
                     }
                 }
-                console.log(name)
+                if (!isHas){
+                    this.validationErrorMinMax.push({
+                        name: name,
+                        check: check
+                    })
+                }
             },
             checkMinMaxLengthVar(value, min, max){
                 let check = true
@@ -3130,5 +3264,37 @@
     }
     .errorValidate{
         border: 1px solid red!important;
+    }
+    .validation{
+        position: relative;
+        padding-right: 25px;
+    }
+    .validation svg{
+        position: absolute;
+        top: 0;
+        right: 5px;
+        width: 15px;
+        height: 100%;
+        cursor: pointer;
+    }
+    .validation svg path:nth-child(1){
+        stroke: #ffffff;
+    }
+    .validation svg path:nth-child(2){
+        fill: blue;
+    }
+    .validation svg path:nth-child(3){
+        stroke: #ffffff;
+    }
+    .validation .info{
+        display: none;
+    }
+    .validation .errorValidate + .info{
+        display: block;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        width: auto;
+        height: auto;
     }
 </style>
