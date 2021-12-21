@@ -303,7 +303,7 @@
               <div class="heading">
                 <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
               </div>
-              <div v-if="wellUwi" class="sheare-icon">
+              <div v-if="wellUwi" class="sheare-icon" @click="ExportToExcel('xlsx')">
                 <svg
                   width="20"
                   height="20"
@@ -339,7 +339,7 @@
             </div>
             <div class="info-element">
 
-              <table v-if="wellUwi">
+              <table v-if="wellUwi" id="tbl_exporttable_to_xls">
                 <tr v-for="(item, index) in this.tableData">
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.name }}</td>
@@ -679,6 +679,13 @@ export default {
         this.isBothColumnFolded = false;
       }
     },
+    ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('tbl_exporttable_to_xls');
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('WellCard.' + (type || 'xlsx')));
+        },
     onSearch(search, loading) {
       if (search.length) {
         loading(true);
@@ -2567,6 +2574,10 @@ h4 {
   margin-top: auto;
   margin-bottom: auto;
   display: inline-flex;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .sheare-text {

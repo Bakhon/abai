@@ -22,8 +22,8 @@
         </div>
       </div>
 
-      <div class="customScroll d-flex flex-column"
-           style="overflow-y: scroll; height: 465px">
+      <div :style="`overflow-y: scroll; height: ${tableHeight}`"
+           class="customScroll d-flex flex-column">
         <div v-for="(item, index) in tableData"
              :key="index"
              :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
@@ -71,6 +71,10 @@ export default {
       required: true,
       type: Array,
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   computed: {
     reverseOilPrices() {
@@ -283,6 +287,10 @@ export default {
 
       return gtmsByOilPrice
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '615px' : '465px'
+    }
   },
 }
 </script>

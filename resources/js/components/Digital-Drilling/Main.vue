@@ -5,6 +5,10 @@
                 <div class="main__component-back">
                     <img src="/img/digital-drilling/back-icon.png" alt="">
                     <img src="/img/digital-drilling/reboot-icon.png" alt="">
+                    <div v-if="page.id==28" @click="importReport=true" class="importReportButton">
+                        Импорт
+                        <img src="/img/digital-drilling/excel.svg" alt="">
+                    </div>
                 </div>
                 <div class="main__component-filters">
                     <dropdown title="ДЗО" :options="dzo" :current="currentDZO" class="dropdown__area" @updateList="getField"/>
@@ -59,15 +63,17 @@
 
             </div>
         </div>
+        <impord-daily-raport v-if="importReport" @close="importReport=false" @saveReport="saveReport"/>
     </div>
 </template>
 
 <script>
     import {digitalDrillingActions, digitalDrillingState, globalloadingMutations} from '@store/helpers';
     import Dropdown from './components/dropdown'
+    import ImpordDailyRaport from './Report/ImportDailyRaport'
     export default {
         name: "Main",
-        components: {Dropdown},
+        components: {Dropdown, ImpordDailyRaport},
         props: ['page'],
         data(){
             return{
@@ -85,7 +91,8 @@
                 currentWellItem: {
                     name: ''
                 },
-                error: false
+                error: false,
+                importReport: false,
             }
         },
         mounted(){
@@ -106,6 +113,25 @@
             ...globalloadingMutations([
                 'SET_LOADING'
             ]),
+            saveReport(response){
+                this.$bvToast.toast("Файл успешно импортирован!!", {
+                    title: "Отчет",
+                    variant: "success",
+                    solid: true,
+                    toaster: "b-toaster-top-center",
+                    autoHideDelay: 8000,
+                });
+                this.importReport = false
+                if (response.Status){
+                    console.log(response)
+                    this.changeCurrentWellValue(response.item)
+                    this.query = response.item.well_num
+                    this.currentDZO.id = response.item.dzo_id
+                    this.currentDZO.name = response.item.dzo_name
+                    this.currentField.id = response.item.field_id
+                    this.currentField.name = response.item.field_name
+                }
+            },
             async filterField(query){
                 await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'?q='+query).then((response) => {
                     let data = response.data;
@@ -212,6 +238,25 @@
 </script>
 
 <style scoped>
+    .main__component-back{
+        display: flex;
+        align-items: center;
+    }
+    .importReportButton{
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
+        padding: 0 5px;
+    }
+    .importReportButton:hover{
+        border: 1px solid white;
+        background-color: #205aa3;
+    }
+    .importReportButton img{
+        height: 17px;
+        margin-left: 14px;
+    }
     .main__component *{
         color: #ffffff;
     }

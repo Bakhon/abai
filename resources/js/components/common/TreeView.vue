@@ -65,7 +65,28 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.left-section-inner-content {
+  .treeUl li:after {
+      left: 2px;
+  }
+  .treeUl li:before {
+      left: 2px;
+      width: 22px;
+      height: 15px;
+  }
+  .opened-arrow {
+    transform: rotate(0deg);
+  }
 
+  .closed-arrow {
+    transform: rotate(-90deg);
+  }
+}
+.wells-select-block .centered{
+    width: 14px;
+    height: 14px;
+    transform: translate(-50%, 0%);
+}
 .custom-checkbox {
   .container {
     padding: 0px;

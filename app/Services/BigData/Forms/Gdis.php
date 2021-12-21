@@ -156,9 +156,6 @@ class Gdis extends PlainForm
             $this->originalData = $dbQuery->first();
             $dbQuery->update($data);
 
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
-
             foreach ($gdisComplexValues as $metricId => $value) {
                 $gdisComplexValue = DB::connection('tbd')
                     ->table('prod.gdis_complex_value')
@@ -182,12 +179,16 @@ class Gdis extends PlainForm
         } else {
             $this->checkFormPermission('create');
 
+            $this->originalData = [];
             $id = $dbQuery->insertGetId($data);
 
             foreach ($gdisComplexValues as $metricId => $value) {
                 $this->insertComplexValue($id, $metricId, $value);
             }
         }
+
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $id;
 
         $this->submitInnerTable($id);
 

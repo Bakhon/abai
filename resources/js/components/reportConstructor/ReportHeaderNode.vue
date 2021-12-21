@@ -17,6 +17,7 @@
     <ul class="hierarchy" v-if="isOpen">
       <draggable
           :headerNode="headerNode.children"
+          :list="headerNode.children"
           ghost-class="ghost"
           @input="updateNode"
           :group="group"
@@ -186,13 +187,13 @@ export default {
     padding-left: 0;
 }
 .cmp-tree-container {
-    padding-left: 20px;
+    padding-left: 25px;
 }
 .cmp-node label {
       margin-bottom: 0;
       display: block;
       height: auto;
-      margin-right: 4px;
+      margin-right: 30px;
 }
 .cmp-drag-node {
   background-color: #768487;

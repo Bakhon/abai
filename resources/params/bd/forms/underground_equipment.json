@@ -7,7 +7,7 @@
       "form": "underground_equipment_installation"
     },
     {
-      "action": "create",
+      "action": "edit",
       "title": "disassembling",
       "form": "underground_equipment_disassembling"
     },
@@ -28,6 +28,12 @@
     }
   ],
   "table": "prod.well_equip",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "",

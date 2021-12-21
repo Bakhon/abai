@@ -36,6 +36,11 @@ class WellDocument extends PlainForm
                     $rows[$row->id]->file[] = $file;
                 } else {
                     $row->file = [$file];
+                    try {
+                        $date = Carbon::parse($row->name_ru);
+                    } catch (\Exception $e) {
+                    }
+                    $row->name_ru = !empty($date) ? $date->format('d.m.Y') : $row->name_ru;
                     $rows[$row->id] = $row;
                 }
             }
@@ -109,8 +114,6 @@ class WellDocument extends PlainForm
             $this->originalData = $dbQuery->first();
             $dbQuery->update($data);
 
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
         } else {
             if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
                 throw new \Exception("You don't have permissions");
@@ -126,11 +129,12 @@ class WellDocument extends PlainForm
                     ]
                 );
 
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
-
+            $this->originalData = [];
             $this->updateFiles($id, $files);
         }
+
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $id;
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }

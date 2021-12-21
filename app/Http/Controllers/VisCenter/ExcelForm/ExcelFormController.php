@@ -28,6 +28,8 @@ use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseItemIdsType;
 use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
 use \jamesiarmes\PhpEws\Type\ItemIdType;
 use \jamesiarmes\PhpEws\Type\TargetFolderIdType;
+use App\Exports\VisualCenterDailyReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelFormController extends Controller
 {
@@ -545,5 +547,16 @@ class ExcelFormController extends Controller
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
             ->sum($field);
+    }
+
+    public function dailyReportExcelExport(Request $request)
+    {
+        $params = array(
+            'date' => $request->get('date')
+        );
+        $dzoSummary = app()->call('App\Http\Controllers\VisCenter\DailyReport@getDailyProduction',$params);
+
+        $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
+        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary']), $fileName . '.xlsx');
     }
 }

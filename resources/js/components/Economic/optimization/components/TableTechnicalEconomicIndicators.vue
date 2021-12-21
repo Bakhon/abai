@@ -57,8 +57,8 @@
         </div>
       </div>
 
-      <div class="customScroll"
-           style="overflow-y: scroll; overflow-x: hidden; height: 405px">
+      <div :style="`overflow-y: scroll; overflow-x: hidden; height: ${tableHeight}`"
+           class="customScroll">
         <div v-for="(item, itemIndex) in tableData"
              :key="itemIndex"
              :style="`background: ${item.color}`"
@@ -129,6 +129,10 @@ export default {
       required: true,
       type: Array,
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   methods: {
     costPriceValue(index = null, scenario = null) {
@@ -459,6 +463,10 @@ export default {
               +variant.percent_stop_cat_1 === 0 &&
               +variant.percent_stop_cat_2 === 0
           )
+    },
+
+    tableHeight() {
+      return this.isFullscreen ? '555px' : '405px'
     }
   },
 }

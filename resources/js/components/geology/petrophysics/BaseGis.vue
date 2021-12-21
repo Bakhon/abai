@@ -133,7 +133,6 @@ import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
 import graph2 from "./graphics/graph2";
-import curve from "../demo_json/curve.json";
 import AwGis from "./graphics/awGis/AwGis";
 
 export default {
@@ -156,7 +155,6 @@ export default {
         {
           id: "canvasWrapper",
           is: AwGis,
-          graphData: curve,
         },
         {
           id: 2,
