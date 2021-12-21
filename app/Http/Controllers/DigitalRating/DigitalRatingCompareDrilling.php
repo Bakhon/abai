@@ -42,6 +42,7 @@ class DigitalRatingCompareDrilling extends Controller
            
          }
       }
+      dd($data);
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
    }
@@ -64,12 +65,24 @@ class DigitalRatingCompareDrilling extends Controller
          ->where('digital_rating.outer_owc_omg_json.owc_id', $owc) 
          ->get();
       }
+      foreach ($data as $item) {
+         $coordinates = substr( $item->coordinates, 1, -1);
+         preg_match_all('#\[(.*?)\]#', $coordinates, $array);
+         $item->coordinates= $array[0];
+        
+      }
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
-   
    }
 
-
+   public function get_horizon(Request $request):JsonResponse 
+   {  
+      $data =   DB::connection('tbd')->table('digital_rating.horizon')
+      ->get();
+      dd($data);
+      $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+      return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
+   }
    public function get_actual_project_points(Request $request):JsonResponse 
    {  
      

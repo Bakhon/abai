@@ -27,5 +27,6 @@ Route::group(
             Route::get('/api/get_compaer_data', 'DigitalRating\DigitalRatingCompareDrilling@get_compaer_data')->name('get_compaer_data');
             Route::get('/api/get_actual_project_points', 'DigitalRating\DigitalRatingCompareDrilling@get_actual_project_points')->name('get_actual_project_points');
             Route::get('/api/get_maps', 'DigitalRating\DigitalRatingCompareDrilling@get_maps')->name('get_maps');
+            Route::get('/api/get_horizon', 'DigitalRating\DigitalRatingCompareDrilling@get_horizon')->name('get_horizon');
         });
     });
