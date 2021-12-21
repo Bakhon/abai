@@ -418,6 +418,9 @@ export default {
             this.isChemistryButtonVisible = true;
             this.$modal.show('additionalParamsReminder');
         }
+        if (moment().date() === this.yearlyUpdateLimit.day) {
+            this.$modal.show('yearlyReasonsReminder');
+        }
         this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
         this.fillPlanColumns();
         this.fillPlanRows();
