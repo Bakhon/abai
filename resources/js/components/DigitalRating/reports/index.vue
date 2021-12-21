@@ -20,12 +20,14 @@
         </thead>
         <tbody v-if="reports && reports.length">
           <tr
-            class="cursor-pointer"
             v-for="(item, index) in reports"
             :key="index"
-            @click="onTableClick(item)"
           >
-            <td v-for="(col, colIdx) in cols" :key="colIdx">
+            <td
+              v-for="(col, colIdx) in cols"
+              :key="colIdx"
+              :class="col.name === 'sector' ? 'cursor-pointer' : ''"
+              @click="onTableClick(item, col)">
               <span>{{ item[col.name] }}</span>
             </td>
           </tr>
@@ -140,7 +142,8 @@ export default {
       }
     },
 
-    onTableClick(item) {
+    onTableClick(item, col) {
+      if (col.name !== 'sector') return;
       const {sector, horizon} = item;
       this.SET_SECTOR(sector);
       this.SET_HORIZON(horizon);
