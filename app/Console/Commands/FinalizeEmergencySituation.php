@@ -65,6 +65,7 @@ class FinalizeEmergencySituation extends Command
             ->select('created_at')
             ->where('dzo_name',$situation->description)
             ->whereDate('date',Carbon::parse($situation->date)->subDays(1))
+            ->whereNull('is_corrected')
             ->first();
 
         if (!is_null($dzoRecord)) {
