@@ -58,13 +58,13 @@
                 "code": "cem_volume",
                 "type": "numeric",
                 "title": "poured_cement_volume",
-                "validation": "numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "cem_height",
                 "type": "numeric",
                 "title": "cement_lifting_height",
-                "validation": "numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "landing_date",

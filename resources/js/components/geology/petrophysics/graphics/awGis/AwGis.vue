@@ -1,5 +1,6 @@
 <template>
   <div class="aw-gis" ref="mainContainer" :style="{ height: `${settings.heightContainer}px` }">
+    <div id="dpi"></div>
     <div class="block-wrapper d-flex" ref="blockWrapper">
       <AwGisBlock v-for="(well, key) in getWellsBlock" :style="key===0&&{marginLeft: `${stratigraphy.length?settings.offsetColumnsLeft:0}px`}" :ref="`block_${key}`" :alt="`block_${key}`" v-bind="settings"
                   :key="key" :block-name="well.name" :block-id="well.name" :groups="getGroups" />
@@ -108,6 +109,7 @@ export default {
         this.$refs.infoSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
         this.$refs.infoSvg.style.top = `${headerHeight}px`;
       }
+
       this.tHorizon.wells = widthBlock;
       this.tHorizon.calcWells();
       this.tHorizon.updateMaps();
@@ -135,6 +137,13 @@ export default {
     position: relative;
     overflow-x: auto;
     overflow-y: hidden;
+  }
+  #dpi {
+    height: 1in;
+    left: -100%;
+    position: absolute;
+    top: -100%;
+    width: 1in;
   }
 }
 </style>

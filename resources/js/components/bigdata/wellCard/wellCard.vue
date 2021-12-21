@@ -121,15 +121,23 @@
                 </v-select>
               </form>
               <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
-                <div class="p-1 ml-2 d-flex align-items-center">
+                <div class="p-1 ml-2 d-flex align-items-center" 
+                  @mouseover="isOpen = true" 
+                  @mouseleave="isOpen = false"
+                >
                   <img class="pr-1" src="/img/icons/help.svg" alt="">
-                  <a class="text-white cursor-pointer">Легенда</a>
+                  <a class="text-white cursor-pointer" >Легенда</a>
                 </div>
                 <div class="p-1 ml-2 d-flex align-items-center">
                   <img class="pr-1" src="/img/icons/chart.svg" alt="">
                   <a class="text-white cursor-pointer"
                      @click="$refs.childForm.switchChartVisibility()">Показать график
                   </a>
+                </div>
+                <div class="modal-show" v-show="isOpen === true" >
+                      <div>
+                          <img class="" src="/img/bd/image1.png" alt="">
+                      </div>
                 </div>
                 <div
                         v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
@@ -426,6 +434,7 @@ export default {
   },
   data() {
     return {
+      isOpen: false,
       well_all_data: null,
       well_type_category: null,
       well_passport: [],
@@ -1631,6 +1640,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.modal-show{
+  z-index:1000;
+  position:absolute;
+  top:100%;
+}
 $leftColumnWidth: 300px;
 $leftColumnFoldedWidth: 50px;
 $rightColumnWidth: 300px;

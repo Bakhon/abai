@@ -2,24 +2,29 @@
 
 namespace App\Imports\Economic\Technical;
 
+use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class TechnicalWellForecastImport implements
     ToModel,
     WithBatchInserts,
     WithChunkReading,
+    WithEvents,
     ShouldQueue
 {
-    use Importable;
+    use Importable, RegistersEventListeners;
 
     public $timeout = 6000;
 
@@ -132,5 +137,17 @@ class TechnicalWellForecastImport implements
     public function chunkSize(): int
     {
         return self::CHUNK;
+    }
+
+    public static function afterImport(AfterImport $event)
+    {
+        EconomicDataLog::query()
+            ->where([
+                'id' => $event->getConcernable()->logId,
+                'is_processed' => false,
+            ])
+            ->update([
+                'is_processed' => true
+            ]);
     }
 }

@@ -36,8 +36,11 @@ class WellDocument extends PlainForm
                     $rows[$row->id]->file[] = $file;
                 } else {
                     $row->file = [$file];
-                    $date = Carbon::parse($row->name_ru);
-                    $row->name_ru = $date ? $date->format('d.m.Y') : $row->name_ru;
+                    try {
+                        $date = Carbon::parse($row->name_ru);
+                    } catch (\Exception $e) {
+                    }
+                    $row->name_ru = !empty($date) ? $date->format('d.m.Y') : $row->name_ru;
                     $rows[$row->id] = $row;
                 }
             }
