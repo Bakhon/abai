@@ -83,7 +83,8 @@ const geologyGis = {
         WELLS_MNEMONICS: [],
         WELLS_MNEMONICS_FOR_TREE: [],
         CURVES_OF_SELECTED_WELLS: {},
-        WELLS_HORIZONS: {}
+        WELLS_HORIZONS: {},
+        WELLS_HORIZONS_ELEMENTS: []
     },
     getters: {
         [GET_WELLS_OPTIONS](state) {
@@ -257,6 +258,7 @@ const geologyGis = {
                 }
             }
             state.WELLS_HORIZONS = horizons;
+            state.WELLS_HORIZONS_ELEMENTS = state.tHorizon.elements;
         },
 
         [SET_GIS_DATA](state) {

@@ -79,9 +79,7 @@ export default class THorizon {
             this.#wellsBlockData.set(wellData.props.wellName, wellData)
         }
     }
-    calcStartPoint(elementData){
 
-    }
     getElementPath(elementName) {
         let d = [], moveTo = false;
         for (let wellName of this.#maps.keys()) {
