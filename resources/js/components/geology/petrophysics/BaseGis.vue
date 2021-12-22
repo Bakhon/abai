@@ -243,9 +243,18 @@ export default {
         selectedGisCurves: awGisSelectedCurves,
         gisWells: awGisSelectedWells
       } = this.$store.state.geologyGis;
-
+      // console.log(awGisData)
       let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
-        let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
+        let findElement = awGisData.find(({data}) => {
+
+          console.log(element === data.name && awGisSelectedWells.find((w) => {
+            return data.wellID.includes(w.name)
+          }))
+
+          return element === data.name && awGisSelectedWells.find((w) => {
+            return data.wellID.includes(w.name)
+          })
+        });
         if (findElement && findElement.data) {
           let curves = Object.values(findElement.data.curve_id);
           let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));

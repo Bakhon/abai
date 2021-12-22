@@ -1,31 +1,31 @@
 <template>
   <div>
-    <Switcher @click="switcher" :active.sync="postData.switcherActive" :items="[
+    <Switcher @click="switcher" :active.sync="postData.method" :items="[
         {label: 'DTW'},
         {label: 'PCA'},
     ]" class="switcher mb-2" />
 
-    <dropdown block class="w-100 mb-2" @change="postData.multipleSelect = []"
-              :selected-value.sync="postData.referenceWell" button-text="Опорная скважина" :options="getWellsList" />
+    <dropdown block class="w-100 mb-2" @change="postData.correlated_wells = []"
+              :selected-value.sync="postData.reference_well" button-text="Опорная скважина" :options="getWellsList" />
 
-    <dropdown block class="w-100 mb-2" :selected-value.sync="postData.stratigraphy" button-text="Выбор отбивок"
+    <dropdown block class="w-100 mb-2" :selected-value.sync="postData.horizons" button-text="Выбор отбивок"
               :options="getHorizon" />
 
-    <dropdown multiple :selected-value.sync="postData.multipleSelect" block class="w-100 mb-2"
+    <dropdown multiple :selected-value.sync="postData.correlated_wells" block class="w-100 mb-2"
               button-text="Корреляционные скважины"
-              :options="getWellsList.filter((item)=>(item.value !== postData.referenceWell))" />
+              :options="getWellsList.filter((item)=>(item.value !== postData.reference_well))" />
 
     <ToolBlock title="Выбор кривых">
       <div class="p-2">
         <div class="buttons-grid">
           <Button @click="selectCurve('GR')" :color="postData.curves.GR?'accent-400':'accent'" align="center">GR
           </Button>
-          <Button :disabled="postData.switcherActive === 'PCA'" @click="selectCurve('NPHI')"
+          <Button :disabled="postData.method === 'PCA'" @click="selectCurve('NPHI')"
                   :color="postData.curves.NPHI?'accent-400':'accent'" align="center">NPHI
           </Button>
           <Button @click="selectCurve('SP')" :color="postData.curves.SP?'accent-400':'accent'" align="center">SP
           </Button>
-          <Button :disabled="postData.switcherActive === 'PCA'" @click="selectCurve('RHOB')"
+          <Button :disabled="postData.method === 'PCA'" @click="selectCurve('RHOB')"
                   :color="postData.curves.RHOB?'accent-400':'accent'" align="center">RHOB
           </Button>
         </div>
@@ -34,16 +34,16 @@
 
     <ToolBlock class="mb-2">
       <div class="p-2 grid__inputs">
-        <AwInput v-model="postData.searchInterval" min="29" :disabled="postData.switcherActive === 'DTW'" type="number"
+        <AwInput v-model="postData.method_params.pca_search_interval" min="30" :disabled="postData.method === 'DTW'" type="number"
                  class="curve-inputs mb-2" label-direction="row" label="Интервал поиска" />
-        <AwInput v-model="postData.searchBox" min="30" :disabled="postData.switcherActive === 'DTW'" type="number" class="curve-inputs"
+        <AwInput v-model="postData.method_params.pca_search_window_size" min="29" :disabled="postData.method === 'DTW'" type="number" class="curve-inputs"
                  label-direction="row" label="Окно поиска" />
       </div>
     </ToolBlock>
 
-    <Button :disabled="validationPostData" class="mb-2 w-100" color="primary" align="center">Старт</Button>
+    <Button @click="post" :disabled="validationPostData" class="mb-2 w-100" color="primary" align="center">Старт</Button>
 
-    <dropdown multiple :selected-value.sync="postData.multipleSelect" block class="w-100 mb-2" button-text="Результаты"
+    <dropdown multiple :selected-value.sync="postData.correlated_wells" block class="w-100 mb-2" button-text="Результаты"
               :options="[
         {label: 'Option 0'},
         {label: 'Option 1'},
@@ -65,6 +65,7 @@ import Switcher from "../../components/switcher/Switcher";
 import ToolBlock from "../../components/toolBlock/ToolBlock";
 import dropdown from "../../components/dropdowns/dropdown";
 import AwInput from "../../components/form/AwInput";
+import {Fetch_Autocorrelation} from "../../api/autocorrelation.api";
 
 export default {
   name: "SecondComponent",
@@ -78,12 +79,14 @@ export default {
   data() {
     return {
       postData: {
-        switcherActive: "DTW",
-        multipleSelect: [],
-        referenceWell: null,
-        stratigraphy: null,
-        searchInterval: 29,
-        searchBox: 30,
+        method: "DTW",
+        correlated_wells: [],
+        reference_well: null,
+        horizons: null,
+        method_params:{
+          pca_search_window_size: 29,
+          pca_search_interval: 30
+        },
         curves: {
           GR: false,
           NPHI: false,
@@ -96,12 +99,13 @@ export default {
   computed: {
     validationPostData() {
       return [
-        (this.postData.switcherActive === "DTW" || this.postData.switcherActive === "PCA"),
-        this.postData.multipleSelect.length,
-        this.postData.referenceWell !== null,
+        (this.postData.method === "DTW" || this.postData.method === "PCA"),
+        this.postData.correlated_wells.length,
+        this.postData.reference_well !== null,
+        this.postData.horizons !== null&&this.postData.horizons.length,
         Object.values(this.postData.curves).some((c) => c),
-          this.postData.searchBox>=30,
-          this.postData.searchInterval>=29
+          this.postData.method_params.pca_search_window_size>=29,
+          this.postData.method_params.pca_search_interval>=30
       ].some((el) => !el);
     },
     getHorizon() {
@@ -116,7 +120,7 @@ export default {
     }
   },
   mounted() {
-    this.switcher(this.postData.switcherActive);
+    this.switcher(this.postData.method);
   },
   methods: {
     resetCurves() {
@@ -126,13 +130,11 @@ export default {
       this.postData.curves.SP = false;
     },
     switcher(val) {
-
       if (val === "DTW") {
         this.postData.curves.GR = false;
         this.postData.curves.SP = false;
         return;
       }
-
       if (val === "PCA") {
         this.postData.curves.NPHI = false;
         this.postData.curves.RHOB = false;
@@ -142,12 +144,25 @@ export default {
     },
     selectCurve(name) {
       this.resetCurves();
-      if (this.switcherActive === "PCA") {
+      if (this.postData.method === "PCA") {
         this.postData.curves.GR = true;
         this.postData.curves.SP = true;
         return;
       }
       this.postData.curves[name] = !this.postData.curves[name];
+    },
+    async post(){
+      let data = JSON.parse(JSON.stringify(this.postData));
+
+      data.mnemonics = Object.entries(data.curves).reduce((acc, [name, bool])=>{
+        if(bool) acc.push(name);
+        return acc
+      }, []).join('_');
+
+      data.horizons = [data.horizons];
+      data.correlated_wells = data.correlated_wells.map(({value})=>value);
+      console.log(data);
+      console.log(await Fetch_Autocorrelation(data));
     }
   }
 }
