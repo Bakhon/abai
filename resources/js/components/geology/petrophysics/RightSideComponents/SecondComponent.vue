@@ -18,15 +18,15 @@
     <ToolBlock title="Выбор кривых">
       <div class="p-2">
         <div class="buttons-grid">
-          <Button @click="selectCurve('GR')" :color="postData.curves.GR?'accent-400':'accent'" align="center">GR
+          <Button @click="selectCurve('GR')" :color="postData.curves.GR?'primary':'accent'" align="center">GR
           </Button>
           <Button :disabled="postData.method === 'PCA'" @click="selectCurve('NPHI')"
-                  :color="postData.curves.NPHI?'accent-400':'accent'" align="center">NPHI
+                  :color="postData.curves.NPHI?'primary':'accent'" align="center">NPHI
           </Button>
-          <Button @click="selectCurve('SP')" :color="postData.curves.SP?'accent-400':'accent'" align="center">SP
+          <Button @click="selectCurve('SP')" :color="postData.curves.SP?'primary':'accent'" align="center">SP
           </Button>
           <Button :disabled="postData.method === 'PCA'" @click="selectCurve('RHOB')"
-                  :color="postData.curves.RHOB?'accent-400':'accent'" align="center">RHOB
+                  :color="postData.curves.RHOB?'primary':'accent'" align="center">RHOB
           </Button>
         </div>
       </div>
