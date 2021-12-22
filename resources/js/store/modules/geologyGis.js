@@ -83,7 +83,8 @@ const geologyGis = {
         WELLS_MNEMONICS: [],
         WELLS_MNEMONICS_FOR_TREE: [],
         CURVES_OF_SELECTED_WELLS: {},
-        WELLS_HORIZONS: {}
+        WELLS_HORIZONS: {},
+        WELLS_HORIZONS_ELEMENTS: []
     },
     getters: {
         [GET_WELLS_OPTIONS](state) {
@@ -257,6 +258,7 @@ const geologyGis = {
                 }
             }
             state.WELLS_HORIZONS = horizons;
+            state.WELLS_HORIZONS_ELEMENTS = state.tHorizon.elements;
         },
 
         [SET_GIS_DATA](state) {
@@ -273,7 +275,16 @@ const geologyGis = {
             for (const curveName of state.selectedGisCurves) {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
-                    let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT: {}, name: {},colorPalette:{}};
+                    let curveOptions = {
+                        min: {},
+                        max: {},
+                        sum: {},
+                        startX: {},
+                        isLithology: {},
+                        isCSAT: {},
+                        name: {},
+                        colorPalette: {}
+                    };
                     let isLithology = curveName.toLowerCase().trim() === "litho";
                     let isFluid = curveName.toLowerCase().trim() === "fluid";
                     state.awGis.editElementData(curveName, {
@@ -358,7 +369,13 @@ function mnemonicsSort(data, state) {
             wellID = datum.well;
             mnemonicsSort.apply(this, [datum.mnemonics, state]);
         } else {
-            let {name, curve_id} = datum;
+            let {
+                name,
+                curve_id,
+                depth_start,
+                depth_end,
+                step
+            } = datum;
             let groupId = uuidv4();
 
             if (!groupsIds.has(name)) {
@@ -374,16 +391,28 @@ function mnemonicsSort(data, state) {
             }
 
             if (this.hasElement(name)) {
-                state.awGis.editPropertyElementData(name, 'data', 'curve_id', (elCurveIDS) => {
-                    if (!elCurveIDS[wellID.toString()]) elCurveIDS[wellID.toString()] = curve_id;
-                    return elCurveIDS;
-                });
-
-                state.awGis.editPropertyElementData(name, 'data', 'wellID', (wellIDS) => {
-                    if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
-                    return wellIDS;
-                });
-
+                state.awGis.editPropertyElementData(name, 'data', [
+                    ['wellID', (wellIDS) => {
+                        if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
+                        return wellIDS;
+                    }],
+                    ['curve_id', (elCurveIDS) => {
+                        if (!elCurveIDS.hasOwnProperty(wellID.toString())) elCurveIDS[wellID.toString()] = curve_id;
+                        return elCurveIDS;
+                    }],
+                    ['depth_start', (d_start) => {
+                        if (!d_start.hasOwnProperty(wellID.toString())) d_start[wellID.toString()] = depth_start;
+                        return d_start;
+                    }],
+                    ['depth_end', (d_end) => {
+                        if (!d_end.hasOwnProperty(wellID.toString())) d_end[wellID.toString()] = depth_end;
+                        return d_end;
+                    }],
+                    ['step', (d_step) => {
+                        if (!d_step.hasOwnProperty(wellID.toString())) d_step[wellID.toString()] = step;
+                        return d_step;
+                    }]
+                ]);
             } else {
                 let curveColor = COLOR_PALETTE.curves, hex;
 
@@ -407,6 +436,9 @@ function mnemonicsSort(data, state) {
                     wellID: [wellID],
                     isShow: true,
                     curve_id: {[wellID]: curve_id},
+                    depth_start: {[wellID]: depth_start},
+                    depth_end: {[wellID]: depth_end},
+                    step: {[wellID]: step},
                 }, JSON.parse(JSON.stringify(CURVE_ELEMENT_OPTIONS)))
             }
 

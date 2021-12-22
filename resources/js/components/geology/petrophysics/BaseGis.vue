@@ -24,7 +24,8 @@
       </div>
     </div>
     <div class="main_graph mb-2">
-      <component :stratigraphy="getSelectedStratigraphy" v-bind="getGraphComponents[0]" :is="getGraphComponents[0].is" />
+      <component :stratigraphy="getSelectedStratigraphy" v-bind="getGraphComponents[0]"
+                 :is="getGraphComponents[0].is" />
     </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
@@ -99,7 +100,8 @@
       <ListOfWells />
     </AwModal>
 
-    <AwModal @save="saveStratigraphy" @cancel="cancelStratigraphy" is-confirm position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
+    <AwModal @save="saveStratigraphy" @cancel="cancelStratigraphy" is-confirm position="top" size="lg"
+             title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
       <AwTree class="p-2" :selected.sync="getSelectedStratigraphy" :items="getStratigraphy" />
     </AwModal>
 
@@ -174,11 +176,11 @@ export default {
     };
   },
   computed: {
-    getSelectedStratigraphy:{
-      get(){
+    getSelectedStratigraphy: {
+      get() {
         return this.chooseStratModalTree;
       },
-      set(val){
+      set(val) {
         this.chooseStratModalTree = val;
       }
     },
@@ -188,7 +190,7 @@ export default {
         value: 1,
         iconType: "welltops",
         isOpen: true,
-        children: this.$store.getters[GET_TREE_STRATIGRAPHY]||[]
+        children: this.$store.getters[GET_TREE_STRATIGRAPHY] || []
       };
     },
     getGraphComponents() {
@@ -202,8 +204,8 @@ export default {
       this.drawStratigraphy()
     },
 
-    isShowChooseStratModal(val){
-      if(val) {
+    isShowChooseStratModal(val) {
+      if (val) {
         this.$store.state.geologyGis.tHorizon.clearSvg();
         this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
       }
@@ -223,16 +225,16 @@ export default {
   },
 
   methods: {
-    saveStratigraphy(){
+    saveStratigraphy() {
       this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
       this.drawStratigraphy()
     },
 
-    cancelStratigraphy(){
+    cancelStratigraphy() {
       this.chooseStratModalTree = [...this.chooseStratModalTreeOld];
       this.drawStratigraphy();
     },
-    drawStratigraphy(){
+    drawStratigraphy() {
       this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.chooseStratModalTree]);
     },
     async saveTableSettings() {
@@ -243,9 +245,8 @@ export default {
         selectedGisCurves: awGisSelectedCurves,
         gisWells: awGisSelectedWells
       } = this.$store.state.geologyGis;
-
       let selectedCurves = awGisSelectedCurves.reduce((acc, element) => {
-        let findElement = awGisData.find(({data}) => (element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name))));
+        let findElement = awGisData.find(({data}) => element === data.name && awGisSelectedWells.find((w) => data.wellID.includes(w.name)));
         if (findElement && findElement.data) {
           let curves = Object.values(findElement.data.curve_id);
           let hasCurve = curves.every((item) => Object.keys(loadedCurves).includes(item.toString()));

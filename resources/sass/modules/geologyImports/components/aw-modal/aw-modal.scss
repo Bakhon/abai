@@ -30,7 +30,7 @@
   &__background{
     @extend .___aw-modal__transition;
     @extend .customScroll;
-    background: rgba(var(--a-black), .5);
+    background: rgba(var(--a-black-rgb), .5);
     padding-bottom: 80px;
   }
   &__header{
@@ -68,6 +68,9 @@
   }
   &.xl{
     max-width: 1600px;
+  }
+  &.s500{
+    max-width: 500px;
   }
 }
 
