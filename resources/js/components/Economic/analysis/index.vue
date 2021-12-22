@@ -43,10 +43,6 @@
             :form="form"
             class="ml-2"/>
 
-        <select-permanent-stop-coefficient
-            :form="form"
-            class="ml-2"/>
-
         <select-technical-well-forecast-kit
             :form="form"
             :fetch-params="{is_processed: 1}"
@@ -97,7 +93,6 @@ import {formatValueMixin} from "../mixins/formatMixin";
 import {calcPercentMixin} from "../mixins/percentMixin";
 
 import SelectOrganization from "../components/SelectOrganization";
-import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
 import SelectTechnicalWellForecastKit from "./components/SelectTechnicalWellForecastKit";
 import CalculatedHeader from "./components/CalculatedHeader";
 import RemoteHeader from "../optimization/components/RemoteHeader";
@@ -111,7 +106,6 @@ export default {
   name: "economic-analysis",
   components: {
     SelectOrganization,
-    SelectPermanentStopCoefficient,
     SelectTechnicalWellForecastKit,
     CalculatedHeader,
     RemoteHeader,
@@ -127,7 +121,7 @@ export default {
     form: {
       org_id: null,
       kit_ids: [],
-      permanent_stop_coefficient: 0.7,
+      permanent_stop_coefficient: null,
     },
     wellsSumByStatus: null,
     wellsSumByLossStatus: null,

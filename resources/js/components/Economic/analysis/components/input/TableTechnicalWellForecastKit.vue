@@ -3,11 +3,6 @@
       ref="table"
       :params="params"
       class="height-fit-content height-unset">
-    <div slot="column-6" slot-scope="{ props }" class="mx-auto">
-      {{ props.cellData.calculated_variants }} /
-      {{ props.cellData.total_variants }}
-    </div>
-
     <div slot="column-7" slot-scope="{ props }" class="mx-auto">
       <delete-button @click.native="deleteKit(props.rowData[0].data)"/>
     </div>
@@ -40,22 +35,22 @@ export default {
 
       const {data} = await this.axios.get(`${this.url}/get-data`)
 
-      data.forEach(item => {
+      data.forEach(kit => {
         let row = []
 
         this.headers.forEach(header => {
           if (header.isUser) {
-            return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
+            return row.push(kit[header.key] ? `${kit.created_at} ${kit[header.key].name}` : '')
           }
 
           if (header.isRelationName) {
-            return row.push(item[header.key] ? item[header.key].name : '')
+            return row.push(kit[header.key] ? kit[header.key].name : '')
           }
 
           if (header.isParams) {
             let value = ''
 
-            item[header.key].forEach((param, paramIndex) => {
+            kit[header.key].forEach((param, paramIndex) => {
               value += paramIndex ? `, ${param.value}` : param.value
             })
 
@@ -63,10 +58,10 @@ export default {
           }
 
           if (header.isProgress) {
-            return row.push(item)
+            return row.push(`${kit.calculated_variants}/${kit.total_variants}`)
           }
 
-          row.push(item[header.key])
+          row.push(kit[header.key])
         })
 
         this.data.push(row)
