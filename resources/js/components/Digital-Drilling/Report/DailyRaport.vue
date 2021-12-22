@@ -1778,6 +1778,7 @@
     </div>
     <previous-daily-raport v-else :report="previousReport"
                            :user="user"
+                           :show="show"
                            @closePreviousReport="previous=false"
                            @changePreviousReport="changePreviousReport"
                            @editReport = "editReport"
@@ -1799,7 +1800,7 @@
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-        props: ['report', 'user', 'isEdit'],
+        props: ['report', 'user', 'isEdit', 'show'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1944,33 +1945,42 @@
         watch:{
             report(){
                 this.reportDate = moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+                this.getResourses()
             },
         },
         mounted(){
-            this.getRigType()
-            this.getRig()
-            this.getBitDiameters()
-            this.getDrillingMudTypes()
-            this.getThreadTypes()
-            this.getDiameters()
-            this.getConstructors()
-            this.getDrillingContractors()
-            this.getOperationCodes()
-            this.getBitTypes()
-            this.getManufacturers()
-            this.getPumps()
-            this.getBushings()
-            this.getNameChemicals()
-            this.getStratigraphy()
-            this.getLithology()
-            this.getOperation1()
-            this.getoperation2()
-            this.getDeviceType()
-            this.getBHAelements()
-            this.changeTotalTime(24)
-            this.changeTotalTime(6)
+            if (this.show){
+                this.openForShow()
+            } else{
+                this.getResourses()
+            }
+
         },
         methods: {
+            getResourses(){
+                this.getRigType()
+                this.getRig()
+                this.getBitDiameters()
+                this.getDrillingMudTypes()
+                this.getThreadTypes()
+                this.getDiameters()
+                this.getConstructors()
+                this.getDrillingContractors()
+                this.getOperationCodes()
+                this.getBitTypes()
+                this.getManufacturers()
+                this.getPumps()
+                this.getBushings()
+                this.getNameChemicals()
+                this.getStratigraphy()
+                this.getLithology()
+                this.getOperation1()
+                this.getoperation2()
+                this.getDeviceType()
+                this.getBHAelements()
+                this.changeTotalTime(24)
+                this.changeTotalTime(6)
+            },
             getPreviousDay(){
                 let date = new Date();
                 date.setDate(date.getDate() - 1);
@@ -1989,6 +1999,10 @@
                         console.log(error)
                         this.showToast('', 'No result', 'danger');
                     })
+            },
+            openForShow(){
+                this.previousReport = this.report
+                this.previous = true
             },
             changeDate(){
                 let date =  moment(this.reportDate, 'YYYY-MM-DD').format('DD-MM-YYYY')

@@ -24,9 +24,6 @@ class FluidProductionMonth extends MeasLogByMonth
 
     public function getResults(array $params = []): array
     {
-        if ($this->request->get('type') !== 'tech') {
-            throw new \Exception(trans('bd.select_gu'));
-        }
 
         $filter = json_decode($this->request->get('filter'));
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
@@ -264,7 +261,12 @@ class FluidProductionMonth extends MeasLogByMonth
                 while ($monthDay <= $date) {
                     $liquidValue = $this->getLiquidValueForDay($well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = [
-                        'value' => $liquidValue['note'] ?? null
+                        'value' => $liquidValue['note'] ?? null,
+                        'is_editable' => true,
+                        'params' => [
+                            'well_id' => $well->id,
+                            'indicator' => 'note',
+                        ],
                     ];
                     $monthDay = $monthDay->addDay();
                 }
@@ -925,14 +927,19 @@ class FluidProductionMonth extends MeasLogByMonth
                 $date = Carbon::parse($date)->timezone('Asia/Almaty')->startOfDay()->toImmutable();
                 $wellId = $field['params']['well_id'];
                 switch ($field['params']['indicator']) {
-                    case 'liquid':
-                        $this->saveField('prod.meas_liq', 'liquid', $wellId, $date, $field['value']);
-                        break;
                     case 'bsw':
                         $this->saveField('prod.meas_water_cut', 'water_cut', $wellId, $date, $field['value']);
                         break;
+                    case 'liquid':
                     case 'reason_decline':
-                        $this->saveField('prod.meas_liq', 'reason_decline', $wellId, $date, $field['value']);
+                    case 'note':
+                        $this->saveField(
+                            'prod.meas_liq',
+                            $field['params']['indicator'],
+                            $wellId,
+                            $date,
+                            $field['value']
+                        );
                         break;
                     case 'gas':
                         $row = DB::connection('tbd')

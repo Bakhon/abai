@@ -67,10 +67,10 @@ class WellsController extends Controller
                 'techModeProdOil' => $this->techModeProdOil($well),
                 'dmart_daily_prod_oil' => $this->dmartDailyProd($well),
                 'meas_well' => $this->measWell($well),
-                'lab_research_value' => $this->labResearchValue($well), 
-                'diameter_pump' => $this->wellEquipParametr($well, 'DIAN'),   
-                'depthLow' => $this->pumpDepthLowing($well, [6,20,49,36,75]),
-                'pump_capacity' => $this->wellEquipParams($well, '33'),   
+                'lab_research_value' => $this->labResearchValue($well),
+                'diameter_pump' => $this->wellEquipParametr($well, 'DIAN'),
+                'depthLow' => $this->pumpDepthLowing($well, [6, 20, 49, 36, 75]),
+                'pump_capacity' => $this->wellEquipParams($well, '33'),
             ];
         }
         if ($category[0]->code == 'INJ') {
@@ -118,8 +118,8 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well, 'RP', $mainOrg),
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),    
-            'well_block' => $this->wellBlock($well),       
+            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),
+            'well_block' => $this->wellBlock($well),
         ];
 
         $wellInfo = array_merge($wellInfo, $show_param);
@@ -180,9 +180,9 @@ class WellsController extends Controller
             ->get(['name_ru'])
             ->toArray();
 
-        if($status){
-                return $status[0];
-            }
+        if ($status) {
+            return $status[0];
+        }
 
         return "";
     }
@@ -190,30 +190,30 @@ class WellsController extends Controller
     private function tubeNom(Well $well)
     {
         $wellConstr = $well->tubeNom()
-                        ->wherePivot('project_drill', '=', 'false')
-                        ->wherePivot('casing_type', '=', '8')
-                        ->wherePivot('od', '!=', null)
-                        ->get(['prod.well_constr.od'])
-                        ->toArray();
+            ->wherePivot('project_drill', '=', 'false')
+            ->wherePivot('casing_type', '=', '8')
+            ->wherePivot('od', '!=', null)
+            ->get(['prod.well_constr.od'])
+            ->toArray();
 
-        if($wellConstr){
-        return $wellConstr[0];
+        if ($wellConstr) {
+            return $wellConstr[0];
         }
 
-        if(!$wellConstr){
-        $wellConstrOd = DB::connection('tbd')
-                        ->table('prod.well_constr')
-                        ->where('well', '=', $well->id)
-                        ->where('od', '!=', null)      
-                        ->where('casing_type', '8')                   
-                        ->orderBy('id', 'desc')
-                        ->get('od')
-                        ->toArray();   
-        if($wellConstrOd){
-        return $wellConstrOd[0];
+        if (!$wellConstr) {
+            $wellConstrOd = DB::connection('tbd')
+                ->table('prod.well_constr')
+                ->where('well', '=', $well->id)
+                ->where('od', '!=', null)
+                ->where('casing_type', '8')
+                ->orderBy('id', 'desc')
+                ->get('od')
+                ->toArray();
+            if ($wellConstrOd) {
+                return $wellConstrOd[0];
+            }
+            return "";
         }
-        return "";
-        }                   
     }
 
     private function date_expl(Well $well)
@@ -225,7 +225,7 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-        if($date_expl){
+        if ($date_expl) {
             return $date_expl[0];
         }
 
@@ -235,7 +235,7 @@ class WellsController extends Controller
 
     private function category(Well $well)
     {
-        $category = $well->category()           
+        $category = $well->category()
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dend')
             ->select(['name_ru'])
@@ -277,73 +277,74 @@ class WellsController extends Controller
 
     private function depthNkt(Well $well)
     {
-       $depthNkt = DB::connection('tbd')
-                    ->table('prod.well_equip_param as we')
-                    ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
-                    ->join('dict.equip_param as p', 'we.equip_param', '=', 'p.id')
-                    ->join('dict.equip_type as t', 'p.equip_type', '=', 't.id')
-                    ->join('dict.metric as m', 'p.metric', '=', 'm.id')
-                    ->where('t.code', '=', 'NKT')
-                    ->where('m.code', '=', 'PAKR')
-                    ->where('w.well', '=', $well->id)
-                    ->orderBy('we.dbeg', 'desc')
-                    ->get('we.value_double')
-                    ->toArray();
-       if($depthNkt){
-           return $depthNkt[0];
-       }             
-       return "";             
+        $depthNkt = DB::connection('tbd')
+            ->table('prod.well_equip_param as we')
+            ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
+            ->join('dict.equip_param as p', 'we.equip_param', '=', 'p.id')
+            ->join('dict.equip_type as t', 'p.equip_type', '=', 't.id')
+            ->join('dict.metric as m', 'p.metric', '=', 'm.id')
+            ->where('t.code', '=', 'NKT')
+            ->where('m.code', '=', 'PAKR')
+            ->where('w.well', '=', $well->id)
+            ->orderBy('we.dbeg', 'desc')
+            ->get('we.value_double')
+            ->toArray();
+        if ($depthNkt) {
+            return $depthNkt[0];
+        }
+        return "";
     }
 
-    private function wellEquipParams(Well $well, $method){
+    private function wellEquipParams(Well $well, $method)
+    {
         $wellEquipParams = DB::connection('tbd')
-                            ->table('prod.well_equip_param as we')
-                            ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
-                            ->where('w.well', '=', $well->id)
-                            ->where('we.equip_param', '=', $method)
-                            ->orderBy('we.dbeg', 'desc')
-                            ->get(['we.value_double'])
-                            ->toArray();
-        if($wellEquipParams){
+            ->table('prod.well_equip_param as we')
+            ->join('prod.well_equip as w', 'we.well_equip', '=', 'w.id')
+            ->where('w.well', '=', $well->id)
+            ->where('we.equip_param', '=', $method)
+            ->orderBy('we.dbeg', 'desc')
+            ->get(['we.value_double'])
+            ->toArray();
+        if ($wellEquipParams) {
             return $wellEquipParams[0];
-        }                    
+        }
         return "";
     }
 
     private function wellEquipParametr(Well $well, $code)
     {
-       $wellEquipParametr = DB::connection('tbd')
-                            ->table('prod.well_equip')
-                            ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
-                            ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
-                            ->where('dict.metric.code', '=', $code)
-                            ->where('prod.well_equip.well', '=', $well->id)
-                            ->orderBy('prod.well_equip.dbeg', 'desc')
-                            ->get()                           
-                            ->toArray();
-       if($wellEquipParametr){
-           return $wellEquipParametr[0];
-       }            
-       return "";
+        $wellEquipParametr = DB::connection('tbd')
+            ->table('prod.well_equip')
+            ->join('dict.equip_factory_param', 'prod.well_equip.equip', '=', 'dict.equip_factory_param.equip')
+            ->join('dict.metric', 'dict.equip_factory_param.prm', '=', 'dict.metric.id')
+            ->where('dict.metric.code', '=', $code)
+            ->where('prod.well_equip.well', '=', $well->id)
+            ->orderBy('prod.well_equip.dbeg', 'desc')
+            ->get()
+            ->toArray();
+        if ($wellEquipParametr) {
+            return $wellEquipParametr[0];
+        }
+        return "";
     }
 
     private function diametrStuzer(Well $well)
     {
         $diametrstuzer = DB::connection('tbd')
-                ->table('prod.well_equip as wq')
-                ->join('dict.equip_factory_param as efp', 'wq.equip', '=', 'efp.equip')
-                ->join('dict.equip as eq', 'efp.equip', '=', 'eq.id')
-                ->join('dict.equip_type as e', 'eq.equip_type', '=', 'e.id')
-                ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
-                ->where('m.code', '=', 'BND')
-                ->where('e.code', '=', 'CHK')
-                ->where('wq.well', $well->id)
-                ->where('efp.value_text', '!=', null)
-                ->orderBy('wq.dbeg', 'desc')
-                ->get(['efp.value_double', 'efp.value_text'])
-                ->toArray();
+            ->table('prod.well_equip as wq')
+            ->join('dict.equip_factory_param as efp', 'wq.equip', '=', 'efp.equip')
+            ->join('dict.equip as eq', 'efp.equip', '=', 'eq.id')
+            ->join('dict.equip_type as e', 'eq.equip_type', '=', 'e.id')
+            ->join('dict.metric as m', 'efp.prm', '=', 'm.id')
+            ->where('m.code', '=', 'BND')
+            ->where('e.code', '=', 'CHK')
+            ->where('wq.well', $well->id)
+            ->where('efp.value_text', '!=', null)
+            ->orderBy('wq.dbeg', 'desc')
+            ->get(['efp.value_double', 'efp.value_text'])
+            ->toArray();
 
-        if($diametrstuzer){
+        if ($diametrstuzer) {
             return $diametrstuzer[0];
         }
         return "";
@@ -351,16 +352,16 @@ class WellsController extends Controller
 
     private function pumpDepthLowing(Well $well, $param)
     {
-       $pumpDepth = DB::connection('tbd')
-                    ->table('prod.well_equip_param')
-                    ->join('prod.well_equip', 'prod.well_equip_param.well_equip', '=', 'prod.well_equip.id')                                        
-                    ->whereIn('prod.well_equip_param.equip_param', $param)
-                    ->where('prod.well_equip.well', '=', $well->id)
-                    ->orderBy('prod.well_equip_param.dbeg', 'desc')
-                    ->get()
-                    ->toArray();
+        $pumpDepth = DB::connection('tbd')
+            ->table('prod.well_equip_param')
+            ->join('prod.well_equip', 'prod.well_equip_param.well_equip', '=', 'prod.well_equip.id')
+            ->whereIn('prod.well_equip_param.equip_param', $param)
+            ->where('prod.well_equip.well', '=', $well->id)
+            ->orderBy('prod.well_equip_param.dbeg', 'desc')
+            ->get()
+            ->toArray();
 
-        if($pumpDepth){
+        if ($pumpDepth) {
             return $pumpDepth[0];
         }
         return "";
@@ -369,30 +370,29 @@ class WellsController extends Controller
     private function wellExplOnRight(Well $well)
     {
         $wellExpl = $well->wellExpl()
-                ->withPivot('dend as dend', 'dbeg as dbeg')
-                ->orderBy('dbeg', 'desc')
-                ->select(['name_ru', 'dend', 'dbeg'])
-                ->get()
-                ->toArray();
+            ->withPivot('dend as dend', 'dbeg as dbeg')
+            ->orderBy('dbeg', 'desc')
+            ->select(['name_ru', 'dend', 'dbeg'])
+            ->get()
+            ->toArray();
 
-        if($wellExpl){
+        if ($wellExpl) {
             return $wellExpl[0];
         }
 
         return "";
-
     }
 
     private function wellBlock(Well $well)
     {
         $wellBlock = $well->wellBlock()
-                     ->join('dict.block', 'prod.well_block.block', '=', 'dict.block.id')
-                     ->orderBy('prod.well_block.dbeg')
-                     ->get()
-                     ->toArray();
-        if($wellBlock){
+            ->join('dict.block', 'prod.well_block.block', '=', 'dict.block.id')
+            ->orderBy('prod.well_block.dbeg')
+            ->get()
+            ->toArray();
+        if ($wellBlock) {
             return $wellBlock[0];
-        }             
+        }
         return "";
     }
 
@@ -423,7 +423,7 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-        if($tap){
+        if ($tap) {
             return $tap[0];
         }
         return "";
@@ -436,7 +436,7 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-        if($wellType){
+        if ($wellType) {
             return $wellType[0];
         }
 
@@ -457,10 +457,8 @@ class WellsController extends Controller
 
     private function orgCode(array $dict_orgs)
     {
-        foreach($dict_orgs as $dict_org)
-        {
-            if(!$dict_org->parent)
-            {
+        foreach ($dict_orgs as $dict_org) {
+            if (!$dict_org->parent) {
                 return $dict_org->code;
             }
         }
@@ -470,8 +468,7 @@ class WellsController extends Controller
     private function structureOrg(array $dict_orgs)
     {
         $allParents = [];
-        foreach($dict_orgs as $dict_org)
-        {
+        foreach ($dict_orgs as $dict_org) {
             $allParents[]['name_ru'] = $dict_org->name;
         }
 
@@ -501,7 +498,7 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-        if($spatialObjectBottom){
+        if ($spatialObjectBottom) {
             return $spatialObjectBottom[0];
         }
 
@@ -510,8 +507,9 @@ class WellsController extends Controller
 
     private function actualBottomHole(Well $well)
     {
-        $bottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->get()->toArray();
-        if($bottomHole){
+        $bottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->get(
+        )->toArray();
+        if ($bottomHole) {
             return $bottomHole[0];
         }
         return "";
@@ -519,8 +517,9 @@ class WellsController extends Controller
 
     private function artificialBottomHole(Well $well)
     {
-        $BottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->get()->toArray();
-        if($BottomHole){
+        $BottomHole = BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->get(
+        )->toArray();
+        if ($BottomHole) {
             return $BottomHole[0];
         }
         return "";
@@ -543,11 +542,11 @@ class WellsController extends Controller
     private function pzabWell(Well $well)
     {
         $pzabWell = $well->pzabWell()
-               ->orderBy('date', 'desc')
-               ->get(['well', 'date', 'p_res', 'bhp'])
-               ->toArray();
+            ->orderBy('date', 'desc')
+            ->get(['well', 'date', 'p_res', 'bhp'])
+            ->toArray();
 
-        if($pzabWell){
+        if ($pzabWell) {
             return $pzabWell[0];
         }
 
@@ -578,11 +577,11 @@ class WellsController extends Controller
             ->get(['prm', 'value_double'])
             ->toArray();
 
-       if($wellEquip){
-           return $wellEquip[0];
-       }
+        if ($wellEquip) {
+            return $wellEquip[0];
+        }
 
-       return "";
+        return "";
     }
 
     private function labResearchValue(Well $well)
@@ -598,7 +597,7 @@ class WellsController extends Controller
             ->get(['inj_pressure', 'agent_vol'])
             ->toArray();
 
-        if($techModeInj){
+        if ($techModeInj) {
             return $techModeInj[0];
         }
 
@@ -613,9 +612,9 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-         if($techmode){
-             return $techmode[0];
-         }
+        if ($techmode) {
+            return $techmode[0];
+        }
 
         return "";
     }
@@ -634,7 +633,7 @@ class WellsController extends Controller
             ->get(['water_inj_val', 'pressure_inj'])
             ->toArray();
 
-        if($measLiqInjection){
+        if ($measLiqInjection) {
             return $measLiqInjection[0];
         }
         return "";
@@ -649,32 +648,32 @@ class WellsController extends Controller
             ->get(['value_double', 'dbeg'])
             ->toArray();
 
-            if($measWell){
-                return $measWell[0];
-            }
+        if ($measWell) {
+            return $measWell[0];
+        }
 
-            return "";
+        return "";
     }
 
     private function wellPerfActual(Well $well)
     {
         $wellPerfActual = DB::connection('tbd')
-                            ->table('prod.well_perf as w')
-                            ->where('w.well', $well->id)
-                            ->orderBy('w.perf_date', 'desc')
-                            ->get('w.id')
-                            ->toArray();
+            ->table('prod.well_perf as w')
+            ->where('w.well', $well->id)
+            ->orderBy('w.perf_date', 'desc')
+            ->get('w.id')
+            ->toArray();
 
         if ($wellPerfActual) {
             $wellPerf = DB::connection('tbd')
-                        ->table('prod.well_perf_actual as wp')
-                        ->join('prod.well_perf','wp.well_perf', '=', 'prod.well_perf.id')
-                        ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
-                        ->orderBy('wp.top','ASC')
-                        ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
-                        ->toArray();
-                      
-            return $wellPerf;            
+                ->table('prod.well_perf_actual as wp')
+                ->join('prod.well_perf', 'wp.well_perf', '=', 'prod.well_perf.id')
+                ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
+                ->orderBy('wp.top', 'ASC')
+                ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
+                ->toArray();
+
+            return $wellPerf;
         }
 
         return "";
@@ -690,7 +689,8 @@ class WellsController extends Controller
     private function getKrsPrs(Well $well, $code)
     {
         $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->get(
-            ['dbeg', 'dend'])->toArray();
+            ['dbeg', 'dend']
+        )->toArray();
 
         if ($wellWorkover) {
             return $wellWorkover[0];
@@ -700,12 +700,12 @@ class WellsController extends Controller
 
     private function wellTreatment(Well $well)
     {
-       $wellTreatment = $well->wellTreatment()
+        $wellTreatment = $well->wellTreatment()
             ->where('treatment_type', '=', '14')
             ->get(['treat_date'])
             ->toArray();
 
-        if($wellTreatment){
+        if ($wellTreatment) {
             return $wellTreatment[0];
         }
 
@@ -734,7 +734,7 @@ class WellsController extends Controller
             ->get(['treat_date'])
             ->toArray();
 
-        if($wellTreatmentSko){
+        if ($wellTreatmentSko) {
             return $wellTreatmentSko[0];
         }
         return "";
@@ -743,11 +743,11 @@ class WellsController extends Controller
     private function wellDailyDrill(Well $well)
     {
         $wellDailyDrill = $well->wellDailyDrill()
-              ->select(['dbeg', 'dend'])
-              ->get()
-              ->toArray();
+            ->select(['dbeg', 'dend'])
+            ->get()
+            ->toArray();
 
-        if($wellDailyDrill){
+        if ($wellDailyDrill) {
             return $wellDailyDrill[0];
         }
 
@@ -840,7 +840,7 @@ class WellsController extends Controller
             ->get()
             ->toArray();
 
-        if($gdisCurrentRzatr){
+        if ($gdisCurrentRzatr) {
             return $gdisCurrentRzatr[0];
         }
 
@@ -869,13 +869,13 @@ class WellsController extends Controller
 
     private function gis(Well $well)
     {
-        $gis = $well->gis()        
+        $gis = $well->gis()
             ->where('gis_type', '=', '1')
             ->orderBy('gis_date', 'desc')
             ->get(['gis_date'])
             ->toArray();
 
-        if($gis){
+        if ($gis) {
             return $gis[0];
         }
         return "";
@@ -917,6 +917,11 @@ class WellsController extends Controller
         if (empty($request->get('query')) || strlen($request->get('query')) < 2) {
             return [];
         }
+
+        $wellQuery = Well::query()
+            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'")
+            ->with('orgs');
+
         $selectedUserDzo = $request->get('selectedUserDzo');
         $childrenIds = [];
         $orgsTree = $service->getTree(Carbon::now());
@@ -924,9 +929,6 @@ class WellsController extends Controller
             $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
         }
 
-        $wellQuery = Well::query()
-            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'")
-            ->with('orgs');
         if ($childrenIds) {
             $wellQuery->whereHas(
                 'orgs',
@@ -935,20 +937,23 @@ class WellsController extends Controller
                 }
             );
         }
+
         $wells = $wellQuery->limit(50)->get();
 
-        $orgsToFilter = [];
-        $userDzoIds = array_map(function ($item) {
-            return substr($item, strpos($item, ":") + 1);
-        }, auth()->user()->org_structure);
-        foreach ($userDzoIds as $userDzoId) {
-            $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
-        }
-        if (!empty($orgsToFilter)) {
-            $wells = $wells->filter(function ($well) use ($orgsToFilter) {
-                $wellOrgs = $well->orgs->pluck('id')->toArray();
-                return !empty(array_intersect($wellOrgs, $orgsToFilter));
-            });
+        if (auth()->user()->check_org_permissions) {
+            $orgsToFilter = [];
+            $userDzoIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, auth()->user()->org_structure);
+            foreach ($userDzoIds as $userDzoId) {
+                $orgsToFilter = array_merge($orgsToFilter, $service::getChildIds($orgsTree, $userDzoId));
+            }
+            if (!empty($orgsToFilter)) {
+                $wells = $wells->filter(function ($well) use ($orgsToFilter) {
+                    $wellOrgs = $well->orgs->pluck('id')->toArray();
+                    return !empty(array_intersect($wellOrgs, $orgsToFilter));
+                });
+            }
         }
 
         return [
@@ -962,21 +967,28 @@ class WellsController extends Controller
      */
     public function getProductionWellsScheduleData(Request $request): object
     {
-
         $wellId = $request->get('wellId');
         $period = $request->get('period');
         $result = [];
-        if (Cache::has('well_' . $wellId . '_history_chart_' . $request->type . 'period_' .$period)) {
-            return response()->json(Cache::get('well_' . $wellId . '_history_chart_' . $request->type . 'period_' .$period));
+        if (Cache::has('well_' . $wellId . '_history_chart_' . $request->type . 'period_' . $period)) {
+            return response()->json(
+                Cache::get('well_' . $wellId . '_history_chart_' . $request->type . 'period_' . $period)
+            );
         }
         if ($request->type === 'Нефтяная') {
-            $result = $this->wellCardGraphRepo->wellItems($wellId,$period);
-        } else if ($request->type === 'Нагнетательная') {
-            $result = $this->wellCardGraphRepo->getInjectionData($wellId,$period);
+            $result = $this->wellCardGraphRepo->wellItems($wellId, $period);
+        } else {
+            if ($request->type === 'Нагнетательная') {
+                $result = $this->wellCardGraphRepo->getInjectionData($wellId, $period);
+            }
         }
-        Cache::put('well_' . $wellId . '_history_chart_' . $request->type . 'period_' .$period, $result, now()->addDay());
+        Cache::put(
+            'well_' . $wellId . '_history_chart_' . $request->type . 'period_' . $period,
+            $result,
+            now()->addDay()
+        );
 
-        return  response()->json($result);
+        return response()->json($result);
     }
 
     public function getActivityByWell(Request $request, $wellId)
@@ -989,7 +1001,7 @@ class WellsController extends Controller
             ->where('well', $wellId)
             ->with('repairType')
             ->get();
-        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkover,'dbeg'));
+        $activity = array_merge($activity, $this->getFormattedWorkover($wellWorkover, 'dbeg'));
         $wellWorkoverEnd = WellWorkover::query()
             ->select(['dend', 'well', 'repair_type', 'well_status', 'work_list'])
             ->whereIn('repair_type', [1, 3])
@@ -997,7 +1009,7 @@ class WellsController extends Controller
             ->where('well', $wellId)
             ->with('repairType')
             ->get();
-        $activity = array_merge($activity,$this->getFormattedWorkover($wellWorkoverEnd,'dend'));
+        $activity = array_merge($activity, $this->getFormattedWorkover($wellWorkoverEnd, 'dend'));
         $gtms = Gtm::query()
             ->select(['param_result', 'gtm_type', 'dbeg'])
             ->where('well', $wellId)
@@ -1005,7 +1017,8 @@ class WellsController extends Controller
             ->with('GtmType')
             ->get();
         foreach ($gtms as $gtm) {
-            array_push($activity,
+            array_push(
+                $activity,
                 array(
                     'dbeg' => $gtm->dbeg,
                     'repair_type' => $gtm->GtmType[0]->name_ru,
@@ -1018,11 +1031,12 @@ class WellsController extends Controller
         return $activity;
     }
 
-    private function getFormattedWorkover($workovers,$dateField)
+    private function getFormattedWorkover($workovers, $dateField)
     {
         $result = [];
         foreach ($workovers as $workover) {
-            array_push($result,
+            array_push(
+                $result,
                 array(
                     $dateField => $workover->$dateField,
                     'work_plan' => $workover->work_plan,

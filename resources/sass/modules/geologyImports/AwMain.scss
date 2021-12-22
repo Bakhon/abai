@@ -24,5 +24,21 @@
         }
       }
     }
+    &.direction{
+      &-column{
+        display: flex;
+        flex-direction: column;
+      }
+      &-row{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        label {
+          margin: 0 5px 0 0;
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }

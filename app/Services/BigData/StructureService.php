@@ -132,8 +132,12 @@ class StructureService
 
     public function getTreeWithPermissions(array $types = []): array
     {
-        $userSelectedTreeItems = auth()->user()->org_structure;
         $fullTree = $this->getTree(Carbon::now(), false, false, $types);
+        if (!auth()->user()->check_org_permissions) {
+            return $fullTree;
+        }
+
+        $userSelectedTreeItems = auth()->user()->org_structure;
         $tree = [];
         $this->generateTreeWithPermissions($fullTree, $tree, $userSelectedTreeItems);
         return $this->fillTreeWithFullNames($tree);
@@ -153,7 +157,7 @@ class StructureService
         }
 
         $orgStructures = $this->getOrgStructure($types);
-        if ($this->hasType('tech', $types) || in_array('well', $types)) {
+        if (empty($types) || $this->hasType('tech', $types) || in_array('well', $types)) {
             $techStructure = $this->getTechStructure($date, $showWells, $types);
 
             $orgTechs = DB::connection('tbd')
@@ -161,7 +165,7 @@ class StructureService
                 ->select('org', 'tech')
                 ->get()
                 ->mapToGroups(
-                    function ($item, $key) {
+                    function ($item) {
                         return [
                             $item->org => $item->tech
                         ];

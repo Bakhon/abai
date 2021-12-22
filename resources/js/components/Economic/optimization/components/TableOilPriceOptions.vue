@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 535px">
+  <div :style="`height: ${tableHeight}`">
     <subtitle>
       <div class="font-size-16px line-height-18px">
         {{ trans('economic_reference.table_oil_price_options_title') }}
@@ -10,7 +10,8 @@
       </div>
     </subtitle>
 
-    <div class="mt-2">
+    <div :style="`height: ${isFullscreen ? 350 : 275}px`"
+        class="mt-2 d-flex flex-column">
       <div class="text-center border-grey d-flex bg-header">
         <div
             v-for="(item, index) in tableKeys"
@@ -26,7 +27,7 @@
       <div v-for="(item, index) in tableData"
            :key="index"
            :style="`background: ${item.color}`"
-           class="d-flex">
+           class="flex-grow-1 d-flex">
         <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
              :class="keyIndex ? 'text-center justify-content-center' : ''"
@@ -46,11 +47,12 @@
       {{ trans('economic_reference.cat_2_trips') }}: {{ scenario.percent_stop_cat_2 * 100 }}%
     </subtitle>
 
-    <div class="mt-2">
+    <div :style="`height: ${isFullscreen ? 250 : 175}px`"
+        class="mt-2 d-flex flex-column">
       <div v-for="(item, index) in tableDataOptimized"
            :key="index"
            :style="`background: ${item.color}`"
-           class="d-flex">
+           class="flex-grow-1 d-flex">
         <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
              :class="[
@@ -91,6 +93,10 @@ export default {
       required: true,
       type: Object
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   methods: {
     calcPrsPerUwi(prs, uwi_count) {
@@ -399,6 +405,10 @@ export default {
         },
       ]
     },
+
+    tableHeight() {
+      return this.isFullscreen ? '685px' : '535px'
+    }
   },
 }
 </script>

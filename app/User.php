@@ -23,7 +23,8 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
-        'org_structure'
+        'org_structure',
+        'check_org_permissions'
     ];
 
     /**
@@ -43,7 +44,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_authorized_at' => 'datetime',
-        'org_structure' => 'array'
+        'org_structure' => 'array',
+        'check_org_permissions' => 'boolean'
     ];
 
     private $userOrgs = [];

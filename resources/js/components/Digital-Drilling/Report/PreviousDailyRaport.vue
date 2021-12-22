@@ -21,7 +21,7 @@
                            <button class="save" @click="editReport" v-if="isAuthor">
                                Редактировать
                            </button>
-                           <button class="save" @click="back">
+                           <button class="save" @click="back" v-if="!show">
                                Текущий отчет
                            </button>
                        </div>
@@ -1451,7 +1451,7 @@
 
     export default {
         name: "PreviousDailyRaport",
-        props: ['report', 'user'],
+        props: ['report', 'user', 'show'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1471,6 +1471,7 @@
                 isAuthor: false
             }
         },
+
         mounted(){
             this.changeTotalTime(24)
             this.changeTotalTime(6)
