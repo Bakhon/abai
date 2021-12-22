@@ -112,7 +112,7 @@ class ProductionWell extends PlainForm
         $rows = parent::formatRows($rows);
         return $rows->map(function ($row) {
             if (isset($row->oil)) {
-                $row->oil = round($row->oil, 2);
+                $row->oil = round($row->oil, 1);
             }
             return $row;
         });
