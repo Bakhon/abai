@@ -210,9 +210,9 @@ class DailyReport extends Controller
     {
         $productionParams = DzoImportData::query()
             ->select(['id','dzo_name'])
-            ->whereDate('date', '>=', $start)
-            ->whereDate('date', '<=', $end)
+            ->whereDate('date',Carbon::yesterday())
             ->whereNull('is_corrected')
+            ->orderBy('date', 'asc')
             ->with('importDecreaseReason')
             ->get();
 
@@ -226,9 +226,10 @@ class DailyReport extends Controller
             }
             foreach($fields as $key => $value) {
                 if (!is_null($day['importDecreaseReason'][$key])) {
+                    $multiplier = $this->dzoMapping[$day['dzo_name']]['part'];
                     $formatted[$day['dzo_name']][$key] = array(
                         $day['importDecreaseReason'][$key],
-                        $day['importDecreaseReason'][$value]
+                        $day['importDecreaseReason'][$value] * $multiplier / 100
                     );
                 }
             }
