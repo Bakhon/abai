@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\HasPlannedEvents;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ProductionWell extends PlainForm
@@ -104,5 +105,16 @@ class ProductionWell extends PlainForm
                     ]
                 );
         }
+    }
+
+    protected function formatRows(Collection $rows): Collection
+    {
+        $rows = parent::formatRows($rows);
+        return $rows->map(function ($row) {
+            if (isset($row->oil)) {
+                $row->oil = round($row->oil, 2);
+            }
+            return $row;
+        });
     }
 }

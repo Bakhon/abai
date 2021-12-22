@@ -503,7 +503,6 @@ export default {
     calculateCellValue(cellColumn, cellRow, rowIndex) {
 
       let formula = this.fillFormulaWithValues(cellColumn, cellRow, rowIndex)
-      console.log(formula)
 
       let value = null
       if (formula.indexOf('$') === -1) {
