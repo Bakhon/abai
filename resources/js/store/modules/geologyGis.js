@@ -400,17 +400,17 @@ function mnemonicsSort(data, state) {
                         if (!elCurveIDS.hasOwnProperty(wellID.toString())) elCurveIDS[wellID.toString()] = curve_id;
                         return elCurveIDS;
                     }],
-                    ['depth_start', (_d_start) => {
-                        if (!_d_start.hasOwnProperty(wellID.toString())) _d_start[wellID.toString()] = depth_start;
-                        return _d_start;
+                    ['depth_start', (d_start) => {
+                        if (!d_start.hasOwnProperty(wellID.toString())) d_start[wellID.toString()] = depth_start;
+                        return d_start;
                     }],
-                    ['depth_end', (_d_end) => {
-                        if (!_d_end.hasOwnProperty(wellID.toString())) _d_end[wellID.toString()] = depth_end;
-                        return _d_end;
+                    ['depth_end', (d_end) => {
+                        if (!d_end.hasOwnProperty(wellID.toString())) d_end[wellID.toString()] = depth_end;
+                        return d_end;
                     }],
-                    ['step', (_step) => {
-                        if (!_step.hasOwnProperty(wellID.toString())) _step[wellID.toString()] = step;
-                        return _step;
+                    ['step', (d_step) => {
+                        if (!d_step.hasOwnProperty(wellID.toString())) d_step[wellID.toString()] = step;
+                        return d_step;
                     }]
                 ]);
             } else {
