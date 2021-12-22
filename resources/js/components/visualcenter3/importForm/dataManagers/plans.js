@@ -285,7 +285,11 @@ export default {
                 this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
                 this.fillPlanRows();
                 this.plans = await this.getDzoPlans();
-                this.handlePlans();
+                if (this.plans.length > 0) {
+                    this.handlePlans();
+                } else {
+                    this.fillPlanRows();
+                }
                 document.querySelector('#planGrid').refresh('all');
             } else if (this.category.isCloseMonthActive) {
                 this.disableColumnHighlightByMonth();

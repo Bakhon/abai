@@ -65,6 +65,7 @@ class FinalizeEmergencySituation extends Command
             ->select('created_at')
             ->where('dzo_name',$situation->description)
             ->whereDate('date',Carbon::parse($situation->date)->subDays(1))
+            ->whereNull('is_corrected')
             ->first();
 
         if (!is_null($dzoRecord)) {
@@ -93,7 +94,7 @@ class FinalizeEmergencySituation extends Command
             ->where('id', $situationId)
             ->update(
                 [
-                    'approve_date' => Carbon::parse($resolveDate)->addMonth(),
+                    'approve_date' => $resolveDate,
                     'approved' => true
                 ]
             );
