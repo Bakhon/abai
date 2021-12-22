@@ -152,6 +152,10 @@
           {
             title: `${this.trans('digital_rating.distance')}, м`,
             name: 'dist'
+          },
+          {
+            title: `${this.trans('digital_rating.lastDateGRP')}`,
+            name: 'frac_date'
           }
         ]
       },
