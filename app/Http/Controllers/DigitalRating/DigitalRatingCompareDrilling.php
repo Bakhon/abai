@@ -16,7 +16,7 @@ class DigitalRatingCompareDrilling extends Controller
    const WELL_CATEGORY_TYPE_ID = [1];
    const WELL_STATUS_TYPE_ID = [3,4];
 
-   public function getCompaerData(Request $request):JsonResponse 
+   public function getCompareData(Request $request):JsonResponse 
    {  
       $horizon = $request->input('horizon');
       $year = $request->input('year');

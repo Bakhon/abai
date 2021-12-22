@@ -24,9 +24,9 @@ Route::group(
             Route::get('/get_environment', 'DigitalRating\DigitalRatingContoller@get_environment')->name('get_environment');   
             Route::get('/get_injection_wells', 'DigitalRating\DigitalRatingContoller@get_injection_wells')->name('get_injection_wells');
             
-            Route::get('/api/getCompaerData', 'DigitalRating\DigitalRatingCompareDrilling@getCompaerData')->name('getCompaerData');
-            Route::get('/api/getActualProjectPoints', 'DigitalRating\DigitalRatingCompareDrilling@getActualProjectPoints')->name('getActualProjectPoints');
-            Route::get('/api/getMapCoordinates', 'DigitalRating\DigitalRatingCompareDrilling@getMapCoordinates')->name('getMapCoordinates');
-            Route::get('/api/getHorizon', 'DigitalRating\DigitalRatingCompareDrilling@getHorizon')->name('getHorizon');
+            Route::get('/api/get-compare-data', 'DigitalRating\DigitalRatingCompareDrilling@getCompareData')->name('getCompareData');
+            Route::get('/api/get-actual-project-points', 'DigitalRating\DigitalRatingCompareDrilling@getActualProjectPoints')->name('getActualProjectPoints');
+            Route::get('/api/get-map-coordinates', 'DigitalRating\DigitalRatingCompareDrilling@getMapCoordinates')->name('getMapCoordinates');
+            Route::get('/api/get-horizon', 'DigitalRating\DigitalRatingCompareDrilling@getHorizon')->name('getHorizon');
         });
     });
