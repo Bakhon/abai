@@ -96,6 +96,11 @@ export default {
       },
     }
   },
+  watch:{
+    "$store.state.geologyGis.gisWells"(){
+      this.postData.correlated_wells = [];
+    }
+  },
   computed: {
     validationPostData() {
       return [
