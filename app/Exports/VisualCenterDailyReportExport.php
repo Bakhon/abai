@@ -43,19 +43,9 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         $sheet->setTitle("С учетом доли участия КМГ");
         $sheet->getStyle('A2:H60')->getFont()->setSize(18);
         $sheet->getStyle('A3:H1')->getFont()->setSize(22);
-        $sheet->getStyle('B5')->getAlignment()->setVertical('center');
-        $sheet->getStyle('G5')->getAlignment()->setVertical('center');
-        $sheet->getStyle('A24')->getAlignment()->setVertical('center');
-        $sheet->getStyle('B24')->getAlignment()->setVertical('center');
-        $sheet->getStyle('C24')->getAlignment()->setVertical('center');
-        $sheet->getStyle('D24')->getAlignment()->setVertical('center');
-        $sheet->getStyle('H24')->getAlignment()->setVertical('center');
-        $sheet->getStyle('B44')->getAlignment()->setVertical('center');
-        $sheet->getStyle('H44')->getAlignment()->setVertical('center');
+        $sheet->getStyle('A5:H60')->getAlignment()->setVertical('center');
         $sheet->getStyle('A1:A60')->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A1:H60')->getAlignment()->setIndent(10);
-        $sheet->getStyle('A5:A60')->getAlignment()->setVertical('center');
-        $sheet->getStyle('C5:C60')->getAlignment()->setVertical('center');
         foreach(array('A4','A23','A43') as $cell) {
             $sheet->getStyle($cell)->getAlignment()->setHorizontal('right');
         }
