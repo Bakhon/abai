@@ -272,37 +272,43 @@ const geologyGis = {
         },
 
         [SET_GIS_DATA_FOR_GRAPH](state) {
-            if(Array.isArray(state.CURVES_OF_SELECTED_WELLS)){
-                for (const curveName of state.selectedGisCurves) {
-                    if (state.awGis.hasElement(curveName)) {
-                        let {data: {curve_id}} = state.awGis.getElement(curveName);
-                        let curveOptions = {min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT: {}, name: {},colorPalette:{}};
-                        let isLithology = curveName.toLowerCase().trim() === "litho";
-                        let isFluid = curveName.toLowerCase().trim() === "fluid";
-                        state.awGis.editElementData(curveName, {
-                            curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
-                                console.log(state.CURVES_OF_SELECTED_WELLS, id);
-                                let curve = state.CURVES_OF_SELECTED_WELLS[id];
-                                let curveWithoutNull = [...curve.filter((x) => +x)]
-                                curveOptions.name[key] = curveName;
-                                curveOptions.startX[key] = curveWithoutNull[0];
-                                curveOptions.min[key] = Math.min(...curveWithoutNull);
-                                curveOptions.max[key] = Math.max(...curveWithoutNull);
-                                curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
-                                curveOptions.isLithology[key] = isLithology;
-                                curveOptions.isCSAT[key] = isFluid;
-                                if (curve) acc[key] = curve;
-                                return acc;
-                            }, {})
-                        })
-                        if (isLithology || isFluid) {
-                            curveOptions.colorPalette = COLOR_PALETTE[curveName.toLowerCase()];
-                        }
-                        state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify({...curveOptions})));
+            for (const curveName of state.selectedGisCurves) {
+                if (state.awGis.hasElement(curveName)) {
+                    let {data: {curve_id}} = state.awGis.getElement(curveName);
+                    let curveOptions = {
+                        min: {},
+                        max: {},
+                        sum: {},
+                        startX: {},
+                        isLithology: {},
+                        isCSAT: {},
+                        name: {},
+                        colorPalette: {}
+                    };
+                    let isLithology = curveName.toLowerCase().trim() === "litho";
+                    let isFluid = curveName.toLowerCase().trim() === "fluid";
+                    state.awGis.editElementData(curveName, {
+                        curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
+                            let curve = state.CURVES_OF_SELECTED_WELLS[id];
+                            let curveWithoutNull = [...curve.filter((x) => +x)]
+                            curveOptions.name[key] = curveName;
+                            curveOptions.startX[key] = curveWithoutNull[0];
+                            curveOptions.min[key] = Math.min(...curveWithoutNull);
+                            curveOptions.max[key] = Math.max(...curveWithoutNull);
+                            curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
+                            curveOptions.isLithology[key] = isLithology;
+                            curveOptions.isCSAT[key] = isFluid;
+                            if (curve) acc[key] = curve;
+                            return acc;
+                        }, {})
+                    })
+                    if (isLithology || isFluid) {
+                        curveOptions.colorPalette = COLOR_PALETTE[curveName.toLowerCase()];
                     }
+                    state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify({...curveOptions})));
                 }
-                state.changeGisData = Date.now();
             }
+            state.changeGisData = Date.now();
         },
 
         [SET_CURVE_OPTIONS](state, [propName, props]) {
@@ -368,7 +374,8 @@ function mnemonicsSort(data, state) {
                 curve_id,
                 depth_start,
                 depth_end,
-                step} = datum;
+                step
+            } = datum;
             let groupId = uuidv4();
 
             if (!groupsIds.has(name)) {
