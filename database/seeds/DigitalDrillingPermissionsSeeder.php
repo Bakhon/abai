@@ -12,18 +12,14 @@ class DigitalDrillingPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        \Spatie\Permission\Models\Permission::create(
-            [
-                'name' => 'digitalDrilling view main',
-                'guard_name' => 'web'
-            ]
+        Permission::updateOrCreate(
+            ['name' => 'digitalDrilling view main'],
+            ['guard_name' => 'web']
         );
 
-        \Spatie\Permission\Models\Permission::create(
-            [
-                'name' => 'digitalDrilling view catalog',
-                'guard_name' => 'web'
-            ]
+        Permission::updateOrCreate(
+            ['name' => 'digitalDrilling view catalog'],
+            ['guard_name' => 'web']
         );
     }
 }
