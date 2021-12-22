@@ -136,11 +136,11 @@
                 </div>
                 <div class="modal-show" v-show="isOpen === true" @mouseover="isOpen = true">
                       <div class="modal_show_item">
-                        <img class="modal_show_img" src="/img/bd/circle-red.png"/>
+                        <img class="modal_show_img" src="/img/bd/orange-circle-icon.png"/>
                           <span class="legenda_text">Отклонение от тех. режима</span>
                       </div>
                       <div class="modal_show_item">
-                        <img class="modal_show_img" src="/img/bd/orange-circle-icon.png">
+                        <img class="modal_show_img" src="/img/bd/circle-red.png">
                           <span class="legenda_text">В простое</span>
                       </div>
                 </div>
