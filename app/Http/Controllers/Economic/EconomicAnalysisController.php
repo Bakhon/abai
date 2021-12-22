@@ -569,7 +569,6 @@ class EconomicAnalysisController extends Controller
             ->addSelect(DB::raw("
                 wells.$joinKey as status_id,
                 wells.date_month,
-                well_status.name as status_name,
                 well_profitability.profitability_propose as profitability,
                 COUNT(wells.uwi) AS uwi_count,
                 SUM(wells.oil) AS oil,
@@ -590,18 +589,13 @@ class EconomicAnalysisController extends Controller
                 wells.liquid_tech_loss * well_profitability.variable_cost * well_profitability.oil_density / 1000
                 ) as operating_profit_tech_loss
             "))
-            ->leftjoin("$tableWellStatus AS well_status", function ($join) use ($joinKey) {
-                /** @var JoinClause $join */
-                $join->on("wells.$joinKey", '=', 'well_status.id');
-            })
             ->groupByRaw(DB::raw("
                 $joinKey,
-                status_name,
                 wells.date_month,
                 well_profitability.profitability_propose
             "));
 
-        return TechnicalWellForecastKitJob::sqlJoinWellProfitability(
+        $wellsByStatus = TechnicalWellForecastKitJob::sqlJoinWellProfitability(
             $query,
             $economicLogId,
             $technicalLogId,
@@ -613,6 +607,18 @@ class EconomicAnalysisController extends Controller
         )
             ->get()
             ->toArray();
+
+        $statuses = DB::table($tableWellStatus)->get();
+
+        foreach ($wellsByStatus as &$wellByStatus) {
+            $wellByStatus = (array)$wellByStatus;
+
+            $wellByStatus['status_name'] = $statuses
+                ->firstWhere("id", $wellByStatus["status_id"])
+                ->name;
+        }
+
+        return $wellsByStatus;
     }
 
     private function getProposedStoppedWells(

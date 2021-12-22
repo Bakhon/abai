@@ -28,7 +28,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
 
     const DEFAULT_WHERE_IN_PARAM = "''";
 
-    const OIL_FACTOR = 1;
+    const OIL_FACTOR = 100;
     const OIL_DEVIATION = 1;
 
     public function __construct(int $kitId, float $permanentStopCoefficient)
@@ -167,8 +167,8 @@ class TechnicalWellForecastKitJob implements ShouldQueue
         $excludedUwis = DB::table($tableWellForecast)
             ->addSelect(DB::raw("DISTINCT uwi"))
             ->whereRaw(DB::raw("
-                loss_status_id IN ($lossStatuses) AND
-                log_id = $technicalLogId
+                log_id = $technicalLogId AND
+                loss_status_id IN ($lossStatuses)
             "))
             ->toSql();
 
@@ -383,19 +383,19 @@ class TechnicalWellForecastKitJob implements ShouldQueue
         string $analysisParamAlias = 'analysis_param'
     ): Builder
     {
-        $analysisParams = DB::table((new EcoRefsAnalysisParam())->getTable())
-            ->whereRaw(DB::raw("log_id = $economicLogId"))
-            ->toSql();
+        $tableAnalysisParams = (new EcoRefsAnalysisParam())->getTable();
 
         return $query->leftjoin(
-            DB::raw("($analysisParams) AS $analysisParamAlias"),
+            "$tableAnalysisParams AS $analysisParamAlias",
             function ($join) use ($wellForecastAlias, $analysisParamAlias, $economicLogId) {
                 /** @var JoinClause $join */
-                $join->on(
-                    DB::raw("$wellForecastAlias.date_month"),
-                    '=',
-                    DB::raw("$analysisParamAlias.date")
-                );
+                $join
+                    ->on(
+                        DB::raw("$wellForecastAlias.date_month"),
+                        '=',
+                        DB::raw("$analysisParamAlias.date")
+                    )
+                    ->whereRaw(DB::raw("$analysisParamAlias.log_id = $economicLogId"));
             });
     }
 
