@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!previous">
+    <div v-if="!previous" :class="{fixed: fixedStyle}" >
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily_raport_block-header">
@@ -19,6 +19,9 @@
                     <div class="daily_raport_block-header-save">
                         <button class="save" @click="saveModal=true">
                             {{trans('app.save')}}
+                        </button>
+                        <button class="save" @click="closeReport">
+                            Назад
                         </button>
                     </div>
                 </div>
@@ -1779,9 +1782,11 @@
     <previous-daily-raport v-else :report="previousReport"
                            :user="user"
                            :show="show"
+                           :fixedStyle="fixedStyle"
                            @closePreviousReport="previous=false"
                            @changePreviousReport="changePreviousReport"
                            @editReport = "editReport"
+                           @closeReport="closeReport"
     />
 </template>
 
@@ -1800,7 +1805,7 @@
     export default {
         name: "DailyRaport",
         components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-        props: ['report', 'user', 'isEdit', 'show'],
+        props: ['report', 'user', 'isEdit', 'show', 'fixedStyle'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1980,6 +1985,9 @@
                 this.getBHAelements()
                 this.changeTotalTime(24)
                 this.changeTotalTime(6)
+            },
+            closeReport(){
+                this.$emit('closeReport')
             },
             getPreviousDay(){
                 let date = new Date();
