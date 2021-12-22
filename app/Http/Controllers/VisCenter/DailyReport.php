@@ -175,7 +175,7 @@ class DailyReport extends Controller
         $monthStart =  $monthlyDate->copy()->startOf('month');
         $monthlyDiff = $monthStart->diff($monthlyEndPeriod)->days;
 
-        $this->monthlyReasons = $this->getReasonsByPeriod($monthStart,$monthlyEndPeriod,$this->monthlyDecreaseReasonFields);
+        $this->monthlyReasons = $this->getReasonsByPeriod($this->monthlyDecreaseReasonFields,Carbon::yesterday(),'whereDate');
         return array (
             'periodStart' => $monthStart->format('Y-m-d'),
             'periodEnd' => $monthlyEndPeriod->format('Y-m-d'),
@@ -194,7 +194,7 @@ class DailyReport extends Controller
         $yearlyDiff = $yearStart->diff($yearEnd)->days;
 
         $this->yearlyPlans = $this->getYearPlan();
-        $this->yearlyReasons = $this->getReasonsByPeriod($yearStart,$yearEnd,$this->yearlyDecreaseReasonFields);
+        $this->yearlyReasons = $this->getReasonsByPeriod($this->yearlyDecreaseReasonFields,Carbon::yesterday()->subMonth(),'whereMonth');
         return array (
             'periodStart' => $yearStart->format('Y-m-d'),
             'periodEnd' => $yearEnd->format('Y-m-d'),
@@ -206,11 +206,11 @@ class DailyReport extends Controller
         );
     }
 
-    private function getReasonsByPeriod($start,$end,$fields)
+    private function getReasonsByPeriod($fields,$date,$query)
     {
         $productionParams = DzoImportData::query()
             ->select(['id','dzo_name'])
-            ->whereDate('date',Carbon::yesterday())
+            ->$query('date',$date)
             ->whereNull('is_corrected')
             ->orderBy('date', 'asc')
             ->with('importDecreaseReason')
