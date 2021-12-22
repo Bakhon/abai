@@ -10,8 +10,7 @@ class EconomicAnalysisWellByKitRequest extends FormRequest
     {
         return [
             'permanent_stop_coefficient' => 'required|numeric',
-            'kit_ids' => 'required|array|min:1',
-            'kit_ids.*' => 'required_with:kit_ids|integer|min:1',
+            'kit_id' => 'required|integer|min:1',
         ];
     }
 }

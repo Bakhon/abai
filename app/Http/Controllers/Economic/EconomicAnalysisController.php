@@ -550,7 +550,7 @@ class EconomicAnalysisController extends Controller
                 SUM($liquidTechLoss) as liquid_tech_loss,
                 SUM($prsPortion) as prs_portion
             "))
-            ->whereRaw(DB::raw("log_id = $technicalLogId AND has_$joinKey = 1"))
+            ->whereRaw(DB::raw("log_id = $technicalLogId AND $joinKey IS NOT NULL"))
             ->groupBy([
                 $joinKey,
                 "date_month",
