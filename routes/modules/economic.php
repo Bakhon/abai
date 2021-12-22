@@ -66,11 +66,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('scenario/get-data', 'EconomicScenarioController@getData');
 
             Route::resource('scenario', 'EconomicScenarioController')
-                ->only(['index', 'store', 'update', 'destroy'])
+                ->only(['index', 'store', 'destroy'])
                 ->names([
                     'index' => 'economic.scenario.index',
                     'store' => 'economic.scenario.store',
-                    'update' => 'economic.scenario.update',
                     'destroy' => 'economic.scenario.destroy',
                 ]);
         });

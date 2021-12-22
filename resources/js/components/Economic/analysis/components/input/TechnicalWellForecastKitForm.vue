@@ -35,8 +35,30 @@
           form-key="technical_log_id"/>
     </div>
 
-    <div v-show="form.technical_log_id"
-         class="text-center mt-3">
+    <div v-show="form.technical_log_id" class="text-center">
+      <div class="text-left">
+        <h5 class="text-secondary mt-3">
+          {{ trans('economic_reference.permanent_stop_coefficient') }}
+        </h5>
+
+        <div v-for="(coefficient, index) in form.permanent_stop_coefficients"
+             :key="index"
+             class="form-group d-flex">
+          <input v-model="coefficient.value"
+                 :min="0"
+                 :max="1"
+                 :step="0.01"
+                 type="numeric"
+                 class="form-control">
+
+          <delete-button
+              class="ml-2"
+              @click.native="deleteCoefficient(index)"/>
+        </div>
+
+        <add-button @click.native="addCoefficient()"/>
+      </div>
+
       <save-button @click.native="saveForm"/>
     </div>
   </div>
@@ -46,6 +68,8 @@
 import {globalloadingMutations} from '@store/helpers';
 
 import SelectLog from "../../../components/SelectLog";
+import AddButton from "../../../components/AddButton";
+import DeleteButton from "../../../components/DeleteButton";
 import SaveButton from "../../../components/SaveButton";
 
 import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel";
@@ -55,6 +79,8 @@ export default {
   name: "TechnicalWellForecastKitForm",
   components: {
     SelectLog,
+    AddButton,
+    DeleteButton,
     SaveButton
   },
   data: () => ({
@@ -78,7 +104,19 @@ export default {
       }
 
       this.SET_LOADING(false)
-    }
+    },
+
+    addCoefficient() {
+      this.form.permanent_stop_coefficients.push(
+          new TechnicalWellForecastKitModel().permanent_stop_coefficient
+      )
+    },
+
+    deleteCoefficient(index) {
+      if (this.form.permanent_stop_coefficients.length < 2) return
+
+      this.form.permanent_stop_coefficients.splice(index, 1)
+    },
   },
   computed: {
     url() {
