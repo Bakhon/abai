@@ -558,6 +558,8 @@ class WellsController extends Controller
         $arr = $well->dmartDailyProd()
             ->orderBy('date', 'desc')
             ->select('oil', 'liquid', 'wcut', 'gas', 'hdin', 'date', 'pzat')
+            ->where('hdin', '!=', null)
+            ->where('pzat', '!=', null)
             ->get()
             ->toArray();
         if ($arr) {
