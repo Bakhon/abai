@@ -161,8 +161,6 @@ export default {
 
       data.horizons = [data.horizons];
       data.correlated_wells = data.correlated_wells.map(({value})=>value);
-      console.log(data);
-      console.log(await Fetch_Autocorrelation(data));
     }
   }
 }
