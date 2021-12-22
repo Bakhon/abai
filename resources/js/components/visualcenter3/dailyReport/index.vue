@@ -16,12 +16,14 @@
                 <table v-if="menu.daily" class="daily-table">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="p-2">№<br>п/п</th>
-                            <th rowspan="2" class="p-2">Предприятия</th>
-                            <th rowspan="2" class="p-2">Доля<br>КМГ</th>
-                            <th colspan="3" class="p-2">СУТОЧНАЯ</th>
-                            <th rowspan="2" colspan="2" class="p-2">Причины отклонений</th>
+                            <th rowspan="3" class="p-2">№<br>п/п</th>
+                            <th rowspan="3" class="p-2">Предприятия</th>
+                            <th rowspan="3" class="p-2">Доля<br>КМГ</th>
+                            <th rowspan="2" colspan="3" class="p-2">СУТОЧНАЯ</th>
+                            <th rowspan="3" colspan="2" class="p-2">Причины отклонений</th>
                         </tr>
+                        </tr>
+                        <tr>
                         <tr>
                             <th>План</th>
                             <th>Факт</th>
@@ -131,12 +133,14 @@
                 <table v-if="menu.yearly" class="monthly-table">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="p-2">№<br>п/п</th>
-                            <th rowspan="2" class="p-2">Предприятия</th>
-                            <th rowspan="2" class="p-2">Доля<br>КМГ</th>
-                            <th rowspan="2" class="p-2">План на<br>{{currentYear}} г.</th>
-                            <th colspan="3" class="p-2">За {{previousMonth}} мес.</th>
-                            <th rowspan="2" class="p-2">Причины отклонений</th>
+                            <th rowspan="3" class="p-2">№<br>п/п</th>
+                            <th rowspan="3" class="p-2">Предприятия</th>
+                            <th rowspan="3" class="p-2">Доля<br>КМГ</th>
+                            <th rowspan="3" class="p-2">План на<br>{{currentYear}} г.</th>
+                            <th rowspan="2" colspan="3" class="p-2">За {{previousMonth}} мес.</th>
+                            <th rowspan="3" class="p-2">Причины отклонений</th>
+                        </tr>
+                        <tr>
                         </tr>
                         <tr>
                             <th>План</th>
@@ -255,6 +259,7 @@
         }
         th:nth-child(4) {
             width: 338px;
+            height: 60px;
         }
         th:nth-child(2) {
             width: 400px;
@@ -304,6 +309,7 @@
         }
         th:nth-child(5) {
             width: 200px;
+            height: 60px;
         }
         th:nth-child(2) {
             width: 400px;
