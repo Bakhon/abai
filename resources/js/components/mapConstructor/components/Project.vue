@@ -19,9 +19,10 @@ import Legend from "ol-ext/legend/Legend";
 import CircleStyle from "ol/style/Circle";
 import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
-import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
+import {Control, defaults as defaultControls, MousePosition, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
 import moment from 'moment';
+import {createStringXY} from "ol/coordinate";
 
 export default {
     props: {
@@ -71,6 +72,12 @@ export default {
             if (!this.isGridMap(type)) {
                 data = data[0];
             }
+            if (this.map !== null
+                && typeof this.map.getView().getProjection().getCode() !== "undefined"
+                && this.map.getView().getProjection().getCode() === "EPSG:4326") {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
+                return;
+            }
             return new Promise((resolve, reject) => {
                 try {
                     this.x1 = data.top_left[0];
@@ -91,6 +98,11 @@ export default {
                                     units: 'metric',
                                 }),
                                 new ExportMap(),
+                                new MousePosition({
+                                    coordinateFormat: createStringXY(),
+                                    className: 'mouse-position-coords',
+                                    target: document.getElementById('mouse-position'),
+                                }),
                             ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
@@ -312,7 +324,7 @@ export default {
                 const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
                 this.gridMapsValues.push(resultArray);
-                this.map.on('pointermove', function (evt) {
+                this.map.on('click', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
                         || evt.coordinate[0] > mapExtent[2]
@@ -615,47 +627,58 @@ export default {
             }
         },
         addGeographicalMap() {
-            let satelliteMapLayer = new TileLayer({
-                source: new XYZ({
-                    attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
-                    url:
-                        'https://services.arcgisonline.com/arcgis/rest/services/' +
-                        'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
-                    maxZoom: 11,
-                    projection: 'EPSG:4326',
-                    tileSize: 512,
-                    maxResolution: 180 / 512,
-                    wrapX: true,
-                    crossOrigin:"anonymous",
-                }),
-                visible: true,
-            });
-            let defaultMapLayer = new TileLayer({
-                source: new OSM(),
-                visible: false,
-            });
-            this.map = new Map({
-                controls: defaultControls().extend([
-                    new ScaleLine({
-                        units: 'metric',
+            if (this.map === null) {
+                let satelliteMapLayer = new TileLayer({
+                    source: new XYZ({
+                        attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
+                        url:
+                            'https://services.arcgisonline.com/arcgis/rest/services/' +
+                            'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
+                        maxZoom: 11,
+                        projection: 'EPSG:4326',
+                        tileSize: 512,
+                        maxResolution: 180 / 512,
+                        wrapX: true,
+                        crossOrigin:"anonymous",
                     }),
-                    new ToggleMapStyle(),
-                    new ExportMap(),
-                ]),
-                target: this.projectKey,
-                view: new View({
-                    projection: 'EPSG:4326',
-                    zoom: 0,
-                    center: [0, 0],
-                }),
-            });
-            let layerGroup = new LayerGroup();
-            layerGroup.name = 'Географическая карта';
-            layerGroup.type = 'map';
-            layerGroup.getLayers().push(defaultMapLayer);
-            layerGroup.getLayers().push(satelliteMapLayer);
-            this.addLayerGroupToMap(layerGroup);
-            this.addMapLegend();
+                    visible: true,
+                });
+                let defaultMapLayer = new TileLayer({
+                    source: new OSM(),
+                    visible: false,
+                });
+                this.map = new Map({
+                    controls: defaultControls().extend([
+                        new ScaleLine({
+                            units: 'metric',
+                        }),
+                        new ToggleMapStyle(),
+                        new ExportMap(),
+                        new MousePosition({
+                            coordinateFormat: createStringXY(4),
+                            className: 'mouse-position-coords',
+                            projection: 'EPSG:4326',
+                            target: document.getElementById('mouse-position'),
+                        }),
+                    ],),
+                    target: this.projectKey,
+                    view: new View({
+                        projection: 'EPSG:4326',
+                        zoom: 0,
+                        center: [0, 0],
+                    }),
+                    mapType: 'geographical',
+                });
+                let layerGroup = new LayerGroup();
+                layerGroup.name = 'Географическая карта';
+                layerGroup.type = 'map';
+                layerGroup.getLayers().push(defaultMapLayer);
+                layerGroup.getLayers().push(satelliteMapLayer);
+                this.addLayerGroupToMap(layerGroup);
+                this.addMapLegend();
+            } else {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
+            }
         },
         addMapOverlay() {
             let $self = this;
@@ -669,7 +692,7 @@ export default {
                 element: popupDiv,
             });
             this.map.addOverlay(this.mapOverlay);
-            this.map.on('pointermove', function (e) {
+            this.map.on('click', function (e) {
                 if (e.dragging) {
                     return;
                 }
@@ -931,5 +954,11 @@ class ExportMap extends Control {
 }
 .ol-control.mapLegend {
     bottom: 2.5em;
+}
+.mouse-position-coords {
+    color: #ccc;
+    position: absolute;
+    bottom: 0;
+    left: 40%;
 }
 </style>
