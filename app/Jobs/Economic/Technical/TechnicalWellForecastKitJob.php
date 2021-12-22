@@ -423,8 +423,8 @@ class TechnicalWellForecastKitJob implements ShouldQueue
             function ($join) use ($wellAlias, $wellProfitabilityAlias) {
                 /** @var JoinClause $join */
                 $join
-                    ->on("$wellProfitabilityAlias.uwi", "=", "$wellAlias.uwi")
-                    ->on("$wellProfitabilityAlias.date", "=", "$wellAlias.date_month");
+                    ->on("$wellProfitabilityAlias.date", "=", "$wellAlias.date_month")
+                    ->on("$wellProfitabilityAlias.uwi", "=", "$wellAlias.uwi");
             });
     }
 
@@ -493,6 +493,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
 
         $wells = DB::table((new TechnicalWellForecast())->getTable())
             ->whereRaw(DB::raw("log_id = $technicalLogId"))
+            ->orderByRaw(DB::raw("date_month"))
             ->toSql();
 
         $query = DB::table(DB::raw("($wells) AS well_forecast"))
@@ -549,6 +550,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
                 profitability,
                 profitability_propose,
                 profitability_without_prs
-            "));
+            "))
+            ->orderByRaw(DB::raw("wells.date, wells.uwi"));
     }
 }

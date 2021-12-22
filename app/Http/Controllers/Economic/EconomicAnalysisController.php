@@ -14,12 +14,18 @@ use App\Models\Refs\TechnicalWellForecastKitResult;
 use App\Models\Refs\TechnicalWellLossStatus;
 use App\Models\Refs\TechnicalWellStatus;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Level23\Druid\Types\Granularity;
 
 class EconomicAnalysisController extends Controller
 {
+    const CACHE_DELIMITER = '_';
+    const CACHE_DAYS = 1;
+    const CACHE_KEY_WELLS_KIT = 'economic_analysis_wells_kit';
+
     const CHANGED_STATUS_NOT_CHANGE = 0;
     const CHANGED_STATUS_STOP = -1;
     const CHANGED_STATUS_LAUNCH = 1;
@@ -146,7 +152,16 @@ class EconomicAnalysisController extends Controller
         TechnicalWellForecastKitResult $result
     ): array
     {
-        return [
+        $cacheKey = $this->cacheKey(
+            self::CACHE_KEY_WELLS_KIT,
+            [$kit->id, $result->permanent_stop_coefficient]
+        );
+
+        if (Cache::has($cacheKey)) {
+            return json_decode(Cache::get($cacheKey), true);
+        }
+
+        $wellsKit = [
             'wellsSumByStatus' => $this->getWellsSumByStatus(
                 (new TechnicalWellStatus())->getTable(),
                 'status_id',
@@ -184,6 +199,10 @@ class EconomicAnalysisController extends Controller
                 $result->stopped_uwis
             ),
         ];
+
+        Cache::put($cacheKey, json_encode($wellsKit, true), $this->cacheTime());
+
+        return $wellsKit;
     }
 
     private function getWellsKitByGranularity(
@@ -537,6 +556,7 @@ class EconomicAnalysisController extends Controller
                 "date_month",
                 "uwi",
             ])
+            ->orderByRaw(DB::raw("date_month, uwi"))
             ->toSql();
 
         $netBack = TechnicalWellForecastKitJob::sqlQueryNetBack(
@@ -876,5 +896,15 @@ class EconomicAnalysisController extends Controller
                  THEN $statusStop
                  ELSE $statusNotChange
             END";
+    }
+
+    private function cacheKey(string $cacheName, array $params): string
+    {
+        return $cacheName . implode(self::CACHE_DELIMITER, $params);
+    }
+
+    private function cacheTime(): Carbon
+    {
+        return now()->addDays(self::CACHE_DAYS);
     }
 }
