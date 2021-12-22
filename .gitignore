@@ -45,6 +45,7 @@ public/vendors~/
 public/js/vendor.js.LICENSE.txt
 public/fonts/style.css
 public/adminer-4.8.1.php
+public/img/.DS_Store
 
 #IDE file
 kmg-dashboard.iml
