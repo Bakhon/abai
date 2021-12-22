@@ -25,7 +25,7 @@
           </div>
           <div class="dropdown-holder">
             <b-dropdown>
-              <template #button-content>
+              <template #button-content class="outer_button_filter">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6 0C2.7 0 0 2.7 0 6C0 9.3 2.7 12 6 12C9.3 12 12 9.3 12 6C12 2.7 9.3 0 6 0ZM6 11.2714C3.08571 11.2714 0.771429 8.91429 0.771429 6C0.771429 3.08571 3.08571 0.771429 6 0.771429C8.91429 0.771429 11.2714 3.08571 11.2714 6C11.2714 8.91429 8.91429 11.2714 6 11.2714Z" fill="#868BB2"/>
 <path d="M5.99799 9.04286C6.42404 9.04286 6.76942 8.69748 6.76942 8.27143C6.76942 7.84538 6.42404 7.5 5.99799 7.5C5.57194 7.5 5.22656 7.84538 5.22656 8.27143C5.22656 8.69748 5.57194 9.04286 5.99799 9.04286Z" fill="#868BB2"/>
@@ -39,8 +39,12 @@
             </b-dropdown>
             <div class="line-block"></div>
             <div class="tab-archive-div" v-if="currentBlockTab == 1">
-                  <currentWorkHook v-for="template in wellsTreeCurrent"
-            :key="template.well_name" :template="template"></currentWorkHook>
+                  <currentWorkHook 
+                    v-for="template in wellsTreeCurrent"
+                    :key="template.well_name" 
+                    :template="template"
+                    >
+                  </currentWorkHook>
               </div>
 
               <div class="tab-archive-div" v-if="currentBlockTab == 2">
@@ -64,7 +68,7 @@
                     src="/img/tkrs/brigada_table.svg"
                     />Бригада №11</a>
                     <a class="hws-header-info-name">Месторождение: 0</a>
-                    <a class="hws-header-info-name">Скважина: 417</a>
+                    <a class="hws-header-info-name">Скважина:</a>
                     <img class="hws-tab-img comp-charts-icon" 
                     @click="comparison_graphs()" data-toggle="modal" 
                     data-target="#exampleModalCenter"
@@ -153,7 +157,6 @@
     <modal name="comparison_graphs" :width="560" :height="220"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953;  height:100%; border: 3px solid #656A8A;">
                   <a class="comparison-graphs">{{trans('tkrs.comparison_graphs')}}</a>
-
                 </div>
     </modal>
   </div>
@@ -168,6 +171,7 @@ import excess from './tabs/excess.vue';
 import currentWorkHook from './tabs/currentWorkHook.vue';
 import archWorkHook from './tabs/archWorkHook.vue';
 import { Plotly } from 'vue-plotly'
+import {mapState, mapActions} from 'vuex'
 
 
 export default {
@@ -186,6 +190,7 @@ export default {
     Plotly,
   },
   computed: {
+    ...mapState('tkrs', ["table_work", "wellFile", "areaChartData", "maximum", "minimum"]),
     layoutData() {
       return {
         modebar: {
@@ -226,7 +231,6 @@ export default {
       currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
-      areaChartData: [],
       buttonsToRemove: [
         'hoverClosestCartesian',
         'hoverCompareCartesian',
@@ -239,11 +243,7 @@ export default {
       wellList: [],
       wellDate: [],
       wellNumber: null,
-      wellFile: null,
-      maximum: null,
-      minimum: null,
       chartData: null,
-      table_work: [],
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWorkTable: "dayliWork1/",
       wellsTree: {},
@@ -263,9 +263,7 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
-          this.areaChartData = data.data;
-          this.maximum = data.data[0].rangeSlider.max;
-          this.minimum = data.data[0].rangeSlider.min;
+
         } else {
           console.log("No data");
         }
@@ -278,21 +276,22 @@ export default {
       this.getListWell();
       this.getDataTreeArchive();
       this.getDataTreeCurrent();
-      this.getTableWork();
       
     },
   
   methods: {
+    ...mapActions('tkrs', ['getTableWork','getSelectedtWellFile']),
     comparison_graphs() {
         this.$modal.show('comparison_graphs')
     },
     onChangeWell(number) {
       this.wellNumber = number;
+      console.log(this.wellNumber)
       this.postSelectedtWell();        
     },
     onChangeWellDate(number) {
       this.wellFile = number;
-      this.postSelectedtWellFile();
+      this.getSelectedtWellFile();
     },
     getListWell() {
       
@@ -327,27 +326,26 @@ export default {
                 }
             });
     },
-    postSelectedtWellFile() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-        this.axios
-            .get(
-                `http://172.20.103.203:8090/chooseDate/${this.wellNumber}/${this.wellFile}/`,
-            )
-            .then((response) => {
-                this.$store.commit("globalloading/SET_LOADING", false);
-                let data = response.data;
-                if (data) {
-                    this.wellFile = data;
-                    this.areaChartData = data.data;
-                    this.maximum = data.data[0].rangeSlider.max;
-                    this.minimum = data.data[0].rangeSlider.min;
+    // postSelectedtWellFile() {
+    //   this.$store.commit("globalloading/SET_LOADING", true);
+    //     this.axios
+    //         .get(
+    //             `http://172.20.103.203:8090/chooseDate/${well_name}/${well_date}/`,
+    //         )
+    //         .then((response) => {
+    //             this.$store.commit("globalloading/SET_LOADING", false);
+    //             let data = response.data;
+    //             if (data) {
+    //                 this.wellFile = data;
+    //                 this.areaChartData = data.data;
+    //                 this.maximum = data.data[0].rangeSlider.max;
+    //                 this.minimum = data.data[0].rangeSlider.min;
                     
-                } else {
-                    console.log("No data");
-                }
-            });
-      this.getTableWork();
-    },
+    //             } else {
+    //                 console.log("No data");
+    //             }
+    //         });
+    // },
     cancelChat() {
       this.isChart = false;
     },
@@ -361,23 +359,23 @@ export default {
     selectBlockTab(selectedBlockTab) {
       this.currentBlockTab = selectedBlockTab
     },
-    getTableWork() {
+    // getTableWork() {
       
-      this.axios
-          .get(
-              this.postApiUrl + this.linkWorkTable + "AKH_0482/05.08.2020/",
+    //   this.axios
+    //       .get(
+    //           this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
               
-          )
-          .then((response) => {
-              let data = response.data;
-              if (data) {
-                this.table_work = data
+    //       )
+    //       .then((response) => {
+    //           let data = response.data;
+    //           if (data) {
+    //             this.table_work = data
 
-              } else {
-                  console.log("No data");
-              }
-          });
-    },
+    //           } else {
+    //               console.log("No data");
+    //           }
+    //       });
+    // },
 
     getDataTreeArchive() {
       
@@ -418,7 +416,7 @@ export default {
 };
 </script>
 <style scoped>
-.btn-secondary {
+.btn-group::v-deep .btn-secondary {
     color: #fff;
     background-color: #20274F;
     border-color: #20274F;
@@ -629,7 +627,6 @@ table, th, td {
 .tab-archive-div {
   padding-left: 3%;
   overflow: scroll; 
-  height: 824px;
+  height: 747px;
 }
-
 </style>

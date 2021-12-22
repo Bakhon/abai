@@ -13,13 +13,13 @@
         style="color: #3366FF; margin-right: 8px;"
         class="fa fa-folder light-blue"
       ></i
-      >{{ template.well_name}}
+      >{{ template.well_name}}.{{ template.well_work}}
     </label>
     <ul>
       <currentWorkHookTreeMenuChiild
         
       v-for="date in template.date"
-            :key="date.field_name" :date="date"/>
+            :key="date.field_name" :date="date" :treeChild="template.well_name"/>
     </ul>
   </li>
 </template>

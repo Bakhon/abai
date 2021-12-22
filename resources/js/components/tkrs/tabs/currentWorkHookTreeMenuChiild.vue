@@ -1,8 +1,6 @@
 <template>
   <li
-    @mouseover="hovered = true"
-    @mouseleave="hovered = false"
-    @click="type === 'download' ? handleTemplateDownload() : setTableData()"
+  @click="handleTableAndGraph"
   >
     <label>
       <i style="color: #999DC0; margin-right: 8px;" class="fa fa-file "></i
@@ -19,11 +17,12 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 
 export default {
   name: "currentWorkHookTreeMenuChiild",
   props: {
-    treeChild: Object,
+    treeChild: String,
     date: Object,
   },
   data() {
@@ -35,6 +34,11 @@ export default {
   computed: {
   },
   methods: {
+    ...mapActions("tkrs", ["getTableWork", "getSelectedtWellFile"]),
+    handleTableAndGraph() {
+      this.getTableWork({ well_name: this.treeChild, well_date: this.date.field_name });
+      this.getSelectedtWellFile({ well_name_chart: this.treeChild, well_date_chart: this.date.field_name });
+    },
     setTableData() {
       if (this.currentSubsoilField[0])
         this.handleTableData({
@@ -43,6 +47,9 @@ export default {
           user_id: this.userID,
           template: this.treeChild,
         });
+    },
+    postSelectedtWellFileChild(well_name, well_date) {
+      this.$emit('post_method', {well_name, well_date})
     },
   },
 };
