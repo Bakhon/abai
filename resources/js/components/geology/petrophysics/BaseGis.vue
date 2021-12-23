@@ -117,12 +117,11 @@
 </template>
 
 <script>
-import {globalloadingMutations} from "@store/helpers";
-import {geologyState} from "../../../store/helpers";
+import {globalloadingMutations, geologyState} from "@store/helpers";
 import {
   FETCH_WELLS_CURVES, GET_TREE_STRATIGRAPHY,
   SET_GIS_DATA, SET_GIS_DATA_FOR_GRAPH,
-  SET_SELECTED_WELL_CURVES_FORCE, SET_WELLS, SET_WELLS_BLOCKS
+  SET_SELECTED_WELL_CURVES_FORCE, SET_SHOW_STRATIGRAPHY_ELEMENTS, SET_WELLS, SET_WELLS_BLOCKS
 } from "../../../store/modules/geologyGis.const";
 
 import Button from "../components/buttons/Button";
@@ -178,10 +177,10 @@ export default {
   computed: {
     getSelectedStratigraphy: {
       get() {
-        return this.chooseStratModalTree;
+        return this.$store.state.geologyGis.showStratigraphyElements;
       },
       set(val) {
-        this.chooseStratModalTree = val;
+        this.$store.commit(SET_SHOW_STRATIGRAPHY_ELEMENTS, val);
       }
     },
     getStratigraphy() {
@@ -199,15 +198,10 @@ export default {
     ...geologyState(["isOpenedRightSide", "isOpenedLeftSide"]),
   },
   watch: {
-    "$store.state.geologyGis.blocksScrollY"(val) {
-      this.$store.state.geologyGis.tHorizon.scrollY = val;
-      this.drawStratigraphy()
-    },
-
     isShowChooseStratModal(val) {
       if (val) {
         this.$store.state.geologyGis.tHorizon.clearSvg();
-        this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+        this.chooseStratModalTreeOld = [...this.getSelectedStratigraphy];
       }
     },
 
@@ -226,16 +220,15 @@ export default {
 
   methods: {
     saveStratigraphy() {
-      this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+      this.chooseStratModalTreeOld = [...this.getSelectedStratigraphy];
       this.drawStratigraphy()
     },
-
     cancelStratigraphy() {
       this.chooseStratModalTree = [...this.chooseStratModalTreeOld];
       this.drawStratigraphy();
     },
     drawStratigraphy() {
-      this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.chooseStratModalTree]);
+      this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.getSelectedStratigraphy]);
     },
     async saveTableSettings() {
       this.SET_LOADING(true);

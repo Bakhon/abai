@@ -5,6 +5,9 @@ import {
     FETCH_WELLS,
     FETCH_WELLS_MNEMONICS,
     FETCH_WELLS_HORIZONS,
+    FETCH_AUTOCORRELATION,
+
+    POST_HORIZON,
 
     SET_WELLS_MNEMONICS,
     SET_FIELDS,
@@ -21,6 +24,8 @@ import {
     SET_GIS_DATA_FOR_GRAPH,
     SET_CURVE_OPTIONS,
     SET_WELLS_HORIZONS,
+    SET_AUTOCORRELATION,
+    SET_SHOW_STRATIGRAPHY_ELEMENTS,
 
     GET_CURVES,
     GET_WELLS_OPTIONS,
@@ -31,7 +36,7 @@ import {
     GET_TREE_STRATIGRAPHY, COLOR_PALETTE
 } from "./geologyGis.const";
 
-import {isFloat, uuidv4} from "../../components/geology/js/utils";
+import {uuidv4} from "../../components/geology/js/utils";
 import AwGisClass from "../../components/geology/petrophysics/graphics/awGis/utils/AwGisClass";
 import {
     Fetch_Curves,
@@ -40,8 +45,9 @@ import {
     Fetch_Wells,
     Fetch_WellsMnemonics
 } from "../../components/geology/api/petrophysics.api";
-import {Fetch_Horizons} from "../../components/geology/api/horizons.api";
+import {Fetch_Horizons, Post_Horizons} from "../../components/geology/api/horizons.api";
 import THorizon from '../../components/geology/petrophysics/graphics/awGis/utils/THorizon'
+import {Fetch_Autocorrelation} from "../../components/geology/api/autocorrelation.api";
 
 const geologyGis = {
     state: {
@@ -62,6 +68,8 @@ const geologyGis = {
 
         awGisElementsCount: 0,
         gisWells: [],
+        showStratigraphyElements: [],
+        showStratigraphyElementsForResultDropdown: [],
         blocksScrollY: 0,
         wellTreeParam: {
             dragElement: {
@@ -84,7 +92,8 @@ const geologyGis = {
         WELLS_MNEMONICS_FOR_TREE: [],
         CURVES_OF_SELECTED_WELLS: {},
         WELLS_HORIZONS: {},
-        WELLS_HORIZONS_ELEMENTS: []
+        WELLS_HORIZONS_ELEMENTS: [],
+        AUTOCORRELATION: [],
     },
     getters: {
         [GET_WELLS_OPTIONS](state) {
@@ -182,6 +191,7 @@ const geologyGis = {
 
         [SET_SCROLL_BLOCK_Y](state, y) {
             state.blocksScrollY = y;
+            state.tHorizon.scrollY = y;
         },
 
         [SET_CURVE_NAME](state, curveName) {
@@ -230,7 +240,6 @@ const geologyGis = {
                 return state.WELLS[sort];
             });
             state.tHorizon.selectedWells = blockIds.map((w) => w.value);
-
         },
 
         [SET_WELLS_MNEMONICS](state, mnemonics) {
@@ -244,6 +253,7 @@ const geologyGis = {
                         let fillColor = Math.floor(Math.random() * 16777215).toString(16);
                         state.tHorizon.addElement(el.name, {
                                 name: el.name,
+                                code: el.code,
                                 show: false,
                                 fill: `#${fillColor}`,
                                 toWells: {},
@@ -315,6 +325,38 @@ const geologyGis = {
             if (state.awGis.hasElement(state.curveName)) {
                 state.awGis.editPropertyElementData(state.curveName, 'options', `customParams.${propName}`, (p) => ({...p, ...props}));
             }
+        },
+
+        [SET_AUTOCORRELATION](state, [payload, data]) {
+            let newObject = {}
+            let toShow = []
+            let lastMD = 0;
+            state.showStratigraphyElementsForResultDropdown = [];
+            for (let [wellName, wellData = {}] of Object.entries(payload)) {
+                newObject[wellName] = Object.entries(wellData).map(([stratigraphyName, stratigraphyValue]) => {
+                    let horizonData = state.tHorizon.getElement(stratigraphyName);
+                    toShow.push(`${stratigraphyName}_${data.method}`)
+                    state.showStratigraphyElementsForResultDropdown.push({
+                        label: `${stratigraphyName}/ ${wellName} ${data.method}`,
+                        value: `${stratigraphyName}_${data.method}`
+                    })
+                    return {
+                        name: `${stratigraphyName}_${data.method}`,
+                        code: horizonData.code,
+                        md: lastMD = Math.abs(stratigraphyValue[0])
+                    }
+                })
+            }
+
+            this.commit(SET_WELLS_HORIZONS, newObject);
+            this.commit(SET_SHOW_STRATIGRAPHY_ELEMENTS, toShow);
+            state.tHorizon.drawSelectedPath(state.showStratigraphyElements);
+            this.commit(SET_SCROLL_BLOCK_Y, Math.round(lastMD) - 100);
+            state.AUTOCORRELATION = newObject;
+        },
+        [SET_SHOW_STRATIGRAPHY_ELEMENTS](state, stratigraphy) {
+            state.showStratigraphyElements = stratigraphy;
+            state.tHorizon.updateMaps();
         }
     },
 
@@ -346,6 +388,19 @@ const geologyGis = {
 
         async [FETCH_WELLS_HORIZONS]({commit, state}, payload) {
             if (payload.length) return commit(SET_WELLS_HORIZONS, await Fetch_Horizons(payload));
+        },
+
+        async [FETCH_AUTOCORRELATION]({commit, state}, payload) {
+            try {
+                commit(SET_AUTOCORRELATION, [await Fetch_Autocorrelation(payload), payload]);
+            } catch (e) {
+                console.log('e', e);
+            }
+
+        },
+
+        async [POST_HORIZON]({commit, state}, payload) {
+            return await Post_Horizons(payload);
         },
     }
 }

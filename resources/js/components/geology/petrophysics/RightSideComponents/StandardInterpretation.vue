@@ -1,5 +1,19 @@
 <template>
   <div>
+    <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов"
+              :options="[
+              {label: 'option 1', value: 1},
+              {label: 'option 2', value: 2},
+              {label: 'option 3', value: 3}
+            ]" />
+
+    <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Данные по сважине"
+              :options="[
+              {label: 'option 1', value: 1},
+              {label: 'option 2', value: 2},
+              {label: 'option 3', value: 3}
+
+            ]" />
     <dropdown block class="w-100 mb-2" button-text="Скважина" :options="[
         {label: 'Option 0'},
         {label: 'Option 1'},
@@ -113,7 +127,10 @@ export default {
   data() {
     return {
       multipleSelect: [],
-      demoModal: false
+      demoModal: false,
+      dropdownValue: {
+        value: null
+      },
     }
   },
 }
