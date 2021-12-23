@@ -19,7 +19,7 @@
         <td style="border: 1px solid white;"></td>
     </tr>
     <tr>
-        <td colspan="8" style="text-align: right; font-size: 14px; font-style: italic; font-family: Arial; border: 1px solid white;">{{in_array('ОМГ',$missing)}}тонн</td>
+        <td colspan="8" style="text-align: right; font-size: 14px; font-style: italic; font-family: Arial; border: 1px solid white;">тонн</td>
     </tr>
     <tbody>
         <tr>
