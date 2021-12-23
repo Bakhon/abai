@@ -29,55 +29,55 @@
         </div>
         <div class="move-menu">
             @if(auth()->user()->can('bigdata view main'))
-                <li class="left-menu-li">
-                    <a class="d-flex justify-content-between" href="{{route('bigdata')}}">
-                        <div>
-                            <img src="/img/icons/bigdata_gray.svg" class="companyLogo">
-                            {{ trans('bd.bigdata_module') }}
-                        </div>
-                        <img src="/img/icons/arrow-right.svg">
-                    </a>
-                    <ul class="dropdown-child">
-                        <div class="menu-header">
-                            <img src="/img/icons/bigdata_gray.svg" class="companyLogo">
-                            {{ trans('bd.bigdata_module') }}
-                        </div>
-                        <div class="menu-title no-route">{{ trans('bd.bigdata_module') }}</div>
-                        <li class="left-menu-li">
-                            <ul>
-                                <li class="left-menu-li">
-                                    <a href="{{route('bigdata.well_card')}}">
-                                        {{ trans('bd.forms.well_card.menu') }}
-                                    </a>
-                                </li>
+            <li class="left-menu-li">
+                <a class="d-flex justify-content-between" href="{{route('bigdata')}}">
+                    <div>
+                        <img src="/img/icons/bigdata_gray.svg" class="companyLogo">
+                        {{ trans('bd.bigdata_module') }}
+                    </div>
+                    <img src="/img/icons/arrow-right.svg">
+                </a>
+                <ul class="dropdown-child">
+                    <div class="menu-header">
+                        <img src="/img/icons/bigdata_gray.svg" class="companyLogo">
+                        {{ trans('bd.bigdata_module') }}
+                    </div>
+                    <div class="menu-title no-route">{{ trans('bd.bigdata_module') }}</div>
+                    <li class="left-menu-li">
+                        <ul>
+                            <li class="left-menu-li">
+                                <a href="{{route('bigdata.well_card')}}">
+                                    {{ trans('bd.forms.well_card.menu') }}
+                                </a>
+                            </li>
 
-                                <li class="left-menu-li">
-                                    <a href="{{route('bigdata.wells.index')}}">
-                                        {{ trans('bd.forms.title') }}
-                                    </a>
-                                </li>
+                            <li class="left-menu-li">
+                                <a href="{{route('bigdata.wells.index')}}">
+                                    {{ trans('bd.forms.title') }}
+                                </a>
+                            </li>
 
-                                <li class="left-menu-li">
-                                    <a href="{{route('bigdata.wells.create')}}">
-                                        {{ trans('bd.forms.well_register.title') }}
-                                    </a>
-                                </li>
+                            <li class="left-menu-li">
+                                <a href="{{route('bigdata.wells.create')}}">
+                                    {{ trans('bd.forms.well_register.title') }}
+                                </a>
+                            </li>
 
-                                <li class="left-menu-li">
-                                    <a href="{{route('report_constructor')}}">
-                                        {{ trans('bd.forms.report_constructor.menu') }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                            <li class="left-menu-li">
+                                <a href="{{route('report_constructor')}}">
+                                    {{ trans('bd.forms.report_constructor.menu') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
             @endif
             @if(auth()->user()->can('visualcenter view main'))
                 <li class="left-menu-li">
                     <a href="{{route('visualcenter3')}}">
-                        <img src="/img/icons/visual-center-left-menu-icon.svg" class="companyLogo">
-                        {{ trans('visualcenter.visualcenter_module') }}
+                    <img src="/img/icons/visual-center-left-menu-icon.svg" class="companyLogo">
+                    {{ trans('visualcenter.visualcenter_module') }}
                     </a>
                 </li>
             @endif
@@ -161,55 +161,55 @@
 @yield('sidebar_menu_additional')
 
 <div class="nav_bottom">
-    <a href="{{route('faq')}}"
-       class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-            <img src="/img/nav_icon1.svg" class="companyLogo">
-            <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.help') }}</span>
-        </div>
-    </a>
-    <div class="dropright">
-        <div data-toggle="dropdown">
-            <a href="#" class="bg-dark-new list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <img src="/img/nav_icon2.svg" class="companyLogo">
-                    <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.support') }}</span>
-                </div>
-            </a>
-        </div>
-        <div class="dropdown-menu dropdown-menu__support">
-            <div class="menu-header justify-content-between">
-                <div class="d-flex align-items-center">
-                    <img src="/img/nav_icon2.svg" class="companyLogo">
-                    {{ trans('app.support') }}
-                </div>
+<a href="{{route('faq')}}"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon1.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.help') }}</span>
+    </div>
+</a>
+<div class="dropright">
+    <div data-toggle="dropdown">
+        <a href="#" class="bg-dark-new list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <img src="/img/nav_icon2.svg" class="companyLogo">
+                <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.support') }}</span>
             </div>
-            <div class="move-menu">
-                <li class="left-menu-li">
-                    <a href="#">
-                        <img src="/img/icons/default_phone.svg" class="companyLogo"> Для абонентов «Казахтелеком» 1444
-                    </a>
-                </li>
-                <li class="left-menu-li">
-                    <a href="#">
-                        <img src="/img/icons/mobile_phone.svg" class="companyLogo">  Для мобильных абонентов  +7 (800) 080 1444
-                    </a>
-                </li>
+        </a>
+    </div>
+    <div class="dropdown-menu dropdown-menu__support">
+        <div class="menu-header justify-content-between">
+            <div class="d-flex align-items-center">
+                <img src="/img/nav_icon2.svg" class="companyLogo">
+                {{ trans('app.support') }}
             </div>
         </div>
-    </div>
-    <a href="mailto:sms.abai@niikmg.kz"
-       class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-            <img src="/img/nav_icon3.svg" class="companyLogo">
-            <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.mail') }}</span>
-        </div>
-    </a>
-    <div
-            class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-            <img src="/img/nav_icon4.svg" class="companyLogo">
-            <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.chat') }}</span>
+        <div class="move-menu">
+            <li class="left-menu-li">
+                <a href="#">
+                <img src="/img/icons/default_phone.svg" class="companyLogo"> Для абонентов «Казахтелеком» 1444
+                </a>
+            </li>
+            <li class="left-menu-li">
+                <a href="#">
+                <img src="/img/icons/mobile_phone.svg" class="companyLogo">  Для мобильных абонентов  +7 (800) 080 1444
+                </a>
+            </li>
         </div>
     </div>
+</div>
+<a href="mailto:sms.abai@niikmg.kz"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon3.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.mail') }}</span>
+    </div>
+</a>
+<div
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-start align-items-center">
+        <img src="/img/nav_icon4.svg" class="companyLogo">
+        <span class="menu-collapsed companyName d-none nav_item_text">{{ trans('app.chat') }}</span>
+    </div>
+</div>
 </div>
