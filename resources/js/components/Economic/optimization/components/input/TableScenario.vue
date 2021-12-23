@@ -3,17 +3,6 @@
       ref="table"
       :params="params"
       class="height-fit-content height-unset">
-    <div slot="column-10" slot-scope="{ props }" class="mx-auto">
-      <launch-button
-          v-if="props.cellData.total_variants === null"
-          @click.native="launchScenario(props.cellData.id)"/>
-
-      <div v-else>
-        {{ props.cellData.calculated_variants }} /
-        {{ props.cellData.total_variants }}
-      </div>
-    </div>
-
     <div slot="column-11" slot-scope="{ props }" class="mx-auto">
       <delete-button @click.native="deleteScenario(props.rowData[0].data)"/>
     </div>
@@ -71,7 +60,7 @@ export default {
           }
 
           if (header.isProgress) {
-            return row.push(scenario)
+            return row.push(`${scenario.calculated_variants}/${scenario.total_variants}`)
           }
 
           row.push(scenario[header.key])
@@ -100,24 +89,6 @@ export default {
 
       this.SET_LOADING(false)
     },
-
-    async launchScenario(id) {
-      this.SET_LOADING(true)
-
-      try {
-        let {data} = await this.axios.put(`${this.url}/${id}`)
-
-        let index = this.data.findIndex(x => x[0] === id)
-
-        this.data[index][10].calculated_variants = data.calculated_variants
-
-        this.data[index][10].total_variants = data.total_variants
-      } catch (e) {
-        console.log(e)
-      }
-
-      this.SET_LOADING(false)
-    }
   },
   computed: {
     url() {

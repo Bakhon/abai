@@ -32,7 +32,8 @@ class AddPermissionSectionForDigitalDrilling extends Migration
         $data = [
             [
                 'code' => 'main',
-                'module' => 'digitalDrilling'
+                'module' => 'digitalDrilling',
+                'title_trans' => 'digital_drilling.permission_sections.main',
             ],
         ];
 

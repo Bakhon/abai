@@ -7,7 +7,7 @@
 @section('module_title', trans('digital_drilling.module_title'))
 @section('content')
     <link rel="stylesheet" href="/css/digital_drilling.css">
-    <digital-drilling />
+    <digital-drilling :user="{{json_encode(auth()->user()->load('profile'))}}"/>
 @endsection
 @section('sidebar_menu_additional')
     @include('partials.sidebar.digital_drilling_menu')

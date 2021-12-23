@@ -128,7 +128,10 @@ class Gdis extends PlainForm
             return !empty($field['table']) && $field['table'] === 'prod.gdis_complex_value';
         })->pluck('code')->unique()->toArray();
 
-        $data = $gdisComplexValues = [];
+        $data = [
+            'well' => $this->request->get('well')
+        ];
+        $gdisComplexValues = [];
         foreach ($tmpData as $key => $value) {
             if (in_array($key, $gdisComplexValueFieldsCodes)) {
                 $metric = $metrics->where('code', $key)->first();
@@ -137,7 +140,7 @@ class Gdis extends PlainForm
                 }
                 $gdisComplexValues[$metric->id] = $value;
             } else {
-                if($key === 'id' || $this->getFields()->where('code', $key)->isNotEmpty()) {
+                if ($key === 'id' || $this->getFields()->where('code', $key)->isNotEmpty()) {
                     $data[$key] = $value;
                 }
             }
@@ -153,7 +156,7 @@ class Gdis extends PlainForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = $dbQuery->first()->toArray();
             $dbQuery->update($data);
 
             foreach ($gdisComplexValues as $metricId => $value) {

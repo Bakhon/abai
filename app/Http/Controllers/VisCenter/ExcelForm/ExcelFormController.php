@@ -51,6 +51,20 @@ class ExcelFormController extends Controller
     );
     private $systemFields = ['id','dzo_import_data_id'];
     private $condensateCompanies = ['АГ'];
+    private $dzoWithoutEmails = ['АГ','КПО','НКО','ПКИ','ПКК','ТП','ТШО','КГМ','ПКИ'];
+    private $yearlyReasonsDay = 10;
+    private $yearlyReasonFields = array (
+        'yearly_reason_1_explanation',
+        'yearly_reason_1_losses',
+        'yearly_reason_2_explanation',
+        'yearly_reason_2_losses',
+        'yearly_reason_3_explanation',
+        'yearly_reason_3_losses',
+        'yearly_reason_4_explanation',
+        'yearly_reason_4_losses',
+        'yearly_reason_5_explanation',
+        'yearly_reason_5_losses'
+    );
 
     public function getDzoCurrentData(Request $request)
     {
@@ -88,21 +102,38 @@ class ExcelFormController extends Controller
     public function store(Request $request)
     {
         $this->deleteAlreadyExistRecord($request);
-
         $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
-
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
         $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
         $dzo_downtime_reason->save();
-
-        $dzo_decrease_reason = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
+        if (Carbon::now()->day === $this->yearlyReasonsDay && !is_null($decrease_data)) {
+            $params = array();
+            foreach($this->yearlyReasonFields as $field) {
+                $params[$field] = $decrease_data[$field];
+                $decrease_data[$field] = '';
+            }
+            $this->updateLastMonthRecord($request->dzo_name,$params);
+        }
+        $dzo_decrease_reason = new DzoImportDecreaseReason;
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
+    }
+
+    private function updateLastMonthRecord($dzoName,$params)
+    {
+        $parent = DzoImportData::query()
+            ->where('dzo_name',$dzoName)
+            ->whereDate('date',Carbon::now()->subMonth())
+            ->first();
+
+        DzoImportDecreaseReason::query()
+            ->where('dzo_import_data_id',$parent->id)
+            ->update($params);
     }
 
     public function deleteAlreadyExistRecord($request)
@@ -288,11 +319,13 @@ class ExcelFormController extends Controller
     public function approveDailyCorrection(Request $request)
     {
         $this->deleteDuplicates($request->dzo_name,$request->date,$request->actualId);
-        $client = $this->getEmailClient();
         $updateOptions = array(
             $request->currentApproverField => true
         );
-        $this->sendApproveEmailToDzo($request->request,$client);
+        if (!in_array($request->dzo_name,$this->dzoWithoutEmails)) {
+            $client = $this->getEmailClient();
+            $this->sendApproveEmailToDzo($request->request,$client);
+        }
         DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
         DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
@@ -340,8 +373,11 @@ class ExcelFormController extends Controller
             <b>Дата:</b> {$request->date}<br />
             <b>Исполнитель:</b> {$request->user_name}<br />
             <b>Причина:</b> {$request->change_reason}</p>";
-        $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$request->dzo_name]);
-        $this->sendEmail($messageOptions,$client);
+        if (!in_array($request->dzo_name,$this->dzoWithoutEmails)) {
+            $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$request->dzo_name]);
+            $this->sendEmail($messageOptions,$client);
+        }
+
         DzoImportData::query()
             ->where('id', $request->currentId)
             ->update(
@@ -546,6 +582,7 @@ class ExcelFormController extends Controller
             ->whereMonth('date',$type,$date)
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
+            ->whereNull('is_corrected')
             ->sum($field);
     }
 
@@ -557,6 +594,6 @@ class ExcelFormController extends Controller
         $dzoSummary = app()->call('App\Http\Controllers\VisCenter\DailyReport@getDailyProduction',$params);
 
         $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
-        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary']), $fileName . '.xlsx');
+        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary'],$dzoSummary['missing']), $fileName . '.xlsx');
     }
 }

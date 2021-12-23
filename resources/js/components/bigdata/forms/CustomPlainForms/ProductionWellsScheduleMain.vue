@@ -855,7 +855,7 @@ export default {
                 this.techMode = await this.getProductionTechMode();
             }
             for (let i in this.historicalData) {
-                let techModeItem = this.techMode.find(o => o.dbeg === this.historicalData[i].date.format("YYYY-MM-DD"));
+                let techModeItem = this.techMode.find(o => o.dbeg <= this.historicalData[i].date.format("YYYY-MM-DD") && o.dend > this.historicalData[i].date.format("YYYY-MM-DD"));
                 for (let y in techModeItem) {
                     if (!isNaN(this.techModeMapping[y])) {
                         this.historicalData[i].params['techMode'][this.techModeMapping[y]].value = techModeItem[y];
