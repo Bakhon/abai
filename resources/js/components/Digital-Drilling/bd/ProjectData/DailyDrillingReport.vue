@@ -157,6 +157,7 @@
                         toaster: "b-toaster-top-center",
                         autoHideDelay: 8000,
                     });
+                    this.getFormReports()
                 }).catch((e)=>{
                     console.log(e)
                 });
