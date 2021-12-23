@@ -19,7 +19,7 @@
         <td style="border: 1px solid white;"></td>
     </tr>
     <tr>
-        <td colspan="8" style="text-align: right; font-size: 14px; font-style: italic; font-family: Arial; border: 1px solid white;">тонн</td>
+        <td colspan="8" style="text-align: right; font-size: 14px; font-style: italic; font-family: Arial; border: 1px solid white;">{{in_array('ОМГ',$missing)}}тонн</td>
     </tr>
     <tbody>
         <tr>
@@ -50,11 +50,29 @@
             <tr>
                 @if ($dzo['orderId'] === 2)
                     <td rowspan="2">{{ $dzo['id'] }}</td>
-                    <td style="word-wrap:break-word">{{ $dzo['name']}}</td>
+                    @if (in_array($dzo['acronym'],$missing))
+                        <td style="word-wrap:break-word; color:#e67300">
+                            {{ $dzo['name']}}
+                            <div><br>(данные обновляются)</div>
+                        </td>
+                    @else
+                        <td style="word-wrap:break-word;">
+                            {{ $dzo['name']}}
+                        </td>
+                    @endif
                     <td rowspan="2" style="text-align:right">{{ $dzo['part']}}%</td>
                 @elseif ($dzo['orderId'] !== 3)
                     <td>{{ $dzo['id'] }}</td>
-                    <td style="word-wrap:break-word">{{ $dzo['name']}}</td>
+                    @if (in_array($dzo['acronym'],$missing))
+                        <td style="word-wrap:break-word; color:#e67300">
+                            {{ $dzo['name']}}
+                            <div><br>(данные обновляются)</div>
+                        </td>
+                    @else
+                        <td style="word-wrap:break-word;">
+                            {{ $dzo['name']}}
+                        </td>
+                    @endif
                     <td style="text-align:right">{{ $dzo['part']}}%</td>
                 @else
                     <td style="text-indent: 14px; word-wrap:break-word">{{ $dzo['name']}}</td>
@@ -129,11 +147,29 @@
             <tr>
                 @if ($dzo['orderId'] === 2)
                     <td rowspan="2">{{ $dzo['id'] }}</td>
-                    <td style="word-wrap:break-word">{{ $dzo['name']}}</td>
+                    @if (in_array($dzo['acronym'],$missing))
+                        <td style="word-wrap:break-word; color:#e67300">
+                            {{ $dzo['name']}}
+                            <div><br>(данные обновляются)</div>
+                        </td>
+                    @else
+                        <td style="word-wrap:break-word;">
+                            {{ $dzo['name']}}
+                        </td>
+                    @endif
                     <td rowspan="2" style="text-align:right">{{ $dzo['part']}}%</td>
                 @elseif ($dzo['orderId'] !== 3)
                     <td>{{ $dzo['id'] }}</td>
-                    <td style="word-wrap:break-word">{{ $dzo['name']}}</td>
+                    @if (in_array($dzo['acronym'],$missing))
+                        <td style="word-wrap:break-word; color:#e67300">
+                            {{ $dzo['name']}}
+                            <div><br>(данные обновляются)</div>
+                        </td>
+                    @else
+                        <td style="word-wrap:break-word;">
+                            {{ $dzo['name']}}
+                        </td>
+                    @endif
                     <td style="text-align:right">{{ $dzo['part']}}%</td>
                 @else
                     <td style="text-indent: 14px; word-wrap:break-word">{{ $dzo['name']}}</td>

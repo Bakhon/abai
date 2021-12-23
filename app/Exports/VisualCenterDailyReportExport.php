@@ -28,13 +28,15 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         11 => 'Ноябрь',
         12 => 'Декабрь'
     );
+    private $missing = array();
 
-    function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary)
+    function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary,$missing)
     {
         $this->dailyParams = $dailyParams;
         $this->monthlyParams = $monthlyParams;
         $this->yearlyParams = $yearlyParams;
         $this->summary = $summary;
+        $this->missing = $missing;
     }
 
     public function styles(Worksheet $sheet)
@@ -100,7 +102,8 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
             'monthName' => $this->monthMapping[Carbon::now()->month],
             'monthId' => Carbon::now()->month-1,
             'yearId' => Carbon::now()->year,
-            'summary' => $this->summary
+            'summary' => $this->summary,
+            'missing' => $this->missing
         ]);
     }
 }
