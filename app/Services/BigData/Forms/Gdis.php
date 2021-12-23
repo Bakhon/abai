@@ -156,7 +156,7 @@ class Gdis extends PlainForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = $dbQuery->first()->toArray();
             $dbQuery->update($data);
 
             foreach ($gdisComplexValues as $metricId => $value) {
