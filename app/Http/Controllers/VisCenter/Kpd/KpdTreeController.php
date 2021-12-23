@@ -142,4 +142,16 @@ class KpdTreeController extends Controller
             }
         }
     }
+
+    public function deleteKpd(Request $request)
+    {
+        KpdTreeCatalog::find($request->id)->delete();
+    }
+
+    public function getKpdByManager(Request $request)
+    {
+        return KpdTreeCatalog::query()
+            ->where('type',$request->input('type'))
+            ->get();
+    }
 }

@@ -38,7 +38,7 @@
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd"></kpd-modal-kpd-edit>
+        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd"></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -80,6 +80,23 @@ export default {
             this.kpdList[index]['elements'] = item.kpd_elements;
             delete this.kpdList[index]['kpd_elements'];
         });
+        this.$watch(
+            () => {
+                if (this.$refs.editKpd) {
+                    return this.$refs.editKpd.isOperationFinished
+                }
+            },
+            async (update) => {
+                if (update) {
+                    this.kpdList = await this.getKpdList();
+                    _.forEach(this.kpdList, (item,index) => {
+                        let elements = item.kpd_elements;
+                        this.kpdList[index]['elements'] = item.kpd_elements;
+                        delete this.kpdList[index]['kpd_elements'];
+                    });
+                }
+            }
+        );
     },
     props: ['managers','corporateManager'],
 }
@@ -133,7 +150,7 @@ export default {
     border-radius: 8px;
 }
 .table-container {
-    max-height: 800px;
+    max-height: 740px;
     overflow-y: auto;
 }
 </style>

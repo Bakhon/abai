@@ -340,7 +340,6 @@ export default {
             },
             selectedKpd: {},
             kpdList: [],
-            kpdDecompositionB: [],
             kpdType: {
                 'ceo2Decomposition': 3
             },
@@ -352,7 +351,8 @@ export default {
             },
             managers: [],
             deputy: [],
-            strategicKpdList: []
+            strategicKpdList: [],
+            corporateKpdList: []
         };
     },
     methods: {
@@ -380,16 +380,10 @@ export default {
             }
             return response.data;
         },
-        getKpdByType(type,id) {
+        getKpdByType(type) {
             let kpdList = [];
-            if (!id) {
-                return _.filter(this.kpdList, (item) => {
-                    return JSON.parse(item.type).alias === type;
-                });
-            }
             _.forEach(this.kpdList, (kpd) => {
-                let parsedType = JSON.parse(kpd.type);
-                if (parsedType.alias === type && parsedType.id === id) {
+                if (kpd.type === type) {
                     kpdList.push(kpd);
                 }
             });
@@ -404,7 +398,7 @@ export default {
         },
         switchManager(manager) {
             this.selectedManager = manager;
-            this.$modal.show('modalMap');
+            this.$modal.show('modalMonitoring');
         },
         getChildClassA(kpdId) {
             return 'kpdDecompositionA_' + kpdId;
@@ -463,10 +457,23 @@ export default {
                 kpd = Object.assign(kpd,this.kpdTemplate);
             });
         });
-        this.selectedKpd = this.kpdCeoDecompositionB[0].kpd[0];
         this.kpdList = await this.getAllKpd();
-        this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === this.kpdType.ceo2Decomposition);
         this.SET_LOADING(false);
         this.strategicKpdList = this.getKpdByType('strategic');
+        this.corporateKpdList = this.getKpdByType(this.corporateManager.id.toString());
     },
+    computed: {
+        thirdDecompositionStyles() {
+            let height = Math.round(780 / (this.managers.length) + this.managers.length) + 'px';
+            return {'height':height};
+        },
+        strategicDecompositionStyles() {
+            let height = Math.round(780 / (this.strategicKpdList.length) - (this.strategicKpdList.length * 2)) + 'px';
+            return {'height':height};
+        },
+        corporateDecompositionStyles() {
+            let height = Math.round(780 / (this.corporateKpdList.length) - (this.corporateKpdList.length * 2)) + 'px';
+            return {'height':height};
+        }
+    }
 }

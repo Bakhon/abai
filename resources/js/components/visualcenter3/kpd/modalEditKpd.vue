@@ -13,7 +13,7 @@
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">{{kpd.name}}</div>
                     <div class="btn-toolbar">
-                        <button type="button" class="modal-bign-button" @click="$modal.hide('modalKpdEdit')">
+                        <button type="button" class="modal-bign-button" @click="[isOperationFinished = true,$modal.hide('modalKpdEdit')]">
                             {{trans('pgno.zakrit')}}
                         </button>
                     </div>
@@ -117,10 +117,10 @@
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Владелец</div>
                         <select class="form-select input_kpd p-2 col-10" @change="handleTypeChange($event)">
-                            <option v-for="owner in owners" :value="JSON.stringify(owner.type)">{{owner.name}}</option>
+                            <option v-for="owner in owners" :value="owner.id">{{owner.name}}</option>
                         </select>
                     </div>
-                    <div v-if="JSON.parse(kpd.current.type).alias !== 'strategic'" class="p-1 col-12 d-flex">
+                    <div v-if="kpd.current.type !== 'strategic'" class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Принадлежность</div>
                         <select class="form-select input_kpd p-2 col-10" @change="kpd.current.parent = $event.target.value">
                             <option v-for="kpd in kpdParents" :value="kpd.id">{{kpd.name}}</option>
@@ -153,7 +153,7 @@
                     <button type="button" class="modal-button_save mr-2" @click="store">
                         {{trans('kpd_tree.save')}}
                     </button>
-                    <button type="button" class="modal-button_delete mr-2" @click="$modal.show('modalKpdEdit')">
+                    <button type="button" class="modal-button_delete mr-2" @click="deleteKpd">
                         {{trans('kpd_tree.delete')}}
                     </button>
                 </div>
@@ -178,7 +178,7 @@ export default {
                     functions: '',
                     result: '',
                     responsible: '',
-                    type: JSON.stringify({'alias': 'strategic','id':null}),
+                    type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
                     calculation_document: ''
@@ -187,10 +187,11 @@ export default {
             owners: [
                 {
                     'name': 'Стратегические КПД',
-                    'type': {'alias': 'strategic','id': null}
+                    'id': 'strategic'
                 },
             ],
-            kpdParents: []
+            kpdParents: [],
+            isOperationFinished: false
         };
     },
     methods: {
@@ -218,7 +219,7 @@ export default {
             formData.append('name', this.kpd.current.name);
             formData.append('elements', JSON.stringify(this.kpd.current.elements));
             formData.append('description', this.kpd.current.description);
-            formData.append('unit', this.kpd.unit);
+            formData.append('unit', this.kpd.current.unit);
             formData.append('formula', this.kpd.current.formula);
             formData.append('functions', this.kpd.current.functions);
             formData.append('result', this.kpd.current.result);
@@ -241,24 +242,15 @@ export default {
             this.isOperationFinished = true;
             this.$modal.hide('modalKpdEdit');
         },
+        async deleteKpd() {
+            let uri = this.localeUrl("/kpd-tree-catalog-delete");
+            await axios.get(uri, {params:{'id':this.kpd.current.id}});
+            this.isOperationFinished = true;
+            this.$modal.hide('modalKpdEdit');
+        },
         handleTypeChange(e) {
             this.kpd.current.type = e.target.value;
-            if (this.kpd.current.type.alias === 'strategic') {
-                this.kpdParents = [
-                    {
-                        'id': null,
-                        'alias': 'strategic'
-                    }
-                ];
-            } else {
-                let filtered = _.filter(this.kpdList, (item) => {
-                    return JSON.parse(item.type).alias === JSON.parse(this.kpd.current.type).alias;
-                });
-                this.kpdParents = filtered;
-                if (filtered.length > 0) {
-                    this.kpd.current.parent = JSON.parse(filtered[0].type).id;
-                }
-            }
+            this.kpd.current.parent = this.kpdList[0].type;
         },
     },
     async mounted() {

@@ -89,6 +89,8 @@ Route::group(
                 Route::get('/kpd-tree', 'VisCenter\Kpd\KpdTreeController@kpdTree')->name('kpd-tree');
                 Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
+                Route::get('/kpd-tree-catalog-delete', 'VisCenter\Kpd\KpdTreeController@deleteKpd');
+                Route::get('/get-kpd-by-manager', 'VisCenter\Kpd\KpdTreeController@getKpdByManager');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
                 Route::get('/oil-dynamic', 'VisCenter\OilDynamic@oilDynamic')->name('oil-dynamic');
                 Route::get('/oil-dynamic-daily', 'VisCenter\OilDynamic@getDailyProductionData');

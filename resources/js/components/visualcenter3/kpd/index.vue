@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 col-12 row m-0 ceo-table">
+            <div class="mt-3 mb-3 col-12 row m-0 ceo-table">
                 <div class="col-2 d-flex">
                     <div class="col-12 table-header">
                         <span>Стратегические КПД</span>
@@ -47,64 +47,74 @@
                         <div class="col-12 p-2 kpd-column">
                             <div
                                     v-for="(kpd, index) in strategicKpdList"
+                                    class="d-flex align-items-center"
+                                    :style="strategicDecompositionStyles"
                             >
 <!--                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"-->
 <!--                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"-->
-                                <div class="text-right">
-                                    0%
-                                </div>
-                                <div class="progress progress_template">
-                                    <div
-                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                            :style="{width: 0 + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="0"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                    ></div>
-                                </div>
-                                <div class="text-left">
-                                    {{kpd.name}}
+                                <div class="col-12">
+                                    <div class="text-right">
+                                        0%
+                                    </div>
+                                    <div class="progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
+                                                :style="{width: 0 + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="0"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="text-left">
+                                        {{kpd.name}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-3 row m-0">
-                    <div class="col-12 d-flex p-2 table-sub-header chairmaster" @click="switchManager(kpdDecompositionA)">
-                        <img v-if="corporateManager.avatar" width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
-                        <div class="ml-2 text-left"><b>{{corporateManager.name}}</b> <br> {{corporateManager.title}}</div>
-                    </div>
-                    <div class="col-12 p-2 kpd-column">
-                        <div
-                                v-for="(kpd, index) in getKpdByType('corporateManager',corporateManager.id)"
-                        >
-<!--                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"-->
-<!--                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"-->
-                            <div class="text-right">
-                                0%
-                            </div>
-                            <div class="progress progress_template">
-                                <div
-                                        :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                        :style="{width: 0 + '%',}"
-                                        role="progressbar"
-                                        :aria-valuenow="0"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                ></div>
-                            </div>
-                            <div class="text-left">
-                                {{kpd.name}}
+                    <div class="col-12 p-0">
+                        <div class="col-12 d-flex p-2 table-sub-header chairmaster" @click="switchManager(corporateManager)">
+                            <img v-if="corporateManager.avatar" width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
+                            <div class="ml-2 text-left"><b>{{corporateManager.name}}</b> <br> {{corporateManager.title}}</div>
+                        </div>
+                        <div class="col-12 p-2 kpd-column">
+                            <div
+                                    v-for="(kpd, index) in corporateKpdList"
+                                    class="d-flex align-items-center"
+                                    :style="corporateDecompositionStyles"
+                            >
+    <!--                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"-->
+    <!--                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"-->
+                                <div class="col-12">
+                                    <div class="text-right">
+                                        0%
+                                    </div>
+                                    <div class="progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
+                                                :style="{width: 0 + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="0"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="text-left">
+                                        {{kpd.name}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-7 row m-0">
-                    <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="manager in managers" class="col-12 table-manager-kpd row p-0 m-0">
-                            <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
-                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" width="50px" height="50px" class="rounded-circle"></img>
+                    <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
+                        <div v-for="manager in managers"  :style="thirdDecompositionStyles" class="kpd-ceo_header-b">
+                            <div class="h-100 col-12 d-flex align-items-center chairmaster" @click="switchManager(master)">
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                 <div class="ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                             </div>
 <!--                            <div-->
@@ -206,7 +216,8 @@
 .kpd-column {
     border: 1px solid #2A3A85;
     background: #272C5C;
-    min-height: 780px;
+    height: 780px;
+    max-height: 780px;
 }
 .progress.progress_template {
     background-color: #A4A8BF !important;
@@ -226,7 +237,9 @@
     border: 1px solid #2A3A85;
 }
 .kpd-ceo_header-b {
-    border-bottom: 4px solid #656A8A;
+    border: 0.2em solid #272C5C;
+    background: #535591;
+    border-radius: 7px;
 }
 .kpd-ceo_item-b {
     background: #272C5C;
@@ -280,9 +293,15 @@
     border: 2px solid #272953;
 }
 .table-manager-kpd {
-    height: 110px;
+    /*height: 110px;*/
 }
 .visibility-settings {
     background: #474F91;
+}
+.manager-column {
+    border: 1px solid #2A3A85;
+    background: #272C5C;
+    height: 840px;
+    max-height: 840px;
 }
 </style>

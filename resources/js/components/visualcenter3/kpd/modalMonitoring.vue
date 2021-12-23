@@ -30,57 +30,84 @@
                                 <div class="col-4">Вызов<br>(125%)</div>
                             </div>
                         </th>
-                        <th colspan="3" class="p-2">Результаты</th>
+                        <th colspan="4" class="p-2">Результаты</th>
                         <th rowspan="2" class="p-2">Комментарии</th>
                     </tr>
                     <tr>
-                        <th class="p-2">
-                            Факт за<br>
-                            <el-date-picker
-                                    v-model="period"
-                                    type="date"
-                                    format="dd.MM.yyyy"
-                                    popper-class="custom-date-picker"
-                                    :picker-options="datePickerOptions"
-                                    @change="changeDate"
-                            >
-                            </el-date-picker>
-                        </th>
+                        <th class="p-2">Дата</th>
+                        <th class="p-2">Факт</th>
                         <th class="p-2">Оценка<br>(баллы)</th>
                         <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
                     </tr>
-                    <tr v-for="row in kpd.table.body">
-                        <td class="p-2" v-for="(column,index) in row">
-                            <div v-if="index === 4" class="row m-0">
-                                <div class="col-12 d-flex justify-content-around">
-                                    <div v-for="position in column">
-                                        {{position}}
+                    <tr v-for="(kpd,index) in kpdList">
+                        <td class="p-2">{{index + 1}}</td>
+                        <td class="p-2">{{kpd.name}}</td>
+                        <td class="p-2">{{kpd.unit}}</td>
+                        <td class="p-2">{{kpd.weight}}</td>
+                        <td class="p-2">
+                            <div class="col-12 progress progress_template mt-2 p-0 progress-monitoring">
+                                <div
+                                        :class="[getProgressBarFillingColor(30),'col-12 progress-bar progress-bar_filling']"
+                                        :style="{width: 30 + '%',}"
+                                        role="progressbar"
+                                        :aria-valuenow="30"
+                                        :aria-valuemin="getProgressPoint('min',kpd.step)"
+                                        :aria-valuemax="getProgressPoint('max',kpd.maximum)"
+                                >
+                                    <div class="d-flex justify-content-around">
+<!--                                        <div v-for="position in column" class="progress-splitter"></div>-->
                                     </div>
                                 </div>
-                                <div class="col-12 progress progress_template mt-2 p-0 progress-monitoring">
-                                    <div
-                                            :class="[getProgressBarFillingColor(row[index+1]),'col-12 progress-bar progress-bar_filling']"
-                                            :style="{width: row[index+1] + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="row[index+1]"
-                                            :aria-valuemin="getProgressPoint('min',column)"
-                                            :aria-valuemax="getProgressPoint('max',column)"
-                                    >
-                                        <div class="d-flex justify-content-around">
-                                            <div v-for="position in column" class="progress-splitter">
-                                            </div>
-                                        </div>
-                                        </div>
-                                </div>
-                                <div
-                                        :style="{ 'padding-left': `${row[index+1]}px` }"
-                                        :class="getProgressBarTitleColor(row[index+1])"
-                                >
-                                    {{row[index+1]}}
-                                </div>
                             </div>
-                            <div v-else>{{column}}</div>
                         </td>
+
+<!--                        <td class="p-2">{{kpd.step}}</td>-->
+<!--                        <td class="p-2">{{kpd.target}}</td>-->
+<!--                        <td class="p-2">{{kpd.maximum}}</td>-->
+
+
+                        <td class="p-2">data</td>
+                        <td class="p-2">fact</td>
+                        <td class="p-2">оценка</td>
+                        <td class="p-2">вклад</td>
+                        <td class="p-2">comments</td>
+<!--                        <td class="p-2">{{kpd['kpd-fact']['created_at']}}</td>-->
+<!--                        <td class="p-2">{{kpd['kpd-fact']['fact']}}</td>-->
+<!--                        <td class="p-2">{{kpd.comments}}</td>-->
+
+
+
+<!--                        <td class="p-2" v-for="(column,index) in row">-->
+<!--                            <div v-if="index === 4" class="row m-0">-->
+<!--                                <div class="col-12 d-flex justify-content-around">-->
+<!--                                    <div v-for="position in column">-->
+<!--                                        {{position}}-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-12 progress progress_template mt-2 p-0 progress-monitoring">-->
+<!--                                    <div-->
+<!--                                            :class="[getProgressBarFillingColor(row[index+1]),'col-12 progress-bar progress-bar_filling']"-->
+<!--                                            :style="{width: row[index+1] + '%',}"-->
+<!--                                            role="progressbar"-->
+<!--                                            :aria-valuenow="row[index+1]"-->
+<!--                                            :aria-valuemin="getProgressPoint('min',column)"-->
+<!--                                            :aria-valuemax="getProgressPoint('max',column)"-->
+<!--                                    >-->
+<!--                                        <div class="d-flex justify-content-around">-->
+<!--                                            <div v-for="position in column" class="progress-splitter">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        </div>-->
+<!--                                </div>-->
+<!--                                <div-->
+<!--                                        :style="{ 'padding-left': `${row[index+1]}px` }"-->
+<!--                                        :class="getProgressBarTitleColor(row[index+1])"-->
+<!--                                >-->
+<!--                                    {{row[index+1]}}-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div v-else>{{column}}</div>-->
+<!--                        </td>-->
                     </tr>
                     <tr>
                         <td></td>
@@ -88,7 +115,7 @@
                         <td></td>
                         <td>100%</td>
                         <td></td>
-                        <td colspan="3">
+                        <td colspan="4">
                             Итоговая результативность
                             <span class="summary ml-4">74%</span>
                         </td>
@@ -106,6 +133,7 @@
 
 <script>
 import moment from "moment-timezone";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     data: function () {
@@ -212,9 +240,18 @@ export default {
                     return moment(date) >= moment().subtract(1, 'days')
                 }
             },
+            kpdList: []
         };
     },
     methods: {
+        async getKpdList() {
+            let uri = this.localeUrl("/get-kpd-by-manager");
+            const response = await axios.get(uri,{params:{'type':this.managerInfo.id}});
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
         handleFilter(index) {
             _.forEach(this.filters, (filter) => {
                 filter.selected = false;
@@ -232,19 +269,19 @@ export default {
             }
         },
         getProgressPoint(type,values) {
-            if (type === 'min' && values.length === 3) {
-                if (parseInt(values[0])) {
-                    return parseInt(values[0]);
-                } else {
-                    0;
-                }
-            } else if (type === 'max' && values.length === 3) {
-                if (parseInt(values[2])) {
-                    return parseInt(values[2]);
-                } else {
-                    parseInt(values[1]);
-                }
-            }
+            // if (type === 'min' && values.length === 3) {
+            //     if (parseInt(values[0])) {
+            //         return parseInt(values[0]);
+            //     } else {
+            //         0;
+            //     }
+            // } else if (type === 'max' && values.length === 3) {
+            //     if (parseInt(values[2])) {
+            //         return parseInt(values[2]);
+            //     } else {
+            //         parseInt(values[1]);
+            //     }
+            // }
         },
         getProgressBarTitleColor(progress) {
             if (progress < 0) {
@@ -259,11 +296,21 @@ export default {
             this.SET_LOADING(true);
             this.SET_LOADING(false);
         },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
         this.kpdCount = this.kpd.table.body.length;
     },
     props: ['managerInfo'],
+    watch: {
+        managerInfo: async function () {
+            this.SET_LOADING(true);
+            this.kpdList = await this.getKpdList();
+            this.SET_LOADING(false);
+        },
+    }
 }
 
 
@@ -281,6 +328,12 @@ export default {
         }
         &:nth-child(2) {
             width: 250px;
+        }
+        &:nth-child(3) {
+            width: 100px;
+        }
+        &:nth-child(4) {
+            width: 60px;
         }
         &:nth-child(5), &:nth-child(6) {
             width: 400px;
