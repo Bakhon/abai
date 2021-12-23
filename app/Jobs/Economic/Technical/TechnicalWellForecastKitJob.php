@@ -40,6 +40,8 @@ class TechnicalWellForecastKitJob implements ShouldQueue
 
     public function handle()
     {
+        ini_set('max_execution_time', $this->timeout);
+
         /** @var TechnicalWellForecastKit $kit */
         $kit = TechnicalWellForecastKit::find($this->kitId);
 
