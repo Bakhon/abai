@@ -30,7 +30,8 @@
               {{ trans('bd.select_dzo') }}
             </p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
+            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}"
+                 class="tables__list scrollable">
               <div v-for="custom_column in formParams.custom_columns">
                 <div :is="custom_column.component_name"
                      :allColumns="formParams.columns"
@@ -986,7 +987,7 @@ body.fixed {
     margin: 0;
     padding: 0;
 
-    .tables {
+    .tables__list {
       overflow-x: auto;
       overflow-y: auto;
       width: 100%;
