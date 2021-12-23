@@ -582,6 +582,7 @@ class ExcelFormController extends Controller
             ->whereMonth('date',$type,$date)
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
+            ->whereNull('is_corrected')
             ->sum($field);
     }
 
