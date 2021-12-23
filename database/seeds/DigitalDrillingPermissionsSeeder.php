@@ -21,5 +21,9 @@ class DigitalDrillingPermissionsSeeder extends Seeder
             ['name' => 'digitalDrilling view catalog'],
             ['guard_name' => 'web']
         );
+        Permission::updateOrCreate(
+            ['name' => 'digitalDrilling delete catalog'],
+            ['guard_name' => 'web']
+        );
     }
 }
