@@ -48,8 +48,10 @@
               </div>
 
               <div class="tab-archive-div" v-if="currentBlockTab == 2">
-                  <archWorkHook v-for="template in wellsTree"
-            :key="template.year" type="year" :template="template"></archWorkHook>
+                  <archWorkHook 
+                  v-for="template in wellsTree"
+                  :key="template.year" 
+                  type="year" :template="template"></archWorkHook>
               </div>
          
           </div>

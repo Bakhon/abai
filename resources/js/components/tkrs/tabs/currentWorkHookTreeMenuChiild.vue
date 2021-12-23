@@ -39,15 +39,6 @@ export default {
       this.getTableWork({ well_name: this.treeChild, well_date: this.date.field_name });
       this.getSelectedtWellFile({ well_name_chart: this.treeChild, well_date_chart: this.date.field_name });
     },
-    setTableData() {
-      if (this.currentSubsoilField[0])
-        this.handleTableData({
-          field_id: this.currentSubsoilField[0].field_id,
-          report_id: this.treeChild.id,
-          user_id: this.userID,
-          template: this.treeChild,
-        });
-    },
     postSelectedtWellFileChild(well_name, well_date) {
       this.$emit('post_method', {well_name, well_date})
     },
