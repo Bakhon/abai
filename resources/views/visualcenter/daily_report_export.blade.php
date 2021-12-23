@@ -183,7 +183,7 @@
                     <td style="text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @endif
                 @if (count($dzo['reasons']) > 0 && $dzo['fact'] - $dzo['plan'] < 0)
-                    <td style="height:{{{count($dzo['reasons']) * 35}}}px">
+                    <td style="height:{{{count($dzo['reasons']) * 35}}}px; word-wrap:break-word;">
                         @php
                         $i = 1;
                         @endphp

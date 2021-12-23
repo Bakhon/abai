@@ -61,7 +61,7 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         $sheet->getColumnDimension('E')->setWidth(19.86);
         $sheet->getColumnDimension('F')->setWidth(19.86);
         $sheet->getColumnDimension('G')->setWidth(19.86);
-        $sheet->getColumnDimension('H')->setWidth(149.57);
+        $sheet->getColumnDimension('H')->setWidth(162);
         $sheet->getPageSetup()->setFitToPage(true);
         foreach(array('A5:H6','A24:H26','A44:H45') as $cell) {
             $sheet->getStyle($cell)->getFont()->setBold(true);
