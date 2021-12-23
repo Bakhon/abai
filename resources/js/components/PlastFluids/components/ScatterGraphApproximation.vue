@@ -140,20 +140,20 @@
             :graphType="graphType"
           />
           <ScatterGraphApproximationLabelInput
-            style="margin-bottom: 10px;"
+            style="margin-bottom: 10px"
             :inputText.sync="backwardPredict"
             labelTransKey="approximation_backward_predict"
             :graphType="graphType"
           />
           <div class="configure-intersection-holder">
             <ScatterGraphApproximationLabelCheckbox
-              style="margin-bottom: 0;"
+              style="margin-bottom: 0"
               :graphType="graphType"
               :checkboxInput.sync="isConfigureIntersection"
               labelTransKey="configure_intersection"
               :disableCheckbox="
                 approximationSelected !== 'linear' &&
-                  approximationSelected !== 'polynomial'
+                approximationSelected !== 'polynomial'
               "
             />
             <input
@@ -189,7 +189,7 @@
             :initialValue="initialMinX"
           />
           <ScatterGraphApproximationLabelInput
-            style="margin-bottom: 10px;"
+            style="margin-bottom: 10px"
             :inputText.sync="abscissaTo"
             labelTransKey="to"
             :isAxisInput="true"
@@ -209,7 +209,7 @@
             :initialValue="initialMinY"
           />
           <ScatterGraphApproximationLabelInput
-            style="margin-bottom: 10px;"
+            style="margin-bottom: 10px"
             :inputText.sync="ordinateTo"
             labelTransKey="to"
             :isAxisInput="true"
@@ -255,6 +255,7 @@ export default {
     initialMaxY: [String, Number],
     initialMaxX: [String, Number],
     initialMinX: [String, Number],
+    defaultIntersection: Number,
     minY: [String, Number],
     maxY: [String, Number],
   },
@@ -333,12 +334,15 @@ export default {
       immediate: true,
     },
     isConfigureIntersection() {
-      this.intersection = "";
+      this.intersection = this.defaultIntersection ?? "";
     },
     approximationSelected(value) {
-      if (value === "linear" || value === "polynomial") return;
+      if (value === "linear" || value === "polynomial") {
+        this.isConfigureIntersection =
+          typeof this.defaultIntersection === "number";
+        return;
+      }
       this.isConfigureIntersection = false;
-      this.intersection = "";
     },
   },
   methods: {
