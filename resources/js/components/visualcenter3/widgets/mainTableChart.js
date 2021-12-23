@@ -218,6 +218,7 @@ export default {
             initialSummary.productionFactForChart = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
             initialSummary.productionPlanForChart2 = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
 
+            let previousDifference = this.getPreviousDifference(date,summaryForChart);
             if (date.month() === 0) {
                 initialSummary.monthlyPlan = initialSummary.productionPlanForChart;
             } else if (date.month() >= moment().month() && initialSummary.productionFactForChart === 0) {
@@ -225,9 +226,12 @@ export default {
                 initialSummary.productionPlanForChart = null;
                 initialSummary.productionFactForChart = null;
                 initialSummary.productionPlanForChart2 = null;
+            } else if (date.month() >= moment().month()) {
+                let previousPlan = this.getMonthlyFact(date.clone().subtract(1,'months'),summaryForChart,'productionPlanForChart');
+                initialSummary.monthlyPlan = previousPlan + previousDifference;
             } else {
-                let previousDifference = this.getPreviousDifference(date,summaryForChart);
-                initialSummary.monthlyPlan = initialSummary.productionPlanForChart + previousDifference;
+                let previousPlan = this.getMonthlyFact(date.clone().subtract(1,'months'),summaryForChart,'productionPlanForChart');
+                initialSummary.monthlyPlan = previousPlan + previousDifference;
                 this.previousMonthDifference = initialSummary.monthlyPlan;
             }
 

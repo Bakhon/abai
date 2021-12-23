@@ -317,7 +317,7 @@ export default {
     },
     getCellValue(row, column) {
 
-      if (row[column.code] && typeof row[column.code] === 'object' && row[column.code].formated_value) {
+      if (row[column.code] && typeof row[column.code] === 'object' && row[column.code].hasOwnProperty('formated_value')) {
         return row[column.code].formated_value
       }
 

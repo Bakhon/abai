@@ -83,7 +83,9 @@
                                 <label>Редактировать отчет:</label>
                                 <div class="dropdown__area-edit">
                                     <input type="checkbox" v-model="is_open">
-                                    <input type="date" class="date" :disabled="!is_open" v-model="dateOpen" :class="{error: is_open && error && dateOpen==''}">
+                                    <select name="" id="" v-model="dateOpen" class="date" :disabled="!is_open" :class="{error: is_open && error && dateOpen==''}">
+                                        <option :value="report.id" v-for="report in reportData">{{report.date}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +127,7 @@
                 isEdit: false,
                 is_open: false,
                 dateOpen: '',
+                reportData: [],
             }
         },
         mounted(){
@@ -136,11 +139,22 @@
             },
             changeCurrentWell(item){
                 this.currentWell = item
+                this.getReportData(this.currentWell.well_id)
             },
             changeReport(data){
                 this.isEdit = true
                 this.is_open = false
                 this.report = data
+            },
+            getReportData(id){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/'+id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.reportData = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
             },
             getDailyReport(){
                 if (!this.is_open){
@@ -164,7 +178,17 @@
                                     console.log("No data");
                                 }
                             })
-                                .catch((error) => console.log(error))
+                                .catch((error) => {
+                                    if (error.response.data){
+                                        this.$bvToast.toast(error.response.data.error_message, {
+                                            title: "Отчет",
+                                            variant: 'danger',
+                                            solid: true,
+                                            toaster: "b-toaster-top-center",
+                                            autoHideDelay: 8000,
+                                        });
+                                    }
+                                })
                         }else{
                             this.error = true
                         }
@@ -185,21 +209,26 @@
                                 console.log("No data");
                             }
                         })
-                            .catch((error) => console.log(error))
+                            .catch((error) => {
+                                if (error.response.data){
+                                    this.$bvToast.toast(error.response.data.error_message, {
+                                        title: "Отчет",
+                                        variant: 'danger',
+                                        solid: true,
+                                        toaster: "b-toaster-top-center",
+                                        autoHideDelay: 8000,
+                                    });
+                                }
+                            })
                     }
                 }else{
                     if (this.dateOpen == ''){
                         this.error = true
                     }else{
                         this.error = false
-                        let date =  moment(this.dateOpen, 'YYYY-MM-DD').format('DD-MM-YYYY')
-                        this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/well/date',{
-                            well:  this.currentWell.well_id,
-                            date: date
-                        }).then((response) => {
+                        this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.dateOpen).then((response) => {
                             if (response) {
                                 this.report = response.data
-                                this.report.report_daily.author = this.user.username
                                 this.created = true
                             } else {
                                 console.log("No data");
@@ -258,6 +287,7 @@
                     if (data) {
                         this.well = data;
                         this.currentWell = data[0]
+                        this.getReportData(this.currentWell.well_id)
                     } else {
                         console.log('No data');
                     }

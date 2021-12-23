@@ -69,7 +69,6 @@ class FluidProductionMonth extends MeasLogByMonth
             'bsw',
             'oil',
             'gas',
-            'note',
             'reason_decline',
             'worktime'
         ];
@@ -155,7 +154,6 @@ class FluidProductionMonth extends MeasLogByMonth
                     $item = $item->first();
                     return [
                         'liquid' => round($item->liquid, 2),
-                        'note' => $item->note,
                         'reason_decline' => $item->reason_decline
                     ];
                 });
@@ -303,7 +301,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         $row = [];
         $row['tech'] = [
-            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->liquid : null
+            'value' => $this->techMode->get($well->id) ? round($this->techMode->get($well->id)->liquid, 2) : null
         ];
 
         $count = $sum = 0;
@@ -340,7 +338,7 @@ class FluidProductionMonth extends MeasLogByMonth
     {
         $row = [];
         $row['tech'] = [
-            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->wcut : null
+            'value' => $this->techMode->get($well->id) ? round($this->techMode->get($well->id)->wcut, 2) : null
         ];
 
         $count = $sum = 0;
@@ -376,12 +374,12 @@ class FluidProductionMonth extends MeasLogByMonth
     ) {
         $row = [];
         $row['tech'] = [
-            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil : null
+            'value' => $this->techMode->get($well->id) ? round($this->techMode->get($well->id)->oil, 2) : null
         ];
 
         $liquidRow = $this->getLiquidRowData($well, $date);
         $bswRow = $this->getBswRowData($well, $date);
-        $oilDensity = $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil_density : 0;
+        $oilDensity = $this->techMode->get($well->id) ? round($this->techMode->get($well->id)->oil_density, 2) : 0;
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();

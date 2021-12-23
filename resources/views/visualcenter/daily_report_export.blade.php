@@ -67,17 +67,25 @@
                     <td style="text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @endif
                 @if (count($dzo['reasons']) > 0 && $dzo['fact'] - $dzo['plan'] < 0)
-                    <td colspan="2" style="height:{{{count($dzo['reasons']) * 35}}}px">
-                        @foreach($dzo['reasons'] as $index => $reason)
-                            {{$index+1}}.  {{$reason[0]}}
-                            @if ($reason[1] !== null)
-                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
-                            @endif
-                            @if (count($dzo['reasons']) - 1 !== $index)
-                                <br>
-                            @endif
-                        @endforeach
-                    </td>
+                    @if (count($dzo['reasons']) < 4)
+                        <td colspan="2" style="height:{{{count($dzo['reasons']) * 36}}}px">
+                            @foreach($dzo['reasons'] as $index => $reason)
+                                {{$index+1}}.  {{$reason[0]}}, потери - {{number_format($reason[1],0,',', ' ')}} т.
+                                @if (count($dzo['reasons']) - 1 !== $index)
+                                    <br>
+                                @endif
+                            @endforeach
+                        </td>
+                    @else
+                        <td colspan="2" style="height:{{{count($dzo['reasons']) * 24}}}px">
+                            @foreach($dzo['reasons'] as $index => $reason)
+                                {{$index+1}}.  {{$reason[0]}}, потери - {{number_format($reason[1],0,',', ' ')}} т.
+                                @if (count($dzo['reasons']) - 1 !== $index)
+                                    <br>
+                                @endif
+                            @endforeach
+                        </td>
+                    @endif
                 @else
                     <td colspan="2"></td>
                 @endif
@@ -139,15 +147,12 @@
                     <td style="text-align:right">{{ number_format($dzo['fact'] - $dzo['plan'],0,',', ' ') }}</td>
                 @endif
                 @if (count($dzo['reasons']) > 0 && $dzo['fact'] - $dzo['plan'] < 0)
-                    <td>
+                    <td style="height:{{{count($dzo['reasons']) * 35}}}px">
                         @php
                         $i = 1;
                         @endphp
                         @foreach($dzo['reasons'] as $index => $reason)
-                            {{$i}}. {{$reason[0]}}
-                            @if ($reason[1] !== null)
-                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
-                            @endif
+                            {{$i}}. {{$reason[0]}}, потери - {{number_format($reason[1],0,',', ' ')}} т.
                             @if (++$i <= count($dzo['reasons']))
                                 <br>
                             @endif
@@ -216,10 +221,7 @@
                         $y = 1;
                         @endphp
                         @foreach($dzo['reasons'] as $index => $reason)
-                            {{$y}}. {{$reason[0]}}
-                            @if ($reason[1] !== null)
-                                , потери - {{number_format($reason[1],0,',', ' ')}} т.
-                            @endif
+                            {{$y}}. {{$reason[0]}}, потери - {{number_format($reason[1],0,',', ' ')}} т.
                             @if (++$y <= count($dzo['reasons']))
                                 <br>
                             @endif

@@ -52,7 +52,7 @@
                 "code": "tube_count",
                 "type": "numeric",
                 "title": "number_of_pipes",
-                "validation": "required|numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "cem_volume",
@@ -70,7 +70,7 @@
                 "code": "landing_date",
                 "type": "date",
                 "title": "landing_date",
-                "validation": "required|date"
+                "validation": "nullable|date"
               }
               
             ]

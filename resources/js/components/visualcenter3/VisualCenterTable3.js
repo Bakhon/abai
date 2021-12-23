@@ -125,7 +125,8 @@ export default {
             additionalCompanies: ['ОМГК','АГ'],
             missedCompanies: [],
             chartReasons: [],
-            opecEndDate: moment('01.08.2021', 'DD.MM.YYYY')
+            opecEndDate: moment('01.08.2021', 'DD.MM.YYYY'),
+            dzoWithoutAdditionalWidgets: ['КПО','НКО','ТШО']
         };
     },
     methods: {
@@ -317,6 +318,11 @@ export default {
             this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
             this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
             this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+        }
+
+        if (this.oneDzoSelected !== null && this.dzoWithoutAdditionalWidgets.includes(this.oneDzoSelected)) {
+            this.SET_LOADING(false);
+            return;
         }
         this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
         this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');

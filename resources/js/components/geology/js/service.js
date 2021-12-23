@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 const service = axios.create({
     baseURL: process.env.MIX_MICROSERVICE_WELLS_DATA
 });
@@ -20,7 +19,7 @@ service.interceptors.response.use(
         return res.data
     },
     error => {
-        return Promise.reject({ error: error, color: 'danger', message: '' /* TODO Error message or action */ })
+        return Promise.reject({ error: error, color: 'danger', message: error.response.data })
     }
 );
 

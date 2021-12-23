@@ -69,11 +69,11 @@ export default class TCoords {
     }
 
     positionX(x) {
-        return this.scaleX(+x) + +this.#__settings.centerX - this.#__settings.offsetX;
+        return this.scaleX(+x) - this.#__settings.offsetX;
     }
 
     positionY(y) {
-        return this.scaleY(+y) + +this.#__settings.centerY - this.#__settings.offsetY;
+        return this.cm2px(+y) - this.#__settings.offsetY
     }
 
     percentPositionX(X, maxValue, minValue) {
@@ -94,8 +94,6 @@ export default class TCoords {
 
     cm2px(cm, dpi) {
         dpi = dpi === undefined ? document.getElementById("dpi").offsetHeight : dpi;
-        if (dpi) return 2.54 / cm * dpi;
         return cm
     }
-
 }
