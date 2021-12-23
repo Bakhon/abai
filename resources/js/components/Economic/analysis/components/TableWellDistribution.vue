@@ -95,11 +95,6 @@ export default {
 
       this.isMounted = false
 
-      let keys = [
-        'wells',
-        'proposedWells',
-      ]
-
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 

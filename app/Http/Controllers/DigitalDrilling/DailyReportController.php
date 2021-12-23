@@ -30,4 +30,5 @@ class DailyReportController extends Controller
     {
         return view('digital_drilling.daily_report.catalog');
     }
+
 }

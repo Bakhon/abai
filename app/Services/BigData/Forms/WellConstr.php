@@ -25,12 +25,13 @@ class WellConstr extends PlainForm
             $errors['depth'][] = trans('bd.validation.depth');
         }
 
-        if (!$this->isValidDate(
-            $this->request->get('well'),
-            $this->request->get('landing_date'),
-            'dict.well',
-            'drill_start_date'
-        )) {
+        if ($this->request->get('landing_date') &&
+            !$this->isValidDate(
+                $this->request->get('well'),
+                $this->request->get('landing_date'),
+                'dict.well',
+                'drill_start_date'
+            )) {
             $errors['landing_date'][] = trans('bd.validation.landing_date');
         }
 

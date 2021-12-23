@@ -13,10 +13,6 @@
               @change="toggleGranularity()"/>
         </div>
 
-        <select-permanent-stop-coefficient
-            :form="form"
-            class="ml-2"/>
-
         <select-technical-well-forecast-kit
             :form="form"
             form-key="kit_ids"
@@ -108,7 +104,6 @@
 import {globalloadingMutations} from '@store/helpers';
 
 import SelectGranularity from "../components/SelectGranularity";
-import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
 import SelectTechnicalWellForecastKit from "./components/SelectTechnicalWellForecastKit";
 
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
@@ -119,13 +114,12 @@ export default {
   name: "economic-analysis-wells",
   components: {
     SelectGranularity,
-    SelectPermanentStopCoefficient,
     SelectTechnicalWellForecastKit,
   },
   data: () => ({
     form: {
       granularity: 'month',
-      permanent_stop_coefficient: 0.7,
+      permanent_stop_coefficient: null,
       uwi: null,
       kit_ids: [],
     },

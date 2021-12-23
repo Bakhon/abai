@@ -5,6 +5,7 @@
                 :options="[
               {label: 'First Component Demo', value: 'FirstComponent'},
               {label: 'Second Component Demo', value: 'SecondComponent'},
+              {label: 'Standard Interpretation Demo', value: 'StandardInterpretation'},
             ]" />
 
       <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов"
@@ -33,6 +34,7 @@ import PageSide from "../components/pageSide/PageSide";
 
 import FirstComponent from "./RightSideComponents/FirstComponent";
 import SecondComponent from "./RightSideComponents/SecondComponent";
+import StandardInterpretation from "./RightSideComponents/StandardInterpretation";
 export default {
   name: "Geology-RSide",
   data() {
@@ -45,6 +47,9 @@ export default {
           },
           SecondComponent:{
             is: SecondComponent
+          },
+          StandardInterpretation:{
+            is: StandardInterpretation
           },
         }
       },

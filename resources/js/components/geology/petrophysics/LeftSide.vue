@@ -125,10 +125,8 @@ import {
   GET_DZOS_OPTIONS,
   SET_WELLS_BLOCKS,
   FETCH_WELLS_MNEMONICS,
-  FETCH_WELLS_CURVES,
   FETCH_WELLS_HORIZONS
 } from "../../../store/modules/geologyGis.const";
-import {Fetch_Wells} from "../api/petrophysics.api";
 
 export default {
   name: "Geology-LSide",
@@ -170,7 +168,7 @@ export default {
       return this.$store.getters[GET_FIELDS_OPTIONS];
     },
     getWellsList() {
-      return this.$store.getters[GET_WELLS_OPTIONS];
+      return this.$store.getters[GET_WELLS_OPTIONS]
     }
   },
 
