@@ -47,7 +47,7 @@
               :options="getResultList" />
 
     <div class="buttons-grid">
-      <Button @click="save" color="accent-100" align="center">Сохранить</Button>
+      <Button :disabled="!forSave.length" @click="save" color="accent-100" align="center">Сохранить</Button>
       <Button color="gray" align="center">Отмена</Button>
     </div>
 
@@ -135,12 +135,14 @@ export default {
       return (item.value !== this.postData.reference_well);
     },
     resetCurves() {
+      this.forSave = []
       this.postData.curves.NPHI = false;
       this.postData.curves.RHOB = false;
       this.postData.curves.GR = false;
       this.postData.curves.SP = false;
     },
     switcher(val) {
+      this.forSave = []
       if (val === "DTW") {
         this.postData.curves.GR = false;
         this.postData.curves.SP = false;
@@ -163,6 +165,7 @@ export default {
       this.postData.curves[name] = !this.postData.curves[name];
     },
     async post(){
+      this.forSave = []
       let data = JSON.parse(JSON.stringify(this.postData));
       data.mnemonics = Object.entries(data.curves).reduce((acc, [name, bool])=>{
         if(bool) acc.push(name);
@@ -175,12 +178,14 @@ export default {
       this.SET_LOADING(false)
     },
     async save(){
+      this.SET_LOADING(true)
       for (let forSaveElement of this.forSave) {
         let horizonData = this.$store.state.geologyGis.tHorizon.getElement(forSaveElement.value);
         for (let [well, data] of Object.entries(horizonData.toWells)) {
           await this.$store.dispatch(POST_HORIZON, {well, data})
         }
       }
+      this.SET_LOADING(false)
     }
   }
 }
