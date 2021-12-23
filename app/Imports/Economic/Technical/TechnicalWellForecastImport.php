@@ -28,7 +28,6 @@ class TechnicalWellForecastImport implements
 
     public $timeout = 6000;
 
-
     protected $userId;
 
     protected $logId;
