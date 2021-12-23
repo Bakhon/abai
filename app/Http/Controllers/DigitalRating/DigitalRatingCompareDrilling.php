@@ -16,7 +16,7 @@ class DigitalRatingCompareDrilling extends Controller
    const WELL_CATEGORY_TYPE_ID = [1];
    const WELL_STATUS_TYPE_ID = [3,4];
 
-   public function get_compaer_data(Request $request):JsonResponse 
+   public function getCompareData(Request $request):JsonResponse 
    {  
       $horizon = $request->input('horizon');
       $year = $request->input('year');
@@ -42,12 +42,13 @@ class DigitalRatingCompareDrilling extends Controller
            
          }
       }
+      dd($data);
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
    }
    
 
-   public function get_maps(Request $request):JsonResponse 
+   public function getMapCoordinates(Request $request):JsonResponse 
    {  
       $field = $request->input('field');
       $horizon = $request->input('horizon');
@@ -64,13 +65,25 @@ class DigitalRatingCompareDrilling extends Controller
          ->where('digital_rating.outer_owc_omg_json.owc_id', $owc) 
          ->get();
       }
+      foreach ($data as $item) {
+         $coordinates = substr( $item->coordinates, 1, -1);
+         preg_match_all('#\[(.*?)\]#', $coordinates, $array);
+         $item->coordinates= $array[0];
+        
+      }
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
-   
    }
 
-
-   public function get_actual_project_points(Request $request):JsonResponse 
+   public function getHorizon(Request $request):JsonResponse 
+   {  
+      $data =   DB::connection('tbd')->table('digital_rating.horizon')
+      ->get();
+      dd($data);
+      $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+      return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
+   }
+   public function getActualProjectPoints(Request $request):JsonResponse 
    {  
      
      

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open" @changeReport="changeReport"/>
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -79,11 +79,21 @@
                                           @updateList="changeCurrentWell"
                                           @search="filterWell"/>
                             </div>
+                            <div class="well_body-form-input last" v-if="newWell=='old'">
+                                <label>Редактировать отчет:</label>
+                                <div class="dropdown__area-edit">
+                                    <input type="checkbox" v-model="is_open">
+                                    <select name="" id="" v-model="dateOpen" class="date" :disabled="!is_open" :class="{error: is_open && error && dateOpen==''}">
+                                        <option :value="report.id" v-for="report in reportData">{{report.date}}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="well-create" @click="create">
-                    {{ trans('digital_drilling.default.create') }}
+                    <span v-if="!is_open">{{ trans('digital_drilling.default.create') }}</span>
+                    <span v-else>Открыть</span>
                 </div>
             </div>
         </div>
@@ -94,10 +104,11 @@
 <script>
     import DailyRaport from './DailyRaport'
     import Dropdown from '../components/dropdown'
-
+    import moment from "moment";
     export default {
         name: "DailyReportOpen",
         components: {DailyRaport, Dropdown},
+        props: ['user'],
         data(){
             return{
                 newWell: "new",
@@ -113,6 +124,10 @@
                 created: false,
                 report: {},
                 error: false,
+                isEdit: false,
+                is_open: false,
+                dateOpen: '',
+                reportData: [],
             }
         },
         mounted(){
@@ -124,47 +139,106 @@
             },
             changeCurrentWell(item){
                 this.currentWell = item
+                this.getReportData(this.currentWell.well_id)
+            },
+            changeReport(data){
+                this.isEdit = true
+                this.is_open = false
+                this.report = data
+            },
+            getReportData(id){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/reports/'+id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.reportData = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
             },
             getDailyReport(){
-                if (this.newWell == 'new'){
-                    if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
-                        this.error = false
+                if (!this.is_open){
+                    if (this.newWell == 'new'){
+                        if (this.newWellNumber!= '' && this.whcx != null && this.whcy != null){
+                            this.error = false
+                            this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
+                                {
+                                    "is_new_well": true,
+                                    "uwi": this.newWellNumber,
+                                    "geo": this.currentField,
+                                    "org": this.currentDZO,
+                                    "whcx": this.whcx,
+                                    "whcy": this.whcy
+                                }).then((response) => {
+                                if (response.data) {
+                                    this.report = response.data
+                                    this.report.report_daily.author = this.user.username
+                                    this.created = true
+                                } else {
+                                    console.log("No data");
+                                }
+                            })
+                                .catch((error) => {
+                                    if (error.response.data){
+                                        this.$bvToast.toast(error.response.data.error_message, {
+                                            title: "Отчет",
+                                            variant: 'danger',
+                                            solid: true,
+                                            toaster: "b-toaster-top-center",
+                                            autoHideDelay: 8000,
+                                        });
+                                    }
+                                })
+                        }else{
+                            this.error = true
+                        }
+                    }
+                    else{
                         this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
                             {
-                                "is_new_well": true,
-                                "uwi": this.newWellNumber,
+                                "is_new_well": this.currentWell.is_new_well,
+                                "well": this.currentWell.well_id,
                                 "geo": this.currentField,
-                                "org": this.currentDZO,
-                                "whcx": this.whcx,
-                                "whcy": this.whcy
+                                "org": this.currentDZO
                             }).then((response) => {
                             if (response.data) {
+                                this.report = response.data
+                                this.report.report_daily.author = this.user.username
+                                this.created = true
+                            } else {
+                                console.log("No data");
+                            }
+                        })
+                            .catch((error) => {
+                                if (error.response.data){
+                                    this.$bvToast.toast(error.response.data.error_message, {
+                                        title: "Отчет",
+                                        variant: 'danger',
+                                        solid: true,
+                                        toaster: "b-toaster-top-center",
+                                        autoHideDelay: 8000,
+                                    });
+                                }
+                            })
+                    }
+                }else{
+                    if (this.dateOpen == ''){
+                        this.error = true
+                    }else{
+                        this.error = false
+                        this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+this.dateOpen).then((response) => {
+                            if (response) {
                                 this.report = response.data
                                 this.created = true
                             } else {
                                 console.log("No data");
                             }
                         })
-                            .catch((error) => console.log(error))
-                    }else{
-                        this.error = true
+                            .catch((error) => {
+                                console.log(error)
+                                this.showToast('', 'No result', 'danger');
+                            })
                     }
-                } else{
-                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/empty_report',
-                        {
-                            "is_new_well": this.currentWell.is_new_well,
-                            "well": this.currentWell.well_id,
-                            "geo": this.currentField,
-                            "org": this.currentDZO
-                        }).then((response) => {
-                        if (response.data) {
-                            this.report = response.data
-                            this.created = true
-                        } else {
-                            console.log("No data");
-                        }
-                    })
-                        .catch((error) => console.log(error))
                 }
 
             },
@@ -213,6 +287,7 @@
                     if (data) {
                         this.well = data;
                         this.currentWell = data[0]
+                        this.getReportData(this.currentWell.well_id)
                     } else {
                         console.log('No data');
                     }
@@ -238,6 +313,29 @@
     }
     .error{
         border: 1px solid red!important;
+    }
+    label{
+        margin-bottom: 0;
+    }
+    .dropdown__area-edit{
+        width: 194px!important;
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+    .well_body-form-input.last{
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .date{
+        background: #334296!important;
+        border: 0.5px solid #454FA1;
+        box-sizing: border-box;
+        border-radius: 4px;
+        width: 224px;
+        height: 28px;
+        margin-left: 10px;
     }
 
 </style>

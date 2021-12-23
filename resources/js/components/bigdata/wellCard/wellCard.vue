@@ -121,15 +121,28 @@
                 </v-select>
               </form>
               <div v-if="measurementScheduleForms.includes(activeFormComponentName)" class="button-block mr-3">
-                <div class="p-1 ml-2 d-flex align-items-center">
+                <div class="p-1 ml-2 d-flex align-items-center" 
+                  @mouseover="isOpen = true" 
+                  @mouseleave="isOpen = false"
+                >
                   <img class="pr-1" src="/img/icons/help.svg" alt="">
-                  <a class="text-white cursor-pointer">Легенда</a>
+                  <a class="text-white cursor-pointer" >Легенда</a>
                 </div>
                 <div class="p-1 ml-2 d-flex align-items-center">
                   <img class="pr-1" src="/img/icons/chart.svg" alt="">
                   <a class="text-white cursor-pointer"
                      @click="$refs.childForm.switchChartVisibility()">Показать график
                   </a>
+                </div>
+                <div class="modal-show" v-show="isOpen === true" @mouseover="isOpen = true">
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/orange-circle-icon.png"/>
+                          <span class="legenda_text">Отклонение от тех. режима</span>
+                      </div>
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/circle-red.png">
+                          <span class="legenda_text">В простое</span>
+                      </div>
                 </div>
                 <div
                         v-if="!isProductionWellsHistoricalVisible && !isInjectionWellsHistoricalVisible"
@@ -195,6 +208,7 @@
                 <BigDataPlainFormResult
                     v-if="activeForm.type === 'plain'"
                     :code="activeForm.code"
+                    :params="activeForm"
                     :well-id="this.well.id"
                     type="well"
                 ></BigDataPlainFormResult>
@@ -302,7 +316,7 @@
               <div class="heading">
                 <p v-if="wellUwi">{{ this.trans("well.well_passport") }}</p>
               </div>
-              <div v-if="wellUwi" class="sheare-icon">
+              <div v-if="wellUwi" class="sheare-icon" @click="ExportToExcel('xlsx')">
                 <svg
                   width="20"
                   height="20"
@@ -338,7 +352,7 @@
             </div>
             <div class="info-element">
 
-              <table v-if="wellUwi">
+              <table v-if="wellUwi" id="tbl_exporttable_to_xls">
                 <tr v-for="(item, index) in this.tableData">
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.name }}</td>
@@ -425,6 +439,7 @@ export default {
   },
   data() {
     return {
+      isOpen: false,
       well_all_data: null,
       well_type_category: null,
       well_passport: [],
@@ -678,6 +693,13 @@ export default {
         this.isBothColumnFolded = false;
       }
     },
+    ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('tbl_exporttable_to_xls');
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('WellCard.' + (type || 'xlsx')));
+        },
     onSearch(search, loading) {
       if (search.length) {
         loading(true);
@@ -876,7 +898,6 @@ export default {
       let diametr_stuzer = this.well.diametr_stuzer ? this.well.diametr_stuzer.value_text : "";
       let gas_production = this.well.dmart_daily_prod_oil.gas ? this.well.dmart_daily_prod_oil.gas.toFixed(1) : "";
       let tubeNomOd = this.getTubeNom(well);
-      let tube = this.getTube(well);
       let well_block = this.well.well_block ? this.well.well_block.name_ru : "";
       let pump_capacity = this.well.pump_capacity ? this.well.pump_capacity.value_double : "";
       let depth_nkt = this.well.depth_nkt ? this.well.depth_nkt.value_double : "";
@@ -1015,15 +1036,14 @@ export default {
         },
         {
           name: this.trans("well.diametr"),
-          data: tube,
+          data: "",
           type: ["all"],
-          codes: ["KGM"],
+          codes: ["KGM", "KTM"],
         },
         {
           name: this.trans("well.diametr_exp"),
           data: tubeNomOd,
           type: ["all"],
-          codes: ["KTM"],
         },
         {
           name: this.trans("well.type_gol"),
@@ -1355,9 +1375,9 @@ export default {
                 "name_ru"
               );
               this.wellTechsTap = this.getMultipleValues(data.techs, "tap");
-              this.perf_date = data.well_perf_actual[0].perf_date;
-                this.perfActual = this.getwellPerf(data.well_perf_actual, "top", "base");
-                this.wellOrgName = this.getMultipleValues(
+              this.perf_date = data.well_perf_actual.length > 0 ? data.well_perf_actual[0].perf_date : '';
+              this.perfActual = data.well_perf_actual.length > 0 ? this.getwellPerf(data.well_perf_actual, "top", "base") : '';
+              this.wellOrgName = this.getMultipleValues(
                     data.org.reverse(),
                     "name_ru"
                 );
@@ -1396,12 +1416,6 @@ export default {
     getTubeNom(well){
       if(this.well.tubeNom.od){
         return this.well.tubeNom.od;
-      }
-      return "";
-    },
-    getTube(well){
-      if(this.well.tubeNom.od){
-        return this.well.tubeNom.od + ' / ' + this.well.tubeNom.od;
       }
       return "";
     },
@@ -1533,7 +1547,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != "") {
-        return moment(data).format("DD.MM.YYYY");
+        return moment(data).tz('Asia/Almaty').format("DD.MM.YYYY");
       }
     },
     changeColumnsVisible(value) {
@@ -2574,6 +2588,10 @@ h4 {
   margin-top: auto;
   margin-bottom: auto;
   display: inline-flex;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .sheare-text {
@@ -2990,5 +3008,25 @@ h4 {
 .cursor-pointer {
   cursor: pointer;
 }
+.modal-show{
+  z-index:1000;
+  position:absolute;
+  top:100%;
+  color: #fff;
+  margin-left: 9px;
+}
+.modal_show_item{
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+.modal_show_img{
+  width: 24px;
+}
+.legenda_text{
+  margin-left: 5px;
+}
+
+
 
 </style>

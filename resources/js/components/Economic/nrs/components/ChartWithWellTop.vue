@@ -1,6 +1,6 @@
 <template>
   <div>
-    <select v-model="wellKey" class="form-control bg-dark-blue text-white">
+    <select v-model="wellKey" class="form-control bg-dark-blue text-white mb-2">
       <option
           v-for="key in wellKeys"
           :key="key.value"
@@ -13,7 +13,7 @@
         :key="wellKey"
         :options="options"
         :series="chartSeries"
-        :height="520"/>
+        :height="chartHeight"/>
   </div>
 </template>
 
@@ -25,12 +25,6 @@ export default {
   name: 'ChartWithWellTop',
   mixins: [chartInitMixin],
   components: {apexchart: chart},
-  props: {
-    org_id: {
-      required: true,
-      type: Number
-    }
-  },
   data: () => ({
     wellKey: 'Operating_profit'
   }),
@@ -50,6 +44,10 @@ export default {
           data: this.data[this.wellKey].highest.map(well => +well[wellKey.value] / dimension)
         }
       ];
+    },
+
+    chartHeight() {
+      return this.form.isFullScreen ? 670 : 540
     },
 
     options() {
@@ -151,7 +149,7 @@ export default {
 
       let well = this.data[this.wellKey][prefix][dataPointIndex]
 
-      window.open(this.localeUrl(`/economic/nrs/wells/${this.org_id}/${well.uwi}`), '_blank')
+      window.open(this.localeUrl(`/economic/nrs/wells/${this.form.org_id}/${well.uwi}`), '_blank')
     },
   }
 }

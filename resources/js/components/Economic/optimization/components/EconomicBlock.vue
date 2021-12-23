@@ -15,19 +15,30 @@
             {{ subBlock.value }}
           </span>
 
-          <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
-            <div>{{ subBlock.dimension }}</div>
+          <span class="ml-2 text-blue font-size-14px line-height-16px">
+            <span>{{ subBlock.dimension }}</span>
 
-            <div v-if="subBlock.dimensionSuffix">
+            <span v-if="subBlock.dimensionSuffix">
               {{ subBlock.dimensionSuffix }}
-            </div>
+            </span>
           </span>
         </div>
       </div>
 
-      <div v-if="form.scenario_id"
-           class="text-grey font-size-12px line-height-14px font-weight-bold mb-2">
-        {{ trans('economic_reference.optimized') }}
+      <div class="flex-grow-1 mt-2 font-weight-bold font-size-16px line-height-18px">
+        {{ subBlock.title }}
+      </div>
+
+      <percent-progress :percent="calcPercent(+subBlock.value, +subBlock.originalValue)"/>
+
+      <div class="d-flex font-size-12px line-height-14px mb-2">
+        <div class="flex-grow-1 text-blue">
+          {{ (100 + calcPercent(+subBlock.value, +subBlock.originalValue)).toFixed(2) }} %
+        </div>
+
+        <div>
+          {{ subBlock.originalValue }}
+        </div>
       </div>
 
       <div v-if="form.scenario_id"
@@ -37,25 +48,17 @@
             :reverse="subBlock.reverse"
             class="font-size-16px line-height-18px mr-1"/>
 
-        <span class="font-size-20px line-height-28px font-weight-bold">
+        <span class="font-size-16px line-height-18px font-weight-bold">
             {{ Math.abs(+subBlock.percent) }}
         </span>
 
-        <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
-           <div>{{ subBlock.percentDimension || subBlock.dimension }}</div>
+        <span class="ml-2 font-size-12px line-height-12px">
+           <span>{{ subBlock.percentDimension || subBlock.dimension }}</span>
 
-            <div v-if="subBlock.dimensionSuffix">
-              {{ subBlock.dimensionSuffix }}
-            </div>
+           <span v-if="subBlock.dimensionSuffix">
+             {{ subBlock.dimensionSuffix }}
+           </span>
         </span>
-
-        <span class="ml-1 font-size-12px line-height-14px text-blue">
-            {{ trans('economic_reference.vs_base') }}
-        </span>
-      </div>
-
-      <div class="flex-grow-1 mt-2 font-weight-bold font-size-16px line-height-18px">
-        {{ subBlock.title }}
       </div>
     </div>
   </div>
@@ -64,13 +67,20 @@
 <script>
 import Divider from "../../components/Divider";
 import PercentBadgeIcon from "../../components/PercentBadgeIcon";
+import PercentProgress from "../../components/PercentProgress";
+
+import {calcPercentMixin} from "../../mixins/percentMixin";
 
 export default {
   name: "EconomicBlock",
   components: {
     Divider,
-    PercentBadgeIcon
+    PercentBadgeIcon,
+    PercentProgress,
   },
+  mixins: [
+    calcPercentMixin
+  ],
   props: {
     form: {
       required: true,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Jobs\RunPostgresqlProcedure;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
 use App\Services\AttachmentService;
@@ -95,22 +96,22 @@ class CurrentGDIS extends TableForm
         'WCUT'
     ];
 
-    protected $fieldsOrder = [       
-        'target',        
+    protected $fieldsOrder = [
+        'target',
         'FLVL',
         'STLV',
         'OTP',
         'BP',
         'BHP',
         'RP',
-        'TBP',      
-        'GASR',        
+        'TBP',
+        'GASR',
         'INJR',
         'FLRT',
         'FLRD',
         'WCUT',
-        'MLP',  
-        'conclusion',     
+        'MLP',
+        'conclusion',
         'ADMCF',
         'PDCF',
         'RRP',
@@ -146,7 +147,6 @@ class CurrentGDIS extends TableForm
 
     public function getResults(): array
     {
-
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -457,5 +457,20 @@ class CurrentGDIS extends TableForm
         }
 
         return [];
+    }
+
+
+    protected function afterSubmit(array $fields, array $filter = [])
+    {
+        $date = Carbon::parse($filter['date']);
+        if ($date->startOfDay() >= Carbon::now()->startOfDay()) {
+            return;
+        }
+
+        if (!empty($fields)) {
+            $field = reset($fields);
+            $wellId = $field['last_measure_value']['params']['well_id'];
+            RunPostgresqlProcedure::dispatch('dmart.sync_well_daily_prod_oil_abai', [$wellId, $date->format('Y-m-d')]);
+        }
     }
 }

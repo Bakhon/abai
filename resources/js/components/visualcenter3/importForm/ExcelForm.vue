@@ -356,6 +356,30 @@
                 </div>
             </div>
         </modal>
+        <modal
+                class="modal-bign-wrapper"
+                name="yearlyReasonsReminder"
+                :width="720"
+                :height="250"
+                style="background-color: rgba(0, 0, 0, 0.1);"
+                :adaptive="true"
+        >
+            <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                    <div class="modal-bign-title modal_header">Напоминание</div>
+                    <button type="button" class="modal-bign-button" @click="$modal.hide('yearlyReasonsReminder')">
+                        {{trans('pgno.zakrit')}}
+                    </button>
+                </div>
+                <hr class="solid">
+                <div class="modal_header mt-2">
+                    <h4 class="text-center">Сегодня необходимо заполнить:</h4>
+                    <div class="row justify-content-center mt-4 mx-5">
+                        <h4>Причины: С НАЧАЛА ГОДА (ПО ЗАКРЫТЫМ МЕСЯЦАМ)</h4>
+                    </div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 

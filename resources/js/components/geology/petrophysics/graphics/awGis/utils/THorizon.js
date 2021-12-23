@@ -1,5 +1,5 @@
 import {letMeProperty} from "../../../../js/utils";
-
+import TCoords from "./TCoords";
 export default class THorizon {
     #graphSettings = {
         scrollY: 0,
@@ -12,6 +12,7 @@ export default class THorizon {
         offsetColumnsLeft: 200,
         offsetColumnsRight: 200
     };
+    #tCoords = new TCoords();
     #svg = null;
     #svgns = "http://www.w3.org/2000/svg";
     #wellsRefs = [];
@@ -31,6 +32,8 @@ export default class THorizon {
 
     set scrollY(val) {
         this.settings = {scrollY: val};
+        this.#tCoords.setOffsetY = val;
+        this.redrawLastElements();
     }
 
     get settings() {
@@ -39,6 +42,8 @@ export default class THorizon {
 
     set svg(svg) {
         this.#svg = svg;
+        this.#tCoords.setSvg = svg;
+        this.#tCoords.setParams();
     }
 
     get svg() {
@@ -75,9 +80,7 @@ export default class THorizon {
             this.#wellsBlockData.set(wellData.props.wellName, wellData)
         }
     }
-    calcStartPoint(elementData){
 
-    }
     getElementPath(elementName) {
         let d = [], moveTo = false;
         for (let wellName of this.#maps.keys()) {
@@ -85,13 +88,12 @@ export default class THorizon {
             if (elData.wells.includes(wellName)) {
                 let wellData = this.#wellsBlockData.get(wellName);
                 let {left, right} = wellData.props;
-                let y = elData.toWells[wellName].md;
-                let offsetY = y - this.#graphSettings.scrollY * 10
+                let y = this.#tCoords.positionY(elData.toWells[wellName].md);
                 if(moveTo) {
-                    d.push(`M${left} ${offsetY}`);
+                    d.push(`M${left} ${y}`);
                     moveTo = false;
                 }
-                d.push(`L${left} ${offsetY}  L${right} ${offsetY}`);
+                d.push(`L${left} ${y}  L${right} ${y}`);
             }else{
                 moveTo = true;
             }
@@ -104,7 +106,7 @@ export default class THorizon {
     }
 
     redrawLastElements(){
-        this.drawSelectedPath(this.#lastSelectElements)
+        if(this.#lastSelectElements.length) this.drawSelectedPath(this.#lastSelectElements)
     }
     drawSelectedPath(elements) {
         this.#lastSelectElements = elements;
@@ -128,20 +130,20 @@ export default class THorizon {
                 circle.setAttribute('fill', "none");
                 circle.setAttribute('stroke-width', `${strokeWidth}`);
                 circle.setAttribute('cx', `${this.#graphSettings.offsetColumnsLeft / 2 - (circleRadius/2)-strokeWidth}`);
-                circle.setAttribute('cy', `${(firstWellMD + (circleRadius/2)-strokeWidth) - this.#graphSettings.scrollY * 10}`);
+                circle.setAttribute('cy', `${(this.#tCoords.positionY(firstWellMD + (circleRadius/2)-strokeWidth))}`);
 
                 text.textContent = elementData.name;
                 text.setAttribute('text-anchor', "start");
                 text.setAttribute('fill', fillAndStroke);
                 text.setAttribute('x', (this.#graphSettings.offsetColumnsLeft / 2 + 5).toString());
-                text.setAttribute('y', ((firstWellMD-5) - this.#graphSettings.scrollY * 10).toString());
+                text.setAttribute('y', (this.#tCoords.positionY(firstWellMD-5)).toString());
 
                 path.setAttribute('fill', "none");
                 path.setAttribute('stroke', fillAndStroke);
                 path.setAttribute('stroke-linecap', 'round');
                 path.setAttribute('stroke-linejoin', 'round');
                 path.setAttribute('stroke-width', '2');
-                path.setAttribute('d', [`M${this.#graphSettings.offsetColumnsLeft / 2} ${firstWellMD - this.#graphSettings.scrollY * 10}`, ...this.getElementPath(element)].join(' '));
+                path.setAttribute('d', [`M${this.#graphSettings.offsetColumnsLeft / 2} ${this.#tCoords.positionY(firstWellMD) }`, ...this.getElementPath(element)].join(' '));
 
                 g.appendChild(path);
                 g.appendChild(text);
@@ -175,8 +177,7 @@ export default class THorizon {
         let data = this.getElement(elementName);
         if (typeof data === "object" && !Array.isArray(data)) {
             data = JSON.parse(JSON.stringify(data));
-            letMeProperty(data, path, value);
-            this.editDataElement(elementName, {...data}, force);
+            this.editDataElement(elementName, {...letMeProperty(data, path, value)}, force);
         } else {
             console.error("Не тот тип данных элемента");
         }
@@ -187,8 +188,7 @@ export default class THorizon {
         for (let well of this.#wells) {
             let e = [];
             for (let [key, element] of this.#elements) {
-                if (element.wells.includes(well))
-                    if (!e.includes(key)) e.push(key);
+                if (element.wells.includes(well) && !e.includes(key) ) e.push(key);
             }
             this.#maps.set(well, e);
         }

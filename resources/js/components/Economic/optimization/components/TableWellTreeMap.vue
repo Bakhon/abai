@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-auto customScroll" style="height: 550px;">
+  <div class="overflow-auto customScroll" :style="`height: ${chartHeight}`">
     <div v-if="loadingTreemap" class="w-100 text-white text-center my-2">
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
@@ -27,6 +27,10 @@ export default {
       required: true,
       type: Array
     },
+    isFullscreen: {
+      required: false,
+      type: Boolean
+    }
   },
   computed: {
     wells() {
@@ -47,40 +51,9 @@ export default {
       return this.scenario.stopped_uwis
     },
 
-    charts() {
-      return [
-        {
-          title: this.trans('economic_reference.operating_profit') + '+',
-          key: this.profitabilityKey,
-          positive: true,
-          hasSubtitle: true,
-          isShowCount: true
-        },
-        {
-          title: this.trans('economic_reference.operating_profit') + '-',
-          key: this.profitabilityKey,
-          negative: true,
-          sort: 'asc',
-          hasSubtitle: true,
-          isShowCount: true
-        },
-        {
-          title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid',
-          hasSubtitle: true,
-        },
-        {
-          title: this.trans('economic_reference.oil_production'),
-          key: 'oil',
-          hasSubtitle: true,
-        },
-        {
-          title: this.trans('economic_reference.water_cut'),
-          key: this.waterCutKey,
-          hasSubtitle: true,
-        },
-      ]
-    },
+    chartHeight() {
+      return this.isFullscreen ? '700px' : '550px'
+    }
   },
 }
 </script>

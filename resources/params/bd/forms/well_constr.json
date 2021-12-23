@@ -45,31 +45,32 @@
                 "code": "casing_nom",
                 "type": "dict",
                 "title": "casing_type",
-                "dict": "casings"
+                "dict": "casings",
+                "filter_by_well_orgs": true
               },
               {
                 "code": "tube_count",
                 "type": "numeric",
                 "title": "number_of_pipes",
-                "validation": "required|numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "cem_volume",
                 "type": "numeric",
                 "title": "poured_cement_volume",
-                "validation": "numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "cem_height",
                 "type": "numeric",
                 "title": "cement_lifting_height",
-                "validation": "numeric|gt:0"
+                "validation": "nullable|numeric|gt:0"
               },
               {
                 "code": "landing_date",
                 "type": "date",
                 "title": "landing_date",
-                "validation": "required|date"
+                "validation": "nullable|date"
               }
               
             ]

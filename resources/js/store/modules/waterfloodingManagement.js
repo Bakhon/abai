@@ -12,7 +12,14 @@ const waterfloodingManagement = {
         reverse_gr_table: [],
         totalSelection: [],
         polygonWells: [],
-        clustersList: []
+        clustersList: [],
+        polygonFeatures: [],
+        choosePolygons: null,
+        chooseModelPrediction: null,
+        optimizationTask: null,
+        polygonList: [],
+        LastSeries: [],
+        chooseObject: null,
     },
     getters: {
         chooseObjectDate: (state) => state.chooseObjectDate,
@@ -24,6 +31,13 @@ const waterfloodingManagement = {
         totalSelection: (state) => state.totalSelection,
         polygonWells: (state) => state.polygonWells,
         clustersList: (state) => state.clustersList,
+        polygonFeatures: (state) => state.polygonFeatures,
+        choosePolygons: (state) => state.choosePolygons,
+        chooseModelPrediction: (state) => state.chooseModelPrediction,
+        optimizationTask: (state) => state.optimizationTask,
+        polygonList: (state) => state.polygonList,
+        LastSeries: (state) => state.LastSeries,
+        chooseObject: (state) => state.chooseObject,
     },
     mutations:{
         CHANGE_CHOOSE_OBJECT_DATE(state, value) {
@@ -52,6 +66,27 @@ const waterfloodingManagement = {
         },
         SAVE_CLUSTERS_LIST (state, value) {
             state.clustersList = value;
+        },
+        SAVE_POLYGON_FEATURES (state, value) {
+            state.polygonFeatures = value;
+        },
+        SAVE_CHOOSE_POLYGONS (state, value) {
+            state.choosePolygons = value;
+        },
+        CHANGE_MODEL_PREDICTION (state, value) {
+            state.chooseModelPrediction = value;
+        },
+        CHANGE_OPTIMIZATION_TASK (state, value) {
+            state.optimizationTask = value;
+        },
+        CHANGE_POLYGON_LIST (state, value) {
+            state.polygonList = value;
+        },
+        SAVE_LAST_SERIES (state, value) {
+            state.LastSeries = value;
+        },
+        CHANGE_CHOOSE_OBJECT (state, value) {
+            state.chooseObject = value;
         },
     },
     actions: {
@@ -101,8 +136,29 @@ const waterfloodingManagement = {
                 console.log(error)
             })
         },
+        async getLastSeries({dispatch, commit}){
+            let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/excepted-output/'
+            await axios.get(url)
+                .then((response) =>{
+                    commit('SAVE_LAST_SERIES', response.data)
+                }).catch((error) => {
+                    console.log(error)
+                });
+        },
+        changeChoosePolygons({commit}, value){
+            commit('SAVE_CHOOSE_POLYGONS', value);
+        },
+        changeChooseModelPrediction ({commit}, value) {
+            commit('CHANGE_MODEL_PREDICTION', value);
+        },
+        changeOptimizationTask ({commit}, value) {
+            commit('CHANGE_OPTIMIZATION_TASK', value);
+        },
         changePolygonWells({commit}, value){
             commit('SAVE_POLYGON_WELLS', value)
+        },
+        changePolygonFeatures({commit}, value){
+            commit('SAVE_POLYGON_FEATURES', value)
         },
         changeChooseObjectDate ({commit}, value) {
             commit('CHANGE_CHOOSE_OBJECT_DATE', value);
@@ -110,8 +166,14 @@ const waterfloodingManagement = {
         changeGraphicStartDate ({commit}, value) {
             commit('CHANGE_GRAPHIC_START_DATE', value);
         },
+        changeChooseObject ({commit}, value) {
+            commit('CHANGE_CHOOSE_OBJECT', value);
+        },
         changeGraphicEndDate ({commit}, value) {
             commit('CHANGE_GRAPHIC_END_DATE', value);
+        },
+        changePolygonList ({commit}, value) {
+            commit('CHANGE_POLYGON_LIST', value);
         },
     }
 }

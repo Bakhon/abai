@@ -12,8 +12,14 @@ class DigitalDrillingPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        $permission = new Permission();
-        $permission->name = "digitalDrilling view main";
-        $permission->save();
+        Permission::updateOrCreate(
+            ['name' => 'digitalDrilling view main'],
+            ['guard_name' => 'web']
+        );
+
+        Permission::updateOrCreate(
+            ['name' => 'digitalDrilling view catalog'],
+            ['guard_name' => 'web']
+        );
     }
 }

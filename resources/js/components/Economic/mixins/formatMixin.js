@@ -32,7 +32,12 @@ export const formatValueMixin = {
             }
         },
 
-        localeValue(value, dimension = null, isAbsolute = false) {
+        localeValue(
+            value,
+            dimension = null,
+            isAbsolute = false,
+            fractionDigits = 2
+        ) {
             if (dimension) {
                 value /= dimension
             }
@@ -41,7 +46,13 @@ export const formatValueMixin = {
                 value = Math.abs(value)
             }
 
-            return (+value.toFixed(2)).toLocaleString()
+            let formatterValue = value.toFixed(fractionDigits)
+
+            if (fractionDigits === 0 && value < 1 && value > -1) {
+                formatterValue = +value.toFixed(2)
+            }
+
+            return (+formatterValue).toLocaleString()
         }
     }
 }

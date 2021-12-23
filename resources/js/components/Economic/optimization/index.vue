@@ -1,7 +1,7 @@
 <template>
   <div :style="isVisibleWellChanges ? 'padding-right: 75px !important' : 'padding-right: 0'"
        class="position-relative row">
-    <div class="col-12 px-3 mb-10px">
+    <div v-show="!scenarioVariation.isFullScreen" class="col-12 px-3 mb-10px">
       <div class="row text-white text-wrap flex-nowrap ">
         <calculated-header
             v-for="(header, index) in calculatedHeaders"
@@ -36,6 +36,7 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           :res="res"
+          :is-fullscreen="scenarioVariation.isFullScreen"
           @updateTab="updateTab"/>
     </div>
 
@@ -47,7 +48,7 @@
           :block="block"
           :form="form"
           :class="index === blocks.length - 1 ? '' : 'mb-10px'"
-          :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
+          :style="form.scenario_id ? 'min-height: 140px' : 'min-height: 145px'"
       />
     </div>
   </div>
@@ -246,6 +247,7 @@ export default {
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
             value: this.formatValue(this.scenario.oil_optimize).value.toFixed(2),
+            originalValue: this.formatValue(this.scenario.oil).value.toFixed(2),
             dimension: this.formatValue(this.scenario.oil_optimize).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
             percent: +(this.formatValue(this.oilPercent).value.toFixed(2)),
@@ -257,6 +259,7 @@ export default {
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
             value: +this.scenario.prs_optimize,
+            originalValue: +this.scenario.prs,
             dimension: this.trans('economic_reference.units'),
             percent: this.prsPercent,
             reversePercent: true
@@ -267,6 +270,7 @@ export default {
             title: this.trans('economic_reference.liquid_production'),
             icon: 'oil_production.svg',
             value: this.formatValue(this.scenario.liquid_optimize).value.toFixed(2),
+            originalValue: this.formatValue(this.scenario.liquid).value.toFixed(2),
             dimension: this.formatValue(this.scenario.liquid_optimize).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
             percent: +(this.formatValue(this.liquidPercent).value.toFixed(2)),
@@ -278,6 +282,7 @@ export default {
             title: this.trans('economic_reference.specific_prs'),
             icon: 'specific_prs.svg',
             value: this.avgPrsValue(),
+            originalValue: this.avgPrsValue(false),
             dimension: this.trans('economic_reference.units_per_well'),
             percent: this.avgPrsPercent,
             reversePercent: true
@@ -288,6 +293,7 @@ export default {
             title: this.trans('economic_reference.water_cut'),
             icon: 'liquid.svg',
             value: this.waterCutValue(true),
+            originalValue: this.waterCutValue(false),
             dimension: '%',
             percent: this.waterCutPercent,
             reversePercent: true
@@ -296,6 +302,7 @@ export default {
             title: this.trans('economic_reference.mrp'),
             icon: 'total_prs.svg',
             value: this.mrpValue(true),
+            originalValue: this.mrpValue(false),
             dimension: this.trans('economic_reference.days_declination'),
             percent: this.mrpPercent,
             reverse: true
@@ -306,6 +313,7 @@ export default {
             title: this.trans('economic_reference.avg_oil_rate'),
             icon: 'total_prs.svg',
             value: this.avgOilValue(),
+            originalValue: this.avgOilValue(false),
             dimension: this.trans('economic_reference.tons_per_day'),
             percent: this.avgOilPercent,
             reverse: true
@@ -314,6 +322,7 @@ export default {
             title: this.trans('economic_reference.avg_liquid_rate'),
             icon: 'specific_prs.svg',
             value: this.avgLiquidValue(),
+            originalValue: this.avgLiquidValue(false),
             dimension: this.trans('economic_reference.cubic_meter_per_day'),
             percent: this.avgLiquidPercent,
             reverse: false,
@@ -420,6 +429,18 @@ export default {
 
     mrpPercent() {
       return (this.mrpValue() - this.mrpValue(false)).toFixed(2)
+    },
+
+    dollarRatePercent() {
+      return this.scenario.dollar_rate
+          ? (+this.res.dollarRate.value - +this.scenario.dollar_rate).toFixed(2)
+          : 0
+    },
+
+    oilPricePercent() {
+      return this.scenario.oil_price
+          ? (+this.res.oilPrice.value - +this.scenario.oil_price).toFixed(2)
+          : 0
     },
   },
   methods: {

@@ -94,41 +94,6 @@ export default {
       })
     },
 
-    charts() {
-      return [
-        {
-          title: this.trans('economic_reference.operating_profit') + '+',
-          key: this.profitabilityKey,
-          positive: true,
-          hasSubtitle: true,
-          isShowCount: true
-        },
-        {
-          title: this.trans('economic_reference.operating_profit') + '-',
-          key: this.profitabilityKey,
-          negative: true,
-          sort: 'asc',
-          hasSubtitle: true,
-          isShowCount: true
-        },
-        {
-          title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid',
-          hasSubtitle: true,
-        },
-        {
-          title: this.trans('economic_reference.oil_production'),
-          key: 'oil',
-          hasSubtitle: true,
-        },
-        {
-          title: this.trans('economic_reference.water_cut'),
-          key: this.waterCutKey,
-          hasSubtitle: true,
-        },
-      ]
-    },
-
     profitabilityKey() {
       return this.form.operatingProfit
     },

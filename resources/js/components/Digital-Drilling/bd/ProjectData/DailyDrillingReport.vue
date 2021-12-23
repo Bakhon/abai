@@ -19,9 +19,9 @@
                         {{ report.document_name}}
                     </td>
                     <td>
-                        <button class="download" @click="downloadFile()">
+                        <a :href="DIGITAL_DRILLING_URL + currentWell.well_id + '/?file_id=' + report.file_id" target="_blank" class="download" style="color: #ffffff; text-decoration: none;">
                             Скачать
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 <tr v-if="reports.length==0">

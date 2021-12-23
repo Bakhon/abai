@@ -49,7 +49,7 @@
           <input v-model="item.value"
                  :min="relation.minValue"
                  :max="relation.maxValue"
-                 :stel="relation.step"
+                 :step="relation.step"
                  type="numeric"
                  class="form-control">
 

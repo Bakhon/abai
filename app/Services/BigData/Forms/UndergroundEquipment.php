@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +58,15 @@ class UndergroundEquipment extends PlainForm
             ],
             'formated_value' => $equip->vendor_code
         ];
+
+        if ($row->dend) {
+            $dbeg = Carbon::parse($row->dbeg, 'Asia/Almaty')->format('d.m.Y');
+            $dend = Carbon::parse($row->dend, 'Asia/Almaty')->format('d.m.Y');
+            $row->dbeg = [
+                'value' => $row->dbeg,
+                'formated_value' => "{$dbeg} - {$dend}"
+            ];
+        }
 
         $equipParams = [];
         foreach ($rowParamValues as $rowParamValue) {

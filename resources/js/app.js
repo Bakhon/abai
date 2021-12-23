@@ -146,6 +146,12 @@ Vue.component('gtm-tree-date-picker', require('./components/GTM/components/helpe
 Vue.component('successful-factors-indicator', require('./components/GTM/components/helpers/SuccessfulFactorsIndicator.vue').default);
 Vue.component('gtm-aegtm-starting-parameters', require('./components/GTM/components/AegtmStartingParameters.vue').default);
 
+Vue.component('prod-plan-main', require('./components/prod-planning/MonitoringPlanFact').default);
+Vue.component('navbar-prod-plan', require('./components/prod-planning/components/navbar/NavbarComponent.vue').default);
+Vue.component('prod-plan-sidebar', require('./components/prod-planning/components/sidebar/Sidebar.vue').default);
+Vue.component('bus-plan', require('./components/prod-planning/BusinessPlanning.vue').default);
+Vue.component('long-term-program', require('./components/prod-planning/LongTermProgram.vue').default);
+Vue.component('base-prod-forecast', require('./components/prod-planning/BaseProdForecast').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);

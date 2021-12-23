@@ -76,5 +76,6 @@ return array (
   'searchRadius' => 'Радиус поиска',
   'factorAnalysis' => 'Факторный анализ',
   'oilProductionLossDistribution' => 'Распределение потери добычи нефти',
-  'rating' => 'Рейтинг'
+  'rating' => 'Рейтинг',
+  'lastDateGRP' => 'Дата последнего ГРП'
 );

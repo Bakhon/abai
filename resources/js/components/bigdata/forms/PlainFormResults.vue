@@ -2,7 +2,7 @@
   <div>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
-        <p v-if="params" class="table-container-header__title">{{ params.name }}</p>
+        <p v-show="params" class="table-container-header__title">{{ params.name }}</p>
         <template v-if="form && form.actions && form.actions.length > 0">
           <div class="dropdown">
             <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
@@ -316,6 +316,11 @@ export default {
           })
     },
     getCellValue(row, column) {
+
+      if (row[column.code] && typeof row[column.code] === 'object' && row[column.code].hasOwnProperty('formated_value')) {
+        return row[column.code].formated_value
+      }
+
       if (
           typeof this.dictFields[column.code] !== 'undefined'
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
@@ -386,10 +391,6 @@ export default {
             return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.file_name} (${file.info.file_size})</a>`
           }).join('<br>')
         }).join('<br>')
-      }
-
-      if (row[column.code] && typeof row[column.code] === 'object') {
-        return row[column.code].formated_value
       }
 
       return row[column.code]
@@ -501,9 +502,9 @@ export default {
 
     .element-position {
       padding: 9px 13px;
+      text-align: center;
 
       p {
-        float: right;
         margin-top: auto;
         margin-bottom: auto;
         margin-left: auto;

@@ -25,6 +25,8 @@ export const SET_CURVES = 'geology/mutation/petrophysics/SET_CURVES';
 export const SET_GIS_DATA_FOR_GRAPH = 'geology/mutation/petrophysics/SET_GIS_DATA_FOR_GRAPH';
 export const SET_CURVE_OPTIONS = 'geology/mutation/petrophysics/SET_CURVE_OPTIONS';
 export const SET_WELLS_HORIZONS = 'geology/mutation/petrophysics/SET_WELLS_HORIZONS';
+export const SET_AUTOCORRELATION = 'geology/mutation/petrophysics/SET_AUTOCORRELATION';
+export const SET_SHOW_STRATIGRAPHY_ELEMENTS = 'geology/mutation/petrophysics/SET_SHOW_STRATIGRAPHY_ELEMENTS';
 
 //actions
 export const FETCH_GIS_DATA = 'geology/action/petrophysics/FETCH_GIS_DATA';
@@ -34,6 +36,9 @@ export const FETCH_WELLS = 'geology/action/petrophysics/FETCH_WELLS';
 export const FETCH_WELLS_MNEMONICS = 'geology/action/petrophysics/FETCH_WELLS_MNEMONICS';
 export const FETCH_WELLS_CURVES = 'geology/action/petrophysics/FETCH_WELLS_CURVES';
 export const FETCH_WELLS_HORIZONS = 'geology/action/petrophysics/FETCH_WELLS_HORIZONS';
+export const FETCH_AUTOCORRELATION = 'geology/action/petrophysics/FETCH_AUTOCORRELATION';
+
+export const POST_HORIZON = 'geology/action/petrophysics/POST_HORIZON';
 
 //Other
 export const CANVAS_DASH_LINES_TYPES = {

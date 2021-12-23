@@ -10,7 +10,7 @@
 @section('content')
     <link rel="stylesheet" href="/css/digital-drilling.css">
     <div class="row digital_drilling">
-        <daily-report-open />
+        <daily-report-open :user="{{json_encode(auth()->user()->load('profile'))}}"/>
     </div>
 @endsection
 @section('sidebar_menu_additional')

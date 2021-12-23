@@ -95,11 +95,6 @@ export default {
 
       this.isMounted = false
 
-      let keys = [
-        'wells',
-        'proposedWells',
-      ]
-
       try {
         const {data} = await this.axios.get(this.url, {params: this.form})
 
@@ -142,6 +137,9 @@ export default {
             ...this.getChartMarkers(wellsKey, sortKey, 0, 0),
             ...this.getChartMarkers(wellsKey, sortKey, 1, 1)
           ]
+        },
+        xaxis: {
+          tickAmount: 20,
         },
         yaxis: this.chartSeries[sortKey].map((chart, index) => {
           let max = Math.max(...chart.data.map(val => Math.abs(val)))
@@ -227,7 +225,7 @@ export default {
             color: '#009847',
             data: operatingProfit,
             dimensionTitle: `
-              ${this.trans('economic_reference.million')}.
+              ${this.trans('economic_reference.million')}
               ${this.trans('economic_reference.tenge')}
             `,
           },

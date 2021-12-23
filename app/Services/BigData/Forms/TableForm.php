@@ -531,6 +531,7 @@ abstract class TableForm extends BaseForm
 
         try {
             $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
+            $this->afterSubmit($this->request->get('fields'), $this->request->get('filter'));
             DB::connection('tbd')->commit();
             return $result;
         } catch (\Exception $e) {
@@ -542,6 +543,10 @@ abstract class TableForm extends BaseForm
     public function submitForm(array $fields, array $filter = []): array
     {
         return [];
+    }
+
+    protected function afterSubmit(array $fields, array $filter = [])
+    {
     }
 
     protected function insertValueInCell(

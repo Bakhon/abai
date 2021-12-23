@@ -1,5 +1,5 @@
 <template>
-  <div class="aw-form__input">
+  <div :class="{['aw-form__input']:true, ...getClasses}">
     <label v-if="label" :for="getUID">{{ label }}</label>
     <input v-bind="$attrs"
            :readonly="readonly || plaintext"
@@ -21,7 +21,7 @@ export default {
   mixins: [inputProps, inputComputed, inputMethods],
   inheritAttrs: false,
   props: {
-    type: String
+    type: String,
   },
   data() {
     return {
