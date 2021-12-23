@@ -208,13 +208,6 @@
         margin: 0 auto;
         cursor: pointer;
     }
-/*.characteristic__modal{*/
-    /*position: static;*/
-    /*width: 100%;*/
-    /*height: auto;*/
-    /*z-index: auto;*/
-    /*background: rgba(0, 0, 0, 0.5);*/
-/*}*/
 .report_content{
     background: #272953;
     box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
