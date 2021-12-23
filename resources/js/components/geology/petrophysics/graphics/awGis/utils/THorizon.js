@@ -33,6 +33,7 @@ export default class THorizon {
     set scrollY(val) {
         this.settings = {scrollY: val};
         this.#tCoords.setOffsetY = val;
+        this.redrawLastElements();
     }
 
     get settings() {
@@ -105,7 +106,7 @@ export default class THorizon {
     }
 
     redrawLastElements(){
-        this.drawSelectedPath(this.#lastSelectElements)
+        if(this.#lastSelectElements.length) this.drawSelectedPath(this.#lastSelectElements)
     }
     drawSelectedPath(elements) {
         this.#lastSelectElements = elements;

@@ -13,7 +13,7 @@
 
     <dropdown multiple :selected-value.sync="postData.correlated_wells" block class="w-100 mb-2"
               button-text="Корреляционные скважины"
-              :options="getWellsList.filter((item)=>(item.value !== postData.reference_well))" />
+              :options="getWellsList.filter(wellFilter)" />
 
     <ToolBlock title="Выбор кривых">
       <div class="p-2">
@@ -43,16 +43,11 @@
 
     <Button @click="post" :disabled="validationPostData" class="mb-2 w-100" color="primary" align="center">Старт</Button>
 
-    <dropdown multiple :selected-value.sync="postData.correlated_wells" block class="w-100 mb-2" button-text="Результаты"
-              :options="[
-        {label: 'Option 0'},
-        {label: 'Option 1'},
-        {label: 'Option 2'},
-        {label: 'Option 3'},
-    ]" />
+    <dropdown multiple :selected-value.sync="forSave" block class="w-100 mb-2" button-text="Результаты"
+              :options="getResultList" />
 
     <div class="buttons-grid">
-      <Button color="accent-100" align="center">Сохранить</Button>
+      <Button :disabled="!forSave.length" @click="save" color="accent-100" align="center">Сохранить</Button>
       <Button color="gray" align="center">Отмена</Button>
     </div>
 
@@ -65,7 +60,9 @@ import Switcher from "../../components/switcher/Switcher";
 import ToolBlock from "../../components/toolBlock/ToolBlock";
 import dropdown from "../../components/dropdowns/dropdown";
 import AwInput from "../../components/form/AwInput";
-import {Fetch_Autocorrelation} from "../../api/autocorrelation.api";
+import {FETCH_AUTOCORRELATION, POST_HORIZON} from "../../../../store/modules/geologyGis.const";
+import {globalloadingMutations} from "@store/helpers";
+import {Post_Horizons} from "../../api/horizons.api";
 
 export default {
   name: "SecondComponent",
@@ -78,6 +75,7 @@ export default {
   },
   data() {
     return {
+      forSave:[],
       postData: {
         method: "DTW",
         correlated_wells: [],
@@ -122,19 +120,29 @@ export default {
     },
     getWellsList() {
       return (this.$store.state.geologyGis.gisWells || []).map((item) => ({value: item.name}));
-    }
+    },
+    getResultList() {
+      return this.$store.state.geologyGis.showStratigraphyElementsForResultDropdown || [];
+    },
   },
   mounted() {
     this.switcher(this.postData.method);
+    console.log(this)
   },
   methods: {
+    ...globalloadingMutations(["SET_LOADING"]),
+    wellFilter(item){
+      return (item.value !== this.postData.reference_well);
+    },
     resetCurves() {
+      this.forSave = []
       this.postData.curves.NPHI = false;
       this.postData.curves.RHOB = false;
       this.postData.curves.GR = false;
       this.postData.curves.SP = false;
     },
     switcher(val) {
+      this.forSave = []
       if (val === "DTW") {
         this.postData.curves.GR = false;
         this.postData.curves.SP = false;
@@ -157,16 +165,27 @@ export default {
       this.postData.curves[name] = !this.postData.curves[name];
     },
     async post(){
+      this.forSave = []
       let data = JSON.parse(JSON.stringify(this.postData));
-
       data.mnemonics = Object.entries(data.curves).reduce((acc, [name, bool])=>{
         if(bool) acc.push(name);
         return acc
       }, []).join('_');
-
       data.horizons = [data.horizons];
       data.correlated_wells = data.correlated_wells.map(({value})=>value);
-      await Fetch_Autocorrelation(data)
+      this.SET_LOADING(true)
+      await this.$store.dispatch(FETCH_AUTOCORRELATION, data);
+      this.SET_LOADING(false)
+    },
+    async save(){
+      this.SET_LOADING(true)
+      for (let forSaveElement of this.forSave) {
+        let horizonData = this.$store.state.geologyGis.tHorizon.getElement(forSaveElement.value);
+        for (let [well, data] of Object.entries(horizonData.toWells)) {
+          await this.$store.dispatch(POST_HORIZON, {well, data})
+        }
+      }
+      this.SET_LOADING(false)
     }
   }
 }

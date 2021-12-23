@@ -62,6 +62,12 @@ export default {
     stratigraphy(){
       this.initSvg();
     },
+    "$store.state.geologyGis.showStratigraphyElements"(){
+      setTimeout(()=>{
+        this.initSvg();
+        this.tHorizon.redrawLastElements();
+      }, 300)
+    },
     "$store.state.geologyGis.changeGisData"() {
       this.initSvg();
       this.tHorizon.redrawLastElements();
@@ -112,7 +118,6 @@ export default {
 
       this.tHorizon.wells = widthBlock;
       this.tHorizon.calcWells();
-      this.tHorizon.updateMaps();
       this.wellsHash = MD5(JSON.stringify(this.getWellsBlock));
     },
   },
