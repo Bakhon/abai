@@ -12,6 +12,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoPlan;
 use App\Models\VisCenter\ImportForms\DZOyear;
+use Illuminate\Support\Facades\Cache;
 
 class DailyReport extends Controller
 {
@@ -133,9 +134,15 @@ class DailyReport extends Controller
         'monthly' => array(),
         'yearly' => array()
     );
+    private $saveTime = 1440;
+    private $nkoFormula = ((1 - 0.019) * 241 / 1428) / 2;
 
     public function getDailyProduction(Request $request)
     {
+        $name = 'daily_report_excel_' . Carbon::now()->format('M_d_Y');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
         $date = Carbon::parse($request->date);
         $daily = $this->getDailyParams($date);
         $monthly = $this->getMonthlyParams($date);
@@ -144,12 +151,14 @@ class DailyReport extends Controller
         $this->processDzoByPeriod($monthly,$this->periodMapping['month'],$request);
         $this->processDzoByPeriod($yearly,$this->periodMapping['year'],$request);
         $this->fillSummary();
-        return [
+        $productionByPeriods = [
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
             'yearly' => $this->yearlyParams,
             'summary' => $this->summary
         ];
+        Cache::put($name, $productionByPeriods, $this->saveTime);
+        return $productionByPeriods;
     }
 
     private function getDailyParams($date)
@@ -175,7 +184,7 @@ class DailyReport extends Controller
         $monthStart =  $monthlyDate->copy()->startOf('month');
         $monthlyDiff = $monthStart->diff($monthlyEndPeriod)->days;
 
-        $this->monthlyReasons = $this->getReasonsByPeriod($monthStart,$monthlyEndPeriod,$this->monthlyDecreaseReasonFields);
+        $this->monthlyReasons = $this->getReasonsByPeriod($this->monthlyDecreaseReasonFields,Carbon::yesterday(),'whereDate');
         return array (
             'periodStart' => $monthStart->format('Y-m-d'),
             'periodEnd' => $monthlyEndPeriod->format('Y-m-d'),
@@ -194,7 +203,7 @@ class DailyReport extends Controller
         $yearlyDiff = $yearStart->diff($yearEnd)->days;
 
         $this->yearlyPlans = $this->getYearPlan();
-        $this->yearlyReasons = $this->getReasonsByPeriod($yearStart,$yearEnd,$this->yearlyDecreaseReasonFields);
+        $this->yearlyReasons = $this->getReasonsByPeriod($this->yearlyDecreaseReasonFields,Carbon::yesterday()->subMonth(),'whereMonth');
         return array (
             'periodStart' => $yearStart->format('Y-m-d'),
             'periodEnd' => $yearEnd->format('Y-m-d'),
@@ -206,11 +215,11 @@ class DailyReport extends Controller
         );
     }
 
-    private function getReasonsByPeriod($start,$end,$fields)
+    private function getReasonsByPeriod($fields,$date,$query)
     {
         $productionParams = DzoImportData::query()
             ->select(['id','dzo_name'])
-            ->whereDate('date',Carbon::yesterday())
+            ->$query('date',$date)
             ->whereNull('is_corrected')
             ->orderBy('date', 'asc')
             ->with('importDecreaseReason')
@@ -262,7 +271,11 @@ class DailyReport extends Controller
             if (is_null($multiplier)) {
                 $multiplier = 100;
             }
-            $formatted[$year['dzo']] = $formatted[$year['dzo']] / 100 * $multiplier;
+            if ($year['dzo'] === 'НКО') {
+                $formatted[$year['dzo']] = $formatted[$year['dzo']] * $this->nkoFormula;
+            } else {
+                $formatted[$year['dzo']] = $formatted[$year['dzo']] / 100 * $multiplier;
+            }
         }
         return $formatted;
     }
@@ -308,6 +321,9 @@ class DailyReport extends Controller
                 }
                 if ($params['periodType'] === 'year' && $dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $this->yearlyReasons[$dzo['name']];
+                }
+                if ($dzo['name'] === 'НКО') {
+                    $dzoDetails['part'] = str_replace('.', ',', $dzoDetails['part']);
                 }
                 array_push($this->$type,$dzoDetails);
             }
