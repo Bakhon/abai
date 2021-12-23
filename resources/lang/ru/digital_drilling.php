@@ -720,6 +720,7 @@ return array (
     'permission_sections' => [
         'main' => 'Главная страница',
         'daily_raport_catalogs' => 'Каталоги суточного рапорта',
+        'daily_raport_delete_catalogs' => 'Удаление суточного рапорта',
     ],
 
 );
