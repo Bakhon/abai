@@ -24,4 +24,11 @@ return array (
   'geologica-technical-measures-program' => 'Выбор программы ГТМ',
   'сhoosing-drilling-program' => 'Выбор программы бурения',
   'optimal-scenario' => 'Оптимальный сценарий',
+  'accumulated-oil-production' => 'Добыча нефти накопленное',
+  'injection-accumulated' => 'Закачка накопленное',
+  'measurement-pressure' => 'Замерное давление',
+  'saturation-pressure' => 'Давление насыщение',
+  'design-pressure' => 'Расчетное давление',
+  'material-balance-method' => 'Прогноз добычи методом материального баланса',
+  'volume' => 'Объём м³'
 );
