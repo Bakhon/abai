@@ -62,12 +62,6 @@
                                         {{ trans('bd.forms.well_register.title') }}
                                     </a>
                                 </li>
-
-                                <li class="left-menu-li">
-                                    <a href="{{route('report_constructor')}}">
-                                        {{ trans('bd.forms.report_constructor.menu') }}
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -136,7 +130,7 @@
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('eco_refs_list')}}" class="ml-3">
+                                    <a href="{{route('eco_refs_list')}}" class="ml-4">
                                         {{ trans('economic_reference.input_params') }}
                                     </a>
                                 </li>
@@ -192,8 +186,7 @@
                 </li>
                 <li class="left-menu-li">
                     <a href="#">
-                        <img src="/img/icons/mobile_phone.svg" class="companyLogo"> Для мобильных абонентов +7 (800) 080
-                        1444
+                        <img src="/img/icons/mobile_phone.svg" class="companyLogo">  Для мобильных абонентов  +7 (800) 080 1444
                     </a>
                 </li>
             </div>
