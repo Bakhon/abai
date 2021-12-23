@@ -1,6 +1,9 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open" @changeReport="changeReport"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open"
+                      @changeReport="changeReport"
+                      @closeReport="closeReport"
+        />
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -134,6 +137,9 @@
             this.getDZO()
         },
         methods:{
+            closeReport(){
+                this.created = false
+            },
             create(){
                 this.getDailyReport()
             },

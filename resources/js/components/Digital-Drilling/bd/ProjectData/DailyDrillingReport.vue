@@ -9,16 +9,16 @@
                   @closeReport="isReport=false"
     />
     <div class="DailyDrillingReport" v-else>
-        <div class="characteristic__modal">
-            <div class="characteristic_content">
-                <div class="characteristic_header">
-                    <div class="header-btn">
+        <div class="report-modal">
+            <div class="report_content">
+                <div class="report_content_header">
+                    <div class="report_content_header-btn">
                         <div class="btn-tech" @click="getReportsByWell" :class="{active: importFiles}">Импортированные</div>
                         <div class="btn-tech" @click="getFormReports" :class="{active: !importFiles}">Форма ввода</div>
                     </div>
                 </div>
-                <div class="characteristic_content-inner">
-                    <div class="characteristic_body">
+                <div class="report_content-inner">
+                    <div class="report_content_body">
                         <div v-if="importFiles">
                             <table class="table defaultTable">
                                 <tbody>
@@ -208,43 +208,44 @@
         margin: 0 auto;
         cursor: pointer;
     }
-.characteristic_content{
+/*.characteristic__modal{*/
+    /*position: static;*/
+    /*width: 100%;*/
+    /*height: auto;*/
+    /*z-index: auto;*/
+    /*background: rgba(0, 0, 0, 0.5);*/
+/*}*/
+.report_content{
     background: #272953;
     box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
     padding: 15px;
     border: 1px solid #656A8A;
 }
-.characteristic__modal.graph .characteristic_content,
-.characteristic__modal.scheme .characteristic_content{
-    max-width: 90%;
-    width: 90%;
-    height: auto;
-}
-.characteristic_content-inner{
+.report_content-inner{
     border: 10px solid rgba(69, 77, 125, 0.702);
     padding: 6px;
 }
-.characteristic_content .characteristic_body{
+.report_content_body{
     max-height: 100%;
     height: auto;
     overflow-y: scroll;
     overflow-x: hidden;
 
 }
-.digital_drilling .characteristic_body::-webkit-scrollbar-thumb{
+.digital_drilling .report_content_body::-webkit-scrollbar-thumb{
     background: #656A8A;
     border-radius: 10px;
 }
-.digital_drilling .characteristic_body::-webkit-scrollbar{
+.digital_drilling .report_content_body::-webkit-scrollbar{
     width:4px;
 }
 
-.characteristic_header{
+.report_content_header{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.header-btn{
+.report_content_header-btn{
     display: flex;
 }
 .btn-tech{
