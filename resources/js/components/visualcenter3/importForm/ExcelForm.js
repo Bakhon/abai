@@ -633,11 +633,17 @@ export default {
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
             let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
+            if (this.category.isArchieveActive) {
+                difference = Math.abs(monthlyPlan - monthlyFact);
+            }
             if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
                 return false;
             }
 
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
+            if (this.category.isArchieveActive) {
+                isMonthlyPlanAbnormal = monthlyFact < monthlyPlan;
+            }
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 for (let i=1;i<6;i++) {
@@ -684,9 +690,8 @@ export default {
             _.forEach(fields, (field) => {
                sum += this.excelData['decreaseReason'][field];
             });
-            let min = difference + 5;
+            let min = difference - 5;
             let max = difference + 5;
-
             return sum >= min && sum <= max;
         },
         getFormattedNumberByThousand(num) {

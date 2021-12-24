@@ -18,7 +18,23 @@ class DailyReport extends Controller
 {
     private $dailyParams = array();
     private $monthlyParams = array();
-    private $monthlyReasons = array();
+    private $monthlyReasons = array(
+        'КГМ' => [],
+        'ПКК' => [],
+        'УО' => [],
+        'ЭМГ' => [],
+        'ОМГ' => [],
+        'ММГ' => [],
+        'КОА' => [],
+        'КБМ' => [],
+        'АГ' => [],
+        'ТШО' => [],
+        'ТП' => [],
+        'КПО' => [],
+        'ПКИ' => [],
+        'НКО' => [],
+        'КТМ' => []
+    );
     private $yearlyParams = array();
     private $yearlyReasons = array();
     private $yearlyPlans = array();
@@ -136,6 +152,7 @@ class DailyReport extends Controller
     );
     private $saveTime = 1440;
     private $nkoFormula = ((1 - 0.019) * 241 / 1428) / 2;
+    private $missedCompanies = [];
 
     public function getDailyProduction(Request $request)
     {
@@ -155,7 +172,8 @@ class DailyReport extends Controller
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
             'yearly' => $this->yearlyParams,
-            'summary' => $this->summary
+            'summary' => $this->summary,
+            'missing' => array_values($this->missedCompanies)
         ];
         Cache::put($name, $productionByPeriods, $this->saveTime);
         return $productionByPeriods;
@@ -184,7 +202,16 @@ class DailyReport extends Controller
         $monthStart =  $monthlyDate->copy()->startOf('month');
         $monthlyDiff = $monthStart->diff($monthlyEndPeriod)->days;
 
-        $this->monthlyReasons = $this->getReasonsByPeriod($this->monthlyDecreaseReasonFields,Carbon::yesterday(),'whereDate');
+        $reasons = $this->getReasonsByPeriod($this->monthlyDecreaseReasonFields,Carbon::yesterday(),'whereDate');
+        $diff = array_diff(array_keys($this->monthlyReasons),array_keys($reasons));
+        if (count($diff) > 0) {
+            $this->missedCompanies = $diff;
+            foreach($diff as $dzo) {
+                $reasons[$dzo] = [];
+            }
+        }
+        $this->monthlyReasons = $reasons;
+
         return array (
             'periodStart' => $monthStart->format('Y-m-d'),
             'periodEnd' => $monthlyEndPeriod->format('Y-m-d'),
@@ -203,7 +230,15 @@ class DailyReport extends Controller
         $yearlyDiff = $yearStart->diff($yearEnd)->days;
 
         $this->yearlyPlans = $this->getYearPlan();
-        $this->yearlyReasons = $this->getReasonsByPeriod($this->yearlyDecreaseReasonFields,Carbon::yesterday()->subMonth(),'whereMonth');
+        $reasons = $this->getReasonsByPeriod($this->yearlyDecreaseReasonFields,Carbon::yesterday()->subMonth(),'whereMonth');
+        $diff = array_diff(array_keys($this->monthlyReasons),array_keys($reasons));
+        if (count($diff) > 0) {
+            foreach($diff as $dzo) {
+                $reasons[$dzo] = [];
+            }
+        }
+        $this->yearlyReasons = $reasons;
+
         return array (
             'periodStart' => $yearStart->format('Y-m-d'),
             'periodEnd' => $yearEnd->format('Y-m-d'),
@@ -243,6 +278,7 @@ class DailyReport extends Controller
                 }
             }
         }
+
         return $formatted;
     }
 
@@ -306,6 +342,7 @@ class DailyReport extends Controller
                     'plan' => $dzo['plan'],
                     'fact' => $dzo['fact'],
                     'reasons' => array(),
+                    'acronym' => $dzo['name']
                 );
                 if ($dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $dzo['decreaseReasonExplanations'];
