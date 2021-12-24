@@ -23,32 +23,6 @@ class CurrentGDIS extends TableForm
             ]
         ],
         [
-            'code' => 'conclusion',
-            'params' => [
-                'type' => 'dict',
-                'dict' => 'gdis_conclusion',
-            ]
-        ],
-        [
-            'code' => 'device',
-            'params' => [
-                'type' => 'dict',
-                'dict' => 'device'
-            ]
-        ],
-        [
-            'code' => 'transcript_dynamogram',
-            'params' => [
-                'type' => 'text'
-            ]
-        ],
-        [
-            'code' => 'note',
-            'params' => [
-                'type' => 'text'
-            ]
-        ],
-        [
             'code' => 'conclusion_text',
             'params' => [
                 'type' => 'text'
@@ -63,76 +37,28 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
-        'TBP',
-        'OTP',
-        'OTPM',
-        'STLV',
         'FLVL',
+        'STLV',
         'BHP',
         'RP',
-        'RRP',
-        'MLP',
         'BP',
-        'STP',
-        'RSVT',
-        'INJR',
-        'FLRT',
-        'FLRD',
-        'GASR',
-        'ADMCF',
-        'PDCF',
-        'RSD',
-        'PRDK',
-        'DBD',
-        'SLHDM',
-        'PSHDM',
-        'PSD',
-        'TPDM',
-        'PLST',
-        'PMPR',
-        'SHDMD',
-        'SHDME',
-        'RPM',
-        'WCUT'
+        'OTP',
+        'PSD'
     ];
 
     protected $fieldsOrder = [
         'target',
         'FLVL',
         'STLV',
-        'OTP',
-        'BP',
         'BHP',
         'RP',
-        'TBP',
-        'GASR',
-        'INJR',
-        'FLRT',
-        'FLRD',
-        'WCUT',
-        'MLP',
+        'BP',
+        'OTP',
+        'PSD',
         'conclusion',
-        'ADMCF',
-        'PDCF',
-        'RRP',
-        'STP',
-        'RSVT',
         'device',
         'transcript_dynamogram',
-        'RSD',
-        'PRDK',
-        'DBD',
-        'SLHDM',
-        'PSHDM',
         'note',
-        'PSD',
-        'OTPM',
-        'TPDM',
-        'PLST',
-        'PMPR',
-        'SHDMD',
-        'SHDME',
-        'RPM',
         'conclusion_text',
         'file_dynamogram'
     ];
