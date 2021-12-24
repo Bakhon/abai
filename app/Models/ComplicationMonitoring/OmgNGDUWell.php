@@ -27,13 +27,13 @@ class OmgNGDUWell extends Model
         return $this->belongsTo(OmgNGDUWell::class, 'last_well_data_id', 'id');
     }
 
-    public function scopeWithLastWellData($query)
+    public function scopeWithLastWellData($query, $date)
     {
         $query->addSelect(
             [
                 'last_well_data_id' => OmgNGDUWell::select('id')
                     ->whereColumn('well_id', 'well_id')
-//                    ->where('date')
+                    ->where('date', '<', $date)
                     ->whereNotNull('bsw')
                     ->orderBy('date', 'desc')
                     ->take(1)

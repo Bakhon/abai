@@ -424,6 +424,7 @@ return array (
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
       'no-pressure-on-gu-omgdu' => 'На задано давление на ГУ',
+      'no-pressure-omgdu-data' => 'Нет данных по давлению на ГУ',
     ),
     'error' => 
     array (
