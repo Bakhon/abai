@@ -4,8 +4,8 @@
                 class="modal-bign-wrapper"
                 name="modalManagers"
                 draggable=".modal-bign-header"
-                :width="1500"
-                :height="800"
+                :width="900"
+                :height="600"
                 style="background: transparent;"
                 :adaptive="true"
         >
@@ -15,15 +15,15 @@
                     <div class="btn-toolbar">
                         <button
                                 type="button"
-                                :class="[selectedType.alias === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType({'alias':'manager','id': null})"
+                                :class="[selectedType === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType('manager')"
                         >
                             Члены Правления
                         </button>
                         <button
                                 type="button"
-                                :class="[selectedType.alias === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType({'alias':'deputy','id': null})"
+                                :class="[selectedType === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
+                                @click="switchManagerType('deputy')"
                         >
                             Заместители
                         </button>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="row text-left" v-for="manager in managers">
                     <div class="col-12 row p-2 pl-5">
-                        <div class="col-3">{{manager.name}}</div>
+                        <div class="col-8">{{manager.name}}</div>
                         <button type="button" class="modal-button_add col-2" @click="[selectManager(manager),$modal.show('modalManager')]">
                             Управление
                         </button>
@@ -50,12 +50,14 @@
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 export default {
     data: function () {
         return {
             managers: [],
             selectedManager: {},
-            selectedType: {'alias':'manager','id':null}
+            selectedType: 'manager'
         };
     },
     methods: {
@@ -73,20 +75,33 @@ export default {
         async switchManagerType(type) {
             this.selectedType = type;
             this.managers = await this.getManagers(type);
-        }
+        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
-        this.managers = await this.getManagers({'alias':'manager','id': null});
+        this.managers = await this.getManagers(this.selectedType);
+        console.log(this.managers);
         this.$watch(
             () => {
                 return this.$refs.userCreation.isOperationFinished
             },
             async (status) => {
                 if (status) {
-                    this.managers = await this.getManagers({'alias':'manager','id': null});
+                    this.managers = await this.getManagers(this.selectedType);
                 }
             }
         );
+    },
+    props: ['type'],
+    watch: {
+        type: async function () {
+            this.SET_LOADING(true);
+            this.selectedType = this.type;
+            this.managers = await this.getManagers(this.selectedType);
+            this.SET_LOADING(false);
+        },
     }
 }
 

@@ -22,23 +22,34 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12 menu-block d-flex">
+                <div :class="[menuVisibility.strategic ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('strategic')"></div>
+                <div :class="[menuVisibility.corporate ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('corporate')"></div>
+                <div :class="[menuVisibility.manager ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('manager')"></div>
+                <div :class="[menuVisibility.deputy ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('deputy')"></div>
+            </div>
             <div class="mt-3 mb-3 col-12 row m-0 ceo-table">
-                <div class="col-2 d-flex">
+                <div v-if="menuVisibility.strategic" class="col-2 d-flex">
                     <div class="col-12 table-header">
                         <span>Стратегические КПД</span>
                     </div>
                 </div>
-                <div class="col-3 d-flex">
+                <div v-if="menuVisibility.corporate" class="col-3 d-flex">
                     <div class="col-12 table-header">
                         <span>Корпоративные КПД</span>
                     </div>
                 </div>
-                <div class="col-7">
+                <div v-if="menuVisibility.manager" class="col-7">
                     <div class="col-12 table-header">
                         <span>КПД руководящих работников (членов Правления)</span>
                     </div>
                 </div>
-                <div class="col-2 row m-0">
+                <div v-if="menuVisibility.deputy" class="col-7">
+                    <div class="col-12 table-header">
+                        <span>КПД управленческих работников</span>
+                    </div>
+                </div>
+                <div v-if="menuVisibility.strategic" class="col-2 row m-0">
                     <div class="col-12 p-0">
                         <div class="col-12 d-flex p-2 table-sub-header">
                             <div class="img-goals"></div>
@@ -50,8 +61,6 @@
                                     class="d-flex align-items-center"
                                     :style="strategicDecompositionStyles"
                             >
-<!--                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"-->
-<!--                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"-->
                                 <div class="col-12">
                                     <div class="text-right">
                                         0%
@@ -74,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3 row m-0">
+                <div v-if="menuVisibility.corporate" class="col-3 row m-0">
                     <div class="col-12 p-0">
                         <div class="col-12 d-flex p-2 table-sub-header chairmaster" @click="switchManager(corporateManager)">
                             <img v-if="corporateManager.avatar" width="43px" :src="'/img/kpd-tree/managers/' + corporateManager.avatar" class="rounded-circle"></img>
@@ -86,8 +95,6 @@
                                     class="d-flex align-items-center"
                                     :style="corporateDecompositionStyles"
                             >
-    <!--                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"-->
-    <!--                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"-->
                                 <div class="col-12">
                                     <div class="text-right">
                                         0%
@@ -110,46 +117,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-7 row m-0">
+                <div v-if="menuVisibility.manager" class="col-7 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
-                        <div v-for="manager in managers"  :style="thirdDecompositionStyles" class="kpd-ceo_header-b">
+                        <div v-for="manager in managers"  :style="thirdDecompositionStyles" class="manager-header">
                             <div class="h-100 col-12 d-flex align-items-center chairmaster" @click="switchManager(master)">
                                 <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                 <div class="ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                             </div>
-<!--                            <div-->
-<!--                                    v-for="(kpd,index) in master.kpd"-->
-<!--                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"-->
-<!--                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"-->
-<!--                            >-->
-<!--                                <div class="item-list_vector m-2"></div>-->
-<!--                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>-->
-<!--                                <div class="progress progress_template mt-2 p-0 progress-ceo_b">-->
-<!--                                    <div-->
-<!--                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"-->
-<!--                                            :style="{width: kpd.progress + '%',}"-->
-<!--                                            role="progressbar"-->
-<!--                                            :aria-valuenow="kpd.progress"-->
-<!--                                            aria-valuemin="0"-->
-<!--                                            aria-valuemax="100"-->
-<!--                                    ></div>-->
-<!--                                </div>-->
-<!--                                <div class="col-1 text-right">-->
-<!--                                    {{kpd.progress}}%-->
-<!--                                 </div>-->
-<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div v-if="menuVisibility.deputy" class="col-7 row m-0">
+                    <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
+                        <div v-for="manager in deputy"  :style="thirdDecompositionStyles" class="manager-header">
+                            <div class="h-100 col-12 d-flex align-items-center chairmaster" @click="switchManager(master)">
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
+                                <div class="ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
             <kpd-modal-catalog :managers="managers" :corporate-manager="corporateManager"></kpd-modal-catalog>
-            <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
-            <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
             <modal-settings :corporate-manager="corporateManager"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager"></modal-corporate-manager>
-            <modal-managers></modal-managers>
         </div>
     </div>
 </template>
@@ -228,32 +221,15 @@
 .progress-bar_filling__high {
     background-color: #009847 !important;
 }
-.kpd-ceo_list {
-    border: 2px solid #2A3A85;
-    border-bottom: 2px solid #656A8A;
-    max-height: 99px;
-}
-.kpd-ceo_list-b {
-    border: 1px solid #2A3A85;
-}
-.kpd-ceo_header-b {
+.manager-header {
     border: 0.2em solid #272C5C;
     background: #535591;
     border-radius: 7px;
-}
-.kpd-ceo_item-b {
-    background: #272C5C;
 }
 .chairmaster:hover {
     background: #3C4280;
     border-radius: 5px;
     border: 2px solid #272953;
-}
-.kpd-ceo-a_item:hover {
-    background: #3C4280;
-    .item-list_vector {
-        opacity: 1;
-    }
 }
 .kpd-ceo_item {
     margin-top: 5rem;
@@ -261,47 +237,40 @@
 .kpd-ceo_item:hover {
     background: #3C4280;
 }
-.kpd-ceo-a_item {
-    margin-top: 3rem;
-    &:nth-child(4) {
-        margin-top: 120px;
-    }
-    &:last-child,&:first-child {
-        margin-top: 0;
-    }
-}
-.item-list_vector {
-    background: #3366FF;
-    opacity: 0.25;
-    transform: matrix(1, 0, 0, -1, 0, 0);
-    position: absolute;
-    width: 9px;
-    height: 9px;
-}
-.progress-ceo_b {
-    width: 160px;
-}
-.kpd-name_b {
-    font-size: 14px;
-}
-.main-buttons:hover, .kpd-name_b:hover {
+.main-buttons:hover {
     background: #3A4280;
-}
-.hover {
-    background: #3C4280;
-    border-radius: 5px;
-    border: 2px solid #272953;
-}
-.table-manager-kpd {
-    /*height: 110px;*/
-}
-.visibility-settings {
-    background: #474F91;
 }
 .manager-column {
     border: 1px solid #2A3A85;
     background: #272C5C;
     height: 840px;
     max-height: 840px;
+}
+.menu-block {
+    padding-left: 30px;
+    div:nth-child(1) {
+        width: 40px;
+        height: 20px;
+    }
+    div:nth-child(2) {
+        width: 50px;
+        height: 20px;
+    }
+    div:nth-child(3) {
+        width: 70px;
+        height: 20px;
+    }
+    div:nth-child(4) {
+        width: 70px;
+        height: 20px;
+    }
+}
+.menu-item_selected {
+    background: #989ecd;
+    cursor: pointer;
+}
+.menu-item {
+    background: #474F91;
+    cursor: pointer;
 }
 </style>

@@ -35,7 +35,7 @@
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-4 text-left pt-2">Тип</div>
-                        <select class="form-select p-2 col-7" @change="switchManagerType($event)">
+                        <select class="form-select p-2 col-7" @change="switchManagerType($event)" v-model="manager.type">
                             <option v-for="type in managerTypes" :value="type.alias">{{type.name}}</option>
                         </select>
                     </div>
@@ -93,22 +93,16 @@ export default {
         async store() {
             this.SET_LOADING(true);
             let uri = this.localeUrl("/store-kpd-manager");
-            if (Object.keys(this.managerInfo).length === 0) {
-                this.manager.type = {'alias':this.manager.type,'id':null};
-            }
             let formData = new FormData();
             if (!this.manager.img) {
                 formData.append("avatar", this.manager.avatar);
             } else {
                 formData.append("avatar", this.manager.img);
             }
-            let formattedType = this.manager.type;
-            if (typeof this.manager.type !== 'string') {
-                formattedType = JSON.stringify(this.manager.type);
-            }
+
             formData.append('name', this.manager.name);
             formData.append('title', this.manager.title);
-            formData.append('type', formattedType);
+            formData.append('type', this.manager.type);
             formData.append('id', this.manager.id);
             await this.axios.post(uri, formData, {
                 headers: {

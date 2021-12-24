@@ -13,4 +13,8 @@ class KpdTreeCatalog extends Model
     {
         return $this->hasMany('App\Models\VisCenter\Kpd\KpdElements', 'kpd_id', 'id');
     }
+    public function kpdFact()
+    {
+        return $this->hasMany('App\Models\VisCenter\Kpd\KpdFact', 'kpd_id', 'id');
+    }
 }

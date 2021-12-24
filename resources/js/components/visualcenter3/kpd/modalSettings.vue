@@ -26,23 +26,32 @@
                         </button>
                     </div>
                     <div class="col-12 row p-2 pl-5">
-                        <div class="col-6">Раздел "Члены Правления"</div>
-                        <button type="button" class="modal-button_add col-3" @click="$modal.show('modalManagers')">
+                        <div class="col-6">Раздел "Руководящие работники"</div>
+                        <button type="button" class="modal-button_add col-3" @click="[type = 'manager',$modal.show('modalManagers')]">
+                            Управление
+                        </button>
+                    </div>
+                    <div class="col-12 row p-2 pl-5">
+                        <div class="col-6">Раздел "Управленческие работники"</div>
+                        <button type="button" class="modal-button_add col-3" @click="[type = 'deputy',$modal.show('modalManagers')]">
                             Управление
                         </button>
                     </div>
                 </div>
             </div>
         </modal>
-
+        <modal-managers :type="type"></modal-managers>
     </div>
 </template>
 
 <script>
+    import Vue from "vue";
+
+    Vue.component('modal-managers', require('./modalManagers.vue').default);
 export default {
     data: function () {
         return {
-
+            'type': 'manager'
         };
     },
 }
