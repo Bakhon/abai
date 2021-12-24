@@ -870,11 +870,11 @@ class DictionaryService
     }
 
     private function getResMethodDict(){
-        $codes = ['NONE','PDC','IC'];
+        $codes = ['SSPR', 'PDC', 'IPR', 'IDR', 'UKPD', 'MN', 'RLR', 'RPM', 'LDR', 'PBR', 'SSSR', 'EPIM'];
         $items = DB::connection('tbd')
             ->table('dict.research_method as r')
             ->select('r.id', 'r.name_ru as name', 'r.code')
-            ->whereNotIn('r.code', $codes)
+            ->whereIn('r.code', $codes)
             ->orderBy('name', 'asc')
             ->get()
             ->map(
