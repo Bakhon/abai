@@ -17,7 +17,7 @@
             <div class="row">
               <button id="refreshExperimentInfo" :disabled="isLoading"
                       class="col btn btn-primary get-report-button"
-                      @click="refreshGenericUploadParams()">
+                      @click.prevent="refreshGenericUploadParams()">
                 &#x21bb; Обновить
               </button>
             </div>
@@ -28,7 +28,16 @@
               </div>
               <div class="col">
                 <label class="subsection-text">месторождение</label>
-                <input v-model="input.field" class="form-control filter-input mr-2 mb-2">
+                <select
+                    v-model="input.field"
+                    :disabled="isLoading"
+                    class="col form-control filter-input select mr-2 mb-2"
+                >
+                  <option disabled selected value="">Укажите месторождение</option>
+                  <option v-for="field in fieldsList" :value="field.value">
+                    {{ getLocalizedParameterName(field) }}
+                  </option>
+                </select>
               </div>
               <div class="col">
                 <label class="subsection-text">комментарий</label>
@@ -46,7 +55,7 @@
                   class="col form-control filter-input select mr-2 mb-2"
               >
                 <option disabled selected value="">Укажите происхождение файла</option>
-                <option v-for="item in getDict('file_origin')" :value="item.id">{{ item.name }}</option>
+                <option v-for="item in getDict('file_origin')" :value="item.code">{{ item.name }}</option>
               </select>
             </div>
             <div class="row">
@@ -66,7 +75,7 @@
                     required
                 >
                   <option disabled value="">Тип ствола</option>
-                  <option v-for="item in getDict('stem_type')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('stem_type')" :value="item.code">{{ item.name }}</option>
                 </select>
               </div>
               <div class="col-6">
@@ -78,7 +87,7 @@
                     required
                 >
                   <option disabled value="">Технология записи</option>
-                  <option v-for="item in getDict('recording_method')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('recording_method')" :value="item.name">{{ item.name }}</option>
                 </select>
               </div>
             </div>
@@ -132,7 +141,7 @@
                     required
                 >
                   <option disabled value="">Статус обработки</option>
-                  <option v-for="item in getDict('file_status')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('file_status')" :value="item.code">{{ item.name }}</option>
                 </select>
               </div>
             </div>
@@ -153,7 +162,7 @@
                     required
                 >
                   <option disabled value="">Статус записи</option>
-                  <option v-for="item in getDict('recording_state')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('recording_state')" :value="item.code">{{ item.name }}</option>
                 </select>
               </div>
             </div>
@@ -167,14 +176,14 @@
                     required
                 >
                   <option disabled value="">Расширение файла</option>
-                  <option v-for="item in getDict('file_type')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('file_type')" :value="item.name">{{ item.name }}</option>
                 </select>
               </div>
               <div class="col"></div>
             </div>
             <div class="row">
               <button id="submitExperimentInfo"
-                      :disabled="!isInputFilledFieldsForFileUpload || !files || isLoading || input.provenanceId === ''"
+                      :disabled="!isInputFilledFieldsForFileUpload || !files || isLoading || input.provenanceId === '' || !input.field"
                       class="col btn btn-primary get-report-button"
                       @click.prevent="saveExperiment()">
                 Подтвердить данные по эксперименту

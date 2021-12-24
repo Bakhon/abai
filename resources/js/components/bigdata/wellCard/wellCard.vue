@@ -134,7 +134,7 @@
                      @click="$refs.childForm.switchChartVisibility()">Показать график
                   </a>
                 </div>
-                <div class="modal-show" v-show="isOpen === true" @mouseleave="isOpen = false">
+                <div class="modal-show" v-show="isOpen === true" @mouseover="isOpen = true">
                       <div class="modal_show_item">
                         <img class="modal_show_img" src="/img/bd/orange-circle-icon.png"/>
                           <span class="legenda_text">Отклонение от тех. режима</span>
