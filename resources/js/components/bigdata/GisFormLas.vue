@@ -34,7 +34,7 @@
                     class="col form-control filter-input select mr-2 mb-2"
                 >
                   <option disabled selected value="">Укажите месторождение</option>
-                  <option v-for="field in fieldsList" :value="field.value">
+                  <option v-for="field in fieldsList" :value="field.ru">
                     {{ getLocalizedParameterName(field) }}
                   </option>
                 </select>
