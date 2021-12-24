@@ -30,5 +30,6 @@ return array (
   'saturation-pressure' => 'Давление насыщение',
   'design-pressure' => 'Расчетное давление',
   'material-balance-method' => 'Прогноз добычи методом материального баланса',
-  'volume' => 'Объём м³'
-);
+  'volume' => 'Объём м³',
+  'pressure' => 'Давление атм'
+  );

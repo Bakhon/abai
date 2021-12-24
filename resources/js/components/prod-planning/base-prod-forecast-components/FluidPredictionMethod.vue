@@ -53,7 +53,7 @@ export default {
           linecolor: "#454D7D"
         },
         yaxis2: {
-          title: `${this.trans('prod-plan.accumulated-oil-production')}`,
+          title: `${this.trans('prod-plan.pressure')}`,
           showline: true,
           gridcolor: "#454D7D",
           linewidth: 1,
