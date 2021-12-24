@@ -48,9 +48,7 @@
                 type="checkbox"
                 :id="fluid.id"
               />
-              <label :for="fluid.id">{{
-                trans(`plast_fluids.${fluid.langKey}`)
-              }}</label>
+              <label :for="fluid.id" v-html="trans(`plast_fluids.${fluid.langKey}`)"></label>
             </div>
           </div>
         </div>

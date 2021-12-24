@@ -1,30 +1,58 @@
 <template>
-  <div class="d-flex flex-column">
-    <label for="kit">
-      {{ trans('economic_reference.select_kit') }}
-    </label>
+  <div class="d-flex">
+    <div class="d-flex flex-column">
+      <label for="kit">
+        {{ trans('economic_reference.select_kit') }}
+      </label>
 
-    <select
-        v-show="kits.length"
-        id="kit"
-        v-model="form[formKey]"
-        :multiple="isMultiple"
-        data-style="text-white form-control bg-main4 border-0"
-        title=""
-        class="well-kits"
-        @change="$emit('change')"
-    >
-      <option :value="null" disabled selected>
-        {{ trans('economic_reference.select_item') }}
-      </option>
+      <select
+          v-show="kits.length"
+          id="kit"
+          v-model="form[formKey]"
+          :multiple="isMultiple"
+          data-style="text-white form-control bg-main4 border-0"
+          title=""
+          class="well-kits"
+          @change="form.permanent_stop_coefficient = null"
+      >
+        <option :value="null" disabled selected>
+          {{ trans('economic_reference.select_item') }}
+        </option>
 
-      <option
-          v-for="kit in kits"
-          :key="kit.id"
-          :value="kit.id">
-        {{ kit.name }}
-      </option>
-    </select>
+        <option
+            v-for="kit in kits"
+            :key="kit.id"
+            :value="kit.id">
+          {{ kit.name }}
+        </option>
+      </select>
+    </div>
+
+    <div v-if="isVisiblePermanentCoefficient"
+         class="ml-2">
+      <label for="permanent_cost_coefficient">
+        {{ trans('economic_reference.permanent_stop_coefficient') }}
+      </label>
+
+      <select
+          id="permanent_cost_coefficient"
+          v-model="form.permanent_stop_coefficient"
+          class="form-control text-white border-0"
+          style="background-color: #333975 !important;"
+          @change="$emit('change')"
+      >
+        <option :value="null" disabled selected>
+          {{ trans('economic_reference.select_item') }}
+        </option>
+
+        <option
+            v-for="(coefficient, index) in permanentCoefficients"
+            :key="index"
+            :value="coefficient">
+          {{ coefficient }}
+        </option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -81,6 +109,34 @@ export default {
     url() {
       return this.localeUrl('/economic/technical/well_forecast/kit/get-data')
     },
+
+    isVisiblePermanentCoefficient() {
+      if (!this.kits.length) {
+        return false
+      }
+
+      return this.isMultiple ? this.form[this.formKey].length : this.form[this.formKey]
+    },
+
+    permanentCoefficients() {
+      if (!this.isMultiple) {
+        return this.kits
+            .find(kit => kit.id === this.form[this.formKey]).permanent_stop_coefficients
+            .map(coefficient => coefficient.value)
+      }
+
+      let coefficients = []
+
+      this.kits.forEach(kit => {
+        if (!this.form[this.formKey].includes(kit.id)) return
+
+        coefficients.push(kit.permanent_stop_coefficients.map(coefficient => coefficient.value))
+      })
+
+      return coefficients.length > 1
+          ? coefficients.reduce((a, b) => a.filter(c => b.includes(c)))
+          : coefficients[0]
+    }
   }
 }
 </script>

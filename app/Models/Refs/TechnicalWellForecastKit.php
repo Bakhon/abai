@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TechnicalWellForecastKit extends Model
 {
-    protected $fillable = [
-        'name', 'technical_log_id', 'economic_log_id', 'user_id',
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'permanent_stop_coefficients' => 'array',
     ];
 
     public function economicLog()
@@ -24,5 +26,10 @@ class TechnicalWellForecastKit extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function results()
+    {
+        return $this->hasMany(TechnicalWellForecastKitResult::class, 'kit_id');
     }
 }

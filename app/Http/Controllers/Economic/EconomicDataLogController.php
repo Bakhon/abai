@@ -14,13 +14,14 @@ use App\Models\Refs\EcoRefsGtmValue;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellForecastKit;
+use App\Models\Refs\TechnicalWellForecastKitResult;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class EconomicDataLogController extends Controller
 {
-    const PAGINATION = 10;
+    const PAGINATION = 100;
 
     public function index(EconomicDataLogRequest $request): View
     {
@@ -50,13 +51,21 @@ class EconomicDataLogController extends Controller
 
                     break;
                 case EconomicDataLogType::WELL_FORECAST:
-                    TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->delete();
+                    $kitIds = TechnicalWellForecastKit::query()->whereTechnicalLogId($log->id)->pluck('id');
+
+                    TechnicalWellForecastKit::query()->whereIn('id', $kitIds)->delete();
+
+                    TechnicalWellForecastKitResult::query()->whereIn('kit_id', $kitIds)->delete();
 
                     TechnicalWellForecast::query()->whereLogId($log->id)->delete();
 
                     break;
                 case EconomicDataLogType::ANALYSIS_PARAM:
-                    TechnicalWellForecastKit::query()->whereEconomicLogId($log->id)->delete();
+                    $kitIds = TechnicalWellForecastKit::query()->whereEconomicLogId($log->id)->pluck('id');
+
+                    TechnicalWellForecastKit::query()->whereIn('id', $kitIds)->delete();
+
+                    TechnicalWellForecastKitResult::query()->whereIn('kit_id', $kitIds)->delete();
 
                     EcoRefsAnalysisParam::query()->whereLogId($log->id)->delete();
 
