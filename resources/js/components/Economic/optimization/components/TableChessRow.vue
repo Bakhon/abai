@@ -7,7 +7,11 @@
 
     <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
          class="px-3 py-1 border-grey text-center flex-150px d-flex align-items-center justify-content-center">
-      {{ row.pp2020 }}
+      {{
+        typeof row.manufacturingProgram === 'string'
+            ? row.manufacturingProgram
+            : localeValue(+row.manufacturingProgram)
+      }}
     </div>
 
     <div v-if="row.subtitle"
@@ -20,15 +24,20 @@
          :key="`${index}_${columnIndex}`"
          :style="`flex: 1 1 ${100 / row.columns.length}%; background: ${column.color}`"
          class="px-3 py-1 border-grey text-center d-flex align-items-center justify-content-center">
-      {{ (+column.value).toLocaleString() }}
+      {{ localeValue(+column.value) }}
       {{ row.columnDimension }}
     </div>
   </div>
 </template>
 
 <script>
+import {formatValueMixin} from "../../mixins/formatMixin";
+
 export default {
   name: "TableChessRow",
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     row: {
       required: true,

@@ -70,7 +70,10 @@ class EconomicOptimizationController extends Controller
                 ? EcoRefsGtm::query()
                     ->whereLogId($gtmKit->gtm_log_id)
                     ->get()
-                : []
+                : [],
+            'manufacturingProgram' => $scenario->manufacturing_program_log_id
+                ? $scenario->manufacturingProgram()->first()
+                : null
         ];
     }
 

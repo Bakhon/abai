@@ -11,6 +11,7 @@ use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsAnalysisParam;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
+use App\Models\Refs\EcoRefsManufacturingProgram;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalWellForecast;
 use App\Models\Refs\TechnicalWellForecastKit;
@@ -78,6 +79,11 @@ class EconomicDataLogController extends Controller
                     EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
 
                     break;
+                case EconomicDataLogType::MANUFACTURING_PROGRAM:
+                    EcoRefsManufacturingProgram::query()->whereLogId($log->id)->delete();
+
+                    break;
+
             }
 
             $log->delete();
