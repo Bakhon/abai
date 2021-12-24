@@ -143,6 +143,7 @@ class PlanGIS extends TableForm
             'title' => trans('bd.forms.plan_g_i_s.total'),
             'parent_column' => 'total',
             'type' => 'calc',
+            'is_editable' => false,
             'formula' => implode(' + ', $totalFormula)
         ];
 
