@@ -104,7 +104,10 @@ Route::group(
                 Route::get('/get-decrease-reasons-by-date', 'VisCenter\VisualCenterController@getDecreaseReasons');
                 Route::get('/get-fact-by-month', 'VisCenter\ExcelForm\ExcelFormController@getFactByMonth');
                 Route::post('/store-fact-by-month', 'VisCenter\ExcelForm\ExcelFormController@storeFactByMonth');
-
+                Route::get('/get-plan-by-import-form', 'VisCenter\ExcelForm\ExcelFormController@getPlanForReasons');
+                Route::get('/get-fact-by-import-form', 'VisCenter\ExcelForm\ExcelFormController@getFactForReason');
+                Route::get('/daily-report-export', 'VisCenter\ExcelForm\ExcelFormController@dailyReportExcelExport');
+                Route::get('/get-daily-report-production', 'VisCenter\DailyReport@getDailyProduction');
                 Route::post('/store-kpd-corporate-manager', 'VisCenter\Kpd\KpdTreeController@storeCorporateManager');
                 Route::get('/get-kpd-corporate-manager', 'VisCenter\Kpd\KpdTreeController@getCorporateManager');
                 Route::post('/store-kpd-manager', 'VisCenter\Kpd\KpdTreeController@storeManager');
