@@ -151,7 +151,6 @@
                                             <tr>
                                                 <th
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
                                                     {{dayNumber}}
                                                 </th>
@@ -164,9 +163,6 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].liq,
-                                                            periodItem.params.techMode[0],
-                                                            dayNumber,periodItem.params.activity)"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1))}}
                                                 </td>

@@ -215,7 +215,7 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                 v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                         >
                                             {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                         </td>
@@ -395,7 +395,7 @@
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Обработанное время, ч',
+                                        'label': 'Отработанное время, ч',
                                         'value': '-',
                                     },
                                 ],

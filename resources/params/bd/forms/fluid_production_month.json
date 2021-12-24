@@ -17,6 +17,7 @@
       "is_editable": false,
       "title": "other_uwi",
       "freezed": true,
+      "toggle": true,
       "width": 75
     },
     {
@@ -25,6 +26,7 @@
       "is_editable": false,
       "title": "tap",
       "freezed": true,
+      "toggle": true,
       "width": 75
     },
     {
