@@ -166,7 +166,6 @@
                                                         :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].liq,
                                                             periodItem.params.techMode[0],
                                                             dayNumber,periodItem.params.activity)"
-
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].liq.toFixed(1))}}
                                                 </td>
