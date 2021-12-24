@@ -152,8 +152,11 @@ export default {
                 return
             }
             this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
-            this.input.field = experiment.field
+            this.setExperimentField(experiment)
             this.input.well = experiment.well
+        },
+        setExperimentField(experiment) {
+            this.input.field = experiment.field
         },
         getOriginalLas(experimentsInfo) {
             let content = JSON.stringify({

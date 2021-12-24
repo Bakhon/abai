@@ -29,6 +29,14 @@ export default {
             well: null
         }
     },
+    computed: {
+        fieldsList() {
+            if (!this.filenameParameters.generic.fields) return null
+            return this.filenameParameters.generic.fields.sort((a, b) => {
+                return a[this.localization].toUpperCase() < b[this.localization].toUpperCase()
+            })
+        }
+    },
     mounted() {
         this.loadDictionaries()
         this.loadWell()
@@ -57,7 +65,7 @@ export default {
             this.axios.get(this.localeUrl(`/api/bigdata/las/wells/${this.wellId}`)).then(response => {
                 this.well = response.data.well
                 this.input.filename.well = this.well.uwi
-                this.input.filename.field = response.data.field.name_ru
+                this.input.filename.field = response.data.field.name_ru.replace(' ', '_')
             })
         },
         saveExperiment() {
@@ -68,6 +76,16 @@ export default {
                     well_id: this.well.id
                 })
             })
-        }
+        },
+        setExperimentField(experiment) {
+
+            let selectedField = this.filenameParameters.generic.fields.filter(field => {
+                return experiment.field === this.getLocalizedParameterName(field)
+            })
+
+            if (selectedField.length > 0) {
+                this.input.field = selectedField[0].value
+            }
+        },
     },
 }
