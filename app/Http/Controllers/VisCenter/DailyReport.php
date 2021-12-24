@@ -254,11 +254,7 @@ class DailyReport extends Controller
     {
         $productionParams = DzoImportData::query()
             ->select(['id','dzo_name'])
-<<<<<<< HEAD
-            ->whereDate('date',Carbon::yesterday())
-=======
             ->$query('date',$date)
->>>>>>> 4c3bcc48205fd498b39f4ee143c591950bef1a34
             ->whereNull('is_corrected')
             ->orderBy('date', 'asc')
             ->with('importDecreaseReason')

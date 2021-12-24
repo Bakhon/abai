@@ -48,12 +48,9 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         $sheet->getStyle('A5:H60')->getAlignment()->setVertical('center');
         $sheet->getStyle('A1:A60')->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A1:H60')->getAlignment()->setIndent(10);
-<<<<<<< HEAD
-=======
         foreach(array('B10','B30','B49') as $cell) {
             $sheet->getStyle($cell)->getAlignment()->setIndent(25);
         }
->>>>>>> 4c3bcc48205fd498b39f4ee143c591950bef1a34
         foreach(array('A4','A23','A43') as $cell) {
             $sheet->getStyle($cell)->getAlignment()->setHorizontal('right');
         }

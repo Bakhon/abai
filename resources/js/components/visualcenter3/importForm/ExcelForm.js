@@ -690,14 +690,8 @@ export default {
             _.forEach(fields, (field) => {
                sum += this.excelData['decreaseReason'][field];
             });
-<<<<<<< HEAD
-            let min = difference + 5;
-            let max = difference + 5;
-
-=======
             let min = difference - 5;
             let max = difference + 5;
->>>>>>> 4c3bcc48205fd498b39f4ee143c591950bef1a34
             return sum >= min && sum <= max;
         },
         getFormattedNumberByThousand(num) {
