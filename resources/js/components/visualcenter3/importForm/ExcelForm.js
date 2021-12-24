@@ -378,6 +378,13 @@ export default {
                 solid: true,
                 noAutoHide: true,
             },
+            dailyLossesField: [
+                'daily_reason_1_losses',
+                'daily_reason_2_losses',
+                'daily_reason_3_losses',
+                'daily_reason_4_losses',
+                'daily_reason_5_losses'
+            ],
             monthlyLossesField: [
                 'monthly_reason_1_losses',
                 'monthly_reason_2_losses',
@@ -410,6 +417,9 @@ export default {
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber) && !this.bigDzo.includes(this.selectedDzo.ticker)) {
             this.isChemistryButtonVisible = true;
             this.$modal.show('additionalParamsReminder');
+        }
+        if (moment().date() === this.yearlyUpdateLimit.day) {
+            this.$modal.show('yearlyReasonsReminder');
         }
         this.planRows = _.cloneDeep(this.planDzoMapping[this.selectedDzo.ticker]);
         this.fillPlanColumns();
@@ -567,19 +577,36 @@ export default {
             }
 
             let isError = false;
-            if (!this.excelData['decreaseReason']['daily_reason_1_losses'] && await this.isDailyDifferenceAbnormal(planField,factField)) {
+            if (!this.excelData['decreaseReason']['daily_reason_1_explanation'] && await this.isDailyDifferenceAbnormal(planField,factField)) {
+                isError = true;
+            }
+            if (!this.isAllOilLossesFilled('dailyLossesField','dailyReasonRow')) {
                 isError = true;
             }
 
             let monthlyFact = await this.getSummaryFactByDzo('monthly');
-            if (await this.isMonthlyDifferenceAbnormal(monthlyFact,factField)) {
+            if (!this.isAllOilLossesFilled('monthlyLossesField','monthlyReasonRow') || await this.isMonthlyDifferenceAbnormal(monthlyFact,factField)) {
                 isError = true;
             }
 
             let yearlyFact = await this.getSummaryFactByDzo('yearly');
-            if (moment().date() === this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact)) {
+            if (!this.isAllOilLossesFilled('yearlyLossesField','yearlyReasonRow') || (moment().date() === this.yearlyUpdateLimit.day && await this.isYearlyDifferenceAbnormal(yearlyFact))) {
                 isError = true;
             }
+            return isError;
+        },
+
+        isAllOilLossesFilled(type,rows) {
+            let isError = true;
+            _.forEach(this[type], (field, index) => {
+                let explanationField = field.replace('losses','explanation');
+                let currentRow = this.dzoMapping[this.selectedDzo.ticker][rows];
+                currentRow = currentRow + index;
+                if (this.excelData['decreaseReason'][explanationField] !== '' && this.excelData['decreaseReason'][field] === '') {
+                    this.setClassToElement($('#factGrid').find('div[data-row="' + currentRow + '"][data-col="5"]'),'cell__color-red');
+                    isError = false;
+                }
+            });
             return isError;
         },
         async isDailyDifferenceAbnormal(planField,factField) {
@@ -606,11 +633,17 @@ export default {
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
             let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
+            if (this.category.isArchieveActive) {
+                difference = Math.abs(monthlyPlan - monthlyFact);
+            }
             if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
                 return false;
             }
 
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
+            if (this.category.isArchieveActive) {
+                isMonthlyPlanAbnormal = monthlyFact < monthlyPlan;
+            }
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 for (let i=1;i<6;i++) {
@@ -657,9 +690,8 @@ export default {
             _.forEach(fields, (field) => {
                sum += this.excelData['decreaseReason'][field];
             });
-            let min = difference - (difference * 0.05);
-            let max = difference + (difference * 0.05);
-
+            let min = difference - 5;
+            let max = difference + 5;
             return sum >= min && sum <= max;
         },
         getFormattedNumberByThousand(num) {
@@ -670,12 +702,14 @@ export default {
                 let dailyRow = this.dzoMapping[this.selectedDzo.ticker].dailyReasonRow;
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 let yearlyRow = this.dzoMapping[this.selectedDzo.ticker].yearlyReasonRow;
-                let dailySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + dailyRow + '"]');
-                let monthlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + monthlyRow + '"]');
-                let yearlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + yearlyRow + '"]');
-                this.removeClassFromElement(dailySelector,'cell__color-red');
-                this.removeClassFromElement(monthlySelector,'cell__color-red');
-                this.removeClassFromElement(yearlySelector,'cell__color-red');
+                for (let y = 0; y < 5; y++) {
+                    let dailySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + (dailyRow + y) + '"]');
+                    let monthlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + (monthlyRow + y) + '"]');
+                    let yearlySelector = $('#factGrid').find('div[data-col="'+ i + '"][data-row="' + (yearlyRow + y) + '"]');
+                    this.removeClassFromElement(dailySelector,'cell__color-red');
+                    this.removeClassFromElement(monthlySelector,'cell__color-red');
+                    this.removeClassFromElement(yearlySelector,'cell__color-red');
+                }
             }
         },
         async getSummaryPlanByDzo(type) {

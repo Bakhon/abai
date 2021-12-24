@@ -208,7 +208,7 @@ export default {
   },
   props: {
     id: {
-      required: true
+      required: false
     },
     item: {},
     value: {},

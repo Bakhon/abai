@@ -215,7 +215,7 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                 v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                         >
                                             {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                         </td>
@@ -395,7 +395,7 @@
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Обработанное время, ч',
+                                        'label': 'Отработанное время, ч',
                                         'value': '-',
                                     },
                                 ],
@@ -458,7 +458,7 @@
                     this.techMode = await this.getProductionTechMode();
                 }
                 for (let i in this.historicalData) {
-                    let techModeItem = this.techMode.find(o => o.dbeg === this.historicalData[i].date.format("YYYY-MM-DD"));
+                    let techModeItem = this.techMode.find(o => o.dbeg <= this.historicalData[i].date.format("YYYY-MM-DD") && o.dend > this.historicalData[i].date.format("YYYY-MM-DD"));
                     for (let y in techModeItem) {
                         if (!isNaN(this.techModeMapping[y])) {
                             this.historicalData[i].params['techMode'][this.techModeMapping[y]].value = techModeItem[y];

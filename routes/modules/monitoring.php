@@ -202,9 +202,6 @@ Route::group(
                 Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
                 Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
-                Route::get('/reverse-calc/fix_pipes', 'ComplicationMonitoring\ReverseCalculationController@fix_pipes');
-
-
 
                 Route::get('/manual-hydro-calc/list', 'ComplicationMonitoring\ManualHydroCalc@list')->name('manual_hydro_calculation.list');
                 Route::get('/manual-hydro-calc/export', 'ComplicationMonitoring\ManualHydroCalc@export')->name('manual_hydro_calculation.export');

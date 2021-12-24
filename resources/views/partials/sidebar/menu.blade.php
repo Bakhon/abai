@@ -62,6 +62,12 @@
                                     {{ trans('bd.forms.well_register.title') }}
                                 </a>
                             </li>
+
+                            <li class="left-menu-li">
+                                <a href="{{route('report_constructor')}}">
+                                    {{ trans('bd.forms.report_constructor.menu') }}
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

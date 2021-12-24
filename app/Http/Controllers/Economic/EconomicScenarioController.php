@@ -27,19 +27,6 @@ class EconomicScenarioController extends Controller
 
         $scenario->user_id = auth()->id();
 
-        $scenario->save();
-
-        return $scenario;
-    }
-
-    public function update(int $id): EcoRefsScenario
-    {
-        $scenario = EcoRefsScenario::query()
-            ->whereId($id)
-            ->whereNull('total_variants')
-            ->lockForUpdate()
-            ->firstOrFail();
-
         $scenario->calculated_variants = 0;
 
         $scenario->total_variants = EconomicScenarioJob::NUMBER_OF_STOPS *

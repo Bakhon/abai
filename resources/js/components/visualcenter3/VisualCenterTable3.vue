@@ -407,7 +407,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+              <div
+                      :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','col-12 col-lg dropdown dropdown4 font-weight px-1']"
+              >
                 <div class="button1 d-flex">
                   <div
                   <div :class="[mainMenu.gasProduction ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
@@ -550,7 +552,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+              <div
+                      :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','col-12 col-lg dropdown dropdown4 font-weight px-1']"
+              >
                 <div class="button1 d-flex">
                   <div :class="[mainMenu.waterInjection ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
                     <div
@@ -838,7 +842,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
+                    <th
+                            :class="isConsolidatedCategoryActive() ? 'width__13' : ''"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                    >
                       <div v-if="periodEnd < opecEndDate">
                         {{ trans("visualcenter.plan") }}
                         {{ trans("visualcenter.dzoOpec") }},
@@ -2089,7 +2096,7 @@
         <div class="col-md-12 second-column-container">
           <div class="first-string">
             <div>
-              <table class="table table1-2">
+              <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table table1-2']">
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-6"
@@ -2155,7 +2162,7 @@
             </div>
             <div class="first-string first-string2">
               <div>
-                <table class="table table1-2">
+                <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table table1-2']">
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-6"
@@ -2226,7 +2233,7 @@
                       @click="switchWidget('otmDrilling')"
                       :class="`${tableMapping.otmDrilling.hover}`"
               >
-                <table class="table">
+                <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table']">
                   <tr class="d-flex">
                     <td class="col-10">
                       <div class="secondaryTitle">{{drillingWidgetFactSum}}</div>
@@ -2264,7 +2271,7 @@
                  :class="`${tableMapping.chemistry.hover}`"
             >
               <div>
-                <table class="table">
+                <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table']">
                   <tr class="d-flex">
                     <td class="col-10">
                       <div class="secondaryTitle">{{chemistryWidgetFactSum}}</div>
@@ -2298,7 +2305,7 @@
             </div>
             <div class="first-string first-string2">
               <div>
-                <table class="table table1-2">
+                <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table table1-2']">
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-6"
@@ -2357,7 +2364,7 @@
 
             <div class="first-string first-string2">
               <div>
-                <table class="table emergency-table">
+                <table :class="[dzoWithoutAdditionalWidgets.includes(oneDzoSelected) ? 'button__disabled' : '','table emergency-table']">
                   <tr class="d-flex">
                     <td class="col-6 cursor-pointer">
                       <a :href="oilDynamicRoute" class="secondaryTitle d-flex">
@@ -2476,9 +2483,6 @@
       th {
         &:nth-child(1) {
           width: 350px;
-        }
-        &:nth-child(3) {
-          width: 13%;
         }
       }
     }
@@ -3103,6 +3107,9 @@
     border-radius: 5px;
     padding: 5px;
     text-align: center;
+  }
+  .width__13 {
+    width: 13%
   }
 
 </style>

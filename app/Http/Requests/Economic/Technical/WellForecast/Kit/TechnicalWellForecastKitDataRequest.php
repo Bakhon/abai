@@ -11,6 +11,7 @@ class TechnicalWellForecastKitDataRequest extends FormRequest
         return [
             'technical_log_id' => 'nullable|integer|min:1',
             'economic_log_id' => 'nullable|integer|min:1',
+            'is_processed' => 'nullable|boolean'
         ];
     }
 }

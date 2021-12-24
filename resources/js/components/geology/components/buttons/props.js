@@ -14,6 +14,12 @@ export default {
             type: String,
             default: "default",
         },
+        variant: {
+            type: String,
+            validator(value) {
+                return ['for-switch', ''].includes(value);
+            }
+        },
         icon: {
             type: [String, null],
             default: null

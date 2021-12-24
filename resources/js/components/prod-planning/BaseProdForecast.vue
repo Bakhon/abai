@@ -116,7 +116,7 @@
             </div>
           </div>
           <keep-alive v-else>
-            <component :is="selected"></component>
+            <component :is="selected" @backToProdForecast="onChangePage()"></component>
           </keep-alive>
         </div>
       </div>
@@ -128,10 +128,13 @@ import fluidPredictionMethod from "./base-prod-forecast-components/FluidPredicti
 import lysenkoCalculations from "./base-prod-forecast-components/LysenkoCalculations";
 import machineLearningMethods from "./base-prod-forecast-components/MachineLearningMethods";
 import waterCutPredictionMethod from "./base-prod-forecast-components/WaterCutPredictionMethod";
+import VueApexCharts  from "vue-apexcharts";
 
 
 export default {
-  name: 'monitoring-plan-fact',
+  components: {
+    apexchart: VueApexCharts
+  },
   data: function () {
     return {
       activatedBlocks: {
@@ -177,131 +180,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.forecast-container {
-  display: flex;
-  width: 100%;
-  height: auto;
-  flex-direction: column;
-}
-
-.forecast-nav {
-  background-color: #272953;
-  width: 100%;
-  height: 42px;
-  margin-bottom: 10px;
-  gap: 6px;
-  display: flex;
-  padding: 6px;
-}
-
-.forecast-nav-item {
-  width: 100%;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #333975;
-  padding-top: 5px;
-  text-align: center;
-}
-
-.forecast-container-block {
-  display: flex;
-  flex-direction: column;
-  flex: 100%;
-  gap: 6px;
-}
-
-.top-block {
-  display: flex;
-  flex: 100%;
-  gap: 6px;
-}
-
-.bottom-block {
-  display: flex;
-  flex: 100%;
-  gap: 6px;
-}
-
-.main-border-block {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border: 6px solid #272953;
-  padding: 4px;
-}
-
-.right-block {
-  display: flex;
-  width: 100%;
-  height: auto;
-}
-
-.left-block {
-  background-color: #272953;
-  width: 300px;
-  height: 936px;
-  gap: 10px;
-  flex: 1;
-}
-
-.fs-white {
-  color: white;
-}
-
-/**/
-.plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.factor-plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.debit-plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.gtm-vns-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-/* block-of-forth */
-.block-header {
-  height: 8%;
-}
-
-.border-block-out {
-  height: 92%;
-  border: 8px solid #363B68;
-}
-
-.border-block-in {
-  height: 100%;
-  border: 8px solid #1A214A;
-}
-
-.border-color {
-  background-color: #323370
-}
-
-.data-block {
-  height: 100%;
-}
-
-.active {
-  background: #2C44BD;
-}
-
-
-.not-active {
-  background: #333975;
-}
-
-
-/**/
-</style>

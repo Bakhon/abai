@@ -8,7 +8,7 @@
 @section('content')
     <link rel="stylesheet" href="/css/digital-drilling.css">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
-    <digital-drilling />
+    <digital-drilling :user="{{$user}}" :user_can_delete="@json($user_can)"/>
 @endsection
 @section('sidebar_menu_additional')
     @include('partials.sidebar.digital_drilling_menu')

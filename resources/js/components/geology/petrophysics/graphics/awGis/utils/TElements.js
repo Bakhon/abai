@@ -78,9 +78,7 @@ export default class TElements {
         }[editableMapName];
         let dataOrOptions = editableMap.get(elementName);
         if (typeof dataOrOptions === "object" && !Array.isArray(dataOrOptions)) {
-            dataOrOptions = JSON.parse(JSON.stringify(dataOrOptions));
-            letMeProperty(dataOrOptions, path, value);
-            this.#propertyEdit(elementName, dataOrOptions, force, editableMapName);
+            this.#propertyEdit(elementName, letMeProperty(dataOrOptions, path, value, true), force, editableMapName);
         } else {
             console.error("Не тот тип данных элемента");
         }

@@ -18,11 +18,19 @@ class BDController extends Controller
 
     public function home()
     {
-        return view('digital_drilling.index');
+        $user = json_encode(auth()->user()->load('profile'));
+
+        $user_can = auth()->user()->can('digitalDrilling delete catalog');
+
+        return view('digital_drilling.index', compact('user', 'user_can'));
     }
 
     public function index()
     {
-        return view('digital_drilling.digital-drilling');
+        $user = json_encode(auth()->user()->load('profile'));
+
+        $user_can = auth()->user()->can('digitalDrilling view catalog');
+
+        return view('digital_drilling.digital-drilling', compact('user', 'user_can'));
     }
 }

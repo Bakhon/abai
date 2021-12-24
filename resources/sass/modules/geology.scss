@@ -79,6 +79,14 @@
     padding: 10px 17px;
     font-size: 20px;
   }
+
+  &.variant {
+    &__for-switch{
+      background: var(--a-accent-darken-450);
+      padding: 6px 15px;
+      border-radius: 0;
+    }
+  }
 }
 
 .aw-table {
@@ -114,6 +122,15 @@
 
       &:nth-child(even) {
         background-color: #363B68;
+      }
+    }
+  }
+  &.center{
+    thead, tbody{
+      tr{
+        td, th{
+          text-align: center;
+        }
       }
     }
   }

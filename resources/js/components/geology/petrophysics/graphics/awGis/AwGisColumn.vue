@@ -42,7 +42,7 @@ export default {
     },
     offsetY(val){
       if(this.elements[0].data.name !== 'DEPTH'){
-        this.tCanvas.setOffsetY = val*10;
+        this.tCanvas.setOffsetY = val;
         this.draw();
       }
     },
@@ -66,11 +66,11 @@ export default {
     draw() {
       this.tCanvas.clearCanvas();
       for (const {data:{name}} of this.elements) {
-        let {data: {curves}, options} = this.$store.state.geologyGis.awGis.getElement(name)
+        let {data: {curves}, options, data} = this.$store.state.geologyGis.awGis.getElement(name)
         for (const [wellID, curve] of Object.entries(curves)) {
           if(wellID !== this.wellName) continue;
-          if((options.isCSAT[wellID]||options.isLithology[wellID])&&(options.max[wellID] <= 4)) this.tCanvas.drawLithology(curve, {options, wellID})
-          else this.tCanvas.drawCurve(curve, {options, wellID})
+          if((options.isCSAT[wellID]||options.isLithology[wellID])&&(options.max[wellID] <= 4)) this.tCanvas.drawLithology(curve, {data, options, wellID})
+          else this.tCanvas.drawCurve(curve, {data, options, wellID})
         }
       }
     },

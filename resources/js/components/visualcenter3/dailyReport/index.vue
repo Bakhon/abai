@@ -16,12 +16,14 @@
                 <table v-if="menu.daily" class="daily-table">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="p-2">№<br>п/п</th>
-                            <th rowspan="2" class="p-2">Предприятия</th>
-                            <th rowspan="2" class="p-2">Доля<br>КМГ</th>
-                            <th colspan="3" class="p-2">СУТОЧНАЯ</th>
-                            <th rowspan="2" colspan="2" class="p-2">Причины отклонений</th>
+                            <th rowspan="3" class="p-2">№<br>п/п</th>
+                            <th rowspan="3" class="p-2">Предприятия</th>
+                            <th rowspan="3" class="p-2">Доля<br>КМГ</th>
+                            <th rowspan="2" colspan="3" class="p-2">СУТОЧНАЯ</th>
+                            <th rowspan="3" colspan="2" class="p-2">Причины отклонений</th>
                         </tr>
+                        </tr>
+                        <tr>
                         <tr>
                             <th>План</th>
                             <th>Факт</th>
@@ -49,7 +51,10 @@
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                             <td v-else class="p-2">{{ dzo['id'] }}</td>
-                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">
+                                {{ dzo['name'] }}
+                                <div class="missing-companies" v-if="productionByPeriods.missing.includes(dzo['acronym'])"><br>(Данные обновляются)</div>
+                            </td>
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                             <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                             <td v-else class="p-2">{{ dzo['part'] }}%</td>
@@ -108,7 +113,10 @@
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                             <td v-else class="p-2">{{ dzo['id'] }}</td>
-                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">
+                                {{ dzo['name'] }}
+                                <div class="missing-companies" v-if="productionByPeriods.missing.includes(dzo['acronym'])"><br>(Данные обновляются)</div>
+                            </td>
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                             <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
                             <td v-else class="p-2">{{ dzo['part'] }}%</td>
@@ -131,12 +139,14 @@
                 <table v-if="menu.yearly" class="monthly-table">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="p-2">№<br>п/п</th>
-                            <th rowspan="2" class="p-2">Предприятия</th>
-                            <th rowspan="2" class="p-2">Доля<br>КМГ</th>
-                            <th rowspan="2" class="p-2">План на<br>{{currentYear}} г.</th>
-                            <th colspan="3" class="p-2">За {{previousMonth}} мес.</th>
-                            <th rowspan="2" class="p-2">Причины отклонений</th>
+                            <th rowspan="3" class="p-2">№<br>п/п</th>
+                            <th rowspan="3" class="p-2">Предприятия</th>
+                            <th rowspan="3" class="p-2">Доля<br>КМГ</th>
+                            <th rowspan="3" class="p-2">План на<br>{{currentYear}} г.</th>
+                            <th rowspan="2" colspan="3" class="p-2">За {{previousMonth}} мес.</th>
+                            <th rowspan="3" class="p-2">Причины отклонений</th>
+                        </tr>
+                        <tr>
                         </tr>
                         <tr>
                             <th>План</th>
@@ -255,6 +265,7 @@
         }
         th:nth-child(4) {
             width: 338px;
+            height: 60px;
         }
         th:nth-child(2) {
             width: 400px;
@@ -304,6 +315,7 @@
         }
         th:nth-child(5) {
             width: 200px;
+            height: 60px;
         }
         th:nth-child(2) {
             width: 400px;
@@ -336,5 +348,10 @@
 .dzo-row__dark {
     background: #e6e6e6;
     color: #000;
+}
+.missing-companies {
+    margin-top: -20px;
+    color: #cc7a00;
+    font-size: 12px;
 }
 </style>
