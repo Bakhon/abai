@@ -1,7 +1,7 @@
 <template>
   <div class="main-block-nav">
     <div class="block-nav">
-      <div class="nav-item pr-2"  @click="goToThisPage('main')">
+      <div class="nav-item pr-2"  @click="goToThisPage('main')" :class="{'active': currentPath === 'mon-plan-fact'}">
         <div class="nav-icon pl-2 pt-2">
           <img src="/img/prod-planning/icons/mon-plan-fact.svg" alt="">
         </div>
@@ -9,7 +9,7 @@
           {{ this.trans("prod-plan.plan-fact-monitoring") }}
         </div>
       </div>
-      <div class="nav-item pr-2" @click="goToThisPage('base-prod')">
+      <div class="nav-item pr-2" @click="goToThisPage('base-prod')" :class="{'active': currentPath === 'base-prod-forecast'}">
         <div class="nav-icon pl-2 pt-2">
           <img src="/img/prod-planning/icons/forecast.svg" alt="">
         </div>
@@ -17,7 +17,7 @@
           {{ this.trans("prod-plan.base-production-forecast") }}
         </div>
       </div>
-      <div class="nav-item pr-2" @click="goToThisPage('bus-plan')">
+      <div class="nav-item pr-2" @click="goToThisPage('bus-plan')" :class="{'active': currentPath === 'bus-plan'}">
         <div class="nav-icon pl-2 pt-2">
           <img src="/img/prod-planning/icons/bus-plan.svg" alt="">
         </div>
@@ -25,7 +25,7 @@
           {{ this.trans("prod-plan.business-planning") }}
         </div>
       </div>
-      <div class="nav-item pr-2" @click="goToThisPage('long-term-program')">
+      <div class="nav-item pr-2" @click="goToThisPage('long-term-program')" :class="{'active': currentPath === 'long-term-program'}">
         <div class="nav-icon pl-2 pt-2">
           <img src="/img/prod-planning/icons/program.svg" alt="">
         </div>
@@ -40,9 +40,12 @@
 export default {
   data: function () {
     return {
-      location: {
-        href: ''
-      }
+    }
+  },
+  computed: {
+    currentPath() {
+      let url = document.URL
+      return url.substring(url.lastIndexOf("/") + 1, url.length)
     }
   },
   methods: {
@@ -61,55 +64,7 @@ export default {
       }
       window.location.href = window.location.href.replace(`${currentURL}`, last)
     }
-  }
+  },
+
 }
 </script>
-<style scoped>
-.main-block-nav {
-  display: flex;
-  width: 100%;
-}
-
-.mt-6 {
-  margin-top: 6px;
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.h-150 {
-  height: 150px;
-}
-
-.block-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-}
-
-.nav-item {
-  background: #333975;
-  width: 100%;
-  height: 40px;
-  border-radius: 5px;
-  display: flex;
-  cursor: pointer;
-}
-
-.nav-item:hover {
-  background: #2C44BD;
-}
-
-.active {
-  background: #2C44BD;
-}
-
-.nav-title {
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-}
-</style>
