@@ -23,6 +23,8 @@ import {Control, defaults as defaultControls, MousePosition, ScaleLine} from 'ol
 import jspdf from "jspdf";
 import moment from 'moment';
 import {createStringXY} from "ol/coordinate";
+import {DragBox, Select} from 'ol/interaction';
+import {platformModifierKeyOnly} from "ol/events/condition";
 
 export default {
     props: {
@@ -34,6 +36,7 @@ export default {
             base64Data: null,
             map: null,
             gridMapsValues: [],
+            selectedFeatures: [],
             legend: null,
             legendControl: null,
             mapOverlay: null,
@@ -115,6 +118,7 @@ export default {
                         });
                         this.addMapOverlay();
                         this.addMapLegend();
+                        this.addInteractions();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -595,6 +599,7 @@ export default {
                     layerGroup.name += typeof data.dataType === "undefined" ? '' :
                         data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
                     layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.type = 'bubbles';
                     layerGroup.legendItems = [{
                         title: 'Закачка жидкости, м3',
                         feature: new Feature({
@@ -814,6 +819,86 @@ export default {
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
+        },
+        addInteractions() {
+            let $self = this;
+            const select = new Select();
+            this.map.addInteraction(select);
+            select.on('select', function (e) {
+                const candidateFeatures = $self.selectedFeatures;
+                e.selected.forEach(feature => {
+                    if (feature.getGeometry() instanceof LineString) {
+                        select.getLayer(feature).getSource().getFeatures().forEach(feature => {
+                            candidateFeatures.push(feature);
+                        })
+                    }
+                })
+            })
+            const dragBox = new DragBox({
+                condition: platformModifierKeyOnly,
+            });
+            this.map.addInteraction(dragBox);
+            this.selectedFeatures = select.getFeatures();
+            dragBox.on('boxend', function () {
+                const rotation = $self.map.getView().getRotation();
+                const oblique = rotation % (Math.PI / 2) !== 0;
+                const candidateFeatures = oblique ? [] : $self.selectedFeatures;
+                const extent = dragBox.getGeometry().getExtent();
+                $self.map.getLayerGroup().getLayers().forEach(layerGroup => {
+                    layerGroup.getLayers().forEach(layer => {
+                        switch (layerGroup.type) {
+                            case 'border':
+                                let selectFeature = true;
+                                layer.getSource().getFeatures().forEach(feature => {
+                                    selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                })
+                                if (selectFeature) {
+                                    layer.getSource().getFeatures().forEach(feature => {
+                                        candidateFeatures.push(feature);
+                                    })
+                                }
+                                break;
+                            default:
+                                layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+                                    let selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                    if (selectFeature) {
+                                        candidateFeatures.push(feature);
+                                    }
+                                });
+                        }
+                    })
+                })
+                if (oblique) {
+                    const anchor = [0, 0];
+                    const geometry = dragBox.getGeometry().clone();
+                    geometry.rotate(-rotation, anchor);
+                    const extent = geometry.getExtent();
+                    candidateFeatures.forEach(function (feature) {
+                        const geometry = feature.getGeometry().clone();
+                        geometry.rotate(-rotation, anchor);
+                        if (geometry.intersectsExtent(extent)) {
+                            $self.selectedFeatures.push(feature);
+                        }
+                    });
+                }
+            });
+            dragBox.on('boxstart', function (e) {
+                if (typeof this.selectedFeatures !== "undefined" && this.selectedFeatures.length > 0) {
+                    this.selectedFeatures.clear();
+                }
+            });
+        },
+        checkFeatureInExtent(extent, feature) {
+            let featureInExtent = true;
+            let featureExtent = feature.getGeometry().getExtent();
+            if (extent[0] > featureExtent[0]
+                || extent[1] > featureExtent[1]
+                || extent[2] < featureExtent[2]
+                || extent[3] < featureExtent[3]) {
+                featureInExtent = false
+            }
+
+            return featureInExtent;
         }
     }
 }
