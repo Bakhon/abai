@@ -74,18 +74,37 @@
                                     </div>
                                 </div>
                                 <div
-                                        :style="{ 'padding-left': `${getCurrentFact(kpd.kpdFact,kpd.maximum)}px` }"
-                                        :class="[getProgressBarTitleColor(getCurrentFact(kpd.kpdFact,kpd.maximum)),' mt-2 col-12 p-0']"
+                                        :style="{ 'padding-left': `${getCurrentFact(kpd.kpd_fact,kpd.maximum)}px` }"
+                                        :class="[getProgressBarTitleColor(getCurrentFact(kpd.kpd_fact,kpd.maximum)),' mt-2 col-12 p-0']"
                                 >
-                                    {{getCurrentFact(kpd.kpdFact,kpd.maximum)}}
+                                    {{getCurrentFact(kpd.kpd_fact,kpd.maximum)}}
                                 </div>
                             </div>
                         </td>
-                        <td class="p-2">data</td>
-                        <td class="p-2">fact</td>
+                        <td class="p-2">
+                            <el-date-picker
+                                v-model="kpd.currentFact.date"
+                                type="date"
+                                format="dd.MM.yyyy"
+                                popper-class="custom-date-picker"
+                                @input="changeFactDate($event,kpd)"
+                            >
+                            </el-date-picker
+
+                        </td>
+
+                        <td class="p-2">
+                            <input class="input-field text-center p-1" type="text" v-model="kpd.currentFact.fact">
+                        </td>
                         <td class="p-2">оценка</td>
                         <td class="p-2">вклад</td>
-                        <td class="p-2">comments</td>
+                        <td class="p-2">
+                            <b-form-textarea
+                                    class="col-12 text-left p-1 input_kpd"
+                                    v-model="kpd.currentFact.comments"
+                                    rows="2"
+                            ></b-form-textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -101,7 +120,7 @@
                     </tr>
                 </table>
                 <div align="center" class="bottom-buttons col-12 row">
-                    <div class="col-1 download-button m-4" @click="$modal.hide('modalMonitoring')">ОК</div>
+                    <div class="col-1 download-button m-4" @click="updateKpd">ОК</div>
                     <div class="col-1 cancel-button m-4" @click="$modal.hide('modalMonitoring')">Отмена</div>
                 </div>
             </div>
@@ -116,13 +135,13 @@ import {globalloadingMutations} from '@store/helpers';
 export default {
     data: function () {
         return {
-            period: moment(),
-            datePickerOptions: {
-                disabledDate (date) {
-                    return moment(date) >= moment().subtract(1, 'days')
-                }
-            },
-            kpdList: []
+            kpdList: [],
+            newKpdFact: {
+                'date': moment(),
+                'fact': '',
+                'id': null,
+                'comments': ''
+            }
         };
     },
     methods: {
@@ -133,6 +152,11 @@ export default {
                 return [];
             }
             return response.data;
+        },
+        async updateKpd() {
+            let uri = this.localeUrl("/store-updated-kpd");
+            await axios.post(uri,this.kpdList);
+            this.$modal.hide('modalMonitoring');
         },
         getProgressBarFillingColor(progress) {
             if (progress < 0) {
@@ -164,6 +188,26 @@ export default {
         },
         isPlanFilled(plan) {
             return plan !== null;
+        },
+        changeFactDate(e,kpd) {
+            console.log(e)
+            let filtered = _.filter(kpd.kpd_fact, (fact) => {
+                return moment(fact.date).format('DD.MM.YYYY') === moment(e).format('DD.MM.YYYY');
+            });
+            if (filtered.length > 0) {
+                console.log(filtered[0])
+                if (filtered[0].fact === null) {
+                    filtered[0].fact = '';
+                }
+                kpd.currentFact = _.cloneDeep(filtered[0]);
+            } else {
+                let newFact = _.cloneDeep(this.newKpdFact);
+                newFact['date'] = moment(e);
+                kpd.currentFact = newFact;
+                // newFact['date'] = newFact['date'].format('YYYY-MM-DD');
+                kpd.kpd_fact.push(newFact);
+            }
+            console.log(kpd.currentFact)
         }
     },
     async mounted() {
@@ -175,6 +219,14 @@ export default {
             if (this.managerInfo) {
                 this.SET_LOADING(true);
                 this.kpdList = await this.getKpdList();
+                _.forEach(this.kpdList, (kpd) => {
+                   if (kpd.kpd_fact.length === 0) {
+                       kpd['currentFact'] = _.cloneDeep(this.newKpdFact);
+                   } else {
+                       let sorted = _.orderBy(kpd.kpd_fact, ['date'],['desc']);
+                       kpd['currentFact'] = sorted.at(-1);
+                   }
+                });
                 this.SET_LOADING(false);
             }
         },
@@ -208,7 +260,7 @@ export default {
         }
     }
     tr:nth-child(2) th {
-        width: 100px;
+        width: 145px;
     }
     tr th {
         background: #3A4280;
@@ -249,6 +301,9 @@ export default {
     position: absolute;
     bottom: 0;
     justify-content: center;
+    div {
+        cursor: pointer;
+    }
 }
 .manager-icon {
     height: 70px;
@@ -293,5 +348,15 @@ export default {
     border-radius: 5px;
     border: none;
     width: 100%;
+}
+.input_kpd {
+    background: #1A1D46;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+}
+.not-visible {
+    display: none;
 }
 </style>

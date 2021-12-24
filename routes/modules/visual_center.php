@@ -112,6 +112,7 @@ Route::group(
                 Route::get('/get-kpd-corporate-manager', 'VisCenter\Kpd\KpdTreeController@getCorporateManager');
                 Route::post('/store-kpd-manager', 'VisCenter\Kpd\KpdTreeController@storeManager');
                 Route::get('/get-kpd-managers', 'VisCenter\Kpd\KpdTreeController@getManagers');
+                Route::post('/store-updated-kpd', 'VisCenter\Kpd\KpdTreeController@storeUpdatedKpd');
             }
         );
     }
