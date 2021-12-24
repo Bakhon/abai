@@ -48,9 +48,9 @@ class WellsController extends Controller
             'whc',
             'bottom_coord'
         )->find($well);
-      /*  if (Cache::has('well_' . $well->id)) {
+        if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
-        }*/
+        }
 
         $show_param = [];
         $category = DB::connection('tbd')->table('prod.well_category')
@@ -124,7 +124,7 @@ class WellsController extends Controller
 
         $wellInfo = array_merge($wellInfo, $show_param);
 
-      //  Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
+        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
 
@@ -665,19 +665,19 @@ class WellsController extends Controller
             ->orderBy('w.perf_date', 'desc')
             ->get('w.id')
             ->toArray();
-   foreach($wellPerfActual as $k=>$v){
+
         if ($wellPerfActual) {
             $wellPerf = DB::connection('tbd')
                 ->table('prod.well_perf_actual as wp')
                 ->join('prod.well_perf', 'wp.well_perf', '=', 'prod.well_perf.id')
-                ->where('prod.well_perf.id', '=',$v->id)
+                ->where('prod.well_perf.id', '=', $wellPerfActual[0]->id)
                 ->orderBy('wp.top', 'ASC')
                 ->get(['wp.top', 'wp.base', 'prod.well_perf.well', 'prod.well_perf.perf_date', 'prod.well_perf.id'])
                 ->toArray();
 
             return $wellPerf;
         }
-   }
+
         return "";
     }
 
