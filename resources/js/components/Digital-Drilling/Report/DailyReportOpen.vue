@@ -87,7 +87,7 @@
                                 <div class="dropdown__area-edit">
                                     <input type="checkbox" v-model="is_open">
                                     <select name="" id="" v-model="dateOpen" class="date" :disabled="!is_open" :class="{error: is_open && error && dateOpen==''}">
-                                        <option :value="report.id" v-for="report in reportData">{{report.date}}</option>
+                                        <option :value="report.id" v-for="report in reportData">№{{report.report_num}}, {{report.date}}</option>
                                     </select>
                                 </div>
                             </div>
