@@ -151,7 +151,6 @@
                                             <tr>
                                                 <th
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
                                                     {{dayNumber}}
                                                 </th>
