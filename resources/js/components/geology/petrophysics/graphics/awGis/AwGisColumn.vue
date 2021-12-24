@@ -69,7 +69,7 @@ export default {
         let {data: {curves}, options, data} = this.$store.state.geologyGis.awGis.getElement(name)
         for (const [wellID, curve] of Object.entries(curves)) {
           if(wellID !== this.wellName) continue;
-          if((options.isCSAT[wellID]||options.isLithology[wellID])&&(options.max[wellID] <= 4)) this.tCanvas.drawLithology(curve, {data, options, wellID})
+          if((options.GIS46[wellID]||options.isCSAT[wellID]||options.isLithology[wellID])&&(options.max[wellID] <= 5)) this.tCanvas.drawLithology(curve, {data, options, wellID})
           else this.tCanvas.drawCurve(curve, {data, options, wellID})
         }
       }

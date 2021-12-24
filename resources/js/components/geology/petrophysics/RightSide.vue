@@ -4,11 +4,12 @@
       <dropdown block class="w-100 mb-2" :selected-value.sync="components.activeComponent" button-text="Выбор методов"
                 :options="[
               {label: 'Autocorrelation', value: 'SecondComponent'},
-              {label: 'Standard Interpretation', value: 'StandardInterpretation'},
+              {label: 'Interpretation', value: 'StandardInterpretation'},
             ]" />
 
     </template>
-    <component v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    <component v-bind="components.options[components.activeComponent]"
+               :is="components.options[components.activeComponent].is" />
   </PageSide>
 </template>
 
@@ -18,17 +19,18 @@ import PageSide from "../components/pageSide/PageSide";
 
 import SecondComponent from "./RightSideComponents/SecondComponent";
 import StandardInterpretation from "./RightSideComponents/StandardInterpretation";
+
 export default {
   name: "Geology-RSide",
   data() {
     return {
       components: {
         activeComponent: "SecondComponent",
-        options:{
-          SecondComponent:{
+        options: {
+          SecondComponent: {
             is: SecondComponent
           },
-          StandardInterpretation:{
+          StandardInterpretation: {
             is: StandardInterpretation
           },
         }

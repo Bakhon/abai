@@ -1,6 +1,6 @@
 <template>
-  <div class="tool-block">
-    <div class="tool-block__header" v-if="$scopedSlots['header']||title">
+  <div class="tool-block" :style="{borderColor: `var(${color})`}">
+    <div class="tool-block__header" v-if="$scopedSlots['header']||title" :style="{background: `var(${color})`}">
       <slot name="header">
         <h5>{{ title }}</h5>
       </slot>
@@ -26,7 +26,8 @@
 export default {
   name: "ToolBlock",
   props: {
-    title: [String, Number]
+    title: [String, Number],
+    color: String
   }
 }
 </script>

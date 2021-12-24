@@ -62,7 +62,6 @@ import dropdown from "../../components/dropdowns/dropdown";
 import AwInput from "../../components/form/AwInput";
 import {FETCH_AUTOCORRELATION, POST_HORIZON} from "../../../../store/modules/geologyGis.const";
 import {globalloadingMutations} from "@store/helpers";
-import {Post_Horizons} from "../../api/horizons.api";
 
 export default {
   name: "SecondComponent",
@@ -127,7 +126,6 @@ export default {
   },
   mounted() {
     this.switcher(this.postData.method);
-    console.log(this)
   },
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
@@ -191,12 +189,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.buttons-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-}
-
 .grid__inputs {
   .curve-inputs {
     display: grid;

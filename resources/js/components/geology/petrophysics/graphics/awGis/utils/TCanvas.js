@@ -28,14 +28,13 @@ export default class TCanvas {
         this.#tCoords.setOffsetY = offsetY;
     }
 
-    drawLithology(lithologyData, {data, options, options: {customParams}, wellID}) {
+    drawLithology(lithologyData, {data, options, wellID}) {
         let ctx = this.#__context, y = data.depth_start[wellID], lastLithology = options.startX[wellID], startPolygonPosition = data.depth_start[wellID], step = data.step[wellID];
         let coord = this.#tCoords;
         let colorPalette = options.colorPalette;
         for (const lithology of lithologyData) {
             if (lithology !== lastLithology) {
                 if (lastLithology !== null) {
-
                     let difference = Math.abs(y - startPolygonPosition);
                     ctx.save();
                     ctx.fillStyle = colorPalette[lastLithology].color;

@@ -27,6 +27,7 @@ export const SET_CURVE_OPTIONS = 'geology/mutation/petrophysics/SET_CURVE_OPTION
 export const SET_WELLS_HORIZONS = 'geology/mutation/petrophysics/SET_WELLS_HORIZONS';
 export const SET_AUTOCORRELATION = 'geology/mutation/petrophysics/SET_AUTOCORRELATION';
 export const SET_SHOW_STRATIGRAPHY_ELEMENTS = 'geology/mutation/petrophysics/SET_SHOW_STRATIGRAPHY_ELEMENTS';
+export const SET_FACIES_CLASSIFICATION_TO_ELEMENTS = 'geology/mutation/petrophysics/SET_FACIES_CLASSIFICATION_TO_ELEMENTS';
 
 //actions
 export const FETCH_GIS_DATA = 'geology/action/petrophysics/FETCH_GIS_DATA';
@@ -37,6 +38,7 @@ export const FETCH_WELLS_MNEMONICS = 'geology/action/petrophysics/FETCH_WELLS_MN
 export const FETCH_WELLS_CURVES = 'geology/action/petrophysics/FETCH_WELLS_CURVES';
 export const FETCH_WELLS_HORIZONS = 'geology/action/petrophysics/FETCH_WELLS_HORIZONS';
 export const FETCH_AUTOCORRELATION = 'geology/action/petrophysics/FETCH_AUTOCORRELATION';
+export const FETCH_FACIES_CLASSIFICATION = 'geology/action/petrophysics/FETCH_FACIES_CLASSIFICATION';
 
 export const POST_HORIZON = 'geology/action/petrophysics/POST_HORIZON';
 
@@ -50,7 +52,18 @@ export const CANVAS_DASH_LINES_TYPES = {
     'Dash 5': [20, 3, 3, 3, 3, 3, 3, 3]
 }
 
+let GIS64 = [
+    {name: "", color: 'rgba(0,0,0, 0)'},
+    {name: "1", color: 'rgb(255,255,0)'},
+    {name: "2", color: "rgb(255,165,0)"},
+    {name: "3", color: "rgb(184,134,11)"},
+    {name: "4", color: "rgb(139,69,19)", textColor: "white"},
+    {name: "5", color: "rgb(128,128,128)", textColor: "white"},
+]
+
 export const COLOR_PALETTE = {
+    "6gis":GIS64,
+    "4gis": GIS64,
     "litho": [
         {name: "Глина", color: 'rgb(192,192,192)'},
         {name: "Песчаник", color: "rgb(255,255,0)"},
