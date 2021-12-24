@@ -400,6 +400,7 @@ return [
             'inclinometry' => 'Инклинометрия',
             'conclusion' => 'Заключение от подрядчика',
             'las_files' => 'LAS файлы',
+            'las_files2' => 'Считанный LAS файл',
             'doc_date' => 'Дата документа',
             'files' => 'Файлы'
         ],
