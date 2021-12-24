@@ -8,6 +8,7 @@ use App\Imports\HydroCalcResultImport;
 use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -35,7 +36,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     protected $input;
 
     protected $columnNames = [
-        '№',
+        'ID',
         'out_dia',
         'wall_thick',
         'length',
@@ -62,34 +63,36 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     ];
 
     protected $longSchema = [
-        'distance' => 1,
-        'dout' => 2,
-        'wt' => 3,
-        'liq_rate' => 4,
-        'gor' => 5,
-        'wc' => 6,
-        'pin' => 7,
-        'pout' => 8,
-        'tin' => 9,
-        'tout' => 10,
-        'flow_pattern' => 11,
-        'vliq' => 12,
-        'vgas' => 13,
-        'vm' => 14,
-        'pressure_gradient' => 15,
-        'ohtc' => 16,
-        'nre' => 17,
-        'holdup' => 18,
-        'lambda' => 19,
-        'h_soil' => 20,
-        'h_f' => 21,
-        'npr' => 22,
-        'nnu' => 23,
-        'f_f_ratio' => 24,
-        'rs' => 25,
-        'rsw' => 26,
-        'ev' => 27,
-        'comment' => 28
+        'segment' => 0,
+        'ID' => 1,
+        'distance' => 2,
+        'dout' => 3,
+        'wt' => 4,
+        'liq_rate' => 5,
+        'gor' => 6,
+        'wc' => 7,
+        'pin' => 8,
+        'pout' => 9,
+        'tin' => 10,
+        'tout' => 11,
+        'flow_pattern' => 12,
+        'vliq' => 13,
+        'vgas' => 14,
+        'vm' => 15,
+        'pressure_gradient' => 16,
+        'ohtc' => 17,
+        'nre' => 18,
+        'holdup' => 19,
+        'lambda' => 20,
+        'h_soil' => 21,
+        'h_f' => 22,
+        'npr' => 23,
+        'nnu' => 24,
+        'f_f_ratio' => 25,
+        'rs' => 26,
+        'rsw' => 27,
+        'ev' => 28,
+        'comment' => 29
     ];
 
     const PIPE_OR_SEGMENT = 0;
@@ -206,15 +209,14 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $data = json_decode($request->getBody()->getContents());
         $short = $data->short->data;
-        $long = $data->long;
+        $long = $data->long->data;
 
         if ($short) {
             $this->storeShortResult($short);
         }
 
         if ($long) {
-            array_unshift($long->data, $long->columns);
-            $this->storeLongResult($long->data);
+            $this->storeLongResult($long);
         }
     }
 
@@ -293,41 +295,30 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
     protected function storeLongResult(array $data): void
     {
-        foreach ($data as $key => $row) {
-            if (!ctype_digit($row[self::PIPE_OR_SEGMENT])) {
-                $points = explode(" - ", $row[self::PIPE_OR_SEGMENT]);
-                $pipe = ManualOilPipe::where('start_point', $points[0])
-                    ->where('end_point', $points[1])
-                    ->first();
-
+        $pipe = null;
+        foreach ($data as $row) {
+            if (!ctype_digit($row[$this->longSchema['segment']])) {
+                $pipe = null;
                 continue;
             }
 
             if (!$pipe) {
-                $points = explode(" - ", $data[$key - 1][self::PIPE_OR_SEGMENT]);
-                $message = trans('monitoring.calculate_messages.no_such_pipe',
-                    [
-                        'start_point' => $points[0],
-                        'end_point' => $points[1]
-                    ]);
-
-                $this->setOutput(
-                    [
-                        'error' => $message
-                    ]
-                );
-                return;
+                $pipe = ManualOilPipe::find($row[$this->longSchema['ID']]);
             }
 
             $hydroCalcLong = ManualHydroCalcLong::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
                     'oil_pipe_id' => $pipe->id,
-                    'segment' => $row[self::PIPE_OR_SEGMENT]
+                    'segment' => $row[$this->longSchema['segment']]
                 ]
             );
 
             foreach ($this->longSchema as $param => $index) {
+                if ($param == 'ID') {
+                    continue;
+                }
+
                 $hydroCalcLong->$param = $row[$index];
             }
 

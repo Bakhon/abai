@@ -48,6 +48,20 @@
           </div>
         </div>
         <div class="col-sm-12 mt-4">
+          <div class="form-check">
+            <input
+                id="check_org_permissions"
+                v-model="form.check_org_permissions"
+                class="form-check-input"
+                name="check_org_permissions"
+                type="checkbox"
+            >
+            <label class="form-check-label" for="check_org_permissions">
+              Проверять доступ пользователя к организациям
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 mt-4">
           <button class="btn btn-success" @click.prevent="submit">Сохранить</button>
         </div>
       </div>
@@ -86,6 +100,7 @@ export default {
     this.getModules()
 
     this.form = {
+      check_org_permissions: this.user.check_org_permissions,
       orgs: this.user.orgs,
       roles: this.user.roles,
       modules: this.user.modules
@@ -110,7 +125,7 @@ export default {
     },
     submit() {
       this.axios.patch(`/admin/api/users/${this.user.id}`, this.form).then(response => {
-        console.log(response)
+        this.$notifySuccess('Изменения сохранены')
       })
     }
   }

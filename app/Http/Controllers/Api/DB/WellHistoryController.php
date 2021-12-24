@@ -17,7 +17,7 @@ class WellHistoryController extends Controller
         if (Cache::has('well_history_' . $wellId)) {
             return Cache::get('well_history_' . $wellId);
         }
- 
+
         $measLiqs = DailyProdOil::where('well', $wellId)
             ->orderBy('date', 'asc')
             ->get();
@@ -50,7 +50,17 @@ class WellHistoryController extends Controller
                     'pbuf' => round($day['pbuf'], 1),
                     'pzat' => round($day['pzat'], 1),
                     'hdin' => round($day['hdin'], 1),
-                    'pzab' => round($day['pzab'], 1)
+                    'pzab' => round($day['pzab'], 1),
+                    'gaz_factor' => round($day['gas_factor'], 1),
+                    'p_line' => round($day['p_line'], 1),
+                    'temp_head' => round($day['temp_head'], 1),
+                    'pump_current' => round($day['pump_current'], 1),
+                    'pump_freq' => round($day['pump_freq'], 1),
+                    'pump_efficiency' => round($day['pump_efficiency'], 1),
+                    'pump_temp' => round($day['pump_temp'], 1),
+                    'pump_intk_press' => round($day['pump_intk_press'], 1),
+                    'pump_stroke' => round($day['pump_stroke'], 1),
+                    'pump_spm' => round($day['pump_spm'], 1),
                  ));
               }
            }
@@ -67,6 +77,7 @@ class WellHistoryController extends Controller
         }
 
         $measLiqs = DailyInjectionOil::where('well', $wellId)
+            ->leftJoin('dict.inj_agent_type', 'dmart.daily_inj.agent_type', '=', 'dict.inj_agent_type.id')
             ->orderBy('date', 'asc')
             ->get();
 
@@ -99,7 +110,8 @@ class WellHistoryController extends Controller
                         'water_vol' => round($day['water_vol'], 1),
                         'hdin' => round($day['hdin'], 1),
                         'battery' => round($day['battery'], 1),
-                        'workHours' => round($day['work_hours'], 1)
+                        'workHours' => round($day['work_hours'], 1),
+                        'name_short_ru' => $day['name_short_ru'],
                     ));
                 }
             }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="{fixed: fixedStyle}">
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily_raport_block-header">
@@ -17,9 +17,17 @@
                         {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
                     </div>
                     <div class="daily_raport_block-header-save">
-                        <button class="save" @click="back">
-                            Текущий отчет
-                        </button>
+                       <div class="actions">
+                           <button class="save" @click="editReport" v-if="isAuthor">
+                               Редактировать
+                           </button>
+                           <button class="save" @click="back" v-if="!show">
+                               Текущий отчет
+                           </button>
+                           <button class="save" @click="closeReport" v-if="show">
+                               Выйти
+                           </button>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -108,11 +116,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td >
                                 {{trans('digital_drilling.daily_raport.project_depth')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text" v-model="report.general_data_daily.project_md_tvd">
+                            <td >
+                                <input type="text" v-model="report.general_data_daily.project_md">
+                            </td>
+                            <td >
+                                {{trans('digital_drilling.daily_raport.project_depth_vert')}}
+                            </td>
+                            <td >
+                                <input type="text" v-model="report.general_data_daily.project_tvd">
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.pump_capacity')}}
@@ -1440,7 +1454,7 @@
 
     export default {
         name: "PreviousDailyRaport",
-        props: ['report'],
+        props: ['report', 'user', 'show', 'fixedStyle'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1457,8 +1471,10 @@
 
                 },
                 summTotalTime: '00:00',
+                isAuthor: false
             }
         },
+
         mounted(){
             this.changeTotalTime(24)
             this.changeTotalTime(6)
@@ -1468,8 +1484,17 @@
                     inputs[i].disabled = true;
                 }
             }
+            this.checkAuthor()
         },
         methods:{
+            checkAuthor(){
+                if (this.user.toLowerCase() == this.report.report_daily.author.toLowerCase()){
+                    this.isAuthor = true
+                }
+            },
+            editReport(){
+                this.$emit('editReport', this.report.report_daily.id)
+            },
             getPreviousDay(){
                 let date = new Date();
                 date.setDate(date.getDate() - 1);
@@ -1495,6 +1520,9 @@
             back(){
                 this.$emit('closePreviousReport')
             },
+            closeReport(){
+                this.$emit('closeReport')
+            },
             sumValues(a, b){
                 if (!a){
                     a = 0
@@ -1505,7 +1533,7 @@
                 if (!a && !b){
                     return ''
                 }
-                return parseInt(a) + parseInt(b)
+                return parseFloat(a) + parseFloat(b)
             },
             subtractValues(a, b){
                 if (!a){
@@ -1517,7 +1545,7 @@
                 if (!a && !b){
                     return ''
                 }
-                return parseInt(a) - parseInt(b)
+                return parseFloat(a) - parseFloat(b)
             },
             getAllProdTime(type){
                 let arr = []
@@ -1529,7 +1557,7 @@
                 let sum = 0
                 for (let i=0; i<arr.length; i++){
                     if (arr[i].previous && arr[i].daily) {
-                        sum += parseInt(arr[i].previous) + parseInt(arr[i].daily)
+                        sum += parseFloat(arr[i].previous) + parseFloat(arr[i].daily)
                     }
                 }
                 return sum

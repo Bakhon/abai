@@ -47,8 +47,8 @@
 
 
     <div :class="{'hide': isLeftSectionHided}" class="bg-dark left-section">
-      <div class="col">
-        <div class="row menu">
+      <div class="col ">
+        <div class=" menu">
           <div class="left-section-title" v-bind:class="{active: currentStructureType === 'org'}"
                @click="onMenuClick('org')">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,146 +74,173 @@
             </svg>
             Геоструктура
           </div>
-          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'tech'}"
-               @click="onMenuClick('tech')">
-            <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#fff"/>
-            </svg>
-            Техструктура
-          </div>
         </div>
-        <div class="row">
-          <svg style="margin-right: auto; margin-left: auto;" width="423" height="1" viewBox="0 0 423 1" fill="none"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 1V0H423V1H0Z" fill="#454D7D"/>
-          </svg>
-        </div>
-        <div class="row">
-          <div class="left-section-select-area">
-            <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
-                    fill="white"/>
-            </svg>
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="dropdown-inner-text">
-                  {{ getOptionName() }}
+        <div class="left-section-inner"> 
+          <div class="left-section-inner-content">
+            <form  action="" class="search-report">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.34556 0C5.5525 0 6.57894 0.422504 7.42353 1.26751C8.26857 2.11206 8.69107 3.13846 8.69107 4.34536C8.69107 5.19036 8.46488 5.95982 8.0125 6.65419L11 9.64157L9.6415 11L6.654 8.01217C5.92975 8.46453 5.16029 8.69116 4.34556 8.69116C3.13816 8.69116 2.11262 8.26866 1.26758 7.42365C0.42209 6.57865 0 5.5527 0 4.34536C0 3.13846 0.42209 2.11206 1.26758 1.26751C2.11262 0.422504 3.13816 0 4.34556 0ZM4.34556 1.9465C3.68147 1.9465 3.11553 2.18037 2.64777 2.64811C2.18002 3.11585 1.94615 3.68175 1.94615 4.34536C1.94615 5.00942 2.18002 5.57486 2.64777 6.0426C3.11553 6.51079 3.68147 6.74466 4.34556 6.74466C5.00919 6.74466 5.57509 6.51079 6.04285 6.0426C6.51106 5.57486 6.74448 5.00942 6.74448 4.34536C6.74448 3.68175 6.51106 3.11585 6.04285 2.64811C5.57509 2.18037 5.00919 1.9465 4.34556 1.9465Z" fill="#9EA4C9"/>
+                </svg>
+                <div class="search-report-inner">
+                  <input type="text" class="search-report-input" placeholder="Поиск">
+                  <button class="search-report-btn">
+                      OK
+                  </button>
                 </div>
-                <div class="icon-pointer"></div>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <ul>
-
-                  <li @click="onSelectStructureType(structureType)"
-                      v-for="structureType in structureTypes[currentStructureType]"
-                      class="dropdown-item">
-
-                    <div class="dropdown-item-inner">
-                      <a href="#">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path
-                              d="M3.28389 0C3.20906 0.00444468 3.14131 0.0450155 3.10307 0.108485C2.97711 0.310852 2.7438 0.439259 2.48828 0.439259H2.48467H1.31947C1.29558 0.438815 1.27177 0.443719 1.24891 0.449052C0.926348 0.499233 0.675572 0.775592 0.675572 1.10623C0.675572 1.47181 0.981535 1.77291 1.35299 1.77291C1.36094 1.77273 1.36889 1.77291 1.37679 1.77291C1.38469 1.77291 1.39264 1.77291 1.40059 1.77291H2.48464H2.48825H4.06537C4.19275 1.77291 4.29118 1.86976 4.29118 1.99514C4.29118 2.12052 4.19275 2.21737 4.06537 2.21737H4.06447C4.05918 2.2172 4.0539 2.2172 4.04861 2.21737H2.71582C2.69189 2.21715 2.66807 2.22185 2.64526 2.22763C2.05583 2.27599 1.58062 2.74397 1.58062 3.32578C1.57881 3.45125 1.68248 3.55344 1.80995 3.55148C1.93466 3.55148 2.03418 3.44845 2.03223 3.32578C2.03223 2.96878 2.33135 2.67575 2.72024 2.66428C2.57435 2.84892 2.48384 3.07634 2.48384 3.32578C2.48204 3.45125 2.5857 3.55344 2.71318 3.55148C2.83789 3.55148 2.93741 3.44845 2.93546 3.32578C2.93546 2.96162 3.24609 2.66255 3.64639 2.66255C3.65403 2.66264 3.6617 2.66237 3.66934 2.66255H4.04862C4.05178 2.66255 4.05508 2.66255 4.05833 2.66255H4.06537C4.43683 2.66255 4.74279 2.36138 4.74279 1.99585C4.74279 1.65601 4.47764 1.37444 4.14211 1.33603C4.12224 1.33115 4.10178 1.32846 4.08125 1.3289H2.50061C2.49532 1.32872 2.49004 1.32872 2.48471 1.3289H2.25802C2.13064 1.3289 2.03222 1.23205 2.03222 1.10667C2.03222 0.981326 2.13064 0.884432 2.25802 0.884432H2.48471H2.48832H2.49013C2.50589 0.884032 2.52156 0.879998 2.53688 0.87822C2.92647 0.862219 3.28639 0.666666 3.48862 0.34176C3.58205 0.19682 3.48035 0.00674779 3.30603 0.000569691C3.29867 0.000214117 3.29131 0.000214117 3.28399 0.000569691L3.28389 0ZM1.35307 0.883727H1.62298C1.59742 0.953597 1.58067 1.02787 1.58067 1.10596C1.58067 1.18423 1.59733 1.25815 1.62298 1.32819H1.4007C1.39334 1.32811 1.38598 1.32842 1.37867 1.32819H1.37596C1.36832 1.32819 1.36069 1.32819 1.35301 1.32819C1.22563 1.32819 1.12721 1.2313 1.12721 1.10596C1.12721 0.980576 1.22563 0.883727 1.35301 0.883727H1.35307ZM0.903226 4.21987C0.903226 4.621 0.899161 4.97773 0.895277 5.33104H6.33051C6.32645 4.97773 6.32256 4.621 6.32256 4.21987H0.903226ZM8.58064 5.55327L6.8183 6.68354C6.84481 7.50185 6.88578 8.12051 6.93208 8.66454H7.22581V9.99795H7.0882C7.14342 10.3326 7.20119 10.6242 7.25933 10.8522C7.4617 11.6456 7.67717 12.2082 7.67742 13.9956L14 14V5.55425L11.2903 7.33212V5.55425L8.58064 7.33212V5.55327ZM0.889113 5.7755C0.780595 12.1532 0 10.4834 0 13.9982H7.22581C7.22581 10.4834 6.44433 12.1532 6.33581 5.7755H0.889113ZM8.58064 8.66449H9.93548V9.99789H8.58064V8.66449ZM11.2903 8.66449H12.6452V9.99789H11.2903V8.66449ZM8.58064 11.3313H9.93548V12.6647H8.58064V11.3313ZM11.2903 11.3313H12.6452V12.6647H11.2903V11.3313Z"
-                              fill="#868BB2"/>
-                        </svg>
-                        {{ structureType['name'] }}
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="left-section-select-area">
-            <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
-                    fill="white"/>
-            </svg>
-            <div class="dropdown">
-              Выбор типа скважин:
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="wellSelector"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="dropdown-inner-text">
-                  {{ wellSheetTypes[wellTypeSelected] }}
-                </div>
-                <div class="icon-pointer"></div>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <ul>
-
-                  <li @click="onSelectWellSheetType(sheetType)"
-                      v-for="(sheetDescription, sheetType) in wellSheetTypes"
-                      class="dropdown-item">
-
-                    <div class="dropdown-item-inner">
-                      <a href="#">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path
-                              d="M3.28389 0C3.20906 0.00444468 3.14131 0.0450155 3.10307 0.108485C2.97711 0.310852 2.7438 0.439259 2.48828 0.439259H2.48467H1.31947C1.29558 0.438815 1.27177 0.443719 1.24891 0.449052C0.926348 0.499233 0.675572 0.775592 0.675572 1.10623C0.675572 1.47181 0.981535 1.77291 1.35299 1.77291C1.36094 1.77273 1.36889 1.77291 1.37679 1.77291C1.38469 1.77291 1.39264 1.77291 1.40059 1.77291H2.48464H2.48825H4.06537C4.19275 1.77291 4.29118 1.86976 4.29118 1.99514C4.29118 2.12052 4.19275 2.21737 4.06537 2.21737H4.06447C4.05918 2.2172 4.0539 2.2172 4.04861 2.21737H2.71582C2.69189 2.21715 2.66807 2.22185 2.64526 2.22763C2.05583 2.27599 1.58062 2.74397 1.58062 3.32578C1.57881 3.45125 1.68248 3.55344 1.80995 3.55148C1.93466 3.55148 2.03418 3.44845 2.03223 3.32578C2.03223 2.96878 2.33135 2.67575 2.72024 2.66428C2.57435 2.84892 2.48384 3.07634 2.48384 3.32578C2.48204 3.45125 2.5857 3.55344 2.71318 3.55148C2.83789 3.55148 2.93741 3.44845 2.93546 3.32578C2.93546 2.96162 3.24609 2.66255 3.64639 2.66255C3.65403 2.66264 3.6617 2.66237 3.66934 2.66255H4.04862C4.05178 2.66255 4.05508 2.66255 4.05833 2.66255H4.06537C4.43683 2.66255 4.74279 2.36138 4.74279 1.99585C4.74279 1.65601 4.47764 1.37444 4.14211 1.33603C4.12224 1.33115 4.10178 1.32846 4.08125 1.3289H2.50061C2.49532 1.32872 2.49004 1.32872 2.48471 1.3289H2.25802C2.13064 1.3289 2.03222 1.23205 2.03222 1.10667C2.03222 0.981326 2.13064 0.884432 2.25802 0.884432H2.48471H2.48832H2.49013C2.50589 0.884032 2.52156 0.879998 2.53688 0.87822C2.92647 0.862219 3.28639 0.666666 3.48862 0.34176C3.58205 0.19682 3.48035 0.00674779 3.30603 0.000569691C3.29867 0.000214117 3.29131 0.000214117 3.28399 0.000569691L3.28389 0ZM1.35307 0.883727H1.62298C1.59742 0.953597 1.58067 1.02787 1.58067 1.10596C1.58067 1.18423 1.59733 1.25815 1.62298 1.32819H1.4007C1.39334 1.32811 1.38598 1.32842 1.37867 1.32819H1.37596C1.36832 1.32819 1.36069 1.32819 1.35301 1.32819C1.22563 1.32819 1.12721 1.2313 1.12721 1.10596C1.12721 0.980576 1.22563 0.883727 1.35301 0.883727H1.35307ZM0.903226 4.21987C0.903226 4.621 0.899161 4.97773 0.895277 5.33104H6.33051C6.32645 4.97773 6.32256 4.621 6.32256 4.21987H0.903226ZM8.58064 5.55327L6.8183 6.68354C6.84481 7.50185 6.88578 8.12051 6.93208 8.66454H7.22581V9.99795H7.0882C7.14342 10.3326 7.20119 10.6242 7.25933 10.8522C7.4617 11.6456 7.67717 12.2082 7.67742 13.9956L14 14V5.55425L11.2903 7.33212V5.55425L8.58064 7.33212V5.55327ZM0.889113 5.7755C0.780595 12.1532 0 10.4834 0 13.9982H7.22581C7.22581 10.4834 6.44433 12.1532 6.33581 5.7755H0.889113ZM8.58064 8.66449H9.93548V9.99789H8.58064V8.66449ZM11.2903 8.66449H12.6452V9.99789H11.2903V8.66449ZM8.58064 11.3313H9.93548V12.6647H8.58064V11.3313ZM11.2903 11.3313H12.6452V12.6647H11.2903V11.3313Z"
-                              fill="#868BB2"/>
-                        </svg>
-                        {{ sheetDescription }}
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col left-section-select-area">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
-                    fill="white" fill-opacity="0.3"/>
-            </svg>
-            <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
-              <input type="text" placeholder="Выбор параметров" id="parameter-search">
-              </input>
             </form>
-          </div>
-        </div>
-        <div class="row">
-          <div class="table-wrapper col">
-            <div class="table-container">
-              <div class="table-container-column-header">
-                <div class="row">
-                  <div class="my-table-border col-md-2" style="padding:0px;">
-                    <div class="centered">Выбор</div>
+            <div class="top-drop-down-asside">
+                <div class="dropdown-parent">
+                    <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
+                            fill="white"/>
+                    </svg>
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown-inner-text">
+                          {{ getOptionName() }}
+                        </div>
+                        <div class="icon-pointer"></div>
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <ul>
+    
+                          <li @click="onSelectStructureType(structureType)"
+                              v-for="structureType in structureTypes[currentStructureType]"
+                              class="dropdown-item">
+    
+                            <div class="dropdown-item-inner">
+                              <a href="#">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                      d="M3.28389 0C3.20906 0.00444468 3.14131 0.0450155 3.10307 0.108485C2.97711 0.310852 2.7438 0.439259 2.48828 0.439259H2.48467H1.31947C1.29558 0.438815 1.27177 0.443719 1.24891 0.449052C0.926348 0.499233 0.675572 0.775592 0.675572 1.10623C0.675572 1.47181 0.981535 1.77291 1.35299 1.77291C1.36094 1.77273 1.36889 1.77291 1.37679 1.77291C1.38469 1.77291 1.39264 1.77291 1.40059 1.77291H2.48464H2.48825H4.06537C4.19275 1.77291 4.29118 1.86976 4.29118 1.99514C4.29118 2.12052 4.19275 2.21737 4.06537 2.21737H4.06447C4.05918 2.2172 4.0539 2.2172 4.04861 2.21737H2.71582C2.69189 2.21715 2.66807 2.22185 2.64526 2.22763C2.05583 2.27599 1.58062 2.74397 1.58062 3.32578C1.57881 3.45125 1.68248 3.55344 1.80995 3.55148C1.93466 3.55148 2.03418 3.44845 2.03223 3.32578C2.03223 2.96878 2.33135 2.67575 2.72024 2.66428C2.57435 2.84892 2.48384 3.07634 2.48384 3.32578C2.48204 3.45125 2.5857 3.55344 2.71318 3.55148C2.83789 3.55148 2.93741 3.44845 2.93546 3.32578C2.93546 2.96162 3.24609 2.66255 3.64639 2.66255C3.65403 2.66264 3.6617 2.66237 3.66934 2.66255H4.04862C4.05178 2.66255 4.05508 2.66255 4.05833 2.66255H4.06537C4.43683 2.66255 4.74279 2.36138 4.74279 1.99585C4.74279 1.65601 4.47764 1.37444 4.14211 1.33603C4.12224 1.33115 4.10178 1.32846 4.08125 1.3289H2.50061C2.49532 1.32872 2.49004 1.32872 2.48471 1.3289H2.25802C2.13064 1.3289 2.03222 1.23205 2.03222 1.10667C2.03222 0.981326 2.13064 0.884432 2.25802 0.884432H2.48471H2.48832H2.49013C2.50589 0.884032 2.52156 0.879998 2.53688 0.87822C2.92647 0.862219 3.28639 0.666666 3.48862 0.34176C3.58205 0.19682 3.48035 0.00674779 3.30603 0.000569691C3.29867 0.000214117 3.29131 0.000214117 3.28399 0.000569691L3.28389 0ZM1.35307 0.883727H1.62298C1.59742 0.953597 1.58067 1.02787 1.58067 1.10596C1.58067 1.18423 1.59733 1.25815 1.62298 1.32819H1.4007C1.39334 1.32811 1.38598 1.32842 1.37867 1.32819H1.37596C1.36832 1.32819 1.36069 1.32819 1.35301 1.32819C1.22563 1.32819 1.12721 1.2313 1.12721 1.10596C1.12721 0.980576 1.22563 0.883727 1.35301 0.883727H1.35307ZM0.903226 4.21987C0.903226 4.621 0.899161 4.97773 0.895277 5.33104H6.33051C6.32645 4.97773 6.32256 4.621 6.32256 4.21987H0.903226ZM8.58064 5.55327L6.8183 6.68354C6.84481 7.50185 6.88578 8.12051 6.93208 8.66454H7.22581V9.99795H7.0882C7.14342 10.3326 7.20119 10.6242 7.25933 10.8522C7.4617 11.6456 7.67717 12.2082 7.67742 13.9956L14 14V5.55425L11.2903 7.33212V5.55425L8.58064 7.33212V5.55327ZM0.889113 5.7755C0.780595 12.1532 0 10.4834 0 13.9982H7.22581C7.22581 10.4834 6.44433 12.1532 6.33581 5.7755H0.889113ZM8.58064 8.66449H9.93548V9.99789H8.58064V8.66449ZM11.2903 8.66449H12.6452V9.99789H11.2903V8.66449ZM8.58064 11.3313H9.93548V12.6647H8.58064V11.3313ZM11.2903 11.3313H12.6452V12.6647H11.2903V11.3313Z"
+                                      fill="#868BB2"/>
+                                </svg>
+                                {{ structureType['name'] }}
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="centered">Объект</div>
+             
+              <div class="dropdown-parent">
+                <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
+                        fill="white"/>
+                </svg>
+                <div class="dropdown">
+                  <!-- Выбор типа скважин: -->
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="wellSelector"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="dropdown-inner-text">
+                      {{ wellSheetTypes[wellTypeSelected] }}
+                    </div>
+                    <div class="icon-pointer"></div>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul>
+
+                      <li @click="onSelectWellSheetType(sheetType)"
+                          v-for="(sheetDescription, sheetType) in wellSheetTypes"
+                          class="dropdown-item">
+
+                        <div class="dropdown-item-inner">
+                          <a href="#">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                  d="M3.28389 0C3.20906 0.00444468 3.14131 0.0450155 3.10307 0.108485C2.97711 0.310852 2.7438 0.439259 2.48828 0.439259H2.48467H1.31947C1.29558 0.438815 1.27177 0.443719 1.24891 0.449052C0.926348 0.499233 0.675572 0.775592 0.675572 1.10623C0.675572 1.47181 0.981535 1.77291 1.35299 1.77291C1.36094 1.77273 1.36889 1.77291 1.37679 1.77291C1.38469 1.77291 1.39264 1.77291 1.40059 1.77291H2.48464H2.48825H4.06537C4.19275 1.77291 4.29118 1.86976 4.29118 1.99514C4.29118 2.12052 4.19275 2.21737 4.06537 2.21737H4.06447C4.05918 2.2172 4.0539 2.2172 4.04861 2.21737H2.71582C2.69189 2.21715 2.66807 2.22185 2.64526 2.22763C2.05583 2.27599 1.58062 2.74397 1.58062 3.32578C1.57881 3.45125 1.68248 3.55344 1.80995 3.55148C1.93466 3.55148 2.03418 3.44845 2.03223 3.32578C2.03223 2.96878 2.33135 2.67575 2.72024 2.66428C2.57435 2.84892 2.48384 3.07634 2.48384 3.32578C2.48204 3.45125 2.5857 3.55344 2.71318 3.55148C2.83789 3.55148 2.93741 3.44845 2.93546 3.32578C2.93546 2.96162 3.24609 2.66255 3.64639 2.66255C3.65403 2.66264 3.6617 2.66237 3.66934 2.66255H4.04862C4.05178 2.66255 4.05508 2.66255 4.05833 2.66255H4.06537C4.43683 2.66255 4.74279 2.36138 4.74279 1.99585C4.74279 1.65601 4.47764 1.37444 4.14211 1.33603C4.12224 1.33115 4.10178 1.32846 4.08125 1.3289H2.50061C2.49532 1.32872 2.49004 1.32872 2.48471 1.3289H2.25802C2.13064 1.3289 2.03222 1.23205 2.03222 1.10667C2.03222 0.981326 2.13064 0.884432 2.25802 0.884432H2.48471H2.48832H2.49013C2.50589 0.884032 2.52156 0.879998 2.53688 0.87822C2.92647 0.862219 3.28639 0.666666 3.48862 0.34176C3.58205 0.19682 3.48035 0.00674779 3.30603 0.000569691C3.29867 0.000214117 3.29131 0.000214117 3.28399 0.000569691L3.28389 0ZM1.35307 0.883727H1.62298C1.59742 0.953597 1.58067 1.02787 1.58067 1.10596C1.58067 1.18423 1.59733 1.25815 1.62298 1.32819H1.4007C1.39334 1.32811 1.38598 1.32842 1.37867 1.32819H1.37596C1.36832 1.32819 1.36069 1.32819 1.35301 1.32819C1.22563 1.32819 1.12721 1.2313 1.12721 1.10596C1.12721 0.980576 1.22563 0.883727 1.35301 0.883727H1.35307ZM0.903226 4.21987C0.903226 4.621 0.899161 4.97773 0.895277 5.33104H6.33051C6.32645 4.97773 6.32256 4.621 6.32256 4.21987H0.903226ZM8.58064 5.55327L6.8183 6.68354C6.84481 7.50185 6.88578 8.12051 6.93208 8.66454H7.22581V9.99795H7.0882C7.14342 10.3326 7.20119 10.6242 7.25933 10.8522C7.4617 11.6456 7.67717 12.2082 7.67742 13.9956L14 14V5.55425L11.2903 7.33212V5.55425L8.58064 7.33212V5.55327ZM0.889113 5.7755C0.780595 12.1532 0 10.4834 0 13.9982H7.22581C7.22581 10.4834 6.44433 12.1532 6.33581 5.7755H0.889113ZM8.58064 8.66449H9.93548V9.99789H8.58064V8.66449ZM11.2903 8.66449H12.6452V9.99789H11.2903V8.66449ZM8.58064 11.3313H9.93548V12.6647H8.58064V11.3313ZM11.2903 11.3313H12.6452V12.6647H11.2903V11.3313Z"
+                                  fill="#868BB2"/>
+                            </svg>
+                            {{ sheetDescription }}
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
-              <div class="table-container-element">
-                <template>
-                  <report-constructor-item-select-tree
-                      v-if="currentOption"
-                      @modalChangeVisible="(value) => modalChangeVisible(value)"
-                      @changeOrgSelector="changeOrgSelector()"
-                      :structureType="currentStructureType"
-                      :itemType="currentItemType"
-                      :isShowCheckboxes="true"
-                      :currentOption="currentOption"
-                      :selectedObjects="selectedObjects[currentStructureType]"
-                      :isCheckedCheckbox="isCheckedCheckbox"
-                      ref="itemSelectTree"
-                  >
-                  </report-constructor-item-select-tree>
-                </template>
+              
+            </div>
+            <div class="row">
+              <div class="col left-section-select-area">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
+                          fill="white" />
+                  </svg>
+                  <span id="parameter-search" @click="isDisplayParameterBuilder = !isDisplayParameterBuilder"> Выбор параметров
+                  </span>
               </div>
             </div>
+            <div class="top-parameters-container row" v-if="isDisplayParameterBuilder">
+              <div class="col table-wrapper col">
+                  <div class="table-container">
+                    <div class="table-container-column-header">
+                    <div class="row">
+                      <div class="my-table-border col-md-2" style="padding:0px;">
+                        <div class="centered">Выбор</div>
+                      </div>
+                      <div class="my-table-border col-md-10">
+                        <div class="centered">Параметр</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-params-container">
+                    <div class="row " v-for="sheetType in sheetTypes"  >
+                  
+                    <report-header-builder
+                        v-model="attributesByHeader[sheetType]"
+                        :data="attributesByHeader[sheetType]"
+                        :translateAttribute="getAttributeDescription"
+                        group="items"
+                        v-if="isDisplayParametersOfSheet(sheetType)"
+                    >
+                    </report-header-builder>
+                    </div>  
+                  </div>
+                </div>
+              </div>
+            </div> 
+            <div class="row">
+              <div class="table-wrapper col" >
+                <div class="table-container">
+                  <div class="table-container-column-header">
+                    <div class="row">
+                      <div class="my-table-border col-md-2" style="padding:0px;">
+                        <div class="centered">Выбор</div>
+                      </div>
+                      <div class="my-table-border col-md-10">
+                        <div class="centered">Объект</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-container-element">
+                    <template>
+                      <report-constructor-item-select-tree
+                          v-if="currentOption"
+                          @modalChangeVisible="(value) => modalChangeVisible(value)"
+                          @changeOrgSelector="changeOrgSelector()"
+                          :structureType="currentStructureType"
+                          :itemType="currentItemType"
+                          :isShowCheckboxes="true"
+                          :currentOption="currentOption"
+                          :selectedObjects="selectedObjects[currentStructureType]"
+                          :isCheckedCheckbox="isCheckedCheckbox"
+                          ref="itemSelectTree"
+                      >
+                      </report-constructor-item-select-tree>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -221,6 +248,9 @@
         <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 12L1.03149 6.58081C0.989503 6.53506 0.989503 6.46488 1.03149 6.41881L6 1" stroke="white" stroke-width="2" stroke-miterlimit="22.9256" stroke-linecap="round"/>
         </svg>
+      </div>
+      <div class="left-section-text">
+        Параметры
       </div>
     </div>
     <div :class="{'hide': isLeftSectionHided}" class="section-main">
@@ -230,9 +260,9 @@
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
                 <div class="row date-container">
-                  <div class="col">
-                    <div class="row start-date-container mb-2">
-                      <label class="col">{{ trans('bd.start_date') }}</label>
+                  <div class="date-block">
+                    <div class=" date-content ">
+                      <label class="start-date-container__title">{{ trans('bd.start_date') }}</label>
                       <template>
                         <datetime
                             type="date"
@@ -253,7 +283,7 @@
                         </datetime>
                       </template>
                     </div>
-                    <div class="row end-date-container mb-2">
+                    <div class=" date-content ">
                       <label class="col">{{ trans('bd.end_date') }}</label>
                       <template>
                         <datetime
@@ -275,25 +305,25 @@
                         </datetime>
                       </template>
                     </div>
+                     <button @click="clearDate()" class="clear-date"> Очистить дату</button>
                   </div>
-                  <div class="col date-picker inline-flex">
+                  <div class=" date-picker inline-flex">
                     <button
                         @click="onMonthClick()"
-                        class="calendar mb-2"
+                        class="calendar "
                         v-bind:class="{active: currentDatePickerFilter === 'month'}"
                     >{{ trans('bd.month_3') }}
                     </button>
 
                     <button
                         @click="onYearClick()"
-                        class="calendar justify-content-center mb-2"
+                        class="calendar justify-content-center "
                         v-bind:class="{active: currentDatePickerFilter === 'year'}"
                     >{{ trans('bd.year_1') }}
                     </button>
                   </div>
 
                   <div class="btn-container">
-                    <button @click="clearDate()"> Очистить дату</button>
                     <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
                         trans('bd.choose_template')
                       }}
@@ -306,86 +336,41 @@
             </section>
           </div>
         </div>
-        <div class="row" v-for="sheetType in sheetTypes">
-          <div class="col">
-            <report-header-builder
-                v-model="attributesByHeader[sheetType]"
-                :data="attributesByHeader[sheetType]"
-                :translateAttribute="getAttributeDescription"
-                group="items"
-                v-if="isDisplayParametersOfSheet(sheetType)"
-            >
-            </report-header-builder>
-          </div>
-        </div>
+        
       </div>
       <div class="col">
         <div class="row">
           <div class="col">
-            <section class="section-content bg-dark">
+            <div class="section-field bg-dark">
               <div class="row">
-                <div class="content-top col">
-                  <div class="content-top-element">
-                    <svg width="22" height="27" viewBox="0 0 22 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M9.45012 13.3545C9.58318 13.3545 9.71625 13.3013 9.79598 13.1947L11.3403 11.0917L12.6446 12.0502C12.7247 12.1299 12.8577 12.1564 12.9644 12.13C13.0705 12.1032 13.1772 12.0503 13.2304 11.9701L14.7744 9.89355L15.2004 10.2131C15.2805 10.2932 15.4134 10.2932 15.5201 10.2398C15.6262 10.1865 15.6796 10.08 15.7064 9.97347L15.7597 8.26961C15.7597 8.16308 15.7064 8.08328 15.6262 8.00342C15.5465 7.95022 15.44 7.92374 15.3337 7.95028L13.7361 8.5092C13.63 8.536 13.5498 8.64225 13.5233 8.74878C13.4965 8.85545 13.5499 8.96201 13.6564 9.04175L14.0824 9.36108L12.778 11.1182L11.4733 10.1597C11.3936 10.1068 11.2605 10.0536 11.154 10.08C11.0474 10.1068 10.9408 10.1597 10.8875 10.2398L9.07748 12.6625C8.94414 12.8489 8.97088 13.1149 9.15715 13.248C9.26381 13.3281 9.36998 13.3545 9.45012 13.3545Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M9.31795 16.2832H10.4895C10.649 16.2832 10.7825 16.1502 10.7825 15.9907V14.4465C10.7825 14.2866 10.649 14.1535 10.4895 14.1535H9.31795C9.15835 14.1535 9.02539 14.2866 9.02539 14.4465V15.9907C9.02539 16.1502 9.15835 16.2832 9.31795 16.2832Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M11.9273 13.0087C11.7679 13.0087 11.6348 13.1421 11.6348 13.3017V15.9907C11.6348 16.1502 11.7679 16.2832 11.9273 16.2832H13.099C13.2585 16.2832 13.3918 16.1502 13.3918 15.9907V13.3017C13.3918 13.1421 13.2585 13.0087 13.099 13.0087H11.9273Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M14.5096 11.8642C14.3497 11.8642 14.2168 11.9973 14.2168 12.1567V15.9907C14.2168 16.1502 14.3497 16.2832 14.5096 16.2832H15.681C15.8409 16.2832 15.9739 16.1502 15.9739 15.9907V12.1567C15.9739 11.9973 15.8409 11.8642 15.681 11.8642H14.5096Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M20.2863 4.78223H16.9584V1.45435C16.9584 1.08168 16.6391 0.761963 16.2664 0.761963H0.692057C0.319391 0.761963 0 1.08168 0 1.45435V21.3415C0 21.7141 0.319391 22.0334 0.692057 22.0334H4.01986V25.3613C4.01986 25.734 4.33934 26.0537 4.7124 26.0537H20.3131C20.6857 26.0537 21.005 25.734 21.005 25.3613V5.47428C20.9786 5.10162 20.6858 4.78223 20.2863 4.78223ZM4.01986 5.47428V20.649H1.38444V2.1464H15.5743V4.78223H4.7124C4.3128 4.78223 4.01986 5.10162 4.01986 5.47428ZM19.5943 24.6693H5.40438V6.16667H19.5943V24.6693Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M8.4401 19.4512H16.5331C16.9062 19.4512 17.2256 19.1314 17.2256 18.7587C17.2256 18.386 16.9062 18.0667 16.5331 18.0667H8.4401C8.06744 18.0667 7.74805 18.386 7.74805 18.7587C7.74805 19.1582 8.06744 19.4512 8.4401 19.4512Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M8.4401 22.5664H16.5331C16.9062 22.5664 17.2256 22.247 17.2256 21.8743C17.2256 21.5017 16.9062 21.182 16.5331 21.182H8.4401C8.06744 21.182 7.74805 21.5017 7.74805 21.8743C7.74805 22.247 8.06744 22.5664 8.4401 22.5664Z"
-                            fill="white"/>
-                    </svg>
-                  </div>
-                  <div class="col">
-                    <div class="row" style="width: 100%; padding-right: 0px;">
-                      <div class="content-top-element" style="width: 100%; padding-right: 0px; margin-right:0px;">
-                        Отчет:
-                        <div class="share">
-                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                               xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                  d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
-                                  fill="#82BAFF"/>
-                          </svg>
-                        </div>
-                      </div>
+                <div class="section-field-inner col">
+                    <div class="field">
+                      Месторождение: АО “ЭмбаМунайГаз”  
                     </div>
-                    <div class="row">
-                      <div class="content-top-element">
-                        Геоструктура:
+                     <div class="share">
+                        <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
+                                fill="#82BAFF"/>
+                        </svg>
                       </div>
-                    </div>
-                  </div>
                 </div>
               </div>
-              <div class="row" v-if="statistics">
-                <div class="table-wrapper col">
-                  <ul class="nav nav-tabs report-tab">
-                    <template v-for="(sheetType, index) in sheetTypes">
-                      <li class="nav-item" v-if="isStatisticsForSheetTypeExists(sheetType)">
-                          <span class="nav-link report-link" href="#" :class="{ active: activeTab === index }"
-                                @click="activeTab = index">
-                            {{ sheetTypesDescription[sheetType] }}
-                          </span>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
+            </div>
+            <div class="section-filter bg-dark" v-if="statistics">
+              <ul class="filter-block nav nav-tabs report-tab">
+                <template v-for="(sheetType, index) in sheetTypes"  >
+                  <li  :key="index" :class="` filter-item__${sheetType}`"  v-if="isStatisticsForSheetTypeExists(sheetType)">
+                      <span class="filter-block__item " href="#"  :class="{ active: activeTab === index }"
+                            @click="activeTab = index">
+                        {{ sheetTypesDescription[sheetType] }}
+                      </span>
+                  </li>
+                </template>
+              </ul>
+            </div>
+            <section class="section-content bg-dark">
               <div class="row">
                 <div class="table-wrapper col">
                   <div class="table-container" v-if="statistics">
@@ -437,15 +422,18 @@
                   </div>
                 </div>
               </div>
+              
+            </section>
+            <section class="button-section bg-dark">
               <div class="row">
                 <div class="btn-container">
-                  <button class="" :disabled="!startDate" @click="updateStatistics()">
-                    {{ trans('bd.create_report') }}
-                  </button>
-                  <button @click="getStatisticsFile()">Скачать отчет</button>
-                  <button @click="showModal('newTemplateNameModal')">Сохранить как шаблон</button>
+                    <button class="" :disabled="!startDate" @click="updateStatistics()">
+                      {{ trans('bd.create_report') }}
+                    </button>
+                    <button @click="getStatisticsFile()">Скачать отчет</button>
+                    <button @click="showModal('newTemplateNameModal')">Сохранить как шаблон</button>
+                  </div>
                 </div>
-              </div>
             </section>
           </div>
         </div>
@@ -715,7 +703,216 @@
 </template>
 
 <script src="./ReportConstructor.js"></script>
+
 <style scoped lang="scss">
+
+
+.table-params-container {
+  padding: 10px 0;
+}
+#parameter-search {
+    background: #3C4280;
+    border-radius: 5px;
+    height: 30px;
+    padding: 6px 0px 5px 10px;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+    line-height: 19px;
+    display: flex;
+    width: 100%;
+    &:hover {
+      background: #334296;
+    }
+}
+
+.search-report {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    svg {
+        width: 14px;
+        height: 14px;
+    }
+    &-inner {
+        background: #1F2142;
+        border: 0.5px solid #454FA1;
+        display: flex;
+        align-items: center;
+        width: calc(100% - 21px);
+    }
+    &-input {
+      height: 30px;
+      background: #1F2142;
+      border: none;
+      outline: none;
+      width: calc(100% - 43px);
+      text-indent: 15px;
+      font-size: 16px;
+      color: #B6BAD9;
+      &::placeholder {
+        color: #B6BAD9;
+      }
+    }
+    &-btn {
+      background: rgba(123, 132, 173, 0.64);
+      width: 40px;
+      height: 24px;
+      border: none;
+      color: #fff;
+      &:hover{
+        background:#334296;
+      }
+    }
+}
+
+.top-drop-down-asside {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.dropdown-parent {
+    align-items: center;
+    display: flex;
+    width: 48%;
+    position: relative;
+    padding-left: 20px;
+    & > svg {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+}
+.left-section-inner {
+    background: #363B68;
+    padding: 10px;
+    &-content {
+        background: #272953;
+        padding: 10px;
+        height: calc(100vh - 152px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .table-container {
+      height: auto;
+    }
+    .bd-forms {
+        margin-bottom: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #181837;
+      width: 6px !important;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #656a8a;
+      border-radius: 10px;
+      border: 3px solid #181837;
+    }
+    
+}
+.date {
+  display: flex;
+  align-items: center;
+}
+.date-block {
+    display: flex;
+}
+
+.date-content {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  & > label {
+    white-space: nowrap;
+  }
+}
+.clear-date {
+    background: #3C4280;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #fff;
+    padding: 7px 12px 7px 28px;
+    font-size: 14px;
+    line-height: 1;
+    background-image: url('/img/bd/close_tab.svg');
+    background-repeat: no-repeat;
+    background-position: left 8px center;
+    white-space: nowrap;
+}
+.section-field {
+    padding: 11px 7px 11px 7px;
+    margin-bottom: 10px;
+}
+.section-field-inner {
+    background: #323370;
+    border: 1px solid #545580;
+    width: 100%;
+    margin: 0 20px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.field {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  padding-left: 30px;
+  position: relative;
+  background-image: url(/img/bd/field_icon.svg);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 16px;
+}
+.section-filter {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+.filter-block {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    border:none;
+    li {
+      width: 24.5%;
+    }
+}
+.filter-block__item{
+    padding: 9px 23px 7px 36px;
+    background-color: #333975;
+    border-radius: 4px;
+    font-size: 16px;
+    height: 40px;
+    line-height: 1;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-position: left 8px center;
+    display: flex;
+    align-items: center;
+    &.active,&:hover {
+      background-color: #3366FF;
+      cursor: pointer;
+    }
+}
+.filter-item{
+  width: 24.5%;
+  &__well_production span  ,&__well_pump span{
+    background-image: url(/img/bd/well_icon.svg);
+  }
+  &__object span {
+    background-image: url(/img/bd/object_icon.svg);
+  }
+  &__well_summary span,&__object_summary span {
+    background-image: url(/img/bd/well_sum_data_icon.svg);
+  }
+}
+
 $dark-font: #1F2142;
 $HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
 @mixin st-font-16-700 {
@@ -733,7 +930,8 @@ $HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -768,17 +966,33 @@ body {
 .left-section.hide div{
   display: none;
 }
-
+.left-section.hide .left-section-text {
+  display: flex;
+}
 .left-section.hide .arrow-hide {
   display: flex;
   transform: translateY(-50%) rotate(180deg);
 }
 
-
+.left-section-text {
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    transform: rotate(
+-90deg) translateY(-50%);
+    display: block;
+    position: absolute;
+    right: -13px;
+    top: 49%;
+    display: none;
+}
 .arrow-hide {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   width: 13px;
   height: 50px;
   display: flex;
@@ -795,14 +1009,16 @@ body {
   cursor: pointer;
 }
 
-.left-section {
-  width: 441px;
-  margin-left: 15px;
-
-  @media(max-width: 800px) {
-    margin-top: 10px;
-    width: 100%;
-  }
+.left-section{
+    width: 441px;
+    margin-left: 15px;
+    height: calc(100vh - 91px);
+    overflow: hidden;
+    position: relative;
+    @media(max-width: 800px) {
+      margin-top: 10px;
+      width: 100%;
+    }
 
   :after {
     margin: 0px;
@@ -816,20 +1032,31 @@ body {
     font-family: $HarmoniaSansProCyr;
     font-weight: 700;
     font-size: 13.5px;
-    width: 140px;
-    height: 35px;
+    
     line-height: 19px;
     letter-spacing: 1px;
     border-radius: 2px;
     cursor: pointer;
-
+    background: #31335F;
+    border-radius: 5px 5px 0 0;
+    margin-right: 10px;
+    padding: 5px;
+    color: #8389AF;
     svg {
       margin-right: 10px;
+      path {
+          fill: #8389AF;
+      }
     }
   }
 
   .active {
-    background-color: #3366FF;
+    background-color: #363B68;
+    color:#fff;
+    svg path {
+          fill: #fff;
+      
+    }
   }
 
   .left-section-title:not(.active):hover {
@@ -844,13 +1071,11 @@ body {
     color: white;
     font-family: $HarmoniaSansProCyr;
     font-size: 16px;
-    line-height: 19px;
+    line-height: 1.3;
     font-weight: 400;
-    padding: 0px;
+    padding: 5px 0;
     border-radius: 5px;
     display: flex;
-    height: 31px;
-
     .dropdown-item-inner {
       margin-left: 11px;
       margin-top: auto;
@@ -868,20 +1093,21 @@ body {
   }
 
   .menu {
-    flex-wrap: wrap-reverse;
-    justify-content: space-evenly;
     align-items: center;
-    height: 50px;
+    display: flex;
+    margin-top: 10px;
   }
 
   .dropdown-menu.show {
     background: #1A214A;
-    width: 100%;
     color: white;
     padding: 0px;
     border-radius: 6px;
     border: 0px;
+    & > ul {
+    border: 1px solid #1A214A;
 
+    }
     :hover {
       border: 1px solid #3366FF;
       border-radius: 6px;
@@ -913,12 +1139,13 @@ body {
   }
 
   .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
   }
 
   .btn-secondary {
-    border: 1.3px solid #3366FF;
     border-radius: 5px;
-    width: 350px;
     height: 30px;
     padding: 6px 0px 5px 10px;
     background: $dark-font;
@@ -927,7 +1154,8 @@ body {
     font-family: $HarmoniaSansProCyr;
     line-height: 19px;
     display: flex;
-
+    width: 100%;
+    background: #3C4280;
     .icon-pointer {
       width: 10px;
       height: 10px;
@@ -940,6 +1168,8 @@ body {
     .dropdown-inner-text {
       text-align: left;
       color: #B6BAD9;
+      overflow: hidden;
+      margin-right: 6px;
     }
   }
 
@@ -968,10 +1198,12 @@ body {
   }
 
   .left-section-select-area {
-    margin: 20px 10px;
+    margin: 20px 0;
     width: 100%;
     display: flex;
-
+    form {
+        width: 100%;
+    }
     .last-element {
       margin-left: auto;
     }
@@ -983,17 +1215,21 @@ body {
     }
 
     form {
-      input[type="text"] {
-        width: 159px;
-        background: rgba(60, 66, 128, 0.3);
-        padding: 6px 8px 5px 9px;
-        color: rgba(255, 255, 255, 0.2);
-        font-family: $HarmoniaSansProCyr;
+      button{
+        border-radius: 5px;
+        height: 30px;
+        padding: 6px 0px 5px 10px;
+        background: #1F2142;
         font-weight: 400;
-        line-height: 19px;
         font-size: 16px;
-        border-radius: 6px;
-        border: 0px;
+        font-family: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+        line-height: 19px;
+        display: flex;
+        width: 100%;
+        background: #3C4280;
+        outline: none;
+        border: none;
+        color: #fff;
       }
     }
   }
@@ -1076,11 +1312,25 @@ body {
       }
     }
 
-    .date-container {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-
+    .date-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 0 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        
+        &::-webkit-scrollbar-track {
+          background: #181837;
+          height: 2px !important;
+          width: 2px !important;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #656a8a;
+          border-radius: 10px;
+          border: 3px solid #181837;
+        }
       label {
         margin-right: 10px;
       }
@@ -1113,9 +1363,9 @@ body {
       }
     }
 
-    .date-picker {
-      justify-content: center;
-
+  .date-picker {
+    justify-content: center;
+    flex-wrap: nowrap;
       .calendar {
         display: flex;
         align-items: center;
@@ -1144,15 +1394,21 @@ body {
       }
     }
   }
-
+  .button-section{
+      padding: 15px;
+      justify-content: center;
+      display: flex;
+  }
   .section-content {
-    display: block;
-    height: 913px;
-    padding: 0px 14px;
-
-    .table-wrapper {
-      margin: 0px;
-    }
+      display: block;
+      height: calc(100vh - 375px);
+      padding: 0px 14px;
+      overflow-y: auto;
+      overflow-x: auto;
+      margin-bottom: 10px;
+      .table-wrapper {
+        margin: 0px;
+      }
 
     .content-top {
       display: inline-flex;
@@ -1473,7 +1729,6 @@ body {
     font-weight: 400;
     line-height: 19px;
     font-family: $HarmoniaSansProCyr;
-
     .table-container-svg {
       display: flex;
     }
@@ -1572,14 +1827,14 @@ body {
     color: white;
     border: 1px solid #3C4280;
     border-radius: 6px;
+    white-space: nowrap;
     font-weight: 700;
-    font-family: $HarmoniaSansProCyr;
-    font-size: 16px;
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+    font-size: 14px;
     line-height: 19px;
-    padding: 8px 33px 6px 32px;
-    margin-right: 18px;
+    padding: 7px 12px 7px 28px;
     float: right;
-
+    margin:0 5px;
     &:hover {
       background: #3366FF;
       color: white;
@@ -1860,6 +2115,18 @@ body {
 .template-name-ok {
   margin-left: 114px;
 }
-
+@media (max-width: 1640px) {
+  .section-main .section-top .date-picker {
+      flex-wrap: wrap;
+      font-size: 12px;
+  }
+  .section-main .section-top label {
+      font-size: 12px;
+  }
+  .section-content {
+    display: block;
+    height: calc(100vh - 375px);
+  }
+}
 </style>
 

@@ -1,3 +1,5 @@
+import {letMeProperty} from "../../../../js/utils";
+
 export default class TElements {
 
     #__elements = new Set();
@@ -20,7 +22,7 @@ export default class TElements {
     }
 
     get getElements() {
-        return [...this.#__elements.keys()]
+        return Array.from(this.#__elements.keys());
     }
     get getElementsCount(){
         return this.#__elements.size
@@ -67,6 +69,19 @@ export default class TElements {
 
     editElementOptions(elementName, options = {}, force) {
         this.#propertyEdit(elementName, options, force, 'options')
+    }
+
+    editPropertyElementData(elementName, editableMapName, path, value, force = false) {
+        let editableMap = {
+            "options": this.#__elementsOptions,
+            "data": this.#__elementsData
+        }[editableMapName];
+        let dataOrOptions = editableMap.get(elementName);
+        if (typeof dataOrOptions === "object" && !Array.isArray(dataOrOptions)) {
+            this.#propertyEdit(elementName, letMeProperty(dataOrOptions, path, value, true), force, editableMapName);
+        } else {
+            console.error("Не тот тип данных элемента");
+        }
     }
 
     #propertyEdit = (elementName, dataOrOptions, force, propName) => {

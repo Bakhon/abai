@@ -13,7 +13,7 @@
 <script>
 import AwGisColumn from "./AwGisColumn";
 import {SET_SCROLL_BLOCK_Y} from "../../../../../store/modules/geologyGis.const";
-
+import TCoords from "./utils/TCoords";
 export default {
   name: "AwGisDepthColumn",
   components: {
@@ -29,7 +29,8 @@ export default {
       context: null,
       offsetDepth: this.offsetY,
       scaleY: 10,
-      scrollSpeed: 10
+      scrollSpeed: 10,
+      tCoords: new TCoords()
     }
   },
   computed: {
@@ -73,7 +74,7 @@ export default {
   methods: {
     mouseMove(e) {
       e.preventDefault();
-      this.scrollBlock -= e?.movementY;
+      this.scrollBlock -= e?.movementY*10;
     },
     initAxis() {
       if (!this.context)
@@ -84,28 +85,20 @@ export default {
 
     drawAxis() {
       let ctx = this.context;
-      let axisSize = this.scaleY;
-
-      let offsetY = this.scrollBlock + this.getOffsetDepth;
-      let canvasHeight = ctx.canvas.height / axisSize;
-      canvasHeight = canvasHeight += offsetY;
-
+      let offsetY = this.scrollBlock;
+      let canvasHeight = ctx.canvas.height + offsetY;
       ctx.beginPath();
       for (let i = offsetY; i < canvasHeight; i++) {
-        let y = (i * axisSize) - offsetY * axisSize;
+        let y = i - offsetY;
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
         ctx.moveTo(this.depthColumnWidth, y);
         if (!(i % 10) || i === 0) {
           ctx.fillStyle = 'red'
           ctx.font = '12px serif'
+          ctx.fillText(i.toString(), this.depthColumnWidth - 10, y);
           ctx.lineTo(this.depthColumnWidth - 5, y);
-        } else {
-          ctx.fillStyle = 'black'
-          ctx.font = '8px serif'
-          ctx.lineTo(this.depthColumnWidth - 3, y);
         }
-        ctx.fillText(i.toString(), this.depthColumnWidth - 10, y);
       }
       ctx.stroke();
     },

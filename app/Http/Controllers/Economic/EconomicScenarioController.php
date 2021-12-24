@@ -4,44 +4,92 @@
 namespace App\Http\Controllers\Economic;
 
 
-use App\EcoRefsScenario;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\Scenario\EconomicScenarioDataRequest;
 use App\Http\Requests\Economic\Scenario\EconomicScenarioStoreRequest;
-use App\Http\Resources\EcoRefsScenarioResource;
-use Illuminate\View\View;
+use App\Jobs\Economic\Scenario\EconomicScenarioJob;
+use App\Models\Refs\EcoRefsScenario;
+use App\Models\Refs\EcoRefsScFa;
+use Illuminate\Support\Facades\DB;
 
 class EconomicScenarioController extends Controller
 {
-    public function index(): View
+    public function store(EconomicScenarioStoreRequest $request): EcoRefsScenario
     {
-        return view('economic.scenario.index');
-    }
+        EcoRefsScFa::query()
+            ->where([
+                'id' => $request->sc_fa_id,
+                'is_forecast' => true
+            ])
+            ->firstOrFail();
 
-    public function store(EconomicScenarioStoreRequest $request): EcoRefsScenarioResource
-    {
-        $scenario = EcoRefsScenario::create($request->validated());
+        $scenario = new EcoRefsScenario($request->validated());
 
-        $scenario->load('scFa');
+        $scenario->user_id = auth()->id();
 
-        return EcoRefsScenarioResource::make($scenario);
+        $scenario->calculated_variants = 0;
+
+        $scenario->total_variants = EconomicScenarioJob::NUMBER_OF_STOPS *
+            count($scenario->params['oil_prices']) *
+            count($scenario->params['dollar_rates']) *
+            count($scenario->params['cost_wr_payrolls']) *
+            count($scenario->params['fixed_nopayrolls']);
+
+        $scenario->save();
+
+        foreach ($scenario->params['oil_prices'] as $oilPrice) {
+            foreach ($scenario->params['dollar_rates'] as $dollarRate) {
+                dispatch(new EconomicScenarioJob(
+                    $scenario->id,
+                    $oilPrice['value'],
+                    $dollarRate['value'],
+                ));
+            }
+        }
+
+        return $scenario;
     }
 
     public function destroy(int $id): int
     {
-        return (int)EcoRefsScenario::query()
-            ->whereId($id)
-            ->delete();
+        return DB::transaction(function () use ($id) {
+            $scenario = EcoRefsScenario::query()
+                ->whereId($id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $scenario->results()->delete();
+
+            return (int)$scenario->delete();
+        });
     }
 
-    public function getData(): array
+    public function getData(EconomicScenarioDataRequest $request): array
     {
-        $data = EcoRefsScenario::query()
-            ->with('scFa')
-            ->oldest('id')
-            ->get();
+        $query = EcoRefsScenario::query();
 
-        return [
-            'data' => EcoRefsScenarioResource::collection($data)
-        ];
+        if ($request->sc_fa_id) {
+            $query->whereScFaId($request->sc_fa_id);
+        }
+
+        if ($request->source_id) {
+            $query->whereSourceId($request->source_id);
+        }
+
+        if ($request->gtm_kit_id) {
+            $query->whereGtmKitId($request->gtm_kit_id);
+        }
+
+        if ($request->is_processed) {
+            $query->whereRaw(DB::raw("
+                total_variants IS NOT NULL AND total_variants = calculated_variants
+            "));
+        }
+
+        return $query
+            ->with(['scFa', 'source', 'gtmKit', 'user'])
+            ->latest('id')
+            ->get()
+            ->toArray();
     }
 }

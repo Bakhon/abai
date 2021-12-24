@@ -32,6 +32,7 @@ export default {
         [this.color]: !color,
         [`active-btn__${this.activeColor}`]: color,
         [`icon-color__${this.activeColor || this.color}`]: this.activeColor || this.color,
+        [`variant__${this.variant}`]: this.variant,
         "disabled": this.disabled
       }
     }

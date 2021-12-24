@@ -23,7 +23,7 @@ trait WithDocumentsUpload
 
         if ($this->tableFields && $this->tableFields->isNotEmpty()) {
             foreach ($this->tableFields as $field) {
-                if (!empty($this->request->get($field['code']))) {
+                if ($this->request->get($field['code']) !== null) {
                     if ($field['code'] === 'documents') {
                         $this->submitFiles($parentId, $field);
                         return;
@@ -88,7 +88,11 @@ trait WithDocumentsUpload
 
         foreach ($existedFiles as $existedFile) {
             $value = array_filter($values, function ($item) use ($existedFile, $field) {
-                if (is_array($item) && $item['id'] === $existedFile->{$field['table']['document_key']}) {
+                if (!is_array($item)) {
+                    return false;
+                }
+                $fileId = $item['id'] ?? $item['value'];
+                if ($fileId === $existedFile->{$field['table']['document_key']}) {
                     return true;
                 }
                 return false;

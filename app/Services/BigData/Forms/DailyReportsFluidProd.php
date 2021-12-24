@@ -2,6 +2,7 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Helpers\WorktimeHelper;
 use App\Models\BigData\Dictionaries\Org;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -19,7 +20,7 @@ class DailyReportsFluidProd extends DailyReports
     {
         $wells = $this->getOrgWells($org, $date);
 
-        $workTime = $this->getWorkTime($wells, $date);
+        $workTime = WorktimeHelper::getWorkTime($wells, $date->startOfYear(), $date->endOfDay());
 
         return DB::connection('tbd')
             ->table('prod.meas_liq')

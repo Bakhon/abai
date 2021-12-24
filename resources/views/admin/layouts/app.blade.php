@@ -21,8 +21,9 @@
 
 <body>
 @include('admin.layouts.navbar')
-<div class="no-row row"  id="app">
+<div class="no-row row" id="app">
     <div class="col m-lg-3 m-1 p-0">
+        <notifications position="top"></notifications>
         <cat-loader></cat-loader>
         @yield('content')
     </div>

@@ -1,13 +1,18 @@
 <template>
   <div class="main-wrappers">
-    <water-flooding-management-main-menu :menuType="menuType" @menuClick="menuClick" />
+    <menuList :menuType="menuType" @menuClick="menuClick" />
     <div v-bind:is="mainContent" @prediction="prediction"></div>
   </div>
 </template>
 <script>
-import mainMenu from './main_menu.json'
+import mainMenu from './mock-data/main_menu.json'
+import {waterfloodingManagementMapActions} from "../../store/helpers";
+import menuList from './components/mainMenu'
 
 export default {
+  components: {
+    menuList
+  },
   data: function () {
     return {
       menu: mainMenu,
@@ -21,24 +26,48 @@ export default {
           }
         }
       },
+      forecasting: {
+        name: this.trans('waterflooding_management.forecasting_optimization'),
+        "template": `<water-flooding-management-forecasting v-on:monitoring="monitoring"></water-flooding-management-forecasting>`,
+        methods:{
+          monitoring(data){
+            this.$emit("prediction", data);
+          }
+        }
+      },
       mainContent: null,
     };
   },
   mounted() {
-    this.mainContent = this.mapObject
+    this.mainContent = this.mapObject;
+    this.changePolygonFeatures(null)
+    this.changeChoosePolygons(null)
+    this.changePolygonList([])
   },
   methods: {
+    ...waterfloodingManagementMapActions([
+      'changePolygonFeatures',
+      'changeChoosePolygons',
+      'changeChooseModelPrediction',
+      'changeOptimizationTask',
+      'changePolygonList'
+    ]),
     menuClick(data) {
       if (data.type == "choose_object_area"){
         this.mainContent = this.mapObject
-        this.menuType = "choose_object_area";
+      }else if (data.type == "forecasting_optimization"){
+        this.mainContent = this.forecasting
       }else{
         this.mainContent = data;
-        this.menuType = data.type;
       }
+      this.menuType = data.type;
     },
-    prediction(){
-      let component = this.menu[1].component
+    prediction(data){
+      let component = ""
+      if (data == 'choose_object_area')
+        component = this.forecasting
+      else
+        component = this.menu[2].component
       this.mainContent = component;
       this.menuType = component.type;
     }
@@ -46,6 +75,31 @@ export default {
 }
 </script>
 <style >
+.map__legend {
+  background-color: #fff;
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  z-index: 1;
+  color: #000;
+}
+
+.map__legend .well__legend {
+  display: inline-block;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+}
+.map__legend .line__legend {
+  display: inline-block;
+  height: 3px;
+  margin-right: 5px;
+  width: 25px;
+  background: red;
+}
 .wft__left__side{
   margin: 5px 0 0 5px;
   width: calc(21% - 5px);
@@ -86,7 +140,6 @@ export default {
   width: calc(100% - 0px);
   padding: 6px;
   margin: 5px;
-  /*margin-bottom: 10px;*/
   background-color: #272953;
 }
 .card-block .card-title{
@@ -152,5 +205,16 @@ export default {
 }
 .table-td-first{
   background-color: #454D7D;
+}
+.inactive{
+  background-color: #5f6781!important;
+}
+.recommendation__block{
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #2B2E5E;
+  border: 0.5px solid #363B68;
+  box-sizing: border-box;
 }
 </style>

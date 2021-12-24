@@ -177,8 +177,8 @@ sup{
     height: 100%;
     min-height: calc(100vh - 155px);
     padding: 0 0 0 5px;
-    /*overflow-y: auto;*/
-    /*overflow-x: hidden;*/
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .digital_drilling .defaultScroll::-webkit-scrollbar-thumb{
     background-color: #000000;
@@ -261,6 +261,8 @@ sup{
     padding: 10px 6px;
     width: 100%;
     height: calc(100% - 42px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .digital_drilling .left__menu{
@@ -885,7 +887,7 @@ input.rangeInput {
     width: calc(100% + 57px);
     height: calc(100% + 78px);
     background: rgba(0, 0, 0, 0.5);
-    z-index: 3000;
+    z-index: 1000;
 }
 .well_content{
     width: 526px;
@@ -924,7 +926,7 @@ input.rangeInput {
 .well-create{
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 14px;
 
     color: #FFFFFF;
@@ -935,6 +937,7 @@ input.rangeInput {
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
 }
 .well_body-content-title span{
     background: #363B68;
@@ -1191,6 +1194,11 @@ input.rangeInput {
     max-height: calc(100vh - 100px);
     overflow: scroll;
 }
+.fixed .daily_raport_block{
+    height: calc(100vh - 180px);
+    max-height: calc(100vh - 180px);
+    min-height: 320px;
+}
 .daily_raport_block::-webkit-scrollbar-thumb{
     background-color: #000000;
     border: 2px solid #ffffff;
@@ -1244,19 +1252,24 @@ input.rangeInput {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 200px;
+    width: 395px;
     background-color: #323370;
 }
-.daily_raport_block-header-save .save{
-    padding: 6px!important;
+.daily_raport_block-header-save .actions{
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
+    padding: 6px!important;
+}
+.daily_raport_block-header-save .save{
+    margin-left: 8px;
 }
 .daily_raport_block-header-center{
     background-color: #323370;
     color: #FFFFFF;
     font-weight: bold;
     height: 85px;
-    width: calc(100% - 500px);
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1454,7 +1467,14 @@ progress::-webkit-progress-value {
     padding: 15px 0;
     font-weight: bold;
 }
-
+button.download{
+    color: #ffffff;
+}
+.fixed{
+    position: fixed;
+    top: 80px;
+    left: 48px;
+}
 @media (max-width: 1670px) {
     .nozzle-row{
         flex: 0 0 100%;

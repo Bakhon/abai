@@ -62,6 +62,12 @@
                                     {{ trans('bd.forms.well_register.title') }}
                                 </a>
                             </li>
+
+                            <li class="left-menu-li">
+                                <a href="{{route('report_constructor')}}">
+                                    {{ trans('bd.forms.report_constructor.menu') }}
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -128,9 +134,24 @@
                                         {{ trans('economic_reference.analysis_of_actual_stops') }}
                                     </a>
                                 </li>
+
+                                <li class="left-menu-li">
+                                    <a href="{{route('eco_refs_list')}}">
+                                        {{ trans('economic_reference.input_params') }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
+                </li>
+            @endif
+
+            @if(auth()->user()->can('mapConstructor view'))
+                <li class="left-menu-li">
+                    <a href="{{route('map_constructor_index')}}">
+                        <img src="/img/icons/map-constructor_grey.svg" class="companyLogo">
+                        {{ trans('map_constructor.map_constructor') }}
+                    </a>
                 </li>
             @endif
         </div>

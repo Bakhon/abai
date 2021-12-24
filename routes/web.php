@@ -73,12 +73,15 @@ Route::group(
                     'gtm'
                 );
 
+                Route::get('/prod-planning', 'ProdPlanning\ProdPlanningController@index');
+
                 Route::post('attachments', 'AttachmentController@upload')->name('attachment.upload');
                 Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
                 Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
 
                 Route::post('map-constructor/import', 'MapConstructorController@importFile');
                 Route::post('map-constructor/get_data_from_excel', 'MapConstructorController@getDataFromExcel');
+                Route::post('map-constructor/get_interpolation_data', 'MapConstructorController@getInterpolationData');
                 Route::post('map-constructor/structure', 'MapConstructorController@getStructure');
                 Route::post('map-constructor/wells', 'MapConstructorController@getWells');
                 Route::post('map-constructor/get_grid_by_base64', 'MapConstructorController@getGridByBase64');

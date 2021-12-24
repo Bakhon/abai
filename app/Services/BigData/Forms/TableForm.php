@@ -10,6 +10,7 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
+use App\Services\BigData\StructureService;
 use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -24,7 +25,6 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
-    protected $additionalEntities = [];
 
     public function __construct(Request $request)
     {
@@ -405,6 +405,18 @@ abstract class TableForm extends BaseForm
                         ->whereDate('dict.tech.dend', '>=', $filter->date);
                 }
             );
+        } elseif ($type === 'org') {
+            $structureService = app()->make(StructureService::class);
+            $orgIds = $structureService->getOrgIds($id);
+            $wellsQuery->whereHas(
+                'orgs',
+                function ($query) use ($orgIds, $filter) {
+                    return $query
+                        ->whereIn('dict.org.id', $orgIds)
+                        ->whereDate('dict.org.dbeg', '<=', $filter->date)
+                        ->whereDate('dict.org.dend', '>=', $filter->date);
+                }
+            );
         } else {
             $wellsQuery->where('id', $id);
         }
@@ -467,16 +479,18 @@ abstract class TableForm extends BaseForm
     {
         foreach ($additionalFilter as $key => $value) {
             if (is_array($value)) {
-                $entityKey = md5($value['table']) . json_encode($value['fields']);
-                if (isset($this->additionalEntities[$entityKey])) {
-                    $entity = $this->additionalEntities[$entityKey];
+                $entityKey = 'form_additional_filter_' . md5($value['table']) . json_encode($value['fields']);
+                if (Cache::has($entityKey)) {
+                    $entity = Cache::get($entityKey);
                 } else {
-                    $entityQuery = DB::connection('tbd')->table($value['table']);
+                    $entityQuery = DB::connection('tbd')
+                        ->table($value['table'])
+                        ->select('id');
                     foreach ($value['fields'] as $fieldName => $fieldValue) {
                         $entityQuery->where($fieldName, $fieldValue);
                     }
                     $entity = $entityQuery->first();
-                    $this->additionalEntities[$entityKey] = $entity;
+                    Cache::put($entityKey, $entity);
                 }
                 if (!empty($entity)) {
                     $query = $query->where($key, $entity->id);
@@ -517,6 +531,7 @@ abstract class TableForm extends BaseForm
 
         try {
             $result = $this->submitForm($this->request->get('fields'), $this->request->get('filter'));
+            $this->afterSubmit($this->request->get('fields'), $this->request->get('filter'));
             DB::connection('tbd')->commit();
             return $result;
         } catch (\Exception $e) {
@@ -528,6 +543,10 @@ abstract class TableForm extends BaseForm
     public function submitForm(array $fields, array $filter = []): array
     {
         return [];
+    }
+
+    protected function afterSubmit(array $fields, array $filter = [])
+    {
     }
 
     protected function insertValueInCell(

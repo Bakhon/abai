@@ -113,6 +113,7 @@ import ToolBlockList from "../components/toolBlock/ToolBlockList";
 import dropdown from "../components/dropdowns/dropdown";
 import Button from "../components/buttons/Button";
 import AwIcon from "../components/icons/AwIcon";
+import {globalloadingMutations} from "@store/helpers";
 
 import PageSide from "../components/pageSide/PageSide";
 import {
@@ -121,7 +122,11 @@ import {
   FETCH_WELLS,
   GET_WELLS_OPTIONS,
   SET_WELLS,
-  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS, FETCH_WELLS_CURVES
+  GET_FIELDS_OPTIONS,
+  GET_DZOS_OPTIONS,
+  SET_WELLS_BLOCKS,
+  FETCH_WELLS_MNEMONICS,
+  FETCH_WELLS_HORIZONS
 } from "../../../store/modules/geologyGis.const";
 
 export default {
@@ -164,7 +169,7 @@ export default {
       return this.$store.getters[GET_FIELDS_OPTIONS];
     },
     getWellsList() {
-      return this.$store.getters[GET_WELLS_OPTIONS];
+      return this.$store.getters[GET_WELLS_OPTIONS]
     }
   },
 
@@ -175,6 +180,7 @@ export default {
   },
 
   methods: {
+    ...globalloadingMutations(["SET_LOADING"]),
     async dzos(e) {
       this.loadingStates.field = true;
       this.$refs.dropDawnFields.selectedLocal = null;
@@ -192,13 +198,17 @@ export default {
     },
 
     async applyWells() {
+      this.SET_LOADING(true)
       let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
       this.loadingStates.mnemonics = true;
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      await this.$store.dispatch(FETCH_WELLS_HORIZONS, arr.map((item)=>item.value));
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
       this.saveTableSettings()
+      this.SET_LOADING(false)
     },
+
     selectWellsHandle(item, i) {
       let index = this.selectedWells.findIndex((a) => a.value === item.value);
       if (~index) {

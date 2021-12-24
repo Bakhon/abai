@@ -151,10 +151,10 @@
 </template>
 <script>
 import WFM_modal from './modal'
-import waringModal from './warningModal'
+import waringModal from './components/warningModal'
 import VueApexCharts from 'vue-apexcharts'
 import {waterfloodingManagementMapActions, waterfloodingManagementMapGetters} from '@store/helpers';
-import listTable from './list-table'
+import listTable from './components/list-table'
 
 export default {
   name: "forecastingOptimization",

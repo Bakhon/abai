@@ -13,10 +13,6 @@
               @change="toggleGranularity()"/>
         </div>
 
-        <select-permanent-stop-coefficient
-            :form="form"
-            class="ml-2"/>
-
         <select-technical-well-forecast-kit
             :form="form"
             form-key="kit_ids"
@@ -50,6 +46,10 @@
             data-live-search="true"
             class="well-search"
             @change="getData()">
+          <option :value="null" disabled selected>
+            {{ trans('economic_reference.select_well') }}
+          </option>
+
           <option v-for="uwi in uwis" :key="uwi">
             {{ uwi }}
           </option>
@@ -58,6 +58,30 @@
     </div>
 
     <div class="mx-auto max-width-88vw bg-main1 pt-4 px-4 pb-2">
+      <div class="mb-3 d-flex align-items-center">
+        <i :class="sort.isAsc ? 'fa-sort-amount-up' :'fa-sort-amount-down-alt'"
+           class="fas text-white cursor-pointer mr-3"
+           style="font-size: 22px"
+           @click="toggleSortKey('isAsc')"></i>
+
+        <select
+            :value="sort.key"
+            class="form-control bg-dark-blue text-white"
+            style="width: 280px"
+            @change="updateSortKey">
+          <option :value="null" disabled selected>
+            {{ trans('economic_reference.select_sort') }}
+          </option>
+
+          <option
+              v-for="header in tableHeaders.filter(header => !header.isString)"
+              :key="header.key"
+              :value="header.key">
+            {{ header.name }}
+          </option>
+        </select>
+      </div>
+
       <vue-table-dynamic
           :params="tableParams"
           class="matrix-table">
@@ -80,8 +104,7 @@
 import {globalloadingMutations} from '@store/helpers';
 
 import SelectGranularity from "../components/SelectGranularity";
-import SelectPermanentStopCoefficient from "./components/SelectPermanentStopCoefficient";
-import SelectTechnicalWellForecastKit from "../components/SelectTechnicalWellForecastKit";
+import SelectTechnicalWellForecastKit from "./components/SelectTechnicalWellForecastKit";
 
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-select/dist/js/bootstrap-select.min';
@@ -91,19 +114,20 @@ export default {
   name: "economic-analysis-wells",
   components: {
     SelectGranularity,
-    SelectPermanentStopCoefficient,
     SelectTechnicalWellForecastKit,
   },
   data: () => ({
     form: {
       granularity: 'month',
-      permanent_stop_coefficient: 0.7,
+      permanent_stop_coefficient: null,
       uwi: null,
       kit_ids: [],
     },
     wells: null,
     sort: {
-      isGroup: true
+      isGroup: true,
+      isAsc: true,
+      key: null,
     },
     uwis: []
   }),
@@ -175,6 +199,10 @@ export default {
     },
 
     getHeaderValue(header, rowIndex, value) {
+      if (header.key === 'profitability') {
+        return value ? this.trans(`economic_reference.${value}`) : ''
+      }
+
       if (header.isString) {
         return value
       }
@@ -198,11 +226,11 @@ export default {
       this.uwis = Object.keys(uwis)
     },
 
-    toggleSortKey(sortKey) {
+    toggleSortKey(key) {
       this.SET_LOADING(true)
 
       setTimeout(() => {
-        this.sort[sortKey] = !this.sort[sortKey]
+        this.sort[key] = !this.sort[key]
 
         this.SET_LOADING(false)
       })
@@ -222,7 +250,29 @@ export default {
 
         $('.well-search').selectpicker('destroy')
       }
-    }
+    },
+
+    updateSortKey(event) {
+      let key = event.target.value
+
+      this.SET_LOADING(true)
+
+      setTimeout(() => {
+        this.sort.key = key
+
+        this.SET_LOADING(false)
+      })
+    },
+
+    sortRows(rows) {
+      let headerIndex = this.tableHeaders.findIndex(header => header.key === this.sort.key)
+
+      rows.sort((prev, next) => this.sort.isAsc
+          ? (+prev[headerIndex] - +next[headerIndex])
+          : (+next[headerIndex] - +prev[headerIndex])
+      )
+    },
+
   },
   computed: {
     url() {
@@ -277,7 +327,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'oil',
@@ -285,7 +336,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'liquid',
@@ -307,7 +359,8 @@ export default {
         },
         {
           name: `
-            ${this.trans('economic_reference.operating_profit')},
+            ${this.trans('economic_reference.operating_profit')}
+            (${this.trans('economic_reference.tenge')}),
             ${this.trans('economic_reference.fact').toLocaleLowerCase()}
           `,
           key: 'operating_profit',
@@ -321,7 +374,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
           `,
           key: 'oil_forecast',
@@ -329,7 +383,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.forecast').toLocaleLowerCase()}
           `,
           key: 'liquid_forecast',
@@ -344,7 +399,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.oil_production_q_short')},
+           ${this.trans('economic_reference.oil_production_q_short')}
+           ${this.trans('economic_reference.tons')},
            ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
           `,
           key: 'oil_propose',
@@ -352,7 +408,8 @@ export default {
         },
         {
           name: `
-           ${this.trans('economic_reference.liquid_production_q_short')},
+           ${this.trans('economic_reference.liquid_production_q_short')}
+           ${this.trans('economic_reference.cubic_meter')},
            ${this.trans('economic_reference.proposed_short').toLocaleLowerCase()}
           `,
           key: 'liquid_propose',
@@ -360,8 +417,9 @@ export default {
         },
         {
           name: `
-            ${this.trans('economic_reference.operating_profit')},
-            ${this.trans('economic_reference.proposed_short')},
+            ${this.trans('economic_reference.operating_profit')}
+            (${this.trans('economic_reference.tenge')}),
+            ${this.trans('economic_reference.proposed_short')}
           `,
           key: 'operating_profit_propose',
           width: 160,
@@ -397,6 +455,10 @@ export default {
 
         rows.push(row)
       })
+
+      if (this.sort.key) {
+        this.sortRows(rows)
+      }
 
       rows.unshift(sumRow)
 
@@ -462,6 +524,10 @@ export default {
         rows.push(this.getTableRow(currentWell))
       }
 
+      if (this.sort.key) {
+        this.sortRows(rows)
+      }
+
       rows.unshift(sumRow)
 
       return rows
@@ -513,5 +579,9 @@ export default {
 
 .pt-35px {
   padding-top: 35px;
+}
+
+.bg-dark-blue {
+  background-color: #333975;
 }
 </style>

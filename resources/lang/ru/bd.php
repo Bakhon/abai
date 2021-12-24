@@ -32,6 +32,7 @@ return [
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'documents' => 'Документы',
+    'confirm_delete' => 'Вы действительно хотите удалить информацию?',
     'forms' => [
         'title' => 'Формы ввода',
         'fluid_production' => [
@@ -286,7 +287,17 @@ return [
             "number_of_pipes" => "Количество труб",
             "poured_cement_volume" => "Объем залитого цемента",
             "cement_lifting_height" => "Высота подъема цемента",
-            "landing_date" => "Дата спуска"
+            "landing_date" => "Дата спуска",
+            "od" => "Наружный диаметр, (мм)",
+            "wt" => "Толщина стенки, (мм)",
+            "sg" => "Класс прочности / Марка стали",
+            "st" => "Стандарт",
+            "vd" => "Внутренний диаметр, (мм)",
+            "wpm" => "Погонный вес, (кг/м)",
+            "td" => "Проходной диаметр, (мм)",
+            "ys" => "Предел текучести, (т)",
+            "nw" => "Номинальный вес, (кг/м)",
+            "nd" => "Номинальный диаметр, дюйм"
         ],
         'tech_state' => [
             'title' => 'Техническое состояние скважин',
@@ -305,8 +316,8 @@ return [
             'bottom_h_m' => 'Фактический забой, м'
         ],
         'well_block' => [
-            'title' => 'Блок',
-            'w_block' => 'Блок',
+            'title' => 'Блок скважины',
+            'w_block' => 'Блок скважины',
             'main' => 'Основное',
             'date' => 'Дата',
             'ch_block' => 'Сменяемый блок',
@@ -500,7 +511,7 @@ return [
             'oil_production' => 'Добыча нефти (т)',
             'water_injection' => 'Закачка воды (м3)',
             'water_production' => 'Добыча воды (м3)',
-            'liquid_production' => 'Добыча жидкости (м3)',
+            'liquid_production' => 'Добыча жидкости (т)',
             'oil_injection' => 'Сдача нефти (т)',
             'gas_production' => 'Добыча газа (м3)',
             'steam_injection' => 'Закачка пара (м3)',
@@ -981,7 +992,7 @@ return [
             'value' => 'Значение'
         ],
         'well_document_short' => [
-            'title'=> 'Документ скважины',
+            'title' => 'Документ скважины (сокращенная)',
             'document_date' => 'Дата документа',
             'uploaded_files' => 'Загружаемые файлы',
         ],
@@ -1342,11 +1353,18 @@ return [
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
         ],
         'plan_g_d_i_s' => [
-            'title'=> 'План по ГДИС',
+            'title' => 'План по ГДИС',
             'date' => 'Дата с',
             'date_to' => 'Дата по',
             'well' => 'скваж.',
             'measure' => 'замер.',
+            'flowing_wells' => 'Фонтанные скважины',
+            'depthpump_wells' => 'Глубинонасосные скважины',
+            'pumpjack' => 'ШГН',
+            'evn_ecn' => 'ЭВН, ЭЦН',
+            'inj_wells' => 'Нагнетательные скважины',
+            'obs_wells' => 'Пьезометрические и наблюдательные скважины',
+            'water_wells' => 'Водозаборные скважины',
         ],
         'plan_g_i_s' => [
             'title'=> 'План по ГИС',
@@ -1500,8 +1518,19 @@ return [
             'title' => 'Монтаж оборудования',
             'equip_type' => 'Вид оборудования',
             'equip_element' => 'Элемент оборудования',
-            'installation' => 'Монтаж оборудования',
-            'disassembling' => 'Демонтаж оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования'
+        ],
+        'underground_equipment_element' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+        ],
+        'underground_equipment_params' => [
+            'title' => 'Замена оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
             'installation_date' => 'Дата установки',
             'installation_parameters' => 'Параметры установки оборудования'
         ],
@@ -1509,6 +1538,15 @@ return [
             'title' => 'Демонтаж оборудования',
             'disassembling' => 'Демонтаж',
             'disassembling_date' => 'Дата демонтажа',
+        ],
+        'underground_equipment_repair' => [
+            'title' => 'Ремонт оборудования',
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования',
+            'work_info' => 'Проделанные работы',
+            'repair_date' => 'Дата проведения ремонта'
         ],
         'tech_mode_inj' => [
             'title' => 'Нагнетательные скважины',

@@ -3,17 +3,17 @@
   "table": "prod.well_equip",
   "tabs": [
     {
-      "title": "",
+      "title": "title",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "date",
+                "code": "dbeg",
                 "type": "datetime",
                 "title": "installation_date",
-                "validation": ""
+                "validation": "required|date"
               },
               {
                 "code": "equip_type",

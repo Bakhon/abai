@@ -79,7 +79,7 @@ export default {
           dimension: '',
         },
         {
-          name: this.trans('economic_reference.netback_forecast'),
+          name: this.trans('economic_reference.netback_fact'),
           value: this.localeValue(params.netback_forecast),
           dimension: this.trans('economic_reference.tenge_per_ton'),
         },

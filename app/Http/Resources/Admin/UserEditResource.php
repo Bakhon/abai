@@ -17,6 +17,7 @@ class UserEditResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
+            'check_org_permissions' => $this->check_org_permissions,
             'orgs' => $this->org_structure,
             'roles' => $this->roles->pluck('id'),
             'modules' => $this->modules->pluck('id'),

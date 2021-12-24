@@ -145,7 +145,7 @@
                     },
                 ],
                 activePeriod: 90,
-                colors: ['rgba(255, 0, 0, 1)','rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(230, 230, 0, 1)'],
+                colors: ['rgba(255, 0, 0, 1)','rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)'],
             }
         },
         methods: {
@@ -185,7 +185,7 @@
             chartOptions() {
                 return {
                     title: {
-                        text: this.title
+                        text: 'График эксплуатации скважины ' + this.title
                     },
                     labels: this.labels,
                     stroke: {
@@ -193,7 +193,7 @@
                         curve: 'smooth'
                     },
                     legend: {
-                        position: 'right',
+                        position: 'bottom',
                     },
                     chart: {
                         background: 'rgba(255, 255, 255, 1)',
@@ -207,17 +207,25 @@
                         },
                         locales: [ru],
                         defaultLocale: 'ru',
+                        animations: {
+                            enabled: false,
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
                     },
                     markers: {
-                        size: [0,0,0,4],
+                        size: [0,0,4],
                         strokeWidth: 0,
                         hover: {
                             sizeOffset: 0
                         }
                     },
                     xaxis: {
+                        tooltip: {
+                            enabled: false
+                        },
                         type: 'datetime',
-                        tickAmount: 10,
                         labels: {
                             format: 'dd-MM-yyyy',
                         }
@@ -228,21 +236,19 @@
                             let colors = w.globals.colors
                             let style_circle = 'width: 10px;height: 10px;border-radius: 50%;display:inline-block;margin-right:3px'
                             let dateItem = moment(w.globals.initialConfig.labels[dataPointIndex]).format("DD.MM.YYYY");
-                            let events = this.chartSeries[3].info[dataPointIndex];
-                            if (events && seriesIndex === 3) {
+                            let events = this.chartSeries[2].info[dataPointIndex];
+                            if (events && seriesIndex === 2) {
                                 let activity = '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
                                     "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                                    "<span style='display: block;'><div style='background: " + colors[3] + ";" + style_circle + "'></div>" + events + "</span>" + "</div>";
+                                    "<span style='display: block;'><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + events + "</span>" + "</div>";
                                 return activity;
                             }
                             return (
                                 '<div class="arrow_box" style="padding: 3px;line-height: 1rem;">' +
                                 "<span style='display: block;background: #ccc; fontSize: 10px'>" + dateItem + "</span>" +
-                                "<span style='display: block;'><b><div style='background: " + colors[0] + ";" + style_circle + "'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex] + "</span>" +
+                                "<span style='display: block;'><b><div style='background: " + colors[0] + ";" + style_circle + "'></div>" + w.globals.initialSeries[0].name + ":</b> " + w.globals.initialSeries[0].data[dataPointIndex].toFixed(1) + "</span>" +
                                 "<span style='display: block;'><b><div style='background: " + colors[1] + ";" + style_circle + "'></div>" + w.globals.initialSeries[1].name + ":</b> " + w.globals.initialSeries[1].data[dataPointIndex].toFixed(1) + "</span>" +
-                                "<span style='display: block;'><b><div style='background: " + colors[2] + ";" + style_circle + "'></div>" + w.globals.initialSeries[2].name + ":</b> " + w.globals.initialSeries[2].data[dataPointIndex].toFixed(1) + "</span>" +
-                                "</div>"
-                            );
+                                "</div>");
 
                         }
                     },
@@ -256,22 +262,17 @@
             },
             chartSeries: function () {
                 if (this.chartSeries.length > 2) {
-                    this.maximumTick.hdin = _.maxBy(this.chartSeries[0].data, function(o) {
+                    this.maximumTick.liq = _.maxBy(this.chartSeries[0].data, function(o) {
                         return parseFloat(o);
                     });
-                    this.maximumTick.liq = _.maxBy(this.chartSeries[1].data, function(o) {
-                        return parseFloat(o);
-                    });
-                    this.maximumTick.liqPressure = _.maxBy(this.chartSeries[2].data, function(o) {
+                    this.maximumTick.liqPressure = _.maxBy(this.chartSeries[1].data, function(o) {
                         return parseFloat(o);
                     });
 
-                    this.maximumTick.hdin = Math.round(parseFloat(this.maximumTick.hdin) + (parseFloat(this.maximumTick.hdin) + 8));
                     this.maximumTick.liq = Math.round(parseFloat(this.maximumTick.liq) + (parseFloat(this.maximumTick.liq) * 0.1));
                     this.maximumTick.liqPressure = Math.round(parseFloat(this.maximumTick.liqPressure) + (parseFloat(this.maximumTick.liqPressure) * 0.1));
-                    this.yaxis[1].max = this.maximumTick.liq;
-                    this.yaxis[2].max = this.maximumTick.liqPressure;
-                    this.yaxis[0].max = this.maximumTick.hdin;
+                    this.yaxis[0].max = this.maximumTick.liq;
+                    this.yaxis[1].max = this.maximumTick.liqPressure;
                 }
             }
         }

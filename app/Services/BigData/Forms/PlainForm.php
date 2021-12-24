@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
@@ -72,17 +71,17 @@ abstract class PlainForm extends BaseForm
     {
         DB::connection('tbd')->beginTransaction();
 
-        try {
-            $result = $this->submitForm();
-            DB::connection('tbd')->commit();
-            if (isset($result['well'])) {
-                Cache::forget("well_{$result['well']}");
-            }
-            return $result;
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
+//        try {
+        $result = $this->submitForm();
+        DB::connection('tbd')->commit();
+        if (isset($result['well'])) {
+            Cache::forget("well_{$result['well']}");
         }
+        return $result;
+//        } catch (\Exception $e) {
+//            DB::connection('tbd')->rollBack();
+//            throw new SubmitFormException($e->getMessage());
+//        }
     }
 
     protected function submitForm(): array
@@ -109,16 +108,17 @@ abstract class PlainForm extends BaseForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = (array)$dbQuery->first();
             $dbQuery->update($data);
-
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
         } else {
             $this->checkFormPermission('create');
 
+            $this->originalData = [];
             $id = $dbQuery->insertGetId($data);
         }
+
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $id;
 
         $this->submitInnerTable($id);
         $this->afterSubmit($id);
@@ -193,10 +193,11 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory($id, \DateTimeInterface $date = null): array
+    public function getHistory($id, string $form, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)
+            ->where('form_name', $form)
             ->orderBy('created_at', 'desc')
             ->with('user')
             ->get();

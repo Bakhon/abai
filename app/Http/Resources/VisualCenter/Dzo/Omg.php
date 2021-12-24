@@ -19,7 +19,7 @@ class Omg extends Dzo {
         $condensateSummary['plan'] = $companySummary['condensatePlan'];
         $condensateSummary['opek'] = $companySummary['condensateOpek'];
         if ($periodType === 'month') {
-            $condensateSummary['monthlyPlan'] = $companySummary['condensatePlan'] * $daysInMonth;
+            $condensateSummary['monthlyPlan'] = $companySummary['monthlyPlanCondensate'];
         }
         if ($periodType === 'year'|| ($periodType === 'period' && count($filteredPlan) > 1)) {
             $condensateSummary['yearlyPlan'] = $filteredYearlyPlan->first()->gk_plan;
@@ -28,6 +28,7 @@ class Omg extends Dzo {
             $condensateSummary['condensatePlan'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
             $condensateSummary['condensateOpek'] = $this->getPlanByYear($filteredPlan,'plan_kondensat',$periodEnd);
         }
+        $condensateSummary['decreaseReasonExplanations'] = array();
         return $condensateSummary;
     }
 

@@ -1,7 +1,7 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import orgStructure from '../../mock-data/org_structure.json'
-import {paegtmMapState, globalloadingMutations} from "@store/helpers";
+import {paegtmMapState, globalloadingMutations, paegtmMapGetters} from "@store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import filterSelect from '../../mixin/selectFilter'
 
@@ -13,10 +13,10 @@ export default {
     mixins: [filterSelect],
     data: function () {
         return {
-            comparisonIndicators: [],
-            accumOilProdLabels: [],
-            accumOilProdFactData: [],
             accumOilProdPlanData: [],
+            accumOilProdFactData: [],
+            gtmIndicators: [],
+            accumOilProdLabels: [],
             gtmTypesList: [
                 { id: "vns", name: this.trans('paegtm.gtm_vns') },
                 { id: "grp", name: this.trans('paegtm.gtm_grp') },
@@ -33,7 +33,7 @@ export default {
                 name: this.trans('paegtm.plan') ,
                 data:  [28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138],
             },],
-            donutChartData: [45,60],
+            donutChartData: [],
             lineChartOptions: {
                 chart: {
                     type: 'line',
@@ -65,18 +65,28 @@ export default {
                         }
                     },
                 },
-
-            },
-            lineSeriesChart: [
-                {
-                    name: this.trans('paegtm.plan'),
-                    data: this.accumOilProdPlanData,
+                dataLabels: {
+                    enabled: false,
+                    enabledOnSeries: [0, 1],
+                    background: {
+                        enabled: true,
+                        foreColor: '#fff',
+                        opacity: 0,
+                        padding: 0,
+                        dropShadow: {
+                            enabled: false,
+                        }
+                    },
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'normal'
+                    },
+                    offsetY: -7
                 },
-                {
-                    name: this.trans('paegtm.fact'),
-                    data: this.accumOilProdFactData,
+                legend: {
+                    show: true,
                 }
-            ],
+            },
             barChartOptions: {
                 chart: {
                     type: 'bar',
@@ -142,32 +152,12 @@ export default {
     computed: {
         ...paegtmMapState([
             'dateStart',
-            'dateEnd'
+            'dateEnd',
         ]),
-        accumOilProdData: function () {
-            return [
-                {
-                    label: this.trans('paegtm.fact'),
-                    borderColor: "#F27E31",
-                    backgroundColor: '#F27E31',
-                    data: this.accumOilProdFactData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: this.trans('paegtm.plan'),
-                    borderColor: "#82BAFF",
-                    backgroundColor: '#82BAFF',
-                    data: this.accumOilProdPlanData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                }
-            ]
-        },
+        ...paegtmMapGetters([
+            'dzoId',
+            'dzoName',
+        ]),
         selectAllGtms: {
             get: function () {
                 return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
@@ -192,52 +182,80 @@ export default {
         getData() {
             this.SET_LOADING(true);
             this.axios.get(
-                this.localeUrl('/paegtm/accum_oil_prod_data'),
-                {params: {dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                this.localeUrl('/paegtm/aegtm/get-accumulated-oil-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
-                if (data) {
-                    let accumOilProdFactData = [];
-                    let accumOilProdPlanData = [];
-                    this.accumOilProdLabels = [];
-                    data.forEach((item) => {
-                        this.accumOilProdLabels.push(item.date)
-                        accumOilProdFactData.push(Math.round(item.accumOilProdFactData))
-                        accumOilProdPlanData.push(Math.round(item.accumOilProdPlanData))
-                    });
-                    this.accumOilProdFactData = accumOilProdFactData;
-                    this.accumOilProdPlanData = accumOilProdPlanData;
+
+                if (data && data.series) {
+                    this.accumOilProdPlanData = data.series;
+                    this.accumOilProdFactData = data.series;
+
+                    this.lineChartOptions.labels = data.months;
+
+                    if(typeof this.$refs.accumOilProdChart !== 'undefined') {
+                        this.$refs.accumOilProdChart.updateOptions({ labels: data.months });
+                    }
                 }
+
                 this.loaded = true;
             });
             this.axios.get(
-                this.localeUrl('/paegtm/comparison_indicators_data'),
-                {params: {dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                this.localeUrl('/paegtm/aegtm/get-comparison-table-data'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
-                    this.comparisonIndicators = [];
+                    if (typeof data != 'object' || !data.length) {
+                        this.setNotify(this.trans('paegtm.aegtm_invalid_data'), this.trans('app.error'), "danger")
+                        return false;
+                    }
+
+                    this.gtmIndicators = [];
                     data.forEach((item) => {
-                        this.comparisonIndicators.push([
-                            item.gtm_kind,
-                            item.wellsCount,
-                            Math.round(item.avgDebitPlan * 100) / 100,
-                            Math.round(item.avgDebitFact * 100) / 100,
-                            Math.round(item.plan_add_prod_12m),
-                            Math.round(item.add_prod_12m),
+                        this.gtmIndicators.push([
+                            item.gtm,
+                            item.count_plan,
+                            item.count_fact,
+                            item.avg_increase_plan,
+                            item.avg_increase_fact,
+                            item.add_prod_plan,
+                            item.add_prod_fact,
                         ])
                     });
                 }
             });
+
+            this.axios.get(
+                this.localeUrl('/paegtm/aegtm/get-gtms-factor-analysis-count'),
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data && data.successful_gtms_count && data.unsuccessful_gtms_count) {
+                    this.donutChartData = [data.successful_gtms_count, data.unsuccessful_gtms_count]
+                }
+            }).catch(err => {
+                this.setNotify(this.trans('paegtm.empty_responce'), this.trans('app.error'), "danger")
+            }).finally(() => this.SET_LOADING(false));
+
+            if(typeof this.$refs.successfulFactorsIndicatorRef !== 'undefined') {
+                this.$refs.successfulFactorsIndicatorRef.onFilterChanged();
+            }
+
             this.SET_LOADING(false);
+        },
+        setNotify(message, title, type) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: type,
+                solid: true,
+                toaster: "b-toaster-top-center",
+                autoHideDelay: 8000,
+            });
         },
     },
     mounted() {
-        this.getData();
         this.dzosForFilter = this.dzos;
     },
-    created() {
-        console.log(this.horizontsForFilter)
-        console.log(this.objectsForFilter)
-    }
+    created() {}
 }

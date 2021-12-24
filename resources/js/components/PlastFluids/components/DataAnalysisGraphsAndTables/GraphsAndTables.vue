@@ -17,8 +17,8 @@
         </div>
         <div v-if="isDataReady" class="content">
           <div
-            v-for="(graphKey, index) in currentGraphics"
-            :key="index"
+            v-for="graph in sortedCurrentGraphics"
+            :key="graph.order"
             class="content-child"
             :style="
               currentGraphics.length > 2
@@ -27,9 +27,15 @@
             "
           >
             <ScatterGraph
-              :series="graphData[graphKey]"
-              :title="trans(`plast_fluids.${graphType}_graph_${graphKey}`)"
-              :graphType="graphKey"
+              :series="
+                graphData[graph.key] ? graphData[graph.key] : emptySeriesObject
+              "
+              :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
+              :graphType="graph.key"
+              :currentGraphs="sortedCurrentGraphics"
+              :defaultIntersection="
+                defaultIntersection[graph.key.toLowerCase()]
+              "
             />
           </div>
         </div>
@@ -59,6 +65,17 @@ export default {
     DataAnalysisDataTable,
     SmallCatLoader,
   },
+  data() {
+    return {
+      emptySeriesObject: {
+        name: "Данные",
+        data: [],
+        data2: [],
+        type: "scatter",
+        config: { minX: "auto", maxX: "auto", minY: "auto", maxY: "auto" },
+      },
+    };
+  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
@@ -72,6 +89,8 @@ export default {
       "loading",
       "graphType",
       "currentGraphics",
+      "defaultIntersection",
+      "currentBlocks",
     ]),
     graphData() {
       const zeroX = ["Ps", "Bs", "Ds", "Ms"];
@@ -93,15 +112,21 @@ export default {
           minY: zeroY.includes(keys[i]) ? 0 : keys[i] === "Bs" ? 1 : "auto",
           maxY: "auto",
         };
+        const conf = this.getFloatNumber(keys[i]);
+        allGraphData[keys[i]].config = {
+          ...allGraphData[keys[i]].config,
+          ...conf,
+        };
       }
       const fKeys = Object.keys(allGraphData);
       this.tableRows.forEach((row) => {
         for (let i = 0; i < fKeys.length; i++) {
-          const sample = row[fKeys[i]];
+          const sample = { wellName: row.table_data[4], ...row[fKeys[i]] };
           if (sample.x2) {
             allGraphData[fKeys[i]].data2.push({
               x: sample.x2,
               y: sample.y,
+              wellName: sample.wellName,
               key: sample.key,
             });
           }
@@ -119,6 +144,9 @@ export default {
         !this.loading
       );
     },
+    sortedCurrentGraphics() {
+      return this.currentGraphics.sort((a, b) => a.order - b.order);
+    },
   },
   watch: {
     currentSubsoilField: {
@@ -130,17 +158,52 @@ export default {
       },
       deep: true,
     },
+    currentSubsoilHorizon(value) {
+      this.handleBlocksFilter(value);
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
+    currentBlocks() {
+      this.handleAnalysisTableData({
+        field_id: this.currentSubsoilField[0].field_id,
+        postUrl: "analytics/pvt-data-analysis",
+      });
+    },
   },
   methods: {
     ...mapActions("plastFluidsLocal", [
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
-    setConfig() {},
-    getMaxMin(arrayData) {
-      const max = Math.max(...arrayData);
-      const min = Math.min(...arrayData);
-      return [min, max];
+    getFloatNumber(key) {
+      const config = {
+        x: 1,
+        y: 1,
+      };
+      switch (this.graphType) {
+        case "ps_bs_ds_ms":
+          config.y =
+            key === "Ps"
+              ? 2
+              : key === "Bs"
+              ? 3
+              : key === "Ds"
+              ? 1
+              : key === "Ms"
+              ? 0.3
+              : 1;
+          break;
+        case "data_rs_ps_ds":
+          config.x = "remain";
+          config.y = key === "Ps" ? 2 : key === "Ms" ? 0.3 : 1;
+          break;
+        case "all_depth":
+          config.x = key === "pi_ps" ? 2 : key === "volume_coefficient" ? 3 : 1;
+          break;
+      }
+      return config;
     },
   },
   async mounted() {

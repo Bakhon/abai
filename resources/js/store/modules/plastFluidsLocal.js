@@ -23,7 +23,13 @@ const plastFluidsLocal = {
     tableState: "default",
     loading: false,
     graphType: "ps_bs_ds_ms",
-    currentGraphics: ["Ps", "Bs", "Ds", "Ms"],
+    currentGraphics: [
+      { key: "Ps", order: 0 },
+      { key: "Bs", order: 1 },
+      { key: "Ds", order: 2 },
+      { key: "Ms", order: 3 },
+    ],
+    defaultIntersection: {},
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
@@ -75,6 +81,9 @@ const plastFluidsLocal = {
     },
     SET_CURRENT_GRAPHICS(state, payload) {
       state.currentGraphics = payload;
+    },
+    SET_DEFAULT_INTERSECTION(state, payload) {
+      state.defaultIntersection = payload;
     },
     SET_LOCAL_HORIZONS(state, payload) {
       state.localHorizons = payload;
@@ -160,14 +169,11 @@ const plastFluidsLocal = {
       commit("SET_FILE_LOG", entries);
     },
     async getTableData({}, postData) {
-      const payload = new FormData();
-      for (let key in postData) {
-        payload.append(key, postData[key]);
-      }
+      const payload = convertToFormData(postData);
       const data = await getTemplateData(payload);
       return data;
     },
-    async getTemplates({ state, commit }, payload) {
+    async getTemplates({ commit }, payload) {
       const postData = new FormData();
       postData.append("user_id", payload.userID);
       const data = await getUploadTemplates(postData);
@@ -177,13 +183,24 @@ const plastFluidsLocal = {
       );
       commit("SET_CURRENT_TEMPLATE", template);
     },
-    async handleTableData({ commit, dispatch }, incomeData) {
+    async handleTableData({ state, rootState, commit, dispatch }, incomeData) {
       try {
-        const { template, ...rest } = incomeData;
+        const { template, type, ...rest } = incomeData;
         commit("SET_LOADING", true);
+        let horizonIDs = "None";
+        let blockIDs = "None";
+        if (type === "analysis") {
+          if (rootState.plastFluids.currentSubsoilHorizon.length)
+            horizonIDs = rootState.plastFluids.currentSubsoilHorizon.map(
+              (horizon) => horizon.horizon_id
+            );
+          if (state.currentBlocks.length)
+            blockIDs = state.currentBlocks.map((block) => block.block_id);
+        }
         const postDataMock = {
-          horizons: "None",
-          blocks: "None",
+          field_id: rootState.plastFluids.currentSubsoilField[0].field_id,
+          horizons: horizonIDs,
+          blocks: blockIDs,
           row_on_page: 30,
           page_number: 1,
           report_id: 1,
@@ -222,18 +239,20 @@ const plastFluidsLocal = {
         let merged = { ...postDataMock, ...rest };
         const postData = convertToFormData(merged);
         const data = await getTableData(postData, postUrl);
-        commit(
-          "SET_TABLE_FIELDS",
-          Array.isArray(data) ? data[0].table_header : data.header
-        );
-        commit(
-          "SET_LOCAL_HORIZONS",
-          Array.isArray(data) ? data[1].filter_data : data.filter_data
-        );
-        commit(
-          "SET_TABLE_ROWS",
-          Array.isArray(data) ? data.slice(2) : data.table
-        );
+        if (Array.isArray(data)) {
+          commit("SET_TABLE_FIELDS", data[0].table_header);
+          commit("SET_LOCAL_HORIZONS", data[1].filter_data);
+          if (state.graphType === "ps_bs_ds_ms") {
+            commit("SET_DEFAULT_INTERSECTION", data[2].intersection);
+            commit("SET_TABLE_ROWS", data.slice(3));
+            return;
+          }
+          commit("SET_TABLE_ROWS", data.slice(2));
+        } else {
+          commit("SET_TABLE_FIELDS", data.header);
+          commit("SET_LOCAL_HORIZONS", data.filter_data);
+          commit("SET_TABLE_ROWS", data.table);
+        }
       } catch (error) {
         console.log(error);
       } finally {

@@ -30,7 +30,7 @@
       <div class="content-holder">
         <div class="content-heading">
           <img
-            src="/img/PlastFluids/mapsAndTablesFluidsProperties.svg"
+            src="/img/PlastFluids/tableCustomization.svg"
             alt="fluid properties"
           />
           <p>{{ trans("plast_fluids.show_fluid_properties") }}</p>
@@ -48,9 +48,7 @@
                 type="checkbox"
                 :id="fluid.id"
               />
-              <label :for="fluid.id">{{
-                trans(`plast_fluids.${fluid.langKey}`)
-              }}</label>
+              <label :for="fluid.id" v-html="trans(`plast_fluids.${fluid.langKey}`)"></label>
             </div>
           </div>
         </div>

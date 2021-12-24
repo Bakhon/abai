@@ -91,20 +91,24 @@
                                     <th>{{trans("digital_drilling.default.company_name")}}</th>
                                     <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
                                     <th>{{trans("digital_drilling.default.companyman")}}</th>
-                                    <th>{{trans("digital_drilling.default.load_capacity_kN")}}</th>
-                                    <th>{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
-                                    <th>{{trans("digital_drilling.default.rig_up_duration")}}</th>
-                                    <th>{{trans("digital_drilling.default.rig_duration")}}</th>
+                                    <th class="width-100">{{trans("digital_drilling.default.load_capacity_kN")}}</th>
+                                    <th class="width-100">{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
+                                    <th class="width-100">
+                                        {{trans("digital_drilling.default.rig_up_duration")}}<br>
+                                        {{trans("digital_drilling.default.days")}}
+                                    </th>
+                                    <th class="width-100">
+                                        {{trans("digital_drilling.default.rig_duration")}}<br>
+                                        {{trans("digital_drilling.default.days")}}
+                                    </th>
+                                    <th>Технические <br> характеристики</th>
                                     <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
                                     <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
                                 </tr>
                                 <tr v-for="rig in rigs">
-                                    <td class="w-150">{{rig.company}}</td>
+                                    <td class="w-250">{{rig.company}}</td>
                                     <td class="w-150">
                                         <div class="text-center mb-2">{{rig.name_ru}}</div>
-                                        <button class="characteristic" @click="openCharacteristicModal(rig.id)">
-                                            {{trans("digital_drilling.default.technical_description")}}
-                                        </button>
                                     </td>
 
                                     <td>{{rig.superintendent}}</td>
@@ -112,6 +116,13 @@
                                     <td>{{rig.nominal_drilling_depth}}</td>
                                     <td>{{rig.installation_time}}</td>
                                     <td>{{rig.dismantling_time}}</td>
+                                    <td class="w-150">
+                                        <div class="text-center mb-2">
+                                        </div>
+                                        <button class="characteristic" @click="openCharacteristicModal(rig.id)">
+                                            {{trans("digital_drilling.default.technical_description")}}
+                                        </button>
+                                    </td>
                                     <td class="w-150">
                                         <div class="text-center mb-2">
                                         </div>
@@ -498,6 +509,9 @@
     .w-150{
         width: 180px!important;
     }
+    .w-250{
+        width: 220px!important;
+    }
     .characteristic__modal{
         position: fixed;
         top: 0;
@@ -651,5 +665,10 @@
     .contentBlock{
         height: calc(100% - 130px);
     }
-
+    button{
+        color: #FFFFFF;
+    }
+    .width-100{
+        width: 100px!important;
+    }
 </style>

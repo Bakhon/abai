@@ -8,18 +8,22 @@
         <p>{{ title }}</p>
         <div class="scatter-graph-toolbar">
           <img
-            @click.stop="isApproximationOpen = true"
+            @click.stop="
+              graphSeries[0].data.length ? (isApproximationOpen = true) : ''
+            "
             src="/img/PlastFluids/settings.svg"
             alt="customize graph"
           />
           <img
             src="/img/PlastFluids/download.svg"
-            @click.stop="saveToPng"
+            @click.stop="graphSeries[0].data.length ? saveToPng : ''"
             width="14"
             height="14"
           />
           <img
-            @click.stop="isFullScreen = true"
+            @click.stop="
+              graphSeries[0].data.length ? (isFullScreen = true) : ''
+            "
             src="/img/PlastFluids/openModal.svg"
             width="14"
           />
@@ -44,10 +48,13 @@
       "
       :seriesNames="seriesNames"
       :graphType="graphType"
-      :minX="minXAxisBorder"
-      :maxX="maxXAxisBorder"
-      :minY="minYAxisBorder"
-      :maxY="maxYAxisBorder"
+      :maxY="computedMaxY"
+      :minY="computedMinY"
+      :initialMinY="minYAxisBorder"
+      :initialMaxY="maxYAxisBorder"
+      :initialMinX="minXAxisBorder"
+      :initialMaxX="maxXAxisBorder"
+      :defaultIntersection="defaultIntersection"
       @close-approximation="closeApproximation"
       @get-approximation="getApproximation"
     />
@@ -68,7 +75,7 @@ import VueApexCharts from "vue-apexcharts";
 import Export from "apexcharts/src/modules/Exports.js";
 import _ from "lodash";
 import { mapState, mapMutations } from "vuex";
-import { convertToFormData, between } from "../helpers";
+import { convertToFormData } from "../helpers";
 import { getCorrelationData } from "../services/graphService";
 
 export default {
@@ -82,19 +89,20 @@ export default {
     series: Object,
     title: String,
     graphType: String,
+    currentGraphs: Array,
+    defaultIntersection: Number,
   },
   data() {
     return {
       type: "scatter",
+      unwatch: null,
       doubled: false,
       isFullScreen: false,
       isApproximationOpen: false,
       isRemoveModalOpen: false,
       currentAnnotationColorIndex: 0,
-      prevPoint: null,
       currentSeries: null,
       graphSeries: [],
-      approximation: [],
       minXAxisBorder: "",
       minYAxisBorder: "",
       maxXAxisBorder: "",
@@ -140,6 +148,7 @@ export default {
         },
         noData: {
           text: this.trans("plast_fluids.no_data"),
+          verticalAlign: "top",
         },
         grid: {
           show: true,
@@ -166,7 +175,6 @@ export default {
           labels: {
             formatter: this.labelFormatterX,
           },
-          seriesName: this.trans("plast_fluids.data"),
           type: "numeric",
           lines: {
             show: true,
@@ -175,7 +183,6 @@ export default {
           tickAmount: 6,
         },
         yaxis: {
-          seriesName: this.trans("plast_fluids.data"),
           labels: {
             formatter: this.labelFormatterY,
           },
@@ -189,6 +196,21 @@ export default {
     };
   },
   watch: {
+    currentGraphs: {
+      handler() {
+        if (this.unwatch) this.unwatch();
+        const correlationType =
+          this.graphType === "Ds" ? "bs" : this.graphType.toLowerCase();
+        this.unwatch = this.$watch(
+          function () {
+            return this["currentSelectedCorrelation_" + correlationType];
+          },
+          () => this.handleCorrelationAdd(correlationType)
+        );
+      },
+      deep: true,
+      immediate: true,
+    },
     series: {
       handler(obj) {
         let filtered2;
@@ -208,51 +230,51 @@ export default {
           axis.minY = yValues[0] < axis.minY ? yValues[0] : axis.minY;
           axis.maxY = yValues[1] > axis.maxY ? yValues[1] : axis.maxY;
         }
-
         const calculate = (num, axisLine, type) => {
-          let largeDiff, sum, max, min;
+          let largeSetOfNumbers, largeDiff, sum, max, min, isMaxLarger;
           max = axis["max" + axisLine];
           min = axis["min" + axisLine];
-          largeDiff = max - min > max * 0.2;
-          if (type === "min") {
-            sum = largeDiff ? num - num * 0.2 : num - num * 0.05;
+          isMaxLarger = this.comparePositives(max, min);
+          largeSetOfNumbers =
+            axisLine === "X" ? Math.abs(max) > 350 : Math.abs(max) > 250;
+          if (largeSetOfNumbers) {
+            const balance = num % 50;
+            sum = type === "min" ? min - balance : 50 - balance + max;
+            if (!isMaxLarger) {
+              sum =
+                type === "min"
+                  ? 50 - (Math.abs(min) % 50) + Math.abs(min)
+                  : Math.abs(max) - (Math.abs(max) % 50);
+              return sum * -1;
+            }
+            return sum;
           } else {
-            sum = largeDiff ? num + num * 0.2 : num + num * 0.05;
+            largeDiff = max - min > max * 0.2;
+            if (type === "min") {
+              sum = largeDiff ? num - min * 0.2 : num - min * 0.02;
+            } else {
+              sum = largeDiff ? num + min * 0.2 : num + min * 0.02;
+            }
+            return Number(sum.toFixed(1));
           }
-          return Number(sum.toFixed(1));
         };
 
-        const temp = {
-          minX:
-            obj.config.minX === "auto"
-              ? calculate(axis.minX, "X", "min")
-              : obj.config.minX,
-          minY:
-            obj.config.minY === "auto"
-              ? calculate(axis.minY, "Y", "min")
-              : obj.config.minY,
-          maxX:
-            obj.config.maxX === "auto"
-              ? calculate(axis.maxX, "X", "max")
-              : obj.config.maxX,
-          maxY:
-            obj.config.maxY === "auto"
-              ? calculate(axis.maxY, "Y", "max")
-              : obj.config.maxY,
-        };
-
-        this.minXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
-          ? temp.minX
-          : temp.maxX;
-        this.minYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
-          ? temp.minY
-          : temp.maxY;
-        this.maxXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
-          ? temp.maxX
-          : temp.minX;
-        this.maxYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
-          ? temp.maxY
-          : temp.minY;
+        this.minXAxisBorder =
+          obj.config.minX === "auto"
+            ? calculate(axis.minX, "X", "min")
+            : obj.config.minX;
+        this.minYAxisBorder =
+          obj.config.minY === "auto"
+            ? calculate(axis.minY, "Y", "min")
+            : obj.config.minY;
+        this.maxXAxisBorder =
+          obj.config.maxX === "auto"
+            ? calculate(axis.maxX, "X", "max")
+            : obj.config.maxX;
+        this.maxYAxisBorder =
+          obj.config.maxY === "auto"
+            ? calculate(axis.maxY, "Y", "max")
+            : obj.config.maxY;
 
         this.chartOptions = {
           ...this.chartOptions,
@@ -271,6 +293,19 @@ export default {
               show: true,
             },
             tickAmount: 4,
+            tooltip: {
+              enabled: true,
+            },
+            crosshairs: {
+              show: true,
+              position: "back",
+              opacity: 0.9,
+              stroke: {
+                color: "#fff",
+                width: 1,
+                dashArray: 3,
+              },
+            },
           },
         };
         this.SET_CURRENT_SELECTED_SAMPLES("clear");
@@ -321,7 +356,12 @@ export default {
         temp[0].data = samples;
         if (this.doubled) {
           temp[1].data = samples.map((sample) => {
-            const returnObject = { x: sample.x2, y: sample.y, key: sample.key };
+            const returnObject = {
+              x: sample.x2,
+              y: sample.y,
+              key: sample.key,
+              wellName: sample.wellName,
+            };
             sample.fillColor ? (returnObject.fillColor = sample.fillColor) : "";
             return returnObject;
           });
@@ -355,9 +395,39 @@ export default {
       names.shift();
       return names;
     },
+    computedMinY() {
+      return this.chartOptions.yaxis.min ?? this.chartOptions.yaxis[0].min;
+    },
+    computedMaxY() {
+      return this.chartOptions.yaxis.max ?? this.chartOptions.yaxis[0].max;
+    },
   },
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_CURRENT_SELECTED_SAMPLES"]),
+    calcFloatingNumForMS(num) {
+      if (Math.abs(num) > 100) return num.toFixed();
+      if (Math.abs(num) > 10) return num.toFixed(1);
+      return num.toFixed(2);
+    },
+    getTooltipContent(seriesIndex, dataPointIndex) {
+      const sample = this.graphSeries[seriesIndex].data[dataPointIndex];
+      const floatXnum =
+        this.series.config.x === 0.3
+          ? this.calcFloatingNumForMS(sample.x)
+          : this.series.config.x === "remain"
+          ? sample.x
+          : sample.x.toFixed(this.series.config.x);
+      const floatYnum =
+        this.series.config.y === 0.3
+          ? this.calcFloatingNumForMS(sample.y)
+          : sample.y.toFixed(this.series.config.y);
+      return `<div class="tooltip-holder">
+        <div class="tooltip-header">${sample.wellName}</div>
+        <div class="tooltip-content">${this.trans(
+          "plast_fluids.data"
+        )}: ${floatXnum}; ${floatYnum}</div>
+      </div>`;
+    },
     exitFullScreen() {
       this.isFullScreen = false;
     },
@@ -415,7 +485,9 @@ export default {
             ? "R2: " + data.approximation.r2.toFixed(2)
             : "";
           let equation = data.approximation.function
-            ? "Функция: " + data.approximation.function
+            ? `${this.trans("plast_fluids._function")}: ${
+                data.approximation.function
+              }`
             : "";
           const temp = _.cloneDeep(this.chartOptions);
           !temp.colors[this.currentAnnotationColorIndex]
@@ -482,12 +554,14 @@ export default {
           ...this.chartOptions,
           xaxis: {
             ...this.chartOptions.xaxis,
-            min: data.graphOptions.abscissaFrom
-              ? Number(data.graphOptions.abscissaFrom)
-              : this.chartOptions.xaxis.min,
-            max: data.graphOptions.abscissaTo
-              ? Number(data.graphOptions.abscissaTo)
-              : this.chartOptions.xaxis.max,
+            min:
+              typeof data.graphOptions.abscissaFrom === "number"
+                ? data.graphOptions.abscissaFrom
+                : this.chartOptions.xaxis.min,
+            max:
+              typeof data.graphOptions.abscissaTo === "number"
+                ? data.graphOptions.abscissaTo
+                : this.chartOptions.xaxis.max,
           },
           yaxis: {
             labels: {
@@ -497,12 +571,14 @@ export default {
               show: true,
             },
             tickAmount: 4,
-            min: data.graphOptions.ordinateFrom
-              ? Number(data.graphOptions.ordinateFrom)
-              : minY,
-            max: data.graphOptions.ordinateTo
-              ? Number(data.graphOptions.ordinateTo)
-              : maxY,
+            min:
+              typeof data.graphOptions.ordinateFrom === "number"
+                ? data.graphOptions.ordinateFrom
+                : minY,
+            max:
+              typeof data.graphOptions.ordinateTo === "number"
+                ? data.graphOptions.ordinateTo
+                : maxY,
           },
         };
       }
@@ -601,8 +677,7 @@ export default {
         this.handleDataPointSelection;
       this.chartOptions.chart.events.legendClick = this.openRemoveModal;
     },
-
-    async handleCorrelationAdd() {
+    async handleCorrelationAdd(correlationType) {
       const horizonIDs = this.currentSubsoilHorizon.length
         ? this.currentSubsoilHorizon.map((horizon) => horizon.horizon_id)
         : "None";
@@ -612,18 +687,16 @@ export default {
         : "None";
       const postTemp = {
         field_id: this.currentSubsoilField[0].field_id,
-        correlations_type: this.graphType.toLowerCase(),
-        func_id:
-          this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
-            .func_id,
+        correlations_type: correlationType,
+        func_id: this["currentSelectedCorrelation_" + correlationType].func_id,
         horizons: horizonIDs,
         blocks: blockIDs,
       };
       const postData = convertToFormData(postTemp);
       const correlationData = await getCorrelationData(postData);
+
       const correlationSeries = {
-        name: this["currentSelectedCorrelation_" + this.graphType.toLowerCase()]
-          .name,
+        name: this["currentSelectedCorrelation_" + correlationType].name,
         type: "line",
         data: [],
       };
@@ -636,17 +709,15 @@ export default {
           type: "line",
         },
       };
-      correlationSeries.data = correlationData[
-        this.graphType.toLowerCase()
-      ].chart.reduce((result, xy) => {
+      const chartData =
+        this.graphType === "Ds"
+          ? correlationData.bs.material_balance_chart
+          : correlationData[correlationType].chart;
+      correlationSeries.data = chartData.reduce((result, xy) => {
         const entry = Object.entries(xy)[0];
-        if (
-          between(Number(entry[0]), this.minXAxisBorder, this.maxXAxisBorder) &&
-          between(Number(entry[1]), this.minYAxisBorder, this.maxYAxisBorder)
-        ) {
-          const objectToPush = { x: Number(entry[0]), y: Number(entry[1]) };
-          result.push(objectToPush);
-        }
+
+        const objectToPush = { x: Number(entry[0]), y: Number(entry[1]) };
+        result.push(objectToPush);
         return result;
       }, []);
       this.currentAnnotationColorIndex++;
@@ -655,17 +726,15 @@ export default {
   },
   created() {
     this.setEvents();
-    this.$watch(
-      "currentSelectedCorrelation_" + this.graphType.toLowerCase(),
-      () => this.handleCorrelationAdd()
-    );
   },
   mounted() {
     this.chartOptions = {
       ...this.chartOptions,
-      xaxis: {
-        ...this.chartOptions.xaxis,
-        max: this.maxXAxisBorder,
+      tooltip: {
+        ...this.chartOptions.tooltip,
+        custom: ({ seriesIndex, dataPointIndex }) => {
+          return this.getTooltipContent(seriesIndex, dataPointIndex);
+        },
       },
     };
   },
@@ -769,5 +838,15 @@ export default {
 
 .scatter-graph-toolbar > img:last-of-type {
   margin-right: 0;
+}
+
+.graph-holder::v-deep .apexcharts-tooltip > .tooltip-holder > .tooltip-header {
+  background: rgba(70, 73, 142, 0.65);
+  padding: 3px 4px 2px 4px;
+}
+
+.graph-holder::v-deep .apexcharts-tooltip > .tooltip-holder > .tooltip-content {
+  background: rgba(46, 80, 233, 0.65);
+  padding: 2px 4px;
 }
 </style>

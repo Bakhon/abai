@@ -13,9 +13,10 @@ use Illuminate\Database\Eloquent\Collection;
 class DigitalRatingCompareDrilling extends Controller
 {
 
-   const WELL_CATEGORY_TYPE_ID = [1,2,4,6,7];
+   const WELL_CATEGORY_TYPE_ID = [1];
+   const WELL_STATUS_TYPE_ID = [3,4];
 
-   public function get_compaer_data(Request $request):JsonResponse 
+   public function getCompareData(Request $request):JsonResponse 
    {  
       $horizon = $request->input('horizon');
       $year = $request->input('year');
@@ -41,13 +42,13 @@ class DigitalRatingCompareDrilling extends Controller
            
          }
       }
+      dd($data);
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
-   
    }
    
 
-   public function get_maps(Request $request):JsonResponse 
+   public function getMapCoordinates(Request $request):JsonResponse 
    {  
       $field = $request->input('field');
       $horizon = $request->input('horizon');
@@ -64,34 +65,50 @@ class DigitalRatingCompareDrilling extends Controller
          ->where('digital_rating.outer_owc_omg_json.owc_id', $owc) 
          ->get();
       }
+      foreach ($data as $item) {
+         $coordinates = substr( $item->coordinates, 1, -1);
+         preg_match_all('#\[(.*?)\]#', $coordinates, $array);
+         $item->coordinates= $array[0];
+        
+      }
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
-   
    }
 
-
-   public function get_actual_project_points(Request $request):JsonResponse 
+   public function getHorizon(Request $request):JsonResponse 
+   {  
+      $data =   DB::connection('tbd')->table('digital_rating.horizon')
+      ->get();
+      dd($data);
+      $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+      return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
+   }
+   public function getActualProjectPoints(Request $request):JsonResponse 
    {  
      
      
-    $horizon = $request->input('horizon');
-    $year = $request->input('year');
-    $date_to = $year.'-01-01 00:00:00+06';
-    $date_end = $year.'-12-31 00:00:00+06';
-    $block= $request->input('block');
-
-    $actual_wells_count =   DB::connection('tbd')->table('tbdi.well')
-        ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
-        ->whereDate('tbdi.well.dt', '<',$date_end)
-        ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
-        ->where('tbdi.geo.name',   $horizon)  
-        ->join('tbdi.well_block', 'tbdi.well_block.well_id', '=', 'tbdi.well.id')
-        ->join('tbdi.block', 'tbdi.block.id', '=', 'tbdi.well_block.block_id')
-        ->where('tbdi.block.name',   $block)  
-        ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-        ->where('tbdi.well_category.well_category_type_id', 1)
-        ->get();
-
+   $horizon = $request->input('horizon');
+   $year = $request->input('year');
+   $date_to = $year.'-01-01 00:00:00+06';
+   $date_end = $year.'-12-31 00:00:00+06';
+   $block= $request->input('block');
+   $filed= 'UZN';
+   $actual_wells =   DB::connection('tbd')->table('tbdi.well')
+      ->where('tbdi.well.uwi', 'like', '%'.$filed.'%')
+      ->join('tbdi.well_geo', 'tbdi.well.id', '=', 'tbdi.well_geo.well_id')
+      ->whereYear('tbdi.well.dt', '=',  $year)
+      ->join('tbdi.geo', 'tbdi.well_geo.geo_id', '=', 'tbdi.geo.id')
+      ->where('tbdi.geo.name',   $horizon)  
+      ->join('tbdi.well_block', 'tbdi.well_block.well_id', '=', 'tbdi.well.id')
+      ->join('tbdi.block', 'tbdi.block.id', '=', 'tbdi.well_block.block_id')
+      ->where('tbdi.block.name',   $block)  
+      ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
+      ->whereIn('tbdi.well_category.well_category_type_id',self::WELL_CATEGORY_TYPE_ID)
+      ->select('tbdi.well.uwi')
+      ->groupBy('tbdi.well.uwi')
+      ->get();
+      
+      
 
     $project_wells_count =   DB::connection('tbd')->table('digital_rating.project_points')
         ->where('digital_rating.project_points.horizon',   $horizon)  

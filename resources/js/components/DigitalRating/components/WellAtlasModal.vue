@@ -60,7 +60,9 @@
             />
           </div>
         </div>
-        <component :is="currentTabComponent"></component>
+        <keep-alive>
+          <component :is="currentTabComponent"></component>
+        </keep-alive>
       </div>
     </div>
     <template #modal-footer>

@@ -35,7 +35,7 @@
                 "validation": "gte:0"                
               },
               {
-                "title": "pretreat_pressure",
+                "title": "posttreat_pressure",
                 "code": "pressure_after",
                 "type": "numeric",
                 "validation": "gte:0"                
@@ -74,7 +74,7 @@
                 "title": "scraper_income",
                 "code": "scraper_income",
                 "type": "numeric",
-                "validation": "required|gte:0|lte:10000"
+                "validation": "nullable|gte:0|lte:10000"
               }              
             ]
           }

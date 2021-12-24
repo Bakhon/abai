@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Jobs\RunPostgresqlProcedure;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
 use App\Services\AttachmentService;
@@ -96,24 +97,24 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $fieldsOrder = [
-        'conclusion',
+        'target',
         'FLVL',
         'STLV',
+        'OTP',
+        'BP',
         'BHP',
         'RP',
         'TBP',
-        'OTP',
         'GASR',
-        'target',
         'INJR',
         'FLRT',
         'FLRD',
         'WCUT',
         'MLP',
+        'conclusion',
         'ADMCF',
         'PDCF',
         'RRP',
-        'BP',
         'STP',
         'RSVT',
         'device',
@@ -146,11 +147,6 @@ class CurrentGDIS extends TableForm
 
     public function getResults(): array
     {
-        if ($this->request->get('type') !== 'well') {
-            //todo: сделать универсальные сообщения, в которые будут передаваться типы объектов
-            throw new \Exception(trans('bd.select_well'));
-        }
-
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -165,9 +161,13 @@ class CurrentGDIS extends TableForm
     {
         $wellId = $this->request->get('id');
 
+        $filter = json_decode($this->request->get('filter'));
+        $date = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
+
         $dates = GdisCurrent::query()
             ->where('well', $wellId)
             ->select('meas_date')
+            ->where('meas_date', '<=', $date)
             ->orderBy('meas_date', 'desc')
             ->distinct()
             ->limit(10)
@@ -181,6 +181,7 @@ class CurrentGDIS extends TableForm
         $gdisCurrent = GdisCurrent::query()
             ->where('well', $wellId)
             ->where('meas_date', '>=', $oldestDate)
+            ->where('meas_date', '<=', $date)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')
@@ -456,5 +457,20 @@ class CurrentGDIS extends TableForm
         }
 
         return [];
+    }
+
+
+    protected function afterSubmit(array $fields, array $filter = [])
+    {
+        $date = Carbon::parse($filter['date']);
+        if ($date->startOfDay() >= Carbon::now()->startOfDay()) {
+            return;
+        }
+
+        if (!empty($fields)) {
+            $field = reset($fields);
+            $wellId = $field['last_measure_value']['params']['well_id'];
+            RunPostgresqlProcedure::dispatch('dmart.sync_well_daily_prod_oil_abai', [$wellId, $date->format('Y-m-d')]);
+        }
     }
 }
