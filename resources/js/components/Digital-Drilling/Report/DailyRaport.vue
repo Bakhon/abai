@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!previous" :class="{fixed: fixedStyle}" >
+    <div v-if="!previous" :class="{fixed: fixedStyle}" class="daily-report">
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily_raport_block-header">

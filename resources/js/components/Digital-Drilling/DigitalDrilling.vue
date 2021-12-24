@@ -53,7 +53,7 @@
     export default {
         name: "DigitalDrilling",
         components: {menuHead, leftMenu, Main, NewWell, OldWell},
-        props: ['user'],
+        props: ['user', 'user_can_delete'],
         data(){
             return{
                 leftMenuOpen: true,
@@ -77,10 +77,12 @@
         },
         created(){
             this.changeCurrentUserValue(this.user)
+            this.changeCurrentUserAccess(this.user_can_delete)
         },
         methods:{
             ...digitalDrillingActions([
-                'changeCurrentUserValue'
+                'changeCurrentUserValue',
+                'changeCurrentUserAccess',
             ]),
             changePage(page){
                 if (page=='home'){

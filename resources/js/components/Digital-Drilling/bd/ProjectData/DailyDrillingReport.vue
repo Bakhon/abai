@@ -67,9 +67,14 @@
                                     <td>
                                         {{ report.date }}
                                     </td>
-                                    <td>
-                                        <div class="download" @click="openReport(report.id)">
-                                            Открыть
+                                    <td class="report-actions">
+                                        <div class="report-actions-inner">
+                                            <div class="download" @click="openReport(report.id)">
+                                                Открыть
+                                            </div>
+                                            <div class="download delete" @click="deleteReport(report)" v-if="userCanDelete">
+                                                Удалить
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -81,6 +86,25 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="catalog-add" v-if="reportModalDelete">
+            <div class="catalog-add-inner">
+                <div class="catalog-add-form">
+                    <div class="catalog-add-header">
+                        <div class="catalog-add-title">
+                           Отчет
+                        </div>
+                        <div class="catalog-add-close" @click="reportModalDelete=false">
+                            Закрыть
+                        </div>
+                    </div>
+                    <div class="catalog-add-content">
+                        <span class="text-center">
+                            Вы точно хотите удалить? </span>
+                        <button @click="deleteReportFrom">Удалить</button>
                     </div>
                 </div>
             </div>
@@ -103,12 +127,15 @@
                 report: {},
                 isEdit: false,
                 is_open: true,
+                reportModalDelete: false,
+                currentReport: {},
             }
         },
         computed: {
             ...digitalDrillingState([
                 'currentWell',
-                'currentUser'
+                'currentUser',
+                'userCanDelete'
             ]),
         },
         mounted() {
@@ -120,6 +147,26 @@
             }
         },
         methods:{
+            deleteReportFrom(){
+                this.axios.delete(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/' +
+                    this.currentReport.id).then((response) => {
+                    this.$bvToast.toast("Отчет удален успешно!!!", {
+                        title: "Отчет",
+                        variant: 'success',
+                        solid: true,
+                        toaster: "b-toaster-top-center",
+                        autoHideDelay: 8000,
+                    });
+                    this.getFormReports()
+                }).catch((e)=>{
+                    console.log(e)
+                });
+                this.reportModalDelete = false
+            },
+            deleteReport(report){
+                this.currentReport = report
+                this.reportModalDelete = true
+            },
             openReport(id){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/'+id).then((response) => {
                     if (response) {
@@ -208,6 +255,21 @@
         margin: 0 auto;
         cursor: pointer;
     }
+    .report-actions{
+        max-width: 150px;
+    }
+    .report-actions-inner{
+        display: flex;
+        align-items: center;
+    }
+    .report-actions-inner .delete{
+        background: rgba(237, 85, 100, 0.4);
+        border: 0.5px solid #ED5564;
+    }
+.report-actions-inner .delete:hover{
+    background: #C63E4B;
+}
+
 .report_content{
     background: #272953;
     box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
@@ -271,4 +333,11 @@
 button{
     color: #FFFFFF;
 }
+    .catalog-add-content{
+        display: flex;
+        flex-direction: column;
+    }
+    .catalog-add-content button{
+        margin-top: 20px;
+    }
 </style>
