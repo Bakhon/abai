@@ -117,25 +117,6 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         'height_drop' => 20
     ];
 
-    const ID = 0;
-    const LENGTH = 3;
-    const QLIQ = 4;
-    const BSW = 5;
-    const GAZF = 6;
-    const PRESS_START = 7;
-    const PRESS_END = 8;
-    const TEMPERATURE_START = 9;
-    const TEMPERATURE_END = 10;
-    const START_POINT = 11;
-    const END_POINT = 12;
-    const MIX_SPEED_AVERAGE = 14;
-    const FLUID_SPEED = 15;
-    const GAS_SPEED = 16;
-    const FLOW_TYPE = 17;
-    const PRESS_CHANGE = 18;
-    const BREAK_QTY = 19;
-    const HEIGHT_DROP = 20;
-
     /**
      * Create a new job instance.
      *
