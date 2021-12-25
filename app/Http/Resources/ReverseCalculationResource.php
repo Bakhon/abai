@@ -18,7 +18,7 @@ class ReverseCalculationResource extends CrudListResource
         $gas_factor = $this->omgngdu ? ($this->omgngdu->gas_factor ? $this->omgngdu->gas_factor : ($this->omgngdu->lastWellData ? $this->omgngdu->lastWellData->gas_factor : '')) : '';
         $bsw = $this->omgngdu ? ($this->omgngdu->bsw ? $this->omgngdu->bsw : ($this->omgngdu->lastWellData ? $this->omgngdu->lastWellData->bsw : '')) : '';
         //кгс/см переводятся в бар
-        $pressure_end = $this->omgngdu_gu ? $this->omgngdu_gu->surge_tank_pressure * 98000 / 100000 : '';
+        $pressure_end = $this->omgngdu_gu ? round($this->omgngdu_gu->surge_tank_pressure * 98000 / 100000, 2) : '';
 
         $result = [
             'id' => $this->id,
@@ -37,15 +37,14 @@ class ReverseCalculationResource extends CrudListResource
                 'bsw' => round($bsw, 2),
                 'gas_factor' => round($gas_factor, 2),
                 'pressure_start' => '',
-                // кг/см в бар
-                'pressure_end' => round($pressure_end * 98000/100000, 2),
+                'pressure_end' => $pressure_end,
                 'temp_start' => '',
                 'temp_end' => $this->omgngdu ? round($this->omgngdu->temperature_zu, 2) : '',
-                'mix_speed_avg' => round($this->mix_speed_avg, 2),
-                'fluid_speed' => round($this->fluid_speed, 2),
-                'gaz_speed' => round($this->gaz_speed, 2),
-                'flow_type' => round($this->flow_type, 2),
-                'press_change' => round($this->press_change, 4),
+                'mix_speed_avg' => $this->mix_speed_avg,
+                'fluid_speed' => $this->fluid_speed,
+                'gaz_speed' => $this->gaz_speed,
+                'flow_type' => $this->flow_type,
+                'press_change' => $this->press_change,
                 'break_qty' => $this->break_qty
             ],
         ];
