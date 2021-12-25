@@ -24,7 +24,7 @@ import jspdf from "jspdf";
 import moment from 'moment';
 import {createStringXY} from "ol/coordinate";
 import {DragBox, Select} from 'ol/interaction';
-import {platformModifierKeyOnly} from "ol/events/condition";
+import {platformModifierKeyOnly, shiftKeyOnly} from "ol/events/condition";
 
 export default {
     props: {
@@ -822,7 +822,9 @@ export default {
         },
         addInteractions() {
             let $self = this;
-            const select = new Select();
+            const select = new Select({
+                addCondition: platformModifierKeyOnly,
+            });
             this.map.addInteraction(select);
             select.on('select', function (e) {
                 const candidateFeatures = $self.selectedFeatures;
@@ -835,7 +837,7 @@ export default {
                 })
             })
             const dragBox = new DragBox({
-                condition: platformModifierKeyOnly,
+                condition: shiftKeyOnly,
             });
             this.map.addInteraction(dragBox);
             this.selectedFeatures = select.getFeatures();
@@ -1044,6 +1046,6 @@ class ExportMap extends Control {
     color: #ccc;
     position: absolute;
     bottom: 0;
-    left: 40%;
+    right: 10%;
 }
 </style>
