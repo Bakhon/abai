@@ -2,6 +2,19 @@
   <div class="tech-map">
     <div class="tech-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
+
+      <b-button v-if="alerts && alerts.length"
+                class="mb-2 btn_errors"
+                :class="alertsVisible ? null : 'collapsed'"
+                aria-controls="collapse-alerts"
+                variant="danger"
+                :aria-expanded="alertsVisible ? 'true' : 'false'"
+                @click="alertsVisible = !alertsVisible"
+      >
+        {{ btnAlertText }} {{ alerts.length }}
+      </b-button>
+
+
       <div v-if="guPoints" class="d-flex">
         <v-select
             v-model="gu"
@@ -158,6 +171,26 @@
       <calcForm @submit="calcualteHydroDinamycs" :alerts="calcAlerts"/>
     </b-modal>
 
+    <b-modal
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="collapse-alerts-modal"
+        modal-class="long-modal"
+        title="Сообщения об ошибках"
+        :ok-only="true"
+        v-model="alertsVisible"
+    >
+      <b-collapse id="collapse-alerts" class="mt-2" v-model="alertsVisible">
+        <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
+          {{ alert.message }}
+        </b-alert>
+      </b-collapse>
+    </b-modal>
+
     <div v-show="false">
       <gu-tool-tip ref="guToolTip" :gu="objectHovered"/>
       <well-tool-tip ref="wellToolTip" :well="objectHovered"/>
@@ -283,7 +316,9 @@ export default {
       selectedWell: null,
       selectedGu: null,
       selectedZu: null,
-      calcAlerts: []
+      calcAlerts: [],
+      alerts: [],
+      alertsVisible: false,
     };
   },
   created() {
@@ -298,6 +333,9 @@ export default {
       'ngdus',
       'cdngs'
     ]),
+    btnAlertText () {
+      return this.alertsVisible ? this.trans('monitoring.table.collapse-errors') : this.trans('monitoring.table.show-errors');
+    },
     modalTitle() {
       let transCode = 'monitoring.' + this.editMode + '.' + this.formType + '_title';
       return this.trans(transCode);
@@ -334,7 +372,7 @@ export default {
       'deleteZu',
       'deleteWell',
       'getElevationByCoords',
-      'getHydroReverseCalc'
+      'getHydroCalc'
     ]),
     ...globalloadingMutations([
       'SET_LOADING'
@@ -395,13 +433,13 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip: ({object}) => {
           if (object) {
-            if (object.last_omgngdu && object.last_omgngdu.well_id) {
+            if ((object.last_omgngdu && object.last_omgngdu.well_id) || (object.omgngdu && object.omgngdu.well_id)) {
               return {
                 html: this.getObjectTooltipHtml(object, 'wellToolTip')
               }
             }
 
-            if (object.cdng_id && object.last_omgngdu) {
+            if (object.cdng_id && (object.last_omgngdu || object.omgngdu)) {
               return {
                 html: this.getObjectTooltipHtml(object, 'guToolTip')
               }
@@ -440,9 +478,7 @@ export default {
     getPipeCalcKey(pipe) {
       let keys = [
         'last_hydro_calc',
-        'last_reverse_calc',
-        'hydro_calc',
-        'reverse_calc'
+        'hydro_calc'
       ];
 
       for (let key of keys) {
@@ -666,7 +702,7 @@ export default {
       return pipeColors[this.mapColorsMode][pipe.between_points]
     },
     getColorByFlowSpeed(pipe) {
-      let speed_flow = pipe.reverse_calc ? pipe.reverse_calc : (pipe.hydro_calc ? pipe.hydro_calc : null);
+      let speed_flow = pipe.hydro_calc ? pipe.hydro_calc : null;
       switch (true) {
         case speed_flow == null:
           return pipeColors[this.mapColorsMode].no_data;
@@ -1347,7 +1383,9 @@ export default {
         case 'pressure':
         case 'temperature':
           this.SET_LOADING(true);
-          this.pipes = await this.getHydroReverseCalc(this.formatDate(this.selectedDate));
+          let data = await this.getHydroCalc(this.formatDate(this.selectedDate));
+          this.pipes = data.pipes;
+          this.alerts = data.press_alerts;
           this.mapRedraw();
           this.SET_LOADING(false);
           break;
@@ -1489,6 +1527,11 @@ h1 {
 
     .vs__dropdown-toggle {
       padding-bottom: 0;
+    }
+
+    .btn_errors {
+      display: flex;
+      min-width: 260px;
     }
   }
 

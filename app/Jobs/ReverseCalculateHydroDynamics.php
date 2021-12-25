@@ -9,9 +9,6 @@ use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\ComplicationMonitoring\ReverseHydroCalcLong;
-use App\Models\ComplicationMonitoring\ReverseHydroCalcResult;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\ComplicationMonitoring\Zu;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -329,7 +326,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         foreach ($data as $row) {
             $pipe = OilPipe::find($row[$this->shortSchema['id']]);
 
-            $calcResult = ReverseHydroCalcResult::firstOrCreate(
+            $calcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
                     'oil_pipe_id' => $pipe->id,
@@ -359,7 +356,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
                 $pipe = OilPipe::find($row[$this->longSchema['ID']]);
             }
 
-            $hydroCalcLong = ReverseHydroCalcLong::firstOrCreate(
+            $hydroCalcLong = HydroCalcLong::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
                     'oil_pipe_id' => $pipe->id,
