@@ -18,7 +18,7 @@ class ReverseCalculationResource extends CrudListResource
         $gas_factor = $this->omgngdu ? ($this->omgngdu->gas_factor ? $this->omgngdu->gas_factor : ($this->omgngdu->lastWellData ? $this->omgngdu->lastWellData->gas_factor : '')) : '';
         $bsw = $this->omgngdu ? ($this->omgngdu->bsw ? $this->omgngdu->bsw : ($this->omgngdu->lastWellData ? $this->omgngdu->lastWellData->bsw : '')) : '';
         //кгс/см переводятся в бар
-        $pressure_end = $this->omgngdu_gu ? $this->omgngdu_gu->surge_tank_pressure  * 98000/100000 : '';
+        $pressure_end = $this->omgngdu_gu ? $this->omgngdu_gu->surge_tank_pressure * 98000 / 100000 : '';
 
         $result = [
             'id' => $this->id,
@@ -37,7 +37,8 @@ class ReverseCalculationResource extends CrudListResource
                 'bsw' => round($bsw, 2),
                 'gas_factor' => round($gas_factor, 2),
                 'pressure_start' => '',
-                'pressure_end' => round($pressure_end, 2),
+                // кг/см в бар
+                'pressure_end' => round($pressure_end * 98000/100000, 2),
                 'temp_start' => '',
                 'temp_end' => $this->omgngdu ? round($this->omgngdu->temperature_zu, 2) : '',
                 'mix_speed_avg' => round($this->mix_speed_avg, 2),
@@ -73,8 +74,9 @@ class ReverseCalculationResource extends CrudListResource
                 'daily_fluid_production' => round($this->qliq, 2),
                 'bsw' => round($this->bsw, 2),
                 'gas_factor' => round($this->gazf, 2),
-                'pressure_start' => round($this->press_start, 2),
-                'pressure_end' => round($this->press_end, 2),
+                // ата в бар
+                'pressure_start' => round(($this->press_start - 1) * 101325 / 100000, 2),
+                'pressure_end' => round(($this->press_end - 1) * 101325 / 100000, 2),
                 'temp_start' => round($this->temperature_start, 2),
                 'temp_end' => round($this->temperature_end, 2),
                 'mix_speed_avg' => round($this->mix_speed_avg, 2),
