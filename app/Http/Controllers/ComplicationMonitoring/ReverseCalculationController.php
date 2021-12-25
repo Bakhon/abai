@@ -7,6 +7,7 @@ use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ReverseCalculationResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\ReverseHydroCalcResult;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
@@ -174,7 +175,7 @@ class ReverseCalculationController extends CrudController
 
     public function getCalculatedData(string $date)
     {
-        return ReverseCalculation::with('oilPipe.pipeType', 'oilPipe.gu')
+        return ReverseHydroCalcResult::with('oilPipe.pipeType', 'oilPipe.gu')
             ->where('date', $date)
             ->orderBy('id')
             ->get();
