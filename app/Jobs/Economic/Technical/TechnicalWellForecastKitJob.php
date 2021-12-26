@@ -28,7 +28,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
 
     const DEFAULT_WHERE_IN_PARAM = "''";
 
-    const OIL_FACTOR = 100;
+    const OIL_FACTOR = 10;
     const OIL_DEVIATION = 1;
 
     public function __construct(int $kitId, float $permanentStopCoefficient)

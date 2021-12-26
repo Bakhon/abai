@@ -4,49 +4,49 @@
       {{ well.name }}
     </p>
     <p>
-      {{ trans('app.date') }} : {{ well.last_omgngdu.date }}
+      {{ trans('app.date') }} : {{ paramValue('date') }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.daily_fluid_production') }} :
-      {{ getValueOrNoData(well.last_omgngdu.daily_fluid_production) }}
+      {{ getValueOrNoData(paramValue('daily_fluid_production')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.daily_oil_production') }} :
-      {{ getValueOrNoData(well.last_omgngdu.daily_oil_production) }}
+      {{ getValueOrNoData(paramValue('daily_oil_production')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.daily_water_production') }} :
-      {{ getValueOrNoData(well.last_omgngdu.daily_water_production) }}
+      {{ getValueOrNoData(paramValue('daily_water_production')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.gas_factor') }} :
       {{ getValueOrNoData(daily_gas_production) }}
     </p>
     <p>
-      {{ trans('monitoring.omgngdu.fields.gas_factor') }} : {{ getValueOrNoData(well.last_omgngdu.gas_factor) }}</p>
+      {{ trans('monitoring.omgngdu.fields.gas_factor') }} : {{ getValueOrNoData(paramValue('gas_factor')) }}</p>
     <p>
     <p>
-      {{ trans('monitoring.omgngdu_well.fields.bsw') }} : {{ getValueOrNoData(well.last_omgngdu.bsw) }}
+      {{ trans('monitoring.omgngdu_well.fields.bsw') }} : {{ getValueOrNoData(paramValue('bsw')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.pressure') }} :
-      {{ getValueOrNoData(well.last_omgngdu.pressure) }}
+      {{ getValueOrNoData(paramValue('pressure')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.temperature') }} :
-      {{ getValueOrNoData(well.last_omgngdu.temperature_well) }}
+      {{ getValueOrNoData(paramValue('temperature_well')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.sg_oil') }} :
-      {{ getValueOrNoData(well.last_omgngdu.sg_oil) }}
+      {{ getValueOrNoData(paramValue('sg_oil')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.sg_gas') }} :
-      {{ getValueOrNoData(well.last_omgngdu.sg_gas) }}
+      {{ getValueOrNoData(paramValue('sg_gas')) }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.sg_water') }} :
-      {{ getValueOrNoData(well.last_omgngdu.sg_water) }}
+      {{ getValueOrNoData(paramValue('sg_water')) }}
     </p>
   </div>
 </template>
@@ -62,8 +62,13 @@ export default {
   mixins: [getValueOrNoData],
   computed: {
     daily_gas_production() {
-      let omgngdu = this.well.last_omgngdu;
+      let omgngdu = this.well.last_omgngdu ? this.well.last_omgngdu : this.well.omgngdu;
       return omgngdu.gas_factor * omgngdu.daily_fluid_production * (1 - omgngdu.bsw / 100);
+    }
+  },
+  methods: {
+    paramValue(param_name) {
+      return this.well.last_omgngdu ? this.well.last_omgngdu[param_name] : this.well.omgngdu[param_name];
     }
   }
 }
