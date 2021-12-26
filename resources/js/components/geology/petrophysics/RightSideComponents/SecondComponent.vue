@@ -81,8 +81,8 @@ export default {
         reference_well: null,
         horizons: null,
         method_params:{
-          pca_search_window_size: 29,
-          pca_search_interval: 30
+          pca_search_window_size: 10,
+          pca_search_interval: 10
         },
         curves: {
           GR: false,
@@ -106,8 +106,8 @@ export default {
         this.postData.reference_well !== null,
         this.postData.horizons !== null&&this.postData.horizons.length,
         Object.values(this.postData.curves).some((c) => c),
-          this.postData.method_params.pca_search_window_size>=29,
-          this.postData.method_params.pca_search_interval>=30
+          this.postData.method_params.pca_search_window_size>=10,
+          this.postData.method_params.pca_search_interval>=10
       ].some((el) => !el);
     },
     getHorizon() {
