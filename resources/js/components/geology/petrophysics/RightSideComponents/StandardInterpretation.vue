@@ -1,108 +1,14 @@
 <template>
   <div>
-    <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов"
+    <dropdown block class="w-100 mb-2" :selected-value.sync="components.activeComponent" button-text="Выбор алгоритмов"
               :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
+              {label: 'Стандартный алгоритм', value: 'standardAlgorithm'},
+              {label: 'Нейронная модель', value: 'neuralModel'},
             ]" />
-
-    <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Данные по сважине"
-              :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-
-            ]" />
-    <dropdown block class="w-100 mb-2" button-text="Скважина" :options="[
-        {label: 'Option 0'},
-        {label: 'Option 1'},
-        {label: 'Option 2'},
-        {label: 'Option 3'},
-    ]" />
-    <dropdown block class="w-100 mb-2" button-text="Константы по горизонтам" :options="[
-        {label: 'Option 0'},
-        {label: 'Option 1'},
-        {label: 'Option 2'},
-        {label: 'Option 3'},
-    ]" />
-    <ToolBlock title="Выбор кривых" class="mb-2">
-      <div class="p-2">
-        <div class="buttons-grid">
-          <Button color="accent" align="center">GR</Button>
-          <Button color="accent" align="center">NPHI</Button>
-          <Button color="accent" align="center">SP</Button>
-          <Button color="accent" align="center">RHOB</Button>
-          <Button color="accent" align="center">LLD</Button>
-          <Button color="accent" align="center">SONIC</Button>
-        </div>
-      </div>
-    </ToolBlock>
-    <Button class="mb-2 w-100" color="gray" align="center" @click="demoModal = true">Константы</Button>
-    <Button class="mb-2 w-100" color="primary" align="center">Старт</Button>
-    <dropdown multiple :selected-value.sync="multipleSelect" block class="w-100 mb-2" button-text="Результаты"
-              :options="[
-        {label: 'Option 0'},
-        {label: 'Option 1'},
-        {label: 'Option 2'},
-        {label: 'Option 3'},
-    ]" />
-
-    <AwModal position="top" size="xl" title="Список скважин" :is-show.sync="demoModal">
-      <div class="scroll-table">
-        <table class="aw-table w-100 no-padding center">
-          <thead>
-          <tr>
-            <th rowspan="2">Well</th>
-            <th rowspan="2">Горизонты</th>
-            <th>DTPGL</th>
-            <th>RHOBGL</th>
-            <th rowspan="2">Oxf_ngld</th>
-            <th rowspan="2">Val_ngld</th>
-            <th rowspan="2">x</th>
-            <th rowspan="2">y</th>
-            <th>RW</th>
-            <th>PHIE_cut</th>
-            <th>VSH_fin_cut</th>
-            <th>GR_max</th>
-            <th>GR_min</th>
-            <th>SP_max</th>
-            <th>SP_min</th>
-          </tr>
-          <tr>
-            <th>us/m</th>
-            <th>g/cm3</th>
-            <th>ohmm</th>
-            <th>v/v</th>
-            <th>v/v</th>
-            <th>gapi</th>
-            <th>gapi</th>
-            <th>mV</th>
-            <th>mV</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>UZN_6979</td>
-            <td>Val</td>
-            <td>340</td>
-            <td>2,3</td>
-            <td>1,05</td>
-            <td>0,5127</td>
-            <td>-0,1833</td>
-            <td>0,5633</td>
-            <td>0,034</td>
-            <td>0,14</td>
-            <td>0,38</td>
-            <td>140</td>
-            <td>55</td>
-            <td>90</td>
-            <td>30</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </AwModal>
+    <dropdown :selected-value.sync="well" block class="w-100 mb-2" button-text="Скважина" :options="getWellsList" />
+    <keep-alive>
+      <component :well="well" v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    </keep-alive>
   </div>
 </template>
 
@@ -112,8 +18,9 @@ import Switcher from "../../components/switcher/Switcher";
 import ToolBlock from "../../components/toolBlock/ToolBlock";
 import dropdown from "../../components/dropdowns/dropdown";
 import AwInput from "../../components/form/AwInput";
-import AwModal from "../../components/notifications/awModal/AwModal";
 
+import NeuralModel from "./NeuralModel";
+import StandardAlgorithm from "./StandardAlgorithm";
 export default {
   name: "StandardInterpretation",
   components: {
@@ -122,24 +29,29 @@ export default {
     ToolBlock,
     dropdown,
     AwInput,
-    AwModal
   },
   data() {
     return {
-      multipleSelect: [],
-      demoModal: false,
-      dropdownValue: {
-        value: null
-      },
+      well: null,
+      components: {
+        activeComponent: "standardAlgorithm",
+        options:{
+          neuralModel:{
+            is:NeuralModel
+          },
+          standardAlgorithm:{
+            is:StandardAlgorithm
+          }
+        }
+      }
     }
   },
+  computed:{
+
+    getWellsList() {
+      return (this.$store.state.geologyGis.gisWells || []).map((item) => ({value: item.name}));
+    },
+
+  }
 }
 </script>
-
-<style scoped lang="scss">
-.buttons-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-}
-</style>

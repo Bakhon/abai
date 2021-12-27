@@ -1,6 +1,10 @@
 import axios from 'axios'
 const service = axios.create({
-    baseURL: process.env.MIX_MICROSERVICE_WELLS_DATA
+    baseURL: process.env.MIX_MICROSERVICE_WELLS_DATA,
+    headers: {
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    },
 });
 
 service.interceptors.request.use(

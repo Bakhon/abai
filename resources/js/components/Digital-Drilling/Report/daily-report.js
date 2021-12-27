@@ -12,7 +12,7 @@ import PreviousDailyRaport from './PreviousDailyRaport'
 export default {
     name: "DailyRaport",
     components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-    props: ['report', 'user', 'isEdit', 'show'],
+    props: ['report', 'user', 'isEdit', 'show', 'fixedStyle'],
     data(){
         return{
             validationError: false,
@@ -196,6 +196,9 @@ export default {
             this.getBHAelements()
             this.changeTotalTime(24)
             this.changeTotalTime(6)
+        },
+        closeReport(){
+            this.$emit('closeReport')
         },
         getPreviousDay(){
             let date = new Date();

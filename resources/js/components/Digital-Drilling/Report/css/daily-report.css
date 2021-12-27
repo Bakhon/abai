@@ -1,18 +1,18 @@
-.tables{
+.daily-report .tables{
     overflow: unset!important;
 }
-.nozzles-td-row{
+.daily-report .nozzles-td-row{
     display: flex;
     align-items: center;
 }
-.nozzles{
+.daily-report .nozzles{
     width: 80px;
     display: flex;
     align-items: center;
     height: 40px!important;
     margin-left: 8px;
 }
-.select__name{
+.daily-report .select__name{
     height: 28px;
     display: flex;
     justify-content: space-between;
@@ -22,11 +22,11 @@
     border-radius: 5px;
     color: #000000;
 }
-.select__name div{
+.daily-report .select__name div{
     text-align: left;
     margin-left:4px
 }
-.bit-ware .selects{
+.daily-report .bit-ware .selects{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,41 +34,41 @@
     border-radius: 5px;
     margin-top: 2px;
 }
-.selects select{
+.daily-report .selects select{
     margin-left: 2px;
 }
-.select__name div:nth-child(1), .select__name div:nth-child(2),
-.select__name div:nth-child(4), .select__name div:nth-child(5),
-.selects select:nth-child(1), .selects select:nth-child(2),
-.selects select:nth-child(4), .selects select:nth-child(5){
+.daily-report .select__name div:nth-child(1), .daily-report .select__name div:nth-child(2),
+.daily-report .select__name div:nth-child(4), .daily-report .select__name div:nth-child(5),
+.daily-report .selects select:nth-child(1), .daily-report .selects select:nth-child(2),
+.daily-report .selects select:nth-child(4), .daily-report .selects select:nth-child(5){
     width: 30px;
 }
-.select__name div:nth-child(3), .select__name div:nth-child(6),
-.select__name div:nth-child(7), .select__name div:nth-child(8),
-.selects select:nth-child(3), .selects select:nth-child(6),
-.selects select:nth-child(7), .selects select:nth-child(8){
+.daily-report .select__name div:nth-child(3), .daily-report .select__name div:nth-child(6),
+.daily-report .select__name div:nth-child(7), .daily-report .select__name div:nth-child(8),
+.daily-report .selects select:nth-child(3), .daily-report .selects select:nth-child(6),
+.daily-report .selects select:nth-child(7), .daily-report .selects select:nth-child(8){
     width: 40px;
 }
-.pump td{
+.daily-report .pump td{
     width: 7.35%!important
 }
-.pump td:last-child input{
+.daily-report .pump td:last-child input{
     width: 106px!important;
 }
-.pump td:first-child input{
+.daily-report .pump td:first-child input{
     width: 610px!important;
 }
-.add{
+.daily-report .add{
     cursor: pointer;
     padding: 5px;
     margin-left: 20px;
     font-size: 25px;
     background-color: #0b2a52
 }
-.add:hover{
+.daily-report .add:hover{
     opacity: 0.5;
 }
-.save{
+.daily-report .save{
     border: 0;
     background: #2E50E9;
     border-radius: 6px;
@@ -82,7 +82,7 @@
     padding: 8px;
 
 }
-.characteristic__modal, .catalog-add{
+.daily-report .characteristic__modal, .catalog-add{
     position: fixed;
     top: 0;
     left: 0;
@@ -91,14 +91,14 @@
     z-index: 20000;
     background: rgba(0, 0, 0, 0.5);
 }
-.catalog-add-inner{
+.daily-report .catalog-add-inner{
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.catalog-add-form{
+.daily-report .catalog-add-form{
     min-width: 300px;
     width: max-content;
     min-height: 200px;
@@ -108,7 +108,7 @@
     border-radius: 8px;
     padding: 20px 14px;
 }
-.catalog-add-header{
+.daily-report .catalog-add-header{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -118,9 +118,9 @@
     line-height: 22px;
     color: #FFFFFF;
 }
-.catalog-add-title{
+.daily-report .catalog-add-title{
 }
-.catalog-add-close{
+.daily-report .catalog-add-close{
     flex: 0 0 90px;
     height: 25px;
     display: flex;
@@ -132,7 +132,7 @@
     line-height: 19px;
     cursor: pointer;
 }
-.catalog-add-content input{
+.daily-report .catalog-add-content input{
     display: block;
     width: 100%;
     margin-bottom: 30px;
@@ -141,27 +141,27 @@
     border-radius: 4px;
     padding: 7px;
 }
-.catalog-add-content input.error{
+.daily-report .catalog-add-content input.error{
     border-color: red;
 }
-.catalog-add-content input:focus{
+.daily-report .catalog-add-content input:focus{
     outline: none;
 }
-.catalog-add-content.flex{
+.daily-report .catalog-add-content.flex{
     display: flex;
 }
-.catalog-add-content.flex .catalog-add-close{
+.daily-report .catalog-add-content.flex .catalog-add-close{
     background-color: rgba(101, 106, 138, 1);;
 }
-.catalog-add-content.flex button{
+.daily-report .catalog-add-content.flex button{
     width: 45%;
     padding: 0!important;
     height: 30px!important;
 }
-.m-height{
+.daily-report .m-height{
     min-height: 140px;
 }
-.catalog-add-content button{
+.daily-report .catalog-add-content button{
     background: rgba(46, 80, 233, 0.5);
     border: 0;
     margin: 0 auto;
@@ -169,7 +169,7 @@
     padding: 8px 40px;
     border-radius: 6px;
 }
-.characteristic_content{
+.daily-report .characteristic_content{
     max-width: 600px;
     margin: 60px auto;
     height: 80vh;
@@ -178,24 +178,24 @@
     border-radius: 10px;
     padding: 15px;
 }
-.characteristic__modal.graph .characteristic_content,
-.characteristic__modal.scheme .characteristic_content{
+.daily-report .characteristic__modal.graph .characteristic_content,
+.daily-report .characteristic__modal.scheme .characteristic_content{
     max-width: 90%;
     width: 90%;
     height: auto;
 }
-.characteristic_content .characteristic_body{
+.daily-report .characteristic_content .characteristic_body{
     margin-top: 15px;
     height: calc(100% - 100px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.characteristic_header{
+.daily-report .characteristic_header{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.characteristic_header span{
+.daily-report .characteristic_header span{
     font-family: Harmonia Sans Pro Cyr;
     font-style: normal;
     font-weight: bold;
@@ -204,7 +204,7 @@
 
     color: #FFFFFF;
 }
-.characteristic_header-close{
+.daily-report .characteristic_header-close{
     background: #656A8A;
     border-radius: 10px;
     padding:0 15px;
@@ -214,10 +214,10 @@
     cursor: pointer;
 }
 
-.ml-10{
+.daily-report .ml-10{
     padding: 0 10px 0 18px!important;
 }
-.rigs__content{
+.daily-report .rigs__content{
     background-color: #272953;
     width: 100%;
     height: 675px;
@@ -227,12 +227,12 @@
     overflow-y: scroll;
 
 }
-.characteristic_body-save{
+.daily-report .characteristic_body-save{
     display: flex;
     justify-content: center;
     margin: 15px;
 }
-.characteristic_body-save button{
+.daily-report .characteristic_body-save button{
     background: #333975;
     border-radius: 6px;
     border: 0;
@@ -245,26 +245,26 @@
     padding: 8px 35px;
     margin: 0 auto;
 }
-.characteristic_body-save button:hover,
-.characteristic_body-save button:focus{
+.daily-report .characteristic_body-save button:hover,
+.daily-report .characteristic_body-save button:focus{
     background: #2E50E9;
 }
-.modalTable td{
+.daily-report .modalTable td{
     padding: 15px!important;
 }
-.characteristic__modal td input{
+.daily-report .characteristic__modal td input{
     background: inherit;
     border: 0;
     width: 100%;
     height: 100%;
 }
-.characteristic__modal td input:focus{
+.daily-report .characteristic__modal td input:focus{
     outline: none;
 }
-.characteristic__modal td{
+.daily-report .characteristic__modal td{
     padding: 5px!important;
 }
-.characteristic{
+.daily-report .characteristic{
     background: #205AA3;
     border: 0.5px solid #454FA1;
     box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
@@ -275,48 +275,48 @@
     margin: 0 auto;
 }
 
-.characteristic img{
+.daily-report .characteristic img{
     margin-left: 5px;
 }
-.error{
+.daily-report .error{
     border: 1px solid red!important;
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.daily-report input::-webkit-outer-spin-button,
+.daily-report input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-td.h-31, .h-31 td{
+.daily-report td.h-31, .daily-report .h-31 td{
     height: 31px!important;
 }
-.delete-row{
+.daily-report .delete-row{
     cursor: pointer;
     width: 10px;
 }
-.min-829{
+.daily-report .min-829{
     min-width: 829px!important;
 }
-.max-829{
+.daily-report .max-829{
     max-width: calc(100% - 829px)!important;
 }
-.time-span{
+.daily-report .time-span{
     display: flex;
     align-items: center;
 }
-.time-span input{
+.daily-report .time-span input{
     appearance: auto;
 }
-.daily_raport_block-header-save{
+.daily-report .daily_raport_block-header-save{
     width: 200px!important;
 }
-.errorValidate{
+.daily-report .errorValidate{
     border: 1px solid red!important;
 }
-.validation{
+.daily-report .validation{
     position: relative;
     padding-right: 25px!important;
 }
-.validation .info{
+.daily-report .validation .info{
     position: absolute;
     top: 0;
     right: 5px;
@@ -326,13 +326,13 @@ td.h-31, .h-31 td{
     display: flex;
     align-items: center;
 }
-.validation .info{
+.daily-report .validation .info{
     display: none;
 }
-.validation:hover .info{
+.daily-report .validation:hover .info{
     display: flex;
 }
-.validation .info:hover::after{
+.daily-report .validation .info:hover::after{
     content: attr(data-title);
     position: absolute; /* Абсолютное позиционирование */
     right: 0; top: 100%; /* Положение подсказки */
@@ -346,26 +346,26 @@ td.h-31, .h-31 td{
     color: #FFFFFF;
     min-width: 120px;
 }
-.validation .info.right:hover::after{
+.daily-report .validation .info.right:hover::after{
     left: initial;
     right: 0;
 }
-.validation svg{
+.daily-report .validation svg{
     width: 14px;
 }
-.validation svg path:nth-child(1){
+.daily-report .validation svg path:nth-child(1){
     stroke: #ffffff;
 }
-.validation svg path:nth-child(2){
+.daily-report .validation svg path:nth-child(2){
     fill: #ffffff;
 }
-.validation svg path:nth-child(3){
+.daily-report .validation svg path:nth-child(3){
     stroke: #ffffff;
 }
-.errorValidate + .info{
+.daily-report .errorValidate + .info{
     display: flex;
 }
-.errorValidate + .info svg path:nth-child(1){
+.daily-report .errorValidate + .info svg path:nth-child(1){
     stroke: red;
 }
 .errorValidate + .info svg path:nth-child(2){

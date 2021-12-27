@@ -91,7 +91,7 @@
                             </div>
                             <div class="import-daily-body-btns">
                                 <button :class="{disabled: !uploadTrue }" @click="importFile">{{ trans('digital_drilling.default.import') }}</button>
-                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.reset') }}</a>
+                                <a @click="close">{{ trans('digital_drilling.default.reset') }}</a>
                             </div>
                         </div>
                     </div>

@@ -133,7 +133,6 @@
   ],
   "table_fields": [
     "perf_date",
-    "perf_type",
     "company",
     "perforator_type",
     "patron_type",
@@ -172,27 +171,8 @@
                 "dict": "companies",
                 "title": "podr"
               },
-              {
-                "code": "perforator_type",
-                "type": "dict",
-                "dict": "perforator_types",
-                "title": "perf_y"
-              },
-              {
-                "code": "patron_type",
-                "type": "text",
-                "title": "marka"
-              },
-              {
-                "code": "hole_count",
-                "type": "numeric",
-                "title": "count"
-              },
-              {
-                "code": "hole_diameter",
-                "type": "numeric",
-                "title": "diame_c"
-              },
+                           
+             
               {
                 "code": "liquid",
                 "type": "numeric",
@@ -207,23 +187,6 @@
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c"
-              },
-              {
-                "code": "packer_type",
-                "type": "dict",
-                "dict": "packer_types",
-                "title": "packer_t"
-              },
-              {
-                "code": "depth",
-                "type": "numeric",
-                "title": "depth"
-              },
-              {
-                "code": "iso_material_type",
-                "type": "dict",
-                "dict": "iso_material_types",
-                "title": "iso_mat_type"
               },
               {
                 "code": "intervals",

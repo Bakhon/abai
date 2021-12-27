@@ -198,6 +198,7 @@ export default {
     getTooltipStyles() {
       const styles = [
         "display: flex",
+        "flex-flow: column",
         "align-items: center",
         `white-space: ${this.isGlobalZoom ? "normal" : "nowrap"}`,
         `width: ${this.isGlobalZoom ? "145px" : "auto"}`,
@@ -237,12 +238,12 @@ export default {
         for (let key in this.provinceChilds) {
           this.provinceChilds[key].unbindTooltip().bindTooltip(
             `<div style='${this.getTooltipStyles()}'>
-              <div style='${this.getTooltipIconStyles()}'></div>
               <p style='margin: 0;'>${
                 this.provinceChilds[key].feature.properties[
                   "name_" + this.currentLang
                 ]
               }</p>
+              <div style='${this.getTooltipIconStyles()}'></div>
             </div>`,
             this.tooltipOptions
           );
@@ -329,7 +330,6 @@ export default {
       this.map.on("zoomend", () => {
         this.toggleTooltipStyles();
       });
-      if (this.currentSubsoilField[0]) this.setField();
     },
   },
   mounted() {

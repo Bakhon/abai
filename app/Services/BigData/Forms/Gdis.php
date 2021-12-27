@@ -17,6 +17,8 @@ class Gdis extends PlainForm
 
     protected $configurationFileName = 'gdis';
     protected $metricColumns;
+    protected $rows;
+    protected $gdisComplexValues;
 
     protected function params(): array
     {
@@ -26,6 +28,37 @@ class Gdis extends PlainForm
             $this->getMetricColumns()
         );
         return $params;
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = parent::getColumns();
+        $metricColumns = $this->getMetricColumns();
+
+        $gdisComplexValues = $this->getGdisComplexValues($this->rows->pluck('id'));
+        $gdisComplexCodes = [];
+        foreach ($this->rows as $row) {
+            $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
+            foreach ($rowGdisComplexValues as $value) {
+                if (!empty($value->value_string)) {
+                    $gdisComplexCodes[$value->code] = '';
+                }
+            }
+        }
+
+
+        $metricColumnsCodes = [];
+        foreach ($metricColumns as $column) {
+            if (!isset($gdisComplexCodes[$column['code']])) {
+                continue;
+            }
+            if (!in_array($column['code'], $metricColumnsCodes)) {
+                $column['toggle'] = true;
+                $columns['research_results_' . $column['code']] = $column;
+            }
+            $metricColumnsCodes[] = $column['code'];
+        }
+        return $columns;
     }
 
     protected function getCustomValidationErrors(string $field = null): array
@@ -52,7 +85,15 @@ class Gdis extends PlainForm
 
         $metrics = DB::connection('tbd')
             ->table('dict.metric as m')
-            ->select('m.code', 'm.name_ru', 'rm.id', 'm.data_type', 'm.value_double_min', 'm.value_double_max')
+            ->select(
+                'm.code',
+                'm.name_ru',
+                'm.name_short_ru',
+                'rm.id',
+                'm.data_type',
+                'm.value_double_min',
+                'm.value_double_max'
+            )
             ->join('prod.gdis_method_metric as gmm', 'm.id', 'gmm.metric')
             ->join('dict.research_method as rm', 'gmm.research_method', 'rm.id')
             ->where('rm.gdis_complex', true)
@@ -72,7 +113,7 @@ class Gdis extends PlainForm
                 'code' => $metric->code,
                 'table' => 'prod.gdis_complex_value',
                 'type' => 'numeric',
-                'title' => $metric->name_ru,
+                'title' => $metric->name_short_ru ?? $metric->name_ru,
                 'validation' => $validation,
                 'depends_on' => [
                     [
@@ -86,6 +127,19 @@ class Gdis extends PlainForm
         $this->metricColumns = $columns;
 
         return $columns;
+    }
+
+    public function getResults(): array
+    {
+        $rows = $this->getRows();
+        $this->rows = $rows;
+        $columns = $this->getColumns();
+
+        return [
+            'rows' => $rows->values(),
+            'columns' => $columns,
+            'form' => $this->params()
+        ];
     }
 
     protected function getRows(): Collection
@@ -120,12 +174,24 @@ class Gdis extends PlainForm
 
         $metrics = DB::connection('tbd')
             ->table('dict.metric')
-            ->select('id', 'name_ru', 'code')
+            ->select('id', 'name_short_ru', 'code')
             ->get();
 
         $tmpData = $this->prepareDataToSubmit();
         $gdisComplexValueFieldsCodes = $this->getFields()->filter(function ($field) {
             return !empty($field['table']) && $field['table'] === 'prod.gdis_complex_value';
+        })->pluck('code')->unique()->toArray();
+
+        $gdisComplexValueFieldsCodesForCurrentMethod = $this->getFields()->filter(function ($field) {
+            if (empty($field['table']) || $field['table'] !== 'prod.gdis_complex_value') {
+                return false;
+            }
+            foreach ($field['depends_on'] as $dependency) {
+                if ($this->request->get($dependency['field']) !== $dependency['value']) {
+                    return false;
+                }
+            }
+            return true;
         })->pluck('code')->unique()->toArray();
 
         $data = [
@@ -134,6 +200,9 @@ class Gdis extends PlainForm
         $gdisComplexValues = [];
         foreach ($tmpData as $key => $value) {
             if (in_array($key, $gdisComplexValueFieldsCodes)) {
+                if (!in_array($key, $gdisComplexValueFieldsCodesForCurrentMethod)) {
+                    continue;
+                }
                 $metric = $metrics->where('code', $key)->first();
                 if (empty($metric)) {
                     continue;
@@ -156,28 +225,16 @@ class Gdis extends PlainForm
 
             $dbQuery = $dbQuery->where('id', $id);
 
-            $this->originalData = $dbQuery->first();
+            $this->originalData = (array)$dbQuery->first();
             $dbQuery->update($data);
 
-            foreach ($gdisComplexValues as $metricId => $value) {
-                $gdisComplexValue = DB::connection('tbd')
-                    ->table('prod.gdis_complex_value')
-                    ->where('gdis_complex', $id)
-                    ->where('metric', $metricId)
-                    ->first();
+            DB::connection('tbd')
+                ->table('prod.gdis_complex_value')
+                ->where('gdis_complex', $id)
+                ->delete();
 
-                if (!empty($gdisComplexValue)) {
-                    DB::connection('tbd')
-                        ->table('prod.gdis_complex_value')
-                        ->where('id', $gdisComplexValue->id)
-                        ->update(
-                            [
-                                'value_string' => $value
-                            ]
-                        );
-                } else {
-                    $this->insertComplexValue($id, $metricId, $value);
-                }
+            foreach ($gdisComplexValues as $metricId => $value) {
+                $this->insertComplexValue($id, $metricId, $value);
             }
         } else {
             $this->checkFormPermission('create');
@@ -227,14 +284,9 @@ class Gdis extends PlainForm
     {
         $rowIds = $rows->pluck('id')->toArray();
 
-        $gdisComplexValues = DB::connection('tbd')
-            ->table('prod.gdis_complex_value as g')
-            ->select('g.gdis_complex', 'm.code', 'g.value_string')
-            ->whereIn('gdis_complex', $rowIds)
-            ->join('dict.metric as m', 'm.id', 'g.metric')
-            ->get();
+        $gdisComplexValues = $this->getGdisComplexValues($rowIds);
 
-        return $rows->map(function ($row) use ($gdisComplexValues) {
+        $rows = $rows->map(function ($row) use ($gdisComplexValues) {
             if (isset($row->dend)) {
                 if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
                     $row->dend = null;
@@ -253,6 +305,21 @@ class Gdis extends PlainForm
 
             return $row;
         });
+
+        return $rows;
+    }
+
+    protected function getGdisComplexValues($rowIds)
+    {
+        if (empty($this->gdisComplexValues)) {
+            $this->gdisComplexValues = DB::connection('tbd')
+                ->table('prod.gdis_complex_value as g')
+                ->select('g.gdis_complex', 'm.code', 'g.value_string')
+                ->whereIn('gdis_complex', $rowIds)
+                ->join('dict.metric as m', 'm.id', 'g.metric')
+                ->get();
+        }
+        return $this->gdisComplexValues;
     }
 
 }

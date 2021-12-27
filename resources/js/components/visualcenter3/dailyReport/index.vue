@@ -51,7 +51,10 @@
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                             <td v-else class="p-2">{{ dzo['id'] }}</td>
-                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">
+                                {{ dzo['name'] }}
+                                <div class="missing-companies" v-if="productionByPeriods.missing.includes(dzo['acronym'])"><br>(Данные обновляются)</div>
+                            </td>
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                             <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['plan']) }}</td>
                             <td v-else class="p-2">{{ dzo['part'] }}%</td>
@@ -110,7 +113,10 @@
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['id'] }}</td>
                             <td v-else-if="dzo.orderId === 3" class="condensate_padding text-left">{{ dzo['name'] }}</td>
                             <td v-else class="p-2">{{ dzo['id'] }}</td>
-                            <td v-if="dzo.orderId !== 3" class="p-2">{{ dzo['name'] }}</td>
+                            <td v-if="dzo.orderId !== 3" class="p-2">
+                                {{ dzo['name'] }}
+                                <div class="missing-companies" v-if="productionByPeriods.missing.includes(dzo['acronym'])"><br>(Данные обновляются)</div>
+                            </td>
                             <td v-if="dzo.orderId === 2" rowspan="2" class="p-2">{{ dzo['part'] }}%</td>
                             <td v-else-if="dzo.orderId === 3" class="p-2 text-right">{{ getFormattedNumber(dzo['monthlyPlan']) }}</td>
                             <td v-else class="p-2">{{ dzo['part'] }}%</td>
@@ -342,5 +348,10 @@
 .dzo-row__dark {
     background: #e6e6e6;
     color: #000;
+}
+.missing-companies {
+    margin-top: -20px;
+    color: #cc7a00;
+    font-size: 12px;
 }
 </style>

@@ -146,7 +146,7 @@ Route::group(
 
                 Route::get('/tech-map', 'ComplicationMonitoring\TechMapController@guMap')->name('tech-map.index');
                 Route::get('/tech-map/mapdata', 'ComplicationMonitoring\TechMapController@mapData')->name('tech-map.mapdata');
-                Route::get('/tech-map/hydro-reverse-calc', 'ComplicationMonitoring\TechMapController@getHydroReverseCalc')->name('tech-map.hydro-reverse-calc');
+                Route::get('/tech-map/hydro-calc', 'ComplicationMonitoring\TechMapController@getHydroCalc')->name('tech-map.hydro-calc');
                 Route::get('/tech-map/pressure', 'ComplicationMonitoring\TechMapController@getPressure')->name('tech-map.pressure');
                 Route::get('/tech-map/temperature', 'ComplicationMonitoring\TechMapController@getTemperature')->name('tech-map.temperature');
 

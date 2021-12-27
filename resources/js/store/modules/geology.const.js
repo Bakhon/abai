@@ -1,6 +1,10 @@
 export const GEOLOGY_SAVE_TO_LOCAL_STORAGE = [
     "geology.isOpenedRightSide",
     "geology.isOpenedLeftSide",
+    "geologyGis.autoInterpretation.startTime",
+    "geologyGis.autoInterpretation.endTime",
+    "geologyGis.autoInterpretation.calculation_id",
+    "geologyGis.autoInterpretation.isActive",
 ];
 
 //Mutations

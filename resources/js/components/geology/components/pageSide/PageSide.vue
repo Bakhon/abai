@@ -79,6 +79,13 @@ export default {
     padding: 14px 6px;
     border-radius: 0 10px 10px 0;
   }
+  &::v-deep {
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 10px;
+    }
+  }
 }
 
 .right {
