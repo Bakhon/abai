@@ -399,8 +399,8 @@ return [
             'akts' => 'АКЦ',
             'inclinometry' => 'Инклинометрия',
             'conclusion' => 'Заключение от подрядчика',
-            'las_files' => 'LAS файлы',
-            'las_files2' => 'Считанный LAS файл',
+            'las_files' => 'Считанный LAS файл',
+            'las_files2' => 'LAS файлы',
             'doc_date' => 'Дата документа',
             'files' => 'Файлы'
         ],
