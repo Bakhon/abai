@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class EcoRefsScenario extends Model
 {
@@ -29,6 +30,29 @@ class EcoRefsScenario extends Model
     public function gtmKit()
     {
         return $this->belongsTo(EcoRefsGtmKit::class, 'gtm_kit_id');
+    }
+
+    /**
+     * @return BelongsTo|EconomicDataLog
+     */
+    public function manufacturingLog()
+    {
+        return $this->belongsTo(EconomicDataLog::class, 'manufacturing_program_log_id');
+    }
+
+    /**
+     * @return HasOneThrough|EcoRefsManufacturingProgram
+     */
+    public function manufacturingProgram()
+    {
+        return $this->hasOneThrough(
+            EcoRefsManufacturingProgram::class,
+            EconomicDataLog::class,
+            'id',
+            'log_id',
+            'manufacturing_program_log_id',
+            'id'
+        );
     }
 
     /**

@@ -13,6 +13,7 @@ class EconomicScenarioStoreRequest extends FormRequest
             'sc_fa_id' => 'required|integer|min:1',
             'source_id' => 'required|integer|min:1',
             'gtm_kit_id' => 'nullable|integer|min:1',
+            'manufacturing_program_log_id' => 'nullable|integer|min:1',
 
             'params' => 'required|array',
 
