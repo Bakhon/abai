@@ -35,12 +35,6 @@
                 "validation": "required|exists:tbd.dict.research_method,id"
               },
               {
-                "code": "research_results",
-                "type": "label",
-                "title": "research_results",
-                "validation": ""
-              },
-              {
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",

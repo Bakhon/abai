@@ -17,6 +17,8 @@ class Gdis extends PlainForm
 
     protected $configurationFileName = 'gdis';
     protected $metricColumns;
+    protected $rows;
+    protected $gdisComplexValues;
 
     protected function params(): array
     {
@@ -26,6 +28,37 @@ class Gdis extends PlainForm
             $this->getMetricColumns()
         );
         return $params;
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = parent::getColumns();
+        $metricColumns = $this->getMetricColumns();
+
+        $gdisComplexValues = $this->getGdisComplexValues($this->rows->pluck('id'));
+        $gdisComplexCodes = [];
+        foreach ($this->rows as $row) {
+            $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
+            foreach ($rowGdisComplexValues as $value) {
+                if (!empty($value->value_string)) {
+                    $gdisComplexCodes[$value->code] = '';
+                }
+            }
+        }
+
+
+        $metricColumnsCodes = [];
+        foreach ($metricColumns as $column) {
+            if (!isset($gdisComplexCodes[$column['code']])) {
+                continue;
+            }
+            if (!in_array($column['code'], $metricColumnsCodes)) {
+                $column['toggle'] = true;
+                $columns['research_results_' . $column['code']] = $column;
+            }
+            $metricColumnsCodes[] = $column['code'];
+        }
+        return $columns;
     }
 
     protected function getCustomValidationErrors(string $field = null): array
@@ -94,6 +127,19 @@ class Gdis extends PlainForm
         $this->metricColumns = $columns;
 
         return $columns;
+    }
+
+    public function getResults(): array
+    {
+        $rows = $this->getRows();
+        $this->rows = $rows;
+        $columns = $this->getColumns();
+
+        return [
+            'rows' => $rows->values(),
+            'columns' => $columns,
+            'form' => $this->params()
+        ];
     }
 
     protected function getRows(): Collection
@@ -238,14 +284,9 @@ class Gdis extends PlainForm
     {
         $rowIds = $rows->pluck('id')->toArray();
 
-        $gdisComplexValues = DB::connection('tbd')
-            ->table('prod.gdis_complex_value as g')
-            ->select('g.gdis_complex', 'm.code', 'g.value_string')
-            ->whereIn('gdis_complex', $rowIds)
-            ->join('dict.metric as m', 'm.id', 'g.metric')
-            ->get();
+        $gdisComplexValues = $this->getGdisComplexValues($rowIds);
 
-        return $rows->map(function ($row) use ($gdisComplexValues) {
+        $rows = $rows->map(function ($row) use ($gdisComplexValues) {
             if (isset($row->dend)) {
                 if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
                     $row->dend = null;
@@ -264,6 +305,21 @@ class Gdis extends PlainForm
 
             return $row;
         });
+
+        return $rows;
+    }
+
+    protected function getGdisComplexValues($rowIds)
+    {
+        if (empty($this->gdisComplexValues)) {
+            $this->gdisComplexValues = DB::connection('tbd')
+                ->table('prod.gdis_complex_value as g')
+                ->select('g.gdis_complex', 'm.code', 'g.value_string')
+                ->whereIn('gdis_complex', $rowIds)
+                ->join('dict.metric as m', 'm.id', 'g.metric')
+                ->get();
+        }
+        return $this->gdisComplexValues;
     }
 
 }
