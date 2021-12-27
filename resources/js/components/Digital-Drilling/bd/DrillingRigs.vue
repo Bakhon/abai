@@ -86,25 +86,28 @@
                     </div>
                     <div class="rigs__content defaultScroll">
                         <table class="table defaultTable">
+                            <thead>
+                            <tr>
+                                <th>{{trans("digital_drilling.default.company_name")}}</th>
+                                <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
+                                <th>{{trans("digital_drilling.default.companyman")}}</th>
+                                <th class="width-100">{{trans("digital_drilling.default.load_capacity_kN")}}</th>
+                                <th class="width-100">{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
+                                <th class="width-100">
+                                    {{trans("digital_drilling.default.rig_up_duration")}}<br>
+                                    {{trans("digital_drilling.default.days")}}
+                                </th>
+                                <th class="width-100">
+                                    {{trans("digital_drilling.default.rig_duration")}}<br>
+                                    {{trans("digital_drilling.default.days")}}
+                                </th>
+                                <th>Технические <br> характеристики</th>
+                                <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
+                                <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
+                            </tr>
+                            </thead>
                             <tbody>
-                                <tr>
-                                    <th>{{trans("digital_drilling.default.company_name")}}</th>
-                                    <th>{{trans("digital_drilling.default.drilling_rig_name")}}</th>
-                                    <th>{{trans("digital_drilling.default.companyman")}}</th>
-                                    <th class="width-100">{{trans("digital_drilling.default.load_capacity_kN")}}</th>
-                                    <th class="width-100">{{trans("digital_drilling.default.nominal_drilling_depth")}}</th>
-                                    <th class="width-100">
-                                        {{trans("digital_drilling.default.rig_up_duration")}}<br>
-                                        {{trans("digital_drilling.default.days")}}
-                                    </th>
-                                    <th class="width-100">
-                                        {{trans("digital_drilling.default.rig_duration")}}<br>
-                                        {{trans("digital_drilling.default.days")}}
-                                    </th>
-                                    <th>Технические <br> характеристики</th>
-                                    <th>{{trans("digital_drilling.default.schedule_planning")}}</th>
-                                    <th>{{trans("digital_drilling.default.rig_movement_scheme")}}</th>
-                                </tr>
+
                                 <tr v-for="rig in rigs">
                                     <td class="w-250">{{rig.company}}</td>
                                     <td class="w-150">
@@ -290,9 +293,7 @@
                 </div>
             </div>
         </div>
-        <div class="all-graph-modal" v-if="allGraphModal">
-            <img src="/img/digital-drilling/all-graph.png" alt="" @click="allGraphModal = false">
-        </div>
+        <drillin-graph v-if="allGraphModal" @close="allGraphModal=false"/>
         <div class="newWell" v-if="filter">
             <div class="well_content">
                 <div class="well_body">
@@ -355,10 +356,10 @@
         MglMarker,
         MglGeojsonLayer
     } from 'vue-mapbox'
-
+    import DrillinGraph from '../components/DrillingGraph'
     export default {
         name: "DrillingRigs",
-        components:{ MglMap, MglMarker, MglGeojsonLayer},
+        components:{ MglMap, MglMarker, MglGeojsonLayer, DrillinGraph},
         data(){
             return{
                 allGraphModal: false,
@@ -671,4 +672,5 @@
     .width-100{
         width: 100px!important;
     }
+    thead th { position: sticky; top: 0; }
 </style>
