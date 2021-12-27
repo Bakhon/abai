@@ -16,6 +16,35 @@
       ]
     },
     {
+      "title": "las_files2",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "las_file",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "las_files2",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
       "title": "table",
       "blocks": [
         [
