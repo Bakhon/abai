@@ -70,15 +70,17 @@
                                             <td v-for="i in 12">
                                                 <div class="graph-card fact"
                                                      v-for="(info, index) in graph.data"
-                                                     :style="'top: 15px; left:' + $moment(getMonthNumber(info.dbeg_fact), 'D').format('D')*15 + 'px; width:' +
+                                                     :class="{otherFact: getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 < 150}"
+                                                     :style="'left:' + $moment(getMonthNumber(info.dbeg_fact), 'D').format('D')*15 + 'px; width:' +
                                                      getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 + 'px'"
                                                      v-if="$moment(getMonthNumber(info.dbeg_fact), 'M').format('M')  == i && info.dbeg_fact && info.dend_fact">
-                                                        Начало бурения -  {{info.dbeg_fact}}
-                                                        Окончание бурения- {{info.dend_fact}}
+                                                        Начало -  {{info.dbeg_fact}}
+                                                        Окончание - {{info.dend_fact}}
                                                 </div>
                                                 <div class="graph-card"
                                                      v-for="(info, index) in graph.data"
-                                                     :style="'top: 50px; left:' + $moment(getMonthNumber(info.dbeg_project), 'D').format('D')*15 + 'px; width:' +
+                                                     :class="{other: getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 < 150}"
+                                                     :style="'left:' + $moment(getMonthNumber(info.dbeg_project), 'D').format('D')*15 + 'px; width:' +
                                                      getDifferenceDay(info.dbeg_project, info.dend_project) * 15 + 'px'"
                                                      v-if="$moment(getMonthNumber(info.dbeg_project), 'M').format('M')  == i && info.graph_data">
                                                     {{info.graph_data}}
@@ -142,7 +144,7 @@
             },
             async getDataGraph(){
                 try{
-                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
+                    await this.axios.get('http://172.20.103.67:8630' + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
                         let data = response.data;
                         if (data) {
                             this.dataGraph =  data
@@ -246,7 +248,7 @@ thead th { position: sticky; top: 0; z-index: 100;}
 .calendar-header td{
     border-right: 1px solid #6D7196;
     border-bottom: 1px solid #6D7196;
-    height: 140px;
+    height: 200px;
     padding: 4px;
     position: relative;
 }
@@ -293,7 +295,7 @@ thead th { position: sticky; top: 0; z-index: 100;}
     border-bottom: 1px solid #545580!important;
     border-top: 0;
     border-left: 0;
-    height: 140px;
+    height: 200px;
     padding: 0 10px;
     text-align: center;
 }
@@ -308,11 +310,18 @@ thead th { position: sticky; top: 0; z-index: 100;}
     padding: 3px 9px;
     max-height: 100%;
     position: absolute;
-    min-width: 184px;
+    top: 50px;
 }
 .graph-card.fact{
     font-size: 10px;
     font-weight: bold;
-    background-color: #009847;;
+    background-color: #009847;
+    top: 15px;
+}
+.otherFact{
+    top: 5px;
+}
+.other{
+    top: 80px;
 }
 </style>
