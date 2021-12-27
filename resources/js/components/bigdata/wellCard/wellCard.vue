@@ -851,12 +851,12 @@ export default {
           this.getFormatedDate(this.well.gdisCurrentValueRp.meas_date)
           : "";
       let gdisComplex =
-        this.well.gdisComplex.value_string && this.well.gdisComplex.dbeg
-          ? this.well.gdisComplex.value_string.toFixed(1) +
+        this.well.gdisComplex.value_double && this.well.gdisComplex.dbeg
+          ? this.well.gdisComplex.value_double.toFixed(1) +
             " / " +
             this.getFormatedDate(this.well.gdisComplex.dbeg)
-            : this.well.gdisComplex.value_string
-                ? this.well.gdisComplex.value_string.toFixed(1)
+            : this.well.gdisComplex.value_double
+                ? this.well.gdisComplex.value_double.toFixed(1)
                 : this.well.gdisComplex.dbeg
                     ? this.getFormatedDate(this.well.gdisComplex.dbeg)
                     : "";
