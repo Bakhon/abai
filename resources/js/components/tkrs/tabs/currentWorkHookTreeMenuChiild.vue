@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "currentWorkHookTreeMenuChiild",
@@ -35,7 +35,9 @@ export default {
   },
   methods: {
     ...mapActions("tkrs", ["getTableWork", "getSelectedtWellFile"]),
+    ...mapMutations("tkrs", ["SET_CURRENTARCHIVEWELLNAME"]),
     handleTableAndGraph() {
+      this.SET_CURRENTARCHIVEWELLNAME(this.treeChild);
       this.getTableWork({ well_name: this.treeChild, well_date: this.date.field_name });
       this.getSelectedtWellFile({ well_name_chart: this.treeChild, well_date_chart: this.date.field_name });
     },

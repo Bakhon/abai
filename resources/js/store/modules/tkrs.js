@@ -7,6 +7,7 @@ const tkrs = {
     areaChartData: null,
     maximum: null,
     minimum: null,
+    currentArchiveWellName: null,
   },
 
   mutations: {
@@ -24,6 +25,9 @@ const tkrs = {
     },
     SET_MINIMUM(state, val) {
       state.minimum = val;
+    },
+    SET_CURRENTARCHIVEWELLNAME(state, val) {
+      state.currentArchiveWellName = val;
     },
 
   },

@@ -70,7 +70,7 @@
                     src="/img/tkrs/brigada_table.svg"
                     />Бригада №11</a>
                     <a class="hws-header-info-name">Месторождение: 0</a>
-                    <a class="hws-header-info-name">Скважина:</a>
+                    <a class="hws-header-info-name">Скважина: {{currentArchiveWellName}}</a>
                     <img class="hws-tab-img comp-charts-icon" 
                     @click="comparison_graphs()" data-toggle="modal" 
                     data-target="#exampleModalCenter"
@@ -192,7 +192,7 @@ export default {
     Plotly,
   },
   computed: {
-    ...mapState('tkrs', ["table_work", "wellFile", "areaChartData", "maximum", "minimum"]),
+    ...mapState('tkrs', ["table_work", "wellFile", "areaChartData", "maximum", "minimum", "currentArchiveWellName"]),
     layoutData() {
       return {
         modebar: {
@@ -328,26 +328,7 @@ export default {
                 }
             });
     },
-    // postSelectedtWellFile() {
-    //   this.$store.commit("globalloading/SET_LOADING", true);
-    //     this.axios
-    //         .get(
-    //             `http://172.20.103.203:8090/chooseDate/${well_name}/${well_date}/`,
-    //         )
-    //         .then((response) => {
-    //             this.$store.commit("globalloading/SET_LOADING", false);
-    //             let data = response.data;
-    //             if (data) {
-    //                 this.wellFile = data;
-    //                 this.areaChartData = data.data;
-    //                 this.maximum = data.data[0].rangeSlider.max;
-    //                 this.minimum = data.data[0].rangeSlider.min;
-                    
-    //             } else {
-    //                 console.log("No data");
-    //             }
-    //         });
-    // },
+
     cancelChat() {
       this.isChart = false;
     },
@@ -361,23 +342,6 @@ export default {
     selectBlockTab(selectedBlockTab) {
       this.currentBlockTab = selectedBlockTab
     },
-    // getTableWork() {
-      
-    //   this.axios
-    //       .get(
-    //           this.postApiUrl + this.linkWorkTable + `${this.wellNumber}/${this.wellFile}/`,
-              
-    //       )
-    //       .then((response) => {
-    //           let data = response.data;
-    //           if (data) {
-    //             this.table_work = data
-
-    //           } else {
-    //               console.log("No data");
-    //           }
-    //       });
-    // },
 
     getDataTreeArchive() {
       
