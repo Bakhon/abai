@@ -83,25 +83,25 @@
                         </td>
                         <td class="p-2">
                             <el-date-picker
-                                v-model="kpd.currentFact.date"
+                                v-model="factDates[index].date"
                                 type="date"
                                 format="dd.MM.yyyy"
                                 popper-class="custom-date-picker"
-                                @input="changeFactDate($event,kpd)"
+                                @input="changeFactDate($event,index,kpd.kpd_fact)"
                             >
                             </el-date-picker
 
                         </td>
 
                         <td class="p-2">
-                            <input class="input-field text-center p-1" type="text" v-model="kpd.currentFact.fact">
+                            <input class="input-field text-center p-1" type="text" v-model="factDates[index].fact">
                         </td>
                         <td class="p-2">оценка</td>
                         <td class="p-2">вклад</td>
                         <td class="p-2">
                             <b-form-textarea
                                     class="col-12 text-left p-1 input_kpd"
-                                    v-model="kpd.currentFact.comments"
+                                    v-model="factDates[index].comments"
                                     rows="2"
                             ></b-form-textarea>
                         </td>
@@ -141,7 +141,8 @@ export default {
                 'fact': '',
                 'id': null,
                 'comments': ''
-            }
+            },
+            factDates: []
         };
     },
     methods: {
@@ -154,6 +155,11 @@ export default {
             return response.data;
         },
         async updateKpd() {
+            _.forEach(this.factDates, (factDate, index) => {
+               if (factDate.fact !== '') {
+                   this.kpdList[index]['kpd_fact'].push(factDate);
+               }
+            });
             let uri = this.localeUrl("/store-updated-kpd");
             await axios.post(uri,this.kpdList);
             this.$modal.hide('modalMonitoring');
@@ -189,25 +195,20 @@ export default {
         isPlanFilled(plan) {
             return plan !== null;
         },
-        changeFactDate(e,kpd) {
-            console.log(e)
-            let filtered = _.filter(kpd.kpd_fact, (fact) => {
-                return moment(fact.date).format('DD.MM.YYYY') === moment(e).format('DD.MM.YYYY');
+        changeFactDate(event,index,facts) {
+            let filtered = _.filter(facts, (fact) => {
+                return moment(fact.date).format('DD.MM.YYYY') === moment(event).format('DD.MM.YYYY');
             });
             if (filtered.length > 0) {
-                console.log(filtered[0])
                 if (filtered[0].fact === null) {
                     filtered[0].fact = '';
                 }
-                kpd.currentFact = _.cloneDeep(filtered[0]);
+                this.factDates[index].fact = _.cloneDeep(filtered[0].fact);
             } else {
-                let newFact = _.cloneDeep(this.newKpdFact);
-                newFact['date'] = moment(e);
-                kpd.currentFact = newFact;
-                // newFact['date'] = newFact['date'].format('YYYY-MM-DD');
-                kpd.kpd_fact.push(newFact);
+                let newDate = _.cloneDeep(this.newKpdFact);
+                newDate.date = moment(event);
+                this.factDates[index] = newDate;
             }
-            console.log(kpd.currentFact)
         }
     },
     async mounted() {
@@ -221,10 +222,10 @@ export default {
                 this.kpdList = await this.getKpdList();
                 _.forEach(this.kpdList, (kpd) => {
                    if (kpd.kpd_fact.length === 0) {
-                       kpd['currentFact'] = _.cloneDeep(this.newKpdFact);
+                       this.factDates.push(_.cloneDeep(this.newKpdFact));
                    } else {
-                       let sorted = _.orderBy(kpd.kpd_fact, ['date'],['desc']);
-                       kpd['currentFact'] = sorted.at(-1);
+                       let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
+                       this.factDates.push(_.cloneDeep(sorted.at(-1)));
                    }
                 });
                 this.SET_LOADING(false);

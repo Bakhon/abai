@@ -184,7 +184,7 @@ class KpdTreeController extends Controller
             if (is_null($fact['id'])) {
                 $kpdFact = new KpdFact;
                 $kpdFact->kpdCatalog()->associate($kpdRecord);
-                $kpdFact->date = $fact['date'];
+                $kpdFact->date = Carbon::parse($fact['date']);
                 $kpdFact->fact = $fact['fact'];
                 $kpdFact->save();
             }
