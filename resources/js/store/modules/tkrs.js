@@ -8,6 +8,7 @@ const tkrs = {
     maximum: null,
     minimum: null,
     currentArchiveWellName: null,
+    currentField: null,
   },
 
   mutations: {
@@ -28,6 +29,9 @@ const tkrs = {
     },
     SET_CURRENTARCHIVEWELLNAME(state, val) {
       state.currentArchiveWellName = val;
+    },
+    SET_CURRENTFIELD(state, val) {
+      state.currentField = val;
     },
 
   },

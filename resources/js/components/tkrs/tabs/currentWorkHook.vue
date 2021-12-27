@@ -19,7 +19,10 @@
       <currentWorkHookTreeMenuChiild
         
       v-for="date in template.date"
-            :key="date.field_name" :date="date" :treeChild="template.well_name"/>
+            :key="date.field_name" 
+            :date="date" 
+            :treeChild="template.well_name" 
+            :treeFieldCurrentName="template.field" />
     </ul>
   </li>
 </template>

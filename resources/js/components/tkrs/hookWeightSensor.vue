@@ -69,7 +69,7 @@
                     <a class="hws-header-info-name back-icon"><img class="hws-tab-img"
                     src="/img/tkrs/brigada_table.svg"
                     />Бригада №11</a>
-                    <a class="hws-header-info-name">Месторождение: 0</a>
+                    <a class="hws-header-info-name">Месторождение: {{currentField}}</a>
                     <a class="hws-header-info-name">Скважина: {{currentArchiveWellName}}</a>
                     <img class="hws-tab-img comp-charts-icon" 
                     @click="comparison_graphs()" data-toggle="modal" 
@@ -192,7 +192,7 @@ export default {
     Plotly,
   },
   computed: {
-    ...mapState('tkrs', ["table_work", "wellFile", "areaChartData", "maximum", "minimum", "currentArchiveWellName"]),
+    ...mapState('tkrs', ["table_work", "wellFile", "areaChartData", "maximum", "minimum", "currentArchiveWellName", "currentField"]),
     layoutData() {
       return {
         modebar: {
@@ -251,6 +251,7 @@ export default {
       wellsTree: {},
       wellsTreeCurrent: {},
       archiveData: ['Бригада', 'Скважина'],
+
       
     }
   },
@@ -371,7 +372,6 @@ export default {
               let data = response.data;
               if (data) {
                 this.wellsTreeCurrent = data
-
               } else {
                   console.log("No data");
               }
