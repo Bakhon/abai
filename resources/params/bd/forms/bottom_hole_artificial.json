@@ -26,6 +26,13 @@
                 "type": "numeric",
                 "title": "b_hole_m",
                 "validation": "required|numeric|gte:0|lte:10000"
+              },
+              {
+                "code": "param",
+                "type": "dict",
+                "dict": "bottom_hole_param_hud",
+                "title": "param",
+                "validation": "required"
               }
             ]
           }

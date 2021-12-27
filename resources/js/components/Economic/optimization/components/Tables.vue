@@ -30,6 +30,7 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :is-fullscreen="isFullscreen"
+          :manufacturing-program="res.manufacturingProgram"
           class="text-white"/>
 
       <table-oil-price-options
@@ -80,6 +81,7 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :is-fullscreen="isFullscreen"
+          :manufacturing-program="res.manufacturingProgram"
           class="text-white"/>
 
       <table-palette
@@ -88,6 +90,7 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :is-fullscreen="isFullscreen"
+          :manufacturing-program="res.manufacturingProgram"
           class="text-white"/>
 
       <table-well-tree-map

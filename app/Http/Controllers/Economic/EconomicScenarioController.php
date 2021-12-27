@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Scenario\EconomicScenarioDataRequest;
 use App\Http\Requests\Economic\Scenario\EconomicScenarioStoreRequest;
 use App\Jobs\Economic\Scenario\EconomicScenarioJob;
+use App\Models\Refs\EcoRefsManufacturingProgram;
 use App\Models\Refs\EcoRefsScenario;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,14 @@ class EconomicScenarioController extends Controller
                 'is_forecast' => true
             ])
             ->firstOrFail();
+
+        if ($request->manufacturing_program_log_id) {
+            EcoRefsManufacturingProgram::query()
+                ->where([
+                    'log_id' => $request->manufacturing_program_log_id
+                ])
+                ->firstOrFail();
+        }
 
         $scenario = new EcoRefsScenario($request->validated());
 
@@ -87,7 +96,7 @@ class EconomicScenarioController extends Controller
         }
 
         return $query
-            ->with(['scFa', 'source', 'gtmKit', 'user'])
+            ->with(['scFa', 'source', 'gtmKit', 'user', 'manufacturingLog'])
             ->latest('id')
             ->get()
             ->toArray();
