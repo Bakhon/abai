@@ -92,7 +92,9 @@ class CurrentGDIS extends TableForm
         'SHDMD',
         'SHDME',
         'RPM',
-        'WCUT'
+        'WCUT',
+        'PINT',
+        'PFLL'
     ];
 
     protected $fieldsOrder = [       
@@ -101,6 +103,8 @@ class CurrentGDIS extends TableForm
         'STLV',
         'OTP',
         'BP',
+        'PINT',
+        'PFLL',
         'BHP',
         'RP',
         'TBP',      
