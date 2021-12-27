@@ -7,6 +7,11 @@ export default {
             const {input, change, ...listeners} = this.$listeners
             return listeners
         },
-
+        getClasses() {
+            return {
+                ["direction-"+this.labelDirection]: true,
+                [this.size]: true
+            }
+        }
     }
 }

@@ -455,4 +455,5 @@ return array (
   'conditionally_profitable' => 'Условно-рентабельные',
   'from_opposite' => 'От обратного',
   'netback_fact' => 'Нетбэк факт',
+  'show_params' => 'Показать параметры',
 );

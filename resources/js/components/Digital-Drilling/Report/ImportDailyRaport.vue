@@ -14,7 +14,7 @@
                                 </div>
                             </div>
                             <div class="header-close">
-                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.close') }}</a>
+                                <div @click="close">{{ trans('digital_drilling.default.close') }}</div>
                             </div>
                         </div>
                         <div class="import-daily-body">
@@ -50,8 +50,20 @@
                             </div>
                             <div class="form">
                                 <div class="form-input">
-                                    <input type="text" class="input"
-                                           placeholder="Напишите код скважины"
+                                    <dropdown title="ДЗО" :options="dzo" :current="currentDZO" class="dropdown__area" @updateList="getField"/>
+                                </div>
+                                <div class="form-input">
+                                    <dropdown title="Месторождение" :options="fields" :current="currentField" class="dropdown__area"
+                                              :search="true"
+                                              :cancelFilter="false"
+                                              @search="filterField"
+                                              @updateList="changeField"
+                                              :class="{error: uploadTrue && currentField.name==''}"
+                                    />
+                                </div>
+                                <div class="form-input">
+                                    <input type="number" class="input"
+                                           placeholder="Напишите номер скважины"
                                            v-model="form.well_num"
                                            @input="checkForm"
                                            :class="{error: uploadTrue && form.well_num=='', errorInput: error_text}"
@@ -62,7 +74,7 @@
                                 </div>
                                <div class="form-input">
                                    <input type="number" class="input"
-                                          placeholder="Напишите ID отчета"
+                                          placeholder="Напишите № рапорта"
                                           v-model="form.report_id"
                                           @input="checkForm"
                                           :class="{error: uploadTrue && form.report_id==''}"
@@ -79,7 +91,7 @@
                             </div>
                             <div class="import-daily-body-btns">
                                 <button :class="{disabled: !uploadTrue }" @click="importFile">{{ trans('digital_drilling.default.import') }}</button>
-                                <a :href="this.localeUrl('/digital-drilling')">{{ trans('digital_drilling.default.reset') }}</a>
+                                <a @click="close">{{ trans('digital_drilling.default.reset') }}</a>
                             </div>
                         </div>
                     </div>
@@ -91,8 +103,11 @@
 </template>
 
 <script>
+    import {digitalDrillingState, globalloadingMutations} from '@store/helpers';
+    import Dropdown from '../components/dropdown'
     export default {
         name: "ImportDailyRaport",
+        components: {Dropdown},
         data(){
             return{
                 filelist: [],
@@ -102,43 +117,123 @@
                     report_id: "",
                 },
                 uploadTrue: false,
-                error_text: null
+                error_text: null,
+                dzo: [],
+                fields: [],
+                currentDZO: {
+                    name: ''
+                },
+                currentField: {
+                    name: ''
+                },
             }
         },
+        computed:{
+            ...digitalDrillingState([
+                'currentWell'
+            ]),
+        },
+        mounted(){
+            this.getDZO()
+            this.currentDZO.id = this.currentWell.dzo_id
+            this.currentDZO.name = this.currentWell.dzo_name
+            this.currentField.id = this.currentWell.field_id
+            this.currentField.name = this.currentWell.field_name
+            this.form.well_num = this.currentWell.well_num
+        },
         methods: {
+            ...globalloadingMutations([
+                'SET_LOADING'
+            ]),
+            close(){
+                this.$emit('close')
+            },
+            changeField(item){
+                this.currentField.id = item.id
+                this.currentField.name = item.name
+                this.checkForm()
+            },
+            async filterField(query){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'?q='+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                        if (data.length>0){
+                            this.currentField = data[0].id;
+                        }
+
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
+            getDZO(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search').then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.dzo = data;
+                        this.getField('')
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
+            async getField(item){
+                if (item!=''){
+                    if (this.currentDZO != item){
+                        this.currentField = {
+                            name: ''
+                        }
+                    }
+                    this.currentDZO = item
+                    this.form.well_num = ''
+                }
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
             importFile(){
                 if (this.uploadTrue) {
+                    this.SET_LOADING(true)
                     let formData = new FormData();
                     formData.append('file', this.filelist[0]);
-                    formData.append('uwi', this.form.well_num);
+                    formData.append('well_num', this.form.well_num);
                     formData.append('report_id', this.form.report_id);
                     formData.append('report_date', this.form.date);
+                    formData.append('field', this.currentField.name);
                     this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/import_report/',
                         formData).then((response) => {
                         if (response) {
                             this.filelist = [],
                             this.error_text = null
-                            this.form = {
-                                well_num: "",
-                                date: "",
-                                report_id: "",
-                                filename: ""
-                            }
                             this.uploadTrue = false
-                            this.$bvToast.toast("Файл успешно импортирован!!", {
-                                title: "Отчет",
-                                variant: "success",
-                                solid: true,
-                                toaster: "b-toaster-top-center",
-                                autoHideDelay: 8000,
-                            });
+                            if (response.data.Success) {
+                                let item = {
+                                    dzo_id: this.currentDZO.id,
+                                    dzo_name:  this.currentDZO.name,
+                                    field_id: this.currentField.id,
+                                    field_name: this.currentField.name,
+                                    well_id: response.data.well_id,
+                                    well_num: this.form.well_num
+
+                                }
+                                this.$emit('saveReport', {Status: response.data.Status, item: item})
+                            }
+
                         } else {
                             console.log("No data");
                         }
                     }).catch((error) =>{
                         console.log(error)
-                        this.error_text = "Формат неправильный(должно быть что-то вроде AIR_0001)"
                     })
+                    this.SET_LOADING(false)
                 }
             },
             onChange() {
@@ -147,7 +242,13 @@
             },
             checkForm(){
                 if (this.filelist.length>0 && this.check()){
-                    this.uploadTrue = true
+                    if (this.form.well_num.toString().length > 4 ) {
+                        this.error_text = "Номер скважины должен содержать максимум 4 цифры"
+                        this.uploadTrue = false
+                    }else{
+                        this.error_text = ''
+                        this.uploadTrue = true
+                    }
                 }else{
                     this.uploadTrue = false
                 }
@@ -159,6 +260,9 @@
                         is_right = false
                         break
                     }
+                }
+                if (this.currentField.name == '') {
+                    is_right = false
                 }
                 return is_right
             },
@@ -194,10 +298,6 @@
     [v-cloak] {
         display: none;
     }
-    .daily-raport{
-        position: relative;
-        z-index: -1;
-    }
     .daily-raport-block{
         position: fixed;
         top: 0;
@@ -217,6 +317,10 @@
         width: 500px;
         border-radius: 4px;
         padding: 17px 14px;
+        height: auto;
+        max-height: 90%;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     .import-daily-raport .header{
         display: flex;
@@ -231,7 +335,7 @@
     .import-daily-raport .header-close{
 
     }
-    .import-daily-raport .header-close a{
+    .import-daily-raport .header-close div{
         background: #656A8A;
         border: 0;
         border-radius: 10px;
@@ -387,6 +491,9 @@
         background: #c63e4b;
         border-radius: 5px;
         font-weight: 600;
+    }
+    .dropdown__area{
+        width: 100%;
     }
 
 </style>

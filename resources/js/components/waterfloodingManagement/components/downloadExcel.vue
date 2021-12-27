@@ -33,7 +33,6 @@ export default {
     appendExcelData(elements){ this.excelData = elements; },
     toExcel(){
       this.SET_LOADING(true)
-      console.log(this.excelData)
       let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/export-excel/'
       axios.post(url,{
         user: this.user, page_name: this.excelData.name, page_data: this.excelData.data})

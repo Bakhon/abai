@@ -41,6 +41,4 @@ return array (
   'kN' => 'kN',
   'kNm' => 'kN*m',
   'thousand_tons' => 't. tons',
-  'rods' => 'rods',
-  'm3' => 'm³',
 );

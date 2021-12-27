@@ -56,9 +56,7 @@ export default {
 
   computed: {
     getSelectedWells() {
-      return this.selectedWells.map((item) => {
-        return item.value
-      })
+      return this.selectedWells.map((item) => item.value);
     },
 
     getTestWells() {

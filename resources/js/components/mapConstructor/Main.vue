@@ -93,6 +93,7 @@
                                  :key="project.key"
                                  :projectKey="project.key"
                                  :data="project"
+                                 :class="{'active-project-block': index === activeProjectIndex}"
                                  class="projectBlock"
                         ></Project>
                     </div>
@@ -124,5 +125,8 @@
 }
 .projectBlock {
     border: 1px groove;
+}
+.active-project-block {
+    border: 2px groove #20e200;
 }
 </style>

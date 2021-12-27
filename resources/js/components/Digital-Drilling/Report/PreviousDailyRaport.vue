@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="{fixed: fixedStyle}">
         <div class="container-main">
             <div class="col-sm-12">
                 <div class="daily_raport_block-header">
@@ -21,8 +21,11 @@
                            <button class="save" @click="editReport" v-if="isAuthor">
                                Редактировать
                            </button>
-                           <button class="save" @click="back">
+                           <button class="save" @click="back" v-if="!show">
                                Текущий отчет
+                           </button>
+                           <button class="save" @click="closeReport" v-if="show">
+                               Выйти
                            </button>
                        </div>
                     </div>
@@ -1451,7 +1454,7 @@
 
     export default {
         name: "PreviousDailyRaport",
-        props: ['report', 'user'],
+        props: ['report', 'user', 'show', 'fixedStyle'],
         data(){
             return{
                 reportDate: moment(this.report.report_daily.date, 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -1471,6 +1474,7 @@
                 isAuthor: false
             }
         },
+
         mounted(){
             this.changeTotalTime(24)
             this.changeTotalTime(6)
@@ -1515,6 +1519,9 @@
             },
             back(){
                 this.$emit('closePreviousReport')
+            },
+            closeReport(){
+                this.$emit('closeReport')
             },
             sumValues(a, b){
                 if (!a){

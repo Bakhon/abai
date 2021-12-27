@@ -19,9 +19,12 @@ import Legend from "ol-ext/legend/Legend";
 import CircleStyle from "ol/style/Circle";
 import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
-import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
+import {Control, defaults as defaultControls, MousePosition, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
 import moment from 'moment';
+import {createStringXY} from "ol/coordinate";
+import {DragBox, Select} from 'ol/interaction';
+import {platformModifierKeyOnly, shiftKeyOnly} from "ol/events/condition";
 
 export default {
     props: {
@@ -33,6 +36,7 @@ export default {
             base64Data: null,
             map: null,
             gridMapsValues: [],
+            selectedFeatures: [],
             legend: null,
             legendControl: null,
             mapOverlay: null,
@@ -71,6 +75,12 @@ export default {
             if (!this.isGridMap(type)) {
                 data = data[0];
             }
+            if (this.map !== null
+                && typeof this.map.getView().getProjection().getCode() !== "undefined"
+                && this.map.getView().getProjection().getCode() === "EPSG:4326") {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
+                return;
+            }
             return new Promise((resolve, reject) => {
                 try {
                     this.x1 = data.top_left[0];
@@ -91,6 +101,11 @@ export default {
                                     units: 'metric',
                                 }),
                                 new ExportMap(),
+                                new MousePosition({
+                                    coordinateFormat: createStringXY(),
+                                    className: 'mouse-position-coords',
+                                    target: document.getElementById('mouse-position'),
+                                }),
                             ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
@@ -103,6 +118,7 @@ export default {
                         });
                         this.addMapOverlay();
                         this.addMapLegend();
+                        this.addInteractions();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -312,7 +328,7 @@ export default {
                 const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
                 this.gridMapsValues.push(resultArray);
-                this.map.on('pointermove', function (evt) {
+                this.map.on('click', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
                         || evt.coordinate[0] > mapExtent[2]
@@ -583,6 +599,7 @@ export default {
                     layerGroup.name += typeof data.dataType === "undefined" ? '' :
                         data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
                     layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.type = 'bubbles';
                     layerGroup.legendItems = [{
                         title: 'Закачка жидкости, м3',
                         feature: new Feature({
@@ -615,47 +632,58 @@ export default {
             }
         },
         addGeographicalMap() {
-            let satelliteMapLayer = new TileLayer({
-                source: new XYZ({
-                    attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
-                    url:
-                        'https://services.arcgisonline.com/arcgis/rest/services/' +
-                        'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
-                    maxZoom: 11,
-                    projection: 'EPSG:4326',
-                    tileSize: 512,
-                    maxResolution: 180 / 512,
-                    wrapX: true,
-                    crossOrigin:"anonymous",
-                }),
-                visible: true,
-            });
-            let defaultMapLayer = new TileLayer({
-                source: new OSM(),
-                visible: false,
-            });
-            this.map = new Map({
-                controls: defaultControls().extend([
-                    new ScaleLine({
-                        units: 'metric',
+            if (this.map === null) {
+                let satelliteMapLayer = new TileLayer({
+                    source: new XYZ({
+                        attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
+                        url:
+                            'https://services.arcgisonline.com/arcgis/rest/services/' +
+                            'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
+                        maxZoom: 11,
+                        projection: 'EPSG:4326',
+                        tileSize: 512,
+                        maxResolution: 180 / 512,
+                        wrapX: true,
+                        crossOrigin:"anonymous",
                     }),
-                    new ToggleMapStyle(),
-                    new ExportMap(),
-                ]),
-                target: this.projectKey,
-                view: new View({
-                    projection: 'EPSG:4326',
-                    zoom: 0,
-                    center: [0, 0],
-                }),
-            });
-            let layerGroup = new LayerGroup();
-            layerGroup.name = 'Географическая карта';
-            layerGroup.type = 'map';
-            layerGroup.getLayers().push(defaultMapLayer);
-            layerGroup.getLayers().push(satelliteMapLayer);
-            this.addLayerGroupToMap(layerGroup);
-            this.addMapLegend();
+                    visible: true,
+                });
+                let defaultMapLayer = new TileLayer({
+                    source: new OSM(),
+                    visible: false,
+                });
+                this.map = new Map({
+                    controls: defaultControls().extend([
+                        new ScaleLine({
+                            units: 'metric',
+                        }),
+                        new ToggleMapStyle(),
+                        new ExportMap(),
+                        new MousePosition({
+                            coordinateFormat: createStringXY(4),
+                            className: 'mouse-position-coords',
+                            projection: 'EPSG:4326',
+                            target: document.getElementById('mouse-position'),
+                        }),
+                    ],),
+                    target: this.projectKey,
+                    view: new View({
+                        projection: 'EPSG:4326',
+                        zoom: 0,
+                        center: [0, 0],
+                    }),
+                    mapType: 'geographical',
+                });
+                let layerGroup = new LayerGroup();
+                layerGroup.name = 'Географическая карта';
+                layerGroup.type = 'map';
+                layerGroup.getLayers().push(defaultMapLayer);
+                layerGroup.getLayers().push(satelliteMapLayer);
+                this.addLayerGroupToMap(layerGroup);
+                this.addMapLegend();
+            } else {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
+            }
         },
         addMapOverlay() {
             let $self = this;
@@ -669,7 +697,7 @@ export default {
                 element: popupDiv,
             });
             this.map.addOverlay(this.mapOverlay);
-            this.map.on('pointermove', function (e) {
+            this.map.on('click', function (e) {
                 if (e.dragging) {
                     return;
                 }
@@ -791,6 +819,88 @@ export default {
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
+        },
+        addInteractions() {
+            let $self = this;
+            const select = new Select({
+                addCondition: platformModifierKeyOnly,
+            });
+            this.map.addInteraction(select);
+            select.on('select', function (e) {
+                const candidateFeatures = $self.selectedFeatures;
+                e.selected.forEach(feature => {
+                    if (feature.getGeometry() instanceof LineString) {
+                        select.getLayer(feature).getSource().getFeatures().forEach(feature => {
+                            candidateFeatures.push(feature);
+                        })
+                    }
+                })
+            })
+            const dragBox = new DragBox({
+                condition: shiftKeyOnly,
+            });
+            this.map.addInteraction(dragBox);
+            this.selectedFeatures = select.getFeatures();
+            dragBox.on('boxend', function () {
+                const rotation = $self.map.getView().getRotation();
+                const oblique = rotation % (Math.PI / 2) !== 0;
+                const candidateFeatures = oblique ? [] : $self.selectedFeatures;
+                const extent = dragBox.getGeometry().getExtent();
+                $self.map.getLayerGroup().getLayers().forEach(layerGroup => {
+                    layerGroup.getLayers().forEach(layer => {
+                        switch (layerGroup.type) {
+                            case 'border':
+                                let selectFeature = true;
+                                layer.getSource().getFeatures().forEach(feature => {
+                                    selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                })
+                                if (selectFeature) {
+                                    layer.getSource().getFeatures().forEach(feature => {
+                                        candidateFeatures.push(feature);
+                                    })
+                                }
+                                break;
+                            default:
+                                layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+                                    let selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                    if (selectFeature) {
+                                        candidateFeatures.push(feature);
+                                    }
+                                });
+                        }
+                    })
+                })
+                if (oblique) {
+                    const anchor = [0, 0];
+                    const geometry = dragBox.getGeometry().clone();
+                    geometry.rotate(-rotation, anchor);
+                    const extent = geometry.getExtent();
+                    candidateFeatures.forEach(function (feature) {
+                        const geometry = feature.getGeometry().clone();
+                        geometry.rotate(-rotation, anchor);
+                        if (geometry.intersectsExtent(extent)) {
+                            $self.selectedFeatures.push(feature);
+                        }
+                    });
+                }
+            });
+            dragBox.on('boxstart', function (e) {
+                if (typeof this.selectedFeatures !== "undefined" && this.selectedFeatures.length > 0) {
+                    this.selectedFeatures.clear();
+                }
+            });
+        },
+        checkFeatureInExtent(extent, feature) {
+            let featureInExtent = true;
+            let featureExtent = feature.getGeometry().getExtent();
+            if (extent[0] > featureExtent[0]
+                || extent[1] > featureExtent[1]
+                || extent[2] < featureExtent[2]
+                || extent[3] < featureExtent[3]) {
+                featureInExtent = false
+            }
+
+            return featureInExtent;
         }
     }
 }
@@ -931,5 +1041,11 @@ class ExportMap extends Control {
 }
 .ol-control.mapLegend {
     bottom: 2.5em;
+}
+.mouse-position-coords {
+    color: #ccc;
+    position: absolute;
+    bottom: 0;
+    right: 10%;
 }
 </style>

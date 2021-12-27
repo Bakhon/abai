@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Jobs\RunPostgresqlProcedure;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
 use App\Services\AttachmentService;
@@ -17,32 +18,6 @@ class CurrentGDIS extends TableForm
     protected $gdisFields = [
         [
             'code' => 'target',
-            'params' => [
-                'type' => 'text'
-            ]
-        ],
-        [
-            'code' => 'conclusion',
-            'params' => [
-                'type' => 'dict',
-                'dict' => 'gdis_conclusion',
-            ]
-        ],
-        [
-            'code' => 'device',
-            'params' => [
-                'type' => 'dict',
-                'dict' => 'device'
-            ]
-        ],
-        [
-            'code' => 'transcript_dynamogram',
-            'params' => [
-                'type' => 'text'
-            ]
-        ],
-        [
-            'code' => 'note',
             'params' => [
                 'type' => 'text'
             ]
@@ -62,15 +37,10 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
-        'TBP',
-        'OTP',
-        'OTPM',
-        'STLV',
         'FLVL',
+        'STLV',
         'BHP',
         'RP',
-        'RRP',
-        'MLP',
         'BP',
         'STP',
         'RSVT',
@@ -97,8 +67,8 @@ class CurrentGDIS extends TableForm
         'PFLL'
     ];
 
-    protected $fieldsOrder = [       
-        'target',        
+    protected $fieldsOrder = [
+        'target',
         'FLVL',
         'STLV',
         'OTP',
@@ -107,35 +77,13 @@ class CurrentGDIS extends TableForm
         'PFLL',
         'BHP',
         'RP',
-        'TBP',      
-        'GASR',        
-        'INJR',
-        'FLRT',
-        'FLRD',
-        'WCUT',
-        'MLP',  
-        'conclusion',     
-        'ADMCF',
-        'PDCF',
-        'RRP',
-        'STP',
-        'RSVT',
+        'BP',
+        'OTP',
+        'PSD',
+        'conclusion',
         'device',
         'transcript_dynamogram',
-        'RSD',
-        'PRDK',
-        'DBD',
-        'SLHDM',
-        'PSHDM',
         'note',
-        'PSD',
-        'OTPM',
-        'TPDM',
-        'PLST',
-        'PMPR',
-        'SHDMD',
-        'SHDME',
-        'RPM',
         'conclusion_text',
         'file_dynamogram'
     ];
@@ -150,7 +98,6 @@ class CurrentGDIS extends TableForm
 
     public function getResults(): array
     {
-
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -461,5 +408,20 @@ class CurrentGDIS extends TableForm
         }
 
         return [];
+    }
+
+
+    protected function afterSubmit(array $fields, array $filter = [])
+    {
+        $date = Carbon::parse($filter['date']);
+        if ($date->startOfDay() >= Carbon::now()->startOfDay()) {
+            return;
+        }
+
+        if (!empty($fields)) {
+            $field = reset($fields);
+            $wellId = $field['last_measure_value']['params']['well_id'];
+            RunPostgresqlProcedure::dispatch('dmart.sync_well_daily_prod_oil_abai', [$wellId, $date->format('Y-m-d')]);
+        }
     }
 }

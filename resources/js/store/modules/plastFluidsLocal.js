@@ -29,6 +29,7 @@ const plastFluidsLocal = {
       { key: "Ds", order: 2 },
       { key: "Ms", order: 3 },
     ],
+    defaultIntersection: {},
     localHorizons: [],
     blocks: [],
     currentBlocks: [],
@@ -80,6 +81,9 @@ const plastFluidsLocal = {
     },
     SET_CURRENT_GRAPHICS(state, payload) {
       state.currentGraphics = payload;
+    },
+    SET_DEFAULT_INTERSECTION(state, payload) {
+      state.defaultIntersection = payload;
     },
     SET_LOCAL_HORIZONS(state, payload) {
       state.localHorizons = payload;
@@ -235,20 +239,18 @@ const plastFluidsLocal = {
         let merged = { ...postDataMock, ...rest };
         const postData = convertToFormData(merged);
         const data = await getTableData(postData, postUrl);
-        commit(
-          "SET_TABLE_FIELDS",
-          Array.isArray(data) ? data[0].table_header : data.header
-        );
-        commit(
-          "SET_LOCAL_HORIZONS",
-          Array.isArray(data) ? data[1].filter_data : data.filter_data
-        );
         if (Array.isArray(data)) {
-          commit(
-            "SET_TABLE_ROWS",
-            state.graphType === "ps_bs_ds_ms" ? data.slice(3) : data.slice(2)
-          );
+          commit("SET_TABLE_FIELDS", data[0].table_header);
+          commit("SET_LOCAL_HORIZONS", data[1].filter_data);
+          if (state.graphType === "ps_bs_ds_ms") {
+            commit("SET_DEFAULT_INTERSECTION", data[2].intersection);
+            commit("SET_TABLE_ROWS", data.slice(3));
+            return;
+          }
+          commit("SET_TABLE_ROWS", data.slice(2));
         } else {
+          commit("SET_TABLE_FIELDS", data.header);
+          commit("SET_LOCAL_HORIZONS", data.filter_data);
           commit("SET_TABLE_ROWS", data.table);
         }
       } catch (error) {

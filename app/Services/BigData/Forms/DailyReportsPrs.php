@@ -6,7 +6,6 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\Org;
 use App\Services\BigData\StructureService;
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
@@ -65,8 +64,7 @@ class DailyReportsPrs extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
-        $org = Org::find($this->request->get('id'));
-        $wellIds = $this->getOrgWells($org, Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable());
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
 
         $rows = DB::connection('tbd')
             ->table('prod.well_workover as ww')
@@ -85,9 +83,12 @@ class DailyReportsPrs extends TableForm
             ->leftJoin('prod.report_org_daily_repair as rodr', 'ww.id', 'rodr.workover')
             ->leftJoin('prod.well_tech as wt', 'w.id', 'wt.well')
             ->leftJoin('dict.tech as t', 'wt.tech', 't.id')
-            ->whereIn('w.id', $wellIds)
+            ->whereIn('w.id', $wells->pluck('id')->toArray())
             ->where('ww.dbeg', '<=', $filter->date)
-            ->where('ww.dend', '>=', $filter->date)
+            ->where(function ($query) use ($filter) {
+                $query->where('ww.dend', '>=', $filter->date)
+                    ->orWhereNull('ww.dend');
+            })
             ->where('wrt.code', $this->repairType)
             ->where('wt.dbeg', '<=', $filter->date)
             ->where('wt.dend', '>', $filter->date)

@@ -88,13 +88,58 @@
                     </div>
                     <div class="historical-info-parent">
                         <div v-show="periodItem.isExpanded" class="historical-info">
-                            <div :class="[periodItem.isHorizontalExpanded ? 'daily-table_width__450': 'daily-table_width__250','bd-table-first']">
+                            <div :class="[periodItem.isHorizontalExpanded ? 'daily-table_width__250': 'daily-table_width__250','bd-table-first']">
                                 <table class="table text-center text-white  historical-table">
                                     <thead>
                                     <tr>
                                         <th v-if="periodItem.isHorizontalExpanded">Длина НКТ, м</th>
                                         <th v-if="periodItem.isHorizontalExpanded">Ø<br>штуцера, мм</th>
                                         <th v-if="periodItem.isHorizontalExpanded">Вид<br>агента</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                                :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
+                                        >
+                                            <td v-if="periodItem.isHorizontalExpanded">
+                                                {{formatNumber(periodItem.params.monthlyData[0].pump_stroke.toFixed(1))}}
+                                            </td>
+                                            <td v-if="periodItem.isHorizontalExpanded">
+                                                 {{formatNumber(periodItem.params.monthlyData[0].choke.toFixed(1))}}
+                                            </td>
+                                            <td v-if="periodItem.isHorizontalExpanded">
+                                                {{periodItem.params.monthlyData[0].name_short_ru}}
+                                            </td>
+                                        </tr>
+                                        <tr class="header-background_dark">
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                        </tr>
+                                        <tr class="header-background_dark">
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                        </tr>
+                                        <tr class="header-background_dark">
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div :class="[periodItem.isHorizontalExpanded ? 'table-arrow_show' : 'table-arrow_hide', 'table-arrow']">
+                                    <div
+                                            :class="[periodItem.isHorizontalExpanded ? 'arrow-right' : 'arrow-left','cursor-pointer']"
+                                            @click="periodItem.isHorizontalExpanded = !periodItem.isHorizontalExpanded"
+                                    >
+                                    </div>
+                                </div>
+                            </div>
+                            <div :class="[periodItem.isHorizontalExpanded ? 'daily-table_width__250 bd-table-first-item': 'daily-table_width__270']">
+                                <table class="table text-center text-white  historical-table">
+                                    <thead>
+                                    <tr>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
                                     </tr>
@@ -105,9 +150,6 @@
                                                 v-for="(techModeItem,index) in periodItem.params.techMode"
                                                 :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                         >
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">
                                                 {{techModeItem.label}}
                                             </td>
@@ -116,21 +158,11 @@
                                             </td>
                                         </tr>
                                         <tr class="header-background_dark">
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
-                                            <td v-if="periodItem.isHorizontalExpanded">&nbsp;</td>
                                             <td class="background__light">Мероприятия</td>
                                             <td>{{periodItem.params.activity.length}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="table-arrow">
-                                    <div
-                                            :class="[periodItem.isHorizontalExpanded ? 'arrow-right' : 'arrow-left','cursor-pointer']"
-                                            @click="periodItem.isHorizontalExpanded = !periodItem.isHorizontalExpanded"
-                                    >
-                                    </div>
-                                </div>
                             </div>
                             <div :class="[periodItem.isHorizontalExpanded ? 'days-table_left__450' : 'days-table_left__250','bd-table-second']">
                                 <table class="table text-center text-white text-nowrap historical-table days-decomposition">
@@ -183,7 +215,7 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                 v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                         >
                                             {{periodItem.params.monthlyData[dayNumber-1].workHours}}
                                         </td>
@@ -345,6 +377,7 @@
                             'month': date.format('MMM'),
                             'year': date.format('YYYY'),
                             'date': date,
+                            'yearMonth': date.format('YYYY-MM-DD'),
                             'isChecked': false,
                             'isVisible': false,
                             'waterInjection': _.sumBy(month, 'water_vol'),
@@ -362,7 +395,7 @@
                                         'value': '-',
                                     },
                                     {
-                                        'label': 'Обработанное время, ч',
+                                        'label': 'Отработанное время, ч',
                                         'value': '-',
                                     },
                                 ],
@@ -425,7 +458,7 @@
                     this.techMode = await this.getProductionTechMode();
                 }
                 for (let i in this.historicalData) {
-                    let techModeItem = this.techMode.find(o => o.dbeg === this.historicalData[i].date.format("YYYY-MM-DD"));
+                    let techModeItem = this.techMode.find(o => o.dbeg <= this.historicalData[i].date.format("YYYY-MM-DD") && o.dend > this.historicalData[i].date.format("YYYY-MM-DD"));
                     for (let y in techModeItem) {
                         if (!isNaN(this.techModeMapping[y])) {
                             this.historicalData[i].params['techMode'][this.techModeMapping[y]].value = techModeItem[y];
@@ -463,6 +496,7 @@
             this.assignInfoByDates(response.data);
             this.nahdleMeasurementSchedule();
             this.SET_LOADING(false);
+            
         },
         computed: {
             ...bigdatahistoricalVisibleState(['injectionMeasurementSchedule']),
@@ -700,11 +734,20 @@
     .bd-table-first {
         position: relative;
     }
+    .bd-table-first-item{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 225px;
+    }
     .daily-table_width__450 {
         width: 450px;
     }
+    .daily-table_width__270{
+        width: 277px;
+    }
     .daily-table_width__250 {
-        width: 276px;
+        width: 226px;
     }
     .table-arrow {
         background: #8F95BA;
@@ -718,6 +761,12 @@
         align-items: center;
         justify-content: center;
         transform: translateY(-50%);
+        &_show{
+            transform: translateY(-50%);
+        }
+        &_hide{
+            transform: translateY(57px);    
+        }
         &.hide {
             transform: translateY(-50%) rotate(180deg);
         }

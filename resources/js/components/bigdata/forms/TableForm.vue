@@ -30,7 +30,8 @@
               {{ trans('bd.select_dzo') }}
             </p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
+            <div v-else ref="table_wrap" :class="{'tables_with-summary': formParams.summary}"
+                 class="tables__list scrollable">
               <div v-for="custom_column in formParams.custom_columns">
                 <div :is="custom_column.component_name"
                      :allColumns="formParams.columns"
@@ -80,6 +81,13 @@
                 </div>
               </template>
               <div v-if="activeTab === 'tab_form'" class="table__wrap">
+                <div v-if="hasToggleColumns" class="table-arrow">
+                  <div
+                      :class="[isToggleColumnsHidden ? 'arrow-left' : 'arrow-right', 'cursor-pointer']"
+                      @click="toggleColumns"
+                  >
+                  </div>
+                </div>
                 <table v-if="rows.length" class="table">
                   <thead>
                   <template v-if="formParams.complicated_header">
@@ -367,7 +375,8 @@ export default {
       isInnerFormOpened: false,
       innerFormParams: null,
       innerFormValues: null,
-      innerFormWellId: null
+      innerFormWellId: null,
+      isToggleColumnsHidden: false
     }
   },
   watch: {
@@ -385,11 +394,24 @@ export default {
     },
     initialRows(value) {
       this.rows = JSON.parse(JSON.stringify(value))
+      this.recalculateCells()
     }
   },
   computed: {
     visibleColumns() {
-      return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
+      return this.formParams.columns.filter(column => {
+            if (column.type === 'hidden') return false
+            if (column.visible === false) return false
+            if (this.isToggleColumnsHidden && column.toggle && column.toggle === true) return false
+
+            return true
+          }
+      )
+    },
+    hasToggleColumns() {
+      return this.formParams.columns.filter(column => {
+        return column.toggle && column.toggle === true
+      }).length > 0
     }
   },
   mounted() {
@@ -471,6 +493,7 @@ export default {
     },
     recalculateCells() {
       this.rows.forEach((row, rowIndex) => {
+
         this.formParams.columns
             .filter(column => column.type === 'calc')
             .forEach(column => {
@@ -573,6 +596,11 @@ export default {
         }
 
         this.visibleColumns.forEach(column => {
+          if (column.is_editable === false) {
+            if (typeof row[column.code] !== 'undefined' && (!row[column.code].hasOwnProperty('is_editable') || !row[column.code].is_editable)) {
+              delete fields[row.id][column.code]
+            }
+          }
           if (this.isColumnRequired(column) && !fields[row.id][column.code]) {
             fields[row.id][column.code] = {value: row[column.code].value}
             if (row[column.code].id) {
@@ -848,6 +876,9 @@ export default {
         this.$refs.container.style.height = height + 'px'
         this.$refs.table_wrap.style.height = (height - 10) + 'px'
       })
+    },
+    toggleColumns() {
+      this.isToggleColumnsHidden = !this.isToggleColumnsHidden
     }
   },
 };
@@ -961,10 +992,54 @@ body.fixed {
     margin: 0;
     padding: 0;
 
-    .tables {
+    .tables__list {
       overflow-x: auto;
       overflow-y: auto;
       width: 100%;
+    }
+
+    .table__wrap {
+      position: relative;
+
+      .table-arrow {
+        background: #8F95BA;
+        border-radius: 5px 0 0 5px;
+        width: 13px;
+        height: 50px;
+        position: absolute;
+        left: 0;
+        top: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+
+        & + .table {
+          margin-left: 13px;
+          width: calc(100% - 13px);
+        }
+      }
+
+      .arrow-right {
+        background: url(/img/bd/arrow-well-right.svg) no-repeat;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-position: center;
+      }
+
+      .arrow-left {
+        background: url(/img/bd/arrow-well-left.svg) no-repeat;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-position: center;
+      }
+
     }
 
     .summary {

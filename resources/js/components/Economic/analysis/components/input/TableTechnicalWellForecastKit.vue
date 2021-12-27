@@ -3,7 +3,7 @@
       ref="table"
       :params="params"
       class="height-fit-content height-unset">
-    <div slot="column-5" slot-scope="{ props }" class="mx-auto">
+    <div slot="column-7" slot-scope="{ props }" class="mx-auto">
       <delete-button @click.native="deleteKit(props.rowData[0].data)"/>
     </div>
   </vue-table-dynamic>
@@ -35,19 +35,33 @@ export default {
 
       const {data} = await this.axios.get(`${this.url}/get-data`)
 
-      data.forEach(item => {
+      data.forEach(kit => {
         let row = []
 
         this.headers.forEach(header => {
           if (header.isUser) {
-            return row.push(item[header.key] ? `${item.created_at} ${item[header.key].name}` : '')
+            return row.push(kit[header.key] ? `${kit.created_at} ${kit[header.key].name}` : '')
           }
 
           if (header.isRelationName) {
-            return row.push(item[header.key] ? item[header.key].name : '')
+            return row.push(kit[header.key] ? kit[header.key].name : '')
           }
 
-          row.push(item[header.key])
+          if (header.isParams) {
+            let value = ''
+
+            kit[header.key].forEach((param, paramIndex) => {
+              value += paramIndex ? `, ${param.value}` : param.value
+            })
+
+            return row.push(value)
+          }
+
+          if (header.isProgress) {
+            return row.push(`${kit.calculated_variants}/${kit.total_variants}`)
+          }
+
+          row.push(kit[header.key])
         })
 
         this.data.push(row)
@@ -91,6 +105,10 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
+        columnWidth: this.headers.map((header, index) => ({
+          column: index,
+          width: header.width || 220
+        }))
       }
     },
 
@@ -99,6 +117,7 @@ export default {
         {
           label: 'id',
           key: 'id',
+          width: 50
         },
         {
           label: this.trans('economic_reference.name'),
@@ -115,9 +134,19 @@ export default {
           isRelationName: true
         },
         {
+          label: this.trans('economic_reference.permanent_stop_coefficient'),
+          key: 'permanent_stop_coefficients',
+          isParams: true
+        },
+        {
           label: this.trans('economic_reference.added_date_author'),
           key: 'user',
           isUser: true
+        },
+        {
+          label: this.trans('economic_reference.progress'),
+          key: 'progress',
+          isProgress: true
         },
         {
           label: '',

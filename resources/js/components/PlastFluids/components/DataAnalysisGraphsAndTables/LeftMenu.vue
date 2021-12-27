@@ -96,7 +96,7 @@ export default {
           children: [
             { key: "Rs", Label: "Rs", order: 0 },
             { key: "Ps", Label: "Ps", order: 1 },
-            { key: "Mo", Label: "μo", order: 2 },
+            { key: "Ms", Label: "μo", order: 2 },
             { key: "Ds", Label: "po", order: 3 },
           ],
         },
@@ -110,16 +110,15 @@ export default {
             { key: "do", Label: "Do", order: 3 },
             { key: "viscosity_reservoir_oil", Label: "mo", order: 4 },
             { key: "density_separated_oil", Label: "po", order: 5 },
-            { key: "mod", Label: "mod", order: 6 },
           ],
         },
         {
           name: "temperature",
           key: "temperature",
           children: [
-            { key: "Ms", Label: "μos", order: 0 },
-            { key: "Mod", Label: "mod", order: 1 },
-            { key: "Ds", Label: "Ds", order: 2 },
+            { key: "Ms", Label: "μoi", order: 0 },
+            { key: "Mod", Label: "μod", order: 1 },
+            { key: "Ds", Label: "po", order: 2 },
           ],
         },
         {
