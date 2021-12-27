@@ -40,7 +40,7 @@ class Gdis extends PlainForm
         foreach ($this->rows as $row) {
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
-                if (!empty($value->value_string)) {
+                if (!empty($value->value_double)) {
                     $gdisComplexCodes[$value->code] = '';
                 }
             }
@@ -275,7 +275,7 @@ class Gdis extends PlainForm
                 [
                     'gdis_complex' => $id,
                     'metric' => $metricId,
-                    'value_string' => $value
+                    'value_double' => $value
                 ]
             );
     }
@@ -297,8 +297,8 @@ class Gdis extends PlainForm
             $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
             foreach ($rowGdisComplexValues as $value) {
                 $field = $this->getFields()->where('code', $value->code)->first();
-                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_string;
-                $row->{$value->code} = $value->value_string;
+                $researchResults[] = ($field ? $field['title'] : $value->code) . ': ' . $value->value_double;
+                $row->{$value->code} = $value->value_double;
             }
 
             $row->research_results = implode(', ', $researchResults);
@@ -314,7 +314,7 @@ class Gdis extends PlainForm
         if (empty($this->gdisComplexValues)) {
             $this->gdisComplexValues = DB::connection('tbd')
                 ->table('prod.gdis_complex_value as g')
-                ->select('g.gdis_complex', 'm.code', 'g.value_string')
+                ->select('g.gdis_complex', 'm.code', 'g.value_double', 'g.value_double')
                 ->whereIn('gdis_complex', $rowIds)
                 ->join('dict.metric as m', 'm.id', 'g.metric')
                 ->get();
