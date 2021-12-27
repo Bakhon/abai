@@ -5,7 +5,6 @@ namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
 use App\Models\BigData\Dictionaries\Block;
-use App\Models\BigData\Dictionaries\BottomHoleParam;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
@@ -315,10 +314,6 @@ class DictionaryService
             'class' => WorkStatus::class,
             'name_field' => 'name_ru'
         ],
-        'bottom_hole_param' => [
-            'class' => BottomHoleParam::class,
-            'name_field' => 'name_ru'
-        ]
     ];
 
     const TREE_DICTIONARIES = [
@@ -466,6 +461,12 @@ class DictionaryService
                     break;
                 case 'casings':
                     $dict = $this->getCasingTypes();
+                    break;
+                case 'bottom_hole_param_td':
+                    $dict = $this->getBottomHoleParams('TD');
+                    break;
+                case 'bottom_hole_param_hud':
+                    $dict = $this->getBottomHoleParams('HUD');
                     break;
                 default:
                     throw new DictionaryNotFound();
@@ -954,5 +955,22 @@ class DictionaryService
             )
             ->toArray();
         return $items;
+    }
+
+    private function getBottomHoleParams(string $bottomHoleTypeCode)
+    {
+        return DB::connection('tbd')
+            ->table('dict.bottom_hole_param as bhp')
+            ->selectRaw('bhp.id, bhp.name_ru as name')
+            ->leftJoin('dict.bottom_hole_type as bht', 'bhp.bottom_hole_type', 'bht.id')
+            ->where('bht.code', $bottomHoleTypeCode)
+            ->orderBy('name')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
     }
 }    

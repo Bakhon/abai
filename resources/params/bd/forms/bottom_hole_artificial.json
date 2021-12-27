@@ -30,7 +30,7 @@
               {
                 "code": "param",
                 "type": "dict",
-                "dict": "bottom_hole_param",
+                "dict": "bottom_hole_param_hud",
                 "title": "param",
                 "validation": "required"
               }
