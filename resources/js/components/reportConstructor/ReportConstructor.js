@@ -24,6 +24,7 @@ export default {
                 tech: null,
                 geo: null
             },
+            reportName: null,
             attributeDescriptions: null,
             attributesForObject: null,
             attributesByHeader: null,

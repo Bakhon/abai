@@ -597,7 +597,9 @@ export default {
 
         this.visibleColumns.forEach(column => {
           if (column.is_editable === false) {
-            delete fields[row.id][column.code]
+            if (typeof row[column.code] !== 'undefined' && (!row[column.code].hasOwnProperty('is_editable') || !row[column.code].is_editable)) {
+              delete fields[row.id][column.code]
+            }
           }
           if (this.isColumnRequired(column) && !fields[row.id][column.code]) {
             fields[row.id][column.code] = {value: row[column.code].value}
