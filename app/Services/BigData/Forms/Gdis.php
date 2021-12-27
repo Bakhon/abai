@@ -35,29 +35,38 @@ class Gdis extends PlainForm
         $columns = parent::getColumns();
         $metricColumns = $this->getMetricColumns();
 
-        $gdisComplexValues = $this->getGdisComplexValues($this->rows->pluck('id'));
-        $gdisComplexCodes = [];
-        foreach ($this->rows as $row) {
-            $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
-            foreach ($rowGdisComplexValues as $value) {
-                if (!empty($value->value_double)) {
-                    $gdisComplexCodes[$value->code] = '';
-                }
-            }
-        }
+        $codes = [
+            'BHPR',
+            'RP',
+            'PNT',
+            'PRCB',
+            'SKFC'
+        ];
 
-
-        $metricColumnsCodes = [];
+        $additionalColumns = $metricColumnsCodes = [];
         foreach ($metricColumns as $column) {
-            if (!isset($gdisComplexCodes[$column['code']])) {
+            if (!in_array($column['code'], $codes)) {
                 continue;
             }
             if (!in_array($column['code'], $metricColumnsCodes)) {
-                $column['toggle'] = true;
-                $columns['research_results_' . $column['code']] = $column;
+                $additionalColumns['research_results_' . $column['code']] = $column;
             }
             $metricColumnsCodes[] = $column['code'];
         }
+
+        $secondPart = $columns->splice(4);
+        $columns = $columns->merge($additionalColumns)->merge($secondPart);
+
+        $columns->put(
+            'documents',
+            [
+                'code' => 'documents',
+                'title' => trans('bd.documents'),
+                'document_list' => true,
+                'type' => 'text'
+            ]
+        );
+
         return $columns;
     }
 

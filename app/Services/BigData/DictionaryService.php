@@ -870,11 +870,10 @@ class DictionaryService
     }
 
     private function getResMethodDict(){
-        $codes = ['SSPR', 'PDC', 'IPR', 'IDR', 'UKPD', 'MN', 'RLR', 'RPM', 'LDR', 'PBR', 'SSSR', 'EPIM'];
         $items = DB::connection('tbd')
             ->table('dict.research_method as r')
             ->select('r.id', 'r.name_ru as name', 'r.code')
-            ->whereIn('r.code', $codes)
+            ->where('r.gdis_complex', true)
             ->orderBy('name', 'asc')
             ->get()
             ->map(
