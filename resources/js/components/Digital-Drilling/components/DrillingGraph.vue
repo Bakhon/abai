@@ -142,7 +142,7 @@
             },
             async getDataGraph(){
                 try{
-                    await this.axios.get('http://172.20.103.67:8630' + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
                         let data = response.data;
                         if (data) {
                             this.dataGraph =  data
