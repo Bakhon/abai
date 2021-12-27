@@ -1,8 +1,8 @@
 <template>
   <div class="filter-container">
 
-     <org-selector v-model="org"></org-selector>
-     
+    <org-selector v-model="org"></org-selector>
+    
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
