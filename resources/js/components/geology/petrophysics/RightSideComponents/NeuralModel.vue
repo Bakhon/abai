@@ -7,9 +7,8 @@
       </div>
     </ToolBlock>
 
-    <ToolBlock color="--a-danger" :title="`Нет данных ${k}`" v-for="(val, k) in missingElements" :key="k"
-               v-show="val.length" class="mb-2">
-      <div class="d-flex align-items-center p-2" v-if="val.length">
+    <ToolBlock color="danger" :title="`Нет данных ${k}`" v-for="(val, k) in missingElements" :key="k" v-show="val.length" class="mb-2">
+      <div class="d-flex align-items-center p-2 flex-wrap" v-if="val.length">
         <Button v-for="(el, key) in val" :key="key" class="mr-2 flex-grow-1 mb-2" color="danger" align="center">
           {{ el }}
         </Button>

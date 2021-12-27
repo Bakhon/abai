@@ -9,7 +9,8 @@ export default {
         },
         getClasses() {
             return {
-                ["direction-"+this.labelDirection]: true
+                ["direction-"+this.labelDirection]: true,
+                [this.size]: true
             }
         }
     }

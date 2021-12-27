@@ -34,9 +34,9 @@
 
     <ToolBlock class="mb-2">
       <div class="p-2 grid__inputs">
-        <AwInput v-model="postData.method_params.pca_search_interval" min="30" :disabled="postData.method === 'DTW'" type="number"
+        <AwInput v-model="postData.method_params.pca_search_interval" min="10" :disabled="postData.method === 'DTW'" type="number"
                  class="curve-inputs mb-2" label-direction="row" label="Интервал поиска" />
-        <AwInput v-model="postData.method_params.pca_search_window_size" min="29" :disabled="postData.method === 'DTW'" type="number" class="curve-inputs"
+        <AwInput v-model="postData.method_params.pca_search_window_size" min="10" :disabled="postData.method === 'DTW'" type="number" class="curve-inputs"
                  label-direction="row" label="Окно поиска" />
       </div>
     </ToolBlock>

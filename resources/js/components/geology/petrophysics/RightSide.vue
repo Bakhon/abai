@@ -8,8 +8,9 @@
             ]" />
 
     </template>
-    <component v-bind="components.options[components.activeComponent]"
-               :is="components.options[components.activeComponent].is" />
+    <keep-alive>
+      <component v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    </keep-alive>
   </PageSide>
 </template>
 
