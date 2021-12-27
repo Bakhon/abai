@@ -17,6 +17,7 @@ class Gdis extends PlainForm
 
     protected $configurationFileName = 'gdis';
     protected $metricColumns;
+    protected $rows;
 
     protected function params(): array
     {
@@ -26,6 +27,21 @@ class Gdis extends PlainForm
             $this->getMetricColumns()
         );
         return $params;
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = parent::getColumns();
+        $metricColumns = $this->getMetricColumns();
+        $metricColumnsCodes = [];
+        foreach ($metricColumns as $column) {
+            if (!in_array($column['code'], $metricColumnsCodes)) {
+                $column['toggle'] = true;
+                $columns['research_results_' . $column['code']] = $column;
+            }
+            $metricColumnsCodes[] = $column['code'];
+        }
+        return $columns;
     }
 
     protected function getCustomValidationErrors(string $field = null): array
@@ -94,6 +110,19 @@ class Gdis extends PlainForm
         $this->metricColumns = $columns;
 
         return $columns;
+    }
+
+    public function getResults(): array
+    {
+        $rows = $this->getRows();
+        $this->rows = $rows;
+        $columns = $this->getColumns();
+
+        return [
+            'rows' => $rows->values(),
+            'columns' => $columns,
+            'form' => $this->params()
+        ];
     }
 
     protected function getRows(): Collection
@@ -245,7 +274,7 @@ class Gdis extends PlainForm
             ->join('dict.metric as m', 'm.id', 'g.metric')
             ->get();
 
-        return $rows->map(function ($row) use ($gdisComplexValues) {
+        $rows = $rows->map(function ($row) use ($gdisComplexValues) {
             if (isset($row->dend)) {
                 if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
                     $row->dend = null;
@@ -264,6 +293,8 @@ class Gdis extends PlainForm
 
             return $row;
         });
+
+        return $rows;
     }
 
 }
