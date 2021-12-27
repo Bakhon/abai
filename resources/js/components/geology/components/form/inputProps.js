@@ -7,6 +7,10 @@ export default {
         },
         readonly: Boolean,
         plaintext: Boolean,
-        value: String|Number
+        value: String|Number,
+        size: {
+            type: String,
+            default: 'md',
+        }
     }
 }

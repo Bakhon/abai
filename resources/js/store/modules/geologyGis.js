@@ -6,8 +6,10 @@ import {
     FETCH_WELLS_MNEMONICS,
     FETCH_WELLS_HORIZONS,
     FETCH_AUTOCORRELATION,
+    FETCH_FACIES_CLASSIFICATION,
 
     POST_HORIZON,
+    POST_INTERPRETATION,
 
     SET_WELLS_MNEMONICS,
     SET_FIELDS,
@@ -27,8 +29,9 @@ import {
     SET_AUTOCORRELATION,
     SET_SHOW_STRATIGRAPHY_ELEMENTS,
     SET_FACIES_CLASSIFICATION_TO_ELEMENTS,
+    SET_TIME_START_AUTOINTERPRETATION,
+    SET_CURRENT_TIME_AUTOINTERPRETATION,
 
-    GET_CURVES,
     GET_WELLS_OPTIONS,
     GET_TREE_CURVES,
     GET_FIELDS_OPTIONS,
@@ -36,8 +39,12 @@ import {
     GET_GIS_GROUPS,
     CURVE_ELEMENT_OPTIONS,
     GET_TREE_STRATIGRAPHY,
+
     COLOR_PALETTE,
-    FETCH_FACIES_CLASSIFICATION
+    CHECK_INTERPRETATION,
+    RESET_TIME_START_AUTOINTERPRETATION,
+    CHECK_TIMER,
+    RUN_TIMER,
 } from "./geologyGis.const";
 
 import {uuidv4} from "../../components/geology/js/utils";
@@ -49,9 +56,20 @@ import {Fetch_Horizons, Post_Horizons} from "../../components/geology/api/horizo
 import THorizon from '../../components/geology/petrophysics/graphics/awGis/utils/THorizon'
 import {Fetch_Autocorrelation} from "../../components/geology/api/autocorrelation.api";
 import {Fetch_FaciesClassification} from "../../components/geology/api/facies.api";
+import {Get_InterpretationStatus, Post_Interpretation} from "../../components/geology/api/interpretation.api";
 
 const geologyGis = {
     state: {
+        autoInterpretation:{
+            isActive: false,
+            scoreboard: "00:00",
+            currentTime: Date.now(),
+            startTime: null,
+            endTime: null,
+            minutesToAdd: 15, //min
+            updateInterval: "00", //sec
+            calculation_id: null
+        },
         changeGisData: Date.now(),
         gisDataCurves: {},
         gisData: [],
@@ -92,7 +110,13 @@ const geologyGis = {
         WELLS_HORIZONS: {},
         WELLS_HORIZONS_ELEMENTS: [],
         AUTOCORRELATION: [],
-    }, getters: {
+    },
+    getters: {
+        [CHECK_TIMER](state){
+            let {isActive, currentTime, endTime} = state.autoInterpretation;
+            return (isActive&&currentTime<new Date(endTime).getTime());
+        },
+
         [GET_WELLS_OPTIONS](state) {
             return forDropDownMap(state.WELLS, ["name", "name"]);
         },
@@ -110,7 +134,9 @@ const geologyGis = {
                 acc[gr] = state.awGis.getGroupElementsWithData(gr);
                 return acc;
             }, {});
-        }, [GET_TREE_STRATIGRAPHY](state) {
+        },
+
+        [GET_TREE_STRATIGRAPHY](state) {
             let stratigraphyArray = Object.entries(state.WELLS_HORIZONS);
             if (stratigraphyArray.length) {
                 let stratigraphyElements = state.tHorizon.elements.reduce((acc, el) => {
@@ -164,6 +190,7 @@ const geologyGis = {
             })
         },
     },
+
     mutations: {
         [SET_DRAG_PARAMS](state, [param, value]) {
             let params = state.wellTreeParam[param];
@@ -265,6 +292,7 @@ const geologyGis = {
             state.WELLS_HORIZONS = horizons;
             state.WELLS_HORIZONS_ELEMENTS = state.tHorizon.elements;
         },
+
         [SET_GIS_DATA](state, customMnemonics = false) {
             state.gisData = mnemonicsSort.apply(state.awGis, [(customMnemonics || state.WELLS_MNEMONICS), state]);
             state.gisGroups = state.awGis.getGroupList
@@ -365,10 +393,48 @@ const geologyGis = {
             this.commit(SET_GIS_DATA, [customMnemonic]);
             this.commit(SET_SELECTED_WELL_CURVES, model);
             this.commit(SET_GIS_DATA_FOR_GRAPH);
+        },
+
+        [RESET_TIME_START_AUTOINTERPRETATION](state) {
+            state.autoInterpretation.isActive = false;
+            state.autoInterpretation.calculation_id = null;
+            state.autoInterpretation.currentTime = Date.now();
+            state.autoInterpretation.startTime = null;
+            state.autoInterpretation.endTime = null;
+            state.autoInterpretation.scoreboard = `00:00`;
+        },
+        [SET_TIME_START_AUTOINTERPRETATION](state, calculation_id) {
+            state.autoInterpretation.isActive = true;
+            state.autoInterpretation.calculation_id = calculation_id;
+            state.autoInterpretation.currentTime = Date.now();
+            state.autoInterpretation.startTime = new Date();
+            state.autoInterpretation.endTime = new Date(state.autoInterpretation.currentTime + state.autoInterpretation.minutesToAdd*60000);
+        },
+        [SET_CURRENT_TIME_AUTOINTERPRETATION](state, [time = false, scoreboard = false]){
+            state.autoInterpretation.currentTime = time||Date.now();
+            if(scoreboard) state.autoInterpretation.scoreboard = scoreboard;
         }
     },
 
     actions: {
+        [RUN_TIMER]({state, getters, commit, dispatch}){
+            const two = (num)=> ((num<10)?`0${num}`:num);
+            let minutes, seconds;
+            let difference = (new Date(state.autoInterpretation.endTime) - new Date(state.autoInterpretation.currentTime)) / 1000;
+            let timer = setInterval(async ()=>{
+                difference--;
+                if(getters[CHECK_TIMER]){
+                    minutes = two(Math.floor(difference / 60));
+                    seconds = two(Math.trunc((difference - minutes * 60))).toString();
+                    if(seconds === state.autoInterpretation.updateInterval) await dispatch(CHECK_INTERPRETATION);
+                    commit(SET_CURRENT_TIME_AUTOINTERPRETATION, [false, `${minutes}:${seconds}`]);
+                }else{
+                    commit(RESET_TIME_START_AUTOINTERPRETATION);
+                    clearInterval(timer);
+                }
+            }, 1000);
+        },
+
         async [FETCH_DZOS]({commit}) {
             commit(SET_DZOS, await Fetch_DZOS());
         },
@@ -414,6 +480,20 @@ const geologyGis = {
 
         async [POST_HORIZON]({commit, state}, payload) {
             return await Post_Horizons(payload);
+        },
+
+        async [CHECK_INTERPRETATION]({state, commit}){
+            if(state.autoInterpretation.calculation_id)
+                return Get_InterpretationStatus(state.autoInterpretation.calculation_id).then(()=>{
+                    commit(RESET_TIME_START_AUTOINTERPRETATION);
+                })
+        },
+
+        async [POST_INTERPRETATION]({commit, state, dispatch}, payload) {
+            let result = await Post_Interpretation(payload)||{calculation_id:""};
+            commit(SET_TIME_START_AUTOINTERPRETATION, result.calculation_id);
+            dispatch(RUN_TIMER);
+            return result;
         },
     }
 }

@@ -6,7 +6,9 @@
               {label: 'Нейронная модель', value: 'neuralModel'},
             ]" />
     <dropdown :selected-value.sync="well" block class="w-100 mb-2" button-text="Скважина" :options="getWellsList" />
-    <component :well="well" v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    <keep-alive>
+      <component :well="well" v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    </keep-alive>
   </div>
 </template>
 
@@ -45,9 +47,11 @@ export default {
     }
   },
   computed:{
+
     getWellsList() {
       return (this.$store.state.geologyGis.gisWells || []).map((item) => ({value: item.name}));
     },
+
   }
 }
 </script>
