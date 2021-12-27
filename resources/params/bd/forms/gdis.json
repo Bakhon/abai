@@ -17,13 +17,13 @@
             "items": [
               {
                 "code": "dbeg",
-                "type": "datetime",
+                "type": "date",
                 "title": "dbeg",
                 "validation": "required"
               },
               {
                 "code": "dend",
-                "type": "datetime",
+                "type": "date",
                 "title": "dend",
                 "validation": "required|after:dbeg"
               },
@@ -39,11 +39,6 @@
                 "type": "numeric",
                 "title": "depth",
                 "validation": "nullable|lte:10000|gte:0"
-              },
-              {
-                "code": "research_target_text",
-                "type": "text",
-                "title": "aim"
               },
               {
                 "code": "conclusion_text",
