@@ -136,6 +136,11 @@ export default {
           isRelationName: true
         },
         {
+          label: this.trans('economic_reference.manufacturing_program'),
+          key: 'manufacturing_log',
+          isRelationName: true
+        },
+        {
           label: this.trans('economic_reference.gtm_kit'),
           key: 'gtm_kit',
           isRelationName: true

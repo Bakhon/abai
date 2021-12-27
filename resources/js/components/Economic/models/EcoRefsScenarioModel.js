@@ -13,6 +13,7 @@ export class EcoRefsScenarioModel {
             sc_fa_id: null,
             source_id: null,
             gtm_kit_id: null,
+            manufacturing_program_log_id: null,
             params: {
                 oil_prices: [this.oil_price],
                 dollar_rates: [this.dollar_rate],

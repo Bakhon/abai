@@ -856,11 +856,11 @@ class WellsController extends Controller
             ->withPivot('dbeg')
             ->where('metric.code', '=', $method)
             ->orderBy('dbeg', 'desc')
-            ->get(['value_string', 'dbeg'])
+            ->get(['value_string', 'value_double', 'dbeg'])
             ->toArray();
 
         if ($gdisComplex && $method == 'BHP' && $mainOrgCode == 'KGM') {
-            $gdisComplex[0]['value_string'] *= 0.987;
+            $gdisComplex[0]['value_double'] *= 0.987;
             return $gdisComplex[0];
         }
         if ($gdisComplex) {

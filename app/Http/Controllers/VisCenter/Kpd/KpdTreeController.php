@@ -8,6 +8,7 @@ use App\Models\VisCenter\Kpd\KpdTreeCatalog;
 use App\Models\VisCenter\Kpd\KpdCorporateManager;
 use App\Models\VisCenter\Kpd\KpdManagers;
 use App\Models\VisCenter\Kpd\KpdElements;
+use App\Models\VisCenter\Kpd\KpdFact;
 use Carbon\Carbon;
 
 class KpdTreeController extends Controller
@@ -84,8 +85,9 @@ class KpdTreeController extends Controller
     public function getAll()
     {
         return KpdTreeCatalog::query()
-            ->select(['id','name','description','unit','formula','responsible','functions','type','result','calculation_document','description_document'])
+            ->select(['id','name','description','unit','formula','responsible','functions','type','result','calculation_document','description_document','weight','step','target','maximum'])
             ->with('kpdElements:id,kpd_id,name,transcript,unit,source,responsible')
+            ->with('kpdFact')
             ->get();
     }
 
@@ -152,6 +154,41 @@ class KpdTreeController extends Controller
     {
         return KpdTreeCatalog::query()
             ->where('type',$request->input('type'))
+            ->with('kpdFact')
             ->get();
+    }
+
+    public function storeUpdatedKpd(Request $request)
+    {
+        $planParams = array ('step','target','maximum','weight');
+        foreach($request->request->all() as $kpd) {
+            $kpdRecord = KpdTreeCatalog::query()
+                ->where('id',$kpd['id'])
+                ->first();
+            $isUpdateRequired = false;
+            foreach ($planParams as $param) {
+                if (is_null($kpdRecord->$param)) {
+                    $isUpdateRequired = true;
+                    $kpdRecord->$param = $kpd[$param];
+                }
+            }
+            if ($isUpdateRequired) {
+                $kpdRecord->save();
+            }
+            $this->storeKpdFact($kpd['kpd_fact'],$kpdRecord);
+        }
+    }
+
+    private function storeKpdFact($factByDates,$kpdRecord)
+    {
+        foreach($factByDates as $fact) {
+            if (is_null($fact['id'])) {
+                $kpdFact = new KpdFact;
+                $kpdFact->kpdCatalog()->associate($kpdRecord);
+                $kpdFact->date = Carbon::parse($fact['date']);
+                $kpdFact->fact = $fact['fact'];
+                $kpdFact->save();
+            }
+        }
     }
 }
