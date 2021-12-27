@@ -30,6 +30,7 @@ import {
 } from "../../../../../../../store/modules/geologyGis.const";
 import WellBlock from "./components/WellBlock";
 import WellListBlock from "./components/WellListBlock";
+import {globalloadingMutations} from "../../../../../../../store/helpers";
 
 export default {
   name: 'LeftSide',
@@ -54,6 +55,7 @@ export default {
     },
 
     async updateCurveList(wellId) {
+      this.SET_LOADING(true);
       this.clearCurveList();
 
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, [wellId]);
@@ -61,17 +63,24 @@ export default {
       this.curveList = curveListRaw.map(function (t) {
         return {value: t.data.curve_id[wellId], label: t.data.name};
       });
+      this.SET_LOADING(false);
     },
 
     async setXData(curveId) {
+      this.SET_LOADING(true);
       await this.$store.dispatch(FETCH_WELLS_CURVES, [curveId]);
       this.$emit('setXData', this.$store.state.geologyGis.CURVES_OF_SELECTED_WELLS[curveId]);
+      this.SET_LOADING(false);
     },
 
     async setYData(curveId) {
+      this.SET_LOADING(true);
       await this.$store.dispatch(FETCH_WELLS_CURVES, [curveId]);
       this.$emit('setYData', this.$store.state.geologyGis.CURVES_OF_SELECTED_WELLS[curveId]);
+      this.SET_LOADING(false);
     },
+
+    ...globalloadingMutations(["SET_LOADING"]),
   },
 
   computed: {
