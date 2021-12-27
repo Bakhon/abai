@@ -5,6 +5,7 @@ namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
 use App\Models\BigData\Dictionaries\Block;
+use App\Models\BigData\Dictionaries\BottomHoleParam;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
@@ -313,8 +314,11 @@ class DictionaryService
         'work_status' => [
             'class' => WorkStatus::class,
             'name_field' => 'name_ru'
+        ],
+        'bottom_hole_param' => [
+            'class' => BottomHoleParam::class,
+            'name_field' => 'name_ru'
         ]
-
     ];
 
     const TREE_DICTIONARIES = [
