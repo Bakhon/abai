@@ -17,108 +17,114 @@
                         {{trans('pgno.zakrit')}}
                     </button>
                 </div>
-                <table class="modal_table mt-5">
-                    <tr>
-                        <th rowspan="2" class="p-2">№<br>п/п</th>
-                        <th rowspan="2" class="p-2">Наименование КПД</th>
-                        <th rowspan="2" class="p-2">Единица<br>измерения</th>
-                        <th rowspan="2" class="p-2">Вес</th>
-                        <th rowspan="2" class="p-2">
-                            <div class="d-flex">
-                                <div class="col-4">Порог<br>(50%)</div>
-                                <div class="col-4">Цель<br>(100%)</div>
-                                <div class="col-4">Вызов<br>(125%)</div>
-                            </div>
-                        </th>
-                        <th colspan="4" class="p-2">Результаты</th>
-                        <th rowspan="2" class="p-2">Комментарии</th>
-                    </tr>
-                    <tr>
-                        <th class="p-2">Дата</th>
-                        <th class="p-2">Факт</th>
-                        <th class="p-2">Оценка<br>(баллы)</th>
-                        <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
-                    </tr>
-                    <tr v-for="(kpd,index) in kpdList">
-                        <td class="p-2">{{index + 1}}</td>
-                        <td class="p-2">{{kpd.name}}</td>
-                        <td class="p-2">{{kpd.unit}}</td>
-                        <td class="p-2">{{kpd.weight}}</td>
-                        <td class="p-2">
-                            <div class="col-12 p-0 row m-0">
-                                <div class="col-12 d-flex justify-content-around p-0">
-                                    <div class="col-3">
-                                        <input :disabled="isPlanFilled(kpd.step)" class="input-field text-center p-1" type="text" v-model="kpd.step">
-                                    </div>
-                                    <div class="col-3">
-                                        <input :disabled="isPlanFilled(kpd.target)" class="input-field text-center p-1" type="text" :value="kpd.target">
-                                    </div>
-                                    <div class="col-3">
-                                        <input :disabled="isPlanFilled(kpd.maximum)" class="input-field text-center p-1" type="text" :value="kpd.maximum">
-                                    </div>
+                <div class="scroll">
+                    <table class="modal_table mt-5">
+                        <tr>
+                            <th rowspan="2" class="p-2">№<br>п/п</th>
+                            <th rowspan="2" class="p-2">Наименование КПД</th>
+                            <th rowspan="2" class="p-2">Единица<br>измерения</th>
+                            <th rowspan="2" class="p-2">Вес</th>
+                            <th rowspan="2" class="p-2">
+                                <div class="d-flex">
+                                    <div class="col-4">Порог<br>(50%)</div>
+                                    <div class="col-4">Цель<br>(100%)</div>
+                                    <div class="col-4">Вызов<br>(125%)</div>
                                 </div>
-                                <div class="mt-2 col-12 progress progress_template p-0 row m-0">
-                                    <div
-                                            :class="[getProgressBarFillingColor(30),'progress-bar progress-bar_filling']"
-                                            :style="{width: 30 + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="30"
-                                            :aria-valuemin="kpd.step"
-                                            :aria-valuemax="kpd.maximum"
-                                    >
-                                    </div>
+                            </th>
+                            <th colspan="4" class="p-2">Результаты</th>
+                            <th rowspan="2" class="p-2">Комментарии</th>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Дата</th>
+                            <th class="p-2">Факт</th>
+                            <th class="p-2">Оценка<br>(баллы)</th>
+                            <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
+                        </tr>
+
+                        <tr v-for="(kpd,index) in kpdList">
+                            <td class="p-2">{{index + 1}}</td>
+                            <td class="p-2">{{kpd.name}}</td>
+                            <td class="p-2">{{kpd.unit}}</td>
+                            <td class="p-2">
+                                <input class="input-field text-center p-1" type="text" v-model="kpd.weight">
+                            </td>
+                            <td class="p-2">
+                                <div class="col-12 p-0 row m-0">
                                     <div class="col-12 d-flex justify-content-around p-0">
-                                        <div class="progress-splitter"></div>
-                                        <div class="progress-splitter"></div>
-                                        <div class="progress-splitter"></div>
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.step">
+                                        </div>
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.target">
+                                        </div>
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.maximum">
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 col-12 progress progress_template p-0 row m-0">
+                                        <div
+                                                :class="[getProgressBarFillingColor(30),'progress-bar progress-bar_filling']"
+                                                :style="{width: 30 + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="30"
+                                                :aria-valuemin="kpd.step"
+                                                :aria-valuemax="kpd.maximum"
+                                        >
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-around p-0">
+                                            <div class="progress-splitter"></div>
+                                            <div class="progress-splitter"></div>
+                                            <div class="progress-splitter"></div>
+                                        </div>
+                                    </div>
+                                    <div
+                                            :style="{ 'padding-left': `${getCurrentFact(kpd.kpd_fact,kpd.maximum)}px` }"
+                                            :class="[getProgressBarTitleColor(getCurrentFact(kpd.kpd_fact,kpd.maximum)),' mt-2 col-12 p-0']"
+                                    >
+                                        {{getCurrentFact(kpd.kpd_fact,kpd.maximum)}}
                                     </div>
                                 </div>
-                                <div
-                                        :style="{ 'padding-left': `${getCurrentFact(kpd.kpd_fact,kpd.maximum)}px` }"
-                                        :class="[getProgressBarTitleColor(getCurrentFact(kpd.kpd_fact,kpd.maximum)),' mt-2 col-12 p-0']"
+                            </td>
+                            <td class="p-2">
+                                <el-date-picker
+                                    v-model="factDates[index].date"
+                                    type="date"
+                                    format="dd.MM.yyyy"
+                                    popper-class="custom-date-picker"
+                                    @input="changeFactDate($event,index,kpd.kpd_fact)"
                                 >
-                                    {{getCurrentFact(kpd.kpd_fact,kpd.maximum)}}
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-2">
-                            <el-date-picker
-                                v-model="factDates[index].date"
-                                type="date"
-                                format="dd.MM.yyyy"
-                                popper-class="custom-date-picker"
-                                @input="changeFactDate($event,index,kpd.kpd_fact)"
-                            >
-                            </el-date-picker
+                                </el-date-picker
 
-                        </td>
+                            </td>
 
-                        <td class="p-2">
-                            <input class="input-field text-center p-1" type="text" v-model="factDates[index].fact">
-                        </td>
-                        <td class="p-2">оценка</td>
-                        <td class="p-2">вклад</td>
-                        <td class="p-2">
-                            <b-form-textarea
-                                    class="col-12 text-left p-1 input_kpd"
-                                    v-model="factDates[index].comments"
-                                    rows="2"
-                            ></b-form-textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>100%</td>
-                        <td></td>
-                        <td colspan="4">
-                            Итоговая результативность
-                            <span class="summary ml-4">74%</span>
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
+                            <td class="p-2">
+                                <input class="input-field text-center p-1" type="text" v-model="factDates[index].fact">
+                            </td>
+                            <td class="p-2">{{kpd.rating}}</td>
+                            <td class="p-2">{{kpd.summary}}</td>
+                            <td class="p-2">
+                                <b-form-textarea
+                                        class="col-12 text-left p-1 input_kpd"
+                                        v-model="factDates[index].comments"
+                                        rows="2"
+                                ></b-form-textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>100%</td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2">
+                                Итоговая результативность
+                            </td>
+                            <td class="summary ml-4">{{totalSummary}}%</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
                 <div align="center" class="bottom-buttons col-12 row">
                     <div class="col-1 download-button m-4" @click="updateKpd">ОК</div>
                     <div class="col-1 cancel-button m-4" @click="$modal.hide('modalMonitoring')">Отмена</div>
@@ -209,6 +215,26 @@ export default {
                 newDate.date = moment(event);
                 this.factDates[index] = newDate;
             }
+        },
+        getKpdEfficiency(step,target,maximum,fact) {
+            if (fact < step) {
+                return 0;
+            }
+            if (fact === step) {
+                return 50;
+            }
+            if (fact > step && fact < target) {
+                return (fact - step) / (target - step) * 50 + 50;
+            }
+            if (fact === target) {
+                return 100;
+            }
+            if (fact > target && fact < maximum) {
+                return (fact - target) / (maximum - target) * 25 + 100;
+            }
+            if (fact >= maximum) {
+                return 125;
+            }
         }
     },
     async mounted() {
@@ -220,16 +246,26 @@ export default {
             if (this.managerInfo) {
                 this.SET_LOADING(true);
                 this.kpdList = await this.getKpdList();
-                _.forEach(this.kpdList, (kpd) => {
+                _.forEach(this.kpdList, (kpd,index) => {
                    if (kpd.kpd_fact.length === 0) {
                        this.factDates.push(_.cloneDeep(this.newKpdFact));
                    } else {
                        let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
                        this.factDates.push(_.cloneDeep(sorted.at(-1)));
                    }
+                   if (kpd.step !== '' && kpd.step !== null && kpd.target !== '' && kpd.target !== null && kpd.maximum !== '' && kpd.maximum !== null) {
+                       kpd.isPlanFilled = true;
+                   }
+                   kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact);
+                   kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                 });
                 this.SET_LOADING(false);
             }
+        },
+    },
+    computed: {
+        totalSummary() {
+            return _.sumBy(this.kpdList, 'summary');
         },
     }
 }
@@ -240,9 +276,12 @@ export default {
 .modal_header {
     margin: 0 auto;
 }
+.scroll {
+    overflow-y: auto;
+    max-height: 550px;
+}
 .modal_table {
     width: 100%;
-
     tr:first-child th {
         &:first-child {
             width: 60px;
@@ -261,7 +300,7 @@ export default {
         }
     }
     tr:nth-child(2) th {
-        width: 145px;
+        width: 148px;
     }
     tr th {
         background: #3A4280;

@@ -85,8 +85,9 @@ class KpdTreeController extends Controller
     public function getAll()
     {
         return KpdTreeCatalog::query()
-            ->select(['id','name','description','unit','formula','responsible','functions','type','result','calculation_document','description_document'])
+            ->select(['id','name','description','unit','formula','responsible','functions','type','result','calculation_document','description_document','weight','step','target','maximum'])
             ->with('kpdElements:id,kpd_id,name,transcript,unit,source,responsible')
+            ->with('kpdFact')
             ->get();
     }
 
@@ -159,7 +160,7 @@ class KpdTreeController extends Controller
 
     public function storeUpdatedKpd(Request $request)
     {
-        $planParams = array ('step','target','maximum');
+        $planParams = array ('step','target','maximum','weight');
         foreach($request->request->all() as $kpd) {
             $kpdRecord = KpdTreeCatalog::query()
                 ->where('id',$kpd['id'])

@@ -421,7 +421,7 @@ return array (
     'cancelled' => 'Отменено'
   ),
   'notes' => 'Примечания',
-  'kpdModuleTitle' => 'КПД Upstream',
+  'kpdModuleTitle' => 'ТОО "КМГ Инжиниринг"',
   'condensateDelivery' => 'Сдача конденсата',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
