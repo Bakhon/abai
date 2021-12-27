@@ -29,4 +29,5 @@ return array (
   'info_brigada' => 'Информация о бригаде',
   'archive' => 'Архив',
   'current_work' => 'Текущие работы',
+  'order_outfit' => 'Заказ-наряд',
 );
