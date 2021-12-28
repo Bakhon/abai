@@ -3094,8 +3094,8 @@
                             <td><input type="text" v-model="report.coring_daily[i].age"></td>
                             <td class="validation">
                                 <input type="number" v-model="report.coring_daily[i].interval_from"
-                                       :class="{errorValidate:!checkMinMaxLengthVar(geological.interval_from , 0, 8000)}"
-                                       @input="checkMinMaxLength(geological.interval_from , 0, 8000, 'interval_from'+i)"
+                                       :class="{errorValidate:!checkMinMaxLengthVar(report.coring_daily[i].interval_from , 0, 8000)}"
+                                       @input="checkMinMaxLength(report.coring_daily[i].interval_from , 0, 8000, 'interval_from'+i)"
                                 >
                                 <div class="info" data-title="Минимум:0, Максимум: 8000">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3109,8 +3109,8 @@
                             </td>
                             <td class="validation">
                                 <input type="number" v-model="report.coring_daily[i].interval_to"
-                                       :class="{errorValidate:!checkMinMaxLengthVar(geological.interval_to , 0, 8000)}"
-                                       @input="checkMinMaxLength(geological.interval_to , 0, 8000, 'interval_to'+i)"
+                                       :class="{errorValidate:!checkMinMaxLengthVar(report.coring_daily[i].interval_to , 0, 8000)}"
+                                       @input="checkMinMaxLength(report.coring_daily[i].interval_to , 0, 8000, 'interval_to'+i)"
                                 >
                                 <div class="info" data-title="Минимум:0, Максимум: 8000">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
