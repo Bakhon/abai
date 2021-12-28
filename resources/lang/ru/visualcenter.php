@@ -229,7 +229,7 @@ return array (
   'dailyReportsKMG' => 'Суточная отчетность КМГ',
   'approvalsTable' => 'Таблица согласований',
   'version' => 'Версия',
-  'upstreamKPI' => 'КПД Блока Upstream',
+  'upstreamKPI' => 'КПД ТОО "КМГ Инжиниринг"',
   'dzoRegions' =>
   array (
     'aturay' => 'Атырауская область',

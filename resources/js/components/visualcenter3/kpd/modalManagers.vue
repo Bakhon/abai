@@ -13,20 +13,6 @@
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">Список Директоров</div>
                     <div class="btn-toolbar">
-                        <button
-                                type="button"
-                                :class="[selectedType === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('manager')"
-                        >
-                            Члены Правления
-                        </button>
-                        <button
-                                type="button"
-                                :class="[selectedType === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('deputy')"
-                        >
-                            Заместители
-                        </button>
                         <button type="button" class="modal-bign-button mr-2" @click="[selectedManager = {},$modal.show('modalManager')]">
                             Добавить
                         </button>
@@ -82,7 +68,6 @@ export default {
     },
     async mounted() {
         this.managers = await this.getManagers(this.selectedType);
-        console.log(this.managers);
         this.$watch(
             () => {
                 return this.$refs.userCreation.isOperationFinished
