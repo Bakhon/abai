@@ -24,8 +24,12 @@
     <ul v-else>
       <archWorkHookTreeMenuChild
         
-      v-for="date in template.date"
-            :key="date.date_name" :date="date" :treeChild="template.well_name"/>
+        v-for="date in template.date"
+        :key="date.date_name" 
+        :date="date" 
+        :treeChild="template.well_name"
+        :treeFieldCurrentName="template.field"
+      />
     </ul>
   </li>
 </template>

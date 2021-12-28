@@ -250,8 +250,6 @@
           <button class="daily-report-button">{{trans('tr.cancel')}}</button> 
         </div>
       </div>      
-              
-
             </div>
 
         </div>
