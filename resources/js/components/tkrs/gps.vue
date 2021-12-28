@@ -2,25 +2,80 @@
   <div class="tkrs-main">
     <mainHeader />
     <div class="sidebar_graph" style="display:flex">
+        
         <div class="data-analysis-left-block">
           <div class="left-block-collapse-holder">
             <div>
-              <img
-                src="/img/PlastFluids/chooseParameters.svg"
-                alt="choose parameters icon"
-              />
-              <span>Параметры</span>
+
+              <div class="nav nav-tabs all-tabs">
+                <div style="display:flex; width: 249px;">
+                  <li class="nav-item">
+                      <a class="nav-link active tab-lblock-header" 
+                      @click="selectBlockTab(1)" href="#">
+                      <a>{{trans('tkrs.current_work')}}</a></a>
+                  </li>
+                  <li class="nav-item" style="width: 107px;">
+                      <a class="nav-link tab-lblock-header" 
+                      @click="selectBlockTab(2)" href="#">
+                      <a>{{trans('tkrs.archive')}}</a></a>
+                  </li>
+                </div>
+              </div>
+             
             </div>
           </div>
           <div class="dropdown-holder">
-            <!-- <b-button class="online-block" @click="isCurrent">{{trans('tkrs.current_work')}}</b-button>
-            <b-button class="online-block" @click="isArchive">{{trans('tkrs.archive')}}</b-button> -->
-            <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
-            <div class="line-block"></div>
-
-            <b-form-select  class="custom-dropdown-block" :options="wellDate" @change="onChangeWellDate"></b-form-select>
-            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
+            <div class="line-block"></div>
+            <div class="tab-archive-div" v-if="currentBlockTab == 1">
+              <a class="form-input-block-header">Добавление скважины</a>
+        <b-dropdown>
+              <template #button-content class="outer_button_filter">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.19995 10.3394C6.87237 10.6948 6.04238 11.1658 5 11.1992V11.9992H11.9999V9.93942C10.3439 9.87222 9.06914 10.1068 8.19995 10.3394ZM8.65154 11.3992L8.54815 11.0128C9.39093 10.7872 10.2801 10.6514 11.1905 10.609L11.2091 11.0086C10.3273 11.0496 9.46693 11.181 8.65154 11.3992Z" fill="#868BB2"/>
+                <path d="M2.99995 10.801C2.88496 10.7752 2.75396 10.7496 2.59996 10.725C1.52318 10.5532 0.610191 10.6304 0 10.725V12.0009H2.99995V10.801Z" fill="#868BB2"/>
+                <path d="M4.80156 9.59921C4.91201 9.59921 5.00156 9.50967 5.00156 9.39922C5.00156 9.28876 4.91201 9.19922 4.80156 9.19922C4.6911 9.19922 4.60156 9.28876 4.60156 9.39922C4.60156 9.50967 4.6911 9.59921 4.80156 9.59921Z" fill="#868BB2"/>
+                <path d="M6.2 9.20078C6.31045 9.20078 6.39999 9.11123 6.39999 9.00078C6.39999 8.89032 6.31045 8.80078 6.2 8.80078C6.08954 8.80078 6 8.89032 6 9.00078C6 9.11123 6.08954 9.20078 6.2 9.20078Z" fill="#868BB2"/>
+                <path d="M5.39922 10.4C5.50967 10.4 5.59921 10.3105 5.59921 10.2C5.59921 10.0895 5.50967 10 5.39922 10C5.28876 10 5.19922 10.0895 5.19922 10.2C5.19922 10.3105 5.28876 10.4 5.39922 10.4Z" fill="#868BB2"/>
+                <path d="M7.2 9.9996C7.31045 9.9996 7.4 9.91006 7.4 9.79961C7.4 9.68915 7.31045 9.59961 7.2 9.59961C7.08954 9.59961 7 9.68915 7 9.79961C7 9.91006 7.08954 9.9996 7.2 9.9996Z" fill="#868BB2"/>
+                <path d="M8.2 9.20078C8.31045 9.20078 8.39999 9.11123 8.39999 9.00078C8.39999 8.89032 8.31045 8.80078 8.2 8.80078C8.08954 8.80078 8 8.89032 8 9.00078C8 9.11123 8.08954 9.20078 8.2 9.20078Z" fill="#868BB2"/>
+                <path d="M11.2 9.20078C11.3105 9.20078 11.4 9.11123 11.4 9.00078C11.4 8.89032 11.3105 8.80078 11.2 8.80078C11.0895 8.80078 11 8.89032 11 9.00078C11 9.11123 11.0895 9.20078 11.2 9.20078Z" fill="#868BB2"/>
+                <path d="M9.79765 9.39999C9.90811 9.39999 9.99765 9.31045 9.99765 9.2C9.99765 9.08954 9.90811 9 9.79765 9C9.6872 9 9.59766 9.08954 9.59766 9.2C9.59766 9.31045 9.6872 9.39999 9.79765 9.39999Z" fill="#868BB2"/>
+                <path d="M0.399216 9.20078C0.509671 9.20078 0.599213 9.11123 0.599213 9.00078C0.599213 8.89032 0.509671 8.80078 0.399216 8.80078C0.28876 8.80078 0.199219 8.89032 0.199219 9.00078C0.199219 9.11123 0.28876 9.20078 0.399216 9.20078Z" fill="#868BB2"/>
+                <path d="M1.59843 9.9996C1.70889 9.9996 1.79843 9.91006 1.79843 9.79961C1.79843 9.68915 1.70889 9.59961 1.59843 9.59961C1.48798 9.59961 1.39844 9.68915 1.39844 9.79961C1.39844 9.91006 1.48798 9.9996 1.59843 9.9996Z" fill="#868BB2"/>
+                <path d="M3.00078 9.59921C3.11123 9.59921 3.20078 9.50967 3.20078 9.39922C3.20078 9.28876 3.11123 9.19922 3.00078 9.19922C2.89032 9.19922 2.80078 9.28876 2.80078 9.39922C2.80078 9.50967 2.89032 9.59921 3.00078 9.59921Z" fill="#868BB2"/>
+                <path d="M11.1983 6.19991H9.59834V6.5999H9.15315L8.22216 2.09857L10.1983 1.71617V5.19992H9.59834V5.79991H11.1983V5.19992H10.5983V1.63858L10.6113 1.63598C10.7159 1.61578 10.7863 1.51698 10.7713 1.41138L10.6281 0.409194C10.6119 0.295595 10.5035 0.218797 10.3909 0.241396L4.59842 1.39998V0.599991L3.99843 0L3.39844 0.599991V3.19995L3.79843 3.73334V4.79993H3.59843C3.48804 4.79993 3.39844 4.88953 3.39844 4.99992V5.79991C3.39844 5.91031 3.48804 5.99991 3.59843 5.99991H3.79843V10.8388C3.56563 10.9234 3.39844 11.142 3.39844 11.3998C3.39844 11.7306 3.67223 11.9998 4.00883 11.9998C4.34542 11.9998 4.61922 11.7306 4.61922 11.3998C4.61922 11.1344 4.44182 10.9114 4.19843 10.8324V5.99991H4.39842C4.50882 5.99991 4.59842 5.91031 4.59842 5.79991V4.99992C4.59842 4.88953 4.50882 4.79993 4.39842 4.79993H4.19843V3.73334L4.59842 3.19995V2.79996L6.54519 2.42316L5.6372 6.5999H4.59842V8.39987H11.9983V6.5999H11.1983V6.19991ZM10.1591 0.803988L10.2377 1.19618L9.23775 1.39618L9.15915 1.00398L10.1591 0.803988ZM4.21923 11.3998C4.21923 11.51 4.12483 11.5998 4.00883 11.5998C3.89283 11.5998 3.79843 11.51 3.79843 11.3998C3.79843 11.2896 3.89283 11.1998 4.00883 11.1998C4.12483 11.1998 4.21923 11.2896 4.21923 11.3998ZM4.19843 5.59992H3.79843V5.19992H4.19843V5.59992ZM4.19843 2.19997H3.79843V1.79997H4.19843V2.19997ZM8.23376 4.19694L8.45296 5.29272L6.96198 4.47953L8.23376 4.19694ZM6.97238 2.34036L7.82917 2.17457L8.13477 3.70234L6.88078 2.76176L6.97238 2.34036ZM6.78739 3.19175L7.73037 3.89914L6.57779 4.15534L6.78739 3.19175ZM6.46719 4.66533L8.08617 5.54832L6.1454 6.14551L6.46719 4.66533ZM6.0466 6.5999L6.0522 6.5743L6.0574 6.5909L8.55896 5.82111L8.75256 6.5999H6.0466Z" fill="#868BB2"/>
+                <path d="M3.39995 6.59961H0V8.39958H3.39995V6.59961Z" fill="#868BB2"/>
+                </svg>
+                <a>Месторождение</a>
+              </template>
+              <b-dropdown-item href="#">Бригада</b-dropdown-item>
+              <b-dropdown-item href="#">Скважина</b-dropdown-item>
+        </b-dropdown>
+        <b-dropdown>
+              <template #button-content class="outer_button_filter">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2295 10.4023H10.668V7.84256C10.668 7.77532 10.6068 7.72048 10.5317 7.72048H9.89921V5.76466L9.96604 5.78922C10.0008 5.80162 10.0353 5.80829 10.07 5.80829C10.1761 5.80829 10.2782 5.75131 10.3209 5.65713L10.7078 4.81786C10.7349 4.7573 10.7349 4.69031 10.7078 4.6307C10.6805 4.5711 10.6272 4.52293 10.5604 4.49861L4.68815 2.3127C4.90244 1.94409 5.09551 1.57025 5.26127 1.19854C5.31696 1.07408 5.25039 0.933162 5.11328 0.882139L2.79377 0.0185678C2.65587 -0.0324556 2.49834 0.0252363 2.43866 0.148026C1.86476 1.35733 1.49373 2.70492 1.27308 4.3887C1.25982 4.49742 1.32745 4.60138 1.43963 4.6431L2.43442 5.01337C2.54634 5.0551 2.6755 5.02458 2.75108 4.93875C3.18257 4.44735 3.55465 3.98552 3.88987 3.52678L5.06289 3.96454L5.00481 4.32337L4.83031 5.41298L4.02858 10.4023H2.1533H0.771569C0.621727 10.4023 0.5 10.5117 0.5 10.6469V11.7563C0.5 11.8903 0.621727 12 0.771569 12H11.2295C11.3783 12 11.5 11.8903 11.5 11.7563V10.6469C11.5 10.5117 11.3783 10.4023 11.2295 10.4023ZM9.35633 7.72048H8.72487C8.64929 7.72048 8.58776 7.77532 8.58776 7.84256V10.4023H7.97142L7.16969 5.41298L7.05672 4.70627L9.35633 5.56247V7.72048ZM6.67297 6.06602L5.71822 5.42633L6.47724 4.84886L6.67297 6.06602ZM6.35445 6.52047L5.14352 7.21311L5.36072 5.85526L6.35445 6.52047ZM6.80636 6.89742L7.09836 8.71352L5.52621 7.62868L6.80636 6.89742ZM5.64078 10.4023L7.20603 9.3835L7.36966 10.4023H5.64078ZM6.17491 4.37844L5.51904 4.87652L5.63096 4.1753L6.17491 4.37844ZM5.02338 7.95676L6.6528 9.08117L4.63193 10.3985L5.02338 7.95676Z" fill="#868BB2"/>
+                </svg>
+
+                <a>Скважина</a>
+              </template>
+              <b-dropdown-item href="#">Бригада</b-dropdown-item>
+              <b-dropdown-item href="#">Скважина</b-dropdown-item>
+        </b-dropdown>
+        <b-button class="online-block" >Создать новый отчет</b-button>
+                  <currentFormInput
+                    v-for="template in wellsTreeCurrent"
+                    :key="template.well_name" 
+                    :template="template">
+                  </currentFormInput>
+              </div>
+
+              <div class="tab-archive-div" v-if="currentBlockTab == 2">
+                  <archFormInput
+                  ></archFormInput>
+              </div>
+         
           </div>
           
         </div>
@@ -29,6 +84,7 @@
             <div>
               <div class="table-div">
             <div>
+              
               <table>
                 
                 <tbody>
@@ -245,6 +301,7 @@
       </div>
       <div class="daily-report">
         <div class="daily-report-buttons">
+         
           <button class="daily-report-button">{{trans('tr.form')}}</button>
           <button class="daily-report-button">{{trans('tr.save')}}</button>
           <button class="daily-report-button">{{trans('tr.cancel')}}</button> 
@@ -264,6 +321,8 @@ import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
 import {globalloadingMutations} from '@store/helpers'
 import dailyReportCurrent from "./dailyReportCurrent.vue";
+import currentFormInput from './tabs/currentFormInput.vue';
+import archFormInput from './tabs/archFormInput.vue';
 
 export default {
   name: "gps",
@@ -274,13 +333,15 @@ export default {
     mainHeader,
     BaseTable,
     baseBlock,
-    dailyReportCurrent
+    dailyReportCurrent,
+    currentFormInput,
+    archFormInput
   },
   computed: {
   },
   data(){
     return {
-      currentTab: 1,
+      currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
       areaChartData: [],
@@ -323,7 +384,7 @@ export default {
       current_bottomhole: null,
       prod_casing_outer_d: null,
       wall_thickness: null,
-      isCurrent: true,
+      wellsTreeCurrent: {},
       
     }
   },
@@ -348,6 +409,7 @@ export default {
         this.SET_LOADING(false);
       });
       this.getListWell();
+      this.getDataTreeCurrent();
     },
   
   methods: {
@@ -377,6 +439,7 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wellList = data.data.wells;
+                    console.log(this.wellList);
                     
                 } else {
                     console.log("No data");
@@ -440,6 +503,22 @@ export default {
                 }
             });
     },
+    getDataTreeCurrent() {
+      
+      this.axios
+          .get(
+               `http://172.20.103.203:8090/wellNameDate1/`,
+              
+          )
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.wellsTreeCurrent = data
+              } else {
+                  console.log("No data");
+              }
+          });
+    },
     cancelChat() {
         this.isChart = false;
     },
@@ -450,11 +529,9 @@ export default {
     selectTab(selectedTab) {
             this.currentTab = selectedTab
     },
-    isCurrent() {
-        this.isCurrent = true;
-    },
-    isArchive() {
-        this.isCurrent = false;
+
+    selectBlockTab(selectedBlockTab) {
+      this.currentBlockTab = selectedBlockTab
     },
   },
 };
@@ -586,5 +663,32 @@ border: none !important;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
+}
+.tab-lblock-header {
+  color: white !important;
+  background: #181837 !important;
+}
+.dropdown-holder {
+  background-color: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  padding: 6px 6px 1px 6px;
+  margin-bottom: 10px;
+}
+.btn-group::v-deep .btn-secondary {
+    color: #fff;
+    background-color: #20274F;
+    border-color: #20274F;
+}
+.form-input-block-header {
+    font-family: Harmonia-sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px; 
+    color: white; 
+}
+.online-block {
+  width: 100%;
+  background: #293688;
 }
 </style>
