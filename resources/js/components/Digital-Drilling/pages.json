@@ -287,7 +287,30 @@
         "name": "main-table",
         "template": "<well-fastening></well-fastening>"
       },
-      "parent": "project"
+      "accordion": true,
+      "parent": "project",
+      "child": [
+        {
+          "name":  "digital_drilling.report_page",
+          "id": 44,
+          "component": {
+            "name": "main-table",
+            "template": "<well-fastening></well-fastening>"
+          },
+          "checked": null,
+          "parent": "project"
+        },
+        {
+          "name": "digital_drilling.calculation_page",
+          "id": 45,
+          "component": {
+            "name": "main-table",
+            "template": "<well-calculation></well-calculation>"
+          },
+          "checked": false,
+          "parent": "project"
+        }
+      ]
     }
   ],
   "online": [
