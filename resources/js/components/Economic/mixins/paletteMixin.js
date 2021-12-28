@@ -15,7 +15,12 @@ export const paletteMixin = {
         isFullscreen: {
             required: false,
             type: Boolean
-        }
+        },
+        manufacturingProgram: {
+            required: false,
+            type: Object,
+            default: null
+        },
     },
     computed: {
         reverseOilPrices() {
@@ -65,7 +70,10 @@ export const paletteMixin = {
 
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-                    pp2020: '',
+                    manufacturingProgram:
+                        this.manufacturingProgram && +this.manufacturingProgram.oil_price === +oilPrice
+                            ? +this.manufacturingProgram.revenue
+                            : '',
                     bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let revenue = 0
@@ -91,7 +99,10 @@ export const paletteMixin = {
 
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-                    pp2020: '',
+                    manufacturingProgram:
+                        this.manufacturingProgram && +this.manufacturingProgram.oil_price === +oilPrice
+                            ? +this.manufacturingProgram.expenditures
+                            : '',
                     bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let expenditures = 0
@@ -123,7 +134,10 @@ export const paletteMixin = {
 
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-                    pp2020: '',
+                    manufacturingProgram:
+                        this.manufacturingProgram && +this.manufacturingProgram.oil_price === +oilPrice
+                            ? +this.manufacturingProgram.operating_profit
+                            : '',
                     bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let operatingProfit = revenue.columns[priceIndex].value - expenditures.columns[priceIndex].value

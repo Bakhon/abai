@@ -123,6 +123,7 @@
                     <div v-if="kpd.current.type !== 'strategic'" class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Принадлежность</div>
                         <select class="form-select input_kpd p-2 col-10" @change="kpd.current.parent = $event.target.value">
+                            <option value=""></option>
                             <option v-for="kpd in kpdParents" :value="kpd.id">{{kpd.name}}</option>
                         </select>
                     </div>

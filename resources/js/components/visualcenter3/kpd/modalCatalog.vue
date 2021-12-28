@@ -114,10 +114,13 @@ export default {
         border: 1px solid #545580;
         max-height: 40px;
         height: 40px;
+        max-width: 220px;
     }
     tr td {
         border: 1px solid #545580;
         height: 30px;
+        max-width: 220px;
+        word-wrap: break-word;
     }
     tr:nth-child(even) {
         background: #272953;

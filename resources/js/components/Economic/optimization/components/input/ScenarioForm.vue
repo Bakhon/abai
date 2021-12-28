@@ -29,6 +29,18 @@
 
     <div v-show="form.source_id">
       <h5 class="text-secondary mt-3">
+        {{ trans('economic_reference.manufacturing_program') }}
+      </h5>
+
+      <select-log
+          :fetch-params="{type_id: EconomicDataLogTypeModel.MANUFACTURING_PROGRAM}"
+          :form="form"
+          :placeholder="trans('economic_reference.select_item')"
+          form-key="manufacturing_program_log_id"/>
+    </div>
+
+    <div v-show="form.source_id">
+      <h5 class="text-secondary mt-3">
         {{ trans('economic_reference.gtm_kit') }}
       </h5>
 
@@ -72,11 +84,13 @@ import {globalloadingMutations} from '@store/helpers';
 import SelectScFa from "../../../components/SelectScFa";
 import SelectSource from "../../../components/SelectSource";
 import SelectGtmKit from "../SelectGtmKit";
+import SelectLog from "../../../components/SelectLog";
 import AddButton from "../../../components/AddButton";
 import DeleteButton from "../../../components/DeleteButton";
 import SaveButton from "../../../components/SaveButton";
 
 import {EcoRefsScenarioModel} from "../../../models/EcoRefsScenarioModel";
+import {EconomicDataLogTypeModel} from "../../../models/EconomicDataLogTypeModel";
 
 export default {
   name: "ScenarioForm",
@@ -84,12 +98,14 @@ export default {
     SelectScFa,
     SelectSource,
     SelectGtmKit,
+    SelectLog,
     AddButton,
     DeleteButton,
     SaveButton
   },
   data: () => ({
     EcoRefsScenarioModel,
+    EconomicDataLogTypeModel,
     form: new EcoRefsScenarioModel().form
   }),
   methods: {

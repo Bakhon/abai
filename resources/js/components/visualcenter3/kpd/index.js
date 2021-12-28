@@ -33,7 +33,7 @@ export default {
                 'corporate': true,
                 'manager': true,
                 'deputy': false
-            }
+            },
         };
     },
     methods: {
@@ -92,6 +92,67 @@ export default {
             if (item === 'deputy' && this.menuVisibility[item]) {
                 this.menuVisibility['manager'] = false;
             }
+        },
+        switchKpdVisibility(manager) {
+            manager['name'] = manager['name'] + ' ';
+            manager['isSelected'] = !manager['isSelected'];
+            _.forEach(this.managers, (item,index) => {
+                if (item.id !== manager.id) {
+                    item['isSelected'] = false;
+                }
+            });
+            _.forEach(manager.kpdList, (item) => {
+                item.isVisible = !item.isVisible;
+            });
+        },
+        getManagerKpdList(managerId) {
+            let filtered = _.filter(this.kpdList, (kpd) => {
+                return parseInt(kpd.type) === managerId;
+            });
+            _.forEach(filtered, (item) => {
+                item.isVisible = false;
+            })
+            return filtered;
+        },
+        fillKpdList(managers) {
+            _.forEach(managers, (manager) => {
+                manager['isSelected'] = false;
+                let filteredKpd = _.filter(_.cloneDeep(this.kpdList), (kpd) => {
+                    return parseInt(kpd.type) === manager.id;
+                });
+                manager['kpdList'] = filteredKpd;
+                _.forEach(filteredKpd, (kpd) => {
+                    let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
+                    if (sorted.length === 0) {
+                        kpd.rating = 0;
+                        kpd.summary = 0;
+                    } else {
+                        kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact);
+                        kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                    }
+                });
+                manager['fact'] = _.sumBy(filteredKpd, 'summary');
+            });
+        },
+        getKpdEfficiency(step,target,maximum,fact) {
+            if (fact < step) {
+                return 0;
+            }
+            if (fact === step) {
+                return 50;
+            }
+            if (fact > step && fact < target) {
+                return (fact - step) / (target - step) * 50 + 50;
+            }
+            if (fact === target) {
+                return 100;
+            }
+            if (fact > target && fact < maximum) {
+                return (fact - target) / (maximum - target) * 25 + 100;
+            }
+            if (fact >= maximum) {
+                return 125;
+            }
         }
     },
     async mounted() {
@@ -105,21 +166,13 @@ export default {
         this.selectedManager = this.kpdDecompositionA;
         this.kpdList = await this.getAllKpd();
         this.strategicKpdList = this.getKpdByType('strategic');
-        this.corporateKpdList = this.getKpdByType(this.corporateManager.id.toString());
+        if (this.corporateManager.id) {
+            this.corporateKpdList = this.getKpdByType(this.corporateManager.id.toString());
+        }
+        this.fillKpdList(this.managers);
         this.SET_LOADING(false);
     },
     computed: {
-        thirdDecompositionStyles() {
-            let height = Math.round(780 / (this.managers.length) + this.managers.length) + 'px';
-            return {'height':height};
-        },
-        strategicDecompositionStyles() {
-            let height = Math.round(780 / (this.strategicKpdList.length) - (this.strategicKpdList.length * 2)) + 'px';
-            return {'height':height};
-        },
-        corporateDecompositionStyles() {
-            let height = Math.round(780 / (this.corporateKpdList.length) - (this.corporateKpdList.length * 2)) + 'px';
-            return {'height':height};
-        }
+
     }
 }
