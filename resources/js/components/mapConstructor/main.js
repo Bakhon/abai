@@ -457,6 +457,8 @@ export default {
             } else {
                 if (this.rightClickTargetProjectIndex !== null && this.rightClickTargetIndex !== null) {
                     this.projects[this.rightClickTargetProjectIndex].layerGroups[this.rightClickTargetIndex].name = name;
+                    const projectRef = this.projects[this.activeProjectIndex].key;
+                    this.$refs[projectRef][0].addGrid();
                 }
             }
         },

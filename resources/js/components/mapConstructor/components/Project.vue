@@ -1,5 +1,7 @@
 <template>
-    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%"></div>
+    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%">
+        <div v-bind:id="'bubblePopup_' + this.projectKey" class="bubblePopup"></div>
+    </div>
 </template>
 
 <script>
@@ -12,7 +14,6 @@ import {Vector as VectorLayer} from "ol/layer";
 import {OSM, Vector as VectorSource, XYZ} from "ol/source";
 import Feature from "ol/Feature";
 import {LineString, Point, Polygon} from "ol/geom";
-import {Overlay} from "ol";
 import Chart from "ol-ext/style/Chart";
 import LegendControl from "ol-ext/control/Legend";
 import Legend from "ol-ext/legend/Legend";
@@ -39,12 +40,15 @@ export default {
             selectedFeatures: [],
             legend: null,
             legendControl: null,
-            mapOverlay: null,
-            overlayValues: {
+            infoBlock: null,
+            infoBlockValues: {
                 grid: {
                     html: '',
                 },
                 featureValues: {
+                    html: '',
+                },
+                coords: {
                     html: '',
                 },
             },
@@ -101,11 +105,6 @@ export default {
                                     units: 'metric',
                                 }),
                                 new ExportMap(),
-                                new MousePosition({
-                                    coordinateFormat: createStringXY(),
-                                    className: 'mouse-position-coords',
-                                    target: document.getElementById('mouse-position'),
-                                }),
                             ]),
                             target: this.projectKey,
                             layers: this.data.layerGroups,
@@ -116,7 +115,7 @@ export default {
                                 zoom: 1,
                             }),
                         });
-                        this.addMapOverlay();
+                        this.addMapInfoBlock();
                         this.addMapLegend();
                         this.addInteractions();
                     } else {
@@ -196,9 +195,10 @@ export default {
             layerGroup.step = typeof data.step !== "undefined" ? data.step : 0;
             layerGroup.bounds = typeof data.bounds !== "undefined" ? data.bounds : [0, 0];
             layerGroup.show = isolinesShow;
+            layerGroup.data = data;
             this.addLayerGroupToMap(layerGroup);
-            if (typeof data.grid !== "undefined") {
-                this.addGrid(data);
+            if (typeof layerGroup.data.grid !== "undefined") {
+                this.addGrid();
             }
         },
         drawLines(fileData) {
@@ -317,18 +317,30 @@ export default {
                 this.data.layerGroups.splice(indexToRemove, 1)
             }
         },
-        addGrid(data) {
-            let binValues = this.decodeFromBase64(data.grid);
-            let shape = data.shape;
-            let resultArray = [];
-            for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
-                resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
-            }
+        addGrid() {
+            this.gridMapsValues = [];
+            this.data.layerGroups.forEach(layerGroup => {
+                if (typeof layerGroup.data !== "undefined"
+                    && typeof layerGroup.data.grid !== "undefined"
+                    && typeof layerGroup.data.shape !== "undefined"
+                ) {
+                    let gridData = [];
+                    let binValues = this.decodeFromBase64(layerGroup.data.grid);
+                    let shape = layerGroup.data.shape;
+                    for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
+                        gridData[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
+                    }
+                    this.gridMapsValues.push({
+                        name: layerGroup.name,
+                        data: gridData,
+                        shape: shape,
+                    });
+                }
+            })
             if (this.map) {
                 const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
-                this.gridMapsValues.push(resultArray);
-                this.map.on('click', function (evt) {
+                this.map.on('pointermove', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
                         || evt.coordinate[0] > mapExtent[2]
@@ -339,15 +351,22 @@ export default {
                         return;
                     }
                     if ($self.gridMapsValues.length > 0) {
-                        const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
-                        const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
-                        let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
-                        let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
-                        let value = $self.gridMapsValues[0][x][y];
-                        if (isNaN(value)) {
-                            return;
-                        }
-                        $self.overlayValues.grid.html = '<div> Значение грид карты: ' + value.toFixed(2) + '</div>';
+                        let value = 0;
+                        let html = '';
+                        $self.gridMapsValues.forEach(gridMapsValue => {
+                            const shape = gridMapsValue.shape;
+                            const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
+                            const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
+                            let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
+                            let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
+                            value = gridMapsValue.data[x][y];
+                            if (isNaN(value)) {
+                                return;
+                            }
+                            html += value === 0 ? ''
+                                : `<div>${gridMapsValue.name} (значение): ${value.toFixed(2)}</div>`;
+                        })
+                        $self.infoBlockValues.grid.html = html;
                     }
                 });
             }
@@ -685,38 +704,29 @@ export default {
                 this.$notifyError(this.trans('map_constructor.not_empty_map'));
             }
         },
-        addMapOverlay() {
+        addMapInfoBlock() {
             let $self = this;
-            let popupDiv = document.getElementById("bubblePopup_" + this.projectKey);
-            if (popupDiv === null) {
-                popupDiv = document.createElement('div');
-                popupDiv.setAttribute("id", "bubblePopup_" + this.projectKey);
-                popupDiv.classList.add("bubblePopup");
-            }
-            this.mapOverlay = new Overlay({
-                element: popupDiv,
-            });
-            this.map.addOverlay(this.mapOverlay);
-            this.map.on('click', function (e) {
+            $self.infoBlock = document.getElementById("bubblePopup_" + this.projectKey);
+            $self.map.on('pointermove', function (e) {
                 if (e.dragging) {
                     return;
                 }
                 let values = [];
                 this.forEachFeatureAtPixel(e.pixel, function (f) {
                     values = f.values_.values;
-                    $self.mapOverlay.setPosition(e.coordinate);
                     return true;
                 });
-                $self.mapOverlay.getElement().innerHTML = '';
+                $self.infoBlock.innerHTML = '';
                 let valuesText = '';
                 if (typeof values !== "undefined" && values.length > 0) {
                     values.forEach(item => {
-                        valuesText += `<div>${item.key}: ${item.value}</div>`
+                        valuesText += `<div>${item.key}: ${item.value}</div>`;
                     });
                 }
-                $self.overlayValues.featureValues.html = valuesText;
-                for (const [key, item] of Object.entries($self.overlayValues)) {
-                    $self.mapOverlay.getElement().innerHTML += `${item.html}`;
+                $self.infoBlockValues.featureValues.html = valuesText;
+                $self.infoBlockValues.coords.html = `<div>X: ${e.coordinate[0].toFixed()} Y: ${e.coordinate[1].toFixed()}</div>`;
+                for (const [key, item] of Object.entries($self.infoBlockValues)) {
+                    $self.infoBlock.innerHTML += `${item.html}`;
                 }
             });
         },
@@ -901,7 +911,7 @@ export default {
             }
 
             return featureInExtent;
-        }
+        },
     }
 }
 
@@ -1016,9 +1026,14 @@ class ExportMap extends Control {
 </script>
 <style>
 .bubblePopup {
+    position: absolute;
+    bottom: 1%;
+    right: 4%;
     border-radius: 2px;
     color: white;
     background: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    z-index: 1000;
 }
 .bubblePopup div {
     padding: 0.1rem 0.5rem;
