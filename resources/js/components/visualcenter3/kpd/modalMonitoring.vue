@@ -148,13 +148,18 @@ export default {
                 'id': null,
                 'comments': ''
             },
-            factDates: []
+            factDates: [],
+            isOperationFinished: false,
         };
     },
     methods: {
         async getKpdList() {
             let uri = this.localeUrl("/get-kpd-by-manager");
-            const response = await axios.get(uri,{params:{'type':this.managerInfo.id}});
+            let managerId = this.managerInfo.id;
+            if (this.managerType === 'corporate') {
+                managerId = this.managerType;
+            }
+            const response = await axios.get(uri,{params:{'type':managerId}});
             if (response.status !== 200) {
                 return [];
             }
@@ -168,6 +173,7 @@ export default {
             });
             let uri = this.localeUrl("/store-updated-kpd");
             await axios.post(uri,this.kpdList);
+            this.isOperationFinished = true;
             this.$modal.hide('modalMonitoring');
         },
         getProgressBarFillingColor(progress) {
@@ -217,7 +223,7 @@ export default {
             }
         },
         getKpdEfficiency(step,target,maximum,fact) {
-            if (fact < step) {
+            if ((fact < step) || (step === null || target === null || maximum === null || fact === null)) {
                 return 0;
             }
             if (fact === step) {
@@ -240,9 +246,10 @@ export default {
     async mounted() {
 
     },
-    props: ['managerInfo'],
+    props: ['managerInfo','managerType'],
     watch: {
         managerInfo: async function () {
+            this.isOperationFinished = false;
             if (this.managerInfo) {
                 this.SET_LOADING(true);
                 this.kpdList = await this.getKpdList();
@@ -256,7 +263,7 @@ export default {
                    if (kpd.step !== '' && kpd.step !== null && kpd.target !== '' && kpd.target !== null && kpd.maximum !== '' && kpd.maximum !== null) {
                        kpd.isPlanFilled = true;
                    }
-                   kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact);
+                   kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
                    kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                 });
                 this.SET_LOADING(false);
