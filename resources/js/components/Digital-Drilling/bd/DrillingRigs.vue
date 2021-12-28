@@ -293,7 +293,7 @@
                 </div>
             </div>
         </div>
-        <drillin-graph v-if="allGraphModal" @close="allGraphModal=false"/>
+        <drillin-graph v-if="allGraphModal" @close="allGraphModal=false" :dataGraph="dataGraph"/>
         <div class="newWell" v-if="filter">
             <div class="well_content">
                 <div class="well_body">
@@ -410,11 +410,13 @@
                         from: 0,
                         to: ''
                     }
-                }
+                },
+                dataGraph: [],
             }
         },
         mounted(){
             this.getRigs('')
+            this.getDataGraph()
         },
         methods:{
             resetFilter(){
@@ -445,6 +447,21 @@
                 }
                 this.getRigs(query)
                 this.filter = false
+            },
+            async getDataGraph(){
+                try{
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
+                        let data = response.data;
+                        if (data) {
+                            this.dataGraph =  data
+                        } else {
+                            console.log('No data');
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log(e)
+                }
             },
             async getRigs(query){
                 await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs?'+query).then((response) => {
