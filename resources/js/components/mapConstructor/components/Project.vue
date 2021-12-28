@@ -24,13 +24,15 @@ import {Control, defaults as defaultControls, MousePosition, ScaleLine} from 'ol
 import jspdf from "jspdf";
 import moment from 'moment';
 import {createStringXY} from "ol/coordinate";
-import {DragBox, Select} from 'ol/interaction';
+import {Draw, DragBox, Select} from 'ol/interaction';
 import {platformModifierKeyOnly, shiftKeyOnly} from "ol/events/condition";
+import {Overlay} from "ol";
 
 export default {
     props: {
         data: Object,
         projectKey: '',
+        activeToolType: null,
     },
     data() {
         return {
@@ -57,6 +59,14 @@ export default {
             y1: 0,
             y2: 0,
             polygonsType: null,
+            selectTool: null,
+            dragBoxTool: null,
+            measuringTool: null,
+            measureTooltip: null,
+            measureTooltipElement: null,
+            measuringToolType: 'LineString',
+            measureLayer: null,
+            metersPerUnit: 20,
         }
     },
     methods: {
@@ -95,7 +105,7 @@ export default {
                         const extent = [this.x1, this.y1, this.x2, this.y2];
                         const projection = new Projection({
                             units: 'm',
-                            metersPerUnit: 20,
+                            metersPerUnit: this.metersPerUnit,
                             extent: extent,
                         });
                         const mapExtent = projection.getExtent();
@@ -117,7 +127,7 @@ export default {
                         });
                         this.addMapInfoBlock();
                         this.addMapLegend();
-                        this.addInteractions();
+                        this.enableSelectTools();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -830,75 +840,77 @@ export default {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
         },
-        addInteractions() {
-            let $self = this;
-            const select = new Select({
-                addCondition: platformModifierKeyOnly,
-            });
-            this.map.addInteraction(select);
-            select.on('select', function (e) {
-                const candidateFeatures = $self.selectedFeatures;
-                e.selected.forEach(feature => {
-                    if (feature.getGeometry() instanceof LineString) {
-                        select.getLayer(feature).getSource().getFeatures().forEach(feature => {
-                            candidateFeatures.push(feature);
-                        })
-                    }
-                })
-            })
-            const dragBox = new DragBox({
-                condition: shiftKeyOnly,
-            });
-            this.map.addInteraction(dragBox);
-            this.selectedFeatures = select.getFeatures();
-            dragBox.on('boxend', function () {
-                const rotation = $self.map.getView().getRotation();
-                const oblique = rotation % (Math.PI / 2) !== 0;
-                const candidateFeatures = oblique ? [] : $self.selectedFeatures;
-                const extent = dragBox.getGeometry().getExtent();
-                $self.map.getLayerGroup().getLayers().forEach(layerGroup => {
-                    layerGroup.getLayers().forEach(layer => {
-                        switch (layerGroup.type) {
-                            case 'border':
-                                let selectFeature = true;
-                                layer.getSource().getFeatures().forEach(feature => {
-                                    selectFeature = $self.checkFeatureInExtent(extent, feature)
-                                })
-                                if (selectFeature) {
-                                    layer.getSource().getFeatures().forEach(feature => {
-                                        candidateFeatures.push(feature);
-                                    })
-                                }
-                                break;
-                            default:
-                                layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
-                                    let selectFeature = $self.checkFeatureInExtent(extent, feature)
-                                    if (selectFeature) {
-                                        candidateFeatures.push(feature);
-                                    }
-                                });
+        enableSelectTools() {
+            if (this.map) {
+                let $self = this;
+                this.selectTool = new Select({
+                    addCondition: platformModifierKeyOnly,
+                });
+                this.map.addInteraction(this.selectTool);
+                this.selectTool.on('select', function (e) {
+                    const candidateFeatures = $self.selectedFeatures;
+                    e.selected.forEach(feature => {
+                        if (feature.getGeometry() instanceof LineString) {
+                            $self.selectTool.getLayer(feature).getSource().getFeatures().forEach(feature => {
+                                candidateFeatures.push(feature);
+                            })
                         }
                     })
                 })
-                if (oblique) {
-                    const anchor = [0, 0];
-                    const geometry = dragBox.getGeometry().clone();
-                    geometry.rotate(-rotation, anchor);
-                    const extent = geometry.getExtent();
-                    candidateFeatures.forEach(function (feature) {
-                        const geometry = feature.getGeometry().clone();
+                this.dragBoxTool = new DragBox({
+                    condition: shiftKeyOnly,
+                });
+                this.map.addInteraction(this.dragBoxTool);
+                this.selectedFeatures = this.selectTool.getFeatures();
+                this.dragBoxTool.on('boxend', function () {
+                    const rotation = $self.map.getView().getRotation();
+                    const oblique = rotation % (Math.PI / 2) !== 0;
+                    const candidateFeatures = oblique ? [] : $self.selectedFeatures;
+                    const extent = $self.dragBoxTool.getGeometry().getExtent();
+                    $self.map.getLayerGroup().getLayers().forEach(layerGroup => {
+                        layerGroup.getLayers().forEach(layer => {
+                            switch (layerGroup.type) {
+                                case 'border':
+                                    let selectFeature = true;
+                                    layer.getSource().getFeatures().forEach(feature => {
+                                        selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                    })
+                                    if (selectFeature) {
+                                        layer.getSource().getFeatures().forEach(feature => {
+                                            candidateFeatures.push(feature);
+                                        })
+                                    }
+                                    break;
+                                default:
+                                    layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+                                        let selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                        if (selectFeature) {
+                                            candidateFeatures.push(feature);
+                                        }
+                                    });
+                            }
+                        })
+                    })
+                    if (oblique) {
+                        const anchor = [0, 0];
+                        const geometry = this.dragBoxTool.getGeometry().clone();
                         geometry.rotate(-rotation, anchor);
-                        if (geometry.intersectsExtent(extent)) {
-                            $self.selectedFeatures.push(feature);
-                        }
-                    });
-                }
-            });
-            dragBox.on('boxstart', function (e) {
-                if (typeof this.selectedFeatures !== "undefined" && this.selectedFeatures.length > 0) {
-                    this.selectedFeatures.clear();
-                }
-            });
+                        const extent = geometry.getExtent();
+                        candidateFeatures.forEach(function (feature) {
+                            const geometry = feature.getGeometry().clone();
+                            geometry.rotate(-rotation, anchor);
+                            if (geometry.intersectsExtent(extent)) {
+                                $self.selectedFeatures.push(feature);
+                            }
+                        });
+                    }
+                });
+                this.dragBoxTool.on('boxstart', function (e) {
+                    if (typeof this.selectedFeatures !== "undefined" && this.selectedFeatures.length > 0) {
+                        this.selectedFeatures.clear();
+                    }
+                });
+            }
         },
         checkFeatureInExtent(extent, feature) {
             let featureInExtent = true;
@@ -912,7 +924,78 @@ export default {
 
             return featureInExtent;
         },
-    }
+        enableMeasuringTool() {
+            if (this.map) {
+                let $self = this;
+                let measureSource = new VectorSource();
+                this.measureLayer = new VectorLayer({
+                    source: measureSource,
+                    style: new Style({
+                        fill: new Fill({
+                            color: 'rgba(255, 255, 255, 0.2)',
+                        }),
+                        stroke: new Stroke({
+                            color: '#ffcc33',
+                            width: 2,
+                        }),
+                        image: new CircleStyle({
+                            radius: 7,
+                            fill: new Fill({
+                                color: '#ffcc33',
+                            }),
+                        }),
+                    }),
+                    zIndex: 100,
+                })
+                this.map.addLayer(this.measureLayer);
+                this.measuringTool = new Draw({
+                    type: this.measuringToolType,
+                    source: measureSource
+                });
+                this.map.addInteraction(this.measuringTool);
+                this.createMeasureTooltip();
+                this.measuringTool.on('drawstart', function (event) {
+                    event.feature.getGeometry().on('change', function (e) {
+                        const measurement = e.target.getLength() * $self.metersPerUnit / 1000;
+                        $self.measureTooltipElement.innerHTML = measurement.toFixed(2) + 'km';
+                        $self.measureTooltip.setPosition(e.target.getLastCoordinate());
+                    });
+                });
+                this.measuringTool.on('drawend', function () {
+                    $self.measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
+                    $self.measureTooltip.setOffset([0, -7]);
+                    $self.measureTooltipElement = null;
+                    $self.createMeasureTooltip();
+                });
+            }
+        },
+        createMeasureTooltip() {
+            if (this.measureTooltipElement) {
+                this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement);
+            }
+            this.measureTooltipElement = document.createElement('div');
+            this.measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+            this.measureTooltip = new Overlay({
+                element: this.measureTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center',
+                stopEvent: false,
+                insertFirst: false,
+            });
+            this.map.addOverlay(this.measureTooltip);
+        },
+        removeAllTools() {
+            if (this.map) {
+                if (this.measureLayer) {
+                    this.measureLayer.getSource().clear();
+                }
+                this.map.getOverlays().clear();
+                this.map.removeInteraction(this.measuringTool);
+                this.map.removeInteraction(this.selectTool);
+                this.map.removeInteraction(this.dragBoxTool);
+            }
+        },
+    },
 }
 
 class ToggleMapStyle extends Control {
@@ -1062,5 +1145,26 @@ class ExportMap extends Control {
     position: absolute;
     bottom: 0;
     right: 10%;
+}
+.ol-tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
+    opacity: 0.7;
+    white-space: nowrap;
+    font-size: 12px;
+    cursor: default;
+    user-select: none;
+}
+.ol-tooltip-measure {
+    opacity: 1;
+    font-weight: bold;
+}
+.ol-tooltip-static {
+    background-color: #ffcc33;
+    color: black;
+    border: 1px solid white;
 }
 </style>

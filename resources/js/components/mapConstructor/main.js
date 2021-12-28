@@ -26,23 +26,22 @@ export default {
                 {
                     icon: 'fas fa-plus',
                     langCode: 'map_constructor.add',
-                    action: 'addGeographicalMap'
+                    action: 'addGeographicalMap',
                 },
                 {
                     icon: 'fas fa-location-arrow',
-                    langCode: 'map_constructor.cursor'
+                    langCode: 'map_constructor.cursor',
+                    action: 'cursorClick',
+                    isActive: true,
                 },
                 {
-                    icon: 'far fa-hand-paper',
-                    langCode: 'map_constructor.hand'
+                    icon: 'fas fa-ruler',
+                    langCode: 'map_constructor.ruler',
+                    action: 'measureClick',
                 },
                 {
                     icon: 'far fa-copy',
                     langCode: 'map_constructor.copy'
-                },
-                {
-                    icon: 'fas fa-ruler',
-                    langCode: 'map_constructor.ruler'
                 },
                 {
                     icon: 'fas fa-info-circle',
@@ -97,6 +96,7 @@ export default {
                 horizonList: [],
             },
             bubblesData: [],
+            activeToolType: null,
         }
     },
     components: {
@@ -549,6 +549,24 @@ export default {
             }
             const projectRef = this.projects[this.activeProjectIndex].key;
             this.$refs[projectRef][0].addGeographicalMap();
+        },
+        cursorClick() {
+            this.leftTools.forEach((tool, index) => {
+                tool.isActive = index === 1;
+            })
+            this.projects.forEach(project => {
+                this.$refs[project.key][0].removeAllTools();
+                this.$refs[project.key][0].enableSelectTools();
+            })
+        },
+        measureClick() {
+            this.leftTools.forEach((tool, index) => {
+                tool.isActive = index === 2;
+            })
+            this.projects.forEach(project => {
+                this.$refs[project.key][0].removeAllTools();
+                this.$refs[project.key][0].enableMeasuringTool();
+            })
         },
         showBubblesByDate() {
             const projectRef = this.projects[this.activeProjectIndex].key;
