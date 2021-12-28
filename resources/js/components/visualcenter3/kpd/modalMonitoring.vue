@@ -17,7 +17,7 @@
                         {{trans('pgno.zakrit')}}
                     </button>
                 </div>
-                <div class="scroll">
+                <div class="scroll mt-5">
                     <table class="modal_table mt-5">
                         <tr>
                             <th rowspan="2" class="p-2">№<br>п/п</th>
@@ -126,7 +126,7 @@
                     </table>
                 </div>
                 <div align="center" class="bottom-buttons col-12 row">
-                    <div class="col-1 download-button m-4" @click="updateKpd">ОК</div>
+                    <div class="col-1 download-button m-4" @click="updateKpd">Сохранить</div>
                     <div class="col-1 cancel-button m-4" @click="$modal.hide('modalMonitoring')">Отмена</div>
                 </div>
             </div>
