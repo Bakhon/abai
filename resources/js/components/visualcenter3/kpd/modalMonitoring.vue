@@ -5,7 +5,7 @@
                 name="modalMonitoring"
                 draggable=".modal-bign-header"
                 :width="1700"
-                :height="700"
+                :height="720"
                 style="background: transparent;"
                 :adaptive="true"
         >
@@ -17,7 +17,7 @@
                         {{trans('pgno.zakrit')}}
                     </button>
                 </div>
-                <div class="scroll mt-5">
+                <div class="scroll">
                     <table class="modal_table mt-5">
                         <tr>
                             <th rowspan="2" class="p-2">№<br>п/п</th>
@@ -345,7 +345,6 @@ export default {
     border-radius: 5px;
 }
 .bottom-buttons {
-    position: absolute;
     bottom: 0;
     justify-content: center;
     div {
