@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
@@ -224,11 +225,16 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => $message
-                ]
-            );
+            if (isset($this->input['cron']) and $this->input['cron']) {
+                Log::channel('calculate_hydro_reverse_yesterday:cron')->error($message);
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => $message
+                    ]
+                );
+            }
+
             return;
         }
 

@@ -73,7 +73,7 @@ class ReverseCalculationResource extends CrudListResource
                 'daily_fluid_production' => round($this->qliq, 2),
                 'bsw' => round($this->bsw, 2),
                 'gas_factor' => round($this->gazf, 2),
-                // ата в бар
+                // атмосферы абс. в бар изб.
                 'pressure_start' => round(($this->press_start - 1) * 101325 / 100000, 2),
                 'pressure_end' => round(($this->press_end - 1) * 101325 / 100000, 2),
                 'temp_start' => round($this->temperature_start, 2),
