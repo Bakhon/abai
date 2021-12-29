@@ -52,7 +52,7 @@
       "code": "work_hours",
       "table": "dmart.monthly_inj",
       "column": "work_hours",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -60,7 +60,7 @@
       "code": "work_hours_pol",
       "table": "dmart.monthly_inj",
       "column": "work_hours_pol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -68,7 +68,7 @@
       "code": "work_day",
       "table": "dmart.monthly_inj",
       "column": "work_day",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -76,7 +76,7 @@
       "code": "downtime_day",
       "table": "dmart.monthly_inj",
       "column": "downtime_day",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -84,7 +84,7 @@
       "code": "work_day_pol",
       "table": "dmart.monthly_inj",
       "column": "work_day_pol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -92,7 +92,7 @@
       "code": "downtime_day_pol",
       "table": "dmart.monthly_inj",
       "column": "downtime_day_pol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -100,7 +100,7 @@
       "code": "water_vol",
       "table": "dmart.monthly_inj",
       "column": "water_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -108,7 +108,7 @@
       "code": "water_vol_rate",
       "table": "dmart.monthly_inj",
       "column": "water_vol_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -116,7 +116,7 @@
       "code": "pol_agent_rate",
       "table": "dmart.monthly_inj",
       "column": "pol_agent_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -124,7 +124,7 @@
       "code": "pol_water_rate",
       "table": "dmart.monthly_inj",
       "column": "pol_water_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -132,7 +132,7 @@
       "code": "pol_mix_rate",
       "table": "dmart.monthly_inj",
       "column": "pol_mix_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -140,7 +140,7 @@
       "code": "pol_agent_vol",
       "table": "dmart.monthly_inj",
       "column": "pol_agent_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -148,7 +148,7 @@
       "code": "pol_water_vol",
       "table": "dmart.monthly_inj",
       "column": "pol_water_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -156,7 +156,7 @@
       "code": "pol_total_vol",
       "table": "dmart.monthly_inj",
       "column": "pol_total_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -164,7 +164,7 @@
       "code": "pol_dry_mass",
       "table": "dmart.monthly_inj",
       "column": "pol_dry_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -172,7 +172,7 @@
       "code": "pol_inlet_pressure",
       "table": "dmart.monthly_inj",
       "column": "pol_inlet_pressure",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -180,7 +180,7 @@
       "code": "pol_mix_viscosity",
       "table": "dmart.monthly_inj",
       "column": "pol_mix_viscosity",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -188,7 +188,7 @@
       "code": "pol_outlet_pressure",
       "table": "dmart.monthly_inj",
       "column": "pol_outlet_pressure",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -196,7 +196,7 @@
       "code": "pol_concentration",
       "table": "dmart.monthly_inj",
       "column": "pol_concentration",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     }
   ]

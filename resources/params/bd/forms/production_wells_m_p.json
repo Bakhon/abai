@@ -70,7 +70,7 @@
       "code": "oil_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "oil_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -79,7 +79,7 @@
       "code": "oil_mass",
       "table": "dmart.monthly_prod_oil",
       "column": "oil_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -88,7 +88,7 @@
       "code": "water_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "water_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -97,7 +97,7 @@
       "code": "water_mass",
       "table": "dmart.monthly_prod_oil",
       "column": "water_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -106,7 +106,7 @@
       "code": "gas_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "gas_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -115,7 +115,7 @@
       "code": "liq_mass",
       "table": "dmart.monthly_prod_oil",
       "column": "liq_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -124,7 +124,7 @@
       "code": "liq_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "liq_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "period"
     },
@@ -133,7 +133,7 @@
       "code": "oil_mass_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "oil_mass_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -142,7 +142,7 @@
       "code": "oil_vol_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "oil_vol_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -151,7 +151,7 @@
       "code": "water_mass_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "water_mass_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -160,7 +160,7 @@
       "code": "water_vol_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "water_vol_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -169,7 +169,7 @@
       "code": "gas_vol_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "gas_vol_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -178,7 +178,7 @@
       "code": "liq_mass_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "liq_mass_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -187,7 +187,7 @@
       "code": "liq_vol_rate",
       "table": "dmart.monthly_prod_oil",
       "column": "liq_vol_rate",
-      "type": "text",
+      "type": "float",
       "is_editable": false,
       "parent_column": "avg_daily"
     },
@@ -196,7 +196,7 @@
       "code": "wcut_mass",
       "table": "dmart.monthly_prod_oil",
       "column": "wcut_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -204,7 +204,7 @@
       "code": "wcut_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "wcut_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -212,7 +212,7 @@
       "code": "gor_vol",
       "table": "dmart.monthly_prod_oil",
       "column": "gor_vol",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -220,7 +220,7 @@
       "code": "gor_mass",
       "table": "dmart.monthly_prod_oil",
       "column": "gor_mass",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -228,7 +228,7 @@
       "code": "work_hours",
       "table": "dmart.monthly_prod_oil",
       "column": "work_hours",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -236,7 +236,7 @@
       "code": "work_day",
       "table": "dmart.monthly_prod_oil",
       "column": "work_day",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -244,7 +244,7 @@
       "code": "downtime_day",
       "table": "dmart.monthly_prod_oil",
       "column": "downtime_day",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     },
     {
@@ -252,7 +252,7 @@
       "code": "work_cal_day",
       "table": "dmart.monthly_prod_oil",
       "column": "work_cal_day",
-      "type": "text",
+      "type": "float",
       "is_editable": false
     }
   ]
