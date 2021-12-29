@@ -43,7 +43,7 @@ class ParseOmgNgduWellData extends Command
     {
         $this->output->title('Starting parse');
 
-        $abaiprotZus = AbaiprotZu::where('__time', '>', '2021-12-01')->get();
+        $abaiprotZus = AbaiprotZu::where('__time', '>', '2021-11-01')->orderBy('zuid')->get();
         $this->parseOmgNgduWellData($abaiprotZus);
         foreach ($this->errors as $error) {
             $this->error($error);
