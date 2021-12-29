@@ -405,8 +405,6 @@
                 class="sheare-icon"
                 @click="ExportToExcel('tbl_exporttable_to_xls', 'WellCard')"
               >
-                <!-- @click="ExportToExcel('xlsx')" -->
-
                 <svg
                   width="20"
                   height="20"
