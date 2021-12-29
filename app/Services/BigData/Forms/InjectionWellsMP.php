@@ -17,12 +17,12 @@ class InjectionWellsMP extends TableForm
 
         $wellId = $this->request->get('id');
         $results = DB::connection('tbd')
-            ->table('dmart.monthly_prod_oil as mpo')
-            ->select('mpo.*', 'sd.name_ru as source')
-            ->join('dict.source_data as sd', 'mpo.source', 'sd.id')
-            ->where('mpo.well', $wellId)
-            ->where('mpo.date', '>=', $filter->date)
-            ->where('mpo.date', '<=', $filter->date_to)
+            ->table('dmart.monthly_inj as mi')
+            ->select('mi.*', 'sd.name_ru as source')
+            ->join('dict.source_data as sd', 'mi.source', 'sd.id')
+            ->where('mi.well', $wellId)
+            ->where('mi.date', '>=', $filter->date)
+            ->where('mi.date', '<=', $filter->date_to)
             ->orderBy('date', 'desc')
             ->get()
             ->map(function ($item) {
@@ -30,7 +30,14 @@ class InjectionWellsMP extends TableForm
                 foreach ($item as $key => $val) {
                     if ($key === 'date') {
                         $val = Carbon::parse($val, 'Asia/Almaty')->format('d.m.Y');
+                    } elseif (is_numeric($val)) {
+                        $val = str_replace(
+                            '.0',
+                            '',
+                            number_format((float)$val, 1, '.', ' ')
+                        );
                     }
+
                     $result[$key] = [
                         'value' => $val
                     ];
