@@ -172,6 +172,7 @@ export default {
                 'name': 'Редактирование КПД',
                 current: {
                     name: '',
+                    id: undefined,
                     description: '',
                     unit: '',
                     formula: '',
@@ -206,7 +207,6 @@ export default {
                     'responsible': ''
                 }
             );
-            console.log(this.currentKpd);
         },
         deleteRow() {
             this.kpd.current.elements.pop();
@@ -218,6 +218,9 @@ export default {
             let uri = this.localeUrl("/kpd-tree-catalog-store");
             let formData = new FormData();
             formData.append('name', this.kpd.current.name);
+            if (this.kpd.current.id) {
+                formData.append('id', this.kpd.current.id);
+            }
             formData.append('elements', JSON.stringify(this.kpd.current.elements));
             formData.append('description', this.kpd.current.description);
             formData.append('unit', this.kpd.current.unit);
@@ -268,6 +271,7 @@ export default {
             this.kpdParents = this.kpdList;
         },
         currentKpd: function() {
+            this.isOperationFinished = false;
             if (Object.keys(this.currentKpd).length > 0) {
                 this.kpd.current = _.cloneDeep(this.currentKpd);
             } else {
@@ -285,6 +289,9 @@ export default {
                     description_document: '',
                     calculation_document: ''
                 };
+            }
+            if (this.kpd.current.elements.length === 0) {
+                this.addRow();
             }
         }
     },
