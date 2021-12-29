@@ -228,7 +228,6 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        
                                                 >
                                                     &nbsp;
                                                 </td>
@@ -455,7 +454,6 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                       
                                                 >
                                                     &nbsp;
                                                 </td>
