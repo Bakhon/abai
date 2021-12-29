@@ -40,7 +40,7 @@
                 </div>
             </div>
         </modal>
-        <modal-managers :type="type"></modal-managers>
+        <modal-managers :type="type" ref="managers"></modal-managers>
     </div>
 </template>
 
@@ -51,8 +51,20 @@
 export default {
     data: function () {
         return {
-            'type': 'manager'
+            'type': 'manager',
         };
+    },
+    async mounted() {
+        this.$watch(
+            () => {
+                return this.$refs.managers.isOperationFinished
+            },
+            async (status) => {
+                if (status) {
+                    this.$emit('update-required', true);
+                }
+            }
+        );
     },
 }
 

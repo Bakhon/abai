@@ -43,13 +43,13 @@
 
                 <div v-if="menuVisibility.manager" class="col-7">
                     <div class="col-12 table-header">
-                        <span><b>КПД руководящих работников (членов Правления)</b></span>
+                        <span><b>Функциональные КПД руководящих работников (членов Правления)</b></span>
                     </div>
                 </div>
 
                 <div v-if="menuVisibility.deputy" class="col-7">
                     <div class="col-12 table-header">
-                        <span><b>КПД управленческих работников</b></span>
+                        <span><b>Функциональные КПД управленческих работников</b></span>
                     </div>
                 </div>
             </div>
@@ -64,6 +64,7 @@
                             <div
                                     v-for="(kpd, index) in strategicKpdList"
                                     class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
                                 <div class="col-12">
                                     <div class="text-right">
@@ -99,17 +100,18 @@
                             <div
                                     v-for="(kpd, index) in corporateManager[0].kpdList"
                                     class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
                                 <div class="col-12">
                                     <div class="text-right">
-                                        {{kpd.fact}}%
+                                        {{kpd.rating}}%
                                     </div>
                                     <div class="progress progress_template">
                                         <div
-                                                :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
-                                                :style="{width: kpd.fact + '%',}"
+                                                :class="[getProgressBarFillingColor(kpd.rating),'progress-bar progress-bar_filling']"
+                                                :style="{width: kpd.rating + '%',}"
                                                 role="progressbar"
-                                                :aria-valuenow="kpd.fact"
+                                                :aria-valuenow="kpd.rating"
                                                 aria-valuemin="0"
                                                 aria-valuemax="100"
                                         ></div>
@@ -134,9 +136,9 @@
                                     <div class="col-12 mt-3 p-0 progress progress_template">
                                         <div
                                                 :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
-                                                :style="{width: manager.fact + '%',}"
+                                                :style="{width: manager.rating + '%',}"
                                                 role="progressbar"
-                                                :aria-valuenow="manager.fact"
+                                                :aria-valuenow="manager.rating"
                                                 aria-valuemin="0"
                                                 aria-valuemax="100"
                                         ></div>
@@ -145,7 +147,7 @@
                                 </div>
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
-                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
                                     <div class="col-8 d-flex p-0">
                                         <div class="kpd-id"></div>
                                         <div>{{kpd.name}}</div>
@@ -154,9 +156,9 @@
                                         <div class="col-12 p-0 progress progress_template">
                                             <div
                                                     :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
-                                                    :style="{width: kpd.fact + '%',}"
+                                                    :style="{width: kpd.rating + '%',}"
                                                     role="progressbar"
-                                                    :aria-valuenow="kpd.fact"
+                                                    :aria-valuenow="kpd.rating"
                                                     aria-valuemin="0"
                                                     aria-valuemax="100"
                                             ></div>
@@ -192,7 +194,7 @@
                                 </div>
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
-                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
                                     <div class="kpd-id"></div>
                                     <div class="">{{kpd.name}}</div>
                                 </div>
@@ -202,10 +204,11 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog :managers="managers" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
+            <kpd-modal-catalog :managers="managers" :deputy="deputy" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
             <kpd-modal-monitoring :manager-info="selectedManager" ref="kpdMonitoring" :manager-type="managerType"></kpd-modal-monitoring>
-            <modal-settings :corporate-manager="corporateManager[0]"></modal-settings>
+            <modal-settings :corporate-manager="corporateManager[0]" @update-required="updateData"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager[0]"></modal-corporate-manager>
+            <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager[0]" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
         </div>
     </div>
 </template>

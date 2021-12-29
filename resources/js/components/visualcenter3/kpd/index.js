@@ -127,22 +127,29 @@ export default {
                     return parseInt(kpd.type) === manager.id;
                 });
                 manager['kpdList'] = filteredKpd;
-                _.forEach(filteredKpd, (kpd) => {
+                _.forEach(filteredKpd, (kpd,index) => {
                     let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
                     if (sorted.length === 0) {
                         kpd.rating = 0;
                         kpd.summary = 0;
                         kpd.fact = 0;
                     } else {
-                        kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact);
+                        kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact));
                         kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                         kpd.fact = sorted.at(-1).fact;
                     }
+                    let elements = kpd.kpd_elements;
+                    filteredKpd[index]['elements'] = kpd.kpd_elements;
+                    delete filteredKpd[index]['kpd_elements'];
                 });
-                manager['fact'] = _.sumBy(filteredKpd, 'summary');
+                manager['fact'] = _.sumBy(filteredKpd, item => Number(item.summary));
             });
         },
         getKpdEfficiency(step,target,maximum,fact) {
+            fact = parseFloat(fact);
+            target = parseFloat(target);
+            maximum = parseFloat(maximum);
+            step = parseFloat(step);
             if (fact < step) {
                 return 0;
             }
@@ -176,7 +183,7 @@ export default {
             this.fillKpdList(this.deputy);
             this.fillKpdList(this.corporateManager,'corporate');
             this.SET_LOADING(false);
-        }
+        },
     },
     async mounted() {
         await this.updateData();

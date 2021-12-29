@@ -43,7 +43,8 @@ export default {
         return {
             managers: [],
             selectedManager: {},
-            selectedType: 'manager'
+            selectedType: 'manager',
+            isOperationFinished: false
         };
     },
     methods: {
@@ -53,20 +54,18 @@ export default {
             if (response.status !== 200) {
                 return [];
             }
+            this.isOperationFinished = false;
             return response.data;
         },
         selectManager(manager) {
             this.selectedManager = manager;
-        },
-        async switchManagerType(type) {
-            this.selectedType = type;
-            this.managers = await this.getManagers(type);
         },
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
     },
     async mounted() {
+        this.isOperationFinished = false;
         this.managers = await this.getManagers(this.selectedType);
         this.$watch(
             () => {
@@ -75,6 +74,7 @@ export default {
             async (status) => {
                 if (status) {
                     this.managers = await this.getManagers(this.selectedType);
+                    this.isOperationFinished = true;
                 }
             }
         );
