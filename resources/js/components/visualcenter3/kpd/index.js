@@ -127,7 +127,7 @@ export default {
                     return parseInt(kpd.type) === manager.id;
                 });
                 manager['kpdList'] = filteredKpd;
-                _.forEach(filteredKpd, (kpd) => {
+                _.forEach(filteredKpd, (kpd,index) => {
                     let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
                     if (sorted.length === 0) {
                         kpd.rating = 0;
@@ -138,6 +138,9 @@ export default {
                         kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                         kpd.fact = sorted.at(-1).fact;
                     }
+                    let elements = kpd.kpd_elements;
+                    filteredKpd[index]['elements'] = kpd.kpd_elements;
+                    delete filteredKpd[index]['kpd_elements'];
                 });
                 manager['fact'] = _.sumBy(filteredKpd, item => Number(item.summary));
             });

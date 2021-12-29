@@ -64,6 +64,7 @@
                             <div
                                     v-for="(kpd, index) in strategicKpdList"
                                     class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
                                 <div class="col-12">
                                     <div class="text-right">
@@ -99,6 +100,7 @@
                             <div
                                     v-for="(kpd, index) in corporateManager[0].kpdList"
                                     class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
                                 <div class="col-12">
                                     <div class="text-right">
@@ -145,7 +147,7 @@
                                 </div>
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
-                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
                                     <div class="col-8 d-flex p-0">
                                         <div class="kpd-id"></div>
                                         <div>{{kpd.name}}</div>
@@ -192,7 +194,7 @@
                                 </div>
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
-                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
                                     <div class="kpd-id"></div>
                                     <div class="">{{kpd.name}}</div>
                                 </div>
@@ -206,6 +208,7 @@
             <kpd-modal-monitoring :manager-info="selectedManager" ref="kpdMonitoring" :manager-type="managerType"></kpd-modal-monitoring>
             <modal-settings :corporate-manager="corporateManager[0]"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager[0]"></modal-corporate-manager>
+            <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager[0]" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
         </div>
     </div>
 </template>

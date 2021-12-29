@@ -131,6 +131,14 @@
                             <option v-for="kpd in kpdParents" :value="kpd.id">{{kpd.name}}</option>
                         </select>
                     </div>
+                    <div class="p-1 col-12 d-flex">
+                        <div class="col-2 text-left pt-2">Примечание</div>
+                        <b-form-textarea
+                                class="col-10 text-left pt-2 input_kpd"
+                                v-model="kpd.current.comment"
+                                rows="4"
+                        ></b-form-textarea>
+                    </div>
                     <div class="p-1 col-12 d-flex mt-2">
                         <div class="col-6 d-flex justify-content-start pt-2">
                             <span>Описание</span>
@@ -187,7 +195,8 @@ export default {
                     type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
-                    calculation_document: ''
+                    calculation_document: '',
+                    comment: ''
                 }
             },
             owners: [
@@ -228,6 +237,7 @@ export default {
             }
             formData.append('elements', JSON.stringify(this.kpd.current.elements));
             formData.append('description', this.kpd.current.description);
+            formData.append('comment', this.kpd.current.comment);
             formData.append('unit', this.kpd.current.unit);
             formData.append('formula', this.kpd.current.formula);
             formData.append('functions', this.kpd.current.functions);
@@ -297,7 +307,8 @@ export default {
                     type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
-                    calculation_document: ''
+                    calculation_document: '',
+                    comment: ''
                 };
             }
             if (this.kpd.current.elements.length === 0) {

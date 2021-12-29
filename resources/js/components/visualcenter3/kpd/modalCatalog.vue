@@ -73,7 +73,6 @@ export default {
             async (update) => {
                 if (update) {
                     this.kpdList = await this.getKpdList();
-                    console.log(this.kpdList);
                     _.forEach(this.kpdList, (item,index) => {
                         let elements = item.kpd_elements;
                         this.kpdList[index]['elements'] = item.kpd_elements;
