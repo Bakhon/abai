@@ -84,7 +84,6 @@ class WellsController extends Controller
         }
 
         $orgs = $this->org($well);
-        $mainOrg = $this->orgCode($orgs);
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well),
