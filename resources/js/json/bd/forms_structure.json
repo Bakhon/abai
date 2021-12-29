@@ -48,8 +48,18 @@
     "type": "dir",
     "isVisible": true,
     "forms": [
-      "production_wells_schedule",
-      "injection_wells_schedule"
+      {
+        "code": "production_wells_schedule",
+        "sub": [
+          "production_wells_m_p"
+        ]
+      },
+      {
+        "code": "injection_wells_schedule",
+        "sub": [
+          "injection_wells_m_p"
+        ]
+      }
     ]
   },
   {

@@ -408,7 +408,7 @@ abstract class PlainForm extends BaseForm
                 }
             }
         }
-        return array_values($params);
+        return $params;
     }
 
 }

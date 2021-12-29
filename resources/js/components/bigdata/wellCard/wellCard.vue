@@ -1006,8 +1006,8 @@ export default {
         ? this.well.gdisCurrent.note
         : "";
       let gdisCurrentValueBhp =
-        this.well.techmode.value_string && this.well.techmode.dbeg
-          ? this.well.techmode.value_string.toFixed(1) +
+        this.well.techmode.value_double && this.well.techmode.dbeg
+          ? this.well.techmode.value_double.toFixed(1) +
             " / " +
             this.getFormatedDate(this.well.techmode.dbeg)
           : "";
