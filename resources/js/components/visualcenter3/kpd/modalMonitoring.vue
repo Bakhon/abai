@@ -310,6 +310,7 @@ export default {
                    kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                    kpd['fact'] = _.sumBy(kpd.kpd_fact,  item => Number(item.fact));
                 });
+                
                 this.SET_LOADING(false);
             }
         },
