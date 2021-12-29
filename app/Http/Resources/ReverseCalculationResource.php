@@ -6,7 +6,7 @@ class ReverseCalculationResource extends CrudListResource
 {
     public function toArray($request)
     {
-        $result = isset($this->fluid_speed) ? $this->calculated() : $this->prepaired();
+        $result = isset($this->flow_type) ? $this->calculated() : $this->prepaired();
 
         $result['links'] = $this->omgngdu ? ['edit' => route('omgngdu-well.edit', $this->omgngdu->id)] : [];
 
