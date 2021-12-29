@@ -23,7 +23,7 @@ class ReverseCalculationResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'id' => $this->id,
+                'oil_pipe_id' => $this->id,
                 'gu_name' => $this->gu ? $this->gu->name : '',
                 'date' => $this->omgngdu ? $this->omgngdu->date : '',
                 'start_point' => $this->start_point,
@@ -60,7 +60,7 @@ class ReverseCalculationResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'check_calc' => $this->oilPipe->gu_id,
-                'id' => $this->id,
+                'oil_pipe_id' => $this->oilPipe->id,
                 'gu_name' => $this->oilPipe->gu ? $this->oilPipe->gu->name : '',
                 'date' => $this->date,
                 'start_point' => $this->start_point,
