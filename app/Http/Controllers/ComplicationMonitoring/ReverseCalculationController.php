@@ -7,15 +7,11 @@ use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ReverseCalculationResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
-use App\Models\ComplicationMonitoring\ReverseHydroCalcResult;
-use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Gu;
-use App\Models\ComplicationMonitoring\ManualOilPipe;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\ComplicationMonitoring\PipeCoord;
-use App\Models\ComplicationMonitoring\ReverseCalculation;
 use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -34,7 +30,7 @@ class ReverseCalculationController extends CrudController
             ],
             'title' => trans('monitoring.reverse_calculation.table_title'),
             'fields' => [
-                'id' => [
+                'oil_pipe_id' => [
                     'title' => '№',
                     'type' => 'numeric',
                 ],
@@ -175,7 +171,7 @@ class ReverseCalculationController extends CrudController
 
     public function getCalculatedData(string $date)
     {
-        return ReverseHydroCalcResult::with('oilPipe.pipeType', 'oilPipe.gu')
+        return HydroCalcResult::with('oilPipe.pipeType', 'oilPipe.gu')
             ->where('date', $date)
             ->orderBy('id')
             ->get();
