@@ -418,7 +418,6 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wellList = data.data.wells;
-                    console.log(this.wellList);
                     
                 } else {
                     console.log("No data");
