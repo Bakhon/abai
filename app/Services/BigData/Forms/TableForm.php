@@ -645,4 +645,27 @@ abstract class TableForm extends BaseForm
         }
         return $data;
     }
+
+    protected function filterParams(array $params): array
+    {
+        $userDZOs = array_filter(
+            array_map(
+                function ($dzo) {
+                    return $dzo['code'];
+                },
+                auth()->user()->getUserOrganizations()
+            )
+        );
+
+        foreach ($params['columns'] as $key => $column) {
+            if (!isset($column['dzos'])) {
+                continue;
+            }
+            if (empty(array_intersect($userDZOs, $column['dzos']))) {
+                unset($params['columns'][$key]);
+            }
+        }
+        $params['columns'] = array_values($params['columns']);
+        return $params;
+    }
 }
