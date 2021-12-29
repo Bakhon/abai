@@ -126,11 +126,3 @@ const tkrsDailyReport = {
   };
   
   export default tkrsDailyReport;
-    
-    //                 this.annular_pressure = data.data.parameters.annular_pressure;
-    //                 this.descent_depth = data.data.parameters.descent_depth;
-    //                 this.pipe_pressure = data.data.parameters.pipe_pressure;
-    //                 this.artificial_slaughter = data.data.parameters.artificial_slaughter;
-    //                 this.current_bottomhole = data.data.parameters.current_bottomhole;
-    //                 this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
-    //                 this.wall_thickness = data.data.parameters.wall_thickness;
