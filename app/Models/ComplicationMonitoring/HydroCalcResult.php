@@ -17,4 +17,17 @@ class HydroCalcResult extends Model
     {
         return $this->belongsTo(OilPipe::class);
     }
+
+    public function wellGuOilPipe()
+    {
+        return $this->belongsTo(OilPipe::class)
+            ->whereIn('between_points', [
+                'well-zu',
+                'well-well_collector',
+                'well_collector-zu',
+                'zu-gu',
+                'zu-zu_coll',
+                'zu_coll-gu'
+            ]);
+    }
 }

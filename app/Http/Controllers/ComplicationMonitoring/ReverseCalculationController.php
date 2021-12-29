@@ -171,7 +171,11 @@ class ReverseCalculationController extends CrudController
 
     public function getCalculatedData(string $date)
     {
-        return HydroCalcResult::with('oilPipe.pipeType', 'oilPipe.gu')
+        return HydroCalcResult::whereHas('oilPipe', function ($query) {
+            $query->where('trunkline', false)
+                ->where('water_pipe', false);
+        })
+            ->with('oilPipe.pipeType', 'oilPipe.gu')
             ->where('date', $date)
             ->orderBy('id')
             ->get();
@@ -193,7 +197,8 @@ class ReverseCalculationController extends CrudController
             ->getFilteredQuery($input, $query)
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
-            ->whereIn('between_points', ['well-zu', 'well_collector-zu', 'zu-gu', 'zu-zu_coll', 'zu_coll-gu'])
+            ->where('trunkline', false)
+            ->where('water_pipe', false)
             ->whereNotIn('id', $calculatedPipesIds)
             ->whereIn('gu_id', $gu_ids)
             ->orderBy('gu_id')
