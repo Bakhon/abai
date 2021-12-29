@@ -18,22 +18,24 @@ export default {
             selectedManager: {},
             selectedKpd: {},
             kpdList: [],
-            corporateManager: {
-                'name': null,
-                'title': null,
-                'avatar': null,
-                'year': moment().year()
-            },
+            corporateManager: [
+                {
+                    'name': null,
+                    'title': null,
+                    'avatar': null,
+                    'year': moment().year()
+                }
+            ],
             managers: [],
             deputy: [],
             strategicKpdList: [],
-            corporateKpdList: [],
             menuVisibility: {
                 'strategic': true,
                 'corporate': true,
                 'manager': true,
                 'deputy': false
             },
+            managerType: undefined
         };
     },
     methods: {
@@ -77,7 +79,8 @@ export default {
                 return 'progress-bar_filling__high';
             }
         },
-        switchManager(manager) {
+        switchManager(manager,type) {
+            this.managerType = type;
             this.selectedManager = manager;
             this.$modal.show('modalMonitoring');
         },
@@ -114,10 +117,13 @@ export default {
             })
             return filtered;
         },
-        fillKpdList(managers) {
+        fillKpdList(managers,type) {
             _.forEach(managers, (manager) => {
                 manager['isSelected'] = false;
                 let filteredKpd = _.filter(_.cloneDeep(this.kpdList), (kpd) => {
+                    if (type === 'corporate') {
+                        return kpd.type === type;
+                    }
                     return parseInt(kpd.type) === manager.id;
                 });
                 manager['kpdList'] = filteredKpd;
@@ -126,9 +132,11 @@ export default {
                     if (sorted.length === 0) {
                         kpd.rating = 0;
                         kpd.summary = 0;
+                        kpd.fact = 0;
                     } else {
                         kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact);
                         kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                        kpd.fact = sorted.at(-1).fact;
                     }
                 });
                 manager['fact'] = _.sumBy(filteredKpd, 'summary');
@@ -153,24 +161,37 @@ export default {
             if (fact >= maximum) {
                 return 125;
             }
+        },
+        async updateData() {
+            this.SET_LOADING(true);
+            let corporateManager = await this.getCorporateManager();
+            if (Object.keys(corporateManager).length > 0) {
+                this.corporateManager = [corporateManager];
+            }
+            this.managers = await this.getAllManagers('manager');
+            this.deputy = await this.getAllManagers('deputy');
+            this.kpdList = await this.getAllKpd();
+            this.strategicKpdList = this.getKpdByType('strategic');
+            this.fillKpdList(this.managers);
+            this.fillKpdList(this.deputy);
+            this.fillKpdList(this.corporateManager,'corporate');
+            this.SET_LOADING(false);
         }
     },
     async mounted() {
-        this.SET_LOADING(true);
-        let corporateManager = await this.getCorporateManager();
-        if (Object.keys(corporateManager).length > 0) {
-            this.corporateManager = corporateManager;
-        }
-        this.managers = await this.getAllManagers('manager');
-        this.deputy = await this.getAllManagers('deputy');
-        this.selectedManager = this.kpdDecompositionA;
-        this.kpdList = await this.getAllKpd();
-        this.strategicKpdList = this.getKpdByType('strategic');
-        if (this.corporateManager.id) {
-            this.corporateKpdList = this.getKpdByType(this.corporateManager.id.toString());
-        }
-        this.fillKpdList(this.managers);
-        this.SET_LOADING(false);
+        await this.updateData();
+        this.$watch(
+            () => {
+                if (this.$refs.kpdMonitoring) {
+                    return this.$refs.kpdMonitoring.isOperationFinished
+                }
+            },
+            async (update) => {
+                if (update) {
+                    await this.updateData();
+                }
+            }
+        );
     },
     computed: {
 

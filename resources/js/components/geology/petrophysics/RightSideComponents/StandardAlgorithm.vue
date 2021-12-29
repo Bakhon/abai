@@ -24,10 +24,15 @@
         Не обновляйте страницу...
       </p>
     </ToolBlock>
-    <Button v-show="!getTimer.isActive" :disabled="getTimer.isActive||validation" class="mb-2 w-100" color="accent" align="center" @click="demoModal = true">Константы</Button>
-    <Button :loading="startButtonLoading" @click="start" :disabled="getTimer.isActive||validation" class="mb-2 w-100" color="primary" align="center" v-if="!getTimer.isActive">Старт</Button>
-    <Button class="mb-2 w-100" color="danger" align="center" v-else>Ожидание ответа | {{getTimer.scoreboard}}</Button>
-    <dropdown :disabled="getTimer.isActive" multiple :selected-value.sync="multipleSelect" block class="w-100 mb-2" button-text="Результаты"
+    <Button v-show="!getTimer.isActive" :disabled="getTimer.isActive||validation" class="mb-2 w-100" color="accent"
+            align="center" @click="demoModal = true">Константы
+    </Button>
+    <Button :loading="startButtonLoading" @click="start" :disabled="getTimer.isActive||validation" class="mb-2 w-100"
+            color="primary" align="center" v-if="!getTimer.isActive">Старт
+    </Button>
+    <Button class="mb-2 w-100" color="danger" align="center" v-else>Ожидание ответа | {{ getTimer.scoreboard }}</Button>
+    <dropdown :disabled="getTimer.isActive" multiple :selected-value.sync="multipleSelect" block class="w-100 mb-2"
+              button-text="Результаты"
               :options="[]" />
     <AwModal is-confirm position="top" size="xl" title="Константы" :is-show.sync="demoModal">
       <div class="scroll-table">
@@ -76,16 +81,20 @@
             <td>{{ getConstWithCode(horizon.code, 'PHIE_cut') }}</td>
             <td>{{ getConstWithCode(horizon.code, 'VSH_fin_cut') }}</td>
             <td>
-              <AwInput @change="editConstWithCode(horizon.code, 'GR_max', $event)" :value="getConstWithCode(horizon.code, 'GR_max')" />
+              <AwInput @change="editConstWithCode(horizon.code, 'GR_max', $event)"
+                       :value="getConstWithCode(horizon.code, 'GR_max')" />
             </td>
             <td>
-              <AwInput @change="editConstWithCode(horizon.code, 'GR_min', $event)" :value="getConstWithCode(horizon.code, 'GR_min')" />
+              <AwInput @change="editConstWithCode(horizon.code, 'GR_min', $event)"
+                       :value="getConstWithCode(horizon.code, 'GR_min')" />
             </td>
             <td>
-              <AwInput @change="editConstWithCode(horizon.code, 'SP_max', $event)" :value="getConstWithCode(horizon.code, 'SP_max')" />
+              <AwInput @change="editConstWithCode(horizon.code, 'SP_max', $event)"
+                       :value="getConstWithCode(horizon.code, 'SP_max')" />
             </td>
             <td>
-              <AwInput @change="editConstWithCode(horizon.code, 'SP_min', $event)" :value="getConstWithCode(horizon.code, 'SP_min')" />
+              <AwInput @change="editConstWithCode(horizon.code, 'SP_min', $event)"
+                       :value="getConstWithCode(horizon.code, 'SP_min')" />
             </td>
           </tr>
           </tbody>
@@ -121,7 +130,7 @@ export default {
   },
   data() {
     return {
-      STRATIGRAPHY_CONSTANTS_WITH_CODE:JSON.parse(JSON.stringify(STRATIGRAPHY_CONSTANTS_WITH_CODE)),
+      STRATIGRAPHY_CONSTANTS_WITH_CODE: JSON.parse(JSON.stringify(STRATIGRAPHY_CONSTANTS_WITH_CODE)),
       multipleSelect: [],
       demoModal: false,
       startButtonLoading: false,
@@ -139,7 +148,7 @@ export default {
     this.$store.dispatch(RUN_TIMER);
   },
   computed: {
-    getTimer(){
+    getTimer() {
       return this.$store.state.geologyGis.autoInterpretation
     },
     validation() {
@@ -149,7 +158,10 @@ export default {
       ].some((m) => !m);
     },
     getHorizon() {
-      return (this.$store.state.geologyGis.WELLS_HORIZONS_ELEMENTS.filter((h) => (h.wells.includes(this.well) && !h.name.match(/_(PCA|DTW)$/))) || [])
+      return [...[{
+        "name": "Val",
+        "code": "Val"
+      }], ...(this.$store.state.geologyGis.WELLS_HORIZONS_ELEMENTS.filter((h) => (h.wells.includes(this.well) && !h.name.match(/_(PCA|DTW)$/))) || [])];
     },
   },
   methods: {

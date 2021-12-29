@@ -5,7 +5,7 @@
       @change="$emit('change')"
   >
     <option :value="null" disabled selected>
-      {{ selectDefault }}
+      {{ placeholder }}
     </option>
 
     <option
@@ -46,7 +46,10 @@ export default {
     },
     placeholder: {
       required: false,
-      type: String
+      type: String,
+      default: function () {
+        return this.trans('economic_reference.select_log')
+      }
     }
   },
   data: () => ({
@@ -72,10 +75,6 @@ export default {
     url() {
       return this.localeUrl('/economic/log/get-data')
     },
-
-    selectDefault() {
-      return this.placeholder || this.trans('economic_reference.select_log')
-    }
   }
 }
 </script>

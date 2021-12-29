@@ -28,6 +28,13 @@
                 "validation": "required|numeric|gte:0|lte:10000"
               },
               {
+                "code": "param",
+                "type": "dict",
+                "dict": "bottom_hole_param_td",
+                "title": "param",
+                "validation": "required"
+              },
+              {
                 "code": "comment",
                 "type": "text",
                 "title": "comment",

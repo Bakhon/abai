@@ -23,6 +23,9 @@ const COLORS = [
   '#2309D6',
   '#000000',
   '#23CBD6',
+  '#FEEA00',
+  '#FCA311',
+  '#EF798A',
 ]
 
 export default {
@@ -136,6 +139,21 @@ export default {
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
+          chartType: 'line',
+        },
+        {
+          prop: 'prs1',
+          name: this.trans('economic_reference.prs_count'),
+          chartType: 'column',
+        },
+        {
+          prop: 'Fixed_expenditures',
+          name: this.trans('economic_reference.fixed_expenditures'),
+          chartType: 'line',
+        },
+        {
+          prop: 'Variable_expenditures',
+          name: this.trans('economic_reference.variable_expenditures'),
           chartType: 'line',
         }
       ]

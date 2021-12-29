@@ -20,7 +20,7 @@ class BDController extends Controller
     {
         $user = json_encode(auth()->user()->load('profile'));
 
-        $user_can = auth()->user()->can('digitalDrilling delete catalog');
+        $user_can = auth()->user()->can('digitalDrilling view catalog');
 
         return view('digital_drilling.index', compact('user', 'user_can'));
     }

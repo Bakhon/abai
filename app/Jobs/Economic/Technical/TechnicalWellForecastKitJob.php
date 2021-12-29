@@ -28,7 +28,7 @@ class TechnicalWellForecastKitJob implements ShouldQueue
 
     const DEFAULT_WHERE_IN_PARAM = "''";
 
-    const OIL_FACTOR = 10;
+    const OIL_FACTOR = 100;
     const OIL_DEVIATION = 1;
 
     public function __construct(int $kitId, float $permanentStopCoefficient)
@@ -41,6 +41,8 @@ class TechnicalWellForecastKitJob implements ShouldQueue
     public function handle()
     {
         ini_set('max_execution_time', $this->timeout);
+
+        ini_set('memory_limit', '-1');
 
         /** @var TechnicalWellForecastKit $kit */
         $kit = TechnicalWellForecastKit::find($this->kitId);
