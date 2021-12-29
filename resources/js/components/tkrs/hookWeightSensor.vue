@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="dropdown-holder">
-            <b-dropdown>
+            <b-dropdown class="left-block-dropdown">
               <template #button-content class="outer_button_filter">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6 0C2.7 0 0 2.7 0 6C0 9.3 2.7 12 6 12C9.3 12 12 9.3 12 6C12 2.7 9.3 0 6 0ZM6 11.2714C3.08571 11.2714 0.771429 8.91429 0.771429 6C0.771429 3.08571 3.08571 0.771429 6 0.771429C8.91429 0.771429 11.2714 3.08571 11.2714 6C11.2714 8.91429 8.91429 11.2714 6 11.2714Z" fill="#868BB2"/>
@@ -386,6 +386,7 @@ export default {
     color: #fff;
     background-color: #20274F;
     border-color: #20274F;
+    width: 100%;
 }
 </style>
 <style  scoped lang='scss'>
@@ -594,5 +595,8 @@ table, th, td {
   padding-left: 3%;
   overflow: scroll; 
   height: 747px;
+}
+.left-block-dropdown {
+  width: 100% !important;
 }
 </style>

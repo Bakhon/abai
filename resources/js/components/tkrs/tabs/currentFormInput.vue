@@ -61,19 +61,7 @@ export default {
 </script>
 
 <style scoped>
-.form-input-block-header {
-    font-family: Harmonia-sans;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 14px; 
-    color: white; 
-}
-.btn-group::v-deep .btn-secondary {
-    color: #fff;
-    background-color: #20274F;
-    border-color: #20274F;
-}
+
 .online-block {
   width: 100%;
   background: #293688;
@@ -180,8 +168,10 @@ ul li.has-child:nth-last-child(2):after {
   bottom: -5px;
   left: -1px;
 }
-
 .rotate {
   transform: rotate(270deg);
+}
+.form-input-block {
+  padding-top: 17px;
 }
 </style>
