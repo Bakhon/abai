@@ -32,7 +32,10 @@
                 "type": "dict",
                 "dict": "bottom_hole_param_td",
                 "title": "param",
-                "validation": "required"
+                "validation": "required",
+                "dzos": [
+                  "KTM"
+                ]
               },
               {
                 "code": "comment",
