@@ -1,0 +1,203 @@
+{
+  "type": "table",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date_from",
+      "type": "date",
+      "default": "first day of january this year"
+    },
+    {
+      "code": "date_to",
+      "title": "date_to",
+      "type": "date",
+      "default": "now"
+    }
+  ],
+  "columns": [
+    {
+      "title": "date",
+      "code": "date",
+      "table": "dmart.monthly_inj",
+      "column": "date",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "source",
+      "code": "source",
+      "table": "dmart.monthly_inj",
+      "column": "source",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "well_geo",
+      "code": "well_geo",
+      "table": "dmart.monthly_inj",
+      "column": "well_geo",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "well_block",
+      "code": "well_block",
+      "table": "dmart.monthly_inj",
+      "column": "well_block",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_hours",
+      "code": "work_hours",
+      "table": "dmart.monthly_inj",
+      "column": "work_hours",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_hours_pol",
+      "code": "work_hours_pol",
+      "table": "dmart.monthly_inj",
+      "column": "work_hours_pol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_day",
+      "code": "work_day",
+      "table": "dmart.monthly_inj",
+      "column": "work_day",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "downtime_day",
+      "code": "downtime_day",
+      "table": "dmart.monthly_inj",
+      "column": "downtime_day",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_day_pol",
+      "code": "work_day_pol",
+      "table": "dmart.monthly_inj",
+      "column": "work_day_pol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "downtime_day_pol",
+      "code": "downtime_day_pol",
+      "table": "dmart.monthly_inj",
+      "column": "downtime_day_pol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "water_vol",
+      "code": "water_vol",
+      "table": "dmart.monthly_inj",
+      "column": "water_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "water_vol_rate",
+      "code": "water_vol_rate",
+      "table": "dmart.monthly_inj",
+      "column": "water_vol_rate",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_agent_rate",
+      "code": "pol_agent_rate",
+      "table": "dmart.monthly_inj",
+      "column": "pol_agent_rate",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_water_rate",
+      "code": "pol_water_rate",
+      "table": "dmart.monthly_inj",
+      "column": "pol_water_rate",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_mix_rate",
+      "code": "pol_mix_rate",
+      "table": "dmart.monthly_inj",
+      "column": "pol_mix_rate",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_agent_vol",
+      "code": "pol_agent_vol",
+      "table": "dmart.monthly_inj",
+      "column": "pol_agent_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_water_vol",
+      "code": "pol_water_vol",
+      "table": "dmart.monthly_inj",
+      "column": "pol_water_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_total_vol",
+      "code": "pol_total_vol",
+      "table": "dmart.monthly_inj",
+      "column": "pol_total_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_dry_mass",
+      "code": "pol_dry_mass",
+      "table": "dmart.monthly_inj",
+      "column": "pol_dry_mass",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_inlet_pressure",
+      "code": "pol_inlet_pressure",
+      "table": "dmart.monthly_inj",
+      "column": "pol_inlet_pressure",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_mix_viscosity",
+      "code": "pol_mix_viscosity",
+      "table": "dmart.monthly_inj",
+      "column": "pol_mix_viscosity",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_outlet_pressure",
+      "code": "pol_outlet_pressure",
+      "table": "dmart.monthly_inj",
+      "column": "pol_outlet_pressure",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "pol_concentration",
+      "code": "pol_concentration",
+      "table": "dmart.monthly_inj",
+      "column": "pol_concentration",
+      "type": "text",
+      "is_editable": false
+    }
+  ]
+}

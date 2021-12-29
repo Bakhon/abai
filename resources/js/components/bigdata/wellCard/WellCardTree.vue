@@ -25,6 +25,17 @@
             <p @click.stop="switchFormByCode(form)">
               <span class=" cursor-pointer" v-html="form.name"></span>
             </p>
+            <ul v-if="form.forms">
+              <li
+                  v-for="(subForm, subFormIndex) in form.forms"
+                  :key="`form_${subFormIndex}`"
+                  :class="{'selected': activeFormCode === subForm.code}"
+              >
+                <p @click.stop="switchFormByCode(subForm)">
+                  <span class=" cursor-pointer" v-html="subForm.name"></span>
+                </p>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -70,6 +81,14 @@ export default {
 .custom-directory {
   #myUL > li {
     margin-bottom: 3px;
+
+    & > ul li p {
+      padding-left: 24px;
+
+      &:after {
+        left: 16px;
+      }
+    }
   }
   
   ul, li {

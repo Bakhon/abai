@@ -1,5 +1,4 @@
 <?php
-
 return array(
     'well_register' => 'App\\Services\\BigData\\Forms\\WellRegister',
     'fluid_production' => 'App\\Services\\BigData\\Forms\\FluidProduction',
@@ -87,4 +86,6 @@ return array(
     'well_treatment' => '\\App\\Services\\BigData\\Forms\\WellTreatment',
     'org_tech_link' => '\\App\\Services\\BigData\\Forms\\OrgTechLink',
     'well_edit' => '\\App\\Services\\BigData\\Forms\\WellEdit',
+    'production_wells_m_p' => '\\App\\Services\\BigData\\Forms\\ProductionWellsMP',
+    'injection_wells_m_p' => '\\App\\Services\\BigData\\Forms\\InjectionWellsMP',
 );

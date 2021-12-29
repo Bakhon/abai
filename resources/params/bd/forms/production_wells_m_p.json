@@ -1,0 +1,259 @@
+{
+  "type": "table",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date_from",
+      "type": "date",
+      "default": "first day of january this year"
+    },
+    {
+      "code": "date_to",
+      "title": "date_to",
+      "type": "date",
+      "default": "now"
+    }
+  ],
+  "merge_columns": {
+    "period": {
+      "title": "Добыча за период",
+      "code": "period"
+    },
+    "avg_daily": {
+      "title": "Ср. сут.показатели за период",
+      "code": "avg_daily"
+    }
+  },
+  "columns": [
+    {
+      "title": "date",
+      "code": "date",
+      "table": "dmart.monthly_prod_oil",
+      "column": "date",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "source",
+      "code": "source",
+      "table": "dmart.monthly_prod_oil",
+      "column": "source",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "well_geo",
+      "code": "well_geo",
+      "table": "dmart.monthly_prod_oil",
+      "column": "well_geo",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "well_block",
+      "code": "well_block",
+      "table": "dmart.monthly_prod_oil",
+      "column": "well_block",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "well_expl",
+      "code": "well_expl",
+      "table": "dmart.monthly_prod_oil",
+      "column": "well_expl",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "oil_vol",
+      "code": "oil_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "oil_vol",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "oil_mass",
+      "code": "oil_mass",
+      "table": "dmart.monthly_prod_oil",
+      "column": "oil_mass",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "water_vol",
+      "code": "water_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "water_vol",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "water_mass",
+      "code": "water_mass",
+      "table": "dmart.monthly_prod_oil",
+      "column": "water_mass",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "gas_vol",
+      "code": "gas_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "gas_vol",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "liq_mass",
+      "code": "liq_mass",
+      "table": "dmart.monthly_prod_oil",
+      "column": "liq_mass",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "liq_vol",
+      "code": "liq_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "liq_vol",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "period"
+    },
+    {
+      "title": "oil_mass_rate",
+      "code": "oil_mass_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "oil_mass_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "oil_vol_rate",
+      "code": "oil_vol_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "oil_vol_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "water_mass_rate",
+      "code": "water_mass_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "water_mass_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "water_vol_rate",
+      "code": "water_vol_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "water_vol_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "gas_vol_rate",
+      "code": "gas_vol_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "gas_vol_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "liq_mass_rate",
+      "code": "liq_mass_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "liq_mass_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "liq_vol_rate",
+      "code": "liq_vol_rate",
+      "table": "dmart.monthly_prod_oil",
+      "column": "liq_vol_rate",
+      "type": "text",
+      "is_editable": false,
+      "parent_column": "avg_daily"
+    },
+    {
+      "title": "wcut_mass",
+      "code": "wcut_mass",
+      "table": "dmart.monthly_prod_oil",
+      "column": "wcut_mass",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "wcut_vol",
+      "code": "wcut_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "wcut_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "gor_vol",
+      "code": "gor_vol",
+      "table": "dmart.monthly_prod_oil",
+      "column": "gor_vol",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "gor_mass",
+      "code": "gor_mass",
+      "table": "dmart.monthly_prod_oil",
+      "column": "gor_mass",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_hours",
+      "code": "work_hours",
+      "table": "dmart.monthly_prod_oil",
+      "column": "work_hours",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_day",
+      "code": "work_day",
+      "table": "dmart.monthly_prod_oil",
+      "column": "work_day",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "downtime_day",
+      "code": "downtime_day",
+      "table": "dmart.monthly_prod_oil",
+      "column": "downtime_day",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "work_cal_day",
+      "code": "work_cal_day",
+      "table": "dmart.monthly_prod_oil",
+      "column": "work_cal_day",
+      "type": "text",
+      "is_editable": false
+    }
+  ]
+}
