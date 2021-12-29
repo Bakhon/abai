@@ -139,10 +139,14 @@ export default {
                         kpd.fact = sorted.at(-1).fact;
                     }
                 });
-                manager['fact'] = _.sumBy(filteredKpd, 'summary');
+                manager['fact'] = _.sumBy(filteredKpd, item => Number(item.summary));
             });
         },
         getKpdEfficiency(step,target,maximum,fact) {
+            fact = parseFloat(fact);
+            target = parseFloat(target);
+            maximum = parseFloat(maximum);
+            step = parseFloat(step);
             if (fact < step) {
                 return 0;
             }

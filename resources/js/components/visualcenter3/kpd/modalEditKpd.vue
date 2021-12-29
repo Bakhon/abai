@@ -31,7 +31,11 @@
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Описание</div>
-                        <input class="input_kpd p-2 col-10" type="text" v-model="kpd.current.description">
+                        <b-form-textarea
+                                class="col-10 text-left pt-2 input_kpd"
+                                v-model="kpd.current.description"
+                                rows="4"
+                        ></b-form-textarea>
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Формула расчета</div>
@@ -117,7 +121,7 @@
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Владелец</div>
                         <select class="form-select input_kpd p-2 col-10" @change="handleTypeChange($event)">
-                            <option v-for="owner in owners" :value="owner.id">{{owner.name}}</option>
+                            <option v-for="owner in owners" :value="JSON.stringify(owner)" :selected="(owner.id.toString() === selectedOwner) || (owner.isCorporate && selectedOwner === 'corporate')">{{owner.name}}</option>
                         </select>
                     </div>
                     <div v-if="kpd.current.type !== 'strategic'" class="p-1 col-12 d-flex">
@@ -193,7 +197,8 @@ export default {
                 },
             ],
             kpdParents: [],
-            isOperationFinished: false
+            isOperationFinished: false,
+            selectedOwner: undefined,
         };
     },
     methods: {
@@ -253,8 +258,12 @@ export default {
             this.$modal.hide('modalKpdEdit');
         },
         handleTypeChange(e) {
-            this.kpd.current.type = e.target.value;
-            this.kpd.current.parent = this.kpdList[0].type;
+            let manager = JSON.parse(e.target.value);
+            if (manager['isCorporate']) {
+                this.kpd.current.type = 'corporate';
+            } else {
+                this.kpd.current.type = manager['id'];
+            }
         },
     },
     async mounted() {
@@ -265,6 +274,7 @@ export default {
             this.owners = this.owners.concat(this.managers);
         },
         corporateManager: function () {
+            this.corporateManager['isCorporate'] = true;
             this.owners.push(this.corporateManager);
         },
         kpdList: function() {
@@ -284,7 +294,7 @@ export default {
                     functions: '',
                     result: '',
                     responsible: '',
-                    type: JSON.stringify({'alias': 'strategic','id':null}),
+                    type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
                     calculation_document: ''
@@ -293,6 +303,7 @@ export default {
             if (this.kpd.current.elements.length === 0) {
                 this.addRow();
             }
+            this.selectedOwner = this.kpd.current.type;
         },
         deputy: function () {
             this.owners = this.owners.concat(this.deputy);

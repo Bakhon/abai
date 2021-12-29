@@ -43,13 +43,13 @@
 
                 <div v-if="menuVisibility.manager" class="col-7">
                     <div class="col-12 table-header">
-                        <span><b>КПД руководящих работников (членов Правления)</b></span>
+                        <span><b>Функциональные КПД руководящих работников (членов Правления)</b></span>
                     </div>
                 </div>
 
                 <div v-if="menuVisibility.deputy" class="col-7">
                     <div class="col-12 table-header">
-                        <span><b>КПД управленческих работников</b></span>
+                        <span><b>Функциональные КПД управленческих работников</b></span>
                     </div>
                 </div>
             </div>
@@ -134,9 +134,9 @@
                                     <div class="col-12 mt-3 p-0 progress progress_template">
                                         <div
                                                 :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
-                                                :style="{width: manager.fact + '%',}"
+                                                :style="{width: manager.rating + '%',}"
                                                 role="progressbar"
-                                                :aria-valuenow="manager.fact"
+                                                :aria-valuenow="manager.rating"
                                                 aria-valuemin="0"
                                                 aria-valuemax="100"
                                         ></div>
@@ -154,9 +154,9 @@
                                         <div class="col-12 p-0 progress progress_template">
                                             <div
                                                     :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
-                                                    :style="{width: kpd.fact + '%',}"
+                                                    :style="{width: kpd.rating + '%',}"
                                                     role="progressbar"
-                                                    :aria-valuenow="kpd.fact"
+                                                    :aria-valuenow="kpd.rating"
                                                     aria-valuemin="0"
                                                     aria-valuemax="100"
                                             ></div>
