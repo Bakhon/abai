@@ -1,6 +1,9 @@
 <template>
   <div :class="cDropDownClass">
-    <Button :disabled="disabled" @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
+    <AwInput v-model="searchText" v-if="search&dropDownOpened" :disabled="disabled" ref="aDropdownSearchInput" color="accent-100"
+            :class="cDropDownClassTarget" />
+
+    <Button v-else :disabled="disabled" @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
             :class="cDropDownClassTarget">
       <span v-if="multiple">{{ cSelected || buttonText }}</span>
       <span v-else>{{ cSelected.label || cSelected.value || buttonText }}</span>
@@ -29,6 +32,7 @@
 // TODO Доделать варианты пунктов.
 import Button from "../buttons/Button";
 import AwIcon from "../icons/AwIcon.vue"
+import AwInput from "../form/AwInput";
 
 export default {
   name: "dropdown",
@@ -40,6 +44,7 @@ export default {
     disabled: Boolean,
     loading: Boolean,
     multiple: Boolean,
+    search: Boolean,
     options: {
       type: Array
     },
@@ -48,10 +53,12 @@ export default {
   data() {
     return {
       dropDownOpened: false,
-      selectedLocal: null
+      selectedLocal: null,
+      searchText: ""
     }
   },
   components: {
+    AwInput,
     Button,
     AwIcon
   },
@@ -72,7 +79,7 @@ export default {
       }
     },
     cOptions() {
-      return this.options || [];
+      return (this.options || []).filter(({label, value})=>(label||value).toLowerCase().match(new RegExp(this.searchText.toLowerCase(), 'mug')));
     },
     cSelected: {
       get() {
@@ -93,8 +100,10 @@ export default {
     }
   },
   methods: {
-    closeDropDown() {
-      this.dropDownOpened = false
+    closeDropDown(e) {
+      let input = this.$refs.aDropdownSearchInput&&this.$refs.aDropdownSearchInput.$el.querySelector('input');
+      if(e&&![input].includes(e.target))
+        this.dropDownOpened = false
     },
 
     isMultipleSelected(option){
@@ -116,7 +125,7 @@ export default {
       }else{
         if(this.cSelected.value !== option.value) this.$emit('change', option.value, e, option)
         this.cSelected = option;
-        this.closeDropDown();
+        this.closeDropDown(e);
       }
     }
   }

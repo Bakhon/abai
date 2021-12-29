@@ -19,17 +19,17 @@
           {{ trans('economic_reference.unit_of_measurement_short') }}
         </div>
 
-        <div class="border-grey flex-200px">
-          <div class="p-3 line-height-14px text-left">
-            {{ trans('economic_reference.approved_budget_2020') }}
+        <div class="border-grey flex-200px d-flex flex-column">
+          <div class="p-3 text-left">
+            {{ trans('economic_reference.approved_budget') }}
           </div>
 
-          <div class="d-flex">
-            <div v-for="(budget, index) in budget2020"
+          <div class="flex-grow-1 d-flex align-items-center">
+            <div v-for="(budget, index) in approvedBudget"
                  :key="index"
                  :class="index % 2 === 1 ? 'border-grey-left' : ''"
                  class="p-2 flex-grow-1 text-left">
-              {{ budget }}
+              {{ localeValue(+budget) }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
           </div>
@@ -42,7 +42,7 @@
 
           <div class="d-flex">
             <div class="p-2 flex-grow-1 line-height-14px text-left" style="white-space: pre-line"
-            > {{ (+baseScenario.oil_price).toLocaleString() }} {{ trans('economic_reference.dollar_per_bar') }}
+            > {{ localeValue(+baseScenario.oil_price) }} {{ trans('economic_reference.dollar_per_bar') }}
               {{ trans('economic_reference.basic').toLocaleLowerCase() }}
             </div>
 
@@ -50,7 +50,7 @@
                  :key="index"
                  :class="index % 2 === 0 ? 'border-grey-left' : ''"
                  class="p-2 flex-grow-1 d-flex align-items-center justify-content-start">
-              {{ (+price).toLocaleString() }}
+              {{ localeValue(+price) }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
           </div>
@@ -78,10 +78,10 @@
           </div>
 
           <div class="d-flex flex-200px">
-            <div v-for="(budget, index) in item.budget2020"
+            <div v-for="(budget, index) in item.approvedBudget"
                  :key="index"
                  class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
-              {{ budget.value }}
+              {{ budget.value ? localeValue(+budget.value) : '' }}
             </div>
           </div>
 
@@ -90,7 +90,7 @@
                  :key="index"
                  class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
                  style="flex: 1 0 100px; white-space: pre-line"
-            >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+            >{{ typeof value === 'string' ? value : localeValue(+value) }}
             </div>
           </div>
         </div>
@@ -132,6 +132,11 @@ export default {
     isFullscreen: {
       required: false,
       type: Boolean
+    },
+    manufacturingProgram: {
+      required: false,
+      type: Object,
+      default: null
     }
   },
   methods: {
@@ -200,7 +205,10 @@ export default {
             ...[this.baseScenario.dollar_rate],
             ...this.reverseOilPrices.map(() => this.scenario.dollar_rate)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram ? this.manufacturingProgram.dollar_rate : ''
+          })),
           color: '#151E70',
         },
         {
@@ -213,20 +221,28 @@ export default {
                 +this.oilPriceScenarios[index].oil_optimize / 1000
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram ? this.manufacturingProgram.oil : ''
+          })),
           color: '#AC7550',
         },
         {
           index: '3',
           title: this.trans('economic_reference.count_prs'),
-          dimension: this.trans('economic_reference.thousand_tons'),
+          dimension: this.trans('economic_reference.units'),
           values: [
             ...[+this.baseScenario.prs_optimize],
             ...this.reverseOilPrices.map((oilPrice, index) =>
                 +this.oilPriceScenarios[index].prs_optimize
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? this.manufacturingProgram.prs
+                : ''
+          })),
           color: '#313560',
         },
         {
@@ -239,7 +255,7 @@ export default {
                 +this.oilPriceScenarios[index].liquid_optimize / 1000
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudgetMap,
           color: '#272953',
         },
         {
@@ -250,7 +266,12 @@ export default {
             ...[this.oilSaleValue(null, this.baseScenario) / 1000],
             ...this.reverseOilPrices.map((oilPrice, index) => this.oilSaleValue(index) / 1000)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? this.manufacturingProgram.oil_sale
+                : ''
+          })),
           color: '#AC7550',
         },
         {
@@ -263,7 +284,12 @@ export default {
                 +this.oilPriceScenarios[index].production_export_optimize / 1000
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? this.manufacturingProgram.oil_sale_export
+                : ''
+          })),
           color: '#313560',
         },
         {
@@ -276,18 +302,31 @@ export default {
                 +this.oilPriceScenarios[index].production_local_optimize / 1000
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? this.manufacturingProgram.oil_sale_local
+                : ''
+          })),
           color: '#272953',
         },
         {
           index: '6',
           title: this.trans('economic_reference.oil_sale_prices'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
+          dimension: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge_per_ton')}
+          `,
           values: [
             ...[this.oilSalePriceValue(null, this.baseScenario) / 1000],
             ...this.reverseOilPrices.map((oilPrice, index) => this.oilSalePriceValue(index) / 1000)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? (+this.manufacturingProgram.revenue / +this.manufacturingProgram.oil_sale)
+                : ''
+          })),
           color: '#313560',
         },
         {
@@ -298,18 +337,21 @@ export default {
             ...[this.oilSalePriceExportValue(null, this.baseScenario) / 1000],
             ...this.reverseOilPrices.map((oilPrice, index) => this.oilSalePriceExportValue(index) / 1000)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudgetMap,
           color: '#272953',
         },
         {
           index: '6.2',
           title: this.trans('economic_reference.home_market'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
+          dimension: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge_per_ton')}
+          `,
           values: [
             ...[this.oilSalePriceLocalValue(null, this.baseScenario) / 1000],
             ...this.reverseOilPrices.map((oilPrice, index) => this.oilSalePriceLocalValue(index) / 1000)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudgetMap,
           color: '#313560',
         },
         {
@@ -320,7 +362,12 @@ export default {
             ...[this.baseScenario.uwi_count_optimize],
             ...this.reverseOilPrices.map((oilPrice, index) => +this.oilPriceScenarios[index].uwi_count_optimize)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? this.manufacturingProgram.wells
+                : ''
+          })),
           color: '#AC7550',
         },
         {
@@ -334,7 +381,7 @@ export default {
                 `${this.trans('economic_reference.cat_2')}: ${this.oilPriceScenarios[index].percent_stop_cat_2 * 100}%`,
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudgetMap,
           color: '#313560',
         },
         {
@@ -347,77 +394,102 @@ export default {
                 +this.oilPriceScenarios[index].uwi_count - +this.oilPriceScenarios[index].uwi_count_optimize
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudgetMap,
           color: '#272953',
         },
         {
           index: '8',
           title: this.trans('economic_reference.income'),
           dimension: `
-            ${this.formatValue(this.baseScenario.Revenue_total_optimize).dimension}
+            ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
           `,
           values: [
-            ...[this.formatValue(this.baseScenario.Revenue_total_optimize).value],
+            ...[this.localeValue(this.baseScenario.Revenue_total_optimize, 1000000000)],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                this.formatValue(this.oilPriceScenarios[index].Revenue_total_optimize).value
+                this.localeValue(this.oilPriceScenarios[index].Revenue_total_optimize, 1000000000)
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? (+this.manufacturingProgram.revenue / 1000)
+                : ''
+          })),
           color: '#106B4B',
         },
         {
           index: '9',
-          title: this.trans('economic_reference.total_expenses'),
+          title: this.trans('economic_reference.costs'),
           dimension: `
-            ${this.formatValue(this.baseScenario.Overall_expenditures_optimize).dimension}
+            ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
           `,
           values: [
-            ...[this.formatValue(this.baseScenario.Overall_expenditures_optimize).value],
+            ...[this.localeValue(this.baseScenario.Overall_expenditures_full_optimize, 1000000000)],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                this.formatValue(this.oilPriceScenarios[index].Overall_expenditures_optimize).value
+                this.localeValue(this.oilPriceScenarios[index].Overall_expenditures_full_optimize, 1000000000)
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? (+this.manufacturingProgram.expenditures / 1000)
+                : ''
+          })),
           color: '#106B4B',
         },
         {
           index: '10',
-          title: this.trans('economic_reference.cost_price_including'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
+          title: this.trans('economic_reference.cost_price'),
+          dimension: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge_per_ton')}
+          `,
           values: [
             ...[this.costPriceValue(null, this.baseScenario) / 1000],
             ...this.reverseOilPrices.map((oilPrice, index) => this.costPriceValue(index) / 1000)
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram ?
+                (+this.manufacturingProgram.expenditures / +this.manufacturingProgram.oil_sale)
+                : ''
+          })),
           color: '#106B4B',
         },
         {
           index: '11',
           title: this.trans('economic_reference.operating_profit'),
           dimension: `
-            ${this.formatValue(this.baseScenario.Operating_profit_optimize).dimension}
+            ${this.trans('economic_reference.billion')}
             ${this.trans('economic_reference.tenge')}
           `,
           values: [
-            ...[this.formatValue(this.baseScenario.Operating_profit_optimize).value],
+            ...[this.localeValue(this.baseScenario.Operating_profit_optimize, 1000000000)],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                this.formatValue(this.oilPriceScenarios[index].Operating_profit_optimize).value
+                this.localeValue(this.oilPriceScenarios[index].Operating_profit_optimize, 1000000000)
             )
           ],
-          budget2020: this.budget2020Map,
+          approvedBudget: this.approvedBudget.map(budget => ({
+            budget: budget,
+            value: this.manufacturingProgram
+                ? (+this.manufacturingProgram.operating_profit / 1000)
+                : ''
+          })),
           color: '#106B4B',
         },
       ]
     },
 
-    budget2020() {
-      return [60, 50]
+    approvedBudget() {
+      return this.manufacturingProgram
+          ? [this.manufacturingProgram.oil_price]
+          : [60, 50]
     },
 
-    budget2020Map() {
-      return this.budget2020.map(budget => ({budget: budget, value: ''}))
+    approvedBudgetMap() {
+      return this.approvedBudget.map(budget => ({budget: budget, value: ''}))
     },
 
     oilPriceScenarios() {

@@ -64,9 +64,23 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
-    <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
-      {{ alert.message }}
-    </b-alert>
+    <b-button v-if="alerts && alerts.length"
+              class="mb-2"
+              :class="alertsVisible ? null : 'collapsed'"
+              aria-controls="collapse-alerts"
+              variant="danger"
+              :aria-expanded="alertsVisible ? 'true' : 'false'"
+              @click="alertsVisible = !alertsVisible"
+    >
+      {{ btnAlertText }} {{ alerts.length }}
+    </b-button>
+    <b-collapse id="collapse-alerts" class="mt-2" v-model="alertsVisible">
+      <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
+        {{ alert.message }}
+      </b-alert>
+    </b-collapse>
+
+
     <div class="table-page__wrapper">
       <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
@@ -290,6 +304,7 @@ export default {
       selectedDate: null,
       alerts: [],
       calcExport: true,
+      alertsVisible: false,
     }
   },
   mounted() {
@@ -317,6 +332,9 @@ export default {
         'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
       }
     },
+    btnAlertText () {
+      return this.alertsVisible ? this.trans('monitoring.table.collapse-errors') : this.trans('monitoring.table.show-errors');
+    }
   },
   methods: {
     ...globalloadingMutations([
@@ -407,6 +425,8 @@ export default {
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
         this.omgca = response.data;
         this.alerts = response.data.alerts;
+        this.alertsVisible = this.alerts.length < 6;
+
       }).catch(e => {
 
       }).finally(() => {

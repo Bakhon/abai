@@ -113,6 +113,7 @@ import ToolBlockList from "../components/toolBlock/ToolBlockList";
 import dropdown from "../components/dropdowns/dropdown";
 import Button from "../components/buttons/Button";
 import AwIcon from "../components/icons/AwIcon";
+import {globalloadingMutations} from "@store/helpers";
 
 import PageSide from "../components/pageSide/PageSide";
 import {
@@ -179,6 +180,7 @@ export default {
   },
 
   methods: {
+    ...globalloadingMutations(["SET_LOADING"]),
     async dzos(e) {
       this.loadingStates.field = true;
       this.$refs.dropDawnFields.selectedLocal = null;
@@ -196,6 +198,7 @@ export default {
     },
 
     async applyWells() {
+      this.SET_LOADING(true)
       let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
       this.loadingStates.mnemonics = true;
       await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
@@ -203,6 +206,7 @@ export default {
       this.loadingStates.mnemonics = false;
       this.$store.commit(SET_WELLS_BLOCKS, arr);
       this.saveTableSettings()
+      this.SET_LOADING(false)
     },
 
     selectWellsHandle(item, i) {

@@ -1,24 +1,8 @@
 <template>
   <div class="filter-container">
 
-
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input
-          select"
-          id="companySelect"
-          :disabled="$store.state.globalloading.loading"
-          v-model="org"
-      >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
-      </select>
-    </div>
-
+    <org-selector v-model="org"></org-selector>
+    
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"

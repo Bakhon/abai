@@ -53,6 +53,11 @@ export default {
               icon: "well_card.svg",
               url: this.localeUrl("/bigdata/well-card"),
             },
+            {
+              name: this.trans("bd.forms.report_constructor.menu"),
+              icon: "report.svg",
+              url: this.localeUrl("/bigdata/report-constructor"),
+            }
           ],
         },
         {

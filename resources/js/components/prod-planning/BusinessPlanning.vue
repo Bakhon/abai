@@ -131,7 +131,6 @@ import geologicalTechnicalMeasuresProgram from "./business-planning-components/G
 import optimalScenario from "./business-planning-components/OptimalScenario";
 
 export default {
-  name: 'bus-plan',
   data: function () {
     return {
       activatedBlocks: {
@@ -168,144 +167,11 @@ export default {
       this.selected = tab.component
       this.isComponentActive = false
       this.$emit(tab.title)
-      console.log(i)
     },
     onGoBack(s) {
       s = !s
       this.isComponentActive = true
     },
-  },
-  created() {
-    console.log('created hook')
   }
 }
 </script>
-<style scoped>
-.left-block {
-  background-color: #272953;
-  width: 300px;
-  height: 936px;
-  gap: 10px;
-  flex: 1;
-}
-
-.main-block {
-  gap: 10px;
-  width: 100%;
-  color: white;
-}
-
-.right-block {
-  display: flex;
-  width: 100%;
-  height: auto;
-}
-
-.forecast-container {
-  display: flex;
-  width: 100%;
-  height: auto;
-  flex-direction: column;
-}
-
-.forecast-nav {
-  background-color: #272953;
-  width: 100%;
-  height: 42px;
-  margin-bottom: 10px;
-  gap: 6px;
-  display: flex;
-  padding: 6px;
-}
-
-.forecast-nav-item {
-  width: 100%;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #333975;
-  padding-top: 5px;
-  text-align: center;
-}
-
-.forecast-container-block {
-  display: flex;
-  flex-direction: column;
-  flex: 100%;
-  gap: 6px;
-}
-
-.top-block {
-  display: flex;
-  flex: 100%;
-  gap: 6px;
-}
-
-.bottom-block {
-  display: flex;
-  flex: 100%;
-  gap: 6px;
-}
-
-.main-border-block {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border: 6px solid #272953;
-  padding: 4px;
-}
-
-/**/
-.plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.factor-plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.debit-plan-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-.gtm-vns-block {
-  flex: 50%;
-  background-color: #1A214A;
-}
-
-/* block-of-forth */
-.block-header {
-  height: 8%;
-}
-
-.border-block-out {
-  height: 92%;
-  border: 8px solid #363B68;
-}
-
-.border-block-in {
-  height: 100%;
-  border: 8px solid #1A214A;
-}
-
-.border-color {
-  background-color: #323370
-}
-
-.data-block {
-  height: 100%;
-}
-
-.active {
-  background: #2C44BD;
-}
-
-
-.not-active {
-  background: #333975;
-}
-
-/**/
-</style>

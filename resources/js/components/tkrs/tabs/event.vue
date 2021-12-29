@@ -131,7 +131,7 @@
 <script>
 export default {
   props: {
-    table_work: Array,
+    table_work: Object,
   }
 
 }

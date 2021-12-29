@@ -98,6 +98,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     const PIPE_OR_SEGMENT = 0;
 
     protected $shortSchema = [
+        'id' => 0,
         'length' => 3,
         'qliq' => 4,
         'bsw' => 5,
@@ -273,8 +274,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     protected function storeShortResult(array $data): void
     {
         foreach ($data as $row) {
-            $pipeName = $row[$this->shortSchema['name']];
-            $pipe = ManualOilPipe::where('name', $pipeName)->first();
+            $pipe = ManualOilPipe::find($row[$this->shortSchema['id']]);
 
             $calcResult = ManualHydroCalcResult::firstOrCreate(
                 [
@@ -284,7 +284,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             );
 
             foreach ($this->shortSchema as $param => $index) {
-                if ($param != 'name') {
+                if ($param != 'name' && $param != 'id') {
                     $calcResult->$param = $row[$index];
                 }
             }

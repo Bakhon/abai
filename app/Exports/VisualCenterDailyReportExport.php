@@ -28,13 +28,15 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         11 => 'Ноябрь',
         12 => 'Декабрь'
     );
+    private $missing = array();
 
-    function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary)
+    function __construct($dailyParams,$monthlyParams,$yearlyParams,$summary,$missing)
     {
         $this->dailyParams = $dailyParams;
         $this->monthlyParams = $monthlyParams;
         $this->yearlyParams = $yearlyParams;
         $this->summary = $summary;
+        $this->missing = $missing;
     }
 
     public function styles(Worksheet $sheet)
@@ -59,7 +61,7 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
         $sheet->getColumnDimension('E')->setWidth(19.86);
         $sheet->getColumnDimension('F')->setWidth(19.86);
         $sheet->getColumnDimension('G')->setWidth(19.86);
-        $sheet->getColumnDimension('H')->setWidth(149.57);
+        $sheet->getColumnDimension('H')->setWidth(162);
         $sheet->getPageSetup()->setFitToPage(true);
         foreach(array('A5:H6','A24:H26','A44:H45') as $cell) {
             $sheet->getStyle($cell)->getFont()->setBold(true);
@@ -100,7 +102,8 @@ class VisualCenterDailyReportExport implements FromView,WithStyles
             'monthName' => $this->monthMapping[Carbon::now()->month],
             'monthId' => Carbon::now()->month-1,
             'yearId' => Carbon::now()->year,
-            'summary' => $this->summary
+            'summary' => $this->summary,
+            'missing' => $this->missing
         ]);
     }
 }

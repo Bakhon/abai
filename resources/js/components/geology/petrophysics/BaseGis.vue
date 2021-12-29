@@ -18,7 +18,7 @@
         <Button @click="isShowCrossPlot = true" color="accent" icon="locPC" class="flex-grow-1 mr-3" align="center">
           Кросс-плот
         </Button>
-        <Button color="accent" icon="gisto" class="flex-grow-1" align="center">
+        <Button @click="isShowHistogram = true" color="accent" icon="gisto" class="flex-grow-1" align="center">
           Гистограмма
         </Button>
       </div>
@@ -113,16 +113,19 @@
     <AwModal is-confirm position="top" size="xl" title="Кросс-плот" :is-show.sync="isShowCrossPlot">
       <CrossPlot />
     </AwModal>
+
+    <AwModal is-confirm position="top" size="xl" title="Гистограмма" :is-show.sync="isShowHistogram">
+      <Histogram />
+    </AwModal>
   </div>
 </template>
 
 <script>
-import {globalloadingMutations} from "@store/helpers";
-import {geologyState} from "../../../store/helpers";
+import {globalloadingMutations, geologyState} from "@store/helpers";
 import {
   FETCH_WELLS_CURVES, GET_TREE_STRATIGRAPHY,
   SET_GIS_DATA, SET_GIS_DATA_FOR_GRAPH,
-  SET_SELECTED_WELL_CURVES_FORCE, SET_WELLS, SET_WELLS_BLOCKS
+  SET_SELECTED_WELL_CURVES_FORCE, SET_SHOW_STRATIGRAPHY_ELEMENTS, SET_WELLS, SET_WELLS_BLOCKS
 } from "../../../store/modules/geologyGis.const";
 
 import Button from "../components/buttons/Button";
@@ -133,7 +136,8 @@ import AwTree from "../components/awTree/AwTree";
 import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
-import CrossPlot from "./modals/CrossPlot";
+import CrossPlot from "./modals/CrossPlot/CrossPlot";
+import Histogram from "./modals/Histogram/Histogram";
 import graph2 from "./graphics/graph2";
 import AwGis from "./graphics/awGis/AwGis";
 
@@ -148,6 +152,7 @@ export default {
     ListOfWells,
     TableSettings,
     CrossPlot,
+    Histogram,
     AwTree,
   },
   data() {
@@ -169,6 +174,7 @@ export default {
       selectedGisCurvesOld: [],
       isShowTableSettings: false,
       isShowCrossPlot: false,
+      isShowHistogram: false,
       isShowListOfWellsModal: false,
       isShowChooseStratModal: false,
       chooseStratModalTree: [],
@@ -178,10 +184,10 @@ export default {
   computed: {
     getSelectedStratigraphy: {
       get() {
-        return this.chooseStratModalTree;
+        return this.$store.state.geologyGis.showStratigraphyElements;
       },
       set(val) {
-        this.chooseStratModalTree = val;
+        this.$store.commit(SET_SHOW_STRATIGRAPHY_ELEMENTS, val);
       }
     },
     getStratigraphy() {
@@ -199,15 +205,10 @@ export default {
     ...geologyState(["isOpenedRightSide", "isOpenedLeftSide"]),
   },
   watch: {
-    "$store.state.geologyGis.blocksScrollY"(val) {
-      this.$store.state.geologyGis.tHorizon.scrollY = val;
-      this.drawStratigraphy()
-    },
-
     isShowChooseStratModal(val) {
       if (val) {
         this.$store.state.geologyGis.tHorizon.clearSvg();
-        this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+        this.chooseStratModalTreeOld = [...this.getSelectedStratigraphy];
       }
     },
 
@@ -226,16 +227,15 @@ export default {
 
   methods: {
     saveStratigraphy() {
-      this.chooseStratModalTreeOld = [...this.chooseStratModalTree];
+      this.chooseStratModalTreeOld = [...this.getSelectedStratigraphy];
       this.drawStratigraphy()
     },
-
     cancelStratigraphy() {
       this.chooseStratModalTree = [...this.chooseStratModalTreeOld];
       this.drawStratigraphy();
     },
     drawStratigraphy() {
-      this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.chooseStratModalTree]);
+      this.$store.state.geologyGis.tHorizon.drawSelectedPath([...this.getSelectedStratigraphy]);
     },
     async saveTableSettings() {
       this.SET_LOADING(true);

@@ -11,9 +11,9 @@
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
-                    <div class="modal-bign-title modal_header">{{catalog.name}}</div>
+                    <div class="modal-bign-title modal_header">Каталог КПД</div>
                     <div class="btn-toolbar">
-                        <button type="button" class="modal-button_add mr-2" @click="$modal.show('modalKpdEdit')">
+                        <button type="button" class="modal-button_add mr-2" @click="[selectedKpd = {},$modal.show('modalKpdEdit')]">
                             {{trans('kpd_tree.add')}}
                         </button>
                         <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
@@ -21,29 +21,21 @@
                         </button>
                     </div>
                 </div>
-                <table class="modal_table">
-                    <tr>
-                        <th class="p-4" v-for="header in catalog.table.headers">{{header}}</th>
-                    </tr>
-                    <tr v-if="kpdList.length > 0" v-for="row in kpdList">
-                        <td class="p-1">{{row.name}}</td>
-                        <td class="p-1">{{row.description}}</td>
-                        <td class="p-1">{{row.unit}}</td>
-                        <td class="p-1">{{row.polarity}}</td>
-                        <td class="p-1">{{row.formula}}</td>
-                        <td class="p-1">{{row.variables}}</td>
-                        <td class="p-1">{{row.source}}</td>
-                        <td class="p-1">{{row.responsible}}</td>
-                        <td class="p-1">{{row.functions}}</td>
-                    </tr>
-                </table>
-                <div align="center" class="bottom-buttons col-12 row">
-                    <div class="col-1 download-button m-4" @click="$modal.hide('modalCatalog')">ОК</div>
-                    <div class="col-1 cancel-button m-4" @click="$modal.hide('modalCatalog')">Отмена</div>
+                <div class="table-container">
+                    <table class="modal_table">
+                        <tr>
+                            <th class="p-2 text-center">№</th>
+                            <th class="p-2 text-left">Наименование КПД</th>
+                        </tr>
+                        <tr v-if="kpdList.length > 0" v-for="(row,index) in kpdList" @click="[selectedKpd = row,$modal.show('modalKpdEdit')]">
+                            <td class="p-2 text-center">{{index + 1}}</td>
+                            <td class="p-2 text-left">{{row.name}}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit></kpd-modal-kpd-edit>
+        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd"></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -51,25 +43,47 @@
 export default {
     data: function () {
         return {
-            catalog: {
-                'name': 'Каталог КПД',
-                'table': {
-                    'headers': [
-                        'Наименование КПД',
-                        'Описание',
-                        'Ед. измерения',
-                        'Полярность',
-                        'Формула расчета',
-                        'Переменные',
-                        'Источник данных',
-                        'Ответственные за достоверность',
-                        'Функции'
-                    ],
-                }
-            },
+            kpdList: [],
+            selectedKpd: {}
         };
     },
-    props: ['kpdList'],
+    methods: {
+        async getKpdList() {
+            let uri = this.localeUrl("/kpd-tree-catalog");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+        },
+    },
+    async mounted() {
+        this.kpdList = await this.getKpdList();
+        _.forEach(this.kpdList, (item,index) => {
+            let elements = item.kpd_elements;
+            this.kpdList[index]['elements'] = item.kpd_elements;
+            delete this.kpdList[index]['kpd_elements'];
+        });
+        this.$watch(
+            () => {
+                if (this.$refs.editKpd) {
+                    return this.$refs.editKpd.isOperationFinished
+                }
+            },
+            async (update) => {
+                if (update) {
+                    this.kpdList = await this.getKpdList();
+                    console.log(this.kpdList);
+                    _.forEach(this.kpdList, (item,index) => {
+                        let elements = item.kpd_elements;
+                        this.kpdList[index]['elements'] = item.kpd_elements;
+                        delete this.kpdList[index]['kpd_elements'];
+                    });
+                }
+            }
+        );
+    },
+    props: ['managers','corporateManager'],
 }
 
 
@@ -83,12 +97,10 @@ export default {
     tr:first-child th {
         background: #3A4280;
         border: 1px solid #545580;
-        max-height: 40px;
-        height: 40px;
     }
     tr td {
         border: 1px solid #545580;
-        height: 30px;
+        word-wrap: break-word;
     }
     tr:nth-child(even) {
         background: #272953;
@@ -119,5 +131,9 @@ export default {
     font-size: 16px;
     width: 100px;
     border-radius: 8px;
+}
+.table-container {
+    max-height: 740px;
+    overflow-y: auto;
 }
 </style>

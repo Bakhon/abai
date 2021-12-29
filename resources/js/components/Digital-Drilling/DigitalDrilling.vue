@@ -25,7 +25,7 @@
                     <div class="mainBlock__left-closed title">
                         {{ trans('digital_drilling.default.selecting_submodule') }}
                     </div>
-                    <div class="mainBlock__left-pages">
+                    <div class="mainBlock__left-pages defaultScroll">
                         <left-menu :pages="leftMenuItems" @changePageComponent="changePageComponent"/>
                     </div>
                 </div>
@@ -48,10 +48,12 @@
     import pages from './pages'
     import Vue from 'vue';
     import Main from './Main'
+    import {digitalDrillingActions} from '@store/helpers';
 
     export default {
         name: "DigitalDrilling",
         components: {menuHead, leftMenu, Main, NewWell, OldWell},
+        props: ['user', 'user_can_delete'],
         data(){
             return{
                 leftMenuOpen: true,
@@ -73,7 +75,15 @@
 
             }
         },
+        created(){
+            this.changeCurrentUserValue(this.user)
+            this.changeCurrentUserAccess(this.user_can_delete)
+        },
         methods:{
+            ...digitalDrillingActions([
+                'changeCurrentUserValue',
+                'changeCurrentUserAccess',
+            ]),
             changePage(page){
                 if (page=='home'){
                     this.pageComponent = null
@@ -144,6 +154,7 @@
     Vue.component('rasters-params', require('./project/rasters-params').default);
     Vue.component('well-deepening', require('./project/well-deepening').default);
     Vue.component('well-fastening', require('./project/well-fastening').default);
+    Vue.component('well-calculation', require('./project/well-calculation').default);
     Vue.component('project_inclino', require('./project/inclino').default);
     Vue.component('report-download', require('./project/ReportDownload').default);
 

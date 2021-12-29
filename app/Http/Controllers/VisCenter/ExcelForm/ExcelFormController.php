@@ -582,6 +582,7 @@ class ExcelFormController extends Controller
             ->whereMonth('date',$type,$date)
             ->whereYear('date',$date)
             ->where('dzo_name',$dzo)
+            ->whereNull('is_corrected')
             ->sum($field);
     }
 
@@ -593,6 +594,6 @@ class ExcelFormController extends Controller
         $dzoSummary = app()->call('App\Http\Controllers\VisCenter\DailyReport@getDailyProduction',$params);
 
         $fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' . Carbon::yesterday()->format('d m Y') . ' г';
-        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary']), $fileName . '.xlsx');
+        return Excel::download(new VisualCenterDailyReportExport($dzoSummary['daily'],$dzoSummary['monthly'],$dzoSummary['yearly'],$dzoSummary['summary'],$dzoSummary['missing']), $fileName . '.xlsx');
     }
 }

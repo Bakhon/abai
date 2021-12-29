@@ -172,6 +172,7 @@
                     >Показать график
                   </a>
                 </div>
+<<<<<<< HEAD
                 <div
                   class="modal-show"
                   v-show="isOpen === true"
@@ -188,6 +189,17 @@
                     <img class="modal_show_img" src="/img/bd/circle-red.png" />
                     <span class="legenda_text">В простое</span>
                   </div>
+=======
+                <div class="modal-show" v-show="isOpen === true" @mouseleave="isOpen = false">
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/orange-circle-icon.png"/>
+                          <span class="legenda_text">Отклонение от тех. режима</span>
+                      </div>
+                      <div class="modal_show_item">
+                        <img class="modal_show_img" src="/img/bd/circle-red.png">
+                          <span class="legenda_text">В простое</span>
+                      </div>
+>>>>>>> 119239c72654aaad1a4f33b1dd72c747ba5447eb
                 </div>
                 <div
                   v-if="
@@ -995,6 +1007,7 @@ export default {
           ? this.well.gdisComplex.value_double.toFixed(1) +
             " / " +
             this.getFormatedDate(this.well.gdisComplex.dbeg)
+<<<<<<< HEAD
           : this.well.gdisComplex.value_double
           ? this.well.gdisComplex.value_double.toFixed(1)
           : this.well.gdisComplex.dbeg
@@ -1003,6 +1016,14 @@ export default {
       let rzatrAtm = this.well.dmart_daily_prod_oil
         ? this.well.dmart_daily_prod_oil.pzat
         : "";
+=======
+            : this.well.gdisComplex.value_double
+                ? this.well.gdisComplex.value_double.toFixed(1)
+                : this.well.gdisComplex.dbeg
+                    ? this.getFormatedDate(this.well.gdisComplex.dbeg)
+                    : "";
+      let rzatrAtm = this.well.dmart_daily_prod_oil ? this.well.dmart_daily_prod_oil.pzat : "";
+>>>>>>> 119239c72654aaad1a4f33b1dd72c747ba5447eb
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";

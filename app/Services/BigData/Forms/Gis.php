@@ -136,6 +136,7 @@ class Gis extends PlainForm
             ]
         );
 
+
         $columns = $columns->merge(
             $this->getFields()
                 ->mapWithKeys(

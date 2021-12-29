@@ -12,7 +12,7 @@ import PreviousDailyRaport from './PreviousDailyRaport'
 export default {
     name: "DailyRaport",
     components: {SelectInput, NozzlesTable, SelectAdd, PreviousDailyRaport},
-    props: ['report', 'user', 'isEdit', 'show'],
+    props: ['report', 'user', 'isEdit', 'show', 'fixedStyle'],
     data(){
         return{
             validationError: false,
@@ -196,6 +196,9 @@ export default {
             this.getBHAelements()
             this.changeTotalTime(24)
             this.changeTotalTime(6)
+        },
+        closeReport(){
+            this.$emit('closeReport')
         },
         getPreviousDay(){
             let date = new Date();
@@ -390,7 +393,7 @@ export default {
                         this.saveModal = false
                     })
                 } else{
-                    this.axios.post('http://172.20.103.68:8630' + '/digital_drilling/daily_report/report',
+                    this.axios.post(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/report/',
                         this.report).then((response) => {
                         if (response) {
                             window.location.href = this.localeUrl('/digital-drilling');

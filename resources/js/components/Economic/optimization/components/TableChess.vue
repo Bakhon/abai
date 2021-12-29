@@ -50,7 +50,9 @@ export default {
         ...[{
           title: `${this.trans('economic_reference.production')},
                   ${this.trans('economic_reference.thousand_tons')}`,
-          pp2020: '',
+          manufacturingProgram: this.manufacturingProgram
+              ? +this.manufacturingProgram.oil
+              : '',
           columns: this.reverseOilPrices.map((price, index) => {
             return {
               value: (this.scenariosByOilPrice[index].oil / 1000).toFixed(2),
@@ -60,22 +62,31 @@ export default {
         }],
         ...[{
           title: '',
-          pp2020: '',
-          subtitle: `${this.trans('economic_reference.income')}, ${this.trans('economic_reference.million_tenge')}`,
+          manufacturingProgram: '',
+          subtitle: `
+            ${this.trans('economic_reference.income')},
+            ${this.trans('economic_reference.million_tenge')}
+          `,
           styleClass: 'bg-deep-blue'
         }],
         ...this.revenueTotalByOilPrice,
         ...[{
           title: '',
-          pp2020: '',
-          subtitle: `${this.trans('economic_reference.costs')}, ${this.trans('economic_reference.million_tenge')}`,
+          manufacturingProgram: '',
+          subtitle: `
+            ${this.trans('economic_reference.costs')},
+            ${this.trans('economic_reference.million_tenge')}
+          `,
           styleClass: 'bg-deep-blue'
         }],
         ...this.overallExpendituresByOilPrice,
         ...[{
           title: '',
-          pp2020: '',
-          subtitle: `${this.trans('economic_reference.operating_profit')}, ${this.trans('economic_reference.million_tenge')}`,
+          manufacturingProgram: '',
+          subtitle: `
+            ${this.trans('economic_reference.operating_profit')},
+            ${this.trans('economic_reference.million_tenge')}
+          `,
           styleClass: 'bg-deep-blue'
         }],
         ...this.operatingProfitByOilPrice
@@ -86,14 +97,14 @@ export default {
       return [
         {
           title: '',
-          pp2020: '',
+          manufacturingProgram: '',
           subtitle: this.trans('economic_reference.production_program_at_oil_price'),
         },
         {
           title: `${this.trans('economic_reference.course')}
                   ${+this.scenario.dollar_rate}
                   ${this.trans('economic_reference.tenge')} / $`,
-          pp2020: this.trans('economic_reference.pp_2020'),
+          manufacturingProgram: this.trans('economic_reference.pp'),
           columns: this.reverseOilPrices.map(oilPrice => {
             return {
               value: oilPrice,

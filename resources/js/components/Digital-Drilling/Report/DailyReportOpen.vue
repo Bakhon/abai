@@ -1,6 +1,9 @@
 <template>
     <div>
-        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open" @changeReport="changeReport"/>
+        <daily-raport v-if="created" :report="report" :user="user.username" :isEdit="isEdit" :show="is_open"
+                      @changeReport="changeReport"
+                      @closeReport="closeReport"
+        />
         <div class="newWell" v-if="!created">
         <div class="well_content">
             <div class="well_body">
@@ -84,7 +87,7 @@
                                 <div class="dropdown__area-edit">
                                     <input type="checkbox" v-model="is_open">
                                     <select name="" id="" v-model="dateOpen" class="date" :disabled="!is_open" :class="{error: is_open && error && dateOpen==''}">
-                                        <option :value="report.id" v-for="report in reportData">{{report.date}}</option>
+                                        <option :value="report.id" v-for="report in reportData">№{{report.report_num}}, {{report.date}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -134,6 +137,9 @@
             this.getDZO()
         },
         methods:{
+            closeReport(){
+                this.created = false
+            },
             create(){
                 this.getDailyReport()
             },

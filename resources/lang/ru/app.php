@@ -71,4 +71,5 @@ return array (
   'support' => 'Поддержка',
   'mail' => 'Почта',
   'chat' => 'Чат',
+  'upload' => 'Загрузить'
 );

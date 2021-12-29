@@ -195,9 +195,9 @@ const guMap = {
             });
         },
 
-        async getHydroReverseCalc({commit}, date) {
-            return await axios.get(this._vm.localeUrl("/tech-map/hydro-reverse-calc"), {params: {date: date}}).then((response) => {
-                return response.data.pipes;
+        async getHydroCalc({commit}, date) {
+            return await axios.get(this._vm.localeUrl("/tech-map/hydro-calc"), {params: {date: date}}).then((response) => {
+                return response.data;
             })
         },
     },

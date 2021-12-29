@@ -3,28 +3,14 @@
     <template #top>
       <dropdown block class="w-100 mb-2" :selected-value.sync="components.activeComponent" button-text="Выбор методов"
                 :options="[
-              {label: 'First Component Demo', value: 'FirstComponent'},
-              {label: 'Second Component Demo', value: 'SecondComponent'},
-              {label: 'Standard Interpretation Demo', value: 'StandardInterpretation'},
-            ]" />
-
-      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов"
-                :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-
-      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Данные по сважине"
-                :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-
+              {label: 'Autocorrelation', value: 'SecondComponent'},
+              {label: 'Interpretation', value: 'StandardInterpretation'},
             ]" />
 
     </template>
-    <component v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    <keep-alive>
+      <component v-bind="components.options[components.activeComponent]" :is="components.options[components.activeComponent].is" />
+    </keep-alive>
   </PageSide>
 </template>
 
@@ -32,29 +18,23 @@
 import dropdown from "../components/dropdowns/dropdown";
 import PageSide from "../components/pageSide/PageSide";
 
-import FirstComponent from "./RightSideComponents/FirstComponent";
 import SecondComponent from "./RightSideComponents/SecondComponent";
 import StandardInterpretation from "./RightSideComponents/StandardInterpretation";
+
 export default {
   name: "Geology-RSide",
   data() {
     return {
       components: {
-        activeComponent: "FirstComponent",
-        options:{
-          FirstComponent:{
-            is: FirstComponent
-          },
-          SecondComponent:{
+        activeComponent: "SecondComponent",
+        options: {
+          SecondComponent: {
             is: SecondComponent
           },
-          StandardInterpretation:{
+          StandardInterpretation: {
             is: StandardInterpretation
           },
         }
-      },
-      dropdownValue: {
-        value: null
       },
       listSelect: []
     }
