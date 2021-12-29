@@ -19,11 +19,8 @@ class ChangeTypeAtKpdTreeCatalog extends Migration
             $table->string('maximum')->nullable()->change();
             $table->string('weight')->nullable()->change();
         });
-        Schema::table('kpd_tree_catalog', function (Blueprint $table) {
-            $table->string('step')->nullable()->change();
-            $table->string('target')->nullable()->change();
-            $table->string('maximum')->nullable()->change();
-            $table->string('weight')->nullable()->change();
+        Schema::table('kpd_fact', function (Blueprint $table) {
+            $table->string('fact')->nullable()->change();
         });
     }
 
