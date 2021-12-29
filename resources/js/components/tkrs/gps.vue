@@ -30,23 +30,11 @@
             <div class="tab-archive-div" v-if="currentBlockTab == 1">
               <div class="form-input-block-header">Добавление скважины</div>
         <b-dropdown class="left-block-dropdown" >
-              <template #button-content >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.19995 10.3394C6.87237 10.6948 6.04238 11.1658 5 11.1992V11.9992H11.9999V9.93942C10.3439 9.87222 9.06914 10.1068 8.19995 10.3394ZM8.65154 11.3992L8.54815 11.0128C9.39093 10.7872 10.2801 10.6514 11.1905 10.609L11.2091 11.0086C10.3273 11.0496 9.46693 11.181 8.65154 11.3992Z" fill="#868BB2"/>
-                <path d="M2.99995 10.801C2.88496 10.7752 2.75396 10.7496 2.59996 10.725C1.52318 10.5532 0.610191 10.6304 0 10.725V12.0009H2.99995V10.801Z" fill="#868BB2"/>
-                <path d="M4.80156 9.59921C4.91201 9.59921 5.00156 9.50967 5.00156 9.39922C5.00156 9.28876 4.91201 9.19922 4.80156 9.19922C4.6911 9.19922 4.60156 9.28876 4.60156 9.39922C4.60156 9.50967 4.6911 9.59921 4.80156 9.59921Z" fill="#868BB2"/>
-                <path d="M6.2 9.20078C6.31045 9.20078 6.39999 9.11123 6.39999 9.00078C6.39999 8.89032 6.31045 8.80078 6.2 8.80078C6.08954 8.80078 6 8.89032 6 9.00078C6 9.11123 6.08954 9.20078 6.2 9.20078Z" fill="#868BB2"/>
-                <path d="M5.39922 10.4C5.50967 10.4 5.59921 10.3105 5.59921 10.2C5.59921 10.0895 5.50967 10 5.39922 10C5.28876 10 5.19922 10.0895 5.19922 10.2C5.19922 10.3105 5.28876 10.4 5.39922 10.4Z" fill="#868BB2"/>
-                <path d="M7.2 9.9996C7.31045 9.9996 7.4 9.91006 7.4 9.79961C7.4 9.68915 7.31045 9.59961 7.2 9.59961C7.08954 9.59961 7 9.68915 7 9.79961C7 9.91006 7.08954 9.9996 7.2 9.9996Z" fill="#868BB2"/>
-                <path d="M8.2 9.20078C8.31045 9.20078 8.39999 9.11123 8.39999 9.00078C8.39999 8.89032 8.31045 8.80078 8.2 8.80078C8.08954 8.80078 8 8.89032 8 9.00078C8 9.11123 8.08954 9.20078 8.2 9.20078Z" fill="#868BB2"/>
-                <path d="M11.2 9.20078C11.3105 9.20078 11.4 9.11123 11.4 9.00078C11.4 8.89032 11.3105 8.80078 11.2 8.80078C11.0895 8.80078 11 8.89032 11 9.00078C11 9.11123 11.0895 9.20078 11.2 9.20078Z" fill="#868BB2"/>
-                <path d="M9.79765 9.39999C9.90811 9.39999 9.99765 9.31045 9.99765 9.2C9.99765 9.08954 9.90811 9 9.79765 9C9.6872 9 9.59766 9.08954 9.59766 9.2C9.59766 9.31045 9.6872 9.39999 9.79765 9.39999Z" fill="#868BB2"/>
-                <path d="M0.399216 9.20078C0.509671 9.20078 0.599213 9.11123 0.599213 9.00078C0.599213 8.89032 0.509671 8.80078 0.399216 8.80078C0.28876 8.80078 0.199219 8.89032 0.199219 9.00078C0.199219 9.11123 0.28876 9.20078 0.399216 9.20078Z" fill="#868BB2"/>
-                <path d="M1.59843 9.9996C1.70889 9.9996 1.79843 9.91006 1.79843 9.79961C1.79843 9.68915 1.70889 9.59961 1.59843 9.59961C1.48798 9.59961 1.39844 9.68915 1.39844 9.79961C1.39844 9.91006 1.48798 9.9996 1.59843 9.9996Z" fill="#868BB2"/>
-                <path d="M3.00078 9.59921C3.11123 9.59921 3.20078 9.50967 3.20078 9.39922C3.20078 9.28876 3.11123 9.19922 3.00078 9.19922C2.89032 9.19922 2.80078 9.28876 2.80078 9.39922C2.80078 9.50967 2.89032 9.59921 3.00078 9.59921Z" fill="#868BB2"/>
-                <path d="M11.1983 6.19991H9.59834V6.5999H9.15315L8.22216 2.09857L10.1983 1.71617V5.19992H9.59834V5.79991H11.1983V5.19992H10.5983V1.63858L10.6113 1.63598C10.7159 1.61578 10.7863 1.51698 10.7713 1.41138L10.6281 0.409194C10.6119 0.295595 10.5035 0.218797 10.3909 0.241396L4.59842 1.39998V0.599991L3.99843 0L3.39844 0.599991V3.19995L3.79843 3.73334V4.79993H3.59843C3.48804 4.79993 3.39844 4.88953 3.39844 4.99992V5.79991C3.39844 5.91031 3.48804 5.99991 3.59843 5.99991H3.79843V10.8388C3.56563 10.9234 3.39844 11.142 3.39844 11.3998C3.39844 11.7306 3.67223 11.9998 4.00883 11.9998C4.34542 11.9998 4.61922 11.7306 4.61922 11.3998C4.61922 11.1344 4.44182 10.9114 4.19843 10.8324V5.99991H4.39842C4.50882 5.99991 4.59842 5.91031 4.59842 5.79991V4.99992C4.59842 4.88953 4.50882 4.79993 4.39842 4.79993H4.19843V3.73334L4.59842 3.19995V2.79996L6.54519 2.42316L5.6372 6.5999H4.59842V8.39987H11.9983V6.5999H11.1983V6.19991ZM10.1591 0.803988L10.2377 1.19618L9.23775 1.39618L9.15915 1.00398L10.1591 0.803988ZM4.21923 11.3998C4.21923 11.51 4.12483 11.5998 4.00883 11.5998C3.89283 11.5998 3.79843 11.51 3.79843 11.3998C3.79843 11.2896 3.89283 11.1998 4.00883 11.1998C4.12483 11.1998 4.21923 11.2896 4.21923 11.3998ZM4.19843 5.59992H3.79843V5.19992H4.19843V5.59992ZM4.19843 2.19997H3.79843V1.79997H4.19843V2.19997ZM8.23376 4.19694L8.45296 5.29272L6.96198 4.47953L8.23376 4.19694ZM6.97238 2.34036L7.82917 2.17457L8.13477 3.70234L6.88078 2.76176L6.97238 2.34036ZM6.78739 3.19175L7.73037 3.89914L6.57779 4.15534L6.78739 3.19175ZM6.46719 4.66533L8.08617 5.54832L6.1454 6.14551L6.46719 4.66533ZM6.0466 6.5999L6.0522 6.5743L6.0574 6.5909L8.55896 5.82111L8.75256 6.5999H6.0466Z" fill="#868BB2"/>
-                <path d="M3.39995 6.59961H0V8.39958H3.39995V6.59961Z" fill="#868BB2"/>
-                </svg>
+              <template #button-content>
+                <img class="hws-tab-img"
+                    src="/img/tkrs/temporary/search_left_block.svg"
+                    />
+                
                 <a>Месторождение</a>
               </template>
               <b-dropdown-item href="#">Бригада</b-dropdown-item>
@@ -154,9 +142,9 @@
                     </tr>
                     <tr>
                       <td class="header_name">Трубное давление:</td>
-                      <td class="input-form-auto header_name_red">{{pipe_pressure}}</td>
+                      <td class="input-form-auto header_name_red">{{parameters.pipe_pressure}}</td>
                       <td class="header_name">Затрубное давление:</td>
-                      <td class="input-form-auto header_name_red">{{annular_pressure}}</td>
+                      <td class="input-form-auto header_name_red">{{parameters.annular_pressure}}</td>
                       <td class="header_name">Межколонное давление:</td>
                       <td class="input-form-auto header_name_red">0 атм</td>
                     </tr>
@@ -184,7 +172,7 @@
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
                     </tr>
-                    <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index">
+                    <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index + 'A'">
                       <td class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{works_report_range.dend_night[item_index]}}</td>
                       <td class="header_name input-form-auto">{{works_report_range.duration_night[item_index]}}</td>
@@ -220,10 +208,10 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[1]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
-                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
-                      <td class="input-form-auto header_name">{{wall_thickness}}</td>
-                      <td class="input-form-auto header_name">{{descent_depth}}</td>
-                      <td class="input-form-auto header_name">17,76</td>
+                      <td class="input-form-auto header_name">{{parameters.prod_casing_outer_d}}</td>
+                      <td class="input-form-auto header_name">{{parameters.wall_thickness}}</td>
+                      <td class="input-form-auto header_name">{{parameters.descent_depth}}</td>
+                      <td class="input-form-auto header_name">{{parameters.volume_val}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">прочее (ОЗЦ и т.д)</td>
@@ -238,9 +226,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[3]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[3]}}</td>
                       <td colspan="2" class="header_name">Искусственный забой, м</td>
-                      <td class="input-form-auto header_name">{{artificial_slaughter}}</td>
+                      <td class="input-form-auto header_name">{{parameters.artificial_slaughter}}</td>
                       <td colspan="2" class="header_name">Текущий забой, м</td>
-                      <td class="input-form-auto header_name">{{current_bottomhole}}</td>
+                      <td class="input-form-auto header_name">{{parameters.current_bottomhole}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">обеденный перерыв</td>
@@ -248,14 +236,14 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[4]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[4]}}</td>
                       <td colspan="2" class="header_name">Интервал перфорации</td>
-                      <td colspan="4" class="input-form-auto header_name">1700-1710м.</td>
+                      <td colspan="4" class="input-form-auto header_name">{{parameters.perf_intervals}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">ремонт оборудования</td>
                       <td class="header_name manual-edit">{{curr_hour_works[5]}}</td>
                       <td class="input-form-auto header_name">{{prev_hour_works[5]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[5]}}</td>
-                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{all_works}}</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{works_report_range.all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">метеоусловия</td>
@@ -350,14 +338,16 @@ export default {
   },
   computed: {
     ...mapState('tkrsDailyReport', ["contractor_name", "areaChartData", "report_number","machine_type",
-    "field_name","well_type"]),
+    "field_name","well_type", "well_name", "programmes_target_name", "chief", 
+    "master_day_shift","master_day_shift_number", "master_night_shift", "master_night_shift_number",
+    "works_report_range", "start_drill", "end_drill","all_day_hour_works","curr_hour_works",
+    "prev_hour_works", "parameters"]),
   },
   data(){
     return {
       currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
-      // areaChartData: [],
       isChart: true,
       wellList: [],
       wellDate: [],
@@ -366,37 +356,11 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
-      // contractor_name: null,
-      // report_number:  null,
-      // well_type:  null,
-      // field_name:  null,
-      // machine_type:  null,
-      well_name:  null,
-      programmes_target_name:  null,
-      chief:  null,
-      master_day_shift:  null,
-      master_day_shift_number:  null,
-      master_night_shift:  null,
-      master_night_shift_number:  null,
-      programmes_target_name:  null,
-      works_report_range: [],
-      all_day_hour_works: [],
-      prev_hour_works: [],
-      curr_hour_works: [],
-      start_drill:  null,
-      end_drill:  null,
       all_works:  null,
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWell: "drWellName/",
       linkWellDate: "drWellDates/",
       linkWellReport: "drHeaderWorkReport/",
-      annular_pressure: null,
-      descent_depth: null,
-      pipe_pressure: null,
-      artificial_slaughter: null,
-      current_bottomhole: null,
-      prod_casing_outer_d: null,
-      wall_thickness: null,
       wellsTreeCurrent: {},
       wellsTree: {},
     }
@@ -477,52 +441,11 @@ export default {
                 }
             });
     },
-    // postSelectedtWellFile() {
-    //   this.SET_LOADING(false);
-    //     this.axios
-    //         .get(
-    //             this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
-    //         )
-    //         .then((response) => {
-    //             let data = response.data;
-    //             if (data) {
-    //                 this.areaChartData = data.data;
-    //                 this.contractor_name = data.data.header.contractor_name;
-    //                 this.report_number = data.data.header.report_number;
-    //                 this.machine_type = data.data.header.machine_type;
-    //                 this.field_name = data.data.header.field_name;
-    //                 this.well_type = data.data.header.well_type;
-    //                 this.well_name = data.data.header.well_name;
-    //                 this.programmes_target_name = data.data.header.programmes_target_name;
-    //                 this.chief = data.data.works_report.chief;
-    //                 this.master_day_shift = data.data.works_report.master_day_shift;
-    //                 this.master_day_shift_number = data.data.works_report.master_day_shift_number;
-    //                 this.master_night_shift = data.data.works_report.master_night_shift;
-    //                 this.master_night_shift_number = data.data.works_report.master_night_shift_number;
-    //                 this.works_report_range = data.data.works_report_range;
-    //                 this.start_drill = data.data.header.start_drill;
-    //                 this.end_drill = data.data.header.end_drill;
-    //                 this.all_works = data.data.works_report_range.all_works;
-    //                 this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
-    //                 this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
-    //                 this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
-    //                 this.annular_pressure = data.data.parameters.annular_pressure;
-    //                 this.descent_depth = data.data.parameters.descent_depth;
-    //                 this.pipe_pressure = data.data.parameters.pipe_pressure;
-    //                 this.artificial_slaughter = data.data.parameters.artificial_slaughter;
-    //                 this.current_bottomhole = data.data.parameters.current_bottomhole;
-    //                 this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
-    //                 this.wall_thickness = data.data.parameters.wall_thickness;
-    //             } else {
-    //                 console.log("No data");
-    //             }
-    //         });
-    // },
     getDataTreeCurrent() {
       
       this.axios
           .get(
-               `http://172.20.103.203:8090/wellNameDate1/`,
+               this.postApiUrl + `wellNameDate1/`,
               
           )
           .then((response) => {
@@ -538,7 +461,7 @@ export default {
       
       this.axios
           .get(
-               `http://172.20.103.203:8090/wellTreeName/`,
+               this.postApiUrl + `wellTreeName/`,
               
           )
           .then((response) => {

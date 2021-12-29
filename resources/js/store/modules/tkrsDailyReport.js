@@ -8,7 +8,20 @@ const tkrsDailyReport = {
         machine_type: null,
         field_name: null,
         well_type: null,
-      
+        well_name: null,
+        programmes_target_name: null,
+        chief: null,
+        master_day_shift: null,
+        master_day_shift_number: null,
+        master_night_shift: null,
+        master_night_shift_number: null,
+        works_report_range: [],
+        start_drill: null,
+        end_drill: null,
+        all_day_hour_works: [],
+        curr_hour_works: [],
+        prev_hour_works: [],
+        parameters: [],
     },
   
     mutations: {
@@ -30,7 +43,48 @@ const tkrsDailyReport = {
       SET_WELLTYPE(state, val) {
         state.well_type = val;
       },
-  
+      SET_WELLNAME(state, val) {
+        state.well_name = val;
+      },
+      SET_PROGRAMMESTARGETNAME(state, val) {
+        state.programmes_target_name = val;
+      },
+      SET_CHIEF(state, val) {
+        state.chief = val;
+      },
+      SET_MASTERDAYSHIFT(state, val) {
+        state.master_day_shift = val;
+      },
+      SET_MASTERDAYSHIFTNUMBER(state, val) {
+        state.master_day_shift_number = val;
+      },
+      SET_MASTERNIGHTSHIFT(state, val) {
+        state.master_night_shift = val;
+      },
+      SET_MASTERNIGHTSHIFTNUMBER(state, val) {
+        state.master_night_shift_number = val;
+      },
+      SET_WORKSREPORTRANGE(state, val) {
+        state.works_report_range = val;
+      },
+      SET_STARTDRILL(state, val) {
+        state.start_drill = val;
+      },
+      SET_ENDDRILL(state, val) {
+        state.end_drill = val;
+      },
+      SET_ALLDAYHOURWORKS(state, val) {
+        state.all_day_hour_works = val;
+      },
+      SET_CURRHOURWORKS(state, val) {
+        state.curr_hour_works = val;
+      },
+      SET_PREVHOURWORKS(state, val) {
+        state.prev_hour_works = val;
+      },
+      SET_PARAMETERS(state, val) {
+        state.parameters = val;
+      },
     },
   
     actions: {
@@ -49,7 +103,20 @@ const tkrsDailyReport = {
                   commit("SET_MACHINETYPE", data.data.header.machine_type);
                   commit("SET_FIELDNAME", data.data.header.field_name);
                   commit("SET_WELLTYPE", data.data.header.well_type);
-  
+                  commit("SET_WELLNAME", data.data.header.well_name);
+                  commit("SET_PROGRAMMESTARGETNAME", data.data.header.programmes_target_name);
+                  commit("SET_CHIEF", data.data.works_report.chief);
+                  commit("SET_MASTERDAYSHIFT", data.data.works_report.master_day_shift);
+                  commit("SET_MASTERDAYSHIFTNUMBER", data.data.works_report.master_day_shift_number);
+                  commit("SET_MASTERNIGHTSHIFT", data.data.works_report.master_night_shift);
+                  commit("SET_MASTERNIGHTSHIFTNUMBER", data.data.works_report.master_night_shift_number);
+                  commit("SET_WORKSREPORTRANGE", data.data.works_report_range);
+                  commit("SET_STARTDRILL", data.data.header.start_drill);
+                  commit("SET_ENDDRILL", data.data.header.end_drill);
+                  commit("SET_ALLDAYHOURWORKS", data.data.all_day_hour_works.all_day_hour_works);
+                  commit("SET_CURRHOURWORKS", data.data.all_day_hour_works.curr_hour_works);
+                  commit("SET_PREVHOURWORKS", data.data.all_day_hour_works.prev_hour_works);
+                  commit("SET_PARAMETERS", data.data.parameters);
                 } else {
                     console.log("No data");
                 }
@@ -59,24 +126,7 @@ const tkrsDailyReport = {
   };
   
   export default tkrsDailyReport;
-
-   //                 this.machine_type = data.data.header.machine_type;
-    //                 this.field_name = data.data.header.field_name;
-    //                 this.well_type = data.data.header.well_type;
-    //                 this.well_name = data.data.header.well_name;
-    //                 this.programmes_target_name = data.data.header.programmes_target_name;
-    //                 this.chief = data.data.works_report.chief;
-    //                 this.master_day_shift = data.data.works_report.master_day_shift;
-    //                 this.master_day_shift_number = data.data.works_report.master_day_shift_number;
-    //                 this.master_night_shift = data.data.works_report.master_night_shift;
-    //                 this.master_night_shift_number = data.data.works_report.master_night_shift_number;
-    //                 this.works_report_range = data.data.works_report_range;
-    //                 this.start_drill = data.data.header.start_drill;
-    //                 this.end_drill = data.data.header.end_drill;
-    //                 this.all_works = data.data.works_report_range.all_works;
-    //                 this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
-    //                 this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
-    //                 this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
+    
     //                 this.annular_pressure = data.data.parameters.annular_pressure;
     //                 this.descent_depth = data.data.parameters.descent_depth;
     //                 this.pipe_pressure = data.data.parameters.pipe_pressure;
