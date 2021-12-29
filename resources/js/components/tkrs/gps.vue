@@ -333,6 +333,7 @@ import {globalloadingMutations} from '@store/helpers'
 import dailyReportCurrent from "./dailyReportCurrent.vue";
 import currentFormInput from './tabs/currentFormInput.vue';
 import archFormInput from './tabs/archFormInput.vue';
+import {mapState, mapActions} from 'vuex'
 
 export default {
   name: "gps",
@@ -348,13 +349,15 @@ export default {
     archFormInput
   },
   computed: {
+    ...mapState('tkrsDailyReport', ["contractor_name", "areaChartData", "report_number","machine_type",
+    "field_name","well_type"]),
   },
   data(){
     return {
       currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
-      areaChartData: [],
+      // areaChartData: [],
       isChart: true,
       wellList: [],
       wellDate: [],
@@ -363,11 +366,11 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
-      contractor_name: null,
-      report_number:  null,
-      well_type:  null,
-      field_name:  null,
-      machine_type:  null,
+      // contractor_name: null,
+      // report_number:  null,
+      // well_type:  null,
+      // field_name:  null,
+      // machine_type:  null,
       well_name:  null,
       programmes_target_name:  null,
       chief:  null,
@@ -396,7 +399,6 @@ export default {
       wall_thickness: null,
       wellsTreeCurrent: {},
       wellsTree: {},
-      
     }
   },
   created: async function () {
@@ -409,7 +411,7 @@ export default {
         this.SET_LOADING(false);
         let data = response.data;
         if (data) {
-          this.areaChartData = data.data;
+        
         } else {
           console.log("No data");
         }
@@ -421,7 +423,8 @@ export default {
       });
       this.getListWell();
       this.getDataTreeCurrent();
-      this.getDataTreeArchive()();
+      this.getDataTreeArchive()
+  
     },
   
   methods: {
@@ -474,47 +477,47 @@ export default {
                 }
             });
     },
-    postSelectedtWellFile() {
-      this.SET_LOADING(false);
-        this.axios
-            .get(
-                this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
-            )
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.areaChartData = data.data;
-                    this.contractor_name = data.data.header.contractor_name;
-                    this.report_number = data.data.header.report_number;
-                    this.machine_type = data.data.header.machine_type;
-                    this.field_name = data.data.header.field_name;
-                    this.well_type = data.data.header.well_type;
-                    this.well_name = data.data.header.well_name;
-                    this.programmes_target_name = data.data.header.programmes_target_name;
-                    this.chief = data.data.works_report.chief;
-                    this.master_day_shift = data.data.works_report.master_day_shift;
-                    this.master_day_shift_number = data.data.works_report.master_day_shift_number;
-                    this.master_night_shift = data.data.works_report.master_night_shift;
-                    this.master_night_shift_number = data.data.works_report.master_night_shift_number;
-                    this.works_report_range = data.data.works_report_range;
-                    this.start_drill = data.data.header.start_drill;
-                    this.end_drill = data.data.header.end_drill;
-                    this.all_works = data.data.works_report_range.all_works;
-                    this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
-                    this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
-                    this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
-                    this.annular_pressure = data.data.parameters.annular_pressure;
-                    this.descent_depth = data.data.parameters.descent_depth;
-                    this.pipe_pressure = data.data.parameters.pipe_pressure;
-                    this.artificial_slaughter = data.data.parameters.artificial_slaughter;
-                    this.current_bottomhole = data.data.parameters.current_bottomhole;
-                    this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
-                    this.wall_thickness = data.data.parameters.wall_thickness;
-                } else {
-                    console.log("No data");
-                }
-            });
-    },
+    // postSelectedtWellFile() {
+    //   this.SET_LOADING(false);
+    //     this.axios
+    //         .get(
+    //             this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
+    //         )
+    //         .then((response) => {
+    //             let data = response.data;
+    //             if (data) {
+    //                 this.areaChartData = data.data;
+    //                 this.contractor_name = data.data.header.contractor_name;
+    //                 this.report_number = data.data.header.report_number;
+    //                 this.machine_type = data.data.header.machine_type;
+    //                 this.field_name = data.data.header.field_name;
+    //                 this.well_type = data.data.header.well_type;
+    //                 this.well_name = data.data.header.well_name;
+    //                 this.programmes_target_name = data.data.header.programmes_target_name;
+    //                 this.chief = data.data.works_report.chief;
+    //                 this.master_day_shift = data.data.works_report.master_day_shift;
+    //                 this.master_day_shift_number = data.data.works_report.master_day_shift_number;
+    //                 this.master_night_shift = data.data.works_report.master_night_shift;
+    //                 this.master_night_shift_number = data.data.works_report.master_night_shift_number;
+    //                 this.works_report_range = data.data.works_report_range;
+    //                 this.start_drill = data.data.header.start_drill;
+    //                 this.end_drill = data.data.header.end_drill;
+    //                 this.all_works = data.data.works_report_range.all_works;
+    //                 this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
+    //                 this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
+    //                 this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
+    //                 this.annular_pressure = data.data.parameters.annular_pressure;
+    //                 this.descent_depth = data.data.parameters.descent_depth;
+    //                 this.pipe_pressure = data.data.parameters.pipe_pressure;
+    //                 this.artificial_slaughter = data.data.parameters.artificial_slaughter;
+    //                 this.current_bottomhole = data.data.parameters.current_bottomhole;
+    //                 this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
+    //                 this.wall_thickness = data.data.parameters.wall_thickness;
+    //             } else {
+    //                 console.log("No data");
+    //             }
+    //         });
+    // },
     getDataTreeCurrent() {
       
       this.axios

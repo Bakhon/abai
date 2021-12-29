@@ -1,12 +1,12 @@
 <template>
   <li
+  @click="handleTableAndGraph"
   >
     <label>
       <i style="color: #999DC0; margin-right: 8px;" class="fa fa-file "></i
       >{{ date.date_name }}
     </label>
     <img
-      v-if="type === 'download'"
       v-show="hovered"
       class="download-icon"
       src="/img/PlastFluids/data_upload.svg"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "archFormInputTreeMenuChild",
   props: {
@@ -33,6 +33,12 @@ export default {
   computed: {
   },
   methods: {
+    ...mapActions("tkrsDailyReport", ["getSelectedtWellFile"]),
+   
+    handleTableAndGraph() {
+      
+      this.getSelectedtWellFile({ well_name: this.treeChild, well_date: this.date.date_name });
+    },
   },
 };
 </script>

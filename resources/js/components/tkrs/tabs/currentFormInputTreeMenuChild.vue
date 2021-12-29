@@ -7,7 +7,6 @@
       >{{ date.field_name }}
     </label>
     <img
-      v-if="type === 'download'"
       v-show="hovered"
       class="download-icon"
       src="/img/PlastFluids/data_upload.svg"
@@ -17,7 +16,7 @@
 </template>
 
 <script>
-// import { mapActions, mapMutations } from "vuex";
+
 
 export default {
   name: "currentFormInputTreeMenuChild",
@@ -35,17 +34,7 @@ export default {
   computed: {
   },
   methods: {
-    // ...mapActions("tkrs", ["getTableWork", "getSelectedtWellFile"]),
-    // ...mapMutations("tkrs", ["SET_CURRENTARCHIVEWELLNAME", "SET_CURRENTFIELD"]),
-    // handleTableAndGraph() {
-    //   this.SET_CURRENTARCHIVEWELLNAME(this.treeChild);
-    //   this.SET_CURRENTFIELD(this.treeFieldCurrentName);
-    //   this.getTableWork({ well_name: this.treeChild, well_date: this.date.field_name });
-    //   this.getSelectedtWellFile({ well_name_chart: this.treeChild, well_date_chart: this.date.field_name });
-    // },
-    // postSelectedtWellFileChild(well_name, well_date) {
-    //   this.$emit('post_method', {well_name, well_date})
-    // },
+
   },
 };
 </script>

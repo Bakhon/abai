@@ -7,7 +7,6 @@
       >{{ date.field_name }}
     </label>
     <img
-      v-if="type === 'download'"
       v-show="hovered"
       class="download-icon"
       src="/img/PlastFluids/data_upload.svg"
