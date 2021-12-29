@@ -74,11 +74,6 @@
                                                 :aria-valuemax="getMaximum(kpd)"
                                         >
                                         </div>
-<!--                                        <div class="col-12 d-flex justify-content-around p-0">-->
-<!--                                            <div class="progress-splitter"></div>-->
-<!--                                            <div class="progress-splitter"></div>-->
-<!--                                            <div class="progress-splitter"></div>-->
-<!--                                        </div>-->
                                     </div>
                                     <div
                                             :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"
@@ -308,7 +303,7 @@ export default {
                    if (kpd.step !== '' && kpd.step !== null && kpd.target !== '' && kpd.target !== null && kpd.maximum !== '' && kpd.maximum !== null) {
                        kpd.isPlanFilled = true;
                    }
-                   if (kpd.weight !== '') {
+                   if (kpd.weight !== '' && kpd.weight !== null) {
                        kpd.isWeightFilled = true;
                    }
                    kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
