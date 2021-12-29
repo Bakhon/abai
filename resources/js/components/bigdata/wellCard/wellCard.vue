@@ -172,6 +172,7 @@
                     >Показать график
                   </a>
                 </div>
+
                 <div
                   class="modal-show"
                   v-show="isOpen === true"
