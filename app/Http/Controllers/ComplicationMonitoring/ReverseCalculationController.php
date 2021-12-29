@@ -152,7 +152,6 @@ class ReverseCalculationController extends CrudController
 
         if (isset($input['date'])) {
             $calculatedPipes = $this->getCalculatedData($input['date']);
-            $calculatedPipes = null;
 
             if ($calculatedPipes) {
                 $calculatedPipesIds = $calculatedPipes->pluck('oil_pipe_id')->toArray();
