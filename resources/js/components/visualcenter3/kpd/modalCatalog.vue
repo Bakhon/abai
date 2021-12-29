@@ -35,7 +35,7 @@
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd"></kpd-modal-kpd-edit>
+        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -83,7 +83,7 @@ export default {
             }
         );
     },
-    props: ['managers','corporateManager'],
+    props: ['managers','corporateManager','deputy'],
 }
 
 

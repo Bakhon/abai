@@ -102,14 +102,14 @@
                             >
                                 <div class="col-12">
                                     <div class="text-right">
-                                        {{kpd.fact}}%
+                                        {{kpd.rating}}%
                                     </div>
                                     <div class="progress progress_template">
                                         <div
-                                                :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
-                                                :style="{width: kpd.fact + '%',}"
+                                                :class="[getProgressBarFillingColor(kpd.rating),'progress-bar progress-bar_filling']"
+                                                :style="{width: kpd.rating + '%',}"
                                                 role="progressbar"
-                                                :aria-valuenow="kpd.fact"
+                                                :aria-valuenow="kpd.rating"
                                                 aria-valuemin="0"
                                                 aria-valuemax="100"
                                         ></div>
@@ -202,7 +202,7 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog :managers="managers" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
+            <kpd-modal-catalog :managers="managers" :deputy="deputy" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
             <kpd-modal-monitoring :manager-info="selectedManager" ref="kpdMonitoring" :manager-type="managerType"></kpd-modal-monitoring>
             <modal-settings :corporate-manager="corporateManager[0]"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager[0]"></modal-corporate-manager>

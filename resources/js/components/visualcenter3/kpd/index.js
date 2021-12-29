@@ -134,7 +134,7 @@ export default {
                         kpd.summary = 0;
                         kpd.fact = 0;
                     } else {
-                        kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact);
+                        kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact));
                         kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                         kpd.fact = sorted.at(-1).fact;
                     }

@@ -114,7 +114,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>100%</td>
+                            <td>{{totalWeight}}%</td>
                             <td></td>
                             <td></td>
                             <td colspan="2">
@@ -274,6 +274,9 @@ export default {
         totalSummary() {
             return _.sumBy(this.kpdList, 'summary');
         },
+        totalWeight() {
+            return _.sumBy(this.kpdList, 'weight');
+        }
     }
 }
 

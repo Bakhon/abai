@@ -293,9 +293,12 @@ export default {
             if (this.kpd.current.elements.length === 0) {
                 this.addRow();
             }
-        }
+        },
+        deputy: function () {
+            this.owners = this.owners.concat(this.deputy);
+        },
     },
-    props: ['managers','corporateManager','kpdList','currentKpd'],
+    props: ['managers','corporateManager','kpdList','currentKpd','deputy'],
 }
 
 
