@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\CausesActivity;
@@ -84,19 +85,19 @@ class User extends Authenticatable
                 ->get();
         }
         else {
-            return new \Illuminate\Database\Eloquent\Collection();
+            return new Collection();
         }
     }
 
-    public function getUserOrganizations(StructureService $structureService): array
+    public function getUserOrganizations(): array
     {
         $orgs = [];
-        if($this->org_structure) {
+        if ($this->org_structure) {
             $orgIds = array_map(function ($item) {
                 return substr($item, strpos($item, ":") + 1);
             }, $this->org_structure);
             $orgs = \App\Models\BigData\Dictionaries\Org::query()
-                ->select(['id', 'name_ru as name'])
+                ->select(['id', 'name_ru as name', 'code'])
                 ->whereIn('id', $orgIds)
                 ->get()
                 ->toArray();
@@ -107,7 +108,11 @@ class User extends Authenticatable
 
     public function getUserAllOrganizations(StructureService $structureService): array
     {
-        if($this->org_structure) {
+        if ($this->userOrgs) {
+            return $this->userOrgs;
+        }
+
+        if ($this->org_structure) {
             $orgIds = array_map(function ($item) {
                 return substr($item, strpos($item, ":") + 1);
             }, $this->org_structure);
