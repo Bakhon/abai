@@ -12,12 +12,29 @@ use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoPlan;
 use App\Models\VisCenter\ImportForms\DZOyear;
+use Illuminate\Support\Facades\Cache;
 
 class DailyReport extends Controller
 {
     private $dailyParams = array();
     private $monthlyParams = array();
-    private $monthlyReasons = array();
+    private $monthlyReasons = array(
+        'КГМ' => [],
+        'ПКК' => [],
+        'УО' => [],
+        'ЭМГ' => [],
+        'ОМГ' => [],
+        'ММГ' => [],
+        'КОА' => [],
+        'КБМ' => [],
+        'АГ' => [],
+        'ТШО' => [],
+        'ТП' => [],
+        'КПО' => [],
+        'ПКИ' => [],
+        'НКО' => [],
+        'КТМ' => []
+    );
     private $yearlyParams = array();
     private $yearlyReasons = array();
     private $yearlyPlans = array();
@@ -133,9 +150,16 @@ class DailyReport extends Controller
         'monthly' => array(),
         'yearly' => array()
     );
+    private $saveTime = 1440;
+    private $nkoFormula = ((1 - 0.019) * 241 / 1428) / 2;
+    private $missedCompanies = [];
 
     public function getDailyProduction(Request $request)
     {
+        $name = 'daily_report_excel_' . Carbon::now()->format('M_d_Y');
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
         $date = Carbon::parse($request->date);
         $daily = $this->getDailyParams($date);
         $monthly = $this->getMonthlyParams($date);
@@ -144,12 +168,15 @@ class DailyReport extends Controller
         $this->processDzoByPeriod($monthly,$this->periodMapping['month'],$request);
         $this->processDzoByPeriod($yearly,$this->periodMapping['year'],$request);
         $this->fillSummary();
-        return [
+        $productionByPeriods = [
             'daily' => $this->dailyParams,
             'monthly' => $this->monthlyParams,
             'yearly' => $this->yearlyParams,
-            'summary' => $this->summary
+            'summary' => $this->summary,
+            'missing' => array_values($this->missedCompanies)
         ];
+        Cache::put($name, $productionByPeriods, $this->saveTime);
+        return $productionByPeriods;
     }
 
     private function getDailyParams($date)
@@ -175,7 +202,16 @@ class DailyReport extends Controller
         $monthStart =  $monthlyDate->copy()->startOf('month');
         $monthlyDiff = $monthStart->diff($monthlyEndPeriod)->days;
 
-        $this->monthlyReasons = $this->getReasonsByPeriod($monthStart,$monthlyEndPeriod,$this->monthlyDecreaseReasonFields);
+        $reasons = $this->getReasonsByPeriod($this->monthlyDecreaseReasonFields,Carbon::yesterday(),'whereDate');
+        $diff = array_diff(array_keys($this->monthlyReasons),array_keys($reasons));
+        if (count($diff) > 0) {
+            $this->missedCompanies = $diff;
+            foreach($diff as $dzo) {
+                $reasons[$dzo] = [];
+            }
+        }
+        $this->monthlyReasons = $reasons;
+
         return array (
             'periodStart' => $monthStart->format('Y-m-d'),
             'periodEnd' => $monthlyEndPeriod->format('Y-m-d'),
@@ -194,7 +230,15 @@ class DailyReport extends Controller
         $yearlyDiff = $yearStart->diff($yearEnd)->days;
 
         $this->yearlyPlans = $this->getYearPlan();
-        $this->yearlyReasons = $this->getReasonsByPeriod($yearStart,$yearEnd,$this->yearlyDecreaseReasonFields);
+        $reasons = $this->getReasonsByPeriod($this->yearlyDecreaseReasonFields,Carbon::yesterday()->subMonth(),'whereMonth');
+        $diff = array_diff(array_keys($this->monthlyReasons),array_keys($reasons));
+        if (count($diff) > 0) {
+            foreach($diff as $dzo) {
+                $reasons[$dzo] = [];
+            }
+        }
+        $this->yearlyReasons = $reasons;
+
         return array (
             'periodStart' => $yearStart->format('Y-m-d'),
             'periodEnd' => $yearEnd->format('Y-m-d'),
@@ -206,11 +250,11 @@ class DailyReport extends Controller
         );
     }
 
-    private function getReasonsByPeriod($start,$end,$fields)
+    private function getReasonsByPeriod($fields,$date,$query)
     {
         $productionParams = DzoImportData::query()
             ->select(['id','dzo_name'])
-            ->whereDate('date',Carbon::yesterday())
+            ->$query('date',$date)
             ->whereNull('is_corrected')
             ->orderBy('date', 'asc')
             ->with('importDecreaseReason')
@@ -234,6 +278,7 @@ class DailyReport extends Controller
                 }
             }
         }
+
         return $formatted;
     }
 
@@ -262,7 +307,11 @@ class DailyReport extends Controller
             if (is_null($multiplier)) {
                 $multiplier = 100;
             }
-            $formatted[$year['dzo']] = $formatted[$year['dzo']] / 100 * $multiplier;
+            if ($year['dzo'] === 'НКО') {
+                $formatted[$year['dzo']] = $formatted[$year['dzo']] * $this->nkoFormula;
+            } else {
+                $formatted[$year['dzo']] = $formatted[$year['dzo']] / 100 * $multiplier;
+            }
         }
         return $formatted;
     }
@@ -293,6 +342,7 @@ class DailyReport extends Controller
                     'plan' => $dzo['plan'],
                     'fact' => $dzo['fact'],
                     'reasons' => array(),
+                    'acronym' => $dzo['name']
                 );
                 if ($dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $dzo['decreaseReasonExplanations'];
@@ -308,6 +358,9 @@ class DailyReport extends Controller
                 }
                 if ($params['periodType'] === 'year' && $dzo['name'] !== 'ОМГК') {
                     $dzoDetails['reasons'] = $this->yearlyReasons[$dzo['name']];
+                }
+                if ($dzo['name'] === 'НКО') {
+                    $dzoDetails['part'] = str_replace('.', ',', $dzoDetails['part']);
                 }
                 array_push($this->$type,$dzoDetails);
             }

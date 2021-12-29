@@ -66,11 +66,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('scenario/get-data', 'EconomicScenarioController@getData');
 
             Route::resource('scenario', 'EconomicScenarioController')
-                ->only(['index', 'store', 'update', 'destroy'])
+                ->only(['index', 'store', 'destroy'])
                 ->names([
                     'index' => 'economic.scenario.index',
                     'store' => 'economic.scenario.store',
-                    'update' => 'economic.scenario.update',
                     'destroy' => 'economic.scenario.destroy',
                 ]);
         });
@@ -247,6 +246,13 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('get-wells-by-granularity', 'EconomicAnalysisController@getWellsByGranularity');
 
             Route::get('get-wells-by-kit', 'EconomicAnalysisController@getWellsByKit');
+        });
+
+        Route::group(['prefix' => 'manufacturing_program'], function () {
+            Route::get('get-data', 'EconomicManufacturingProgramController@getData');
+            Route::get('upload-excel', 'EconomicManufacturingProgramController@uploadExcel');
+            Route::post('import-excel', 'EconomicManufacturingProgramController@importExcel')
+                ->name('economic.manufacturing_program.import');
         });
     });
 });

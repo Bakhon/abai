@@ -405,6 +405,7 @@ export default {
                     this.dt = "01" + "." + month + "." + year;
                 }
                 this.isPermission = this.params.includes(this.permissionName);
+                
             });
         this.pageInfo(this.pageNumberLink);
         this.getFilter();
@@ -624,7 +625,7 @@ export default {
                 this.isShowSecond = true;
                 this.$store.commit("tr/SET_MONTH", this.currentMonth);
                 this.$store.commit("tr/SET_YEAR", this.currentYear);
-                this.chooseDate();
+                this.axiosEdit();
             })
             .catch((error) => {
                 console.log(error.data);

@@ -100,11 +100,6 @@ abstract class BaseForm
         );
     }
 
-    public function getConfigFilePath()
-    {
-        return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
-    }
-
     protected function getFormatedParams(): array
     {
         return $this->params();
@@ -119,8 +114,28 @@ abstract class BaseForm
         $params = json_decode(file_get_contents($jsonFile));
         $this->validateParams($params);
 
-        $params = json_decode(json_encode($params), true);
+        $params = $this->filterParams(json_decode(json_encode($params), true));
         return $this->localizeParams($params);
+    }
+
+    public function getConfigFilePath()
+    {
+        return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+    }
+
+    private function validateParams(\stdClass $params)
+    {
+        $validator = new \JsonSchema\Validator();
+        $schemaFilePath = 'file://' . resource_path('params/bd/forms/schema/') . $this->jsonValidationSchemeFileName;
+
+        $validator->validate($params, (object)['$ref' => $schemaFilePath]);
+
+        if (!$validator->isValid()) {
+            foreach ($validator->getErrors() as $error) {
+                $errors[] = sprintf("[%s] %s\n", $error['property'], $error['message']);
+            }
+            throw new ParseJsonException(implode('<br>', $errors));
+        }
     }
 
     protected function getCustomValidationErrors(string $field = null): array
@@ -205,21 +220,6 @@ abstract class BaseForm
             }
         }
         return $params;
-    }
-
-    private function validateParams($params)
-    {
-        $validator = new \JsonSchema\Validator();
-        $schemaFilePath = 'file://' . resource_path('params/bd/forms/schema/') . $this->jsonValidationSchemeFileName;
-
-        $validator->validate($params, (object)['$ref' => $schemaFilePath]);
-
-        if (!$validator->isValid()) {
-            foreach ($validator->getErrors() as $error) {
-                $errors[] = sprintf("[%s] %s\n", $error['property'], $error['message']);
-            }
-            throw new ParseJsonException(implode('<br>', $errors));
-        }
     }
 
     public function getFormParamsToEdit(array $params)

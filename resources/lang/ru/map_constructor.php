@@ -119,4 +119,5 @@ return array (
   'isolines_count' => 'Количество изолиний',
   'interpolation' => 'Интерполяция',
   'map_constructor' => 'Картопостроитель',
+  'not_empty_map' => 'Карта уже добавлена',
 );

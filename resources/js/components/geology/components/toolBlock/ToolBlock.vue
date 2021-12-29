@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-block">
+  <div :class="getClasses">
     <div class="tool-block__header" v-if="$scopedSlots['header']||title">
       <slot name="header">
         <h5>{{ title }}</h5>
@@ -26,7 +26,16 @@
 export default {
   name: "ToolBlock",
   props: {
-    title: [String, Number]
+    title: [String, Number],
+    color: String
+  },
+  computed:{
+    getClasses() {
+      return {
+        ['tool-block']: true,
+        [this.color]: true
+      };
+    }
   }
 }
 </script>
@@ -87,5 +96,29 @@ export default {
     color: #ffffff;
   }
 
+  $parent: &;
+  &.danger{
+    #{$parent}__header{
+      background: var(--a-danger);
+    }
+    #{$parent}__body{
+      background: #dcbaba;
+      color: var(--a-danger);
+      font-size: 13px;
+    }
+  }
+  &.warning{
+    #{$parent}__header{
+      background: #ffcc00;
+      h5{
+        color: #323232;
+      }
+    }
+    #{$parent}__body{
+      background: #fff2c0;
+      color: #323232;
+      font-size: 13px;
+    }
+  }
 }
 </style>

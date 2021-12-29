@@ -53,9 +53,14 @@ $colorsArray: (
         accent-400: ($accent-400, white),
 );
 
+@function HexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+
 :root {
   @each $key, $btnColor in $colorsArray {
     --a-#{""+$key}: #{nth($btnColor, 1)};
+    --a-#{""+$key}-rgb: #{HexToRGB(nth($btnColor,1))};
   }
 }
 

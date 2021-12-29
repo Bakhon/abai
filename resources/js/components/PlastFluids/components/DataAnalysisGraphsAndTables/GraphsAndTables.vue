@@ -33,6 +33,9 @@
               :title="trans(`plast_fluids.${graphType}_graph_${graph.key}`)"
               :graphType="graph.key"
               :currentGraphs="sortedCurrentGraphics"
+              :defaultIntersection="
+                defaultIntersection[graph.key.toLowerCase()]
+              "
             />
           </div>
         </div>
@@ -86,6 +89,7 @@ export default {
       "loading",
       "graphType",
       "currentGraphics",
+      "defaultIntersection",
       "currentBlocks",
     ]),
     graphData() {
@@ -108,15 +112,21 @@ export default {
           minY: zeroY.includes(keys[i]) ? 0 : keys[i] === "Bs" ? 1 : "auto",
           maxY: "auto",
         };
+        const conf = this.getFloatNumber(keys[i]);
+        allGraphData[keys[i]].config = {
+          ...allGraphData[keys[i]].config,
+          ...conf,
+        };
       }
       const fKeys = Object.keys(allGraphData);
       this.tableRows.forEach((row) => {
         for (let i = 0; i < fKeys.length; i++) {
-          const sample = row[fKeys[i]];
+          const sample = { wellName: row.table_data[4], ...row[fKeys[i]] };
           if (sample.x2) {
             allGraphData[fKeys[i]].data2.push({
               x: sample.x2,
               y: sample.y,
+              wellName: sample.wellName,
               key: sample.key,
             });
           }
@@ -167,6 +177,34 @@ export default {
       "handleAnalysisTableData",
       "handleBlocksFilter",
     ]),
+    getFloatNumber(key) {
+      const config = {
+        x: 1,
+        y: 1,
+      };
+      switch (this.graphType) {
+        case "ps_bs_ds_ms":
+          config.y =
+            key === "Ps"
+              ? 2
+              : key === "Bs"
+              ? 3
+              : key === "Ds"
+              ? 1
+              : key === "Ms"
+              ? 0.3
+              : 1;
+          break;
+        case "data_rs_ps_ds":
+          config.x = "remain";
+          config.y = key === "Ps" ? 2 : key === "Ms" ? 0.3 : 1;
+          break;
+        case "all_depth":
+          config.x = key === "pi_ps" ? 2 : key === "volume_coefficient" ? 3 : 1;
+          break;
+      }
+      return config;
+    },
   },
   async mounted() {
     if (this.currentSubsoilField[0]?.field_id) {

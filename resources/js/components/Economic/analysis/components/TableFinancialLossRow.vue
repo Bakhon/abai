@@ -15,7 +15,7 @@
          :class="header.styleClass"
          :style="`${row.style || ''}; ${row.values[headerIndex].style || ''}`"
          class="p-1 border-grey flex-95px d-flex align-items-center justify-content-center">
-      {{ localeValue(row.values[headerIndex].value, header.dimension, false, 0) }}
+      {{ localeValue(row.values[headerIndex].value, header.dimension, false, 2) }}
     </div>
   </div>
 </template>

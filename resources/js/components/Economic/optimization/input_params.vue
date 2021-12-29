@@ -53,6 +53,32 @@
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
+      <div class="d-flex align-items-center">
+        <h4 class="text-secondary cursor-pointer mb-0 flex-grow-1"
+            @click="isVisibleManufacturingTable = !isVisibleManufacturingTable">
+          {{ trans('economic_reference.manufacturing_program') }}
+        </h4>
+
+        <a :href="localeUrl(`/economic/log?type_id=${EconomicDataLogTypeModel.MANUFACTURING_PROGRAM}`)"
+           target="_blank"
+           class="text-decoration-none text-primary mr-3">
+          {{ trans('economic_reference.delete_wrong_uploaded_data') }}
+        </a>
+
+        <a :href="localeUrl('/economic/manufacturing_program/upload-excel')"
+           target="_blank"
+           class="text-decoration-none text-primary">
+          {{ trans('economic_reference.upload') }}
+          <i class="fas fa-external-link-alt text-primary ml-1"></i>
+        </a>
+      </div>
+
+      <table-manufacturing-program
+          v-if="isVisibleManufacturingTable"
+          class="mt-3"/>
+    </div>
+
+    <div class="container p-4 mb-3 bg-light max-width-90vw">
       <a :href="localeUrl('/economic/gtm')"
          target="_blank"
          class="text-decoration-none">
@@ -94,6 +120,7 @@ import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 import TableCosts from "./components/input/TableCosts";
 import TableTechnicalDataForecast from "./components/input/TableTechnicalDataForecast";
 import TableScenario from "./components/input/TableScenario";
+import TableManufacturingProgram from "./components/input/TableManufacturingProgram";
 import ScenarioForm from "./components/input/ScenarioForm";
 
 export default {
@@ -102,12 +129,14 @@ export default {
     TableCosts,
     TableTechnicalDataForecast,
     TableScenario,
+    TableManufacturingProgram,
     ScenarioForm,
   },
   data: () => ({
     EconomicDataLogTypeModel,
     isVisibleEconomicTable: false,
     isVisibleTechTable: false,
+    isVisibleManufacturingTable: false,
     isVisibleScenarioTable: false,
     isVisibleScenarioForm: false,
   }),

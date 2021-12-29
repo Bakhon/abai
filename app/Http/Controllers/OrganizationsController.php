@@ -23,7 +23,7 @@ class OrganizationsController extends Controller
         $onlyMain = (bool)$request->get('only_main');
         if ($onlyMain) {
             return response()->json([
-                'organizations' => auth()->user()->getUserOrganizations($structureService)
+                'organizations' => auth()->user()->getUserOrganizations()
             ]);
         }
         return response()->json([

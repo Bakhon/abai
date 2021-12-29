@@ -121,6 +121,8 @@ class EconomicScenarioJob implements ShouldQueue
 
     public function handle()
     {
+        ini_set('max_execution_time', $this->timeout);
+
         $scenario = EcoRefsScenario::find($this->scenarioId);
 
         if (!$scenario) return;

@@ -151,7 +151,6 @@
                                             <tr>
                                                 <th
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
                                                     {{dayNumber}}
                                                 </th>
@@ -164,7 +163,8 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].liq,
+                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].workHours,
+                                                            periodItem.params.monthlyData[dayNumber-1].liq,
                                                             periodItem.params.techMode[0],
                                                             dayNumber,periodItem.params.activity)"
                                                 >
@@ -180,7 +180,8 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].liqCut,
+                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].workHours,
+                                                                periodItem.params.monthlyData[dayNumber-1].liqCut,
                                                                 periodItem.params.techMode[1],
                                                                 dayNumber,periodItem.params.activity,true)"
                                                 >
@@ -196,7 +197,8 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].oil,
+                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].workHours,
+                                                                periodItem.params.monthlyData[dayNumber-1].oil,
                                                                 periodItem.params.techMode[2],
                                                                 dayNumber,periodItem.params.activity)"
                                                 >
@@ -212,9 +214,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].hdin,
-                                                                periodItem.params.techMode[6],
-                                                                dayNumber,periodItem.params.activity)"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].hdin.toFixed(1))}}
                                                 </td>
@@ -228,7 +228,6 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
                                                     &nbsp;
                                                 </td>
@@ -256,7 +255,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     &nbsp;
                                                 </td>
@@ -270,9 +269,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="getColorByCell(periodItem.params.monthlyData[dayNumber-1].gas,
-                                                                periodItem.params.techMode[16],
-                                                                dayNumber,periodItem.params.activity)"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gas.toFixed(1))}}
                                                 </td>
@@ -286,7 +283,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     &nbsp;
                                                 </td>
@@ -300,7 +297,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                      {{formatNumber(periodItem.params.monthlyData[dayNumber-1].gaz_factor.toFixed(1))}}
                                                 </td>
@@ -315,7 +312,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pbuf.toFixed(1))}}
                                                 </td>
@@ -329,7 +326,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pzat.toFixed(1))}}
                                                 </td>
@@ -343,7 +340,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].p_line.toFixed(1))}}
                                                 </td>
@@ -357,7 +354,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].temp_head.toFixed(1))}}
                                                 </td>
@@ -371,7 +368,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_current.toFixed(1))}}
                                                 </td>
@@ -385,7 +382,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_freq.toFixed(1))}}
                                                 </td>
@@ -399,7 +396,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                    {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_efficiency.toFixed(1))}}
                                                 </td>
@@ -413,7 +410,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_temp.toFixed(1))}}
                                                 </td>
@@ -427,7 +424,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_intk_press.toFixed(1))}}
                                                 </td>
@@ -441,7 +438,7 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
+                                                        :class="periodItem.params.monthlyData[dayNumber-1].workHours == 0 ? 'background__red' : ''"
                                                 >
                                                     {{formatNumber(periodItem.params.monthlyData[dayNumber-1].pump_stroke.toFixed(1))}}
                                                     /
@@ -457,7 +454,6 @@
                                                 <td
                                                         v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                                         v-if="periodItem.params.monthlyData[dayNumber-1]"
-                                                        :class="isWellStopped(dayNumber,periodItem.params.activity) ? 'background__red' : ''"
                                                 >
                                                     &nbsp;
                                                 </td>
@@ -800,9 +796,9 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        getColorByCell(currentValue,techMode,dayNumber,activity,isLiqCut) {
-            if (this.isWellStopped(dayNumber,activity)) {
-                return 'background__red';
+        getColorByCell(workHour, currentValue,techMode,dayNumber,activity,isLiqCut) {
+            if(this.isWellStop(workHour)){
+                return 'background__red'; 
             }
             if (isLiqCut && techMode && this.isTechModeLess(currentValue,techMode)) {
                 return 'background__yellow';
@@ -810,6 +806,12 @@ export default {
                 return 'background__yellow';
             }
             return '';
+        },
+        isWellStop(workHour){
+            if(workHour == 0){
+                return true;
+            }
+            return false;
         },
         isWellStopped(dayNumber,activity) {
             let startDay = 0;

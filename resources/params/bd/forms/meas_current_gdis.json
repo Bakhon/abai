@@ -83,6 +83,38 @@
       "is_editable": true
     },
     {
+      "title": "pint",
+      "code": "pint",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PINT"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "pfll",
+      "code": "pfll",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PFLL"
+          }
+        }
+      },
+      "table":"prod.gdis_current_value",
+      "type": "float",
+      "is_editable": true
+    },
+    {
       "title": "conclusion",
       "code": "conclusion",
       "type": "dict",

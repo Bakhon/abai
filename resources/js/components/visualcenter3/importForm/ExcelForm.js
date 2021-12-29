@@ -638,6 +638,9 @@ export default {
             }
 
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
+            if (this.category.isArchieveActive) {
+                isMonthlyPlanAbnormal = monthlyFact < monthlyPlan;
+            }
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 for (let i=1;i<6;i++) {
@@ -684,9 +687,8 @@ export default {
             _.forEach(fields, (field) => {
                sum += this.excelData['decreaseReason'][field];
             });
-            let min = difference + 5;
+            let min = difference - 5;
             let max = difference + 5;
-
             return sum >= min && sum <= max;
         },
         getFormattedNumberByThousand(num) {
