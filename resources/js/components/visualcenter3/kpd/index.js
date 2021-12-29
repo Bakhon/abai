@@ -183,7 +183,7 @@ export default {
             this.fillKpdList(this.deputy);
             this.fillKpdList(this.corporateManager,'corporate');
             this.SET_LOADING(false);
-        }
+        },
     },
     async mounted() {
         await this.updateData();

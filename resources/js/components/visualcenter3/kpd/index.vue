@@ -206,7 +206,7 @@
             <kpd-modal-documents></kpd-modal-documents>
             <kpd-modal-catalog :managers="managers" :deputy="deputy" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
             <kpd-modal-monitoring :manager-info="selectedManager" ref="kpdMonitoring" :manager-type="managerType"></kpd-modal-monitoring>
-            <modal-settings :corporate-manager="corporateManager[0]"></modal-settings>
+            <modal-settings :corporate-manager="corporateManager[0]" @update-required="updateData"></modal-settings>
             <modal-corporate-manager :corporate-manager="corporateManager[0]"></modal-corporate-manager>
             <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager[0]" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
         </div>
