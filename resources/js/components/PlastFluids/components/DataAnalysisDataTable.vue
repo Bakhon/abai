@@ -9,7 +9,9 @@
           <img :src="imagePath" />
           <p>{{ trans("plast_fluids." + tableTitle) }}</p>
         </div>
-        <img src="/img/PlastFluids/settings.svg" alt="customize table" />
+        <button @click.stop="isOpenModal = true" class="table-customize-button">
+          <img src="/img/PlastFluids/settings.svg" alt="customize table" />
+        </button>
       </div>
       <div class="header-hide-expand-buttons">
         <button @click="SET_TABLE_STATE('default')">
@@ -26,8 +28,8 @@
       <SmallCatLoader v-if="loading" :loading="loading" />
       <BaseTable
         v-else
-        :fields="fields"
-        :items="items"
+        :fields="activeFields"
+        :items="activeItems"
         tableType="analysis"
         :sticky="true"
         :currentSelectedRow="handleRowSelectState"
@@ -35,12 +37,21 @@
         :currentRoute="reservoilOilInfo[1]"
       />
     </div>
+    <Modal
+      v-show="isOpenModal"
+      :checkedFields="analysisTableActiveColumns"
+      :fields="fields"
+      :templateName="trans('plast_fluids.' + tableTitle)"
+      @send-active-columns="handleTableActiveColumnsChange"
+      @close-modal="isOpenModal = false"
+    />
   </div>
 </template>
 
 <script>
 import BaseTable from "./BaseTable.vue";
 import SmallCatLoader from "./SmallCatLoader.vue";
+import Modal from "./DataAnalysisDataTableModal.vue";
 import { mapState, mapMutations } from "vuex";
 
 export default {
@@ -51,12 +62,21 @@ export default {
     items: [Array, Object],
     fields: [Array, Object],
   },
+  data() {
+    return {
+      isOpenModal: false,
+      activeFields: [],
+      activeItems: [],
+    };
+  },
   inject: { reservoilOilInfo: { default: "template" } },
   components: {
     BaseTable,
     SmallCatLoader,
+    Modal,
   },
   computed: {
+    ...mapState("plastFluids", ["analysisTableActiveColumns"]),
     ...mapState("plastFluidsLocal", [
       "loading",
       "tableState",
@@ -78,6 +98,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("plastFluids", ["SET_ANALYSIS_ACTIVE_COLUMNS"]),
     ...mapMutations("plastFluidsLocal", [
       "SET_TABLE_STATE",
       "SET_CURRENT_SELECTED_SAMPLES",
@@ -98,6 +119,29 @@ export default {
           break;
       }
     },
+    handleTableActiveColumnsChange(activeColumns) {
+      if (activeColumns.length) {
+        this.SET_ANALYSIS_ACTIVE_COLUMNS(activeColumns);
+        const sortedActiveColumns = [...activeColumns].sort(
+          (a, b) => a - b
+        );
+        this.activeFields = sortedActiveColumns.map(
+          (activeColumnIndex) => this.fields[activeColumnIndex]
+        );
+        this.activeItems = this.items.map((item) => {
+          const tableData = sortedActiveColumns.map(
+            (activeColumnIndex) => item.table_data[activeColumnIndex]
+          );
+          return { ...item, table_data: tableData };
+        });
+      } else {
+        this.activeFields = this.fields;
+        this.activeItems = this.items;
+      }
+    },
+  },
+  mounted() {
+    this.handleTableActiveColumnsChange(this.analysisTableActiveColumns);
   },
 };
 </script>
@@ -132,6 +176,17 @@ export default {
   justify-content: space-between;
   border: 1px solid #545580;
   padding: 0 11px;
+}
+
+.table-customize-button {
+  border: none;
+  background-color: unset;
+  width: 18px;
+  height: 18px;
+}
+
+.table-customize-button > img {
+  vertical-align: unset;
 }
 
 .title-holder {

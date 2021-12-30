@@ -2,8 +2,10 @@ const DataAnalysisPressureAndTemperature = () =>
   import("./components/DataAnalysisPressureAndTemperature.vue");
 const DataAnalysisApprovedParameters = () =>
   import("./components/DataAnalysisApprovedParameters.vue");
-const DataAnalysisStudySideMenu = () => import("./components/DataAnalysisStudy/LeftMenu.vue");
-const DataAnalysisStudy = () => import("./components/DataAnalysisStudy/DataAnalysisStudy.vue");
+const DataAnalysisStudySideMenu = () =>
+  import("./components/DataAnalysisStudy/LeftMenu.vue");
+const DataAnalysisStudy = () =>
+  import("./components/DataAnalysisStudy/DataAnalysisStudy.vue");
 const DataAnalysisMapsAndTablesSideMenu = () =>
   import("./components/DataAnalysisMapsAndTables/LeftMenu.vue");
 const DataAnalysisMapsAndTables = () =>
@@ -14,10 +16,12 @@ const DataAnalysisGraphsAndTablesSideMenu = () =>
   import("./components/DataAnalysisGraphsAndTables/LeftMenu.vue");
 const DataAnalysisGraphsAndTables = () =>
   import("./components/DataAnalysisGraphsAndTables/GraphsAndTables.vue");
-  const DataAnalysisFluidCompositionSideMenu = () =>
+const DataAnalysisFluidCompositionSideMenu = () =>
   import("./components/DataAnalysisFluidComposition/LeftMenu.vue");
 const DataAnalysisFluidComposition = () =>
-  import("./components/DataAnalysisFluidComposition/DataAnalysisFluidComposition.vue");
+  import(
+    "./components/DataAnalysisFluidComposition/DataAnalysisFluidComposition.vue"
+  );
 const DataAnalysisGasCondensateStudies = () =>
   import("./components/DataAnalysisGasCondensateStudies.vue");
 
@@ -69,4 +73,31 @@ const setDynamicComponentContent = {
   },
 };
 
-export { setDynamicComponentContent };
+const DataTableModalWidthCalculator = {
+  props: {
+    templateName: String,
+    fields: Array,
+    checkedFields: Array,
+  },
+  computed: {
+    multiplier() {
+      const fValue = this.fields.length / 14;
+      return Number(Math.ceil(fValue));
+    },
+    mainContentWidth() {
+      const width = this.fields.length <= 14 ? 440 : 200 * this.multiplier + 40;
+      return width + "px";
+    },
+    fieldWidth() {
+      const width = this.fields.length <= 14 ? 400 : 200;
+      return width + "px";
+    },
+  },
+  methods: {
+    emitClose() {
+      this.$emit("close-modal");
+    },
+  },
+};
+
+export { setDynamicComponentContent, DataTableModalWidthCalculator };

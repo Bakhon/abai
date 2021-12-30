@@ -28,8 +28,8 @@
     <DataAnalysisDataTable
       imagePath="/img/PlastFluids/sampleDataIcon.png"
       tableTitle="sample_data"
-      :fields="tableFields"
-      :items="tableRows"
+      :fields="analysisTableFields"
+      :items="analysisTableRows"
     />
   </div>
 </template>
@@ -57,13 +57,10 @@ export default {
     ...mapState("plastFluids", [
       "currentSubsoilField",
       "currentSubsoilHorizon",
+      "analysisTableFields",
+      "analysisTableRows",
     ]),
-    ...mapState("plastFluidsLocal", [
-      "tableFields",
-      "tableRows",
-      "tableState",
-      "currentModel",
-    ]),
+    ...mapState("plastFluidsLocal", ["tableState", "currentModel"]),
   },
   watch: {
     currentSubsoilField: {
@@ -88,10 +85,7 @@ export default {
   },
   methods: {
     ...mapMutations("plastFluidsLocal", ["SET_MODELS", "SET_CURRENT_MODEL"]),
-    ...mapActions("plastFluidsLocal", [
-      "handleAnalysisTableData",
-      "handleBlocksFilter",
-    ]),
+    ...mapActions("plastFluids", ["handleAnalysisTableData"]),
     async getHorizonModels(horizons) {
       const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
       const data = await getModels(horizonIDs);
@@ -110,7 +104,6 @@ export default {
         field_id: this.currentSubsoilField[0].field_id,
         postUrl: "map/isogyps-wells-table",
       });
-      this.handleBlocksFilter(this.currentSubsoilHorizon);
       if (this.currentSubsoilHorizon.length)
         this.getHorizonModels(this.currentSubsoilHorizon);
     }

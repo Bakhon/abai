@@ -6,9 +6,10 @@
       v-model.number="computedInputData"
       :id="'approximation-' + labelTransKey"
     />
-    <label :for="'approximation-' + labelTransKey">{{
-      trans(`plast_fluids.${labelTransKey}`)
-    }}</label>
+    <label
+      :for="'approximation-' + labelTransKey"
+      v-html="trans(`plast_fluids.${labelTransKey}`)"
+    ></label>
   </div>
 </template>
 

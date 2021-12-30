@@ -3,7 +3,6 @@ import {
   getTemplateData,
   getUploadTemplates,
 } from "../../components/PlastFluids/services/templateService";
-import { getTableData } from "../../components/PlastFluids/services/mapService";
 import {
   convertToFormData,
   convertTemplateData,
@@ -30,9 +29,6 @@ const plastFluidsLocal = {
       { key: "Ms", order: 3 },
     ],
     defaultIntersection: {},
-    localHorizons: [],
-    blocks: [],
-    currentBlocks: [],
     currentSelectedCorrelation_ps: "",
     currentSelectedCorrelation_bs: "",
     currentSelectedCorrelation_ms: "",
@@ -84,15 +80,6 @@ const plastFluidsLocal = {
     },
     SET_DEFAULT_INTERSECTION(state, payload) {
       state.defaultIntersection = payload;
-    },
-    SET_LOCAL_HORIZONS(state, payload) {
-      state.localHorizons = payload;
-    },
-    SET_BLOCKS(state, payload) {
-      state.blocks = payload;
-    },
-    SET_CURRENT_BLOCKS(state, payload) {
-      state.currentBlocks = payload;
     },
     SET_CURRENT_CORRELATION_PS(state, payload) {
       state.currentSelectedCorrelation_ps = payload;
@@ -183,7 +170,7 @@ const plastFluidsLocal = {
       );
       commit("SET_CURRENT_TEMPLATE", template);
     },
-    async handleTableData({ state, rootState, commit, dispatch }, incomeData) {
+    async handleTableData({ rootState, commit, dispatch }, incomeData) {
       try {
         const { template, type, ...rest } = incomeData;
         commit("SET_LOADING", true);
@@ -194,8 +181,10 @@ const plastFluidsLocal = {
             horizonIDs = rootState.plastFluids.currentSubsoilHorizon.map(
               (horizon) => horizon.horizon_id
             );
-          if (state.currentBlocks.length)
-            blockIDs = state.currentBlocks.map((block) => block.block_id);
+          if (rootState.plastFluids.currentBlocks.length)
+            blockIDs = rootState.plastFluids.currentBlocks.map(
+              (block) => block.block_id
+            );
         }
         const postDataMock = {
           field_id: rootState.plastFluids.currentSubsoilField[0].field_id,
@@ -215,58 +204,6 @@ const plastFluidsLocal = {
       } finally {
         commit("SET_LOADING", false);
       }
-    },
-    async handleAnalysisTableData({ commit, state, rootState }, dataToPost) {
-      const { postUrl, ...rest } = dataToPost;
-      try {
-        commit("SET_LOADING", true);
-        const horizons = rootState.plastFluids.currentSubsoilHorizon;
-        let horizonIDs, blockIDs;
-        if (horizons.length)
-          horizonIDs = horizons.map((horizon) => horizon.horizon_id);
-
-        if (state.currentBlocks.length)
-          blockIDs = state.currentBlocks.map((block) => block.block_id);
-
-        const postDataMock = {
-          horizons: horizons.length ? horizonIDs : "None",
-          blocks: state.currentBlocks.length ? blockIDs : "None",
-          vid_fluid: "None",
-          data_start: "None",
-          data_end: "None",
-          graph_type: state.graphType,
-        };
-        let merged = { ...postDataMock, ...rest };
-        const postData = convertToFormData(merged);
-        const data = await getTableData(postData, postUrl);
-        if (Array.isArray(data)) {
-          commit("SET_TABLE_FIELDS", data[0].table_header);
-          commit("SET_LOCAL_HORIZONS", data[1].filter_data);
-          if (state.graphType === "ps_bs_ds_ms") {
-            commit("SET_DEFAULT_INTERSECTION", data[2].intersection);
-            commit("SET_TABLE_ROWS", data.slice(3));
-            return;
-          }
-          commit("SET_TABLE_ROWS", data.slice(2));
-        } else {
-          commit("SET_TABLE_FIELDS", data.header);
-          commit("SET_LOCAL_HORIZONS", data.filter_data);
-          commit("SET_TABLE_ROWS", data.table);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        commit("SET_LOADING", false);
-      }
-    },
-    handleBlocksFilter({ commit, state }, horizons) {
-      const blocks = horizons.reduce((prev, horizon) => {
-        let found = state.localHorizons.find(
-          (lhorizon) => horizon.horizon_id === lhorizon.horizon_id
-        );
-        return found ? prev.concat(found.blocks) : prev;
-      }, []);
-      commit("SET_BLOCKS", blocks);
     },
   },
 };

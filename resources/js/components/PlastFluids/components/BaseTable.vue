@@ -11,6 +11,13 @@
           <thead>
             <tr>
               <th
+                v-if="tableType === 'upload'"
+                style="padding: 13px 10px 13px 22px"
+                :style="sticky ? 'position: sticky; top: -1px;' : ''"
+              >
+                {{ trans("plast_fluids.actions") }}
+              </th>
+              <th
                 v-for="(heading, index) in fields"
                 :key="index"
                 :style="sticky ? 'position: sticky; top: -1px;' : ''"
@@ -46,21 +53,11 @@
                 </div>
                 <p v-else>{{ isObjectArray ? heading.name : heading }}</p>
               </th>
-              <th
-                v-if="tableType === 'upload'"
-                style="padding: 13px 10px 13px 22px"
-                :style="sticky ? 'position: sticky; top: -1px;' : ''"
-              >
-                {{ trans("plast_fluids.actions") }}
-              </th>
             </tr>
           </thead>
           <tbody ref="tableBody">
             <template v-if="isObjectArray">
               <tr v-for="item in items" :key="item.id">
-                <td v-for="fieldKey in fieldKeys" :key="fieldKey">
-                  {{ item[fieldKey] }}
-                </td>
                 <td v-if="tableType === 'upload'">
                   <button @click="handleReportDownload(item)">
                     <img
@@ -69,6 +66,9 @@
                     />
                     <p>{{ trans("plast_fluids.download") }}</p>
                   </button>
+                </td>
+                <td v-for="fieldKey in fieldKeys" :key="fieldKey">
+                  {{ item[fieldKey] }}
                 </td>
               </tr>
             </template>

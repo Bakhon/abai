@@ -44,8 +44,8 @@
       <DataAnalysisDataTable
         imagePath="/img/PlastFluids/tableIcon.svg"
         tableTitle="sampling_quality_table"
-        :items="tableRows"
-        :fields="tableFields"
+        :items="analysisTableRows"
+        :fields="analysisTableFields"
       />
     </template>
     <p v-else>{{ trans("plast_fluids.no_field_selected") }}</p>
@@ -81,21 +81,21 @@ export default {
       "currentSubsoil",
       "currentSubsoilField",
       "currentSubsoilHorizon",
+      "currentBlocks",
+      "analysisTableFields",
+      "analysisTableRows",
     ]),
     ...mapState("plastFluidsLocal", [
-      "tableFields",
-      "tableRows",
       "tableState",
-      "loading",
       "graphType",
+      "loading",
       "currentGraphics",
       "defaultIntersection",
-      "currentBlocks",
     ]),
     graphData() {
       const zeroX = ["Ps", "Bs", "Ds", "Ms"];
       const zeroY = ["Ps", "Rs"];
-      const keys = Object.keys(this.tableRows[0] ?? "");
+      const keys = Object.keys(this.analysisTableRows[0] ?? "");
       let allGraphData = {};
       for (let i = 0; i < keys.length; i++) {
         if (keys[i] === "key" || keys[i] === "table_data") {
@@ -119,7 +119,7 @@ export default {
         };
       }
       const fKeys = Object.keys(allGraphData);
-      this.tableRows.forEach((row) => {
+      this.analysisTableRows.forEach((row) => {
         for (let i = 0; i < fKeys.length; i++) {
           const sample = { wellName: row.table_data[4], ...row[fKeys[i]] };
           if (sample.x2) {
@@ -158,8 +158,7 @@ export default {
       },
       deep: true,
     },
-    currentSubsoilHorizon(value) {
-      this.handleBlocksFilter(value);
+    currentSubsoilHorizon() {
       this.handleAnalysisTableData({
         field_id: this.currentSubsoilField[0].field_id,
         postUrl: "analytics/pvt-data-analysis",
@@ -173,10 +172,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("plastFluidsLocal", [
-      "handleAnalysisTableData",
-      "handleBlocksFilter",
-    ]),
+    ...mapActions("plastFluids", ["handleAnalysisTableData"]),
     getFloatNumber(key) {
       const config = {
         x: 1,
@@ -212,7 +208,6 @@ export default {
         field_id: this.currentSubsoilField[0].field_id,
         postUrl: "analytics/pvt-data-analysis",
       });
-      this.handleBlocksFilter(this.currentSubsoilHorizon);
     }
   },
 };

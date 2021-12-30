@@ -52,9 +52,9 @@ export default {
     ...mapState("plastFluids", [
       "currentSubsoilField",
       "currentSubsoilHorizon",
+      "currentBlocks",
     ]),
     ...mapState("plastFluidsLocal", [
-      "currentBlocks",
       "currentModel",
       "depthMultiplier",
       "isIsohypsShown",
