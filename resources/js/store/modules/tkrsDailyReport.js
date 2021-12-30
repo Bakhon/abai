@@ -89,38 +89,40 @@ const tkrsDailyReport = {
   
     actions: {
         getSelectedtWellFile({commit, state}, { well_name, well_date }) {
-        axios
-            .get(
-              process.env.MIX_TKRS_POST_API_URL + `drHeaderWorkReport/${well_name}/${well_date}/`,
-                
-            )
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                  commit("SET_AREACHARTDATA", data.data);
-                  commit("SET_CONTRACTORNAME", data.data.header.contractor_name);
-                  commit("SET_REPORTNUMBER", data.data.header.report_number);
-                  commit("SET_MACHINETYPE", data.data.header.machine_type);
-                  commit("SET_FIELDNAME", data.data.header.field_name);
-                  commit("SET_WELLTYPE", data.data.header.well_type);
-                  commit("SET_WELLNAME", data.data.header.well_name);
-                  commit("SET_PROGRAMMESTARGETNAME", data.data.header.programmes_target_name);
-                  commit("SET_CHIEF", data.data.works_report.chief);
-                  commit("SET_MASTERDAYSHIFT", data.data.works_report.master_day_shift);
-                  commit("SET_MASTERDAYSHIFTNUMBER", data.data.works_report.master_day_shift_number);
-                  commit("SET_MASTERNIGHTSHIFT", data.data.works_report.master_night_shift);
-                  commit("SET_MASTERNIGHTSHIFTNUMBER", data.data.works_report.master_night_shift_number);
-                  commit("SET_WORKSREPORTRANGE", data.data.works_report_range);
-                  commit("SET_STARTDRILL", data.data.header.start_drill);
-                  commit("SET_ENDDRILL", data.data.header.end_drill);
-                  commit("SET_ALLDAYHOURWORKS", data.data.all_day_hour_works.all_day_hour_works);
-                  commit("SET_CURRHOURWORKS", data.data.all_day_hour_works.curr_hour_works);
-                  commit("SET_PREVHOURWORKS", data.data.all_day_hour_works.prev_hour_works);
-                  commit("SET_PARAMETERS", data.data.parameters);
-                } else {
-                    console.log("No data");
-                }
-            });
+          commit('globalloading/SET_LOADING', true, { root: true })
+            axios
+                .get(
+                  process.env.MIX_TKRS_POST_API_URL + `drHeaderWorkReport/${well_name}/${well_date}/`,
+                    
+                )
+                .then((response) => {
+                  commit('globalloading/SET_LOADING', false, { root: true })
+                    let data = response.data;
+                    if (data) {
+                      commit("SET_AREACHARTDATA", data.data);
+                      commit("SET_CONTRACTORNAME", data.data.header.contractor_name);
+                      commit("SET_REPORTNUMBER", data.data.header.report_number);
+                      commit("SET_MACHINETYPE", data.data.header.machine_type);
+                      commit("SET_FIELDNAME", data.data.header.field_name);
+                      commit("SET_WELLTYPE", data.data.header.well_type);
+                      commit("SET_WELLNAME", data.data.header.well_name);
+                      commit("SET_PROGRAMMESTARGETNAME", data.data.header.programmes_target_name);
+                      commit("SET_CHIEF", data.data.works_report.chief);
+                      commit("SET_MASTERDAYSHIFT", data.data.works_report.master_day_shift);
+                      commit("SET_MASTERDAYSHIFTNUMBER", data.data.works_report.master_day_shift_number);
+                      commit("SET_MASTERNIGHTSHIFT", data.data.works_report.master_night_shift);
+                      commit("SET_MASTERNIGHTSHIFTNUMBER", data.data.works_report.master_night_shift_number);
+                      commit("SET_WORKSREPORTRANGE", data.data.works_report_range);
+                      commit("SET_STARTDRILL", data.data.header.start_drill);
+                      commit("SET_ENDDRILL", data.data.header.end_drill);
+                      commit("SET_ALLDAYHOURWORKS", data.data.all_day_hour_works.all_day_hour_works);
+                      commit("SET_CURRHOURWORKS", data.data.all_day_hour_works.curr_hour_works);
+                      commit("SET_PREVHOURWORKS", data.data.all_day_hour_works.prev_hour_works);
+                      commit("SET_PARAMETERS", data.data.parameters);
+                    } else {
+                        console.log("No data");
+                    }
+                });
       },
     },
   };

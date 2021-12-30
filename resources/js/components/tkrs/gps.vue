@@ -650,4 +650,9 @@ border: none !important;
 .inline-arch-div {
   padding-top: 21px;
 }
+.tab-archive-div {
+  padding-left: 3%;
+  overflow-y: scroll;
+  height: 747px;
+}
 </style>
