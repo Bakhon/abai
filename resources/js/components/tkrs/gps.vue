@@ -11,12 +11,12 @@
                 <div style="display:flex; width: 249px;">
                   <li class="nav-item">
                       <a class="nav-link active tab-lblock-header" 
-                      @click="selectBlockTab(1)" href="#">
+                      @click="selectBlockTab(1)">
                       <a>{{trans('tkrs.current_work')}}</a></a>
                   </li>
                   <li class="nav-item" style="width: 107px;">
                       <a class="nav-link tab-lblock-header" 
-                      @click="selectBlockTab(2)" href="#">
+                      @click="selectBlockTab(2)">
                       <a>{{trans('tkrs.archive')}}</a></a>
                   </li>
                 </div>
@@ -363,6 +363,7 @@ export default {
       linkWellReport: "drHeaderWorkReport/",
       wellsTreeCurrent: {},
       wellsTree: {},
+      isCurrent: true
     }
   },
   created: async function () {
@@ -629,16 +630,16 @@ border: none !important;
   margin-bottom: 10px;
 }
 .btn-group::v-deep .btn-secondary {
-    color: #fff;
-    background-color: #20274F;
-    border-color: #20274F;
-    width: 100%;
+  color: #fff;
+  background-color: #20274F;
+  border-color: #20274F;
+  width: 100%;
 }
 .form-input-block-header {
-    font-size: 14px;
-    color: white;
-    padding-left: 7px;
-    padding-bottom: 6px;
+  font-size: 14px;
+  color: white;
+  padding-left: 7px;
+  padding-bottom: 6px;
 }
 .online-block {
   width: 100%;
@@ -652,7 +653,8 @@ border: none !important;
 }
 .tab-archive-div {
   padding-left: 3%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 747px;
 }
 </style>
