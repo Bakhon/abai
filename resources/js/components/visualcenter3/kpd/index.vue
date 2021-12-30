@@ -386,11 +386,17 @@
 .progress.progress_template {
     background-color: #A4A8BF !important;
 }
+.progress-bar_filling__low {
+    background-color: #F12F42 !important;
+    color: #F12F42 !important;
+}
 .progress-bar_filling__medium {
     background-color: #FF8736 !important;
+    color: #FF8736 !important;
 }
 .progress-bar_filling__high {
     background-color: #009847 !important;
+    color: #009847 !important;
 }
 .manager-header {
     border: 0.2em solid #272C5C;

@@ -181,7 +181,7 @@ export default {
             }
 
             if (fact < step) {
-                return 0;
+                return 5;
             }
             if (fact === step) {
                 return 50;

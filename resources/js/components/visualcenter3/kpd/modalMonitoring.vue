@@ -81,23 +81,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--                                    <div class="mt-2 col-12 progress progress_template p-0 row m-0">-->
-<!--                                        <div-->
-<!--                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"-->
-<!--                                                :style="{width: getCurrentPosition(kpd) + '%',}"-->
-<!--                                                role="progressbar"-->
-<!--                                                :aria-valuenow="kpd.fact"-->
-<!--                                                :aria-valuemin="kpd.step"-->
-<!--                                                :aria-valuemax="getMaximum(kpd)"-->
-<!--                                        >-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div-->
-<!--                                            :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"-->
-<!--                                            :class="[getProgressBarTitleColor(kpd),'text-left mt-2 col-12 p-0']"-->
-<!--                                    >-->
-<!--                                        {{kpd.fact}}-->
-<!--                                    </div>-->
                                 </div>
                             </td>
                             <td class="p-2">
@@ -196,7 +179,14 @@ export default {
             let step = parseFloat(kpd.step);
             let target = parseFloat(kpd.target);
 
-            let isDate = kpd.step.includes('.');
+            let isDate =false;
+            if (kpd.step !== null && kpd.step !== '-') {
+                isDate = kpd.step.includes('.');
+            } else if (kpd.target !== null && kpd.target !== '-') {
+                isDate = kpd.target.includes('.');
+            } else if (kpd.maximum !== null && kpd.maximum !== '-') {
+                isDate = kpd.maximum.includes('.');
+            }
             if (isDate) {
                 step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
                 target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
@@ -271,7 +261,14 @@ export default {
             let step = parseFloat(kpd.step);
             let target = parseFloat(kpd.target);
             let maximum = parseFloat(kpd.maximum);
-            let isDate = kpd.step.includes('.');
+            let isDate =false;
+            if (kpd.step !== null && kpd.step !== '-') {
+                isDate = kpd.step.includes('.');
+            } else if (kpd.target !== null && kpd.target !== '-') {
+                isDate = kpd.target.includes('.');
+            } else if (kpd.maximum !== null && kpd.maximum !== '-') {
+                isDate = kpd.maximum.includes('.');
+            }
             if (isDate) {
                 step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
                 target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
@@ -309,19 +306,6 @@ export default {
                 return kpd.target;
             }
             return kpd.step;
-        },
-        getProgressBarTitleColor(kpd) {
-            let fact = parseFloat(kpd.fact);
-            let step = parseFloat(kpd.step);
-            let target = parseFloat(kpd.target);
-
-            if (fact < step) {
-                return 'progress-bar_title__low';
-            } else if (fact >= step && fact < target) {
-                return 'progress-bar_title__medium';
-            } else if (fact >= target) {
-                return 'progress-bar_title__high';
-            }
         },
     },
     async mounted() {
@@ -463,15 +447,6 @@ export default {
 }
 .progress-bar_filling__high {
     background-color: #009847 !important;
-    color: #009847 !important;
-}
-.progress-bar_title__low {
-    color: #F12F42 !important;
-}
-.progress-bar_title__medium {
-    color: #FF8736 !important;
-}
-.progress-bar_title__high {
     color: #009847 !important;
 }
 .progress-splitter {
