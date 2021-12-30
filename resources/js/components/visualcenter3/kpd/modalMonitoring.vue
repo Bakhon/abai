@@ -49,38 +49,55 @@
                             <td class="p-2">{{kpd.name}}</td>
                             <td class="p-2">{{kpd.unit}}</td>
                             <td class="p-2">
-                                <input :disabled="kpd.isWeightFilled" class="input-field text-center p-1" type="text" v-model="kpd.weight">
+                                <input v-if="!kpd.isWeightFilled" class="input-field text-center p-1" type="text" v-model="kpd.weight">
+                                <div class="text-center p-1" v-else>{{kpd.weight}}</div>
                             </td>
                             <td class="p-2">
                                 <div class="col-12 p-0 row m-0">
                                     <div class="col-12 d-flex justify-content-around p-0">
                                         <div class="col-3">
-                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.step">
+                                            <input v-if="!kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.step">
+                                            <div class="text-center p-1" v-else>{{kpd.step}}</div>
                                         </div>
                                         <div class="col-3">
-                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.target">
+                                            <input v-if="!kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.target">
+                                            <div class="text-center p-1" v-else>{{kpd.target}}</div>
                                         </div>
                                         <div class="col-3">
-                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.maximum">
+                                            <input v-if="!kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.maximum">
+                                            <div class="text-center p-1" v-else>{{kpd.maximum}}</div>
                                         </div>
                                     </div>
-                                    <div class="mt-2 col-12 progress progress_template p-0 row m-0">
-                                        <div
-                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
-                                                :style="{width: getCurrentPosition(kpd) + '%',}"
-                                                role="progressbar"
-                                                :aria-valuenow="kpd.fact"
-                                                :aria-valuemin="kpd.step"
-                                                :aria-valuemax="getMaximum(kpd)"
-                                        >
+                                    <div class="progress-wrapper p-0 mt-2">
+                                        <div class="progress-bar-kpd">
+                                            <div class="kpd-bar">
+                                                <div :class="[getProgressBarFillingColor(kpd),'kpd_height__3']" :style="{width: getCurrentPosition(kpd) + '%'}"></div>
+                                            </div>
+                                            <div :class="[getProgressBarFillingColor(kpd),'kpd-point']" :style="{left: getCurrentPosition(kpd,18)+ '%'}"></div>
+                                            <div class="col-12 d-flex justify-content-around p-0">
+                                                <div class="kpd-bullet"></div>
+                                                <div class="kpd-bullet"></div>
+                                                <div class="kpd-bullet"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div
-                                            :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"
-                                            :class="[getProgressBarTitleColor(kpd),'text-left mt-2 col-12 p-0']"
-                                    >
-                                        {{kpd.fact}}
-                                    </div>
+                                    <!--                                    <div class="mt-2 col-12 progress progress_template p-0 row m-0">-->
+<!--                                        <div-->
+<!--                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"-->
+<!--                                                :style="{width: getCurrentPosition(kpd) + '%',}"-->
+<!--                                                role="progressbar"-->
+<!--                                                :aria-valuenow="kpd.fact"-->
+<!--                                                :aria-valuemin="kpd.step"-->
+<!--                                                :aria-valuemax="getMaximum(kpd)"-->
+<!--                                        >-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div-->
+<!--                                            :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"-->
+<!--                                            :class="[getProgressBarTitleColor(kpd),'text-left mt-2 col-12 p-0']"-->
+<!--                                    >-->
+<!--                                        {{kpd.fact}}-->
+<!--                                    </div>-->
                                 </div>
                             </td>
                             <td class="p-2">
@@ -243,19 +260,28 @@ export default {
                 return 125;
             }
         },
-        getCurrentPosition(kpd,numberPadding) {
+        getCurrentPosition(kpd) {
             let fact = parseFloat(kpd.fact);
             let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+
             if (fact < step) {
-                return 0;
+                return fact * 10 / step;
             }
-            let position = kpd.fact * 100 / this.getMaximum(kpd);
+            let absolutePosition = 100;
+            if (fact <= this.getMaximum(kpd)) {
+                absolutePosition = absolutePosition - 18;
+            }
+            if (fact <= target) {
+                absolutePosition = absolutePosition - 21;
+            }
+
+            let position = fact * absolutePosition / this.getMaximum(kpd);
+
             if (position > 100) {
                 position = 100;
             }
-            if (numberPadding) {
-                return position - numberPadding;
-            }
+
             return position;
         },
         getMaximum(kpd) {
@@ -355,7 +381,7 @@ export default {
         width: 148px;
     }
     tr th {
-        background: #3A4280;
+        background: #323370;
         border: 1px solid #545580;
     }
     tr td {
@@ -375,10 +401,10 @@ export default {
         }
     }
     tr:nth-child(even) {
-        background: #272953;
+        background: #454D7D;
     }
     tr:nth-child(odd) {
-        background: #2B2E5C;
+        background: #272953;
     }
 }
 .download-button {
@@ -449,5 +475,58 @@ export default {
 }
 .not-visible {
     display: none;
+}
+//progress bar
+.progress-wrapper{
+    width: 400px;
+}
+
+.progress-bar-kpd {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.kpd-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #999;
+    width: 100%;
+    height: 3px;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+
+    &__fill {
+        display: block;
+        background: #00ADEF;
+        height: 100%;
+    }
+}
+
+.kpd-bullet {
+    background: #999;
+    width: 1px;
+    height: 25px;
+    transition: 0.3s ease;
+
+    .point--complete &,
+    .point--active & {
+        background: #999;
+    }
+}
+.kpd-point {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    height: 10px;
+    width: 10px;
+    border-radius: 1.2em;
+}
+.kpd_height__3 {
+    height: 3px;
 }
 </style>
