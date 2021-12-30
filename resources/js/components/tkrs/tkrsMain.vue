@@ -480,7 +480,7 @@ export default {
 .tkrs-content {
   display: flex;
   width: 100%;
-  height: calc(100vh - 143px);
+  height: calc(100vh - 300px);
 }
 table {
   color: white;

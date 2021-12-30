@@ -227,13 +227,18 @@
                             </div>
                           </template>
                           <template v-else-if="row[column.code]">
-                      <span class="value">{{
-                          row[column.code].date ? row[column.code].old_value : row[column.code].value
-                        }}</span>
-                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
-                                  class="date">
-                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
-                      </span>
+                            <span
+                                :class="[['integer', 'float'].indexOf(getCellType(row, column)) > -1 ? 'value_num' : '']"
+                                class="value"
+                            >
+                              {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                            </span>
+                            <span
+                                v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                class="date"
+                            >
+                              {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
+                            </span>
                           </template>
                         </template>
                         <template
@@ -1111,16 +1116,23 @@ body.fixed {
         width: 14px;
       }
 
-      span.date {
-        display: block;
-        font-size: 10px;
-        font-style: italic;
-        white-space: nowrap;
-      }
+      span {
 
-      span.error {
-        color: #ff6464;
-        font-size: 11px;
+        &.value_num {
+          white-space: nowrap;
+        }
+
+        &.date {
+          display: block;
+          font-size: 10px;
+          font-style: italic;
+          white-space: nowrap;
+        }
+
+        &.error {
+          color: #ff6464;
+          font-size: 11px;
+        }
       }
     }
 

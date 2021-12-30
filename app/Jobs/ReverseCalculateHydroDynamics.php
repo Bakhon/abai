@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
@@ -150,7 +151,8 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         $pipes = OilPipe::with('firstCoords', 'lastCoords', 'pipeType', 'gu')
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
-            ->whereIn('between_points', ['well-zu', 'well_collector-zu', 'zu-gu', 'zu-zu_coll', 'zu_coll-gu'])
+            ->where('trunkline', false)
+            ->where('water_pipe', false)
             ->whereIn('gu_id', $gu_ids)
             ->orderBy('gu_id')
             ->orderBy('zu_id')
@@ -224,11 +226,16 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => $message
-                ]
-            );
+            if (isset($this->input['cron']) and $this->input['cron']) {
+                Log::channel('calculate_hydro_reverse_yesterday:cron')->error($message);
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => $message
+                    ]
+                );
+            }
+
             return;
         }
 

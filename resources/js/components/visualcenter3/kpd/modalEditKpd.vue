@@ -31,7 +31,11 @@
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Описание</div>
-                        <input class="input_kpd p-2 col-10" type="text" v-model="kpd.current.description">
+                        <b-form-textarea
+                                class="col-10 text-left pt-2 input_kpd"
+                                v-model="kpd.current.description"
+                                rows="4"
+                        ></b-form-textarea>
                     </div>
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Формула расчета</div>
@@ -117,7 +121,7 @@
                     <div class="p-1 col-12 d-flex">
                         <div class="col-2 text-left pt-2">Владелец</div>
                         <select class="form-select input_kpd p-2 col-10" @change="handleTypeChange($event)">
-                            <option v-for="owner in owners" :value="owner.id">{{owner.name}}</option>
+                            <option v-for="owner in owners" :value="JSON.stringify(owner)" :selected="(owner.id.toString() === selectedOwner) || (owner.isCorporate && selectedOwner === 'corporate')">{{owner.name}}</option>
                         </select>
                     </div>
                     <div v-if="kpd.current.type !== 'strategic'" class="p-1 col-12 d-flex">
@@ -126,6 +130,14 @@
                             <option value=""></option>
                             <option v-for="kpd in kpdParents" :value="kpd.id">{{kpd.name}}</option>
                         </select>
+                    </div>
+                    <div class="p-1 col-12 d-flex">
+                        <div class="col-2 text-left pt-2">Примечание</div>
+                        <b-form-textarea
+                                class="col-10 text-left pt-2 input_kpd"
+                                v-model="kpd.current.comment"
+                                rows="4"
+                        ></b-form-textarea>
                     </div>
                     <div class="p-1 col-12 d-flex mt-2">
                         <div class="col-6 d-flex justify-content-start pt-2">
@@ -172,6 +184,7 @@ export default {
                 'name': 'Редактирование КПД',
                 current: {
                     name: '',
+                    id: undefined,
                     description: '',
                     unit: '',
                     formula: '',
@@ -182,7 +195,8 @@ export default {
                     type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
-                    calculation_document: ''
+                    calculation_document: '',
+                    comment: ''
                 }
             },
             owners: [
@@ -192,7 +206,8 @@ export default {
                 },
             ],
             kpdParents: [],
-            isOperationFinished: false
+            isOperationFinished: false,
+            selectedOwner: undefined,
         };
     },
     methods: {
@@ -206,7 +221,6 @@ export default {
                     'responsible': ''
                 }
             );
-            console.log(this.currentKpd);
         },
         deleteRow() {
             this.kpd.current.elements.pop();
@@ -218,8 +232,12 @@ export default {
             let uri = this.localeUrl("/kpd-tree-catalog-store");
             let formData = new FormData();
             formData.append('name', this.kpd.current.name);
+            if (this.kpd.current.id) {
+                formData.append('id', this.kpd.current.id);
+            }
             formData.append('elements', JSON.stringify(this.kpd.current.elements));
             formData.append('description', this.kpd.current.description);
+            formData.append('comment', this.kpd.current.comment);
             formData.append('unit', this.kpd.current.unit);
             formData.append('formula', this.kpd.current.formula);
             formData.append('functions', this.kpd.current.functions);
@@ -250,8 +268,12 @@ export default {
             this.$modal.hide('modalKpdEdit');
         },
         handleTypeChange(e) {
-            this.kpd.current.type = e.target.value;
-            this.kpd.current.parent = this.kpdList[0].type;
+            let manager = JSON.parse(e.target.value);
+            if (manager['isCorporate']) {
+                this.kpd.current.type = 'corporate';
+            } else {
+                this.kpd.current.type = manager['id'];
+            }
         },
     },
     async mounted() {
@@ -262,12 +284,14 @@ export default {
             this.owners = this.owners.concat(this.managers);
         },
         corporateManager: function () {
+            this.corporateManager['isCorporate'] = true;
             this.owners.push(this.corporateManager);
         },
         kpdList: function() {
             this.kpdParents = this.kpdList;
         },
         currentKpd: function() {
+            this.isOperationFinished = false;
             if (Object.keys(this.currentKpd).length > 0) {
                 this.kpd.current = _.cloneDeep(this.currentKpd);
             } else {
@@ -280,15 +304,23 @@ export default {
                     functions: '',
                     result: '',
                     responsible: '',
-                    type: JSON.stringify({'alias': 'strategic','id':null}),
+                    type: 'strategic',
                     parent: 'strategic',
                     description_document: '',
-                    calculation_document: ''
+                    calculation_document: '',
+                    comment: ''
                 };
             }
-        }
+            if (this.kpd.current.elements.length === 0) {
+                this.addRow();
+            }
+            this.selectedOwner = this.kpd.current.type;
+        },
+        deputy: function () {
+            this.owners = this.owners.concat(this.deputy);
+        },
     },
-    props: ['managers','corporateManager','kpdList','currentKpd'],
+    props: ['managers','corporateManager','kpdList','currentKpd','deputy'],
 }
 
 

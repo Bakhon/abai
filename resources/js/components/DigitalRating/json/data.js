@@ -172,20 +172,16 @@ const horizons = [
 const objectList = [
     {
         id: 1,
-        title: 'УзенМунайГаз',
+        title: 'Карамандыбас',
         children: [
             {
-                id: 13,
-                title: '13 горизонт',
+                id: 18,
+                title: '18 горизонт',
                 children: [
                     {
                         id: 21,
-                        title: 'Хум'
+                        title: 'Западный купол'
                     },
-                    {
-                        id: 22,
-                        title: 'Парс'
-                    }
                 ]
             },
             {
@@ -196,7 +192,39 @@ const objectList = [
     },
     {
         id: 2,
-        title: 'КаражанбасМунай'
+        title: 'Узень',
+        children: [
+            {
+                id: 13,
+                title: '13 горизонт',
+                children: [
+
+                ]
+            },
+            {
+                id: 14,
+                title: '14 горизонт',
+            },
+            {
+                id: 15,
+                title: '15 горизонт',
+                children: [
+                    {
+                        id: 5,
+                        title: 'Основной свод',
+                        owc_id: 'owc_out_uzn_15_osn'
+                    },
+                    {
+                        id: 6,
+                        title: 'Северо-запад'
+                    },
+                    {
+                        id: 7,
+                        title: 'Парсумурун'
+                    },
+                ]
+            }
+        ]
     }
 ]
 

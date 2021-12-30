@@ -39,7 +39,7 @@ export default {
       ],
       horizon: 13,
       year: 2008,
-      type: 'oil_production',
+      type: 'fds_operational_unit',
       rowsOil: [],
       indicatorTitle: 'Добыча нефти, тыс.т',
       diagramData: [],
@@ -49,6 +49,7 @@ export default {
   },
 
   async mounted() {
+    await this.fetchHorizons();
     await this.fetchData();
     await this.initMap('wellMap');
     await this.initWellOnMap();
@@ -181,9 +182,14 @@ export default {
     async fetchData() {
       try {
         this.SET_LOADING(true);
-        const res = await axios.get(this.localeUrl(
-          `digital-rating/api/get_compaer_data?horizon=${this.horizon}&year=${this.year}&type=${this.type}`
-        ));
+        const res = await axios({
+          url: this.localeUrl(`digital-rating/api/get-compare-data`),
+          params: {
+            horizon: this.horizon,
+            year: this.year,
+            type: this.type
+          }
+        });
         this.rowsOil = res.data;
         this.setDiagramData(res.data);
       } finally {
@@ -202,6 +208,14 @@ export default {
       this.diagramData.push(obj1, obj2);
     },
 
+    async fetchHorizons() {
+      try {
+        const res = await axios.get(this.localeUrl(`digital-rating/api/get-horizon`));
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     initWellOnMap() {
       for(let i = 0; i < wellList.length; i++) {
         const coordinate = this.xy(wellList[i]['x'], wellList[i]['y']);
@@ -217,9 +231,14 @@ export default {
     },
 
     async initContourOnMap() {
-      const res = await axios.get(this.localeUrl(
-        `digital-rating/api/get_maps?field=kmb&horizon=14&owc=owc_out_kmb_14_vost`
-      ));
+      const res = await axios({
+        url: this.localeUrl(`digital-rating/api/get-map-coordinates`),
+        params: {
+          field: 'kmb',
+          horizon: '14',
+          owc: 'owc_out_kmb_14_vost'
+        }
+      });
       if (!res.error) {
         this.owcList = res?.data[0]?.coordinates;
 

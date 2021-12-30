@@ -70,18 +70,16 @@
                                             <td v-for="i in 12">
                                                 <div class="graph-card fact"
                                                      v-for="(info, index) in graph.data"
-                                                     :class="{otherFact: getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 < 150}"
-                                                     :style="'left:' + $moment(getMonthNumber(info.dbeg_fact), 'D').format('D')*15 + 'px; width:' +
-                                                     getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 + 'px'"
+                                                     :class="{otherFact: lessThanHeight(info.dbeg_fact, info.dend_fact)}"
+                                                     :style="getStyleCard(info.dbeg_fact, info.dend_fact)"
                                                      v-if="$moment(getMonthNumber(info.dbeg_fact), 'M').format('M')  == i && info.dbeg_fact && info.dend_fact">
                                                         Начало -  {{info.dbeg_fact}}
                                                         Окончание - {{info.dend_fact}}
                                                 </div>
                                                 <div class="graph-card"
                                                      v-for="(info, index) in graph.data"
-                                                     :class="{other: getDifferenceDay(info.dbeg_fact, info.dend_fact) * 15 < 150}"
-                                                     :style="'left:' + $moment(getMonthNumber(info.dbeg_project), 'D').format('D')*15 + 'px; width:' +
-                                                     getDifferenceDay(info.dbeg_project, info.dend_project) * 15 + 'px'"
+                                                     :class="{other: lessThanHeight(info.dbeg_fact, info.dend_fact)}"
+                                                     :style="getStyleCard(info.dbeg_project, info.dend_project)"
                                                      v-if="$moment(getMonthNumber(info.dbeg_project), 'M').format('M')  == i && info.graph_data">
                                                     {{info.graph_data}}
                                                 </div>
@@ -106,20 +104,27 @@
 
     export default {
         name: "DrillingGraph",
+        props: ['dataGraph'],
         data(){
             return{
-                dataGraph: [],
                 currentYear: 2021,
                 monthNames: [ "January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December" ],
             }
         },
         created(){
-            this.getDataGraph()
+
         },
         methods: {
             close(){
                 this.$emit('close')
+            },
+            lessThanHeight(dbeg, dend){
+                return this.getDifferenceDay(dbeg, dend) * 15 < 150
+            },
+            getStyleCard(dbeg, dend){
+                return 'left:' + this.$moment(this.getMonthNumber(dbeg), 'D').format('D')*15 + 'px; width:' +
+                this.getDifferenceDay(dbeg, dend) * 15 + 'px'
             },
             getDaysInMonth(month, year) {
                 let date = new Date(year, month, 1);
@@ -141,21 +146,6 @@
             getMonthNumber(date){
                 let dateNumber = new Date(date);
                 return dateNumber
-            },
-            async getDataGraph(){
-                try{
-                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
-                        let data = response.data;
-                        if (data) {
-                            this.dataGraph =  data
-                        } else {
-                            console.log('No data');
-                        }
-                    });
-                }
-                catch (e) {
-                    console.log(e)
-                }
             },
         },
     }

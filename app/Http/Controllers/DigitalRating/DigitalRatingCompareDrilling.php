@@ -42,7 +42,6 @@ class DigitalRatingCompareDrilling extends Controller
            
          }
       }
-      dd($data);
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
    }
@@ -79,7 +78,6 @@ class DigitalRatingCompareDrilling extends Controller
    {  
       $data =   DB::connection('tbd')->table('digital_rating.horizon')
       ->get();
-      dd($data);
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($data,200,$headers,JSON_UNESCAPED_UNICODE);
    }
