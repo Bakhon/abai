@@ -4,7 +4,7 @@
   >
     <label>
       <i style="color: #999DC0; margin-right: 8px;" class="fa fa-file "></i
-      >{{ date.field_name }}
+      >{{ date.date_name }}
     </label>
     <img
       v-show="hovered"
@@ -17,9 +17,8 @@
 
 <script>
 import { mapActions, mapMutations } from "vuex";
-
 export default {
-  name: "currentWorkHookTreeMenuChiild",
+  name: "archFormInputTreeMenuChild",
   props: {
     treeChild: String,
     date: Object,
@@ -34,16 +33,11 @@ export default {
   computed: {
   },
   methods: {
-    ...mapActions("tkrs", ["getTableWork", "getSelectedtWellFile"]),
-    ...mapMutations("tkrs", ["SET_CURRENTARCHIVEWELLNAME", "SET_CURRENTFIELD"]),
+    ...mapActions("tkrsDailyReport", ["getSelectedtWellFile"]),
+   
     handleTableAndGraph() {
-      this.SET_CURRENTARCHIVEWELLNAME(this.treeChild);
-      this.SET_CURRENTFIELD(this.treeFieldCurrentName);
-      this.getTableWork({ well_name: this.treeChild, well_date: this.date.field_name });
-      this.getSelectedtWellFile({ well_name_chart: this.treeChild, well_date_chart: this.date.field_name });
-    },
-    postSelectedtWellFileChild(well_name, well_date) {
-      this.$emit('post_method', {well_name, well_date})
+      
+      this.getSelectedtWellFile({ well_name: this.treeChild, well_date: this.date.date_name });
     },
   },
 };
