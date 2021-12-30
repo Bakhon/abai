@@ -84,8 +84,9 @@ class DigitalRatingCompareDrilling extends Controller
          foreach ($groupedDataByHorizon as $keyHorizon => $item) {
             $bufferArray=['title'=>$keyHorizon];
             $lastChildren=[];
-            $owc_code=[];
+        
             foreach ($item as $keyBlock => $block) {
+               $owc_code=[];
                if ($block->owc_id_1 != '-') array_push($owc_code, $block->owc_id_1);
                if ($block->owc_id_2 != '-') array_push($owc_code, $block->owc_id_2);
                if ($block->owc_id_3 != '-') array_push($owc_code, $block->owc_id_3);
@@ -101,10 +102,13 @@ class DigitalRatingCompareDrilling extends Controller
             $bufferArray['children']=$lastChildren;
             $children[] = $bufferArray;
          };
+
          $result['children'] = $children;
          return $result;
       })->toArray();
       $result = array_values($result);
+      dd($result);
+
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($result,200,$headers,JSON_UNESCAPED_UNICODE);
    }
