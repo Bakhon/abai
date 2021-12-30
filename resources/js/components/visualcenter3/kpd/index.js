@@ -96,10 +96,10 @@ export default {
                 this.menuVisibility['manager'] = false;
             }
         },
-        switchKpdVisibility(manager) {
+        switchKpdVisibility(manager,managers) {
             manager['name'] = manager['name'] + ' ';
             manager['isSelected'] = !manager['isSelected'];
-            _.forEach(this.managers, (item,index) => {
+            _.forEach(managers, (item,index) => {
                 if (item.id !== manager.id) {
                     item['isSelected'] = false;
                 }

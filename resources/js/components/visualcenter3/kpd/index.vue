@@ -128,7 +128,7 @@
                 <div v-if="menuVisibility.manager" class="col-7 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
                         <div v-for="(manager, index) in managers" class="manager-header cursor-pointer">
-                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager)">
+                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,managers)">
                                 <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                 <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                                 <div class="col-4 row m-0">
@@ -175,7 +175,7 @@
                 <div v-if="menuVisibility.deputy" class="col-7 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
                         <div v-for="(manager, index) in deputy" class="manager-header cursor-pointer">
-                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager)">
+                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,deputy)">
                                 <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                 <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                                 <div class="col-4 row m-0">
@@ -195,8 +195,23 @@
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
                                 <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
-                                    <div class="kpd-id"></div>
-                                    <div class="">{{kpd.name}}</div>
+                                    <div class="col-8 d-flex p-0">
+                                        <div class="kpd-id"></div>
+                                        <div>{{kpd.name}}</div>
+                                    </div>
+                                    <div class="col-3 d-flex mt-3 p-0">
+                                        <div class="col-12 p-0 progress progress_template">
+                                            <div
+                                                    :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
+                                                    :style="{width: kpd.rating + '%',}"
+                                                    role="progressbar"
+                                                    :aria-valuenow="kpd.rating"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100"
+                                            ></div>
+                                        </div>
+                                        <div class="kpd-decomposition-fact">{{kpd.fact}}%</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
