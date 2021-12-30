@@ -35,7 +35,7 @@
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd"></kpd-modal-kpd-edit>
+        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -73,7 +73,6 @@ export default {
             async (update) => {
                 if (update) {
                     this.kpdList = await this.getKpdList();
-                    console.log(this.kpdList);
                     _.forEach(this.kpdList, (item,index) => {
                         let elements = item.kpd_elements;
                         this.kpdList[index]['elements'] = item.kpd_elements;
@@ -83,7 +82,7 @@ export default {
             }
         );
     },
-    props: ['managers','corporateManager'],
+    props: ['managers','corporateManager','deputy'],
 }
 
 

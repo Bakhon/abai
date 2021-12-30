@@ -30,7 +30,14 @@ class ProductionWellsMP extends TableForm
                 foreach ($item as $key => $val) {
                     if ($key === 'date') {
                         $val = Carbon::parse($val, 'Asia/Almaty')->format('d.m.Y');
+                    } elseif (is_numeric($val)) {
+                        $val = str_replace(
+                            '.0',
+                            '',
+                            number_format((float)$val, 1, '.', ' ')
+                        );
                     }
+
                     $result[$key] = [
                         'value' => $val
                     ];
