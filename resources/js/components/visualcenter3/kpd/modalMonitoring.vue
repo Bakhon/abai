@@ -196,6 +196,12 @@ export default {
             let step = parseFloat(kpd.step);
             let target = parseFloat(kpd.target);
 
+            let isDate = kpd.step.includes('.');
+            if (isDate) {
+                step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
+                target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
+            }
+
             if (fact < step) {
                 return 'progress-bar_filling__low';
             } else if (fact >= step && fact < target) {
@@ -264,16 +270,27 @@ export default {
             let fact = parseFloat(kpd.fact);
             let step = parseFloat(kpd.step);
             let target = parseFloat(kpd.target);
+            let maximum = parseFloat(kpd.maximum);
+            let isDate = kpd.step.includes('.');
+            if (isDate) {
+                step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
+                target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
+                maximum = moment(kpd.maximum, 'DD.MM.YYYY').toDate().getTime();
+            }
 
             if (fact < step) {
                 return fact * 10 / step;
             }
             let absolutePosition = 100;
+
             if (fact <= this.getMaximum(kpd)) {
                 absolutePosition = absolutePosition - 18;
             }
             if (fact <= target) {
                 absolutePosition = absolutePosition - 21;
+            }
+            if (isNaN(maximum)) {
+                absolutePosition = absolutePosition - 42;
             }
 
             let position = fact * absolutePosition / this.getMaximum(kpd);
@@ -335,6 +352,9 @@ export default {
                    kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
                    kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                    kpd['fact'] = _.sumBy(kpd.kpd_fact,  item => Number(item.fact));
+                   if (isNaN(kpd['fact'])) {
+                       kpd['fact'] = moment(kpd.kpd_fact.at(-1).fact,'DD.MM.YYYY').toDate().getTime();
+                   }
                 });
                 
                 this.SET_LOADING(false);

@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="progress progress_template">
                                         <div
-                                                :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
+                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
                                                 :style="{width: 0 + '%',}"
                                                 role="progressbar"
                                                 :aria-valuenow="0"
@@ -167,7 +167,7 @@
                                     </div>
                                     <div class="progress progress_template">
                                         <div
-                                                :class="[getProgressBarFillingColor(kpd.rating),'progress-bar progress-bar_filling']"
+                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
                                                 :style="{width: kpd.rating + '%',}"
                                                 role="progressbar"
                                                 :aria-valuenow="kpd.rating"
@@ -191,36 +191,33 @@
                                 <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-11 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,managers)">
                                     <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                     <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
-                                    <div class="col-4 row m-0">
-                                        <!--                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>-->
-                                        <div class="col-12 d-flex p-0 mt-3 justify-content-between">
-                                            <div class="d-flex p-0">
-                                                <div class="text-left manager-result">Результативность</div>
-                                                <div class="text-right ml-2 manager-result">
-                                                    0%
+                                        <div class="col-4 row m-0">
+                                           <div class="col-12 d-flex p-0 mt-3 justify-content-between">
+                                                <div class="d-flex p-0">
+                                                    <div class="text-left manager-result">Результативность</div>
+                                                    <div class="text-right ml-2 manager-result">
+                                                        {{manager.fact}}%
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex p-0">
+                                                    <div class="text-left kpd-header">Ожидание</div>
+                                                    <div class="text-right ml-2 kpd-header">
+                                                        {{getCorporateSummaryWaiting()}}%
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex p-0">
-                                                <div class="text-left kpd-header">Ожидание</div>
-                                                <div class="text-right ml-2 kpd-header">
-                                                    {{getCorporateSummaryWaiting()}}%
-                                                </div>
+                                            <div class="col-12 p-0 progress progress_template">
+                                                <div
+                                                        :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
+                                                        :style="{width: manager.fact + '%',}"
+                                                        role="progressbar"
+                                                        :aria-valuenow="manager.fact"
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="100"
+                                                ></div>
                                             </div>
                                         </div>
-                                        <div class="col-12 p-0 progress progress_template">
-                                            <div
-                                                    :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
-                                                    :style="{width: manager.rating + '%',}"
-                                                    role="progressbar"
-                                                    :aria-valuenow="manager.rating"
-                                                    aria-valuemin="0"
-                                                    aria-valuemax="100"
-                                            ></div>
-                                        </div>
-                                        <div class="col-1 ml-auto mr-3">{{manager.fact}}%</div>
                                     </div>
-                                    <!--                                <img class="col-1" src="/img/kpd-tree/kpd-monitoring.png" @click="switchManager(manager,'manager')" />-->
-                                </div>
                                 <div class="col-1 d-flex justify-content-end"  @click="switchManager(manager,'manager')">
                                     <img class="mt-3 mr-2" height="15em" src="/img/icons/link.svg" />
                                 </div>
@@ -235,7 +232,7 @@
                                     <div class="col-3 d-flex mt-3 p-0">
                                         <div class="col-12 p-0 progress progress_template">
                                             <div
-                                                    :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
+                                                    :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
                                                     :style="{width: kpd.rating + '%',}"
                                                     role="progressbar"
                                                     :aria-valuenow="kpd.rating"
@@ -243,7 +240,7 @@
                                                     aria-valuemax="100"
                                             ></div>
                                         </div>
-                                        <div class="kpd-decomposition-fact">{{kpd.fact}}%</div>
+                                        <div class="kpd-decomposition-fact">{{kpd.rating}}%</div>
                                     </div>
                                 </div>
                             </div>
@@ -260,12 +257,11 @@
                                     <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                     <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
                                     <div class="col-4 row m-0">
-    <!--                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>-->
                                         <div class="col-12 d-flex p-0 mt-3 justify-content-between">
                                             <div class="d-flex p-0">
                                                 <div class="text-left manager-result">Результативность</div>
                                                 <div class="text-right ml-2 manager-result">
-                                                    0%
+                                                    {{manager.fact}}%
                                                 </div>
                                             </div>
                                             <div class="d-flex p-0">
@@ -285,7 +281,6 @@
                                                     aria-valuemax="100"
                                             ></div>
                                         </div>
-<!--                                        <div class="col-1 ml-auto mr-2">{{manager.fact}}%</div>-->
                                     </div>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end"  @click="switchManager(manager,'manager')">
@@ -301,7 +296,7 @@
                                     <div class="col-3 d-flex mt-3 p-0">
                                         <div class="col-12 p-0 progress progress_template">
                                             <div
-                                                    :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
+                                                    :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
                                                     :style="{width: kpd.rating + '%',}"
                                                     role="progressbar"
                                                     :aria-valuenow="kpd.rating"
@@ -309,7 +304,7 @@
                                                     aria-valuemax="100"
                                             ></div>
                                         </div>
-                                        <div class="kpd-decomposition-fact">{{kpd.fact}}%</div>
+                                        <div class="kpd-decomposition-fact">{{kpd.rating}}%</div>
                                     </div>
                                 </div>
                             </div>
