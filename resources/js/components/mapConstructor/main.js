@@ -44,10 +44,6 @@ export default {
                     langCode: 'map_constructor.copy'
                 },
                 {
-                    icon: 'fas fa-info-circle',
-                    langCode: 'map_constructor.reference'
-                },
-                {
                     icon: 'fas fa-cut',
                     langCode: 'map_constructor.scissors'
                 },
@@ -567,6 +563,10 @@ export default {
                 this.$refs[project.key][0].removeAllTools();
                 this.$refs[project.key][0].enableMeasuringTool();
             })
+        },
+        feetToScreen() {
+            const projectRef = this.projects[this.activeProjectIndex].key;
+            this.$refs[projectRef][0].feetToScreen();
         },
         showBubblesByDate() {
             const projectRef = this.projects[this.activeProjectIndex].key;

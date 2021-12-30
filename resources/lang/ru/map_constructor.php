@@ -24,7 +24,6 @@ return array (
   'hand' => 'Рука',
   'copy' => 'Копировать',
   'ruler' => 'Линейка',
-  'reference' => 'Справка',
   'scissors' => 'Ножницы',
   'edit_polygon' => 'Ред. Полигона',
   'fictitious_point' => 'Фиктивная точка',
@@ -120,4 +119,5 @@ return array (
   'interpolation' => 'Интерполяция',
   'map_constructor' => 'Картопостроитель',
   'not_empty_map' => 'Карта уже добавлена',
+  'fit_to_screen' => 'Отдалить',
 );

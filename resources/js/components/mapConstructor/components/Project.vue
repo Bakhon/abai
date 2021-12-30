@@ -995,6 +995,22 @@ export default {
                 this.map.removeInteraction(this.dragBoxTool);
             }
         },
+        feetToScreen() {
+            if (this.map) {
+                const mapSize = this.map.getSize();
+                const mapExtent = this.map.getView().getProjection().getExtent();
+                const mapCenter = [
+                    mapExtent[0] + (mapExtent[2] - mapExtent[0]) / 2,
+                    mapExtent[1] + (mapExtent[3] - mapExtent[1]) / 2,
+                ]
+                const position = [
+                    mapSize[0] / 2,
+                    mapSize[1] / 2,
+                ]
+                this.map.getView().setZoom(1);
+                this.map.getView().centerOn(mapCenter, this.map.getSize(), position);
+            }
+        }
     },
 }
 
