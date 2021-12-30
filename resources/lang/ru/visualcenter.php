@@ -421,7 +421,7 @@ return array (
     'cancelled' => 'Отменено'
   ),
   'notes' => 'Примечания',
-  'kpdModuleTitle' => 'ТОО "КМГ Инжиниринг"',
+  'kpdModuleTitle' => 'Центр визуализации - Ключевые показатели деятельности ТОО "КМГ Инжиниринг"',
   'condensateDelivery' => 'Сдача конденсата',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
