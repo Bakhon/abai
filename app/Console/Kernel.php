@@ -57,6 +57,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('parse_omg_ngdu_temp_press_data:cron')
             ->dailyAt('07:10')
             ->timezone('Asia/Almaty');
+        $schedule->command('calculate_hydro_reverse_yesterday:cron')
+            ->dailyAt('08:00')
+            ->timezone('Asia/Almaty');
     }
 
     /**

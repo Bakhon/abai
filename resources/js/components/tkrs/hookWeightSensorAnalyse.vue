@@ -56,9 +56,14 @@
                   
                 </div>
                 <div class="plotly-graph-custom">
-                  <Plotly :data="areaChartData" :displaylogo="false" 
-                  :layout="layoutData" :display-mode-bar="true" 
-                  :mode-bar-buttons-to-remove="buttonsToRemove" v-if="isChart"></Plotly>
+                  <Plotly 
+                    :data="areaChartData" 
+                    :displaylogo="false" 
+                    :layout="layoutData" 
+                    :display-mode-bar="true" 
+                    :mode-bar-buttons-to-remove="buttonsToRemove" 
+                    v-if="isChart">
+                  </Plotly>
                 </div>
                 <div>
                   <table>
@@ -483,11 +488,8 @@ table, th, td {
 }
 
 .plotly-graph-custom {
-  background-color: #2B2E5E !important;
-  background-image: linear-gradient(#545580 1px, transparent 1px), 
-  linear-gradient(90deg, #545580 1px, transparent 1px);
-  background-size: 20px 20px, 20px 20px;
-  height: calc(100% - 287px);
+  width: 100%;
+  border: 6px solid #20274F;
 }
 .sidebar_graph {
   height: calc(100% - 36px);

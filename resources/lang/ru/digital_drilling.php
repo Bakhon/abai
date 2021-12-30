@@ -17,6 +17,8 @@ return array (
   'drilling_mud' => 'Буровые растворы',
   'borehole_deepening' => 'Углубление скважины',
   'cementing_jobs' => 'Крепление',
+  'report_page' => 'Отчет',
+  'calculation_page' => 'Расчет',
   'drilling_time' => 'Продолжительность строительства',
   'resource_estimate' => 'Ресурсная смета',
   'drilling_online' => 'Онлайн-бурение',

@@ -36,7 +36,7 @@ class Gdis extends PlainForm
         $metricColumns = $this->getMetricColumns();
 
         $codes = [
-            'BHPR',
+            'BHP',
             'RP',
             'PNT',
             'PRCB',

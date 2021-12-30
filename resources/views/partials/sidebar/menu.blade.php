@@ -118,25 +118,25 @@
                         <li class="left-menu-li">
                             <ul>
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic.nrs')}}">
+                                    <a href="{{route('economic.nrs')}}" class="ml-2">
                                         {{ trans('economic_reference.nrs') }}
                                     </a>
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic.optimization')}}">
+                                    <a href="{{route('economic.optimization')}}" class="ml-2">
                                         {{ trans('economic_reference.optimization_of_development') }}
                                     </a>
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic.analysis')}}">
+                                    <a href="{{route('economic.analysis')}}" class="ml-2">
                                         {{ trans('economic_reference.analysis_of_actual_stops') }}
                                     </a>
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('eco_refs_list')}}">
+                                    <a href="{{route('eco_refs_list')}}" class="ml-4">
                                         {{ trans('economic_reference.input_params') }}
                                     </a>
                                 </li>

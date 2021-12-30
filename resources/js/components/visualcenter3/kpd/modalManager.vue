@@ -66,11 +66,11 @@ export default {
             },
             managerTypes: [
                 {
-                    'name': 'Член Правления',
+                    'name': 'Руководящий работник',
                     'alias': 'manager'
                 },
                 {
-                    'name': 'Заместитель',
+                    'name': 'Управленческий работник',
                     'alias': 'deputy'
                 }
             ],
@@ -91,6 +91,7 @@ export default {
             reader.readAsDataURL(event.target.files[0]);
         },
         async store() {
+            this.isOperationFinished = false;
             this.SET_LOADING(true);
             let uri = this.localeUrl("/store-kpd-manager");
             let formData = new FormData();
@@ -128,6 +129,7 @@ export default {
     },
     watch: {
         managerInfo: function () {
+            this.isOperationFinished = false;
             if (Object.keys(this.managerInfo).length === 0) {
                 this.manager = {
                     'name': '',

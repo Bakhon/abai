@@ -5,17 +5,20 @@
                 name="modalMonitoring"
                 draggable=".modal-bign-header"
                 :width="1700"
-                :height="700"
+                :height="720"
                 style="background: transparent;"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header d-flex">
                     <img v-if="managerInfo" :src="'/img/kpd-tree/managers/' + managerInfo.avatar" class="manager-icon ml-5"></img>
-                    <div v-if="managerInfo" class="modal-bign-title modal_header">{{managerInfo.name}}</div>
+                    <div v-if="managerInfo" class="modal-bign-title modal_header">{{managerInfo.title}}</div><br>
                     <button type="button" class="modal-bign-button" @click="$modal.hide('modalMonitoring')">
                         {{trans('pgno.zakrit')}}
                     </button>
+                </div>
+                <div class="modal-bign-header d-flex">
+                    <div v-if="managerInfo" class="modal-bign-title modal_header">{{managerInfo.name}}</div>
                 </div>
                 <div class="scroll">
                     <table class="modal_table mt-5">
@@ -46,7 +49,7 @@
                             <td class="p-2">{{kpd.name}}</td>
                             <td class="p-2">{{kpd.unit}}</td>
                             <td class="p-2">
-                                <input class="input-field text-center p-1" type="text" v-model="kpd.weight">
+                                <input :disabled="kpd.isWeightFilled" class="input-field text-center p-1" type="text" v-model="kpd.weight">
                             </td>
                             <td class="p-2">
                                 <div class="col-12 p-0 row m-0">
@@ -63,25 +66,20 @@
                                     </div>
                                     <div class="mt-2 col-12 progress progress_template p-0 row m-0">
                                         <div
-                                                :class="[getProgressBarFillingColor(30),'progress-bar progress-bar_filling']"
-                                                :style="{width: 30 + '%',}"
+                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
+                                                :style="{width: getCurrentPosition(kpd) + '%',}"
                                                 role="progressbar"
-                                                :aria-valuenow="30"
+                                                :aria-valuenow="kpd.fact"
                                                 :aria-valuemin="kpd.step"
-                                                :aria-valuemax="kpd.maximum"
+                                                :aria-valuemax="getMaximum(kpd)"
                                         >
-                                        </div>
-                                        <div class="col-12 d-flex justify-content-around p-0">
-                                            <div class="progress-splitter"></div>
-                                            <div class="progress-splitter"></div>
-                                            <div class="progress-splitter"></div>
                                         </div>
                                     </div>
                                     <div
-                                            :style="{ 'padding-left': `${getCurrentFact(kpd.kpd_fact,kpd.maximum)}px` }"
-                                            :class="[getProgressBarTitleColor(getCurrentFact(kpd.kpd_fact,kpd.maximum)),' mt-2 col-12 p-0']"
+                                            :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"
+                                            :class="[getProgressBarTitleColor(kpd),'text-left mt-2 col-12 p-0']"
                                     >
-                                        {{getCurrentFact(kpd.kpd_fact,kpd.maximum)}}
+                                        {{kpd.fact}}
                                     </div>
                                 </div>
                             </td>
@@ -114,7 +112,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>100%</td>
+                            <td>{{totalWeight}}%</td>
                             <td></td>
                             <td></td>
                             <td colspan="2">
@@ -126,7 +124,7 @@
                     </table>
                 </div>
                 <div align="center" class="bottom-buttons col-12 row">
-                    <div class="col-1 download-button m-4" @click="updateKpd">ОК</div>
+                    <div class="col-1 download-button m-4" @click="updateKpd">Сохранить</div>
                     <div class="col-1 cancel-button m-4" @click="$modal.hide('modalMonitoring')">Отмена</div>
                 </div>
             </div>
@@ -148,13 +146,18 @@ export default {
                 'id': null,
                 'comments': ''
             },
-            factDates: []
+            factDates: [],
+            isOperationFinished: false,
         };
     },
     methods: {
         async getKpdList() {
             let uri = this.localeUrl("/get-kpd-by-manager");
-            const response = await axios.get(uri,{params:{'type':this.managerInfo.id}});
+            let managerId = this.managerInfo.id;
+            if (this.managerType === 'corporate') {
+                managerId = this.managerType;
+            }
+            const response = await axios.get(uri,{params:{'type':managerId}});
             if (response.status !== 200) {
                 return [];
             }
@@ -168,35 +171,31 @@ export default {
             });
             let uri = this.localeUrl("/store-updated-kpd");
             await axios.post(uri,this.kpdList);
+            this.isOperationFinished = true;
             this.$modal.hide('modalMonitoring');
         },
-        getProgressBarFillingColor(progress) {
-            if (progress < 0) {
+        getProgressBarFillingColor(kpd) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+
+            if (fact < step) {
                 return 'progress-bar_filling__low';
-            } else if (progress <= 70) {
+            } else if (fact >= step && fact < target) {
                 return 'progress-bar_filling__medium';
-            } else if (progress > 70) {
+            } else if (fact >= target) {
                 return 'progress-bar_filling__high';
-            }
-        },
-        getProgressBarTitleColor(progress) {
-            if (progress < 0) {
-                return 'progress-bar_title__low';
-            } else if (progress <= 70) {
-                return 'progress-bar_title__medium';
-            } else if (progress > 70) {
-                return 'progress-bar_title__high';
             }
         },
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        getCurrentFact(facts,maximum) {
-            let summary = 10;
+        getCurrentFact(facts,kpd) {
+            let summary = 0;
             if (facts && facts.length > 0) {
                 summary = _.sumBy(facts,'fact');
             }
-            return summary;
+            return summary * 100 / this.getMaximum(kpd);
         },
         isPlanFilled(plan) {
             return plan !== null;
@@ -217,7 +216,14 @@ export default {
             }
         },
         getKpdEfficiency(step,target,maximum,fact) {
-            if (fact < step) {
+            step = parseFloat(step);
+            target = parseFloat(target);
+            maximum = parseFloat(maximum);
+            fact = parseFloat(fact);
+            if (isNaN(fact)) {
+                return 0;
+            }
+            if ((fact < step) || (step === null || target === null || maximum === null || fact === null)) {
                 return 0;
             }
             if (fact === step) {
@@ -232,17 +238,58 @@ export default {
             if (fact > target && fact < maximum) {
                 return (fact - target) / (maximum - target) * 25 + 100;
             }
+
             if (fact >= maximum) {
                 return 125;
             }
-        }
+        },
+        getCurrentPosition(kpd,numberPadding) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            if (fact < step) {
+                return 0;
+            }
+            let position = kpd.fact * 100 / this.getMaximum(kpd);
+            if (position > 100) {
+                position = 100;
+            }
+            if (numberPadding) {
+                return position - numberPadding;
+            }
+            return position;
+        },
+        getMaximum(kpd) {
+            if (kpd.maximum !== '-') {
+                return kpd.maximum;
+            }
+            if (kpd.target !== '-') {
+                return kpd.target;
+            }
+            return kpd.step;
+        },
+        getProgressBarTitleColor(kpd) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+
+            if (fact < step) {
+                return 'progress-bar_title__low';
+            } else if (fact >= step && fact < target) {
+                return 'progress-bar_title__medium';
+            } else if (fact >= target) {
+                return 'progress-bar_title__high';
+            }
+        },
     },
     async mounted() {
 
     },
-    props: ['managerInfo'],
+    props: ['managerInfo','managerType'],
     watch: {
         managerInfo: async function () {
+            this.isOperationFinished = false;
+            this.kpdList = [];
+            this.factDates = [];
             if (this.managerInfo) {
                 this.SET_LOADING(true);
                 this.kpdList = await this.getKpdList();
@@ -256,9 +303,14 @@ export default {
                    if (kpd.step !== '' && kpd.step !== null && kpd.target !== '' && kpd.target !== null && kpd.maximum !== '' && kpd.maximum !== null) {
                        kpd.isPlanFilled = true;
                    }
-                   kpd.rating = this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact);
+                   if (kpd.weight !== '' && kpd.weight !== null) {
+                       kpd.isWeightFilled = true;
+                   }
+                   kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
                    kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                   kpd['fact'] = _.sumBy(kpd.kpd_fact,  item => Number(item.fact));
                 });
+                
                 this.SET_LOADING(false);
             }
         },
@@ -267,6 +319,9 @@ export default {
         totalSummary() {
             return _.sumBy(this.kpdList, 'summary');
         },
+        totalWeight() {
+            return _.sumBy(this.kpdList,  item => Number(item.weight));
+        }
     }
 }
 
@@ -291,9 +346,6 @@ export default {
         }
         &:nth-child(3) {
             width: 100px;
-        }
-        &:nth-child(4) {
-            width: 60px;
         }
         &:nth-child(5), &:nth-child(6) {
             width: 400px;
@@ -338,7 +390,6 @@ export default {
     border-radius: 5px;
 }
 .bottom-buttons {
-    position: absolute;
     bottom: 0;
     justify-content: center;
     div {

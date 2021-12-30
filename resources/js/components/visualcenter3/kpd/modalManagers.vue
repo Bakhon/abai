@@ -13,20 +13,6 @@
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">Список Директоров</div>
                     <div class="btn-toolbar">
-                        <button
-                                type="button"
-                                :class="[selectedType === 'manager' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('manager')"
-                        >
-                            Члены Правления
-                        </button>
-                        <button
-                                type="button"
-                                :class="[selectedType === 'deputy' ? 'button__selected' : '','modal-bign-button mr-2 button-width__150']"
-                                @click="switchManagerType('deputy')"
-                        >
-                            Заместители
-                        </button>
                         <button type="button" class="modal-bign-button mr-2" @click="[selectedManager = {},$modal.show('modalManager')]">
                             Добавить
                         </button>
@@ -57,7 +43,8 @@ export default {
         return {
             managers: [],
             selectedManager: {},
-            selectedType: 'manager'
+            selectedType: 'manager',
+            isOperationFinished: false
         };
     },
     methods: {
@@ -67,22 +54,19 @@ export default {
             if (response.status !== 200) {
                 return [];
             }
+            this.isOperationFinished = false;
             return response.data;
         },
         selectManager(manager) {
             this.selectedManager = manager;
-        },
-        async switchManagerType(type) {
-            this.selectedType = type;
-            this.managers = await this.getManagers(type);
         },
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
     },
     async mounted() {
+        this.isOperationFinished = false;
         this.managers = await this.getManagers(this.selectedType);
-        console.log(this.managers);
         this.$watch(
             () => {
                 return this.$refs.userCreation.isOperationFinished
@@ -90,6 +74,7 @@ export default {
             async (status) => {
                 if (status) {
                     this.managers = await this.getManagers(this.selectedType);
+                    this.isOperationFinished = true;
                 }
             }
         );

@@ -203,12 +203,13 @@ class HydroCalculation extends Controller
                 'gu'
             )
             ->where('ngdu_id', $ngdu_id)
-            ->where('trunkline', true);
+            ->where('trunkline', true)
+            ->where('water_pipe', false);
 
         $pipes = $this
             ->getFilteredQuery($input, $query)
             ->get();
-        
+
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {
@@ -278,7 +279,11 @@ class HydroCalculation extends Controller
 
     public function getCalculatedData(string $date)
     {
-        return HydroCalcResult::with('oilPipe.pipeType')
+        return HydroCalcResult::whereHas('oilPipe', function ($query) {
+            $query->where('trunkline', true)
+                ->where('water_pipe', false);
+        })
+            ->with('oilPipe.pipeType')
             ->where('date', $date)
             ->orderBy('id')
             ->paginate(25);
