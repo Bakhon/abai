@@ -44,11 +44,6 @@ export default {
                     langCode: 'map_constructor.copy'
                 },
                 {
-                    icon: 'fas fa-eye',
-                    langCode: 'map_constructor.fit_to_screen',
-                    action: 'feetToScreen',
-                },
-                {
                     icon: 'fas fa-cut',
                     langCode: 'map_constructor.scissors'
                 },
