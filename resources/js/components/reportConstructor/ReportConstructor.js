@@ -25,6 +25,7 @@ export default {
                 geo: null
             },
             reportName: null,
+            isAttachScrollOfTwoReports: true,
             attributeDescriptions: null,
             attributesForObject: null,
             attributesByHeader: null,
@@ -36,18 +37,39 @@ export default {
                 "well_summary": "суммарные данные по скважинам",
                 "object_summary": "суммарные данные по объекту",
             },
+            indexFields: {
+                "well_production": "dict.well.uwi",
+                "well_pump": "dict.well.uwi",
+                "object": "dict.org.name_ru",
+                "well_summary": "dict.well.uwi",
+                "object_summary": "dict.org_type.name_ru",
+            },
             sheetConfigurations: {
                 well_production: {
                     mandatoryFields: ['prod.well_status_view.dbeg', 'prod.well_status_view.dend', 'dict.well.uwi'],
                     dateField: 'prod.well_status_view.dbeg',
                     uniqueField: 'dict.well.uwi',
-                    orderedDates: []
+                    reports: [
+                        {
+                            orderedDates: []
+                        },
+                        {
+                            orderedDates: []
+                        }
+                    ]
                 },
                 well_pump: {
                     mandatoryFields: ['prod.well_status_view.dbeg', 'prod.well_status_view.dend', 'dict.well.uwi'],
                     dateField: 'prod.well_status_view.dbeg',
                     uniqueField: 'dict.well.uwi',
-                    orderedDates: []
+                    reports: [
+                        {
+                            orderedDates: []
+                        },
+                        {
+                            orderedDates: []
+                        }
+                    ]
                 }
             },
             dailyParametersCategoryLabel: 'Параметры по дням',
@@ -59,26 +81,59 @@ export default {
             currentItemType: null,
             currentDatePickerFilter: 'date',
             currentOption: null,
-            statistics: null,
             statisticsColumns: null,
             items: [],
             isLoading: false,
+            isComparisonComplete: true,
             isDisplayParameterBuilder: false,
-            isLeftSectionHided: false,
+            isDisplayReportComparison: false,
+            isLeftSectionHidden: false,
             wellSheetTypes: {
                 'well_production': 'Добывающие скважины',
                 'well_pump': 'Нагнетательные скважины'
             },
             wellTypeSelected: 'well_production',
             selectedObjects: {'org': {}, 'geo': {}, 'tech': {}},
-            startDate: null,
-            endDate: null,
+            datesByReport: [
+                {
+                    startDate: null,
+                    endDate: null,
+                },
+                {
+                    startDate: null,
+                    endDate: null,
+                }
+            ],
+            reportsContent: [
+                {
+                    statistics: null,
+                    indexFields: {
+                        "well_production": [],
+                        "well_pump": [],
+                        "object": [],
+                        "well_summary": [],
+                        "object_summary": [],
+                    },
+                    comparisonResults: null,
+                },
+                {
+                    statistics: null,
+                    indexFields: {
+                        "well_production": [],
+                        "well_pump": [],
+                        "object": [],
+                        "well_summary": [],
+                        "object_summary": [],
+                    },
+                    comparisonResults: null,
+                }
+            ],
             dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
             templates: [],
             newTemplateName: "",
             storableParameters: [
-                "startDate", "endDate", "selectedObjects",
+                "datesByReport", "isDisplayReportComparison", "selectedObjects",
                 "activeTab", "activeButtonId", "currentStructureType",
                 "currentItemType", "currentOption", "attributesByHeader",
                 "wellTypeSelected"
@@ -225,7 +280,9 @@ export default {
         },
         async loadStatistics() {
             this.SET_LOADING(true)
-            this.statistics = null;
+            this.isComparisonComplete = false
+            this.reportsContent[0]['statistics'] = null;
+            this.reportsContent[1]['statistics'] = null;
             let wellTypeSelectedAtRequest = this.copyString(this.wellTypeSelected)
             this.attributesByHeaderAtRequest = JSON.parse(JSON.stringify(this.attributesByHeader))
 
@@ -237,22 +294,49 @@ export default {
                 return
             }
 
-            let params = await this.getStatisticsRequestParams();
+            let paramsFirstReport = await this.getStatisticsRequestParams(0);
+            let paramsSecondReport = null
+            if (this.isDisplayReportComparison) {
+                paramsSecondReport = await this.getStatisticsRequestParams(1);
+            }
 
-            this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
+            await this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(paramsFirstReport), {
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
                 this.setAttributesParameters()
-                this.statistics = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest);
+                this.reportsContent[0]['statistics'] = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest, 0);
                 this.setActiveTab(wellTypeSelectedAtRequest)
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                if (!this.isDisplayReportComparison) {
+                    this.SET_LOADING(false)
+                }
+            })
 
+            if (!this.isDisplayReportComparison) {
+                return
+            }
+            await this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(paramsSecondReport), {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                this.reportsContent[1]['statistics'] = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest, 1);
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
                 this.SET_LOADING(false)
+                if (this.isAttachScrollOfTwoReports) {
+                    this.attachScrollOfTwoReports()
+                }
+                this.setComparisonResults(0, 1)
+                this.setComparisonResults(1, 0)
+                this.isComparisonComplete = true
             })
         },
         validateStatisticsParams() {
@@ -330,11 +414,11 @@ export default {
             }
             return field in this.attributeDescriptions["formulas"]
         },
-        async getStatisticsRequestParams() {
+        async getStatisticsRequestParams(reportNum) {
             let selectedObjects = await this.getSelectedObjects();
             let fields = await this.getSelectedAttributes();
             fields = await this.addMandatoryFields(fields);
-            let dates = await this.getDates();
+            let dates = this.getDates(reportNum);
             let currentStructureType = this.currentStructureType;
             fields['well'] = fields[this.wellTypeSelected]
 
@@ -411,15 +495,15 @@ export default {
             }
             return fields
         },
-        getDates() {
+        getDates(reportNum) {
             let dates = []
-            if (this.startDate) {
-                dates.push(formatDate.getMinOfDayFormatted(this.startDate))
+            if (this.datesByReport[reportNum]['startDate']) {
+                dates.push(formatDate.getMinOfDayFormatted(this.datesByReport[reportNum]['startDate']))
             } else {
                 dates.push(null)
             }
-            if (this.endDate) {
-                dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
+            if (this.datesByReport[reportNum]['endDate']) {
+                dates.push(formatDate.getMaxOfDayFormatted(this.datesByReport[reportNum]['endDate']))
             } else {
                 dates.push(formatDate.getTodayDateFormatted());
             }
@@ -446,21 +530,32 @@ export default {
                 this.maxDepthOfSelectedAttributes[sheetType] = this.getMaxDepthOfTree(selectedAttributes[sheetType])
             }
         },
-        postProcessStatistics(statistics, wellTypeSelectedAtRequest) {
+        postProcessStatistics(statistics, wellTypeSelectedAtRequest, reportNum) {
             statistics[wellTypeSelectedAtRequest] = statistics['well']
             delete statistics['well']
-            this.setUniqueOrderedDates(statistics)
+            this.setUniqueOrderedDates(statistics, reportNum)
             statistics = this.processDailyStatistics(statistics)
+            this.setIndexFields(statistics, reportNum)
             return statistics
         },
-        setUniqueOrderedDates(statistics) {
+        setIndexFields(statistics, reportNum) {
+            for (let sheet in statistics) {
+                if (!this.isSheetHasContent(statistics, sheet)) {
+                    continue
+                }
+                let indexField = this.indexFields[sheet]
+                let indexValues = statistics[sheet].map(row => row[indexField])
+                this.reportsContent[reportNum]['indexFields'][sheet] = indexValues
+            }
+        },
+        setUniqueOrderedDates(statistics, reportNum) {
             for (let sheet in this.sheetConfigurations) {
                 if (!this.isSheetHasContent(statistics, sheet)) {
                     continue
                 }
                 let dateField = this.sheetConfigurations[sheet]['dateField']
                 let uniqueDates = new Set(statistics[sheet].map(row => row[dateField]))
-                this.sheetConfigurations[sheet]['orderedDates'] = Array.from(uniqueDates).sort(
+                this.sheetConfigurations[sheet]['reports'][reportNum]['orderedDates'] = Array.from(uniqueDates).sort(
                     function (a, b) {
                         return new Date(a) - new Date(b)
                     }
@@ -521,13 +616,13 @@ export default {
             }
         },
         isStatisticsOfTabExists(tabName) {
-            if (!(tabName in this.statistics)) {
+            if (!(tabName in this.reportsContent[0]['statistics'])) {
                 return false
             }
-            if (Array.isArray(this.statistics[tabName]) && this.statistics[tabName].length > 0) {
+            if (Array.isArray(this.reportsContent[0]['statistics'][tabName]) && this.reportsContent[0]['statistics'][tabName].length > 0) {
                 return true
             }
-            return !Array.isArray(this.statistics[tabName]) && Object.keys(this.statistics[tabName]).length > 0;
+            return !Array.isArray(this.reportsContent[0]['statistics'][tabName]) && Object.keys(this.reportsContent[0]['statistics'][tabName]).length > 0;
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
@@ -539,6 +634,126 @@ export default {
                 }
             }
             return columns
+        },
+        attachScrollOfTwoReports() {
+            $('#top-table').scroll(function () {
+                $('#bottom-table').scrollTop($(this).scrollTop());
+                $('#bottom-table').scrollLeft($(this).scrollLeft());
+            });
+
+            $('#bottom-table').scroll(function () {
+                $('#top-table').scrollTop($(this).scrollTop());
+                $('#top-table').scrollLeft($(this).scrollLeft());
+            });
+        },
+        setComparisonResults(reportNum1, reportNum2) {
+            let firstReport = this.reportsContent[reportNum1]['statistics']
+            let comparisonResults = {}
+            for (let sheet in firstReport) {
+                if (sheet in this.sheetConfigurations) {
+                    comparisonResults[sheet] = this.getDailySheetComparisonResult(sheet, reportNum1, reportNum2);
+                } else {
+                    comparisonResults[sheet] = this.getGenericSheetComparisonResults(sheet, reportNum1, reportNum2);
+                }
+            }
+            this.reportsContent[reportNum1]['comparisonResults'] = comparisonResults
+        },
+        getGenericSheetComparisonResults(sheet, reportNum1, reportNum2) {
+            let firstReport = this.reportsContent[reportNum1]['statistics']
+            let secondReport = this.reportsContent[reportNum2]['statistics']
+            let comparisonResults = []
+            let rowNumInSecondReport = 0
+            let indexField = this.indexFields[sheet]
+            for (let i = 0; i < firstReport[sheet].length; i++) {
+                let comparisonRow = {}
+                let rowIdFirstReport = firstReport[sheet][i][indexField]
+                let rowNumInSecondReportOfCurrentRowId = this.findNextRowNumByIndexValue(
+                    rowIdFirstReport, rowNumInSecondReport, indexField, secondReport[sheet]
+                )
+                if (rowNumInSecondReportOfCurrentRowId === -1) {
+                    comparisonRow = {'_isRowNew': true}
+                    comparisonResults.push(comparisonRow)
+                    continue
+                }
+                rowNumInSecondReport = rowNumInSecondReportOfCurrentRowId
+                let row1 = firstReport[sheet][i]
+                let row2 = secondReport[sheet][rowNumInSecondReport]
+                for (let parameter in row1) {
+                    let value1 = row1[parameter]
+                    let value2 = row2[parameter]
+                    comparisonRow[parameter] = this.compareValues(value1, value2)
+                }
+                comparisonResults.push(comparisonRow)
+            }
+            return comparisonResults;
+        },
+        getDailySheetComparisonResult(sheet, reportNum1, reportNum2) {
+            let firstReport = this.reportsContent[reportNum1]['statistics']
+            let secondReport = this.reportsContent[reportNum2]['statistics']
+            let comparisonResults = {}
+            for (let indexParameter in firstReport[sheet]) {
+                let comparisonRow = {}
+                let row1 = firstReport[sheet][indexParameter]
+                if (!(indexParameter in secondReport[sheet])) {
+                    comparisonRow = {'_isRowNew': true}
+                    comparisonResults[indexParameter] = comparisonRow
+                    continue
+
+                }
+                let row2 = secondReport[sheet][indexParameter]
+                let comparisonRowOfGeneric = this.getGenericParametersComparison(row1, row2, sheet);
+                let comparisonRowOfDates = this.getDatesParametersComparison(reportNum1, reportNum2, row1, row2, sheet);
+                comparisonRow = Object.assign(comparisonRow, comparisonRowOfDates, comparisonRowOfGeneric)
+                comparisonResults[indexParameter] = comparisonRow
+            }
+            return comparisonResults;
+        },
+        findNextRowNumByIndexValue(rowId, start, indexField, statisticsToSearchIn) {
+            for (let j = start; j < statisticsToSearchIn.length; j++) {
+                if (rowId === statisticsToSearchIn[j][indexField]) {
+                    return j
+                }
+            }
+            return -1
+        },
+        getOrderedDates(sheet, reportNum) {
+            if (!(sheet in this.sheetConfigurations)) {
+                return []
+            }
+            return this.sheetConfigurations[sheet]['reports'][reportNum]['orderedDates']
+        },
+        getGenericParameters(sheet, reportNum) {
+            let dates = this.getOrderedDates(sheet, reportNum)
+            let row = this.reportsContent[reportNum]['statistics'][sheet][0]
+            let parameters = []
+            for (let parameter in row) {
+                if (dates.includes(parameter)) {
+                    continue
+                }
+                parameters.push(parameter)
+            }
+            return parameters
+        },
+        compareValues(value1, value2) {
+            if ((value1 === 'None') && this.isFloat(value2)) {
+                return -1
+            }
+            if ((value2 === 'None') && this.isFloat(value1)) {
+                return 1
+            }
+            if (!(this.isFloat(value1) && this.isFloat(value2))) {
+                return 0
+            }
+            if (+value1 > +value2) {
+                return 1
+            }
+            if (+value1 < +value2) {
+                return -1
+            }
+            return 0
+        },
+        isFloat(n) {
+            return parseFloat(n.match(/^-?\d*(\.\d+)?$/)) > 0;
         },
         async getStatisticsFile() {
             this.SET_LOADING(true)
@@ -565,13 +780,46 @@ export default {
             }).catch((error) => console.log(error)
             ).finally(() => this.SET_LOADING(false));
         },
+        getGenericParametersComparison(row1, row2, sheet) {
+            let genericParams = this.getGenericParameters(sheet, 0)
+            let comparisonRow = {}
+            for (let parameter of genericParams) {
+                let value1 = row1[parameter]
+                let value2 = row2[parameter]
+                comparisonRow[parameter] = this.compareValues(value1, value2)
+            }
+            return comparisonRow;
+        },
+        getDatesParametersComparison(reportNum1, reportNum2, row1, row2, sheet) {
+            let dates1 = this.getOrderedDates(sheet, reportNum1)
+            let dates2 = this.getOrderedDates(sheet, reportNum2)
+            let comparisonRow = {}
+            for (let j = 0; j < dates1.length; j++) {
+                comparisonRow[dates1[j]] = {}
+                let parametersOfDate1 = row1[dates1[j]]
+                if (j >= dates2.length) {
+                    for (let parameter in parametersOfDate1) {
+                        comparisonRow[dates1[j]][parameter] = 1
+                    }
+                    continue
+                }
+
+                let parametersOfDate2 = row2[dates2[j]]
+                for (let parameter in parametersOfDate1) {
+                    let value1 = parametersOfDate1[parameter]
+                    let value2 = parametersOfDate2[parameter]
+                    comparisonRow[dates1[j]][parameter] = this.compareValues(value1, value2)
+                }
+            }
+            return comparisonRow;
+        },
         async getStatisticsDownloadRequestParams() {
-            let params = await this.getStatisticsRequestParams()
+            let params = await this.getStatisticsRequestParams(0)
             params['sheetConfigurations'] = {'well': this.sheetConfigurations[this.wellTypeSelected]}
             params['dailyParametersCategoryLabel'] = this.dailyParametersCategoryLabel
             return params
         },
-        getHeaders(sheetType) {
+        getHeaders(sheetType, reportNum) {
             let genericHeaders = this.getGenericHeaders(sheetType)
             if (!(sheetType in this.sheetConfigurations)) {
                 return genericHeaders
@@ -580,12 +828,12 @@ export default {
             if (dailyHeaders.length === 0) {
                 return genericHeaders
             }
-            let dates = this.getDatesForHeaders(sheetType, dailyHeaders)
+            let dates = this.getDatesForHeaders(sheetType, dailyHeaders, reportNum)
             let maxDepth = Math.max(dailyHeaders.length + 1, genericHeaders.length)
             let layers = []
             for (let i = 0; i < maxDepth; i++) {
                 let newLayer = []
-                if (i < genericHeaders.length ) {
+                if (i < genericHeaders.length) {
                     newLayer = newLayer.concat(genericHeaders[i])
                 }
                 newLayer = newLayer.concat(this.getDailyLayer(dates, dailyHeaders, i))
@@ -605,8 +853,8 @@ export default {
             }
             return newLayer
         },
-        getDatesForHeaders(sheetType, dailyHeaders) {
-            let dates = this.sheetConfigurations[sheetType]['orderedDates']
+        getDatesForHeaders(sheetType, dailyHeaders, reportNum) {
+            let dates = this.sheetConfigurations[sheetType]['reports'][reportNum]['orderedDates']
             let maxChildren = 0
             for (let layer of dailyHeaders) {
                 if (maxChildren < layer.length) {
@@ -768,48 +1016,48 @@ export default {
             this.currentDatePickerFilter = 'date';
             this.dateFlow = ['year', 'month', 'date'];
         },
-        onStartDatePickerClick(date) {
+        onStartDatePickerClick(date, reportNum) {
             if (!date) return;
             switch (this.currentDatePickerFilter) {
                 case "year":
-                    this.setStartOfYear(date);
+                    this.setStartOfYear(date, reportNum);
                     break;
                 case "month":
-                    this.setStartOfMonth(date);
+                    this.setStartOfMonth(date, reportNum);
                     break;
                 default:
-                    this.startDate = date;
+                    this.datesByReport[reportNum]['startDate'] = date;
             }
         },
-        setStartOfYear(date) {
-            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        setStartOfYear(date, reportNum) {
+            this.datesByReport[reportNum]['startDate'] = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
         },
-        setStartOfMonth(date) {
-            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        setStartOfMonth(date, reportNum) {
+            this.datesByReport[reportNum]['startDate'] = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
-        onEndDatePickerClick(date) {
+        onEndDatePickerClick(date, reportNum) {
             if (!date) return;
             switch (this.currentDatePickerFilter) {
                 case "year":
-                    this.setEndOfYear(date);
+                    this.setEndOfYear(date, reportNum);
                     break;
                 case "month":
-                    this.setEndOfMonth(date);
+                    this.setEndOfMonth(date, reportNum);
                     break;
                 default:
-                    this.endDate = date;
+                    this.datesByReport[reportNum]['endDate'] = date;
             }
         },
-        setEndOfYear(date) {
-            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        setEndOfYear(date, reportNum) {
+            this.datesByReport[reportNum]['endDate'] = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
-        setEndOfMonth(date) {
-            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        setEndOfMonth(date, reportNum) {
+            this.datesByReport[reportNum]['endDate'] = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
-        clearDate() {
+        clearDate(reportNum) {
             this.setDefaultDateFilter();
-            this.startDate = null;
-            this.endDate = null;
+            this.datesByReport[reportNum]['startDate'] = null;
+            this.datesByReport[reportNum]['endDate'] = null;
         },
         saveTemplate() {
             this.SET_LOADING(true)
@@ -909,16 +1157,87 @@ export default {
             return this.wellTypeSelected === sheetType
         },
         isStatisticsForSheetTypeExists(sheetType) {
-            let sheet = this.statistics[sheetType]
+            let sheet = this.reportsContent[0]['statistics'][sheetType]
             if (sheetType in this.sheetConfigurations) {
                 return (sheet && Object.keys(sheet).length > 0)
             }
             return (sheet && sheet.length > 0)
         },
         onSectionHidingEvent(method) {
-            if(method == 'left'){
-                this.isLeftSectionHided = !this.isLeftSectionHided
+            if (method === 'left') {
+                this.isLeftSectionHidden = !this.isLeftSectionHidden
             }
         },
+        isCreateReportAvailable() {
+            if (this.isDisplayReportComparison) {
+                return this.datesByReport[0]['startDate'] && this.datesByReport[0]['endDate'] && this.datesByReport[1]['startDate'] && this.datesByReport[1]['endDate']
+            }
+            return this.datesByReport[0]['startDate'] && this.datesByReport[0]['endDate']
+        },
+        getSectionClass() {
+            if (this.isDisplayReportComparison) {
+                return 'section-content-half bg-dark'
+            }
+            return 'section-content bg-dark'
+        },
+        onCommonScrollForTwoReports() {
+            this.isAttachScrollOfTwoReports = !this.isAttachScrollOfTwoReports
+            if (this.isAttachScrollOfTwoReports) {
+                this.attachScrollOfTwoReports()
+            } else {
+                this.detachScrollOfTwoReports()
+            }
+        },
+        detachScrollOfTwoReports() {
+            $('#top-table').off("scroll")
+            $('#bottom-table').off("scroll")
+        },
+        getCompareResultClass(rowId, columnId, sheet, reportNum) {
+            if (!this.isComparisonComplete) {
+                return ""
+            }
+            if (!this.reportsContent[reportNum]['comparisonResults']) {
+                return ""
+            }
+            let comparisonResults = this.reportsContent[reportNum]['comparisonResults'][sheet]
+            if (!comparisonResults) {
+                return ""
+            }
+            if ('_isRowNew' in comparisonResults[rowId] && comparisonResults[rowId]['_isRowNew']) {
+                return 'green-compare'
+            }
+            if (comparisonResults[rowId][columnId] === 1) {
+                return 'green-compare'
+            }
+
+            if (comparisonResults[rowId][columnId] === -1) {
+                return 'red-compare'
+            }
+            return ''
+        },
+
+        getCompareDailyResultClass(rowId, date, columnId, sheet, reportNum) {
+            if (!this.isComparisonComplete) {
+                return ""
+            }
+            if (!this.reportsContent[reportNum]['comparisonResults']) {
+                return ""
+            }
+            let comparisonResults = this.reportsContent[reportNum]['comparisonResults'][sheet]
+            if (!comparisonResults) {
+                return ""
+            }
+            if ('_isRowNew' in comparisonResults[rowId] && comparisonResults[rowId]['_isRowNew']) {
+                return 'green-compare'
+            }
+            if (comparisonResults[rowId][date][columnId] === 1) {
+                return 'green-compare'
+            }
+
+            if (comparisonResults[rowId][date][columnId] === -1) {
+                return 'red-compare'
+            }
+            return ''
+        }
     }
 }
