@@ -1007,7 +1007,7 @@ export default {
                     mapSize[0] / 2,
                     mapSize[1] / 2,
                 ]
-                this.map.getView().setZoom(this.map.getView().getMinZoom());
+                this.map.getView().setZoom(1);
                 this.map.getView().centerOn(mapCenter, this.map.getSize(), position);
             }
         }
