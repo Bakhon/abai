@@ -35,7 +35,8 @@ export default {
                 'manager': true,
                 'deputy': false
             },
-            managerType: undefined
+            managerType: undefined,
+            corporateKpdWaiting: [125,100,125,125,125,100,125]
         };
     },
     methods: {
@@ -138,6 +139,7 @@ export default {
                         kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                         kpd.fact = sorted.at(-1).fact;
                     }
+                    kpd['waiting'] = this.corporateKpdWaiting[index];
                     let elements = kpd.kpd_elements;
                     filteredKpd[index]['elements'] = kpd.kpd_elements;
                     delete filteredKpd[index]['kpd_elements'];
@@ -184,6 +186,9 @@ export default {
             this.fillKpdList(this.corporateManager,'corporate');
             this.SET_LOADING(false);
         },
+        getCorporateSummaryWaiting() {
+            return Math.round(_.sum(this.corporateKpdWaiting) / this.corporateKpdWaiting.length);
+        }
     },
     async mounted() {
         await this.updateData();
