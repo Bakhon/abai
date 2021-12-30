@@ -255,7 +255,7 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
-            ->select(['name_ru',])
+            ->select(['name_ru', 'category'])
             ->get()
             ->toArray();
 
