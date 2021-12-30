@@ -557,7 +557,7 @@ export default {
         measWaterCut: { water_cut: null },
         status: { name_ru: null },
         category: { name_ru: null },
-        category_last: { name_ru: null },
+        category_last: { name_ru: null, category: null },
         expl: { dbeg: null, name_ru: null },
         expl_right: { dbeg: null, name_ru: null },
         techs: null,
@@ -1005,12 +1005,26 @@ export default {
       let gdisCurrent_note = this.well.gdisCurrent.note
         ? this.well.gdisCurrent.note
         : "";
-      let gdisCurrentValueBhp =
-        this.well.techmode.value_double && this.well.techmode.dbeg
+      let gdisCurrentValueBhpInj =  
+        this.well.techmode.value_double && this.well.techmode.dbeg && this.well.category_last.category == 5
+        && (parseFloat(this.well.techmode.value_double) > parseFloat(this.well.gdisComplex.value_double))
           ? this.well.techmode.value_double.toFixed(1) +
             " / " +
             this.getFormatedDate(this.well.techmode.dbeg)
-          : "";
+          : "";   
+      let gdisCurrentValueBhpOil =  
+        this.well.techmode.value_double && this.well.techmode.dbeg && this.well.category_last.category == 13
+        && (parseFloat(this.well.techmode.value_double) < parseFloat(this.well.gdisComplex.value_double))
+          ? this.well.techmode.value_double.toFixed(1) +
+            " / " +
+            this.getFormatedDate(this.well.techmode.dbeg)
+          : ""; 
+      let gdisCurrentValueBhp = this.well.techmode.value_double && this.well.techmode.dbeg
+          ? this.well.techmode.value_double.toFixed(1) +
+            " / " +
+            this.getFormatedDate(this.well.techmode.dbeg)
+          : "";       
+      let pzab = this.getPzab(gdisCurrentValueBhpInj, gdisCurrentValueBhpOil, gdisCurrentValueBhp);     
       let rzatrStat = this.well.rzatrStat.value_double
         ? this.well.rzatrStat.value_double
         : "";
@@ -1414,7 +1428,7 @@ export default {
         },
         {
           name: this.trans("well.rzab"),
-          data: gdisCurrentValueBhp,
+          data: pzab,
           type: ["all"],
         },
         {
@@ -1575,6 +1589,15 @@ export default {
         }
       }
       return value;
+    },
+    getPzab (inj, oil, other) {
+      if (this.well.category_last.category == 5) {
+        return inj;
+      }
+      if (this.well.category_last.category == 13) {
+        return oil;
+      }
+      return other;
     },
     getwellPerf(objectName, objectKey, objectKey2) {
       let val = "";
