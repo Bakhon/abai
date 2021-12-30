@@ -255,22 +255,41 @@
                 <div v-if="menuVisibility.deputy" class="col-7 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
                         <div v-for="(manager, index) in deputy" class="manager-header cursor-pointer">
-                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,deputy)">
-                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
-                                <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
-                                <div class="col-4 row m-0">
-                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>
-                                    <div class="col-12 mt-3 p-0 progress progress_template">
-                                        <div
-                                                :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
-                                                :style="{width: manager.fact + '%',}"
-                                                role="progressbar"
-                                                :aria-valuenow="manager.fact"
-                                                aria-valuemin="0"
-                                                aria-valuemax="100"
-                                        ></div>
+                            <div class="d-flex p-0">
+                                <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-11 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,deputy)">
+                                    <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
+                                    <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
+                                    <div class="col-4 row m-0">
+    <!--                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>-->
+                                        <div class="col-12 d-flex p-0 mt-3 justify-content-between">
+                                            <div class="d-flex p-0">
+                                                <div class="text-left manager-result">Результативность</div>
+                                                <div class="text-right ml-2 manager-result">
+                                                    0%
+                                                </div>
+                                            </div>
+                                            <div class="d-flex p-0">
+                                                <div class="text-left kpd-header">Ожидание</div>
+                                                <div class="text-right ml-2 kpd-header">
+                                                    {{getCorporateSummaryWaiting()}}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 p-0 progress progress_template">
+                                            <div
+                                                    :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
+                                                    :style="{width: manager.fact + '%',}"
+                                                    role="progressbar"
+                                                    :aria-valuenow="manager.fact"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100"
+                                            ></div>
+                                        </div>
+<!--                                        <div class="col-1 ml-auto mr-2">{{manager.fact}}%</div>-->
                                     </div>
-                                    <div class="col-1 ml-auto mr-2">{{manager.fact}}%</div>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end"  @click="switchManager(manager,'manager')">
+                                    <img class="mt-3 mr-2" height="15em" src="/img/icons/link.svg" />
                                 </div>
                             </div>
                             <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
