@@ -35,7 +35,8 @@ export default {
                 'manager': true,
                 'deputy': false
             },
-            managerType: undefined
+            managerType: undefined,
+            corporateKpdWaiting: [125,100,125,125,125,100,125]
         };
     },
     methods: {
@@ -72,10 +73,24 @@ export default {
             });
             return kpdList;
         },
-        getProgressBarFillingColor(progress) {
-            if (progress <= 70) {
+        getProgressBarFillingColor(kpd) {
+            if (!kpd || (kpd && !kpd['fact'])) {
+                return 'progress-bar_filling__high';
+            }
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+            let isDate = kpd.step.includes('.');
+            if (isDate) {
+                step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
+                target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
+            }
+
+            if (fact < step) {
+                return 'progress-bar_filling__low';
+            } else if (fact >= step && fact < target) {
                 return 'progress-bar_filling__medium';
-            } else if (progress > 70) {
+            } else if (fact >= target) {
                 return 'progress-bar_filling__high';
             }
         },
@@ -96,10 +111,10 @@ export default {
                 this.menuVisibility['manager'] = false;
             }
         },
-        switchKpdVisibility(manager) {
+        switchKpdVisibility(manager,managers) {
             manager['name'] = manager['name'] + ' ';
             manager['isSelected'] = !manager['isSelected'];
-            _.forEach(this.managers, (item,index) => {
+            _.forEach(managers, (item,index) => {
                 if (item.id !== manager.id) {
                     item['isSelected'] = false;
                 }
@@ -134,24 +149,39 @@ export default {
                         kpd.summary = 0;
                         kpd.fact = 0;
                     } else {
-                        kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,sorted.at(-1).fact));
-                        kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                         kpd.fact = sorted.at(-1).fact;
+                        if (kpd.fact.includes('.')) {
+                            kpd.fact = moment(sorted.at(-1).fact, 'DD.MM.YYYY').toDate().getTime();
+                        }
+                        kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,kpd.fact));
+                        kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
                     }
+                    kpd['waiting'] = this.corporateKpdWaiting[index];
                     let elements = kpd.kpd_elements;
                     filteredKpd[index]['elements'] = kpd.kpd_elements;
                     delete filteredKpd[index]['kpd_elements'];
                 });
                 manager['fact'] = _.sumBy(filteredKpd, item => Number(item.summary));
+                if (isNaN(manager['fact'])) {
+                    manager['fact'] = moment(filteredKpd.at(-1).fact,'DD.MM.YYYY').toDate().getTime();
+                }
             });
         },
-        getKpdEfficiency(step,target,maximum,fact) {
-            fact = parseFloat(fact);
-            target = parseFloat(target);
-            maximum = parseFloat(maximum);
-            step = parseFloat(step);
+        getKpdEfficiency(inputStep,inputTarget,inputMaximum,inputFact) {
+            let fact = parseFloat(inputFact);
+            let target = parseFloat(inputTarget);
+            let maximum = parseFloat(inputMaximum);
+            let step = parseFloat(inputStep);
+
+            let isDate = inputStep.includes('.');
+            if (isDate) {
+                step = moment(inputStep, 'DD.MM.YYYY').toDate().getTime();
+                target = moment(inputTarget, 'DD.MM.YYYY').toDate().getTime();
+                maximum = moment(inputMaximum, 'DD.MM.YYYY').toDate().getTime();
+            }
+
             if (fact < step) {
-                return 0;
+                return 5;
             }
             if (fact === step) {
                 return 50;
@@ -184,6 +214,9 @@ export default {
             this.fillKpdList(this.corporateManager,'corporate');
             this.SET_LOADING(false);
         },
+        getCorporateSummaryWaiting() {
+            return Math.round(_.sum(this.corporateKpdWaiting) / this.corporateKpdWaiting.length);
+        }
     },
     async mounted() {
         await this.updateData();

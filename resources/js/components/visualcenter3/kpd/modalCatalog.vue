@@ -13,7 +13,7 @@
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">Каталог КПД</div>
                     <div class="btn-toolbar">
-                        <button type="button" class="modal-button_add mr-2" @click="[selectedKpd = {},$modal.show('modalKpdEdit')]">
+                        <button type="button" class="modal-button_add mr-2" @click="[selectedKpd = {},$modal.show('modalPassportKpd')]">
                             {{trans('kpd_tree.add')}}
                         </button>
                         <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
@@ -27,7 +27,7 @@
                             <th class="p-2 text-center">№</th>
                             <th class="p-2 text-left">Наименование КПД</th>
                         </tr>
-                        <tr v-if="kpdList.length > 0" v-for="(row,index) in kpdList" @click="[selectedKpd = row,$modal.show('modalKpdEdit')]">
+                        <tr v-if="kpdList.length > 0" v-for="(row,index) in kpdList" @click="[selectedKpd = row,$modal.show('modalPassportKpd')]">
                             <td class="p-2 text-center">{{index + 1}}</td>
                             <td class="p-2 text-left">{{row.name}}</td>
                         </tr>
@@ -35,11 +35,15 @@
                 </div>
             </div>
         </modal>
-        <kpd-modal-kpd-edit ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
+        <kpd-modal-passport ref="editKpd" :managers="managers" :corporate-manager="corporateManager" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-passport>
     </div>
 </template>
 
 <script>
+import Vue from "vue";
+
+Vue.component('kpd-modal-passport', require('./modalPassportKpd.vue').default);
+
 export default {
     data: function () {
         return {
