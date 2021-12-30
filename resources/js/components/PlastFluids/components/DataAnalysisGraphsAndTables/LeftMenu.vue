@@ -183,7 +183,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleAnalysisTableData"]),
+    ...mapActions("plastFluids", ["handleAnalysisTableData"]),
     ...mapMutations("plastFluidsLocal", [
       "SET_GRAPH_TYPE",
       "SET_CURRENT_GRAPHICS",
