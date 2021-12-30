@@ -138,18 +138,19 @@ export default {
   data: function () {
     return {
       activatedBlocks: {
-        isIndexActive: true,
+        isIndexActive: false,
         isSearchWell: true,
-        isIndicatorActive: true,
-        isSearchWellButton: false
+        isIndicatorActive: false,
+        isSearchWellButton: true,
+        isEditedParams: true
       },
       tabs: [
         {
-          title: this.trans("prod-plan.basic-production-and-injection"),
+          title: this.trans("prod-plan.method_mat_balance"),
           component: fluidPredictionMethod,
         },
         {
-          title: this.trans("prod-plan.water-cut-prediction-method"),
+          title: this.trans("prod-plan.displacement-curves"),
           component: waterCutPredictionMethod,
         },
         {
