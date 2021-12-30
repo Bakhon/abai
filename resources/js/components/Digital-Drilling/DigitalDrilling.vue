@@ -155,6 +155,7 @@
     Vue.component('well-deepening', require('./project/well-deepening').default);
     Vue.component('well-fastening', require('./project/well-fastening').default);
     Vue.component('well-calculation', require('./project/well-calculation').default);
+    Vue.component('project-geology', require('./project/ProjectGeology').default);
     Vue.component('project_inclino', require('./project/inclino').default);
     Vue.component('report-download', require('./project/ReportDownload').default);
 
