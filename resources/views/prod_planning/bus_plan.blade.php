@@ -5,6 +5,8 @@
 @section('module_title', trans('prod-plan.module-title'))
 @section('module_home_url', route('prod_planning_index'))
 @section('content')
+<div class="prod-planning-wrapper">
 <navbar-prod-plan></navbar-prod-plan>
 <bus-plan></bus-plan>
+</div>
 @endsection

@@ -18,6 +18,8 @@ class EconomicDataLogType extends Model
 
     const GTM_VALUE = 6;
 
+    const MANUFACTURING_PROGRAM = 7;
+
 
     public static function ids(): array
     {
@@ -28,6 +30,7 @@ class EconomicDataLogType extends Model
             self::ANALYSIS_PARAM,
             self::DATA_FORECAST,
             self::GTM_VALUE,
+            self::MANUFACTURING_PROGRAM,
         ];
     }
 

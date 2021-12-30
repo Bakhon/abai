@@ -4,9 +4,10 @@
             <div class="mt-3 col-12 row m-0">
                 <div class="col-4"></div>
                 <div class="col-4 main-title">
-                    Дерево КПД блока Upstream на {{currentYear}} год
+                    Дерево КПД ТОО "КМГ Инжиниринг" на {{currentYear}} год
                 </div>
                 <div class="col-4 d-flex">
+                    <img @click="$modal.show('modalSettings')" class="p-2" src="/img/kpd-tree/settings.svg" width="40px">
                     <div class="main-buttons p-2 d-flex">
                         <div class="img-documents"></div>
                         <div @click="$modal.show('modalDocuments')" class="ml-1">Нормативные документы</div>
@@ -21,112 +22,181 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 col-12 row m-0 ceo-table">
-                <div class="col-2 d-flex">
-                    <div class="col-12 table-header kpd-main">
-                        КПД CEO
+            <div class="col-12 menu-block d-flex">
+                <div :class="[menuVisibility.strategic ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('strategic')"></div>
+                <div :class="[menuVisibility.corporate ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('corporate')"></div>
+                <div :class="[menuVisibility.manager ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('manager')"></div>
+                <div :class="[menuVisibility.deputy ? 'menu-item_selected' : 'menu-item','ml-1']" @click="switchMenuVisiblity('deputy')"></div>
+            </div>
+            <div class="mt-3 col-12 row m-0">
+                <div v-if="menuVisibility.strategic" class="col-2 d-flex">
+                    <div class="col-12 table-header">
+                        <span><b>Стратегические КПД</b></span>
                     </div>
                 </div>
-                <div class="col-4 d-flex">
-                    <div class="col-12 table-header p-1">
-                        КПД СЕО-1<br />
-                        (заместитель председателя Правления)
+
+                <div v-if="menuVisibility.corporate" class="col-3 d-flex p-0">
+                    <div class="col-12 table-header">
+                        <span><b>Корпоративные КПД</b></span>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="col-12 table-header p-1">
-                        КПД СЕО-2<br />
-                        (директора департаментов)
+
+                <div v-if="menuVisibility.manager" class="col-7">
+                    <div class="col-12 table-header">
+                        <span><b>Функциональные КПД руководящих работников (членов Правления)</b></span>
                     </div>
                 </div>
-                <div class="col-2 row m-0">
+
+                <div v-if="menuVisibility.deputy" class="col-7">
+                    <div class="col-12 table-header">
+                        <span><b>Функциональные КПД управленческих работников</b></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-12 row m-0">
+                <div v-if="menuVisibility.strategic" class="col-2 row m-0">
                     <div class="col-12 p-0">
-                        <div class="col-12 kpd-main d-flex p-4 kpd-ceo_list">
-                            <div class="img-goals"></div>
-                            <div class="ml-2">Цели и задачи <br>&emsp;блока UPSTREAM</div>
+                        <div class="col-12 d-flex p-2 table-sub-header">
+                            <img src="/img/kpd-tree/kmgi-1.svg" />
+                            <div>Цели и задачи <br>&emsp;ТОО "КМГ Инжиниринг"</div>
                         </div>
                         <div class="col-12 p-2 kpd-column">
                             <div
-                                    v-for="(kpd, index) in kpdCeo"
-                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"
-                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"
+                                    v-for="(kpd, index) in strategicKpdList"
+                                    class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
-                                <div class="text-right">
-                                    {{kpd.progress}}%
-                                </div>
-                                <div class="progress progress_template">
-                                    <div
-                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                            :style="{width: kpd.progress + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="kpd.progress"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                    ></div>
-                                </div>
-                                <div class="text-left">
-                                    {{kpd.name}}
+                                <div class="col-12">
+                                    <div class="text-right">
+                                        0%
+                                    </div>
+                                    <div class="progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
+                                                :style="{width: 0 + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="0"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="text-left">
+                                        {{kpd.name}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-4 row m-0">
-                    <div class="col-12 kpd-main d-flex p-4 kpd-ceo_list chairmaster" @click="switchManager(kpdDecompositionA)">
-                        <img class="filter-icon" :src="kpdDecompositionA.img"></img>
-                        <div class="ml-2 text-left"><b>{{kpdDecompositionA.manager}}</b> <br> {{kpdDecompositionA.title}}</div>
-                    </div>
-                    <div class="col-12 p-2 kpd-column">
-                        <div
-                                v-for="(kpd, index) in kpdCeoDecompositionA"
-                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"
-                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"
-                        >
-                            <div class="text-right">
-                                {{kpd.progress}}%
-                            </div>
-                            <div class="progress progress_template">
-                                <div
-                                        :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                        :style="{width: kpd.progress + '%',}"
-                                        role="progressbar"
-                                        :aria-valuenow="kpd.progress"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                ></div>
-                            </div>
-                            <div class="text-left">
-                                {{kpd.name}}
-                            </div>
+
+                <div v-if="menuVisibility.corporate" class="col-3 row m-0 p-0">
+                    <div class="col-12 p-0">
+                        <div class="col-12 d-flex p-2 table-sub-header chairmaster cursor-pointer" @click="switchManager(corporateManager[0],'corporate')">
+                            <img v-if="corporateManager[0].avatar" width="43px" :src="'/img/kpd-tree/managers/' + corporateManager[0].avatar" class="rounded-circle"></img>
+                            <div class="ml-2 text-left"><b>{{corporateManager[0].name}}</b> <br> {{corporateManager[0].title}}</div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-6 row m-0">
-                    <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="(master,masterIndex) in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
-                            <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
-                                <img :src="master.img" class="filter-icon"></img>
-                                <div class="ml-2 text-left"><b>{{master.manager}}</b><br>{{master.title}}</div>
-                            </div>
+                        <div class="col-12 p-2 kpd-column">
+                            {{corporateManager.kpdList}}
                             <div
-                                    v-for="(kpd,index) in master.kpd"
-                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"
-                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"
+                                    v-for="(kpd, index) in corporateManager[0].kpdList"
+                                    class="d-flex align-items-center"
+                                    @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]"
                             >
-                                <div class="item-list_vector m-2"></div>
-                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>
-                                <div class="progress progress_template mt-2 p-0 progress-ceo_b">
-                                    <div
-                                            :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
-                                            :style="{width: kpd.progress + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="kpd.progress"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                    ></div>
+                                <div class="col-12">
+                                    <div class="text-right">
+                                        {{kpd.rating}}%
+                                    </div>
+                                    <div class="progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(kpd.rating),'progress-bar progress-bar_filling']"
+                                                :style="{width: kpd.rating + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="kpd.rating"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="text-left">
+                                        {{kpd.name}}
+                                    </div>
                                 </div>
-                                <div class="col-1 text-right">
-                                    {{kpd.progress}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="menuVisibility.manager" class="col-7 row m-0">
+                    <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
+                        <div v-for="(manager, index) in managers" class="manager-header cursor-pointer">
+                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager)">
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
+                                <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
+                                <div class="col-4 row m-0">
+                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>
+                                    <div class="col-12 mt-3 p-0 progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
+                                                :style="{width: manager.rating + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="manager.rating"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="col-1 ml-auto mr-3">{{manager.fact}}%</div>
+                                </div>
+                            </div>
+                            <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
+                                    <div class="col-8 d-flex p-0">
+                                        <div class="kpd-id"></div>
+                                        <div>{{kpd.name}}</div>
+                                    </div>
+                                    <div class="col-3 d-flex mt-3 p-0">
+                                        <div class="col-12 p-0 progress progress_template">
+                                            <div
+                                                    :class="[getProgressBarFillingColor(kpd.fact),'progress-bar progress-bar_filling']"
+                                                    :style="{width: kpd.rating + '%',}"
+                                                    role="progressbar"
+                                                    :aria-valuenow="kpd.rating"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100"
+                                            ></div>
+                                        </div>
+                                        <div class="kpd-decomposition-fact">{{kpd.fact}}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div v-if="menuVisibility.deputy" class="col-7 row m-0">
+                    <div class="col-12 kpd-ceo_list-b p-0 manager-column pt-1">
+                        <div v-for="(manager, index) in deputy" class="manager-header cursor-pointer">
+                            <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-12 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager)">
+                                <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
+                                <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
+                                <div class="col-4 row m-0">
+                                    <div class="col-6 monitoring-button p-1 cursor-pointer ml-auto" @click="switchManager(manager,'manager')">Мониторинг КПД</div>
+                                    <div class="col-12 mt-3 p-0 progress progress_template">
+                                        <div
+                                                :class="[getProgressBarFillingColor(manager.fact),'progress-bar progress-bar_filling']"
+                                                :style="{width: manager.fact + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="manager.fact"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                        ></div>
+                                    </div>
+                                    <div class="col-1 ml-auto mr-2">{{manager.fact}}%</div>
+                                </div>
+                            </div>
+                            <div v-if="manager['isSelected'] && manager.kpdList['length'] > 0" class="col-12 row m-0 manager-kpd-list p-2">
+                                <div v-for="kpd in manager.kpdList" class="col-12 d-flex kpd-item" @click="[selectedKpd = kpd,$modal.show('modalKpdEdit')]">
+                                    <div class="kpd-id"></div>
+                                    <div class="">{{kpd.name}}</div>
                                 </div>
                             </div>
                         </div>
@@ -134,10 +204,11 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog :kpd-list="kpdDecompositionB"></kpd-modal-catalog>
-            <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
-            <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
-            <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
+            <kpd-modal-catalog :managers="managers" :deputy="deputy" :corporate-manager="corporateManager[0]"></kpd-modal-catalog>
+            <kpd-modal-monitoring :manager-info="selectedManager" ref="kpdMonitoring" :manager-type="managerType"></kpd-modal-monitoring>
+            <modal-settings :corporate-manager="corporateManager[0]" @update-required="updateData"></modal-settings>
+            <modal-corporate-manager :corporate-manager="corporateManager[0]"></modal-corporate-manager>
+            <kpd-modal-kpd-edit :managers="managers" :corporate-manager="corporateManager[0]" :kpd-list="kpdList" :current-kpd="selectedKpd" :deputy="deputy"></kpd-modal-kpd-edit>
         </div>
     </div>
 </template>
@@ -177,19 +248,31 @@
     width: 25px;
 }
 .table-header {
-    background: #2A3A85;
+    background: #213181;
+    height: 60px;
+    position: relative;
+    span {
+        margin: 0;
+        position: relative;
+        top: 30%;
+        transform: translateX(-50%);
+    }
+}
+.table-sub-header {
+    height: 60px;
+    border: 2px solid #2A3A85;
+    border-bottom: 2px solid #656A8A;
+    background: #272953;
 }
 .table-header.kpd-main {
     padding-top: 5%;
 }
-.img-goals {
-    background: url(/img/kpd-tree/goals.png) no-repeat;
-    width: 45px;
-}
 .kpd-column {
     border: 1px solid #2A3A85;
     background: #272C5C;
-    min-height: 780px;
+    height: 780px;
+    max-height: 780px;
+    display: grid;
 }
 .progress.progress_template {
     background-color: #A4A8BF !important;
@@ -200,30 +283,16 @@
 .progress-bar_filling__high {
     background-color: #009847 !important;
 }
-.kpd-ceo_list {
-    border: 2px solid #2A3A85;
-    border-bottom: 2px solid #656A8A;
-    max-height: 99px;
-}
-.kpd-ceo_list-b {
-    border: 1px solid #2A3A85;
-}
-.kpd-ceo_header-b {
-    border-bottom: 4px solid #656A8A;
-}
-.kpd-ceo_item-b {
-    background: #272C5C;
+.manager-header {
+    border: 0.2em solid #272C5C;
+    background: #343771;
+    border-radius: 7px;
+    display: grid;
 }
 .chairmaster:hover {
-    background: #3C4280;
+    background: #535591;
     border-radius: 5px;
     border: 2px solid #272953;
-}
-.kpd-ceo-a_item:hover {
-    background: #3C4280;
-    .item-list_vector {
-        opacity: 1;
-    }
 }
 .kpd-ceo_item {
     margin-top: 5rem;
@@ -231,38 +300,70 @@
 .kpd-ceo_item:hover {
     background: #3C4280;
 }
-.kpd-ceo-a_item {
-    margin-top: 3rem;
-    &:nth-child(4) {
-        margin-top: 120px;
-    }
-    &:last-child,&:first-child {
-        margin-top: 0;
-    }
-}
-.item-list_vector {
-    background: #3366FF;
-    opacity: 0.25;
-    transform: matrix(1, 0, 0, -1, 0, 0);
-    position: absolute;
-    width: 9px;
-    height: 9px;
-}
-.progress-ceo_b {
-    width: 160px;
-}
-.kpd-name_b {
-    font-size: 14px;
-}
-.main-buttons:hover, .kpd-name_b:hover {
+.main-buttons:hover {
     background: #3A4280;
+    border-radius: 7px;
 }
-.filter-icon {
-    width: 45px;
+.manager-column {
+    border: 1px solid #2A3A85;
+    background: #272C5C;
+    height: 840px;
+    max-height: 840px;
+    display: grid;
 }
-.hover {
-    background: #3C4280;
-    border-radius: 5px;
-    border: 2px solid #272953;
+.menu-block {
+    padding-left: 30px;
+    div:nth-child(1) {
+        width: 40px;
+        height: 20px;
+    }
+    div:nth-child(2) {
+        width: 50px;
+        height: 20px;
+    }
+    div:nth-child(3) {
+        width: 70px;
+        height: 20px;
+    }
+    div:nth-child(4) {
+        width: 70px;
+        height: 20px;
+    }
+}
+.menu-item_selected {
+    background: #989ecd;
+    cursor: pointer;
+}
+.menu-item {
+    background: #474F91;
+    cursor: pointer;
+}
+.kpd-id {
+    background: #3366FF;
+    height: 10px;
+    min-width: 10px;
+    margin: 7px;
+}
+.manager-kpd-list {
+    background: #333975;
+    border-radius: 4px;
+}
+.chairmaster_selected {
+    background: #535591;
+}
+.monitoring-button {
+    background: #334296;
+    height: 30px;
+    margin-top: -3%;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.kpd-item {
+    text-align: left;
+}
+.kpd-decomposition-fact {
+    margin-top: -10px;
+    margin-left: 10px;
 }
 </style>

@@ -6,8 +6,10 @@ import {
     FETCH_WELLS_MNEMONICS,
     FETCH_WELLS_HORIZONS,
     FETCH_AUTOCORRELATION,
+    FETCH_FACIES_CLASSIFICATION,
 
     POST_HORIZON,
+    POST_INTERPRETATION,
 
     SET_WELLS_MNEMONICS,
     SET_FIELDS,
@@ -26,31 +28,48 @@ import {
     SET_WELLS_HORIZONS,
     SET_AUTOCORRELATION,
     SET_SHOW_STRATIGRAPHY_ELEMENTS,
+    SET_FACIES_CLASSIFICATION_TO_ELEMENTS,
+    SET_TIME_START_AUTOINTERPRETATION,
+    SET_CURRENT_TIME_AUTOINTERPRETATION,
 
-    GET_CURVES,
     GET_WELLS_OPTIONS,
     GET_TREE_CURVES,
     GET_FIELDS_OPTIONS,
     GET_DZOS_OPTIONS,
-    GET_GIS_GROUPS, CURVE_ELEMENT_OPTIONS,
-    GET_TREE_STRATIGRAPHY, COLOR_PALETTE
+    GET_GIS_GROUPS,
+    CURVE_ELEMENT_OPTIONS,
+    GET_TREE_STRATIGRAPHY,
+
+    COLOR_PALETTE,
+    CHECK_INTERPRETATION,
+    RESET_TIME_START_AUTOINTERPRETATION,
+    CHECK_TIMER,
+    RUN_TIMER,
 } from "./geologyGis.const";
 
 import {uuidv4} from "../../components/geology/js/utils";
 import AwGisClass from "../../components/geology/petrophysics/graphics/awGis/utils/AwGisClass";
 import {
-    Fetch_Curves,
-    Fetch_DZOS,
-    Fetch_Fields,
-    Fetch_Wells,
-    Fetch_WellsMnemonics
+    Fetch_Curves, Fetch_DZOS, Fetch_Fields, Fetch_Wells, Fetch_WellsMnemonics
 } from "../../components/geology/api/petrophysics.api";
 import {Fetch_Horizons, Post_Horizons} from "../../components/geology/api/horizons.api";
 import THorizon from '../../components/geology/petrophysics/graphics/awGis/utils/THorizon'
 import {Fetch_Autocorrelation} from "../../components/geology/api/autocorrelation.api";
+import {Fetch_FaciesClassification} from "../../components/geology/api/facies.api";
+import {Get_InterpretationStatus, Post_Interpretation} from "../../components/geology/api/interpretation.api";
 
 const geologyGis = {
     state: {
+        autoInterpretation:{
+            isActive: false,
+            scoreboard: "00:00",
+            currentTime: Date.now(),
+            startTime: null,
+            endTime: null,
+            minutesToAdd: 15, //min
+            updateInterval: "00", //sec
+            calculation_id: null
+        },
         changeGisData: Date.now(),
         gisDataCurves: {},
         gisData: [],
@@ -65,7 +84,7 @@ const geologyGis = {
 
         tHorizon: new THorizon(),
         awGis: new AwGisClass(),
-
+        wellsElementsMap: new Map(),
         awGisElementsCount: 0,
         gisWells: [],
         showStratigraphyElements: [],
@@ -74,14 +93,11 @@ const geologyGis = {
         wellTreeParam: {
             dragElement: {
                 value: null
-            },
-            toGroup: {
-                value: null,
-                func: (state) => {
+            }, toGroup: {
+                value: null, func: (state) => {
                     state.awGis.moveElement(state.wellTreeParam.dragElement.value, state.wellTreeParam.fromGroup.value, state.wellTreeParam.toGroup.value);
                 }
-            },
-            fromGroup: {
+            }, fromGroup: {
                 value: null,
             }
         },
@@ -96,6 +112,11 @@ const geologyGis = {
         AUTOCORRELATION: [],
     },
     getters: {
+        [CHECK_TIMER](state){
+            let {isActive, currentTime, endTime} = state.autoInterpretation;
+            return (isActive&&currentTime<new Date(endTime).getTime());
+        },
+
         [GET_WELLS_OPTIONS](state) {
             return forDropDownMap(state.WELLS, ["name", "name"]);
         },
@@ -114,6 +135,7 @@ const geologyGis = {
                 return acc;
             }, {});
         },
+
         [GET_TREE_STRATIGRAPHY](state) {
             let stratigraphyArray = Object.entries(state.WELLS_HORIZONS);
             if (stratigraphyArray.length) {
@@ -168,6 +190,7 @@ const geologyGis = {
             })
         },
     },
+
     mutations: {
         [SET_DRAG_PARAMS](state, [param, value]) {
             let params = state.wellTreeParam[param];
@@ -213,8 +236,7 @@ const geologyGis = {
             if (value.length > 1) {
                 if (existElementsCount < value.length) {
                     for (const val of value) {
-                        if (!state.selectedGisCurves.includes(val))
-                            state.selectedGisCurves.push(val)
+                        if (!state.selectedGisCurves.includes(val)) state.selectedGisCurves.push(val)
                     }
                 } else {
                     toggleElements()
@@ -271,8 +293,8 @@ const geologyGis = {
             state.WELLS_HORIZONS_ELEMENTS = state.tHorizon.elements;
         },
 
-        [SET_GIS_DATA](state) {
-            state.gisData = mnemonicsSort.apply(state.awGis, [state.WELLS_MNEMONICS, state]);
+        [SET_GIS_DATA](state, customMnemonics = false) {
+            state.gisData = mnemonicsSort.apply(state.awGis, [(customMnemonics || state.WELLS_MNEMONICS), state]);
             state.gisGroups = state.awGis.getGroupList
             state.awGisElementsCount = state.awGis.getElementsCount
         },
@@ -286,17 +308,11 @@ const geologyGis = {
                 if (state.awGis.hasElement(curveName)) {
                     let {data: {curve_id}} = state.awGis.getElement(curveName);
                     let curveOptions = {
-                        min: {},
-                        max: {},
-                        sum: {},
-                        startX: {},
-                        isLithology: {},
-                        isCSAT: {},
-                        name: {},
-                        colorPalette: {}
+                        min: {}, max: {}, sum: {}, startX: {}, isLithology: {}, isCSAT: {}, GIS46: {}, name: {}, colorPalette: {}
                     };
                     let isLithology = curveName.toLowerCase().trim() === "litho";
                     let isFluid = curveName.toLowerCase().trim() === "fluid";
+                    let GIS46 = "6gis_4gis".match(curveName.toLowerCase().trim())
                     state.awGis.editElementData(curveName, {
                         curves: Object.entries(curve_id).reduce((acc, [key, id]) => {
                             let curve = state.CURVES_OF_SELECTED_WELLS[id];
@@ -308,11 +324,12 @@ const geologyGis = {
                             curveOptions.sum[key] = curveWithoutNull.reduce((acc, i) => (acc + i), 0);
                             curveOptions.isLithology[key] = isLithology;
                             curveOptions.isCSAT[key] = isFluid;
+                            curveOptions.GIS46[key] = GIS46;
                             if (curve) acc[key] = curve;
                             return acc;
                         }, {})
                     })
-                    if (isLithology || isFluid) {
+                    if (isLithology || isFluid || GIS46) {
                         curveOptions.colorPalette = COLOR_PALETTE[curveName.toLowerCase()];
                     }
                     state.awGis.editElementOptions(curveName, JSON.parse(JSON.stringify({...curveOptions})));
@@ -354,13 +371,70 @@ const geologyGis = {
             this.commit(SET_SCROLL_BLOCK_Y, Math.round(lastMD) - 100);
             state.AUTOCORRELATION = newObject;
         },
+
         [SET_SHOW_STRATIGRAPHY_ELEMENTS](state, stratigraphy) {
             state.showStratigraphyElements = stratigraphy;
             state.tHorizon.updateMaps();
+        },
+
+        [SET_FACIES_CLASSIFICATION_TO_ELEMENTS](state, [wellDataMnemonic, [well, model]]) {
+            let curveName = `${well}_${model}`;
+            let customMnemonic = {
+                "well": well,
+                "mnemonics": [{
+                    "curve_id": curveName,
+                    "name": model,
+                    "depth_start": wellDataMnemonic.depth_start,
+                    "depth_end": wellDataMnemonic.depth_end,
+                    "step": wellDataMnemonic.step,
+                }]
+            }
+            this.commit(SET_CURVES, {[curveName]:wellDataMnemonic.data});
+            this.commit(SET_GIS_DATA, [customMnemonic]);
+            this.commit(SET_SELECTED_WELL_CURVES, model);
+            this.commit(SET_GIS_DATA_FOR_GRAPH);
+        },
+
+        [RESET_TIME_START_AUTOINTERPRETATION](state) {
+            state.autoInterpretation.isActive = false;
+            state.autoInterpretation.calculation_id = null;
+            state.autoInterpretation.currentTime = Date.now();
+            state.autoInterpretation.startTime = null;
+            state.autoInterpretation.endTime = null;
+            state.autoInterpretation.scoreboard = `00:00`;
+        },
+        [SET_TIME_START_AUTOINTERPRETATION](state, calculation_id) {
+            state.autoInterpretation.isActive = true;
+            state.autoInterpretation.calculation_id = calculation_id;
+            state.autoInterpretation.currentTime = Date.now();
+            state.autoInterpretation.startTime = new Date();
+            state.autoInterpretation.endTime = new Date(state.autoInterpretation.currentTime + state.autoInterpretation.minutesToAdd*60000);
+        },
+        [SET_CURRENT_TIME_AUTOINTERPRETATION](state, [time = false, scoreboard = false]){
+            state.autoInterpretation.currentTime = time||Date.now();
+            if(scoreboard) state.autoInterpretation.scoreboard = scoreboard;
         }
     },
 
     actions: {
+        [RUN_TIMER]({state, getters, commit, dispatch}){
+            const two = (num)=> ((num<10)?`0${num}`:num);
+            let minutes, seconds;
+            let difference = (new Date(state.autoInterpretation.endTime) - new Date(state.autoInterpretation.currentTime)) / 1000;
+            let timer = setInterval(async ()=>{
+                difference--;
+                if(getters[CHECK_TIMER]){
+                    minutes = two(Math.floor(difference / 60));
+                    seconds = two(Math.trunc((difference - minutes * 60))).toString();
+                    if(seconds === state.autoInterpretation.updateInterval) await dispatch(CHECK_INTERPRETATION);
+                    commit(SET_CURRENT_TIME_AUTOINTERPRETATION, [false, `${minutes}:${seconds}`]);
+                }else{
+                    commit(RESET_TIME_START_AUTOINTERPRETATION);
+                    clearInterval(timer);
+                }
+            }, 1000);
+        },
+
         async [FETCH_DZOS]({commit}) {
             commit(SET_DZOS, await Fetch_DZOS());
         },
@@ -396,11 +470,30 @@ const geologyGis = {
             } catch (e) {
                 console.log('e', e);
             }
+        },
 
+        async [FETCH_FACIES_CLASSIFICATION]({commit, state}, payload) {
+            let results = await Fetch_FaciesClassification(payload).catch(error=>error)
+            commit(SET_FACIES_CLASSIFICATION_TO_ELEMENTS, [results, payload]);
+            return results
         },
 
         async [POST_HORIZON]({commit, state}, payload) {
             return await Post_Horizons(payload);
+        },
+
+        async [CHECK_INTERPRETATION]({state, commit}){
+            if(state.autoInterpretation.calculation_id)
+                return Get_InterpretationStatus(state.autoInterpretation.calculation_id).then(()=>{
+                    commit(RESET_TIME_START_AUTOINTERPRETATION);
+                })
+        },
+
+        async [POST_INTERPRETATION]({commit, state, dispatch}, payload) {
+            let result = await Post_Interpretation(payload)||{calculation_id:""};
+            commit(SET_TIME_START_AUTOINTERPRETATION, result.calculation_id);
+            dispatch(RUN_TIMER);
+            return result;
         },
     }
 }
@@ -416,74 +509,55 @@ function forDropDownMap(arr, [first, second] = ["name", "id"]) {
 
 let wellID = null;
 let groupsIds = new Map();
+let wellEl = [];
 
 function mnemonicsSort(data, state) {
     // TODO Переделать в нормальный код.
     for (let datum of data) {
-        if (datum.mnemonics) {
+        if (datum.hasOwnProperty("mnemonics")) {
             wellID = datum.well;
+            wellEl = [];
             mnemonicsSort.apply(this, [datum.mnemonics, state]);
         } else {
-            let {
-                name,
-                curve_id,
-                depth_start,
-                depth_end,
-                step
-            } = datum;
+            let {name, curve_id, depth_start, depth_end, step} = datum;
             let groupId = uuidv4();
-
+            if (!wellEl.includes(name)) wellEl.push(name);
             if (!groupsIds.has(name)) {
                 groupsIds.set(name, groupId);
                 this.addGroup(groupId, {
-                    id: groupId,
-                    name: name,
-                    value: name,
-                    iconType: 'oilTower',
-                    iconFill: '#FF6600',
-                    isOpen: true,
+                    id: groupId, name: name, value: name, iconType: 'oilTower', iconFill: '#FF6600', isOpen: true,
                 });
             }
 
             if (this.hasElement(name)) {
-                state.awGis.editPropertyElementData(name, 'data', [
-                    ['wellID', (wellIDS) => {
-                        if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
-                        return wellIDS;
-                    }],
-                    ['curve_id', (elCurveIDS) => {
-                        if (!elCurveIDS.hasOwnProperty(wellID.toString())) elCurveIDS[wellID.toString()] = curve_id;
-                        return elCurveIDS;
-                    }],
-                    ['depth_start', (d_start) => {
-                        if (!d_start.hasOwnProperty(wellID.toString())) d_start[wellID.toString()] = depth_start;
-                        return d_start;
-                    }],
-                    ['depth_end', (d_end) => {
-                        if (!d_end.hasOwnProperty(wellID.toString())) d_end[wellID.toString()] = depth_end;
-                        return d_end;
-                    }],
-                    ['step', (d_step) => {
-                        if (!d_step.hasOwnProperty(wellID.toString())) d_step[wellID.toString()] = step;
-                        return d_step;
-                    }]
-                ]);
+                state.awGis.editPropertyElementData(name, 'data', [['wellID', (wellIDS) => {
+                    if (!wellIDS.includes(wellID)) wellIDS.push(wellID);
+                    return wellIDS;
+                }], ['curve_id', (elCurveIDS) => {
+                    if (!elCurveIDS.hasOwnProperty(wellID.toString())) elCurveIDS[wellID.toString()] = curve_id;
+                    return elCurveIDS;
+                }], ['depth_start', (d_start) => {
+                    if (!d_start.hasOwnProperty(wellID.toString())) d_start[wellID.toString()] = depth_start;
+                    return d_start;
+                }], ['depth_end', (d_end) => {
+                    if (!d_end.hasOwnProperty(wellID.toString())) d_end[wellID.toString()] = depth_end;
+                    return d_end;
+                }], ['step', (d_step) => {
+                    if (!d_step.hasOwnProperty(wellID.toString())) d_step[wellID.toString()] = step;
+                    return d_step;
+                }]]);
             } else {
                 let curveColor = COLOR_PALETTE.curves, hex;
-
                 if (curveColor.hasOwnProperty(name.toLowerCase())) {
                     let [r, g, b] = curveColor[name.toLowerCase()];
                     hex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-
                     CURVE_ELEMENT_OPTIONS.customParams = {
                         ...CURVE_ELEMENT_OPTIONS.customParams,
                         curveColor: COLOR_PALETTE.curves.hasOwnProperty(name.toLowerCase()) ? {
-                            use: true,
-                            value: hex
+                            use: true, value: hex
                         } : {use: false, value: "#000000"}
                     }
                 }
-
                 this.addElement(name, {
                     name: name,
                     value: name,
@@ -502,6 +576,7 @@ function mnemonicsSort(data, state) {
             }
         }
     }
+    state.wellsElementsMap.set(wellID, [...(state.wellsElementsMap.get(wellID)||[]),...wellEl]);
     return this.getGroupsWithData;
 }
 

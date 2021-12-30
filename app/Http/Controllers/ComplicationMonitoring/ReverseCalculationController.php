@@ -7,7 +7,15 @@ use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ReverseCalculationResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
-use App\Models\ComplicationMonitoring\ReverseCalculation;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgNGDUWell;
+use App\Models\ComplicationMonitoring\Zu;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 
 class ReverseCalculationController extends CrudController
@@ -22,7 +30,7 @@ class ReverseCalculationController extends CrudController
             ],
             'title' => trans('monitoring.reverse_calculation.table_title'),
             'fields' => [
-                'id' => [
+                'oil_pipe_id' => [
                     'title' => '№',
                     'type' => 'numeric',
                 ],
@@ -47,7 +55,7 @@ class ReverseCalculationController extends CrudController
                     'title' => trans('monitoring.units.q_zh').', '.trans('measurements.m3/day'),
                     'type' => 'numeric',
                 ],
-                'wc' => [
+                'bsw' => [
                     'title' => trans('monitoring.gu.fields.bsw').', '.trans('measurements.percent'),
                     'type' => 'numeric',
                 ],
@@ -122,13 +130,140 @@ class ReverseCalculationController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = ReverseCalculation::with('oilPipe.pipeType');
+        $input = $request->validated();
+        $prepairedData = $this->getPreparedAndCalculatedPipes($input);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
 
-        $reverse_calculations = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->paginate(25);
+        $pipes = $this->paginate($pipes, 25, (int)$input['page']);
+        $list = json_decode(ReverseCalculationResource::collection($pipes)->toJson());
 
-        return response()->json(json_decode(ReverseCalculationResource::collection($reverse_calculations)->toJson()));
+        if (count($alerts)) {
+            $list->alerts = $alerts;
+        }
+
+        return response()->json($list);
+    }
+
+    public function getPreparedAndCalculatedPipes(array $input): array
+    {
+        $calculatedPipes = null;
+        $calculatedPipesIds = [];
+
+        if (isset($input['date'])) {
+            $calculatedPipes = $this->getCalculatedData($input['date']);
+
+            if ($calculatedPipes) {
+                $calculatedPipesIds = $calculatedPipes->pluck('oil_pipe_id')->toArray();
+            }
+        }
+
+        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
+
+        if ($calculatedPipes) {
+            $pipes = $calculatedPipes->merge($pipes);
+        }
+
+        return ['pipes' => $pipes, 'alerts' => $alerts];
+    }
+
+    public function getCalculatedData(string $date)
+    {
+        return HydroCalcResult::whereHas('oilPipe', function ($query) {
+            $query->where('trunkline', false)
+                ->where('water_pipe', false);
+        })
+            ->with('oilPipe.pipeType', 'oilPipe.gu')
+            ->where('date', $date)
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function getPrepairedData(array $input = [],  array $calculatedPipesIds): array
+    {
+        $guNames = [
+            'ГУ-107',
+            'ГУ-24',
+            'ГУ-22'
+        ];
+
+        $gu_ids = Gu::whereIn('name', $guNames)->get()->pluck('id');
+        $query = OilPipe::query()
+            ->with('firstCoords', 'lastCoords', 'pipeType', 'gu');
+
+        $pipes = $this
+            ->getFilteredQuery($input, $query)
+            ->whereNotNull('start_point')
+            ->whereNotNull('end_point')
+            ->where('trunkline', false)
+            ->where('water_pipe', false)
+            ->whereNotIn('id', $calculatedPipesIds)
+            ->whereIn('gu_id', $gu_ids)
+            ->orderBy('gu_id')
+            ->orderBy('zu_id')
+            ->get();
+
+        $alerts = [];
+
+        foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
+            if ($pipe->between_points == 'well-zu') {
+                $query = OmgNGDUWell::where('well_id', $pipe->well_id);
+
+                if (isset($input['date'])) {
+                    $query = $query->where('date', '<=', $input['date']);
+                }
+
+                $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
+
+                if (!$pipe->omgngdu) {
+                    $zu = Zu::find($pipe->zu_id);
+                    $message = $pipe->start_point . ' -> '.$zu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
+
+                    if (isset($input['date'])) {
+                        $message .= ' на ' . $input['date'].' или раньше';
+                    }
+
+                    $alerts[] = [
+                        'message' => $message . ' !',
+                        'variant' => 'danger'
+                    ];
+                    continue;
+                }
+            }
+
+            if ($pipe->between_points == 'zu-gu' || $pipe->between_points == 'zu_coll-gu') {
+                $query = OmgNGDU::where('gu_id', $pipe->gu_id);
+
+                if (isset($input['date'])) {
+                    $query = $query->where('date', $input['date']);
+                }
+
+                $pipe->omgngdu_gu = $query->orderBy('date', 'desc')->first();
+
+                if (!$pipe->omgngdu_gu) {
+                    $gu = Gu::find($pipe->gu_id);
+                    $message =  trans('monitoring.hydro_calculation.message.no-pressure-omgdu-data').' '.$gu->name;
+
+                    if (isset($input['date'])) {
+                        $message .= ' на ' . $input['date'];
+                    }
+
+                    $alerts[] = [
+                        'message' => $message . ' !',
+                        'variant' => 'danger'
+                    ];
+                }
+            }
+        }
+
+        return ['pipes' => $pipes, 'alerts' => $alerts];
     }
 
     protected function getFilteredQuery($filter, $query = null)
@@ -146,5 +281,19 @@ class ReverseCalculationController extends CrudController
                 'id' => $job->getJobStatusId()
             ]
         );
+    }
+
+    /**
+     * Generates the pagination of items in an array or collection.
+     *
+     * @param array|Collection $items
+     */
+    protected function paginate($items, int $perPage = 15, int $page = null, array $options = []): LengthAwarePaginator
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

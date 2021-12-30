@@ -4,99 +4,127 @@
                 class="modal-bign-wrapper"
                 name="modalMonitoring"
                 draggable=".modal-bign-header"
-                :width="1500"
-                :height="700"
+                :width="1700"
+                :height="720"
                 style="background: transparent;"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header d-flex">
-                    <img :src="managerInfo.img" class="manager-icon ml-5"></img>
-                    <div class="modal-bign-title modal_header">{{kpd.name}}</div>
+                    <img v-if="managerInfo" :src="'/img/kpd-tree/managers/' + managerInfo.avatar" class="manager-icon ml-5"></img>
+                    <div v-if="managerInfo" class="modal-bign-title modal_header">{{managerInfo.title}}</div><br>
                     <button type="button" class="modal-bign-button" @click="$modal.hide('modalMonitoring')">
                         {{trans('pgno.zakrit')}}
                     </button>
                 </div>
-                <table class="modal_table mt-5">
-                    <tr>
-                        <th rowspan="2" class="p-2">№<br>п/п</th>
-                        <th rowspan="2" class="p-2">Наименование КПД</th>
-                        <th rowspan="2" class="p-2">Единица<br>измерения</th>
-                        <th rowspan="2" class="p-2">Вес</th>
-                        <th rowspan="2" class="p-2">
-                            <div class="d-flex">
-                                <div class="col-4">Порог<br>(50%)</div>
-                                <div class="col-4">Цель<br>(100%)</div>
-                                <div class="col-4">Вызов<br>(125%)</div>
-                            </div>
-                        </th>
-                        <th colspan="3" class="p-2">Результаты</th>
-                        <th rowspan="2" class="p-2">Комментарии</th>
-                    </tr>
-                    <tr>
-                        <th class="p-2">
-                            Факт за<br>
-                            <el-date-picker
-                                    v-model="period"
+                <div class="modal-bign-header d-flex">
+                    <div v-if="managerInfo" class="modal-bign-title modal_header">{{managerInfo.name}}</div>
+                </div>
+                <div class="scroll">
+                    <table class="modal_table mt-5">
+                        <tr>
+                            <th rowspan="2" class="p-2">№<br>п/п</th>
+                            <th rowspan="2" class="p-2">Наименование КПД</th>
+                            <th rowspan="2" class="p-2">Единица<br>измерения</th>
+                            <th rowspan="2" class="p-2">Вес</th>
+                            <th rowspan="2" class="p-2">
+                                <div class="d-flex">
+                                    <div class="col-4">Порог<br>(50%)</div>
+                                    <div class="col-4">Цель<br>(100%)</div>
+                                    <div class="col-4">Вызов<br>(125%)</div>
+                                </div>
+                            </th>
+                            <th colspan="4" class="p-2">Результаты</th>
+                            <th rowspan="2" class="p-2">Комментарии</th>
+                        </tr>
+                        <tr>
+                            <th class="p-2">Дата</th>
+                            <th class="p-2">Факт</th>
+                            <th class="p-2">Оценка<br>(баллы)</th>
+                            <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
+                        </tr>
+
+                        <tr v-for="(kpd,index) in kpdList">
+                            <td class="p-2">{{index + 1}}</td>
+                            <td class="p-2">{{kpd.name}}</td>
+                            <td class="p-2">{{kpd.unit}}</td>
+                            <td class="p-2">
+                                <input :disabled="kpd.isWeightFilled" class="input-field text-center p-1" type="text" v-model="kpd.weight">
+                            </td>
+                            <td class="p-2">
+                                <div class="col-12 p-0 row m-0">
+                                    <div class="col-12 d-flex justify-content-around p-0">
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.step">
+                                        </div>
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.target">
+                                        </div>
+                                        <div class="col-3">
+                                            <input :disabled="kpd.isPlanFilled" class="input-field text-center p-1" type="text" v-model="kpd.maximum">
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 col-12 progress progress_template p-0 row m-0">
+                                        <div
+                                                :class="[getProgressBarFillingColor(kpd),'progress-bar progress-bar_filling']"
+                                                :style="{width: getCurrentPosition(kpd) + '%',}"
+                                                role="progressbar"
+                                                :aria-valuenow="kpd.fact"
+                                                :aria-valuemin="kpd.step"
+                                                :aria-valuemax="getMaximum(kpd)"
+                                        >
+                                        </div>
+                                    </div>
+                                    <div
+                                            :style="{ 'padding-left': `${getCurrentPosition(kpd,8)}% !important` }"
+                                            :class="[getProgressBarTitleColor(kpd),'text-left mt-2 col-12 p-0']"
+                                    >
+                                        {{kpd.fact}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <el-date-picker
+                                    v-model="factDates[index].date"
                                     type="date"
                                     format="dd.MM.yyyy"
                                     popper-class="custom-date-picker"
-                                    :picker-options="datePickerOptions"
-                                    @change="changeDate"
-                            >
-                            </el-date-picker>
-                        </th>
-                        <th class="p-2">Оценка<br>(баллы)</th>
-                        <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
-                    </tr>
-                    <tr v-for="row in kpd.table.body">
-                        <td class="p-2" v-for="(column,index) in row">
-                            <div v-if="index === 4" class="row m-0">
-                                <div class="col-12 d-flex justify-content-around">
-                                    <div v-for="position in column">
-                                        {{position}}
-                                    </div>
-                                </div>
-                                <div class="col-12 progress progress_template mt-2 p-0 progress-monitoring">
-                                    <div
-                                            :class="[getProgressBarFillingColor(row[index+1]),'col-12 progress-bar progress-bar_filling']"
-                                            :style="{width: row[index+1] + '%',}"
-                                            role="progressbar"
-                                            :aria-valuenow="row[index+1]"
-                                            :aria-valuemin="getProgressPoint('min',column)"
-                                            :aria-valuemax="getProgressPoint('max',column)"
-                                    >
-                                        <div class="d-flex justify-content-around">
-                                            <div v-for="position in column" class="progress-splitter">
-                                            </div>
-                                        </div>
-                                        </div>
-                                </div>
-                                <div
-                                        :style="{ 'padding-left': `${row[index+1]}px` }"
-                                        :class="getProgressBarTitleColor(row[index+1])"
+                                    @input="changeFactDate($event,index,kpd.kpd_fact)"
                                 >
-                                    {{row[index+1]}}
-                                </div>
-                            </div>
-                            <div v-else>{{column}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>100%</td>
-                        <td></td>
-                        <td colspan="3">
-                            Итоговая результативность
-                            <span class="summary ml-4">74%</span>
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
+                                </el-date-picker
+
+                            </td>
+
+                            <td class="p-2">
+                                <input class="input-field text-center p-1" type="text" v-model="factDates[index].fact">
+                            </td>
+                            <td class="p-2">{{kpd.rating}}</td>
+                            <td class="p-2">{{kpd.summary}}</td>
+                            <td class="p-2">
+                                <b-form-textarea
+                                        class="col-12 text-left p-1 input_kpd"
+                                        v-model="factDates[index].comments"
+                                        rows="2"
+                                ></b-form-textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{totalWeight}}%</td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2">
+                                Итоговая результативность
+                            </td>
+                            <td class="summary ml-4">{{totalSummary}}%</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
                 <div align="center" class="bottom-buttons col-12 row">
-                    <div class="col-1 download-button m-4" @click="$modal.hide('modalMonitoring')">ОК</div>
+                    <div class="col-1 download-button m-4" @click="updateKpd">Сохранить</div>
                     <div class="col-1 cancel-button m-4" @click="$modal.hide('modalMonitoring')">Отмена</div>
                 </div>
             </div>
@@ -106,164 +134,195 @@
 
 <script>
 import moment from "moment-timezone";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     data: function () {
         return {
-            statusMapping: {
-                'Утверждено': '/img/kpd-tree/filter_green.png',
-                'Согласовано': '/img/kpd-tree/filter_blue.png',
-                'Проект': '/img/kpd-tree/filter_gray.png',
+            kpdList: [],
+            newKpdFact: {
+                'date': moment(),
+                'fact': '',
+                'id': null,
+                'comments': ''
             },
-            test:5,
-            units: [
-                'сутки',
-                'месяц',
-                'полугодие',
-                'год'
-            ],
-            selectedUnit: null,
-            selectedKpd: null,
-            kpd: {
-                'name': 'Мониторинг КПД заместителя председателя правления по разведке и добыче (Марабаев Ж.Н.) на 2021 год',
-                'table': {
-                    'body': [
-                        [
-                            1,
-                            'Прирост извлекаемых запасов',
-                            'млн. тонн',
-                            '20%',
-                            ['29.2','34.5','37.0'],
-                            31,
-                            '70%',
-                            '25%',
-                            ''
-                        ],
-                        [
-                            2,
-                            'Операционные и капитальные затраты по ДЗО дивизиона',
-                            'млн. тенге',
-                            '20%',
-                            ['1121388','1065318','1012053'],
-                            1000000,
-                            '125%',
-                            '25%',
-                            ''
-                        ],
-                        [
-                            3,
-                            'Чистый денежный поток в КЦ КМГ от дивизиона',
-                            'млн. тенге',
-                            '20%',
-                            ['-14732','0','-'],
-                            -15000,
-                            '0',
-                            '0',
-                            ''
-                        ],
-                        [
-                            4,
-                            'Исполнение бизнес-инициатив',
-                            '%',
-                            '20%',
-                            ['81','100','104'],
-                            104,
-                            '125%',
-                            '25%',
-                            ''
-                        ],
-                        [
-                            5,
-                            'Реализация инвестиционных проектов',
-                            '%',
-                            '20%',
-                            [90,100,110],
-                            90,
-                            '50%',
-                            '10%',
-                            ''
-                        ],
-                    ]
-                }
-            },
-            filters: [
-                {
-                    'name':'Проект',
-                    'icon': '/img/kpd-tree/filter_gray.png',
-                    'selected': false
-                },
-                {
-                    'name':'Согласовано',
-                    'icon': '/img/kpd-tree/filter_blue.png',
-                    'selected': false
-
-                },
-                {
-                    'name':'Утверждено',
-                    'icon': '/img/kpd-tree/filter_green.png',
-                    'selected': false
-                }
-            ],
-            selectedFilter: null,
-            kpdCount: 0,
-            period: moment(),
-            datePickerOptions: {
-                disabledDate (date) {
-                    return moment(date) >= moment().subtract(1, 'days')
-                }
-            },
+            factDates: [],
+            isOperationFinished: false,
         };
     },
     methods: {
-        handleFilter(index) {
-            _.forEach(this.filters, (filter) => {
-                filter.selected = false;
-            });
-            this.filters[index].selected = true;
-            selectedFilter = this.filters[index];
+        async getKpdList() {
+            let uri = this.localeUrl("/get-kpd-by-manager");
+            let managerId = this.managerInfo.id;
+            if (this.managerType === 'corporate') {
+                managerId = this.managerType;
+            }
+            const response = await axios.get(uri,{params:{'type':managerId}});
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
         },
-        getProgressBarFillingColor(progress) {
-            if (progress < 0) {
+        async updateKpd() {
+            _.forEach(this.factDates, (factDate, index) => {
+               if (factDate.fact !== '') {
+                   this.kpdList[index]['kpd_fact'].push(factDate);
+               }
+            });
+            let uri = this.localeUrl("/store-updated-kpd");
+            await axios.post(uri,this.kpdList);
+            this.isOperationFinished = true;
+            this.$modal.hide('modalMonitoring');
+        },
+        getProgressBarFillingColor(kpd) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+
+            if (fact < step) {
                 return 'progress-bar_filling__low';
-            } else if (progress <= 70) {
+            } else if (fact >= step && fact < target) {
                 return 'progress-bar_filling__medium';
-            } else if (progress > 70) {
+            } else if (fact >= target) {
                 return 'progress-bar_filling__high';
             }
         },
-        getProgressPoint(type,values) {
-            if (type === 'min' && values.length === 3) {
-                if (parseInt(values[0])) {
-                    return parseInt(values[0]);
-                } else {
-                    0;
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+        getCurrentFact(facts,kpd) {
+            let summary = 0;
+            if (facts && facts.length > 0) {
+                summary = _.sumBy(facts,'fact');
+            }
+            return summary * 100 / this.getMaximum(kpd);
+        },
+        isPlanFilled(plan) {
+            return plan !== null;
+        },
+        changeFactDate(event,index,facts) {
+            let filtered = _.filter(facts, (fact) => {
+                return moment(fact.date).format('DD.MM.YYYY') === moment(event).format('DD.MM.YYYY');
+            });
+            if (filtered.length > 0) {
+                if (filtered[0].fact === null) {
+                    filtered[0].fact = '';
                 }
-            } else if (type === 'max' && values.length === 3) {
-                if (parseInt(values[2])) {
-                    return parseInt(values[2]);
-                } else {
-                    parseInt(values[1]);
-                }
+                this.factDates[index].fact = _.cloneDeep(filtered[0].fact);
+            } else {
+                let newDate = _.cloneDeep(this.newKpdFact);
+                newDate.date = moment(event);
+                this.factDates[index] = newDate;
             }
         },
-        getProgressBarTitleColor(progress) {
-            if (progress < 0) {
+        getKpdEfficiency(step,target,maximum,fact) {
+            step = parseFloat(step);
+            target = parseFloat(target);
+            maximum = parseFloat(maximum);
+            fact = parseFloat(fact);
+            if (isNaN(fact)) {
+                return 0;
+            }
+            if ((fact < step) || (step === null || target === null || maximum === null || fact === null)) {
+                return 0;
+            }
+            if (fact === step) {
+                return 50;
+            }
+            if (fact > step && fact < target) {
+                return (fact - step) / (target - step) * 50 + 50;
+            }
+            if (fact === target) {
+                return 100;
+            }
+            if (fact > target && fact < maximum) {
+                return (fact - target) / (maximum - target) * 25 + 100;
+            }
+
+            if (fact >= maximum) {
+                return 125;
+            }
+        },
+        getCurrentPosition(kpd,numberPadding) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            if (fact < step) {
+                return 0;
+            }
+            let position = kpd.fact * 100 / this.getMaximum(kpd);
+            if (position > 100) {
+                position = 100;
+            }
+            if (numberPadding) {
+                return position - numberPadding;
+            }
+            return position;
+        },
+        getMaximum(kpd) {
+            if (kpd.maximum !== '-') {
+                return kpd.maximum;
+            }
+            if (kpd.target !== '-') {
+                return kpd.target;
+            }
+            return kpd.step;
+        },
+        getProgressBarTitleColor(kpd) {
+            let fact = parseFloat(kpd.fact);
+            let step = parseFloat(kpd.step);
+            let target = parseFloat(kpd.target);
+
+            if (fact < step) {
                 return 'progress-bar_title__low';
-            } else if (progress <= 70) {
+            } else if (fact >= step && fact < target) {
                 return 'progress-bar_title__medium';
-            } else if (progress > 70) {
+            } else if (fact >= target) {
                 return 'progress-bar_title__high';
             }
         },
-        async changeDate() {
-            this.SET_LOADING(true);
-            this.SET_LOADING(false);
-        },
     },
     async mounted() {
-        this.kpdCount = this.kpd.table.body.length;
+
     },
-    props: ['managerInfo'],
+    props: ['managerInfo','managerType'],
+    watch: {
+        managerInfo: async function () {
+            this.isOperationFinished = false;
+            this.kpdList = [];
+            this.factDates = [];
+            if (this.managerInfo) {
+                this.SET_LOADING(true);
+                this.kpdList = await this.getKpdList();
+                _.forEach(this.kpdList, (kpd,index) => {
+                   if (kpd.kpd_fact.length === 0) {
+                       this.factDates.push(_.cloneDeep(this.newKpdFact));
+                   } else {
+                       let sorted = _.orderBy(kpd.kpd_fact, ['date'],['asc']);
+                       this.factDates.push(_.cloneDeep(sorted.at(-1)));
+                   }
+                   if (kpd.step !== '' && kpd.step !== null && kpd.target !== '' && kpd.target !== null && kpd.maximum !== '' && kpd.maximum !== null) {
+                       kpd.isPlanFilled = true;
+                   }
+                   if (kpd.weight !== '' && kpd.weight !== null) {
+                       kpd.isWeightFilled = true;
+                   }
+                   kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
+                   kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                   kpd['fact'] = _.sumBy(kpd.kpd_fact,  item => Number(item.fact));
+                });
+                
+                this.SET_LOADING(false);
+            }
+        },
+    },
+    computed: {
+        totalSummary() {
+            return _.sumBy(this.kpdList, 'summary');
+        },
+        totalWeight() {
+            return _.sumBy(this.kpdList,  item => Number(item.weight));
+        }
+    }
 }
 
 
@@ -272,9 +331,12 @@ export default {
 .modal_header {
     margin: 0 auto;
 }
+.scroll {
+    overflow-y: auto;
+    max-height: 550px;
+}
 .modal_table {
     width: 100%;
-    table-layout: fixed;
     tr:first-child th {
         &:first-child {
             width: 60px;
@@ -282,19 +344,22 @@ export default {
         &:nth-child(2) {
             width: 250px;
         }
+        &:nth-child(3) {
+            width: 100px;
+        }
         &:nth-child(5), &:nth-child(6) {
             width: 400px;
         }
     }
+    tr:nth-child(2) th {
+        width: 148px;
+    }
     tr th {
         background: #3A4280;
         border: 1px solid #545580;
-        max-height: 40px;
-        height: 40px;
     }
     tr td {
         border: 1px solid #545580;
-        height: 30px;
     }
     tr:last-child {
         td:not(:first-child){
@@ -325,46 +390,22 @@ export default {
     border-radius: 5px;
 }
 .bottom-buttons {
-    position: absolute;
     bottom: 0;
     justify-content: center;
-}
-.filter_selected {
-    background: #3C4280;
-}
-.img-monitoring {
-    background: url(/img/kpd-tree/monitoring.png) no-repeat;
-    height: 25px;
-    width: 35px;
-}
-.img-export {
-    background: url(/img/kpd-tree/export.png) no-repeat;
-    height: 25px;
-    width: 25px;
-}
-.filter_select {
-    background: #1A1D46;
-    color: white;
-    border-radius: 5px;
-}
-.filter-icon {
-    height: 10px;
+    div {
+        cursor: pointer;
+    }
 }
 .manager-icon {
     height: 70px;
-}
-.manager-about {
-    margin-top: -15px;
 }
 .summary {
     color: #FF8736;
     font-size: 20px;
 }
-.main-buttons:hover {
-    background: #3A4280;
-}
 .progress.progress_template {
     background-color: #A4A8BF !important;
+    height: 2px !important;
 }
 .progress-bar_filling__low {
     background-color: #F12F42 !important;
@@ -387,12 +428,26 @@ export default {
 .progress-bar_title__high {
     color: #009847 !important;
 }
-.progress-monitoring {
-    height: 2px !important;
-}
 .progress-splitter {
     width: 5px;
     height: 5px;
     background-color: #656A8A;
+}
+.input-field {
+    background: #1A1D46;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+}
+.input_kpd {
+    background: #1A1D46;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+}
+.not-visible {
+    display: none;
 }
 </style>

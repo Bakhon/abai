@@ -22,7 +22,7 @@ export default new Vuex.Store({
             'techMode',
             'tr',
             'digitalDrilling',
-            'pgno'
+            'pgno',
         ]
     })],
 });

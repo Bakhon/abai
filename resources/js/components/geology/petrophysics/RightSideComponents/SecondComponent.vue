@@ -34,9 +34,9 @@
 
     <ToolBlock class="mb-2">
       <div class="p-2 grid__inputs">
-        <AwInput v-model="postData.method_params.pca_search_interval" min="30" :disabled="postData.method === 'DTW'" type="number"
+        <AwInput v-model="postData.method_params.pca_search_interval" min="10" :disabled="postData.method === 'DTW'" type="number"
                  class="curve-inputs mb-2" label-direction="row" label="Интервал поиска" />
-        <AwInput v-model="postData.method_params.pca_search_window_size" min="29" :disabled="postData.method === 'DTW'" type="number" class="curve-inputs"
+        <AwInput v-model="postData.method_params.pca_search_window_size" min="10" :disabled="postData.method === 'DTW'" type="number" class="curve-inputs"
                  label-direction="row" label="Окно поиска" />
       </div>
     </ToolBlock>
@@ -62,7 +62,6 @@ import dropdown from "../../components/dropdowns/dropdown";
 import AwInput from "../../components/form/AwInput";
 import {FETCH_AUTOCORRELATION, POST_HORIZON} from "../../../../store/modules/geologyGis.const";
 import {globalloadingMutations} from "@store/helpers";
-import {Post_Horizons} from "../../api/horizons.api";
 
 export default {
   name: "SecondComponent",
@@ -82,8 +81,8 @@ export default {
         reference_well: null,
         horizons: null,
         method_params:{
-          pca_search_window_size: 29,
-          pca_search_interval: 30
+          pca_search_window_size: 10,
+          pca_search_interval: 10
         },
         curves: {
           GR: false,
@@ -107,8 +106,8 @@ export default {
         this.postData.reference_well !== null,
         this.postData.horizons !== null&&this.postData.horizons.length,
         Object.values(this.postData.curves).some((c) => c),
-          this.postData.method_params.pca_search_window_size>=29,
-          this.postData.method_params.pca_search_interval>=30
+          this.postData.method_params.pca_search_window_size>=10,
+          this.postData.method_params.pca_search_interval>=10
       ].some((el) => !el);
     },
     getHorizon() {
@@ -127,7 +126,6 @@ export default {
   },
   mounted() {
     this.switcher(this.postData.method);
-    console.log(this)
   },
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
@@ -191,12 +189,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.buttons-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-}
-
 .grid__inputs {
   .curve-inputs {
     display: grid;

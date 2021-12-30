@@ -138,7 +138,7 @@ export default {
     },
     tableSettingsSelected(val) {
       this.$store.commit(SET_SELECTED_WELL_CURVES, val);
-    }
+    },
   },
   computed: {
     getSelectedCurveName(){

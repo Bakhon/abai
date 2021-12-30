@@ -12,7 +12,7 @@
                 <div class="tools">
                     <div class="left-tools" >
                         <div class="tool" v-for="tool in leftTools" @click="toolAction(tool.action)">
-                            <div class="box">
+                            <div class="box" :class="{activeTool: tool.isActive}">
                                 <i :class="tool.icon"></i>
                             </div>
                             <span>{{ trans(tool.langCode) }}</span>
@@ -93,6 +93,8 @@
                                  :key="project.key"
                                  :projectKey="project.key"
                                  :data="project"
+                                 :class="{'active-project-block': index === activeProjectIndex}"
+                                 :activeToolType="activeToolType"
                                  class="projectBlock"
                         ></Project>
                     </div>
@@ -124,5 +126,17 @@
 }
 .projectBlock {
     border: 1px groove;
+}
+.active-project-block {
+    border: 2px groove #20e200;
+}
+.tool .fas, .tool .far {
+    margin: 0.45rem 0 0 0;
+}
+.activeTool {
+    background-color: #fff !important;
+}
+.activeTool i {
+    color: black !important;
 }
 </style>

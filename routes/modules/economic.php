@@ -247,5 +247,12 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
             Route::get('get-wells-by-kit', 'EconomicAnalysisController@getWellsByKit');
         });
+
+        Route::group(['prefix' => 'manufacturing_program'], function () {
+            Route::get('get-data', 'EconomicManufacturingProgramController@getData');
+            Route::get('upload-excel', 'EconomicManufacturingProgramController@uploadExcel');
+            Route::post('import-excel', 'EconomicManufacturingProgramController@importExcel')
+                ->name('economic.manufacturing_program.import');
+        });
     });
 });

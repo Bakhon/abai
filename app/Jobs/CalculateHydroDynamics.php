@@ -144,6 +144,7 @@ class CalculateHydroDynamics implements ShouldQueue
         )
             ->where('ngdu_id', $ngdu_id)
             ->where('trunkline', true)
+            ->where('water_pipe', false)
             ->get();
 
         $isErrors = false;

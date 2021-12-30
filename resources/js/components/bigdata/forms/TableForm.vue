@@ -227,13 +227,18 @@
                             </div>
                           </template>
                           <template v-else-if="row[column.code]">
-                      <span class="value">{{
-                          row[column.code].date ? row[column.code].old_value : row[column.code].value
-                        }}</span>
-                            <span v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
-                                  class="date">
-                        {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
-                      </span>
+                            <span
+                                :class="[['integer', 'float'].indexOf(getCellType(row, column)) > -1 ? 'value_num' : '']"
+                                class="value"
+                            >
+                              {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                            </span>
+                            <span
+                                v-if="row[column.code] && row[column.code].old_value && row[column.code].date"
+                                class="date"
+                            >
+                              {{ row[column.code].date | moment().format('DD.MM.YYYY') }}
+                            </span>
                           </template>
                         </template>
                         <template
@@ -597,7 +602,9 @@ export default {
 
         this.visibleColumns.forEach(column => {
           if (column.is_editable === false) {
-            delete fields[row.id][column.code]
+            if (typeof row[column.code] !== 'undefined' && (!row[column.code].hasOwnProperty('is_editable') || !row[column.code].is_editable)) {
+              delete fields[row.id][column.code]
+            }
           }
           if (this.isColumnRequired(column) && !fields[row.id][column.code]) {
             fields[row.id][column.code] = {value: row[column.code].value}
@@ -1109,16 +1116,23 @@ body.fixed {
         width: 14px;
       }
 
-      span.date {
-        display: block;
-        font-size: 10px;
-        font-style: italic;
-        white-space: nowrap;
-      }
+      span {
 
-      span.error {
-        color: #ff6464;
-        font-size: 11px;
+        &.value_num {
+          white-space: nowrap;
+        }
+
+        &.date {
+          display: block;
+          font-size: 10px;
+          font-style: italic;
+          white-space: nowrap;
+        }
+
+        &.error {
+          color: #ff6464;
+          font-size: 11px;
+        }
       }
     }
 

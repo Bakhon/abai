@@ -73,9 +73,6 @@ class TechMapController extends Controller
                 },
                 'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
-                },
-                'reverseCalc' => function ($query) use ($date) {
-                    $query->where('date', $date);
                 }
             ])
             ->where('water_pipe', false)
@@ -87,9 +84,6 @@ class TechMapController extends Controller
                     $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 },
                 'hydroCalc' => function ($query) {
-                    $query->where('date', Carbon::yesterday()->format('Y-m-d'));
-                },
-                'reverseCalc' => function ($query) {
                     $query->where('date', Carbon::yesterday()->format('Y-m-d'));
                 }
             ])
@@ -348,13 +342,9 @@ class TechMapController extends Controller
                 },
                 'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
-                },
-                'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
             ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
             ->find($pipe->id);
 
         return response()->json(
@@ -516,13 +506,9 @@ class TechMapController extends Controller
                 },
                 'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
-                },
-                'reverseCalc' => function ($query) {
-                    $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
             ->WithLastHydroCalc()
-            ->WithLastReverseCalc()
             ->find($id);
 
         return response()->json(
@@ -637,26 +623,60 @@ class TechMapController extends Controller
         );
     }
 
-    public function getHydroReverseCalc(Request $request)
+    public function getHydroCalc(Request $request)
     {
         $date = $request->input('date');
 
         $pipes = OilPipe::with(
             [
                 'coords',
+                'zu',
                 'pipeType',
                 'hydroCalc' => function ($query) use ($date) {
-                    $query->where('date', $date);
-                },
-                'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
                 'hydroCalcLong' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
+                'well.omgngdu' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                }
             ]
         )->where('water_pipe', false)
+            ->orderBy('between_points')
             ->get();
+
+        $press_alerts = [];
+        $press_zu = [];
+
+        foreach ($pipes as $pipe) {
+            $press_diff = $pipe->hydroCalc && isset($pipe->well->omgngdu[0]) && $pipe->well->omgngdu[0]->pressure ? $pipe->hydroCalc->press_start - $pipe->well->omgngdu[0]->pressure : null;
+
+            if ($press_diff != null && $press_diff != 0) {
+                $press_alerts[] = [
+                    'message' => 'Расчетное давление (' . $pipe->hydroCalc->press_start . ') отличается от датчиков (' . $pipe->well->omgngdu[0]->pressure . ') на скважине ' . $pipe->well->name,
+                    'variant' => 'danger'
+                ];
+            }
+
+            if ($pipe->between_points == 'well-zu' && $pipe->hydroCalc && $pipe->hydroCalc->press_end) {
+                $press_zu[$pipe->zu_id] = $pipe->hydroCalc->press_end;
+            }
+            
+            if ($pipe->between_points == 'zu-gu' 
+                && $pipe->hydroCalc 
+                && $pipe->hydroCalc->press_start 
+                && $pipe->hydroCalc->press_start  != $press_zu[$pipe->zu_id]) {
+                $press_alerts[] = [
+                    'message' => 'Конечное давление ('.$press_zu[$pipe->zu_id].') на трубах СКВ-ЗУ не совпадает с начальным давлением ('.$pipe->hydroCalc->press_start.') на трубе ЗУ-ГУ, '.$pipe->zu->name,
+                    'variant' => 'danger'
+                ];
+            }
+            
+
+            unset($pipe->well);
+            unset($pipe->zu);
+        }
 
         $manualPipes = ManualOilPipe::with(
             [
@@ -665,19 +685,72 @@ class TechMapController extends Controller
                 'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'reverseCalc' => function ($query) use ($date) {
-                    $query->where('date', $date);
-                },
                 'hydroCalcLong' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
             ]
         )->get();
 
+        $wellPoints = Well::with(
+            [
+                'omgngdu' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+            ]
+        )
+            ->whereHas('zu.gu')
+            ->whereHas('ngdu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
+        $wellManualPoints = ManualWell::with(
+            [
+                'omgngdu' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+            ]
+        )
+            ->whereNotNull('zu_id')
+            ->whereNotNull('gu_id')
+            ->whereHas('ngdu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
+        $guPoints = Gu::with(
+            [
+                'omgngdu' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+            ]
+        )
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
+
+        $guManualPoints = ManualGu::with(
+            [
+                'omgngdu' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+            ]
+        )
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
+
+        $wellPoints = $wellPoints->merge($wellManualPoints);
+        $guPoints = $guPoints->merge($guManualPoints);
         $pipes = $pipes->merge($manualPipes);
 
         return [
-            'pipes' => $pipes
+            'pipes' => $pipes,
+            'wells' => $wellPoints,
+            'gus' => $guPoints,
+            'press_alerts' => $press_alerts
         ];
     }
 

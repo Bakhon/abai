@@ -1,5 +1,7 @@
 <template>
-    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%"></div>
+    <div v-bind:id="projectKey" class="col p-0" style="min-width: 50%">
+        <div v-bind:id="'bubblePopup_' + this.projectKey" class="bubblePopup"></div>
+    </div>
 </template>
 
 <script>
@@ -12,35 +14,43 @@ import {Vector as VectorLayer} from "ol/layer";
 import {OSM, Vector as VectorSource, XYZ} from "ol/source";
 import Feature from "ol/Feature";
 import {LineString, Point, Polygon} from "ol/geom";
-import {Overlay} from "ol";
 import Chart from "ol-ext/style/Chart";
 import LegendControl from "ol-ext/control/Legend";
 import Legend from "ol-ext/legend/Legend";
 import CircleStyle from "ol/style/Circle";
 import {globalloadingMutations} from '@store/helpers';
 import TileLayer from "ol/layer/Tile";
-import {Control, defaults as defaultControls, ScaleLine} from 'ol/control';
+import {Control, defaults as defaultControls, MousePosition, ScaleLine} from 'ol/control';
 import jspdf from "jspdf";
 import moment from 'moment';
+import {createStringXY} from "ol/coordinate";
+import {Draw, DragBox, Select} from 'ol/interaction';
+import {platformModifierKeyOnly, shiftKeyOnly} from "ol/events/condition";
+import {Overlay} from "ol";
 
 export default {
     props: {
         data: Object,
         projectKey: '',
+        activeToolType: null,
     },
     data() {
         return {
             base64Data: null,
             map: null,
             gridMapsValues: [],
+            selectedFeatures: [],
             legend: null,
             legendControl: null,
-            mapOverlay: null,
-            overlayValues: {
+            infoBlock: null,
+            infoBlockValues: {
                 grid: {
                     html: '',
                 },
                 featureValues: {
+                    html: '',
+                },
+                coords: {
                     html: '',
                 },
             },
@@ -49,6 +59,14 @@ export default {
             y1: 0,
             y2: 0,
             polygonsType: null,
+            selectTool: null,
+            dragBoxTool: null,
+            measuringTool: null,
+            measureTooltip: null,
+            measureTooltipElement: null,
+            measuringToolType: 'LineString',
+            measureLayer: null,
+            metersPerUnit: 20,
         }
     },
     methods: {
@@ -71,6 +89,12 @@ export default {
             if (!this.isGridMap(type)) {
                 data = data[0];
             }
+            if (this.map !== null
+                && typeof this.map.getView().getProjection().getCode() !== "undefined"
+                && this.map.getView().getProjection().getCode() === "EPSG:4326") {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
+                return;
+            }
             return new Promise((resolve, reject) => {
                 try {
                     this.x1 = data.top_left[0];
@@ -81,7 +105,7 @@ export default {
                         const extent = [this.x1, this.y1, this.x2, this.y2];
                         const projection = new Projection({
                             units: 'm',
-                            metersPerUnit: 20,
+                            metersPerUnit: this.metersPerUnit,
                             extent: extent,
                         });
                         const mapExtent = projection.getExtent();
@@ -101,8 +125,9 @@ export default {
                                 zoom: 1,
                             }),
                         });
-                        this.addMapOverlay();
+                        this.addMapInfoBlock();
                         this.addMapLegend();
+                        this.enableSelectTools();
                     } else {
                         let mapExtent = this.map.getView().getProjection().getExtent();
                         this.x1 = Math.min(this.x1, mapExtent[0]);
@@ -180,9 +205,10 @@ export default {
             layerGroup.step = typeof data.step !== "undefined" ? data.step : 0;
             layerGroup.bounds = typeof data.bounds !== "undefined" ? data.bounds : [0, 0];
             layerGroup.show = isolinesShow;
+            layerGroup.data = data;
             this.addLayerGroupToMap(layerGroup);
-            if (typeof data.grid !== "undefined") {
-                this.addGrid(data);
+            if (typeof layerGroup.data.grid !== "undefined") {
+                this.addGrid();
             }
         },
         drawLines(fileData) {
@@ -301,17 +327,29 @@ export default {
                 this.data.layerGroups.splice(indexToRemove, 1)
             }
         },
-        addGrid(data) {
-            let binValues = this.decodeFromBase64(data.grid);
-            let shape = data.shape;
-            let resultArray = [];
-            for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
-                resultArray[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
-            }
+        addGrid() {
+            this.gridMapsValues = [];
+            this.data.layerGroups.forEach(layerGroup => {
+                if (typeof layerGroup.data !== "undefined"
+                    && typeof layerGroup.data.grid !== "undefined"
+                    && typeof layerGroup.data.shape !== "undefined"
+                ) {
+                    let gridData = [];
+                    let binValues = this.decodeFromBase64(layerGroup.data.grid);
+                    let shape = layerGroup.data.shape;
+                    for (let i = 0; i < Math.ceil(binValues.length / shape[1]); i++){
+                        gridData[i] = binValues.slice((i * shape[1]), (i * shape[1]) + shape[1]);
+                    }
+                    this.gridMapsValues.push({
+                        name: layerGroup.name,
+                        data: gridData,
+                        shape: shape,
+                    });
+                }
+            })
             if (this.map) {
                 const $self = this;
                 const mapExtent = this.map.getView().getProjection().getExtent();
-                this.gridMapsValues.push(resultArray);
                 this.map.on('pointermove', function (evt) {
                     if (
                         evt.coordinate[0] < mapExtent[0]
@@ -323,15 +361,22 @@ export default {
                         return;
                     }
                     if ($self.gridMapsValues.length > 0) {
-                        const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
-                        const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
-                        let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
-                        let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
-                        let value = $self.gridMapsValues[0][x][y];
-                        if (isNaN(value)) {
-                            return;
-                        }
-                        $self.overlayValues.grid.html = '<div> Значение грид карты: ' + value.toFixed(2) + '</div>';
+                        let value = 0;
+                        let html = '';
+                        $self.gridMapsValues.forEach(gridMapsValue => {
+                            const shape = gridMapsValue.shape;
+                            const stepX = (mapExtent[2] - mapExtent[0]) / (shape[0] - 1);
+                            const stepY = (mapExtent[3] - mapExtent[1]) / (shape[1] - 1);
+                            let x = ((evt.coordinate[0] - mapExtent[0]) / stepX).toFixed(0);
+                            let y = ((mapExtent[3] - mapExtent[1] - (evt.coordinate[1] - mapExtent[1])) / stepY).toFixed(0);
+                            value = gridMapsValue.data[x][y];
+                            if (isNaN(value)) {
+                                return;
+                            }
+                            html += value === 0 ? ''
+                                : `<div>${gridMapsValue.name} (значение): ${value.toFixed(2)}</div>`;
+                        })
+                        $self.infoBlockValues.grid.html = html;
                     }
                 });
             }
@@ -583,6 +628,7 @@ export default {
                     layerGroup.name += typeof data.dataType === "undefined" ? '' :
                         data.dataType === 'kto' ? '(текущие)' : '(накопленные)';
                     layerGroup.name += typeof data.selectedMonth === "undefined" ? '' : ' за ' + data.selectedMonth;
+                    layerGroup.type = 'bubbles';
                     layerGroup.legendItems = [{
                         title: 'Закачка жидкости, м3',
                         feature: new Feature({
@@ -615,80 +661,82 @@ export default {
             }
         },
         addGeographicalMap() {
-            let satelliteMapLayer = new TileLayer({
-                source: new XYZ({
-                    attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
-                    url:
-                        'https://services.arcgisonline.com/arcgis/rest/services/' +
-                        'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
-                    maxZoom: 11,
-                    projection: 'EPSG:4326',
-                    tileSize: 512,
-                    maxResolution: 180 / 512,
-                    wrapX: true,
-                    crossOrigin:"anonymous",
-                }),
-                visible: true,
-            });
-            let defaultMapLayer = new TileLayer({
-                source: new OSM(),
-                visible: false,
-            });
-            this.map = new Map({
-                controls: defaultControls().extend([
-                    new ScaleLine({
-                        units: 'metric',
+            if (this.map === null) {
+                let satelliteMapLayer = new TileLayer({
+                    source: new XYZ({
+                        attributions: 'Copyright:© 2013 ESRI, i-cubed, GeoEye',
+                        url:
+                            'https://services.arcgisonline.com/arcgis/rest/services/' +
+                            'ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}',
+                        maxZoom: 11,
+                        projection: 'EPSG:4326',
+                        tileSize: 512,
+                        maxResolution: 180 / 512,
+                        wrapX: true,
+                        crossOrigin:"anonymous",
                     }),
-                    new ToggleMapStyle(),
-                    new ExportMap(),
-                ]),
-                target: this.projectKey,
-                view: new View({
-                    projection: 'EPSG:4326',
-                    zoom: 0,
-                    center: [0, 0],
-                }),
-            });
-            let layerGroup = new LayerGroup();
-            layerGroup.name = 'Географическая карта';
-            layerGroup.type = 'map';
-            layerGroup.getLayers().push(defaultMapLayer);
-            layerGroup.getLayers().push(satelliteMapLayer);
-            this.addLayerGroupToMap(layerGroup);
-            this.addMapLegend();
-        },
-        addMapOverlay() {
-            let $self = this;
-            let popupDiv = document.getElementById("bubblePopup_" + this.projectKey);
-            if (popupDiv === null) {
-                popupDiv = document.createElement('div');
-                popupDiv.setAttribute("id", "bubblePopup_" + this.projectKey);
-                popupDiv.classList.add("bubblePopup");
+                    visible: true,
+                });
+                let defaultMapLayer = new TileLayer({
+                    source: new OSM(),
+                    visible: false,
+                });
+                this.map = new Map({
+                    controls: defaultControls().extend([
+                        new ScaleLine({
+                            units: 'metric',
+                        }),
+                        new ToggleMapStyle(),
+                        new ExportMap(),
+                        new MousePosition({
+                            coordinateFormat: createStringXY(4),
+                            className: 'mouse-position-coords',
+                            projection: 'EPSG:4326',
+                            target: document.getElementById('mouse-position'),
+                        }),
+                    ],),
+                    target: this.projectKey,
+                    view: new View({
+                        projection: 'EPSG:4326',
+                        zoom: 0,
+                        center: [0, 0],
+                    }),
+                    mapType: 'geographical',
+                });
+                let layerGroup = new LayerGroup();
+                layerGroup.name = 'Географическая карта';
+                layerGroup.type = 'map';
+                layerGroup.getLayers().push(defaultMapLayer);
+                layerGroup.getLayers().push(satelliteMapLayer);
+                this.addLayerGroupToMap(layerGroup);
+                this.addMapLegend();
+            } else {
+                this.$notifyError(this.trans('map_constructor.not_empty_map'));
             }
-            this.mapOverlay = new Overlay({
-                element: popupDiv,
-            });
-            this.map.addOverlay(this.mapOverlay);
-            this.map.on('pointermove', function (e) {
+        },
+        addMapInfoBlock() {
+            let $self = this;
+            $self.infoBlock = document.getElementById("bubblePopup_" + this.projectKey);
+            $self.map.on('pointermove', function (e) {
                 if (e.dragging) {
                     return;
                 }
                 let values = [];
                 this.forEachFeatureAtPixel(e.pixel, function (f) {
                     values = f.values_.values;
-                    $self.mapOverlay.setPosition(e.coordinate);
                     return true;
                 });
-                $self.mapOverlay.getElement().innerHTML = '';
+                $self.infoBlock.innerHTML = '';
                 let valuesText = '';
                 if (typeof values !== "undefined" && values.length > 0) {
                     values.forEach(item => {
-                        valuesText += `<div>${item.key}: ${item.value}</div>`
+                        valuesText += `<div>${item.key}: ${item.value}</div>`;
                     });
                 }
-                $self.overlayValues.featureValues.html = valuesText;
-                for (const [key, item] of Object.entries($self.overlayValues)) {
-                    $self.mapOverlay.getElement().innerHTML += `${item.html}`;
+                $self.infoBlockValues.featureValues.html = valuesText;
+                $self.infoBlockValues.coords.html = `<div>X: ${e.coordinate[0].toFixed()} Y: ${e.coordinate[1].toFixed()}</div>`;
+                for (const [key, item] of Object.entries($self.infoBlockValues)) {
+                    $self.infoBlock.innerHTML += `${item.html}`;
                 }
             });
         },
@@ -791,8 +839,163 @@ export default {
             } else {
                 this.$notifyError(this.trans('map_constructor.empty_data'));
             }
-        }
-    }
+        },
+        enableSelectTools() {
+            if (this.map) {
+                let $self = this;
+                this.selectTool = new Select({
+                    addCondition: platformModifierKeyOnly,
+                });
+                this.map.addInteraction(this.selectTool);
+                this.selectTool.on('select', function (e) {
+                    const candidateFeatures = $self.selectedFeatures;
+                    e.selected.forEach(feature => {
+                        if (feature.getGeometry() instanceof LineString) {
+                            $self.selectTool.getLayer(feature).getSource().getFeatures().forEach(feature => {
+                                candidateFeatures.push(feature);
+                            })
+                        }
+                    })
+                })
+                this.dragBoxTool = new DragBox({
+                    condition: shiftKeyOnly,
+                });
+                this.map.addInteraction(this.dragBoxTool);
+                this.selectedFeatures = this.selectTool.getFeatures();
+                this.dragBoxTool.on('boxend', function () {
+                    const rotation = $self.map.getView().getRotation();
+                    const oblique = rotation % (Math.PI / 2) !== 0;
+                    const candidateFeatures = oblique ? [] : $self.selectedFeatures;
+                    const extent = $self.dragBoxTool.getGeometry().getExtent();
+                    $self.map.getLayerGroup().getLayers().forEach(layerGroup => {
+                        layerGroup.getLayers().forEach(layer => {
+                            switch (layerGroup.type) {
+                                case 'border':
+                                    let selectFeature = true;
+                                    layer.getSource().getFeatures().forEach(feature => {
+                                        selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                    })
+                                    if (selectFeature) {
+                                        layer.getSource().getFeatures().forEach(feature => {
+                                            candidateFeatures.push(feature);
+                                        })
+                                    }
+                                    break;
+                                default:
+                                    layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+                                        let selectFeature = $self.checkFeatureInExtent(extent, feature)
+                                        if (selectFeature) {
+                                            candidateFeatures.push(feature);
+                                        }
+                                    });
+                            }
+                        })
+                    })
+                    if (oblique) {
+                        const anchor = [0, 0];
+                        const geometry = this.dragBoxTool.getGeometry().clone();
+                        geometry.rotate(-rotation, anchor);
+                        const extent = geometry.getExtent();
+                        candidateFeatures.forEach(function (feature) {
+                            const geometry = feature.getGeometry().clone();
+                            geometry.rotate(-rotation, anchor);
+                            if (geometry.intersectsExtent(extent)) {
+                                $self.selectedFeatures.push(feature);
+                            }
+                        });
+                    }
+                });
+                this.dragBoxTool.on('boxstart', function (e) {
+                    if (typeof this.selectedFeatures !== "undefined" && this.selectedFeatures.length > 0) {
+                        this.selectedFeatures.clear();
+                    }
+                });
+            }
+        },
+        checkFeatureInExtent(extent, feature) {
+            let featureInExtent = true;
+            let featureExtent = feature.getGeometry().getExtent();
+            if (extent[0] > featureExtent[0]
+                || extent[1] > featureExtent[1]
+                || extent[2] < featureExtent[2]
+                || extent[3] < featureExtent[3]) {
+                featureInExtent = false
+            }
+
+            return featureInExtent;
+        },
+        enableMeasuringTool() {
+            if (this.map) {
+                let $self = this;
+                let measureSource = new VectorSource();
+                this.measureLayer = new VectorLayer({
+                    source: measureSource,
+                    style: new Style({
+                        fill: new Fill({
+                            color: 'rgba(255, 255, 255, 0.2)',
+                        }),
+                        stroke: new Stroke({
+                            color: '#ffcc33',
+                            width: 2,
+                        }),
+                        image: new CircleStyle({
+                            radius: 7,
+                            fill: new Fill({
+                                color: '#ffcc33',
+                            }),
+                        }),
+                    }),
+                    zIndex: 100,
+                })
+                this.map.addLayer(this.measureLayer);
+                this.measuringTool = new Draw({
+                    type: this.measuringToolType,
+                    source: measureSource
+                });
+                this.map.addInteraction(this.measuringTool);
+                this.createMeasureTooltip();
+                this.measuringTool.on('drawstart', function (event) {
+                    event.feature.getGeometry().on('change', function (e) {
+                        const measurement = e.target.getLength() * $self.metersPerUnit / 1000;
+                        $self.measureTooltipElement.innerHTML = measurement.toFixed(2) + 'km';
+                        $self.measureTooltip.setPosition(e.target.getLastCoordinate());
+                    });
+                });
+                this.measuringTool.on('drawend', function () {
+                    $self.measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
+                    $self.measureTooltip.setOffset([0, -7]);
+                    $self.measureTooltipElement = null;
+                    $self.createMeasureTooltip();
+                });
+            }
+        },
+        createMeasureTooltip() {
+            if (this.measureTooltipElement) {
+                this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement);
+            }
+            this.measureTooltipElement = document.createElement('div');
+            this.measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+            this.measureTooltip = new Overlay({
+                element: this.measureTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center',
+                stopEvent: false,
+                insertFirst: false,
+            });
+            this.map.addOverlay(this.measureTooltip);
+        },
+        removeAllTools() {
+            if (this.map) {
+                if (this.measureLayer) {
+                    this.measureLayer.getSource().clear();
+                }
+                this.map.getOverlays().clear();
+                this.map.removeInteraction(this.measuringTool);
+                this.map.removeInteraction(this.selectTool);
+                this.map.removeInteraction(this.dragBoxTool);
+            }
+        },
+    },
 }
 
 class ToggleMapStyle extends Control {
@@ -906,9 +1109,14 @@ class ExportMap extends Control {
 </script>
 <style>
 .bubblePopup {
+    position: absolute;
+    bottom: 1%;
+    right: 4%;
     border-radius: 2px;
     color: white;
     background: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    z-index: 1000;
 }
 .bubblePopup div {
     padding: 0.1rem 0.5rem;
@@ -931,5 +1139,32 @@ class ExportMap extends Control {
 }
 .ol-control.mapLegend {
     bottom: 2.5em;
+}
+.mouse-position-coords {
+    color: #ccc;
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+}
+.ol-tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
+    opacity: 0.7;
+    white-space: nowrap;
+    font-size: 12px;
+    cursor: default;
+    user-select: none;
+}
+.ol-tooltip-measure {
+    opacity: 1;
+    font-weight: bold;
+}
+.ol-tooltip-static {
+    background-color: #ffcc33;
+    color: black;
+    border: 1px solid white;
 }
 </style>

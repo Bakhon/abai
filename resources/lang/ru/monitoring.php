@@ -90,6 +90,8 @@ return array (
     'management' => 'Управление',
     'calc_result' => 'Расчитать результат',
     'calc_result_export' => 'Выгрузить результаты',
+    'show-errors' => 'Показать ошибки',
+    'collapse-errors' => 'Свернуть ошибки',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -422,6 +424,7 @@ return array (
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
       'no-pressure-on-gu-omgdu' => 'На задано давление на ГУ',
+      'no-pressure-omgdu-data' => 'Нет данных по давлению на ГУ',
     ),
     'error' => 
     array (

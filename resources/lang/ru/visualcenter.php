@@ -229,7 +229,7 @@ return array (
   'dailyReportsKMG' => 'Суточная отчетность КМГ',
   'approvalsTable' => 'Таблица согласований',
   'version' => 'Версия',
-  'upstreamKPI' => 'КПД Блока Upstream',
+  'upstreamKPI' => 'КПД ТОО "КМГ Инжиниринг"',
   'dzoRegions' =>
   array (
     'aturay' => 'Атырауская область',
@@ -421,7 +421,7 @@ return array (
     'cancelled' => 'Отменено'
   ),
   'notes' => 'Примечания',
-  'kpdModuleTitle' => 'КПД Upstream',
+  'kpdModuleTitle' => 'ТОО "КМГ Инжиниринг"',
   'condensateDelivery' => 'Сдача конденсата',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',

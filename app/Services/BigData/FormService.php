@@ -49,12 +49,26 @@ class FormService
     {
         $forms = [];
 
-        foreach ($formsStructure['forms'] as $formCode) {
-            $form = $activeForms->where('code', $formCode)->first();
-            if (empty($form)) {
+        foreach ($formsStructure['forms'] as $form) {
+            $code = is_array($form) ? $form['code'] : $form;
+            $formObject = $activeForms->where('code', $code)->first();
+            if (empty($formObject)) {
                 continue;
             }
-            $forms[] = $form;
+
+            if (!empty($form['sub'])) {
+                $subForms = [];
+                foreach ($form['sub'] as $subForm) {
+                    $subFormObject = $activeForms->where('code', $subForm)->first();
+                    if (empty($subFormObject)) {
+                        continue;
+                    }
+                    $subForms[] = $subFormObject;
+                }
+                $formObject->forms = $subForms;
+            }
+
+            $forms[] = $formObject;
         }
 
         $formsStructure['forms'] = $forms;

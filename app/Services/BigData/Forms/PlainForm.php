@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
@@ -71,17 +72,17 @@ abstract class PlainForm extends BaseForm
     {
         DB::connection('tbd')->beginTransaction();
 
-//        try {
-        $result = $this->submitForm();
-        DB::connection('tbd')->commit();
-        if (isset($result['well'])) {
-            Cache::forget("well_{$result['well']}");
+        try {
+            $result = $this->submitForm();
+            DB::connection('tbd')->commit();
+            if (isset($result['well'])) {
+                Cache::forget("well_{$result['well']}");
+            }
+            return $result;
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
         }
-        return $result;
-//        } catch (\Exception $e) {
-//            DB::connection('tbd')->rollBack();
-//            throw new SubmitFormException($e->getMessage());
-//        }
     }
 
     protected function submitForm(): array
@@ -376,6 +377,38 @@ abstract class PlainForm extends BaseForm
                 return [$item['code'] => $item];
             }
         );
+    }
+
+    protected function filterParams(array $params): array
+    {
+        $userDZOs = array_filter(
+            array_map(
+                function ($dzo) {
+                    return $dzo['code'];
+                },
+                auth()->user()->getUserOrganizations()
+            )
+        );
+
+        foreach ($params['tabs'] as &$tab) {
+            foreach ($tab['blocks'] as &$block) {
+                foreach ($block as &$subBlock) {
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
+                    foreach ($subBlock['items'] as $key => $item) {
+                        if (!isset($item['dzos'])) {
+                            continue;
+                        }
+                        if (empty(array_intersect($userDZOs, $item['dzos']))) {
+                            unset($subBlock['items'][$key]);
+                        }
+                    }
+                    $subBlock['items'] = array_values($subBlock['items']);
+                }
+            }
+        }
+        return $params;
     }
 
 }

@@ -341,11 +341,11 @@
       <div class="col">
         <div class="row">
           <div class="col">
-            <div class="section-field bg-dark">
+            <div class="section-field bg-dark" v-if="reportName">
               <div class="row">
                 <div class="section-field-inner col">
                     <div class="field">
-                      Месторождение: АО “ЭмбаМунайГаз”  
+                      {{ reportName }}
                     </div>
                      <div class="share">
                         <svg width="13" height="14" viewBox="0 0 13 14" fill="none"

@@ -8,12 +8,12 @@
       <div class="d-flex bg-header font-weight-600" style="padding-right: 10px">
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}
-          {{ (+scenario.dollar_rate).toLocaleString() }}
+          {{ localeValue(+scenario.dollar_rate) }}
           {{ trans('economic_reference.tenge') }} / $
         </div>
 
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-150px">
-          {{ trans('economic_reference.pp_2020') }}
+          {{ trans('economic_reference.pp') }}
         </div>
 
         <div class="flex-grow-1">
@@ -26,7 +26,7 @@
             <div v-for="price in reverseOilPrices"
                  :key="price"
                  class="py-3 border-grey text-center flex-grow-1">
-              {{ (+price).toLocaleString() }}
+              {{ localeValue(+price) }}
             </div>
           </div>
         </div>
@@ -45,14 +45,18 @@
           </div>
 
           <div class="px-3 py-2 border-grey text-center flex-150px d-flex align-items-center justify-content-center">
-            {{ row.pp2020 }}
+            {{
+              typeof row.manufacturingProgram === 'string'
+                  ? row.manufacturingProgram
+                  : localeValue(+row.manufacturingProgram)
+            }}
           </div>
 
           <div v-for="(column, columnIndex) in row.columns"
                :key="`${index}_${columnIndex}`"
                :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
                class="px-3 py-2 border-grey text-center flex-grow-1 d-flex align-items-center justify-content-center">
-            {{ column.isString ? column.value : (+column.value).toLocaleString() }}
+            {{ column.isString ? column.value : localeValue(+column.value) }}
           </div>
         </div>
       </div>
@@ -64,6 +68,7 @@
 import Subtitle from "../../components/Subtitle";
 
 import {paletteMixin} from "../../mixins/paletteMixin";
+import {formatValueMixin} from "../../mixins/formatMixin";
 
 const ROMANS = {
   M: 1000,
@@ -86,7 +91,10 @@ export default {
   components: {
     Subtitle
   },
-  mixins: [paletteMixin],
+  mixins: [
+    paletteMixin,
+    formatValueMixin
+  ],
   methods: {
     convertToRoman(value) {
       let str = '';
@@ -120,7 +128,7 @@ export default {
         ...[
           {
             title: this.trans('economic_reference.program_number'),
-            pp2020: '',
+            manufacturingProgram: '',
             columns: this.scenariosByOilPrice.map((item, index) => {
               return {
                 value: this.convertToRoman(index + 1),
@@ -134,7 +142,9 @@ export default {
               ${this.trans('economic_reference.production')},
               ${this.trans('economic_reference.thousand_tons')}
             `,
-            pp2020: '',
+            manufacturingProgram: this.manufacturingProgram
+                ? +this.manufacturingProgram.oil
+                : '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
                 value: +(+item.oil / 1000).toFixed(2)
@@ -143,7 +153,7 @@ export default {
           },
           {
             title: this.trans('economic_reference.stop_nrs'),
-            pp2020: '',
+            manufacturingProgram: '',
             columns: this.scenariosByOilPrice.map(item => {
               let cat1 = +item.uwi_count_profitless_cat_1
 
@@ -159,7 +169,9 @@ export default {
               ${this.trans('economic_reference.personnel_costs_payroll')},
               ${this.trans('economic_reference.million_tenge')}
             `,
-            pp2020: '',
+            manufacturingProgram: this.manufacturingProgram
+                ? +this.manufacturingProgram.cost_price_staff
+                : '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
                 value: +(+item.Fixed_noWRpayroll_expenditures / 1000000).toFixed(2)
@@ -171,7 +183,9 @@ export default {
               ${this.trans('economic_reference.kvl')},
               ${this.trans('economic_reference.million_tenge')}
             `,
-            pp2020: '',
+            manufacturingProgram: this.manufacturingProgram
+                ? +this.manufacturingProgram.capital_investment
+                : '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
                 value: '',
