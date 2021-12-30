@@ -208,11 +208,18 @@ const objectList = [
             {
                 id: 15,
                 title: '15 горизонт',
+                parent: {
+                    field: 'uzn'
+                },
                 children: [
                     {
                         id: 5,
                         title: 'Основной свод',
-                        owc_id: 'owc_out_uzn_15_osn'
+                        parent: {
+                            field: 'uzn',
+                            horizon: 15,
+                        },
+                        owc_id: ['owc_out_uzn_15_osn']
                     },
                     {
                         id: 6,
