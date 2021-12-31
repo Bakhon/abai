@@ -141,10 +141,8 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         $this->prepareStatus();
         $this->input = $input;
         $this->log_channel = (isset($this->input['cron']) and $this->input['cron']) ? 'calculate_hydro_reverse_yesterday:cron' : 'calculate_hydro_reverse';
-        $message = "=========================";
-        Log::channel($this->log_channel)->info($message);
-        $message = "Job begins";
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info("=========================");
+        Log::channel($this->log_channel)->info("Job begins");
     }
 
     /**
@@ -164,8 +162,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             'ГУ-22'
         ];
 
-        $message = "Before get pipes";
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info("Before get pipes");
 
         $isErrors = false;
         $gu_ids = Gu::whereIn('name', $guNames)->get()->pluck('id');
@@ -179,8 +176,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             ->orderBy('zu_id')
             ->get();
 
-        $message = "Pipes got";
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info("Pipes got");
 
         foreach ($pipes as $key => $pipe) {
             if (!$pipe->lastCoords || !$pipe->firstCoords) {
@@ -259,8 +255,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             }
         }
 
-        $message = "Pipes omgngdu_gu got";
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info("Pipes omgngdu_gu got");
 
         if ($isErrors) {
             if (isset($this->input['cron']) and $this->input['cron']) {
@@ -288,15 +283,13 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         $filePath = 'public/export/'.$fileName;
         Excel::store(new PipeLineReverseCalcExport($data), $filePath);
 
-        $message = 'Excel file created';
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info('Excel file created');
 
         if (!$isErrors AND isset($this->input['date'])) {
             $calcUrl = env('MANUAL_CALC_SERVICE_URL').'calculate?calculation_type=reverse';
 
             $request = $this->calcRequest($calcUrl, $filePath, $fileName);
-            $message = 'Data calculated, begins saving';
-            Log::channel($this->log_channel)->info($message);
+            Log::channel($this->log_channel)->info('Data calculated, begins saving');
 
             $data = json_decode($request->getBody()->getContents());
             $short = $data->short->data;
@@ -353,8 +346,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
     protected function storeShortResult(array $data): void
     {
-        $message = 'Begins saving short data';
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info('Begins saving short data');
 
         foreach ($data as $row) {
             $pipe = OilPipe::find($row[$this->shortSchema['id']]);
@@ -375,14 +367,12 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             $calcResult->save();
         }
 
-        $message = 'Short data saved';
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info('Short data saved');
     }
 
     protected function storeLongResult(array $data): void
     {
-        $message = 'Begins saving long data';
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info('Begins saving long data');
 
         $pipe = null;
         foreach ($data as $row) {
@@ -414,8 +404,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             $hydroCalcLong->save();
         }
 
-        $message = 'Long data saved';
-        Log::channel($this->log_channel)->info($message);
+        Log::channel($this->log_channel)->info('Long data saved');
     }
 }
 
