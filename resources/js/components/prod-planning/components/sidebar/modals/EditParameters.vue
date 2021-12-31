@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="block-edited-params" style="justify-content: space-between;">
+      <div class="block-edited-params">
         <div>
           Выделение кластеров
         </div>
@@ -10,7 +10,7 @@
         </div>
       </div>
 
-      <div class="block-edited-params mt-1" style="justify-content: space-between;">
+      <div class="block-edited-params mt-1">
         <div>
           Замеры пластового давления
         </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="block-edited-params mt-1" style="justify-content: space-between;">
+      <div class="block-edited-params mt-1">
         <div>
           Взаимосвязь скважин
         </div>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="block-edited-params mt-1" style="justify-content: space-between;">
+      <div class="block-edited-params mt-1">
         <div>
           Влияние аквифера
         </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="block-edited-params mt-1" style="justify-content: space-between;">
+      <div class="block-edited-params mt-1">
         <div>
           Параметры флюида
         </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="block-edited-params mt-1" style="justify-content: space-between;">
+      <div class="block-edited-params mt-1">
         <div>
           Исторические данные
         </div>
@@ -71,45 +71,3 @@ export default {
   name: 'edit-parameters'
 }
 </script>
-<style scoped>
-.block-edited-params {
-  padding: 15px;
-  display: flex;
-  background-color: #323370; border: 0.5px solid #545580;
-}
-
-.block-edited-params-button {
-  background-color: #333975;
-  border-radius: 6px;
-  width: 170px;
-  height: 28px;
-  text-align: center;
-
-}
-
-.block-edited-params-button:hover {
-  background-color: #2E50E9;
-}
-
-.edit-params-input {
-  background: #272953;
-  border: 1px solid #494AA5;
-  outline: none;
-  color: white;
-  border-radius: 2px
-}
-
-.edit-params-input:focus {
-  background: #5657c7;
-}
-
-.edit-params-input:disabled {
-  color: #928f8f;
-  background: #353e70;
-}
-
-.button-block-edited-params {
-  display: flex;
-  justify-content: space-evenly;
-}
-</style>
