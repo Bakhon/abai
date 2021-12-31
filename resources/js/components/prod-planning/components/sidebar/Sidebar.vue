@@ -221,7 +221,7 @@
     </div>
 
     <modal class="modal-bign-wrapper" name="modalEditParams" draggable=".modal-bign-header" :width="500"
-           :height="500"
+           :height="460"
            style="background: transparent;" :adaptive="true">
       <div class="modal-bign modal-bign-container">
         <div class="modal-bign-header">
@@ -240,7 +240,7 @@
 
 
     <modal class="modal-bign-wrapper" name="modalBasicIndicators" draggable=".modal-bign-header" :width="500"
-           :height="500"
+           :height="400"
            style="background: transparent;" :adaptive="true">
       <div class="modal-bign modal-bign-container">
         <div class="modal-bign-header">

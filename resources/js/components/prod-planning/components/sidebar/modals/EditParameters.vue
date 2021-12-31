@@ -55,9 +55,11 @@
         </div>
       </div>
 
-      <div class="block-edited-params-button mt-2 ml-5">
-        <div class="pt-1">
-          Применить
+      <div class="button-block-edited-params mt-1">
+        <div class="block-edited-params-button mt-1">
+          <div class="pt-1">
+            Применить
+          </div>
         </div>
       </div>
 
@@ -82,9 +84,7 @@ export default {
   width: 170px;
   height: 28px;
   text-align: center;
-  position: absolute;
-  left: 30%;
-  bottom: 7%;
+
 }
 
 .block-edited-params-button:hover {
@@ -106,5 +106,10 @@ export default {
 .edit-params-input:disabled {
   color: #928f8f;
   background: #353e70;
+}
+
+.button-block-edited-params {
+  display: flex;
+  justify-content: space-evenly;
 }
 </style>
