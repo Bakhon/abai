@@ -5,10 +5,17 @@
       :style="
         tableState === 'hidden'
           ? 'height: calc(100% - 38px);'
+          : tableState === 'expanded'
+          ? 'height: 38px;'
           : 'height: calc(100% - 360px);'
       "
     >
-      <div class="heading-title-wrapper">
+      <div
+        :class="[
+          'heading-title-wrapper',
+          { 'extra-padding': tableState === 'expanded' },
+        ]"
+      >
         <div class="heading-title">
           <img
             @click.stop="isMapSettingsOpen = true"
@@ -21,7 +28,7 @@
           />
         </div>
       </div>
-      <div class="content">
+      <div class="content" v-show="tableState !== 'expanded'">
         <StructuralMap />
       </div>
     </div>
@@ -132,6 +139,11 @@ export default {
   background: #272953;
   display: flex;
   align-items: center;
+}
+
+.extra-padding {
+  padding: 6px;
+  height: 44px;
 }
 
 .heading-title {
