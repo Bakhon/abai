@@ -265,7 +265,7 @@ export default {
     },
     updateResults(event) {
       //todo: hotfix, need to do it properly
-      if (this.params.form === 'well_document_short') {
+      if (this.params.form === 'well_document') {
         event.values.filenames = event.values.file.map(file => {
           return file.name
         }).join(', ')
