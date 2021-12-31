@@ -49,8 +49,8 @@
         </button>
         <button
           @click="sendTableActiveColumns"
-          :disabled="!checkedFields.length"
-          :class="[{ disabled: !checkedFields.length }, 'save-button']"
+          :disabled="!tempCheckedFields.length"
+          :class="[{ disabled: !tempCheckedFields.length }, 'save-button']"
         >
           <img src="/img/PlastFluids/save.svg" alt="save table" />{{
             trans("plast_fluids.save")
