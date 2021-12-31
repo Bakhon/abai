@@ -1,6 +1,9 @@
 <template>
   <div
-    class="data-analysis-data-table"
+    :class="[
+      'data-analysis-data-table',
+      { expanded: tableState === 'expanded' },
+    ]"
     :style="tableState === 'hidden' ? 'height: 38px;' : ''"
   >
     <div class="data-analysis-table-header">
@@ -14,12 +17,12 @@
         </button>
       </div>
       <div class="header-hide-expand-buttons">
-        <button @click="SET_TABLE_STATE('default')">
+        <button @click="handleTableStateChange('expand')">
           <img
             src="/img/PlastFluids/tableArrow.svg"
             alt="expand table"
           /></button
-        ><button @click="SET_TABLE_STATE('hidden')">
+        ><button @click="handleTableStateChange('collapse')">
           <img src="/img/PlastFluids/tableArrow.svg" alt="hide table" />
         </button>
       </div>
@@ -122,9 +125,7 @@ export default {
     handleTableActiveColumnsChange(activeColumns) {
       if (activeColumns.length) {
         this.SET_ANALYSIS_ACTIVE_COLUMNS(activeColumns);
-        const sortedActiveColumns = [...activeColumns].sort(
-          (a, b) => a - b
-        );
+        const sortedActiveColumns = [...activeColumns].sort((a, b) => a - b);
         this.activeFields = sortedActiveColumns.map(
           (activeColumnIndex) => this.fields[activeColumnIndex]
         );
@@ -137,6 +138,21 @@ export default {
       } else {
         this.activeFields = this.fields;
         this.activeItems = this.items;
+      }
+    },
+    handleTableStateChange(type) {
+      if (type === "expand") {
+        this.tableState === "default"
+          ? this.SET_TABLE_STATE("expanded")
+          : this.tableState === "hidden"
+          ? this.SET_TABLE_STATE("default")
+          : "";
+      } else {
+        this.tableState === "expanded"
+          ? this.SET_TABLE_STATE("default")
+          : this.tableState === "default"
+          ? this.SET_TABLE_STATE("hidden")
+          : "";
       }
     },
   },
@@ -232,5 +248,10 @@ export default {
   width: 100%;
   padding: 4px;
   border: 6px solid #272953;
+}
+
+.expanded {
+  height: calc(100% - 48px);
+  max-height: unset;
 }
 </style>

@@ -6,16 +6,27 @@
         :style="
           tableState === 'hidden'
             ? 'height: calc(100% - 38px);'
+            : tableState === 'expanded'
+            ? 'height: 38px;'
             : 'height: calc(100% - 360px);'
         "
       >
-        <div class="heading-title">
+        <div
+          :class="[
+            'heading-title',
+            { 'extra-padding': tableState === 'expanded' },
+          ]"
+        >
           <div>
             <img src="/img/PlastFluids/graphs.svg" />
             <p>{{ trans("plast_fluids.graphs") }}</p>
           </div>
         </div>
-        <div v-if="isDataReady" class="content">
+        <div
+          v-if="isDataReady"
+          v-show="tableState !== 'expanded'"
+          class="content"
+        >
           <div
             v-for="graph in sortedCurrentGraphics"
             :key="graph.order"
@@ -238,6 +249,11 @@ export default {
   height: 38px;
   padding: 6px 6px 0 6px;
   background: #272953;
+}
+
+.extra-padding {
+  padding: 6px;
+  height: 44px;
 }
 
 .heading-title > div {

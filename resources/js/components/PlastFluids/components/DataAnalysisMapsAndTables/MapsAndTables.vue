@@ -21,7 +21,7 @@
           />
         </div>
       </div>
-      <div class="content">
+      <div class="content" v-show="tableState !== 'expanded'">
         <StructuralMap />
       </div>
     </div>
