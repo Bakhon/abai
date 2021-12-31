@@ -130,7 +130,7 @@ class Gis extends PlainForm
         $columns->push(
             [
                 'code' => 'las',
-                'form' => 'well_document_short',
+                'form' => 'well_document',
                 'title' => trans('bd.forms.gis.las_files'),
                 'type' => 'table'
             ]

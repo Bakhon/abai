@@ -60,7 +60,7 @@
               {
                 "code": "documents",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "table",
                 "table": {
                   "name": "prod.gdis_complex_file",

@@ -25,7 +25,7 @@
               {
                 "code": "las_file",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "las_files2",
                 "document_list": true,
                 "columns": [
@@ -54,7 +54,7 @@
               {
                 "code": "table",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "table",
                 "document_list": true,
                 "columns": [
@@ -83,7 +83,7 @@
               {
                 "code": "results",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "results",
                 "document_list": true,
                 "columns": [
@@ -112,7 +112,7 @@
               {
                 "code": "akts",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "akts",
                 "document_list": true,
                 "columns": [
@@ -141,7 +141,7 @@
               {
                 "code": "inclinometry",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "inclinometry",
                 "document_list": true,
                 "columns": [
@@ -170,7 +170,7 @@
               {
                 "code": "conclusion",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "conclusion",
                 "document_list": true,
                 "columns": [

@@ -38,14 +38,6 @@
                 "is_editable": true
               },
               {
-                "code": "org",
-                "type": "dict_tree",
-                "dict": "orgs",
-                "title": "orgs",
-                "validation": "required",
-                "is_editable": true
-              },
-              {
                 "code": "tags",
                 "type": "table",
                 "title": "doc_tag",

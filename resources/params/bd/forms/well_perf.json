@@ -118,7 +118,7 @@
     {
       "action": "create",
       "title": "Прикрепить файл",
-      "form": "well_document_short",
+      "form": "well_document",
       "default_values": {
         "perf_type": 8
       }
@@ -218,7 +218,7 @@
               {
                 "code": "documents",
                 "type": "table",
-                "form": "well_document_short",
+                "form": "well_document",
                 "title": "table",
                 "table": {
                   "name": "prod.well_perf_file",
