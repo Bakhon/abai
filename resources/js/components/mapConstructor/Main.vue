@@ -41,17 +41,11 @@
                             </div>
                             <div v-if="selectedMonth" class="text-white" @click="monthUp">></div>
                         </div>
-                        <div class="tool">
+                        <div class="tool" @click="toolAction('feetToScreen')">
                             <div class="box">
-                                <i class="fas fa-chart-pie"></i>
+                                <i class="fas fa-eye"></i>
                             </div>
-                            <span>{{ trans('map_constructor.select_kno') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.select_kto') }}</span>
+                            <span>{{ trans('map_constructor.fit_to_screen') }}</span>
                         </div>
                     </div>
                 </div>
