@@ -2,24 +2,78 @@
   <div class="tkrs-main">
     <mainHeader />
     <div class="sidebar_graph" style="display:flex">
+        
         <div class="data-analysis-left-block">
           <div class="left-block-collapse-holder">
             <div>
-              <img
-                src="/img/PlastFluids/chooseParameters.svg"
-                alt="choose parameters icon"
-              />
-              <span>Параметры</span>
+
+              <div class="nav nav-tabs all-tabs">
+                <div style="display:flex; width: 249px;">
+                  <li class="nav-item">
+                      <a class="nav-link active tab-lblock-header" 
+                      @click="selectBlockTab(1)">
+                      <a>{{trans('tkrs.current_work')}}</a></a>
+                  </li>
+                  <li class="nav-item" style="width: 107px;">
+                      <a class="nav-link tab-lblock-header" 
+                      @click="selectBlockTab(2)">
+                      <a>{{trans('tkrs.archive')}}</a></a>
+                  </li>
+                </div>
+              </div>
+             
             </div>
           </div>
           <div class="dropdown-holder">
-      
-            <b-form-select class="custom-dropdown-block"  @change="onChangeWell" :options="wellList"></b-form-select>
-            <div class="line-block"></div>
-
-            <b-form-select  class="custom-dropdown-block" :options="wellDate" @change="onChangeWellDate"></b-form-select>
-            <b-button class="online-block" variant="success">{{trans('tr.online')}}</b-button>
             
+            <div class="line-block"></div>
+            <div class="tab-archive-div" v-if="currentBlockTab == 1">
+              <div class="form-input-block-header">Добавление скважины</div>
+        <b-dropdown class="left-block-dropdown" >
+              <template #button-content>
+                <img class="hws-tab-img"
+                    src="/img/tkrs/temporary/search_left_block.svg"
+                    />
+                
+                <a>Месторождение</a>
+              </template>
+              <b-dropdown-item href="#">Бригада</b-dropdown-item>
+              <b-dropdown-item href="#">Скважина</b-dropdown-item>
+        </b-dropdown>
+        <b-dropdown class="left-block-dropdown" >
+              <template #button-content class="outer_button_filter">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2295 10.4023H10.668V7.84256C10.668 7.77532 10.6068 7.72048 10.5317 7.72048H9.89921V5.76466L9.96604 5.78922C10.0008 5.80162 10.0353 5.80829 10.07 5.80829C10.1761 5.80829 10.2782 5.75131 10.3209 5.65713L10.7078 4.81786C10.7349 4.7573 10.7349 4.69031 10.7078 4.6307C10.6805 4.5711 10.6272 4.52293 10.5604 4.49861L4.68815 2.3127C4.90244 1.94409 5.09551 1.57025 5.26127 1.19854C5.31696 1.07408 5.25039 0.933162 5.11328 0.882139L2.79377 0.0185678C2.65587 -0.0324556 2.49834 0.0252363 2.43866 0.148026C1.86476 1.35733 1.49373 2.70492 1.27308 4.3887C1.25982 4.49742 1.32745 4.60138 1.43963 4.6431L2.43442 5.01337C2.54634 5.0551 2.6755 5.02458 2.75108 4.93875C3.18257 4.44735 3.55465 3.98552 3.88987 3.52678L5.06289 3.96454L5.00481 4.32337L4.83031 5.41298L4.02858 10.4023H2.1533H0.771569C0.621727 10.4023 0.5 10.5117 0.5 10.6469V11.7563C0.5 11.8903 0.621727 12 0.771569 12H11.2295C11.3783 12 11.5 11.8903 11.5 11.7563V10.6469C11.5 10.5117 11.3783 10.4023 11.2295 10.4023ZM9.35633 7.72048H8.72487C8.64929 7.72048 8.58776 7.77532 8.58776 7.84256V10.4023H7.97142L7.16969 5.41298L7.05672 4.70627L9.35633 5.56247V7.72048ZM6.67297 6.06602L5.71822 5.42633L6.47724 4.84886L6.67297 6.06602ZM6.35445 6.52047L5.14352 7.21311L5.36072 5.85526L6.35445 6.52047ZM6.80636 6.89742L7.09836 8.71352L5.52621 7.62868L6.80636 6.89742ZM5.64078 10.4023L7.20603 9.3835L7.36966 10.4023H5.64078ZM6.17491 4.37844L5.51904 4.87652L5.63096 4.1753L6.17491 4.37844ZM5.02338 7.95676L6.6528 9.08117L4.63193 10.3985L5.02338 7.95676Z" fill="#868BB2"/>
+                </svg>
+
+                <a>Скважина</a>
+              </template>
+              <b-dropdown-item href="#">Бригада</b-dropdown-item>
+              <b-dropdown-item href="#">Скважина</b-dropdown-item>
+        </b-dropdown>
+        <b-button class="online-block" >Создать новый отчет</b-button>
+                  <currentFormInput
+                    v-for="template in wellsTreeCurrent"
+                    :key="template.well_name" 
+                    :template="template">
+                  </currentFormInput>
+              </div>
+
+              <div class="tab-archive-div" v-if="currentBlockTab == 2">
+                <svg width="230" height="24" viewBox="0 0 230 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.25 0.25H245.75V23.75H0.25V0.25Z" fill="#121227" stroke="#363B68" stroke-width="0.5"/>
+                    <path opacity="0.8" d="M33.712 15.5V8.564H30.232V15.5H28.852V7.316H35.092V15.5H33.712ZM36.3293 12.62C36.3293 11.74 36.6213 11.012 37.2053 10.436C37.7973 9.852 38.5293 9.56 39.4013 9.56C40.2973 9.56 41.0333 9.852 41.6093 10.436C42.1853 11.012 42.4733 11.74 42.4733 12.62C42.4733 13.476 42.1813 14.204 41.5973 14.804C41.0133 15.404 40.2813 15.704 39.4013 15.704C38.5293 15.704 37.7973 15.408 37.2053 14.816C36.6213 14.224 36.3293 13.492 36.3293 12.62ZM38.1653 11.276C37.8533 11.628 37.6973 12.076 37.6973 12.62C37.6973 13.164 37.8613 13.616 38.1893 13.976C38.5253 14.328 38.9293 14.504 39.4013 14.504C39.9053 14.504 40.3173 14.328 40.6373 13.976C40.9573 13.616 41.1173 13.164 41.1173 12.62C41.1173 12.092 40.9613 11.648 40.6493 11.288C40.3373 10.928 39.9213 10.748 39.4013 10.748C38.8893 10.748 38.4773 10.924 38.1653 11.276ZM43.6511 15.5V9.752H44.9471V11.96C44.9471 12.672 44.9351 13.26 44.9111 13.724H44.9351C45.0551 13.5 45.3191 13.108 45.7271 12.548L47.8031 9.752H48.9911V15.5H47.6951V13.304C47.6951 12.592 47.7071 12 47.7311 11.528H47.7071C47.5791 11.76 47.3151 12.152 46.9151 12.704L44.8391 15.5H43.6511ZM53.2174 9.56C53.9694 9.56 54.5734 9.756 55.0294 10.148C55.4854 10.54 55.7654 10.984 55.8694 11.48H54.4894C54.2814 10.96 53.8534 10.7 53.2054 10.7C52.7094 10.7 52.3054 10.872 51.9934 11.216C51.6894 11.56 51.5374 12.028 51.5374 12.62C51.5374 13.172 51.6934 13.632 52.0054 14C52.3254 14.368 52.7414 14.552 53.2534 14.552C53.8854 14.552 54.3254 14.264 54.5734 13.688H55.9654C55.7894 14.272 55.4734 14.756 55.0174 15.14C54.5694 15.516 53.9734 15.704 53.2294 15.704C52.3494 15.704 51.6174 15.42 51.0334 14.852C50.4494 14.276 50.1574 13.528 50.1574 12.608C50.1574 11.744 50.4374 11.02 50.9974 10.436C51.5574 9.852 52.2974 9.56 53.2174 9.56ZM57.1159 15.5V9.752H58.4599V12.296L60.8599 9.752H62.4319L59.8639 12.476L62.5039 15.5H60.8719L58.4599 12.692V15.5H57.1159Z" fill="#9EA4C9"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7406 6C12.0573 6 13.177 6.46091 14.0984 7.38274C15.0203 8.30407 15.4812 9.42378 15.4812 10.7404C15.4812 11.6622 15.2344 12.5016 14.7409 13.2591L18 16.5181L16.518 18L13.2589 14.7406C12.4688 15.234 11.6294 15.4813 10.7406 15.4813C9.42345 15.4813 8.30468 15.0204 7.38282 14.0985C6.46046 13.1767 6 12.0575 6 10.7404C6 9.42378 6.46046 8.30407 7.38282 7.38274C8.30468 6.46091 9.42345 6 10.7406 6ZM10.7406 8.12345C10.0161 8.12345 9.39876 8.37858 8.88848 8.88884C8.3782 9.3991 8.12307 10.0165 8.12307 10.7404C8.12307 11.4648 8.3782 12.0817 8.88848 12.5919C9.39876 13.1027 10.0161 13.3578 10.7406 13.3578C11.4646 13.3578 12.0819 13.1027 12.5922 12.5919C13.103 12.0817 13.3576 11.4648 13.3576 10.7404C13.3576 10.0165 13.103 9.3991 12.5922 8.88884C12.0819 8.37858 11.4646 8.12345 10.7406 8.12345Z" fill="#9EA4C9"/>
+                    <path d="M23 3V21" stroke="#363B68" stroke-width="0.6"/>
+                </svg>
+                <div class="inline-arch-div"></div>
+                <archFormInput
+                  v-for="template in wellsTree"
+                  :key="template.year" 
+                  type="year" :template="template">
+                </archFormInput>
+              </div>
+         
           </div>
           
         </div>
@@ -28,6 +82,7 @@
             <div>
               <div class="table-div">
             <div>
+              
               <table>
                 
                 <tbody>
@@ -87,9 +142,9 @@
                     </tr>
                     <tr>
                       <td class="header_name">Трубное давление:</td>
-                      <td class="input-form-auto header_name_red">{{pipe_pressure}}</td>
+                      <td class="input-form-auto header_name_red">{{parameters.pipe_pressure}}</td>
                       <td class="header_name">Затрубное давление:</td>
-                      <td class="input-form-auto header_name_red">{{annular_pressure}}</td>
+                      <td class="input-form-auto header_name_red">{{parameters.annular_pressure}}</td>
                       <td class="header_name">Межколонное давление:</td>
                       <td class="input-form-auto header_name_red">0 атм</td>
                     </tr>
@@ -117,7 +172,7 @@
                       <td colspan="3" class="header_name">Ночное время</td>
                       <td></td>
                     </tr>
-                    <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index">
+                    <tr v-for="(item, item_index) in works_report_range.dbeg_night" :key="item_index + 'A'">
                       <td class="header_name manual-edit">{{item}}</td>
                       <td class="header_name manual-edit">{{works_report_range.dend_night[item_index]}}</td>
                       <td class="header_name input-form-auto">{{works_report_range.duration_night[item_index]}}</td>
@@ -153,10 +208,10 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[1]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[1]}}</td>
                       <td colspan="2" class="header_name"> Эксплуатационная колонна</td>
-                      <td class="input-form-auto header_name">{{prod_casing_outer_d}}</td>
-                      <td class="input-form-auto header_name">{{wall_thickness}}</td>
-                      <td class="input-form-auto header_name">{{descent_depth}}</td>
-                      <td class="input-form-auto header_name">17,76</td>
+                      <td class="input-form-auto header_name">{{parameters.prod_casing_outer_d}}</td>
+                      <td class="input-form-auto header_name">{{parameters.wall_thickness}}</td>
+                      <td class="input-form-auto header_name">{{parameters.descent_depth}}</td>
+                      <td class="input-form-auto header_name">{{parameters.volume_val}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">прочее (ОЗЦ и т.д)</td>
@@ -171,9 +226,9 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[3]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[3]}}</td>
                       <td colspan="2" class="header_name">Искусственный забой, м</td>
-                      <td class="input-form-auto header_name">{{artificial_slaughter}}</td>
+                      <td class="input-form-auto header_name">{{parameters.artificial_slaughter}}</td>
                       <td colspan="2" class="header_name">Текущий забой, м</td>
-                      <td class="input-form-auto header_name">{{current_bottomhole}}</td>
+                      <td class="input-form-auto header_name">{{parameters.current_bottomhole}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">обеденный перерыв</td>
@@ -181,14 +236,14 @@
                       <td class="input-form-auto header_name">{{prev_hour_works[4]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[4]}}</td>
                       <td colspan="2" class="header_name">Интервал перфорации</td>
-                      <td colspan="4" class="input-form-auto header_name">1700-1710м.</td>
+                      <td colspan="4" class="input-form-auto header_name">{{parameters.perf_intervals}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">ремонт оборудования</td>
                       <td class="header_name manual-edit">{{curr_hour_works[5]}}</td>
                       <td class="input-form-auto header_name">{{prev_hour_works[5]}}</td>
                       <td class="input-form-auto header_name">{{all_day_hour_works[5]}}</td>
-                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{all_works}}</td>
+                      <td colspan="6" rowspan="4" class="input-form-auto day-works">{{works_report_range.all_works}}</td>
                     </tr>
                     <tr>
                       <td colspan="2" class="header_name">метеоусловия</td>
@@ -244,13 +299,12 @@
       </div>
       <div class="daily-report">
         <div class="daily-report-buttons">
+         
           <button class="daily-report-button">{{trans('tr.form')}}</button>
           <button class="daily-report-button">{{trans('tr.save')}}</button>
           <button class="daily-report-button">{{trans('tr.cancel')}}</button> 
         </div>
       </div>      
-              
-
             </div>
 
         </div>
@@ -264,7 +318,10 @@ import mainHeader from "./mainHeader.vue";
 import baseBlock from './baseBlock.vue';
 import BaseTable from './BaseTable.vue';
 import {globalloadingMutations} from '@store/helpers'
-
+import dailyReportCurrent from "./dailyReportCurrent.vue";
+import currentFormInput from './tabs/currentFormInput.vue';
+import archFormInput from './tabs/archFormInput.vue';
+import {mapState, mapActions} from 'vuex'
 
 export default {
   name: "gps",
@@ -275,15 +332,22 @@ export default {
     mainHeader,
     BaseTable,
     baseBlock,
+    dailyReportCurrent,
+    currentFormInput,
+    archFormInput
   },
   computed: {
+    ...mapState('tkrsDailyReport', ["contractor_name", "areaChartData", "report_number","machine_type",
+    "field_name","well_type", "well_name", "programmes_target_name", "chief", 
+    "master_day_shift","master_day_shift_number", "master_night_shift", "master_night_shift_number",
+    "works_report_range", "start_drill", "end_drill","all_day_hour_works","curr_hour_works",
+    "prev_hour_works", "parameters"]),
   },
   data(){
     return {
-      currentTab: 1,
+      currentBlockTab: 1,
       calendarDate: '2020-06-17',
       Date1: null,
-      areaChartData: [],
       isChart: true,
       wellList: [],
       wellDate: [],
@@ -292,38 +356,14 @@ export default {
       maximum: null,
       minimum: null,
       chartData: null,
-      contractor_name: null,
-      report_number:  null,
-      well_type:  null,
-      field_name:  null,
-      machine_type:  null,
-      well_name:  null,
-      programmes_target_name:  null,
-      chief:  null,
-      master_day_shift:  null,
-      master_day_shift_number:  null,
-      master_night_shift:  null,
-      master_night_shift_number:  null,
-      programmes_target_name:  null,
-      works_report_range: [],
-      all_day_hour_works: [],
-      prev_hour_works: [],
-      curr_hour_works: [],
-      start_drill:  null,
-      end_drill:  null,
       all_works:  null,
       postApiUrl: process.env.MIX_TKRS_POST_API_URL,
       linkWell: "drWellName/",
       linkWellDate: "drWellDates/",
       linkWellReport: "drHeaderWorkReport/",
-      annular_pressure: null,
-      descent_depth: null,
-      pipe_pressure: null,
-      artificial_slaughter: null,
-      current_bottomhole: null,
-      prod_casing_outer_d: null,
-      wall_thickness: null,
-      
+      wellsTreeCurrent: {},
+      wellsTree: {},
+      isCurrent: true
     }
   },
   created: async function () {
@@ -336,7 +376,7 @@ export default {
         this.SET_LOADING(false);
         let data = response.data;
         if (data) {
-          this.areaChartData = data.data;
+        
         } else {
           console.log("No data");
         }
@@ -347,6 +387,9 @@ export default {
         this.SET_LOADING(false);
       });
       this.getListWell();
+      this.getDataTreeCurrent();
+      this.getDataTreeArchive()
+  
     },
   
   methods: {
@@ -398,46 +441,38 @@ export default {
                 }
             });
     },
-    postSelectedtWellFile() {
-      this.SET_LOADING(false);
-        this.axios
-            .get(
-                this.postApiUrl + this.linkWellReport + `${this.wellNumber}/${this.wellFile}/`,
-            )
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.areaChartData = data.data;
-                    this.contractor_name = data.data.header.contractor_name;
-                    this.report_number = data.data.header.report_number;
-                    this.machine_type = data.data.header.machine_type;
-                    this.field_name = data.data.header.field_name;
-                    this.well_type = data.data.header.well_type;
-                    this.well_name = data.data.header.well_name;
-                    this.programmes_target_name = data.data.header.programmes_target_name;
-                    this.chief = data.data.works_report.chief;
-                    this.master_day_shift = data.data.works_report.master_day_shift;
-                    this.master_day_shift_number = data.data.works_report.master_day_shift_number;
-                    this.master_night_shift = data.data.works_report.master_night_shift;
-                    this.master_night_shift_number = data.data.works_report.master_night_shift_number;
-                    this.works_report_range = data.data.works_report_range;
-                    this.start_drill = data.data.header.start_drill;
-                    this.end_drill = data.data.header.end_drill;
-                    this.all_works = data.data.works_report_range.all_works;
-                    this.all_day_hour_works = data.data.all_day_hour_works.all_day_hour_works;
-                    this.curr_hour_works = data.data.all_day_hour_works.curr_hour_works;
-                    this.prev_hour_works = data.data.all_day_hour_works.prev_hour_works;
-                    this.annular_pressure = data.data.parameters.annular_pressure;
-                    this.descent_depth = data.data.parameters.descent_depth;
-                    this.pipe_pressure = data.data.parameters.pipe_pressure;
-                    this.artificial_slaughter = data.data.parameters.artificial_slaughter;
-                    this.current_bottomhole = data.data.parameters.current_bottomhole;
-                    this.prod_casing_outer_d = data.data.parameters.prod_casing_outer_d;
-                    this.wall_thickness = data.data.parameters.wall_thickness;
-                } else {
-                    console.log("No data");
-                }
-            });
+    getDataTreeCurrent() {
+      
+      this.axios
+          .get(
+               this.postApiUrl + `wellNameDate1/`,
+              
+          )
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.wellsTreeCurrent = data
+              } else {
+                  console.log("No data");
+              }
+          });
+    },
+    getDataTreeArchive() {
+      
+      this.axios
+          .get(
+               this.postApiUrl + `wellTreeName/`,
+              
+          )
+          .then((response) => {
+              let data = response.data;
+              if (data) {
+                this.wellsTree = data
+
+              } else {
+                  console.log("No data");
+              }
+          });
     },
     cancelChat() {
         this.isChart = false;
@@ -450,6 +485,9 @@ export default {
             this.currentTab = selectedTab
     },
 
+    selectBlockTab(selectedBlockTab) {
+      this.currentBlockTab = selectedBlockTab
+    },
   },
 };
 </script>
@@ -580,5 +618,43 @@ border: none !important;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
+}
+.tab-lblock-header {
+  color: white !important;
+  background: #181837 !important;
+}
+.dropdown-holder {
+  background-color: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  padding: 6px 6px 1px 6px;
+  margin-bottom: 10px;
+}
+.btn-group::v-deep .btn-secondary {
+  color: #fff;
+  background-color: #20274F;
+  border-color: #20274F;
+  width: 100%;
+}
+.form-input-block-header {
+  font-size: 14px;
+  color: white;
+  padding-left: 7px;
+  padding-bottom: 6px;
+}
+.online-block {
+  width: 100%;
+  background: #293688;
+}
+.left-block-dropdown {
+  width: 100% !important;
+}
+.inline-arch-div {
+  padding-top: 21px;
+}
+.tab-archive-div {
+  padding-left: 3%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 747px;
 }
 </style>

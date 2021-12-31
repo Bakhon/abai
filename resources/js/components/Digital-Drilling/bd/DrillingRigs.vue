@@ -129,7 +129,7 @@
                                     <td class="w-150">
                                         <div class="text-center mb-2">
                                         </div>
-                                        <button class="characteristic" @click="openCharacteristicGraphModal">
+                                        <button class="characteristic" @click="openCharacteristicGraphModal(rig.id)">
                                             {{trans("digital_drilling.default.schedule")}}
                                             <img src="/img/digital-drilling/install-graph.svg" alt="">
                                         </button>
@@ -247,22 +247,8 @@
                 </div>
             </div>
         </div>
-        <div class="characteristic__modal graph" v-if="characteristicGraph">
-            <div class="characteristic_content">
-                <div class="characteristic_header">
-                    <span>{{trans("digital_drilling.default.drilling_rig_moving_schedule")}} ZJ-40 (ТОО СПБ “КазМунайГаз-Бурение)</span>
-                    <div class="characteristic_header-close" @click="openCharacteristicGraphModal">
-                        {{trans("digital_drilling.default.close")}}
-                    </div>
-                </div>
-                <div class="characteristic_body defaultScroll">
-                    <img src="/img/digital-drilling/scheme.png" alt="">
-                </div>
-                <button class="btn__ok" @click="openCharacteristicGraphModal">
-                    Ok
-                </button>
-            </div>
-        </div>
+        <drillin-graph v-if="characteristicGraph" @close="characteristicGraph=false" :dataGraph="dataGraphDetail"/>
+
         <div class="characteristic__modal scheme" v-if="characteristicScheme">
             <div class="characteristic_content">
                 <div class="characteristic_header">
@@ -293,7 +279,7 @@
                 </div>
             </div>
         </div>
-        <drillin-graph v-if="allGraphModal" @close="allGraphModal=false"/>
+        <drillin-graph v-if="allGraphModal" @close="allGraphModal=false" :dataGraph="dataGraph"/>
         <div class="newWell" v-if="filter">
             <div class="well_content">
                 <div class="well_body">
@@ -373,6 +359,7 @@
                 characteristicScheme: false,
                 filter: false,
                 rigs: [],
+                dataGraphDetail: [],
                 technicalDescription: {},
                 operatingCosts: [
                     {
@@ -410,11 +397,13 @@
                         from: 0,
                         to: ''
                     }
-                }
+                },
+                dataGraph: [],
             }
         },
         mounted(){
             this.getRigs('')
+            this.getDataGraph()
         },
         methods:{
             resetFilter(){
@@ -445,6 +434,21 @@
                 }
                 this.getRigs(query)
                 this.filter = false
+            },
+            async getDataGraph(){
+                try{
+                    await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/').then((response) => {
+                        let data = response.data;
+                        if (data) {
+                            this.dataGraph =  data
+                        } else {
+                            console.log('No data');
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log(e)
+                }
             },
             async getRigs(query){
                 await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/rigs?'+query).then((response) => {
@@ -478,11 +482,26 @@
                 document.body.overflow = 'hidden'
                 this.characteristicModal = true
             },
-            openCharacteristicGraphModal(){
+            async openCharacteristicGraphModal(id){
                 if (this.characteristicGraph){
                     this.characteristicGraph = false
                 } else{
                     document.body.overflow = 'hidden'
+                    this.dataGraphDetail =  []
+                    try{
+                        await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/drilling_schedule/'+id).then((response) => {
+                            let data = response.data;
+                            if (data) {
+                                this.dataGraphDetail.push(data)
+
+                            } else {
+                                console.log('No data');
+                            }
+                        });
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
                     this.characteristicGraph = true
                 }
             },

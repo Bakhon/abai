@@ -84,7 +84,6 @@ class WellsController extends Controller
         }
 
         $orgs = $this->org($well);
-        $mainOrg = $this->orgCode($orgs);
         $wellInfo = [
             'wellInfo' => $well,
             'wellDailyDrill' => $this->wellDailyDrill($well),
@@ -115,10 +114,10 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'gdisCurrent' => $this->gdisCurrent($well),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gdis_complex' => $this->gdisComplex($well, 'RP', $mainOrg),
+            'gdis_complex' => $this->gdisComplex($well, 'RP'),
             'gu' => $this->getTechsByCode($well, [1, 3]),
             'agms' => $this->getTechsByCode($well, [2000000000004]),
-            'techmode' => $this->gdisComplex($well, 'BHP', $mainOrg),
+            'techmode' => $this->gdisComplex($well, 'BHP'),
             'well_block' => $this->wellBlock($well),
         ];
 
@@ -256,7 +255,7 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
-            ->select(['name_ru',])
+            ->select(['name_ru', 'category'])
             ->get()
             ->toArray();
 
@@ -849,7 +848,7 @@ class WellsController extends Controller
         return "";
     }
 
-    private function gdisComplex(Well $well, $method, $mainOrgCode)
+    private function gdisComplex(Well $well, $method)
     {
         $gdisComplex = $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
@@ -859,10 +858,6 @@ class WellsController extends Controller
             ->get(['value_string', 'value_double', 'dbeg'])
             ->toArray();
 
-        if ($gdisComplex && $method == 'BHP' && $mainOrgCode == 'KGM') {
-            $gdisComplex[0]['value_double'] *= 0.987;
-            return $gdisComplex[0];
-        }
         if ($gdisComplex) {
             return $gdisComplex[0];
         }

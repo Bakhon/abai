@@ -72,15 +72,16 @@ export default {
       "currentSubsoilField",
       "subsoilHorizons",
       "currentSubsoilHorizon",
+      "blocks",
+      "currentBlocks",
     ]),
-    ...mapState("plastFluidsLocal", ["blocks", "currentBlocks"]),
     selectedHorizons: {
       get() {
         return this.currentSubsoilHorizon;
       },
       set(value) {
         this.SET_CURRENT_SUBSOIL_HORIZON(value);
-        if (!value.length) this.SET_CURRENT_BLOCKS([]);
+        this.GET_HORIZON_BLOCKS();
       },
     },
     selectedBlocks: {
@@ -96,21 +97,23 @@ export default {
     ...mapActions("plastFluids", [
       "UPDATE_CURRENT_SUBSOIL",
       "UPDATE_CURRENT_SUBSOIL_FIELD",
+      "GET_HORIZON_BLOCKS",
     ]),
-    ...mapActions("plastFluidsLocal", [
-      "handleAnalysisTableData",
-      "handleBlocksFilter",
+    ...mapMutations("plastFluids", [
+      "SET_CURRENT_SUBSOIL_HORIZON",
+      "SET_CURRENT_BLOCKS",
     ]),
-    ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
-    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS", "SET_CURRENT_BLOCKS"]),
     async updateCurrentSubsoil(value) {
       await this.UPDATE_CURRENT_SUBSOIL(value);
-      this.handleBlocksFilter([]);
+      await this.GET_HORIZON_BLOCKS();
     },
     async updateCurrentField(value) {
       await this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
-      this.handleBlocksFilter([]);
+      await this.GET_HORIZON_BLOCKS();
     },
+  },
+  mounted() {
+    this.GET_HORIZON_BLOCKS();
   },
 };
 </script>

@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,6 +33,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
     protected $params;
     protected $input;
+    protected $log_channel;
 
     protected $columnNames = [
         'ID',
@@ -117,6 +119,18 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         'height_drop' => 20
     ];
 
+    public $guData = [
+        67 => [
+            'sg_oil' => 0.8450
+        ],
+        38 => [
+            'sg_oil' => 0.8531
+        ],
+        44 => [
+            'sg_oil' => 0.8542
+        ],
+    ];
+
     /**
      * Create a new job instance.
      *
@@ -126,6 +140,11 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
     {
         $this->prepareStatus();
         $this->input = $input;
+        $this->log_channel = (isset($this->input['cron']) and $this->input['cron']) ? 'calculate_hydro_reverse_yesterday:cron' : 'calculate_hydro_reverse';
+        $message = "=========================";
+        Log::channel($this->log_channel)->info($message);
+        $message = "Job begins";
+        Log::channel($this->log_channel)->info($message);
     }
 
     /**
@@ -145,16 +164,23 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             'ГУ-22'
         ];
 
+        $message = "Before get pipes";
+        Log::channel($this->log_channel)->info($message);
+
         $isErrors = false;
         $gu_ids = Gu::whereIn('name', $guNames)->get()->pluck('id');
         $pipes = OilPipe::with('firstCoords', 'lastCoords', 'pipeType', 'gu')
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
-            ->whereIn('between_points', ['well-zu', 'well_collector-zu', 'zu-gu', 'zu-zu_coll', 'zu_coll-gu'])
+            ->where('trunkline', false)
+            ->where('water_pipe', false)
             ->whereIn('gu_id', $gu_ids)
             ->orderBy('gu_id')
             ->orderBy('zu_id')
             ->get();
+
+        $message = "Pipes got";
+        Log::channel($this->log_channel)->info($message);
 
         foreach ($pipes as $key => $pipe) {
             if (!$pipe->lastCoords || !$pipe->firstCoords) {
@@ -173,6 +199,16 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
                 if (!$pipe->omgngdu) {
                     unset($pipes[$key]);
                     continue;
+                }
+
+                if (!$pipe->omgngdu->gas_factor) {
+                    $omg_ngdu = OmgNGDU::where('gu_id', $pipe->gu_id)
+                        ->where('date', '<=', $this->input['date'])
+                        ->orderBy('date', 'desc')
+                        ->first();
+
+                    $omg_ngdu->sg_oil = $omg_ngdu->sg_oil ? $omg_ngdu->sg_oil : (isset($this->guData[$pipe->gu_id]) ? $this->guData[$pipe->gu_id]['sg_oil'] : 0.85);
+                    $pipe->omgngdu->gas_factor = $omg_ngdu->daily_oil_production ? $omg_ngdu->daily_gas_production_in_sib / $omg_ngdu->daily_oil_production / $omg_ngdu->sg_oil : 0;
                 }
             }
 
@@ -223,12 +259,20 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             }
         }
 
+        $message = "Pipes omgngdu_gu got";
+        Log::channel($this->log_channel)->info($message);
+
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => $message
-                ]
-            );
+            if (isset($this->input['cron']) and $this->input['cron']) {
+                Log::channel($this->log_channel)->error($message);
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => $message
+                    ]
+                );
+            }
+
             return;
         }
 
@@ -244,10 +288,15 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
         $filePath = 'public/export/'.$fileName;
         Excel::store(new PipeLineReverseCalcExport($data), $filePath);
 
+        $message = 'Excel file created';
+        Log::channel($this->log_channel)->info($message);
+
         if (!$isErrors AND isset($this->input['date'])) {
             $calcUrl = env('MANUAL_CALC_SERVICE_URL').'calculate?calculation_type=reverse';
 
             $request = $this->calcRequest($calcUrl, $filePath, $fileName);
+            $message = 'Data calculated, begins saving';
+            Log::channel($this->log_channel)->info($message);
 
             $data = json_decode($request->getBody()->getContents());
             $short = $data->short->data;
@@ -304,6 +353,9 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
     protected function storeShortResult(array $data): void
     {
+        $message = 'Begins saving short data';
+        Log::channel($this->log_channel)->info($message);
+
         foreach ($data as $row) {
             $pipe = OilPipe::find($row[$this->shortSchema['id']]);
 
@@ -322,10 +374,16 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
             $calcResult->save();
         }
+
+        $message = 'Short data saved';
+        Log::channel($this->log_channel)->info($message);
     }
 
     protected function storeLongResult(array $data): void
     {
+        $message = 'Begins saving long data';
+        Log::channel($this->log_channel)->info($message);
+
         $pipe = null;
         foreach ($data as $row) {
             if (!ctype_digit($row[$this->longSchema['segment']])) {
@@ -355,6 +413,9 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
             $hydroCalcLong->save();
         }
+
+        $message = 'Long data saved';
+        Log::channel($this->log_channel)->info($message);
     }
 }
 

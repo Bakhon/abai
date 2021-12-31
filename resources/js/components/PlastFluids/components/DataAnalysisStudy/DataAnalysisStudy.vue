@@ -22,8 +22,8 @@
 
 <script>
 import BaseTable from "../BaseTable.vue";
-import { mapState, mapMutations, mapActions } from "vuex";
-import { getTemplateFile, getHorizonBlocks } from "../../services/templateService";
+import { mapState, mapActions } from "vuex";
+import { getTemplateFile } from "../../services/templateService";
 import { convertToFormData, downloadExcelFile } from "../../helpers";
 
 export default {
@@ -40,10 +40,10 @@ export default {
     ...mapState("plastFluids", [
       "currentSubsoilField",
       "currentSubsoilHorizon",
+      "currentBlocks",
     ]),
     ...mapState("plastFluidsLocal", [
       "currentTemplate",
-      "currentBlocks",
       "tableFields",
       "tableRows",
     ]),
@@ -59,13 +59,12 @@ export default {
       },
       deep: true,
     },
-    currentSubsoilHorizon(value) {
+    currentSubsoilHorizon() {
       this.handleTableData({
         user_id: this.userID,
         report_id: this.currentTemplate.id,
         type: "analysis",
       });
-      this.setBlocks(value);
     },
     currentBlocks() {
       this.handleTableData({
@@ -76,7 +75,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_BLOCKS"]),
     ...mapActions("plastFluidsLocal", ["handleTableData"]),
     async handleTableDownload() {
       let horizonIDs = "None";
@@ -99,20 +97,6 @@ export default {
       const file = await getTemplateFile(postData);
       downloadExcelFile(this.currentTemplate["name_" + this.currentLang], file);
     },
-    async setBlocks(horizons) {
-      if (horizons.length) {
-        const horizonIDs = horizons.map((horizon) => horizon.horizon_id);
-        const payload = convertToFormData({ horizons: horizonIDs });
-        const blocks = await getHorizonBlocks(payload);
-        this.SET_BLOCKS(blocks);
-      } else {
-        this.SET_BLOCKS([]);
-      }
-    },
-  },
-  mounted() {
-    if (this.currentSubsoilHorizon.length)
-      this.setBlocks(this.currentSubsoilHorizon);
   },
 };
 </script>

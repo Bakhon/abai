@@ -64,8 +64,8 @@ export default {
           position: "bottom",
           children: [
             {
-              name: this.trans('tkrs.daily_summary'),
-              imagePath: "/img/tkrs/daily_summary.svg",
+              name: this.trans('tkrs.order_outfit'),
+              imagePath: "/img/tkrs/order_outfit.svg",
               showArrow: false,
               position: "right",
               url: "gps",
@@ -75,6 +75,13 @@ export default {
               imagePath: "/img/tkrs/por.svg",
               showArrow: false,
               position: "right",
+            },
+            {
+              name: this.trans('tkrs.daily_summary'),
+              imagePath: "/img/tkrs/daily_summary.svg",
+              showArrow: false,
+              position: "right",
+              url: "gps",
             },
           ],
         },

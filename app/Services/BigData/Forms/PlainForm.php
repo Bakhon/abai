@@ -379,4 +379,36 @@ abstract class PlainForm extends BaseForm
         );
     }
 
+    protected function filterParams(array $params): array
+    {
+        $userDZOs = array_filter(
+            array_map(
+                function ($dzo) {
+                    return $dzo['code'];
+                },
+                auth()->user()->getUserOrganizations()
+            )
+        );
+
+        foreach ($params['tabs'] as &$tab) {
+            foreach ($tab['blocks'] as &$block) {
+                foreach ($block as &$subBlock) {
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
+                    foreach ($subBlock['items'] as $key => $item) {
+                        if (!isset($item['dzos'])) {
+                            continue;
+                        }
+                        if (empty(array_intersect($userDZOs, $item['dzos']))) {
+                            unset($subBlock['items'][$key]);
+                        }
+                    }
+                    $subBlock['items'] = array_values($subBlock['items']);
+                }
+            }
+        }
+        return $params;
+    }
+
 }

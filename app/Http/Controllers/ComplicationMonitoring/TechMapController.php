@@ -66,7 +66,10 @@ class TechMapController extends Controller
     public function mapData(): array
     {
         $date = HydroCalcResult::orderBy('date', 'desc')->first()->date;
-        $pipes = OilPipe::with('coords', 'pipeType')
+        $pipes = OilPipe::with('pipeType')
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
             ->with([
                 'hydroCalcLong' => function ($query) use ($date) {
                     $query->where('date', $date);
@@ -78,7 +81,10 @@ class TechMapController extends Controller
             ->where('water_pipe', false)
             ->get();
 
-        $manualPipes = ManualOilPipe::with('coords', 'pipeType')
+        $manualPipes = ManualOilPipe::with('pipeType')
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
             ->with([
                 'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::yesterday()->format('Y-m-d'));
@@ -142,7 +148,10 @@ class TechMapController extends Controller
         $pipeTypes = PipeType::all();
         $ngdus = Ngdu::all();
         $cdngs = Cdng::all();
-        $water_pipes = OilPipe::with('coords', 'pipeType')
+        $water_pipes = OilPipe::with('pipeType')
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
             ->where('water_pipe', true)
             ->get();
 
@@ -176,7 +185,10 @@ class TechMapController extends Controller
 
     private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        $oilPipes = OilPipe::with('coords', 'pipeType')
+        $oilPipes = OilPipe::with('pipeType')
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
             ->where('water_pipe', false)
             ->get();
 
@@ -335,7 +347,10 @@ class TechMapController extends Controller
             $pipe_coord->save();
         }
 
-        $pipe = ManualOilPipe::with('coords', 'pipeType')
+        $pipe = ManualOilPipe::with('pipeType')
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
             ->with([
                 'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
@@ -629,7 +644,6 @@ class TechMapController extends Controller
 
         $pipes = OilPipe::with(
             [
-                'coords',
                 'zu',
                 'pipeType',
                 'hydroCalc' => function ($query) use ($date) {
@@ -642,7 +656,11 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 }
             ]
-        )->where('water_pipe', false)
+        )
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])
+            ->where('water_pipe', false)
             ->orderBy('between_points')
             ->get();
 
@@ -662,17 +680,17 @@ class TechMapController extends Controller
             if ($pipe->between_points == 'well-zu' && $pipe->hydroCalc && $pipe->hydroCalc->press_end) {
                 $press_zu[$pipe->zu_id] = $pipe->hydroCalc->press_end;
             }
-            
-            if ($pipe->between_points == 'zu-gu' 
-                && $pipe->hydroCalc 
-                && $pipe->hydroCalc->press_start 
-                && $pipe->hydroCalc->press_start  != $press_zu[$pipe->zu_id]) {
+
+            if ($pipe->between_points == 'zu-gu'
+                && $pipe->hydroCalc
+                && $pipe->hydroCalc->press_start
+                && $pipe->hydroCalc->press_start != $press_zu[$pipe->zu_id]) {
                 $press_alerts[] = [
-                    'message' => 'Конечное давление ('.$press_zu[$pipe->zu_id].') на трубах СКВ-ЗУ не совпадает с начальным давлением ('.$pipe->hydroCalc->press_start.') на трубе ЗУ-ГУ, '.$pipe->zu->name,
+                    'message' => 'Конечное давление (' . $press_zu[$pipe->zu_id] . ') на трубах СКВ-ЗУ не совпадает с начальным давлением (' . $pipe->hydroCalc->press_start . ') на трубе ЗУ-ГУ, ' . $pipe->zu->name,
                     'variant' => 'danger'
                 ];
             }
-            
+
 
             unset($pipe->well);
             unset($pipe->zu);
@@ -680,7 +698,6 @@ class TechMapController extends Controller
 
         $manualPipes = ManualOilPipe::with(
             [
-                'coords',
                 'pipeType',
                 'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
@@ -689,7 +706,10 @@ class TechMapController extends Controller
                     $query->where('date', $date);
                 },
             ]
-        )->get();
+        )
+            ->with(['coords' => function ($query) {
+                $query->orderBy('h_distance');
+            }])->get();
 
         $wellPoints = Well::with(
             [

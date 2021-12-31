@@ -375,12 +375,12 @@ export default {
     ...mapState("plastFluids", [
       "currentSubsoilHorizon",
       "currentSubsoilField",
+      "currentBlocks",
     ]),
     ...mapState("plastFluidsLocal", [
       "currentSelectedCorrelation_ps",
       "currentSelectedCorrelation_bs",
       "currentSelectedCorrelation_ms",
-      "currentBlocks",
       "currentSelectedSamples",
     ]),
     heading() {

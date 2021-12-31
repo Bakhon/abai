@@ -6,7 +6,7 @@ class ReverseCalculationResource extends CrudListResource
 {
     public function toArray($request)
     {
-        $result = isset($this->fluid_speed) ? $this->calculated() : $this->prepaired();
+        $result = isset($this->flow_type) ? $this->calculated() : $this->prepaired();
 
         $result['links'] = $this->omgngdu ? ['edit' => route('omgngdu-well.edit', $this->omgngdu->id)] : [];
 
@@ -23,7 +23,7 @@ class ReverseCalculationResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'id' => $this->id,
+                'oil_pipe_id' => $this->id,
                 'gu_name' => $this->gu ? $this->gu->name : '',
                 'date' => $this->omgngdu ? $this->omgngdu->date : '',
                 'start_point' => $this->start_point,
@@ -60,7 +60,7 @@ class ReverseCalculationResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'check_calc' => $this->oilPipe->gu_id,
-                'id' => $this->id,
+                'oil_pipe_id' => $this->oilPipe->id,
                 'gu_name' => $this->oilPipe->gu ? $this->oilPipe->gu->name : '',
                 'date' => $this->date,
                 'start_point' => $this->start_point,
@@ -73,7 +73,7 @@ class ReverseCalculationResource extends CrudListResource
                 'daily_fluid_production' => round($this->qliq, 2),
                 'bsw' => round($this->bsw, 2),
                 'gas_factor' => round($this->gazf, 2),
-                // ата в бар
+                // атмосферы абс. в бар изб.
                 'pressure_start' => round(($this->press_start - 1) * 101325 / 100000, 2),
                 'pressure_end' => round(($this->press_end - 1) * 101325 / 100000, 2),
                 'temp_start' => round($this->temperature_start, 2),
