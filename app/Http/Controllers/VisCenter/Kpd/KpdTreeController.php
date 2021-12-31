@@ -21,7 +21,7 @@ class KpdTreeController extends Controller
     public function getCorporateManager()
     {
         return KpdCorporateManager::query()
-           ->where('year',Carbon::now()->year)
+           ->where('year',2021)
            ->first();
     }
 
@@ -36,13 +36,13 @@ class KpdTreeController extends Controller
 
         KpdCorporateManager::updateOrCreate(
             [
-                'year' => Carbon::now()->year
+                'year' => 2021
             ],
             [
                 'name' => $request->name,
                 'title' => $request->title,
                 'avatar' => $imageName,
-                'year' => Carbon::now()->year
+                'year' => 2021
             ]
         );
     }
@@ -50,7 +50,7 @@ class KpdTreeController extends Controller
     public function getManagers(Request $request)
     {
         return KpdManagers::query()
-           ->where('year',Carbon::now()->year)
+           ->where('year',2021)
            ->where('type',$request->type)
            ->get();
     }
@@ -77,7 +77,7 @@ class KpdTreeController extends Controller
                 'title' => $request->title,
                 'avatar' => $imageName,
                 'type' => $request->type,
-                'year' => Carbon::now()->year
+                'year' => 2021
             ]
         );
     }
