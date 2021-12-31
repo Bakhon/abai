@@ -31,5 +31,7 @@ return array (
   'design-pressure' => 'Расчетное давление',
   'material-balance-method' => 'Прогноз добычи методом материального баланса',
   'volume' => 'Объём м³',
-  'pressure' => 'Давление атм'
+  'pressure' => 'Давление атм',
+  'method_mat_balance' => 'Метод материального баланса',
+  'displacement-curves' => 'Кривые характеристики вытеснения'
   );
