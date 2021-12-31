@@ -69,7 +69,7 @@
                                 <div class="d-flex p-0">
                                     <div class="text-left strategic-kpd-header">Ожидание</div>
                                     <div class="text-right ml-2 strategic-kpd-header">
-                                        125%
+                                        118%
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                 <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-11 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,managers)">
                                     <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
                                     <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
-                                        <div class="col-4 row m-0">
+                                        <div class="col-4 row m-0 p-0">
                                            <div class="col-12 d-flex p-0 mt-3 justify-content-between">
                                                 <div class="d-flex p-0">
                                                     <div class="text-left manager-result">Результативность</div>
@@ -254,9 +254,9 @@
                         <div v-for="(manager, index) in deputy" class="manager-header cursor-pointer">
                             <div class="d-flex p-0">
                                 <div :class="[manager.isSelected ? 'chairmaster_selected' : '','col-11 d-flex align-items-center chairmaster']" @click="switchKpdVisibility(manager,deputy)">
-                                    <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" class="rounded-circle"></img>
+                                    <img :src="'/img/kpd-tree/managers/' + manager.avatar" height="40em" width="40em" class="rounded-circle"></img>
                                     <div class="col-7 ml-2 text-left"><b>{{manager.name}}</b><br>{{manager.title}}</div>
-                                    <div class="col-4 row m-0">
+                                    <div class="col-4 row m-0 p-0">
                                         <div class="col-12 d-flex p-0 mt-3 justify-content-between">
                                             <div class="d-flex p-0">
                                                 <div class="text-left manager-result">Результативность</div>

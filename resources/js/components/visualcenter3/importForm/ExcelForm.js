@@ -638,9 +638,12 @@ export default {
             }
 
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
+            console.log(this.category.isArchieveActive)
             if (this.category.isArchieveActive) {
                 isMonthlyPlanAbnormal = monthlyFact < monthlyPlan;
+                difference = Math.abs(monthlyPlan - monthlyFact);
             }
+            console.log(monthlyFact + ' - ' + monthlyPlan)
             if (isMonthlyPlanAbnormal) {
                 let monthlyRow = this.dzoMapping[this.selectedDzo.ticker].monthlyReasonRow;
                 for (let i=1;i<6;i++) {
