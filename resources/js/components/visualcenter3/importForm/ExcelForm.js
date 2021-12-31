@@ -633,15 +633,15 @@ export default {
             let toastOptions = _.cloneDeep(this.toastOptions);
             let monthlyPlan = await this.getSummaryPlanByDzo('monthly');
             let difference = Math.abs(monthlyPlan - (monthlyFact + this.excelData[this.factValidationMapping[factField]]));
-            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
-                return false;
-            }
 
             let isMonthlyPlanAbnormal = (monthlyFact + this.excelData[this.factValidationMapping[factField]]) < monthlyPlan;
 
             if (this.category.isArchieveActive) {
                 isMonthlyPlanAbnormal = monthlyFact < monthlyPlan;
                 difference = Math.abs(monthlyPlan - monthlyFact);
+            }
+            if (this.excelData['decreaseReason']['monthly_reason_1_explanation'] !== '' && this.isReasonSumCorrect(this.monthlyLossesField,difference)) {
+                return false;
             }
 
             if (isMonthlyPlanAbnormal) {
