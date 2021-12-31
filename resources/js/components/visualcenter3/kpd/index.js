@@ -154,7 +154,7 @@ export default {
                             kpd.fact = moment(sorted.at(-1).fact, 'DD.MM.YYYY').toDate().getTime();
                         }
                         kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,kpd.fact));
-                        kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                        kpd.summary = kpd.rating * (kpd.weight / 100);
                     }
                     kpd['waiting'] = this.corporateKpdWaiting[index];
                     let elements = kpd.kpd_elements;

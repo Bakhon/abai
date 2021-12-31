@@ -237,7 +237,7 @@ export default {
                 return 0;
             }
             if ((fact < step) || (step === null || target === null || maximum === null || fact === null)) {
-                return 0;
+                return 5;
             }
             if (fact === step) {
                 return 50;
@@ -261,7 +261,8 @@ export default {
             let step = parseFloat(kpd.step);
             let target = parseFloat(kpd.target);
             let maximum = parseFloat(kpd.maximum);
-            let isDate =false;
+            let maximumKpd = this.getMaximum(kpd);
+            let isDate = false;
             if (kpd.step !== null && kpd.step !== '-') {
                 isDate = kpd.step.includes('.');
             } else if (kpd.target !== null && kpd.target !== '-') {
@@ -273,6 +274,7 @@ export default {
                 step = moment(kpd.step, 'DD.MM.YYYY').toDate().getTime();
                 target = moment(kpd.target, 'DD.MM.YYYY').toDate().getTime();
                 maximum = moment(kpd.maximum, 'DD.MM.YYYY').toDate().getTime();
+                maximumKpd = moment(maximumKpd, 'DD.MM.YYYY').toDate().getTime();
             }
 
             if (fact < step) {
@@ -280,7 +282,7 @@ export default {
             }
             let absolutePosition = 100;
 
-            if (fact <= this.getMaximum(kpd)) {
+            if (fact <= maximumKpd) {
                 absolutePosition = absolutePosition - 18;
             }
             if (fact <= target) {
@@ -290,12 +292,11 @@ export default {
                 absolutePosition = absolutePosition - 42;
             }
 
-            let position = fact * absolutePosition / this.getMaximum(kpd);
+            let position = fact * absolutePosition / maximumKpd;
 
             if (position > 100) {
                 position = 100;
             }
-
             return position;
         },
         getMaximum(kpd) {
@@ -334,7 +335,8 @@ export default {
                        kpd.isWeightFilled = true;
                    }
                    kpd.rating = Math.round(this.getKpdEfficiency(kpd.step,kpd.target,kpd.maximum,this.factDates[index].fact));
-                   kpd.summary = Math.round(kpd.rating * (kpd.weight / 100));
+                   kpd.summary = kpd.rating * (kpd.weight / 100);
+
                    kpd['fact'] = _.sumBy(kpd.kpd_fact,  item => Number(item.fact));
                    if (isNaN(kpd['fact'])) {
                        kpd['fact'] = moment(kpd.kpd_fact.at(-1).fact,'DD.MM.YYYY').toDate().getTime();
